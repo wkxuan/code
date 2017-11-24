@@ -1,0 +1,75 @@
+﻿@inherits z.MVC5.Views.ListViewPage
+
+@section tj{
+    <row>
+        <i-col span="2" class="RowTitle">
+            ID
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="SearchData.DEPTID" placeholder="Enter something...">
+            </i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="SearchData.DEPT_NAME" placeholder="Enter something...">
+            </i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            部门
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="SearchData.DEPT_NAME" placeholder="Enter something...">
+            </i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            ID
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="SearchData.DEPTID" placeholder="Enter something...">
+            </i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="SearchData.DEPT_NAME" placeholder="Enter something...">
+            </i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            部门
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="SearchData.DEPT_NAME" placeholder="Enter something...">
+            </i-input>
+        </i-col>
+    </row>
+}
+
+@section tjbtn{
+    <i-button type="text" v-on:click="Search">查询</i-button>
+    <span>|</span>
+    <i-button type="text" v-on:click="Save">保存</i-button>
+}
+
+@section jg{
+    <row>
+        <i-col  span="2">
+            部门ID
+        </i-col>
+        <i-col  span="2">
+            部门名称
+        </i-col>
+    </row>
+    <row v-for="item in ResultData.rows">
+        <i-col  span="2">
+            {{ item.DEPTID }}
+        </i-col>
+        <i-col  span="2">
+            {{ item.DEPT_NAME }}
+        </i-col>
+    </row>
+}

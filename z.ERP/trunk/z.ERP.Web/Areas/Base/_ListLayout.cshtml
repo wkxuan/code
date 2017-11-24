@@ -1,0 +1,43 @@
+﻿@inherits z.MVC5.Views.ListViewBase
+
+@{
+    WebFiles = new string[] {
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js"
+                };
+}
+
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+<style>
+    .RowTitle { text-align: right; font-size: large; }
+</style>
+<div id="List_Main">
+    <collapse v-model="frameTar">
+        <panel name="tj">
+            查询条件
+            <div style="float: right; width: 200px ;text-align: right;z-index:99">
+                @RenderSection("tjbtn", false)
+            </div>
+            <p slot="content">
+                @RenderSection("tj", true)
+            </p>
+        </panel>
+        <panel name="jg">
+            查询结果
+            <div style="float: right; width: 200px ;text-align: right;z-index:99">
+                @RenderSection("jgbtn", false)
+            </div>
+            <p slot="content">
+                @RenderSection("jg", true)
+            </p>
+        </panel>
+    </collapse>
+</div>
+
+@section foot{
+    @RenderSection("foot", false)
+}

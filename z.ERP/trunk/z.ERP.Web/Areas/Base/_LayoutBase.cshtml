@@ -1,0 +1,29 @@
+﻿@inherits z.MVC5.Views.ViewBase
+
+@{
+    WebFiles = new string[] {
+                    "Content/jquery.min.js",
+                    "Content/zBase.js",
+                    "Content/AjaxHelper.js"
+                };
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        __ControllerUrl = '@ViewBag.ControllerUrl';
+        __CommonControllerUrl = '@ViewBag.CommonControllerUrl';
+    </script>
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    @RenderBody()
+    @InitThisJs()
+    @RenderSection("foot", false)
+</body>
+</html>
