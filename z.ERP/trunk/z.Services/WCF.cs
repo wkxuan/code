@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace z.Services
-{
+{ 
     public class WCF
     {
         #region Wcf服务工厂
