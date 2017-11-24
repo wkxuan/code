@@ -11,7 +11,7 @@ using z.Extensions;
 namespace z.Verify
 {
     public class VerifyBase
-    {
+    { 
         public VerifyBase()
         {
             _errorMsg = new List<string>();
