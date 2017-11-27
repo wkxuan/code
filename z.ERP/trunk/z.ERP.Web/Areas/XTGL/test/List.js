@@ -9,7 +9,7 @@
             rows: [],
             total: 0
         },
-        frameTar: 'tj',
+        frameTar: 'tj', 
     },
     methods: {
         Search: function (event) {
