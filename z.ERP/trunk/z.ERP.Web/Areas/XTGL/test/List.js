@@ -12,6 +12,9 @@
         frameTar: 'tj',
     },
     methods: {
+
+
+
         Search: function (event) {
             event.stopPropagation();
             //_.Ajax('Func1', {
