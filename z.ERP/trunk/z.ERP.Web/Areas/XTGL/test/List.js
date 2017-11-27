@@ -44,5 +44,5 @@ var Search = new Vue({
     }
 });
 
-alter('石增辉测试')
+alter('石增辉测试') 
 alter('石增辉测试')
