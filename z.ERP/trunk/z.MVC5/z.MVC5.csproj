@@ -98,6 +98,7 @@
     <Compile Include="Results\SearchItem.cs" />
     <Compile Include="Results\SelectResult.cs" />
     <Compile Include="Results\UIResult.cs" />
+    <Compile Include="Views\ControlViewBase.cs" />
     <Compile Include="Views\ListViewPage.cs" />
     <Compile Include="Views\ListViewBase.cs" />
     <Compile Include="Views\ViewBase.cs" />
