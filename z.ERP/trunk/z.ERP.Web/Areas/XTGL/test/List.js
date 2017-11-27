@@ -8,7 +8,7 @@ var Search = new Vue({
             DEPT_NAME: ''
         },
         ResultData: {
-            rows: [],
+            rows: [], 
             total: 0
         },
         frameTar: 'tj', 
