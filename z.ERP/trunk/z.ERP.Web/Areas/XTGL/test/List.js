@@ -1,4 +1,6 @@
-﻿var Search = new Vue({
+﻿alert("测试信息");
+
+var Search = new Vue({
     el: "#List_Main",
     data: {
         SearchData: {
@@ -12,9 +14,6 @@
         frameTar: 'tj',
     },
     methods: {
-
-
-
         Search: function (event) {
             event.stopPropagation();
             //_.Ajax('Func1', {
