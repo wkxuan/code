@@ -11,7 +11,7 @@ var Search = new Vue({
             rows: [],
             total: 0
         },
-        frameTar: 'tj',
+        frameTar: 'tj', 
     },
     methods: {
         Search: function (event) {
@@ -43,3 +43,6 @@ var Search = new Vue({
         }
     }
 });
+
+alter('石增辉测试')
+alter('石增辉测试')
