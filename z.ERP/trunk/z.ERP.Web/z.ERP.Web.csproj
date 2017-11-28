@@ -164,6 +164,7 @@
     <Content Include="Areas\HTGL\LYHT\lyHtList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\BRAND\Brand.js" />
+    <Content Include="Areas\XTGL\BRAND\test.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\jquery.min.js" />
