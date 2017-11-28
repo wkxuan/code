@@ -37,8 +37,9 @@
             _.Ajax('Save1', {
                 bm: Search.SearchData
             }, function (a, b, c) {
-                alert("成功");
+                alert("wll测试提交成功");
             });
         }
     }
 });
+
