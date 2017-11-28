@@ -1,16 +1,15 @@
-﻿alert("测试信息11111");
-
-var Search = new Vue({
+﻿var Search = new Vue({
     el: "#List_Main",
     data: {
         SearchData: {
             DEPTID: '',
             DEPT_NAME: ''
         },
-        ResultData: {
-            rows: [], 
-            total: 0
-        },
+        colBm: [
+            { title: 'ID', key: 'DEPTID' },
+            { title: '名称', key: 'DEPT_NAME' }
+        ],
+        dataBm: [],
         frameTar: 'tj', 
     },
     methods: {
@@ -28,8 +27,8 @@ var Search = new Vue({
                 Method: 'GetData',
                 Data: Search.SearchData,
                 Success: function (data) {
-                    Search.ResultData = data;
                     Search.frameTar = 'jg';
+                    Search.dataBm = data.rows;
                 }
             });
         },
@@ -43,3 +42,4 @@ var Search = new Vue({
         }
     }
 });
+

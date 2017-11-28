@@ -1,5 +1,11 @@
 ﻿@inherits z.MVC5.Views.ListViewPage
 
+@section tjbtn{
+    <i-button type="text" v-on:click="Search">查询</i-button>
+    <span>|</span>
+    <i-button type="text" v-on:click="Save">保存</i-button>
+}
+
 @section tj{
     <row>
         <i-col span="2" class="RowTitle">
@@ -49,27 +55,8 @@
     </row>
 }
 
-@section tjbtn{
-    <i-button type="text" v-on:click="Search">查询</i-button>
-    <span>|</span>
-    <i-button type="text" v-on:click="Save">保存</i-button>
-}
-
 @section jg{
-    <row>
-        <i-col  span="2">
-            部门ID
-        </i-col>
-        <i-col  span="2">
-            部门名称
-        </i-col>
-    </row>
-    <row v-for="item in ResultData.rows">
-        <i-col  span="2">
-            {{ item.DEPTID }}
-        </i-col>
-        <i-col  span="2">
-            {{ item.DEPT_NAME }}
-        </i-col>
-    </row>
+  <row>
+       <i-table border :columns="colBm" :data="dataBm"></i-table>
+  </row>
 }
