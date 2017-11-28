@@ -1,0 +1,23 @@
+﻿@inherits z.MVC5.Views.ListViewPage
+
+@section tjbtn{
+    <i-button type="text" v-on:click="Search">查询</i-button>
+    <span>|</span>
+    <i-button type="text" v-on:click="Clear">清空</i-button>
+}
+
+@section tj{
+    <row>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            <i-input v-model ="SearchData.NAME"></i-input>
+        </i-col>
+    </row>
+}
+@section jg{
+    <row>
+        <i-table border :columns="colBRAND" :data="dataBRAND"></i-table>
+    </row>
+}

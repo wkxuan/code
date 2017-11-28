@@ -150,6 +150,7 @@
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
+    <Compile Include="Areas\XTGL\BRAND\BRAND.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -157,7 +158,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\jquery.min.js" />
@@ -213,6 +213,7 @@
     <Content Include="Config\Debug.config" />
     <Content Include="Areas\HTGL\ZLHT\List.cshtml" />
     <Content Include="Areas\Share\BaseDropDownList.cshtml" />
+    <Content Include="Areas\XTGL\BRAND\Brand.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
