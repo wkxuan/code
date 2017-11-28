@@ -219,6 +219,7 @@
     <Content Include="Areas\HTGL\ZLHT\List.cshtml" />
     <Content Include="Areas\Share\BaseDropDownList.cshtml" />
     <Content Include="Areas\XTGL\BRAND\Brand.cshtml" />
+    <Content Include="Areas\HTGL\LYHT\ViewPage1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
