@@ -21,6 +21,9 @@ namespace z.ERP.Web.Areas.XTGL.test
     {
         public ActionResult List()
         {
+            service.TestService.a();
+
+
             //throw new Exception("123");
             return View();
         }

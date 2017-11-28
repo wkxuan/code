@@ -41,6 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto\BMEntity.cs" />
+    <Compile Include="Auto\BRANCHEntity.cs" />
+    <Compile Include="Auto\BRANDEntity.cs" />
+    <Compile Include="Auto\C1Entity.cs" />
+    <Compile Include="Auto\CC1Entity.cs" />
     <Compile Include="Auto\DHDEntity.cs" />
     <Compile Include="Auto\DHDITEMEntity.cs" />
     <Compile Include="Auto\EMPLOYEEEntity.cs" />
@@ -57,6 +61,7 @@
     <Compile Include="Auto\MENUEntity.cs" />
     <Compile Include="Auto\MENUQXEntity.cs" />
     <Compile Include="Auto\MENUTREEEntity.cs" />
+    <Compile Include="Auto\P1Entity.cs" />
     <Compile Include="Auto\ROLEEntity.cs" />
     <Compile Include="Auto\SPFLEntity.cs" />
     <Compile Include="Auto\SPFPCREntity.cs" />
@@ -65,6 +70,7 @@
     <Compile Include="Auto\THCLEntity.cs" />
     <Compile Include="Auto\THCLITEM_FPCEntity.cs" />
     <Compile Include="Auto\WLDWEntity.cs" />
+    <Compile Include="P1Entity.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

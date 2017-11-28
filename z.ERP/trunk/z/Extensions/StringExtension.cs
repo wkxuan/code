@@ -215,7 +215,7 @@ namespace z.Extensions
         /// <param name="custom">总是有如下字符(不连续)</param>
         /// <param name="nature">有人性(会去掉一些比较难辨认的东西)</param>
         /// <returns></returns>
-        public static string Random(int length, bool useNum = true, bool useLow = false, bool useUpp = false, bool useSpe = false, string custom = "", bool nature = true)
+        public static string Random(int length, bool useNum = true, bool useLow = false, bool useUpp = false, bool useSpe = false, string custom = "", bool nature = false)
         {
             string NoNatureStr = "oOLl9gqVvUuI1\"',./:;<>\\^_`|~";//没人性的字符
             byte[] b = new byte[4];

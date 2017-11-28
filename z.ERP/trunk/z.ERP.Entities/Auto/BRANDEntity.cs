@@ -11,160 +11,153 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("DHDITEM", "")]
-    public partial class DHDITEMEntity : EntityBase
+    [DbTable("BRAND", "品牌定义")]
+    public partial class BRANDEntity : EntityBase
     {
         /// <summary>
-        /// 
+        /// 品牌ID
         /// <summary>
-        public string JLBH
+        [PrimaryKey]
+        [Field("品牌ID")]
+        public string ID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 代码
         /// <summary>
-        public string SP_ID
+        [Field("代码")]
+        public string CODE
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 名称
         /// <summary>
-        public string BZHL
+        [Field("名称")]
+        public string NAME
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 业态
         /// <summary>
-        public string DEPTID
+        [Field("业态")]
+        public string CATEGORYID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 地址
         /// <summary>
-        public string SPDM
+        [Field("地址")]
+        public string ADRESS
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 联系人
         /// <summary>
-        public string SPJS
+        [Field("联系人")]
+        public string CONTACTPERSON
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 电话
         /// <summary>
-        public string SPXS
+        [Field("电话")]
+        public string PHONENUM
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 邮编
         /// <summary>
-        public string JHDJ_HS
+        [Field("邮编")]
+        public string PIZ
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 微信
         /// <summary>
-        public string JHDJ_BHS
+        [Field("微信")]
+        public string WEIXIN
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// QQ
         /// <summary>
-        public string LSDJ
+        [Field("QQ")]
+        public string QQ
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 状态
         /// <summary>
-        public string HYLSDJ
+        [Field("状态")]
+        public string STATUS
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 描述
         /// <summary>
-        public string PFDJ
+        [Field("描述")]
+        public string DESCRIPTION
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 录入人
         /// <summary>
-        public string JHSL
+        [Field("录入人")]
+        public string REPORTER
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 录入人名称
         /// <summary>
-        public string BZ
+        [Field("录入人名称")]
+        public string REPORTER_NAME
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 录入时间
         /// <summary>
-        public string SPWKSL
+        [Field("录入时间")]
+        [DbType(DbType.DateTime)]
+        public string REPORTER_TIME
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 确认人
         /// <summary>
-        public string SPWKDHSL
+        [Field("确认人")]
+        public string VERIFY
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 确认人名称
         /// <summary>
-        public string JSSL
+        [Field("确认人名称")]
+        public string VERIFY_NAME
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 确认时间
         /// <summary>
-        public string INDEX_ID
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        public string PDSL
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        public string WLDWSL
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        public string SHOPID
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        public string JXSL
+        [Field("确认时间")]
+        [DbType(DbType.DateTime)]
+        public string VERIFY_TIME
         {
             get; set;
         }

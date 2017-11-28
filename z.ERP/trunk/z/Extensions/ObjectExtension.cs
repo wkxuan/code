@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using z.Extensiont;
 
 namespace z.Extensions
 {
@@ -14,9 +16,11 @@ namespace z.Extensions
         /// <summary>
         /// 序列化
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
+        /// <param name="simple">简单json,不带换行的</param>
         /// <returns></returns>
-        public static string ToJson(this object obj, bool simple = false)
+        public static string ToJson<T>(this T obj, bool simple = false)
         {
             return JsonConvert.SerializeObject(obj, simple ? Formatting.Indented : Formatting.None);
         }
@@ -32,16 +36,40 @@ namespace z.Extensions
             return JsonConvert.DeserializeObject<T>(str);
         }
 
+
+        /// <summary>
+        /// 反序列化json
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static object ToObj(this string str, Type type)
+        {
+            return JsonConvert.DeserializeObject(str, type);
+        }
+
         /// <summary>
         /// 深度拷贝
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static T DeepClone<T>(this object obj)
+        public static T DeepClone<T>(this T obj)
         {
             return obj.ToJson().ToObj<T>();
         }
+
+        /// <summary>
+        /// 深度拷贝
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static object ObjectDeepClone(this object obj)
+        {
+            return obj.ToJson().ToObj(obj.GetType());
+        }
+
 
         /// <summary>
         /// 获取实体类的str形式
@@ -196,6 +224,9 @@ namespace z.Extensions
             {
                 throw new Exception($"类型{t.GetType().Name}没有名为{name}的属性");
             }
+            p.SetValue(t, value, null);
+            return;
+            //下面的报错
             var param_obj = Expression.Parameter(type);
             var param_val = Expression.Parameter(typeof(object));
             var body_obj = Expression.Convert(param_obj, type);
@@ -212,6 +243,63 @@ namespace z.Extensions
                 setValue(t, value);
             }
         }
+
+        /// <summary>
+        /// 属性是一个数组类型
+        /// </summary>
+        /// <param name="pinfo"></param>
+        /// <returns></returns>
+        public static bool IsArray(this PropertyInfo pinfo)
+        {
+            return pinfo.PropertyType.IsGenericType || pinfo.PropertyType.IsArray;
+        }
+
+        /// <summary>
+        /// 获取数组类型属性的子类型
+        /// </summary>
+        /// <param name="pinfo"></param>
+        /// <returns></returns>
+        public static Type GetChildren(this PropertyInfo pinfo)
+        {
+            if (pinfo.IsArray())
+            {
+                if (pinfo.PropertyType.IsArray)
+                {
+                    return pinfo.PropertyType.GetElementType();
+                }
+                if (pinfo.PropertyType.IsGenericType)
+                {
+                    return pinfo.PropertyType.GetGenericArguments().FirstOrDefault();
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 遍历类型为数组的一个属性
+        /// </summary>
+        /// <typeparam name="Tp">父类型</typeparam>
+        /// <typeparam name="Tc">子类型</typeparam>
+        /// <param name="pinfo">父属性</param>
+        /// <param name="info">父对象</param>
+        /// <param name="act">子对象</param>
+        public static void ForEach<Tp, Tc>(this PropertyInfo pinfo, Tp info, Action<Tc> act)
+        {
+            if (pinfo.IsArray())
+            {
+                if (pinfo.PropertyType.IsArray)
+                {
+                    Tc[] items = pinfo.GetValue(info, null) as Tc[];
+                    items.ForEach(act);
+                }
+                if (pinfo.PropertyType.IsGenericType)
+                {
+                    IEnumerable<Tc> items = pinfo.GetValue(info, null) as IEnumerable<Tc>;
+                    items.ForEach(act);
+                }
+            }
+        }
+
         #endregion
     }
 }

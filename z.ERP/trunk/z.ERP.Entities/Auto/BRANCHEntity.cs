@@ -1,6 +1,6 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/11/28 21:03:15
+ * 生成时间：2017/11/28 21:03:14
  * 生成人：书房
  * 代码生成器版本号：1.2.6537.1447
  *
@@ -11,72 +11,56 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("HT", "")]
-    public partial class HTEntity : EntityBase
+    [DbTable("BRANCH", "")]
+    public partial class BRANCHEntity : EntityBase
     {
         /// <summary>
         /// 
         /// <summary>
-        public string HTH
+        [PrimaryKey]
+        public string ID
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string TYPE
+        public string CODE
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string DEPTID
+        public string NAME
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string GHDWDM
+        public string ORGID
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        [DbType(DbType.DateTime)]
-        public string QDSJ
+        public string AREA_BUILD
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        [DbType(DbType.DateTime)]
-        public string HTYXQ_START
+        public string AREA_USABLE
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        [DbType(DbType.DateTime)]
-        public string HTYXQ_END
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        public string ZXQK
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        public string YXBJ
+        public string AREA_RENTABLE
         {
             get; set;
         }
@@ -90,14 +74,67 @@ namespace z.ERP.Entities
         /// <summary>
         /// 
         /// <summary>
-        public string HSFS
+        public string ADDRESS
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string HTDM
+        public string CONTACT
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        public string CONTACT_NUM
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        public string VERSIONID
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [DbType(DbType.DateTime)]
+        public string VALIDITY_START
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [DbType(DbType.DateTime)]
+        public string VALIDITY_END
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        public string PRINTNAME
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [DbType(DbType.DateTime)]
+        public string CREATE_TIME
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [DbType(DbType.DateTime)]
+        public string UPDATE_TIME
         {
             get; set;
         }

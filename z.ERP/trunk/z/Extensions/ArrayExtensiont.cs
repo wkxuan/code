@@ -20,10 +20,11 @@ namespace z.Extensiont
         /// <param name="act"></param>
         public static void ForEach<T>(this IEnumerable<T> arr, Action<int, T> act)
         {
-            for (int i = 0; i < arr.Count(); i++)
-            {
-                act(i, arr.ElementAt(i));
-            }
+            if (!arr.IsEmpty())
+                for (int i = 0; i < arr.Count(); i++)
+                {
+                    act(i, arr.ElementAt(i));
+                }
         }
 
         /// <summary>
@@ -69,9 +70,10 @@ namespace z.Extensiont
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> list) where T : class
+        public static bool IsEmpty<T>(this IEnumerable<T> list)
         {
             return list == null || list.Count() == 0;
         }
+
     }
 }

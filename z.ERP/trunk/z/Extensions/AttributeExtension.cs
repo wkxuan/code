@@ -22,6 +22,17 @@ namespace z.Extensions
         }
 
         /// <summary>
+        /// 取一个属性的一个自定义特性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static List<T> GetAttributes<T>(this PropertyInfo obj) where T : Attribute
+        {
+            return obj.GetCustomAttributes(typeof(T), true).Select(a => a as T).ToList();
+        }
+
+        /// <summary>
         /// 取一个类的一个自定义特性
         /// </summary>
         /// <typeparam name="T"></typeparam>

@@ -11,6 +11,7 @@ using z.DBHelper.Connection;
 using z.DBHelper.Info;
 using z.DbHelper.DbDomain;
 using z.Extensions;
+using z.Extensiont;
 
 namespace z.DBHelper.Helper
 {
@@ -253,6 +254,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int Insert(EntityBase info)
         {
+            int res;
             if (_dbCommand.Connection.State != ConnectionState.Open)
                 Open();
             IDbDataParameter[] dbprams = info.GetAllField().Select(a =>
@@ -268,12 +270,16 @@ namespace z.DBHelper.Helper
                 );
             try
             {
-                return _dbCommand.ExecuteNonQuery();
+                res = _dbCommand.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
                 throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
             }
+            #region 处理子表
+            _InsertChildren(info);
+            #endregion
+            return res;
         }
 
         /// <summary>
@@ -286,6 +292,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int Update(EntityBase info)
         {
+            int res;
             if (_dbCommand.Connection.State != ConnectionState.Open)
                 Open();
             IDbDataParameter[] dbprams = info.GetFieldWithoutPrimaryKey().Select(a =>
@@ -316,11 +323,70 @@ namespace z.DBHelper.Helper
             _dbCommand.CommandText = string.Format(_update, tablename, set, where);
             try
             {
-                return _dbCommand.ExecuteNonQuery();
+                res = _dbCommand.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
                 throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
+            }
+            #region 处理子表
+            _DeleteChildren(info);
+            _InsertChildren(info);
+            return res;
+            #endregion
+        }
+
+        void _DeleteChildren(EntityBase info)
+        {
+            PropertyInfo[] ForeignKeys = info.GetForeignKey();
+            if (!ForeignKeys.IsEmpty()) //有子表,处理子表
+            {
+                ForeignKeys.ForEach(key =>  //主表里记录子表的列表
+                {
+                    if (key.IsArray())
+                    {
+                        List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
+                        EntityBase edel = Activator.CreateInstance(key.GetChildren()) as EntityBase;
+                        attrs.ForEach(attr =>
+                        {
+                            edel.GetType().GetProperty(attr.ChildrenKey).SetValue(edel, info.GetPropertyValue(attr.ParentKey), null);
+                        });
+                        _DeleteChildren(edel);
+                        DeleteList(edel);
+                    }
+                    else
+                    {
+                        throw new Exception($"属性{key.Name}必须是广义数组");
+                    }
+                });
+            }
+        }
+
+        void _InsertChildren(EntityBase info)
+        {
+            PropertyInfo[] ForeignKeys = info.GetForeignKey();
+            if (!ForeignKeys.IsEmpty()) //有子表,处理子表
+            {
+                ForeignKeys.ForEach(key =>  //主表里记录子表的列表
+                {
+                    if (key.IsArray())
+                    {
+                        key.ForEach(info, (EntityBase item) =>
+                        {
+                            List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
+                            List<Tuple<PropertyInfo, object>> list = new List<Tuple<PropertyInfo, object>>();
+                            attrs.ForEach(a =>
+                            {
+                                item.SetPropertyValue(a.ChildrenKey, info.GetPropertyValue(a.ParentKey));
+                            });
+                            Insert(item);
+                        });
+                    }
+                    else
+                    {
+                        throw new Exception($"属性{key.Name}必须是广义数组");
+                    }
+                });
             }
         }
 
@@ -331,6 +397,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int Delete(EntityBase info)
         {
+            int res;
             IDbDataParameter[] dbprams = info.GetPrimaryKey().Select(a =>
             {
                 if (a.GetAttribute<PrimaryKeyAttribute>() != null)
@@ -354,12 +421,14 @@ namespace z.DBHelper.Helper
             _dbCommand.CommandText = string.Format(_delete, tablename, where);
             try
             {
-                return _dbCommand.ExecuteNonQuery();
+                res= _dbCommand.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
                 throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
             }
+            _DeleteChildren(info);
+            return res;
         }
 
         /// <summary>
@@ -371,16 +440,17 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int DeleteList(EntityBase info)
         {
-            IDbDataParameter[] dbprams = info.GetPrimaryKey().Where(a =>
-               {
-                   return a.GetValue(info, null) != null;
-               }).Select(a =>
+            PropertyInfo[] Allprop = info.GetAllField().Where(a =>
+            {
+                return a.GetValue(info, null) != null;
+            }).ToArray();
+            IDbDataParameter[] dbprams = Allprop.Select(a =>
                {
                    IDbDataParameter p = GetDbDataParameter(a, info);
                    return p;
                }).ToArray();
             string tablename = info.GetTableName();
-            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
+            string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
             if (string.IsNullOrEmpty(where))
             {
                 throw new DataBaseException("没有删除条件，不能删除");

@@ -11,27 +11,28 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("SPFL", "")]
-    public partial class SPFLEntity : EntityBase
+    [DbTable("P1", "")]
+    public partial class P1Entity : EntityBase
     {
         /// <summary>
         /// 
         /// <summary>
-        public string SPFL
+        [PrimaryKey]
+        public string F1
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string NAME
+        public string F2
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string SHOPID
+        public string F3
         {
             get; set;
         }
