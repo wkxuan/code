@@ -152,7 +152,6 @@
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\branch.cs" />
-    <Compile Include="Areas\XTGL\BRANCH\cssss.cs" />
     <Compile Include="Areas\XTGL\BRAND\BRAND.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
