@@ -37,7 +37,7 @@
             _.Ajax('Save1', {
                 bm: Search.SearchData
             }, function (a, b, c) {
-                alert("wll测试提交成功");
+                alert("成功");
             });
         }
     }
