@@ -157,6 +157,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\HTGL\LYHT\lyHtList.js" />
     <Content Include="Areas\XTGL\BRAND\Brand.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
