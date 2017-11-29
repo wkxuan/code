@@ -44,6 +44,60 @@ namespace z.DBHelper.Helper
 
         string _selectcount = "SELECT COUNT(1) from {0} WHERE {1}";
         #endregion
+        #region 抽象
+
+        /// <summary>
+        /// 取总数sql
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        protected abstract string GetCountSql(string sql);
+
+        /// <summary>
+        /// 取分页sql
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+        protected abstract string GetPageSql(string sql, int pageSize = 0, int pageIndex = 0);
+
+        /// <summary>
+        /// 获取字段名对应的参数表示字符串
+        /// </summary>
+        /// <param name="cols"></param>
+        /// <returns></returns>
+        protected abstract string GetPramCols(string cols);
+
+        /// <summary>
+        /// 获取读写sql
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public abstract string GetMergerSql(MergeInfo info);
+
+        /// <summary>
+        /// 取数据库链接
+        /// </summary>
+        /// <param name="_dbConnectionInfoStr"></param>
+        /// <returns></returns>
+        protected abstract DbConnection GetDbConnection(string _dbConnectionInfoStr);
+
+        /// <summary>
+        /// 取数据库操作对象
+        /// </summary>
+        /// <param name="dbconnection"></param>
+        /// <returns></returns>
+        protected abstract DbCommand GetDbCommand(DbConnection dbconnection);
+
+        /// <summary>
+        /// 获取参数列表
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        protected abstract IDbDataParameter GetDbDataParameter(PropertyInfo p, EntityBase info);
+        #endregion
         #region 构造
 
         public DbHelperBase(string ConnectionStr)
@@ -141,21 +195,6 @@ namespace z.DBHelper.Helper
             return dt;
         }
 
-        /// <summary>
-        /// 取总数sql
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <returns></returns>
-        protected abstract string GetCountSql(string sql);
-
-        /// <summary>
-        /// 取分页sql
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
-        /// <returns></returns>
-        protected abstract string GetPageSql(string sql, int pageSize = 0, int pageIndex = 0);
         #endregion
         #region 增删改
         /// <summary>
@@ -468,21 +507,12 @@ namespace z.DBHelper.Helper
             }
         }
 
-        /// <summary>
-        /// 获取字段名对应的参数表示字符串
-        /// </summary>
-        /// <param name="cols"></param>
-        /// <returns></returns>
-        protected abstract string GetPramCols(string cols);
         #endregion
         #endregion
-        #region sql方法
-        public abstract string GetMergerSql(MergeInfo info);
-        #endregion
-        #region 事物操作
+        #region 事务操作
 
         /// <summary>
-        /// 判断是否在事物中
+        /// 判断是否在事务中
         /// </summary>
         /// <returns></returns>
         public virtual bool HasTransaction()
@@ -491,7 +521,7 @@ namespace z.DBHelper.Helper
         }
 
         /// <summary>
-        /// 开启事物
+        /// 开启事务
         /// </summary>
         public virtual DbTransaction BeginTransaction()
         {
@@ -526,22 +556,7 @@ namespace z.DBHelper.Helper
             }
             _dbCommand = GetDbCommand(_dbConnection);
         }
-
-        /// <summary>
-        /// 取数据库链接
-        /// </summary>
-        /// <param name="_dbConnectionInfoStr"></param>
-        /// <returns></returns>
-        protected abstract DbConnection GetDbConnection(string _dbConnectionInfoStr);
-
-        /// <summary>
-        /// 取数据库操作对象
-        /// </summary>
-        /// <param name="dbconnection"></param>
-        /// <returns></returns>
-        protected abstract DbCommand GetDbCommand(DbConnection dbconnection);
-
-
+        
         public virtual void Close()
         {
             try
@@ -562,14 +577,6 @@ namespace z.DBHelper.Helper
         }
         #endregion
         #region 辅助方法
-        /// <summary>
-        /// 获取参数列表
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="info"></param>
-        /// <returns></returns>
-        protected abstract IDbDataParameter GetDbDataParameter(PropertyInfo p, EntityBase info);
-
         /// <summary>
         /// 读取的内容转换为datatable
         /// </summary>
