@@ -148,8 +148,6 @@
     <Compile Include="App_Start\DebugSettings.cs" />
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
-    <Compile Include="Areas\HTGL\LYHT\Class1.cs" />
-    <Compile Include="Areas\HTGL\LYHT\Class2.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\branch.cs" />
@@ -162,8 +160,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\HTGL\LYHT\JavaScript.js" />
-    <Content Include="Areas\HTGL\LYHT\lyHtList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\BRAND\Brand.js" />
     <Content Include="Areas\XTGL\test\List.js" />
@@ -222,11 +218,11 @@
     <Content Include="Areas\HTGL\ZLHT\List.cshtml" />
     <Content Include="Areas\Share\BaseDropDownList.cshtml" />
     <Content Include="Areas\XTGL\BRAND\Brand.cshtml" />
-    <Content Include="Areas\HTGL\LYHT\ViewPage1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Home\" />
+    <Folder Include="Areas\HTGL\LYHT\" />
     <Folder Include="Areas\HTGL\Views\ZLHT\" />
   </ItemGroup>
   <ItemGroup>
