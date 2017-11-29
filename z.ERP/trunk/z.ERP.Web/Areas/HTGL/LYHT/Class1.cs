@@ -5,7 +5,7 @@ using System.Web;
 
 namespace z.ERP.Web.Areas.HTGL.LYHT
 {
-    public class Class3
+    public class Class1
     {
     }
 }
