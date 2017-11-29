@@ -155,6 +155,7 @@
     <Compile Include="Areas\XTGL\BRANCH\branch.cs" />
     <Compile Include="Areas\XTGL\BRANCH\testController.cs" />
     <Compile Include="Areas\XTGL\BRAND\BRAND.cs" />
+    <Compile Include="Areas\XTGL\BRAND\Class1.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
