@@ -167,7 +167,6 @@
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\BRAND\Brand.js" />
     <Content Include="Areas\XTGL\BRAND\test2.js" />
-    <Content Include="Areas\XTGL\BRAND\新建文本文档.txt" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\jquery.min.js" />
