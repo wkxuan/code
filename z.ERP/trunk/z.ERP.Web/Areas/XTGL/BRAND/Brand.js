@@ -9,4 +9,4 @@
             { title: '名称', key: 'DEPT_NAME' }
         ]
     }
-})
+}) 
