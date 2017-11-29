@@ -155,7 +155,6 @@
     <Compile Include="Areas\XTGL\BRANCH\branch.cs" />
     <Compile Include="Areas\XTGL\BRANCH\testController.cs" />
     <Compile Include="Areas\XTGL\BRAND\BRAND.cs" />
-    <Compile Include="Areas\XTGL\BRAND\Class1.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -167,7 +166,6 @@
     <Content Include="Areas\HTGL\LYHT\lyHtList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\BRAND\Brand.js" />
-    <Content Include="Areas\XTGL\BRAND\test2.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\jquery.min.js" />
