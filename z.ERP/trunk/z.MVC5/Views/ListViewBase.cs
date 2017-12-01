@@ -8,7 +8,7 @@ using z.MVC5.Models;
 
 namespace z.MVC5.Views
 {
-    public class ListViewBase : ViewBase
+    public class ListViewBase : ViewBase<dynamic>
     {
         public ListViewBase()
         {

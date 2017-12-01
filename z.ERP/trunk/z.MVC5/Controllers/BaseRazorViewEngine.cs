@@ -16,7 +16,8 @@ namespace z.MVC5.Controllers
         {
             ViewLocationFormats = new string[]
            {
-                "~/Areas/"+controllerContext.RouteData.Values["area"]+"/{1}/{0}.cshtml"
+                "~/Areas/"+controllerContext.RouteData.Values["area"]+"/{1}/{0}.cshtml",
+                "~/Areas/Share/{0}.cshtml"
            };
             return base.FindView(controllerContext, viewName, masterName, useCache);
         }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using System.Web.Optimization;
 using z.Context;
 using z.Extensions;
@@ -13,7 +14,7 @@ using z.MVC5.Models;
 
 namespace z.MVC5.Views
 {
-    public abstract class ViewBase : WebViewPage
+    public abstract class ViewBase<TModel> : WebViewPage<TModel>
     {
         public ViewBase()
         {
@@ -90,5 +91,13 @@ namespace z.MVC5.Views
             return ((int)(DateTime.Now - new DateTime(1988, 12, 6)).TotalSeconds).ToString();
         }
 
+        /// <summary>
+        /// 渲染一个控件
+        /// </summary>
+        /// <param name="render"></param>
+        public void RenderControl(ControlRenderBase render)
+        {
+            Html.RenderAction(render.View, render.ControllerName, render);
+        }
     }
 }

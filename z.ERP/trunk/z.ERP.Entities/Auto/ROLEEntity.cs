@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/11/28 21:03:16
+ * 生成时间：2017/12/2 0:49:28
  * 生成人：书房
- * 代码生成器版本号：1.2.6537.1447
+ * 代码生成器版本号：1.2.6545.1474
  *
  */ 
 
@@ -14,25 +14,64 @@ namespace z.ERP.Entities
     [DbTable("ROLE", "")]
     public partial class ROLEEntity : EntityBase
     {
+        public ROLEEntity()
+        {
+        }
+
+        public ROLEEntity(string roleid)
+        {
+            ROLEID = roleid;
+        }
+
         /// <summary>
         /// 
         /// <summary>
         [PrimaryKey]
-        public string ID
+        public string ROLEID
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string NAME
+        public string ROLECODE
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string STATUS
+        public string ROLENAME
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        public string ORGID
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [DbType(DbType.DateTime)]
+        public string CREATE_TIME
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [DbType(DbType.DateTime)]
+        public string UPDATE_TIME
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        public string VOID_FLAG
         {
             get; set;
         }

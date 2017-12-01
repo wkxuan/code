@@ -27,47 +27,47 @@ namespace z.ERP.Services
 
         public virtual string a()
         {
+            return "";
+            //    P1Entity p1 = new P1Entity()
+            //    {
+            //        F1 = "111",
+            //        F2 = "2",
+            //        F3 = "4",
+            //        c1s = new List<C1Entity>() {
+            //                 new C1Entity() {
+            //                      CF1 ="4",
+            //                      CF2="222",
+            //                      CF3 ="4",
+            //                       cc1s =new CC1Entity[] {
+            //                            new CC1Entity () {
+            //                                   CCF1 ="4",
+            //                                  CCF2="4",
+            //                                  CCF3 ="5",
+            //                                   CCF4 ="4"
+            //                            },
+            //                              new CC1Entity () {
+            //                                   CCF1 ="4",
+            //                                  CCF2="4",
+            //                                  CCF3 ="4",
+            //                                   CCF4 ="4"
+            //                            },
+            //                              new CC1Entity () {
+            //                                   CCF1 ="4",
+            //                                  CCF2="4",
+            //                                  CCF3 ="6",
+            //                                   CCF4 ="4"
+            //                            }
+            //                       }
+            //                 },new C1Entity() {
+            //                       CF2="333",
+            //                 }
+            //            }
+            //    };
+            //    DbHelper.Delete(p1);
+            //    //DbHelper.Save(p1);
 
-            P1Entity p1 = new P1Entity()
-            {
-                F1 = "111",
-                F2 = "2",
-                F3 = "4",
-                c1s = new List<C1Entity>() {
-                         new C1Entity() {
-                              CF1 ="4",
-                              CF2="222",
-                              CF3 ="4",
-                               cc1s =new CC1Entity[] {
-                                    new CC1Entity () {
-                                           CCF1 ="4",
-                                          CCF2="4",
-                                          CCF3 ="5",
-                                           CCF4 ="4"
-                                    },
-                                      new CC1Entity () {
-                                           CCF1 ="4",
-                                          CCF2="4",
-                                          CCF3 ="4",
-                                           CCF4 ="4"
-                                    },
-                                      new CC1Entity () {
-                                           CCF1 ="4",
-                                          CCF2="4",
-                                          CCF3 ="6",
-                                           CCF4 ="4"
-                                    }
-                               }
-                         },new C1Entity() {
-                               CF2="333",
-                         }
-                    }
-            };
-            DbHelper.Delete(p1);
-            //DbHelper.Save(p1);
 
-
-            return "TestManager";
+            //    return "TestManager";
         }
 
         public DataGridResult GetData()

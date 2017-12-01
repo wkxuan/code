@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/11/28 21:03:14
+ * 生成时间：2017/12/2 0:49:22
  * 生成人：书房
- * 代码生成器版本号：1.2.6537.1447
+ * 代码生成器版本号：1.2.6545.1474
  *
  */ 
 
@@ -14,6 +14,16 @@ namespace z.ERP.Entities
     [DbTable("BRANCH", "")]
     public partial class BRANCHEntity : EntityBase
     {
+        public BRANCHEntity()
+        {
+        }
+
+        public BRANCHEntity(string id, string validity_start)
+        {
+            ID = id;
+            VALIDITY_START = validity_start;
+        }
+
         /// <summary>
         /// 
         /// <summary>
@@ -102,6 +112,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 
         /// <summary>
+        [PrimaryKey]
         [DbType(DbType.DateTime)]
         public string VALIDITY_START
         {

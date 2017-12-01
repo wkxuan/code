@@ -4,15 +4,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Share.Render;
 
 namespace z.ERP.Web.Areas.Share
 {
     public class ShareController : BaseController
     {
-        // GET: Share/Share
-        public ActionResult Index()
+        public ActionResult Undefine(UndefineRender render)
         {
-            return View();
+            return View(render);
+        }
+        public ActionResult TextBox(TextBoxRender render)
+        {
+            return View(render);
         }
     }
 }

@@ -150,8 +150,12 @@
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\HTGL\LYHT\Class1.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
+    <Compile Include="Areas\Share\Render\TextBoxRender.cs" />
+    <Compile Include="Areas\Share\Render\VueRender.cs" />
+    <Compile Include="Areas\Share\Render\UndefineRender.cs" />
+    <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
-    <Compile Include="Areas\XTGL\BRANCH\testController.cs" />
+    <Compile Include="Areas\XTGL\BRANCH\BRANCHController.cs" />
     <Compile Include="Areas\XTGL\BRAND\BRAND.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
@@ -220,6 +224,8 @@
     <Content Include="Areas\Share\BaseDropDownList.cshtml" />
     <Content Include="Areas\XTGL\BRAND\Brand.cshtml" />
     <Content Include="Areas\HTGL\LYHT\ViewPage1.cshtml" />
+    <Content Include="Areas\Share\Undefine.cshtml" />
+    <Content Include="Areas\Share\TextBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

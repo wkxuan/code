@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using z.Extensions;
 using z.MVC5.Models;
 
 namespace z.MVC5.Controllers
@@ -25,7 +26,7 @@ namespace z.MVC5.Controllers
                 var viewdata = new ViewDataDictionary();
                 viewdata.Add(new KeyValuePair<string, object>("Model", new ErrorModel()
                 {
-                    Ex = filterContext.Exception,
+                    Ex = filterContext.Exception.GetInnerException(),
                     Site = filterContext.RouteData.GetRequiredString("controller") + "/" + filterContext.RouteData.GetRequiredString("action")
                 }));
                 filterContext.Result = new ViewResult() { ViewName = "/Areas/Base/Error.cshtml", ViewData = viewdata };

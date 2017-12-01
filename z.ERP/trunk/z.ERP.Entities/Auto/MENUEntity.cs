@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/11/28 21:03:15
+ * 生成时间：2017/12/2 0:49:27
  * 生成人：书房
- * 代码生成器版本号：1.2.6537.1447
+ * 代码生成器版本号：1.2.6545.1474
  *
  */ 
 
@@ -14,39 +14,41 @@ namespace z.ERP.Entities
     [DbTable("MENU", "")]
     public partial class MENUEntity : EntityBase
     {
+        public MENUEntity()
+        {
+        }
+
+        public MENUEntity(string menuid)
+        {
+            MENUID = menuid;
+        }
+
         /// <summary>
         /// 
         /// <summary>
         [PrimaryKey]
-        public string ID
+        public string MENUID
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string NAME
+        public string MENUCODE
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string URL
+        public string MENUNAME
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string STATUS
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        public string TYPE
+        public string ENABLE_FLAG
         {
             get; set;
         }

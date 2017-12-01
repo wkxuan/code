@@ -8,7 +8,7 @@ using z.MVC5.Models;
 
 namespace z.MVC5.Views
 {
-    public class ControlViewBase : ViewBase
+    public class ControlViewBase<TModel> : ViewBase<TModel>
     {
         public ControlViewBase()
         {
