@@ -155,8 +155,6 @@
     <Compile Include="Areas\Share\Render\UndefineRender.cs" />
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
-    <Compile Include="Areas\XTGL\BRANCH\BRANCHController.cs" />
-    <Compile Include="Areas\XTGL\BRAND\BRAND.cs" />
     <Compile Include="Areas\XTGL\BRAND\BrandController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
