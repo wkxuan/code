@@ -80,5 +80,15 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+
+        public DataGridResult GetBrandData()
+        {
+            SearchItem item = SearchItem.GetAllPram();
+            string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
+            item.HasKey("NAME", a => sql += $" and B.NAME LIKE ' '{a}' %'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 }
