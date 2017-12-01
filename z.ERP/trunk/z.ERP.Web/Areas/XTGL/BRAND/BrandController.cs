@@ -19,8 +19,8 @@ namespace z.ERP.Web.Areas.XTGL.BRAND
 
         public void Save(BRANDEntity brand) {
             var v = GetVerify(brand);
-            brand.ID = "3";
-            brand.CODE = "000003";
+            if (string.IsNullOrEmpty(brand.CODE))
+                brand.CODE = brand.ID;
             brand.CATEGORYID = "1";
             brand.STATUS = "0";
             brand.REPORTER = "1";
