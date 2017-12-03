@@ -11,44 +11,44 @@
 @section tj{
     <row>
         <i-col span="2" class="RowTitle">
-            ID
+            组织ID
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "SearchData.DEPT_NAME",
+                    vModel = "SearchData.ORGID",
                     Id = "tb_temp",
                     Placeholder = "hahahaha"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            名称
+            组织CODE
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new UndefineRender()
                 {
-                    vModel = "SearchData.DEPT_NAME"
+                    vModel = "SearchData.ORGCODE"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            合同类型
+            组织类型
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new EnumDropDownListRender<合同类型>()
+                RenderControl(new EnumDropDownListRender<部门类型>()
                 {
-                    vModel = "SearchData.DEPT_NAME"
+                    vModel = "SearchData.ORG_TYPE"
                 });
             }
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            ID
+            所在商场
         </i-col>
         <i-col span="6">
             @{
@@ -59,17 +59,10 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            名称
+            创建日期
         </i-col>
         <i-col span="6">
-            <i-input v-model="SearchData.DEPT_NAME" placeholder="Enter something...">
-            </i-input>
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            部门
-        </i-col>
-        <i-col span="6">
-            <i-input v-model="SearchData.DEPT_NAME" placeholder="Enter something...">
+            <i-input v-model="SearchData.CREATE_TIME" placeholder="Enter something...">
             </i-input>
         </i-col>
     </row>
@@ -77,6 +70,6 @@
 
 @section jg{
     <row>
-        <i-table border columns="colBm" data="dataBm"></i-table>
+        <i-table border :columns="colBm" :data="dataBm"></i-table>
     </row>
 }

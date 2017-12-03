@@ -1,13 +1,10 @@
 ﻿var Search = new Vue({
     el: "#List_Main",
     data: {
-        SearchData: {
-            DEPTID: '',
-            DEPT_NAME: ''
-        },
+        SearchData: {},
         colBm: [
-            { title: 'ID', key: 'DEPTID' },
-            { title: '名称', key: 'DEPT_NAME' }
+            { title: 'ID', key: 'ORGID' },
+            { title: '名称', key: 'ORGNAME' }
         ],
         dataBm: [],
         frameTar: 'tj', 

@@ -77,9 +77,11 @@ namespace z.ERP.Services
         public DataGridResult GetData()
         {
             SearchItem item = SearchItem.GetAllPram();
-            string sql = $@"select * from bm where 1=1 ";
-            item.HasKey("DEPTID", a => sql += $" and DEPTID = '{a}' ");
-            item.HasKey("DEPT_NAME", a => sql += $" and DEPT_NAME = '{a}' ");
+            string sql = $@"select * from ORG where 1=1 ";
+            item.HasKey("ORGID", a => sql += $" and ORGID = '{a}' ");
+            item.HasKey("ORGCODE", a => sql += $" and ORGCODE = '{a}' ");
+            item.HasKey("ORG_TYPE", a => sql += $" and ORG_TYPE = '{a}' ");
+            item.HasKey("CREATE_TIME", a => sql += $" and CREATE_TIME = '{a}' ");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
