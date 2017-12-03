@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace z.MVC5.Models
 {
     public abstract class ControlRenderBase
     {
+
         /// <summary>
         /// 控件控制器
         /// </summary>
@@ -21,7 +21,7 @@ namespace z.MVC5.Models
         /// <summary>
         /// 控件名称
         /// </summary>
-        public abstract string View
+        public abstract string ControllerMothod
         {
             get;
         }
@@ -34,5 +34,6 @@ namespace z.MVC5.Models
             get;
             set;
         }
+
     }
 }

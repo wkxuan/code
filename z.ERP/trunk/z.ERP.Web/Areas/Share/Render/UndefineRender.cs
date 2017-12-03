@@ -8,7 +8,7 @@ namespace z.ERP.Web.Areas.Share.Render
 {
     public class UndefineRender : VueRender
     {
-        public override string View
+        public override string ControllerMothod
         {
             get
             {

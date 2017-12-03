@@ -13,7 +13,7 @@ namespace z.ERP.Web.Areas.Share.Render
         {
             EmptyText = "---请选择---";
         }
-        public override string View
+        public override string ControllerMothod
         {
             get
             {

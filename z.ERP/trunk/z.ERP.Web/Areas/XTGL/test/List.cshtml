@@ -51,8 +51,12 @@
             ID
         </i-col>
         <i-col span="6">
-            <i-input v-model="SearchData.DEPTID" placeholder="Enter something...">
-            </i-input>
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    ServiceMothod = m => m.a()
+                });
+            }
         </i-col>
         <i-col span="2" class="RowTitle">
             名称

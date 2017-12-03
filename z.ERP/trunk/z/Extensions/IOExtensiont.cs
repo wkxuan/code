@@ -172,7 +172,6 @@ namespace z.Extensions
             StreamWriter sw = new StreamWriter(fs, encoding == null ? Encoding.Default : encoding);
             sw.Write(text);
             sw.Close();
-            fs.Close();
         }
         #endregion
     }

@@ -97,7 +97,7 @@ namespace z.MVC5.Views
         /// <param name="render"></param>
         public void RenderControl(ControlRenderBase render)
         {
-            Html.RenderAction(render.View, render.ControllerName, render);
+            Html.RenderAction(render.ControllerMothod, render.ControllerName, render);
         }
     }
 }

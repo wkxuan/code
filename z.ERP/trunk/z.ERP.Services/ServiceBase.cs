@@ -50,6 +50,13 @@ namespace z.ERP.Services
                 return ioc.Create<CommonService>();
             }
         }
+        public DataService DataService
+        {
+            get
+            {
+                return ioc.Create<DataService>();
+            }
+        }
         #endregion
 
         #region 通用方法
