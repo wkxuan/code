@@ -54,7 +54,9 @@
     <Compile Include="Auto\BILL_RETURN_ITEMEntity.cs" />
     <Compile Include="Auto\BRANCHEntity.cs" />
     <Compile Include="Auto\BRANDEntity.cs" />
+    <Compile Include="Auto\C1Entity.cs" />
     <Compile Include="Auto\CATEGORYEntity.cs" />
+    <Compile Include="Auto\CC1Entity.cs" />
     <Compile Include="Auto\CONFIGEntity.cs" />
     <Compile Include="Auto\CONTJSKLEntity.cs" />
     <Compile Include="Auto\CONTRACTEntity.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Auto\MERCHANT_BRANDEntity.cs" />
     <Compile Include="Auto\OPERATIONRULEEntity.cs" />
     <Compile Include="Auto\ORGEntity.cs" />
+    <Compile Include="Auto\P1Entity.cs" />
     <Compile Include="Auto\PAYEntity.cs" />
     <Compile Include="Auto\PERIODEntity.cs" />
     <Compile Include="Auto\ROLEEntity.cs" />
@@ -104,6 +107,8 @@
     <Compile Include="Auto\USER_ROLEEntity.cs" />
     <Compile Include="Auto\WORKITEMEntity.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Enum\合同类型.cs" />
+    <Compile Include="P1Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

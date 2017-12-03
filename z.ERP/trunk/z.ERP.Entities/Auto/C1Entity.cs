@@ -1,6 +1,6 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:58:50
+ * 生成时间：2017/12/2 16:58:51
  * 生成人：书房
  * 代码生成器版本号：1.2.6545.1474
  *
@@ -11,24 +11,24 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("BILL_NOTICE_ITEM", "")]
-    public partial class BILL_NOTICE_ITEMEntity : EntityBase
+    [DbTable("C1", "")]
+    public partial class C1Entity : EntityBase
     {
-        public BILL_NOTICE_ITEMEntity()
+        public C1Entity()
         {
         }
 
-        public BILL_NOTICE_ITEMEntity(string billid, string final_billid)
+        public C1Entity(string cf1, string cf2)
         {
-            BILLID = billid;
-            FINAL_BILLID = final_billid;
+            CF1 = cf1;
+            CF2 = cf2;
         }
 
         /// <summary>
         /// 
         /// <summary>
         [PrimaryKey]
-        public string BILLID
+        public string CF1
         {
             get; set;
         }
@@ -36,14 +36,14 @@ namespace z.ERP.Entities
         /// 
         /// <summary>
         [PrimaryKey]
-        public string FINAL_BILLID
+        public string CF2
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string NOTICE_MONEY
+        public string CF3
         {
             get; set;
         }

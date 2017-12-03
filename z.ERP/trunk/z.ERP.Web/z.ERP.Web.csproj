@@ -150,6 +150,7 @@
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\HTGL\LYHT\Class1.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
+    <Compile Include="Areas\Share\Render\EnumDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\TextBoxRender.cs" />
     <Compile Include="Areas\Share\Render\VueRender.cs" />
     <Compile Include="Areas\Share\Render\UndefineRender.cs" />

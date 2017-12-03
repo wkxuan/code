@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -35,7 +36,6 @@ namespace z.Extensions
         {
             return JsonConvert.DeserializeObject<T>(str);
         }
-
 
         /// <summary>
         /// 反序列化json
@@ -245,6 +245,40 @@ namespace z.Extensions
         }
 
         /// <summary>
+        /// 给数组类型赋值
+        /// </summary>
+        /// <param name="prop"></param>
+        /// <param name="info"></param>
+        /// <param name="data"></param>
+        public static void SetArrValue(this PropertyInfo prop, object info, IEnumerable<object> data)
+        {
+            if (prop.PropertyType.IsArray)
+            {
+                object arr = new object();
+                arr = prop.PropertyType.InvokeMember("Set", BindingFlags.CreateInstance, null, arr, new object[] { data.Count() });
+                data.ForEach((inx, obj) =>
+                {
+                    prop.PropertyType.GetMethod("SetValue", new Type[2] { typeof(object), typeof(int) }).Invoke(arr, new object[] { obj, inx });
+                });
+                prop.SetValue(info, arr, null);
+            }
+            else if (prop.PropertyType.IsGenericType)
+            {
+                object arr = new object();
+                arr = prop.PropertyType.InvokeMember("Set", BindingFlags.CreateInstance, null, arr, new object[] { data.Count() });
+                data.ForEach((inx, obj) =>
+                {
+                    prop.PropertyType.GetMethod("Add", new Type[] { prop.GetChildren() }).Invoke(arr, new object[] { obj });
+                });
+                prop.SetValue(info, arr, null);
+            }
+            else
+            {
+                throw new Exception("对象不是数组类型");
+            }
+        }
+
+        /// <summary>
         /// 属性是一个数组类型
         /// </summary>
         /// <param name="pinfo"></param>
@@ -292,7 +326,7 @@ namespace z.Extensions
                     Tc[] items = pinfo.GetValue(info, null) as Tc[];
                     items.ForEach(act);
                 }
-                if (pinfo.PropertyType.IsGenericType)
+                else if (pinfo.PropertyType.IsGenericType)
                 {
                     IEnumerable<Tc> items = pinfo.GetValue(info, null) as IEnumerable<Tc>;
                     items.ForEach(act);

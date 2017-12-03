@@ -38,6 +38,7 @@ namespace z.DBHelper.Helper
         /// </summary>
         protected DbCommand _dbCommand;
 
+        string _select = "SELECT {0} FROM {1} WHERE {2}";
         string _insert = "INSERT INTO {0}({1}) VALUES({2})";
         string _update = "UPDATE {0} SET {1} WHERE {2}";
         string _delete = "DELETE {0} WHERE {1}";
@@ -261,7 +262,7 @@ namespace z.DBHelper.Helper
            {
                if (a.GetAttribute<PrimaryKeyAttribute>() != null)
                {
-                   if (string.IsNullOrEmpty(a.GetValue(info, null).ToString()))
+                   if (string.IsNullOrEmpty(a.GetValue(info, null)?.ToString()))
                    {
                        throw new DataBaseException("字段:" + a.Name + "是主键,在保存时不能为空");
                    }
@@ -338,7 +339,7 @@ namespace z.DBHelper.Helper
            {
                if (a.GetAttribute<PrimaryKeyAttribute>() != null)
                {
-                   if (string.IsNullOrEmpty(a.GetValue(info, null).ToString()))
+                   if (string.IsNullOrEmpty(a.GetValue(info, null)?.ToString()))
                    {
                        throw new DataBaseException("字段:" + a.Name + "是主键,在更新时不能为空");
                    }
@@ -375,60 +376,6 @@ namespace z.DBHelper.Helper
             #endregion
         }
 
-        void _DeleteChildren(EntityBase info)
-        {
-            PropertyInfo[] ForeignKeys = info.GetForeignKey();
-            if (!ForeignKeys.IsEmpty()) //有子表,处理子表
-            {
-                ForeignKeys.ForEach(key =>  //主表里记录子表的列表
-                {
-                    if (key.IsArray())
-                    {
-                        List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
-                        EntityBase edel = Activator.CreateInstance(key.GetChildren()) as EntityBase;
-                        attrs.ForEach(attr =>
-                        {
-                            edel.GetType().GetProperty(attr.ChildrenKey).SetValue(edel, info.GetPropertyValue(attr.ParentKey), null);
-                        });
-                        _DeleteChildren(edel);
-                        DeleteList(edel);
-                    }
-                    else
-                    {
-                        throw new Exception($"属性{key.Name}必须是广义数组");
-                    }
-                });
-            }
-        }
-
-        void _InsertChildren(EntityBase info)
-        {
-            PropertyInfo[] ForeignKeys = info.GetForeignKey();
-            if (!ForeignKeys.IsEmpty()) //有子表,处理子表
-            {
-                ForeignKeys.ForEach(key =>  //主表里记录子表的列表
-                {
-                    if (key.IsArray())
-                    {
-                        key.ForEach(info, (EntityBase item) =>
-                        {
-                            List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
-                            List<Tuple<PropertyInfo, object>> list = new List<Tuple<PropertyInfo, object>>();
-                            attrs.ForEach(a =>
-                            {
-                                item.SetPropertyValue(a.ChildrenKey, info.GetPropertyValue(a.ParentKey));
-                            });
-                            Insert(item);
-                        });
-                    }
-                    else
-                    {
-                        throw new Exception($"属性{key.Name}必须是广义数组");
-                    }
-                });
-            }
-        }
-
         /// <summary>
         /// 删除,按照主键进行删除
         /// </summary>
@@ -441,7 +388,7 @@ namespace z.DBHelper.Helper
             {
                 if (a.GetAttribute<PrimaryKeyAttribute>() != null)
                 {
-                    if (string.IsNullOrEmpty(a.GetValue(info, null).ToString()))
+                    if (string.IsNullOrEmpty(a.GetValue(info, null)?.ToString()))
                     {
                         throw new DataBaseException("字段:" + a.Name + "是主键,在删除时不能为空");
                     }
@@ -460,7 +407,7 @@ namespace z.DBHelper.Helper
             _dbCommand.CommandText = string.Format(_delete, tablename, where);
             try
             {
-                res= _dbCommand.ExecuteNonQuery();
+                res = _dbCommand.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -507,6 +454,86 @@ namespace z.DBHelper.Helper
             }
         }
 
+        /// <summary>
+        /// 查询,按主键查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public T Select<T>(T info) where T : EntityBase, new()
+        {
+            T res;
+            if (_dbCommand.Connection.State != ConnectionState.Open)
+                Open();
+            IDbDataParameter[] dbprams = info.GetPrimaryKey().Select(a =>
+            {
+                if (a.GetAttribute<PrimaryKeyAttribute>() != null)
+                {
+                    if (string.IsNullOrEmpty(a.GetValue(info, null)?.ToString()))
+                    {
+                        throw new DataBaseException("字段:" + a.Name + "是主键,在查询时不能为空");
+                    }
+                }
+                IDbDataParameter p = GetDbDataParameter(a, info);
+                return p;
+            }).ToArray();
+            _dbCommand.Parameters.Clear();
+            _dbCommand.Parameters.AddRange(dbprams);
+            string tablename = info.GetTableName();
+            string select = string.Join(",", info.GetAllField().Select(a => a.Name));
+            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
+            _dbCommand.CommandText = string.Format(_select, select, tablename, where);
+            try
+            {
+                IDataReader reader = _dbCommand.ExecuteReader();
+                res = this.ReaderToEntity(info.GetType(), reader).FirstOrDefault() as T;
+            }
+            catch (Exception ex)
+            {
+                throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
+            }
+            res = _SelectChildren(res);
+            return res;
+        }
+
+        /// <summary>
+        /// 查询,按照所有不为空的条件查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public List<T> SelectList<T>(T info) where T : EntityBase, new()
+        {
+            List<T> res;
+            if (_dbCommand.Connection.State != ConnectionState.Open)
+                Open();
+            PropertyInfo[] Allprop = info.GetAllField().Where(a =>
+            {
+                return a.GetValue(info, null) != null;
+            }).ToArray();
+            IDbDataParameter[] dbprams = Allprop.Select(a =>
+            {
+                IDbDataParameter p = GetDbDataParameter(a, info);
+                return p;
+            }).ToArray();
+            _dbCommand.Parameters.Clear();
+            _dbCommand.Parameters.AddRange(dbprams);
+            string tablename = info.GetTableName();
+            string select = string.Join(",", info.GetAllField().Select(a => a.Name));
+            string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
+            _dbCommand.CommandText = string.Format(_select, select, tablename, where);
+            try
+            {
+                IDataReader reader = _dbCommand.ExecuteReader();
+                res = this.ReaderToEntity(info.GetType(), reader).Select(a => a as T).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
+            }
+            res.ForEach(a => a = _SelectChildren(a));
+            return res;
+        }
         #endregion
         #endregion
         #region 事务操作
@@ -556,7 +583,7 @@ namespace z.DBHelper.Helper
             }
             _dbCommand = GetDbCommand(_dbConnection);
         }
-        
+
         public virtual void Close()
         {
             try
@@ -607,9 +634,125 @@ namespace z.DBHelper.Helper
             return dt;
         }
 
+        /// <summary>
+        /// 读取的内容转换为datatable
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        /// 
+        private List<EntityBase> ReaderToEntity(Type t, IDataReader reader)
+        {
+            List<EntityBase> res = new List<EntityBase>();
+            int fieldCount = reader.FieldCount;
+            while (reader.Read())
+            {
+                EntityBase entity = (EntityBase)Activator.CreateInstance(
+                                          t,
+                                          BindingFlags.Instance | BindingFlags.Public,
+                                          null,
+                                          new object[] { },
+                                          null);
+                for (int i = 0; i < fieldCount; i++)
+                {
+                    entity.SetPropertyValue(reader.GetName(i), reader.GetValue(i).ToString());
+                }
+                res.Add(entity);
+            }
+            reader.Close();
+            return res;
+        }
+
         public override string ToString()
         {
             return _dbConnectionInfoStr.ToString();
+        }
+
+        void _DeleteChildren(EntityBase info)
+        {
+            PropertyInfo[] ForeignKeys = info.GetForeignKey();
+            if (!ForeignKeys.IsEmpty()) //有子表,处理子表
+            {
+                ForeignKeys.ForEach(key =>  //主表里记录子表的列表
+                {
+                    if (key.IsArray() && key.GetChildren().BaseOn<EntityBase>())
+                    {
+                        List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
+                        EntityBase edel = Activator.CreateInstance(key.GetChildren()) as EntityBase;
+                        attrs.ForEach(attr =>
+                        {
+                            edel.GetType().GetProperty(attr.ChildrenKey).SetValue(edel, info.GetPropertyValue(attr.ParentKey), null);
+                        });
+                        _DeleteChildren(edel);
+                        DeleteList(edel);
+                    }
+                    else
+                    {
+                        throw new Exception($"属性{key.Name}必须是EntityBase的广义数组");
+                    }
+                });
+            }
+        }
+
+        void _InsertChildren(EntityBase info)
+        {
+            PropertyInfo[] ForeignKeys = info.GetForeignKey();
+            if (!ForeignKeys.IsEmpty()) //有子表,处理子表
+            {
+                ForeignKeys.ForEach(key =>  //主表里记录子表的列表
+                {
+                    if (key.IsArray() && key.GetChildren().BaseOn<EntityBase>())
+                    {
+                        key.ForEach(info, (EntityBase item) =>
+                        {
+                            List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
+                            attrs.ForEach(a =>
+                            {
+                                item.SetPropertyValue(a.ChildrenKey, info.GetPropertyValue(a.ParentKey));
+                            });
+                            Insert(item);
+                        });
+                    }
+                    else
+                    {
+                        throw new Exception($"属性{key.Name}必须是EntityBase的广义数组");
+                    }
+                });
+            }
+        }
+
+        T _SelectChildren<T>(T info) where T : EntityBase, new()
+        {
+            if (info == null)
+                return info;
+            PropertyInfo[] ForeignKeys = info.GetForeignKey();
+            if (!ForeignKeys.IsEmpty()) //有子表,处理子表
+            {
+                ForeignKeys.ForEach(key =>  //主表里记录子表的列表
+                {
+                    if (key.IsArray() && key.GetChildren().BaseOn<EntityBase>())
+                    {
+                        Type t = key.GetChildren();
+                        var item = (EntityBase)Activator.CreateInstance(
+                                          t,
+                                          BindingFlags.Instance | BindingFlags.Public,
+                                          null,
+                                          new object[] { },
+                                          null);
+                        List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
+                        attrs.ForEach(a =>
+                            {
+                                item.SetPropertyValue(a.ChildrenKey, info.GetPropertyValue(a.ParentKey));
+                            });
+                        List<EntityBase> res = SelectList(item);
+                        key.SetArrValue(info, res);
+                    }
+                    else
+                    {
+                        throw new Exception($"属性{key.Name}必须是EntityBase的广义数组");
+                    }
+                });
+            }
+            return info;
         }
         #endregion
     }
