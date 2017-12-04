@@ -158,6 +158,8 @@
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\XTGL\BRAND\BrandController.cs" />
+    <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
+    <Compile Include="Areas\XTGL\PAY\PayController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -168,6 +170,7 @@
     <Content Include="Areas\HTGL\LYHT\JavaScript.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\BRAND\Brand.js" />
+    <Content Include="Areas\XTGL\PAY\Pay.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\jquery.min.js" />

@@ -19,6 +19,7 @@ namespace z.ERP.Web
         //("XTGL", "BRAND", "Brand");
         //("XTGL", "test", "List");
         //("HTGL", "ZLHT", "List");
-        ("XTGL", "FEESUBJECT", "FeeSubject");
+        //("XTGL", "FEESUBJECT", "FeeSubject");
+        ("XTGL", "PAY", "Pay");
     }
 }
