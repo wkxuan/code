@@ -1,0 +1,48 @@
+﻿@inherits z.MVC5.Views.ListViewBase
+
+@{
+    WebFiles = new string[] {
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js"
+                };
+}
+
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+<style>
+    .RowTitle {
+        text-align: right;
+        font-size: large;
+    }
+</style>
+
+<div>
+     <div style="float: right; width: 200px ;text-align: right;z-index:99">
+        @RenderSection("defbtn", false)
+     </div>
+
+     <row>
+        <i-col span="24">
+           <Card :bordered="false">
+              <p slot="title">包含元素</p>
+              @RenderSection("element", true)
+           </Card>
+        </i-col>
+     </row>
+
+     <row>
+         <i-col span="24">
+            <Card :bordered="false">
+               <p slot="title">列表信息</p>
+                @RenderSection("list", true)
+            </Card>
+         </i-col>
+     </row>
+</div>
+
+@section foot{
+    @RenderSection("foot", false)
+}
