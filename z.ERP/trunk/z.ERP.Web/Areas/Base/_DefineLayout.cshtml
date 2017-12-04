@@ -1,4 +1,4 @@
-﻿@inherits z.MVC5.Views.ListViewBase
+﻿@inherits z.MVC5.Views.DefineViewBase
 
 @{
     WebFiles = new string[] {
@@ -26,19 +26,19 @@
 
      <row>
         <i-col span="24">
-           <Card :bordered="false">
+           <card :bordered="false">
               <p slot="title">包含元素</p>
               @RenderSection("element", true)
-           </Card>
+           </card>
         </i-col>
      </row>
 
      <row>
          <i-col span="24">
-            <Card :bordered="false">
+            <card :bordered="false">
                <p slot="title">列表信息</p>
                 @RenderSection("list", true)
-            </Card>
+            </card>
          </i-col>
      </row>
 </div>

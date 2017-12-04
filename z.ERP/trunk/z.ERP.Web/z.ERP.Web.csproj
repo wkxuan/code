@@ -229,6 +229,7 @@
     <Content Include="Areas\Share\TextBox.cshtml" />
     <Content Include="Areas\Base\_DefineLayout.cshtml" />
     <Content Include="Areas\XTGL\PAY\Pay.cshtml" />
+    <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
