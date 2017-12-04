@@ -17,7 +17,7 @@ namespace z.ERP.Web
         /// </summary>
         public static LoaclePage DefaultPage = new LoaclePage
             //("XTGL", "BRAND", "Brand");
-            ("XTGL", "test", "List");
+            ("XTGL", "BRANCH", "DefineModel");
               //("HTGL", "ZLHT", "List");
     }
 }

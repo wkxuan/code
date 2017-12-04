@@ -227,6 +227,7 @@
     <Content Include="Areas\HTGL\LYHT\ViewPage1.cshtml" />
     <Content Include="Areas\Share\Undefine.cshtml" />
     <Content Include="Areas\Share\TextBox.cshtml" />
+    <Content Include="Areas\XTGL\BRANCH\DefineModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
