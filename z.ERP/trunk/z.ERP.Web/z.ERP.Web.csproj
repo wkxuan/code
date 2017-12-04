@@ -157,6 +157,7 @@
     <Compile Include="Areas\Share\Render\UndefineRender.cs" />
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
+    <Compile Include="Areas\XTGL\BRANCH\DefmodleController.cs" />
     <Compile Include="Areas\XTGL\BRAND\BrandController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
@@ -166,7 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HTGL\LYHT\JavaScript.js" />
-    <Content Include="Areas\XTGL\BRANCH\DefineModel.js" />
+    <Content Include="Areas\XTGL\BRANCH\DefModle.js" />
     <Content Include="Areas\XTGL\BRAND\Brand.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
@@ -227,7 +228,7 @@
     <Content Include="Areas\HTGL\LYHT\ViewPage1.cshtml" />
     <Content Include="Areas\Share\Undefine.cshtml" />
     <Content Include="Areas\Share\TextBox.cshtml" />
-    <Content Include="Areas\XTGL\BRANCH\DefineModel.cshtml" />
+    <Content Include="Areas\XTGL\BRANCH\DefModle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
