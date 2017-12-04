@@ -54,7 +54,7 @@
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
-                    ServiceMothod = m => m.a()
+                    ServiceMothod = m => m.b()
                 });
             }
         </i-col>
@@ -62,13 +62,18 @@
             创建日期
         </i-col>
         <i-col span="6">
-            <date-picker v-model="SearchData.CREATE_TIME"></date-picker>
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "SearchData.CREATE_TIME"
+                });
+            }
         </i-col>
     </row>
 }
 
 @section jg{
     <row>
-        <i-table border :columns="colBm" :data="dataBm"></i-table>
+        <i-table border columns="colBm" data="dataBm"></i-table>
     </row>
 }

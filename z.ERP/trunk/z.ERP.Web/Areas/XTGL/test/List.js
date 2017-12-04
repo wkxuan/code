@@ -1,13 +1,15 @@
 ﻿var Search = new Vue({
     el: "#List_Main",
     data: {
-        SearchData: {},
+        SearchData: {
+            ORG_TYPE: 1
+        },
         colBm: [
             { title: 'ID', key: 'ORGID' },
             { title: '名称', key: 'ORGNAME' }
         ],
         dataBm: [],
-        frameTar: 'tj', 
+        frameTar: 'tj',
     },
     methods: {
         Search: function (event) {

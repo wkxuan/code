@@ -71,11 +71,11 @@ zQuery.extend({
                 error: arguments.length >= 3 ? arguments[3] : null
             }
         }
-        //if (typeof options.data == 'object')
-        //    $.each(options.data, function (inx, obj) {
-        //        if (typeof obj == 'object')
-        //            options.data[inx] = JSON.stringify(obj);
-        //    });
+        if (typeof options.data == 'object')
+            $.each(options.data, function (inx, obj) {
+                if (typeof obj == 'object')
+                    options.data[inx] = JSON.stringify(obj);
+            });
         var options_default = {
             type: "Post",
             url: _.AjaxUrl + options.action,

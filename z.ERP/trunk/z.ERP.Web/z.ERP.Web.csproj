@@ -152,6 +152,7 @@
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Share\Render\ServiceDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\EnumDropDownListRender.cs" />
+    <Compile Include="Areas\Share\Render\DateBoxRender.cs" />
     <Compile Include="Areas\Share\Render\TextBoxRender.cs" />
     <Compile Include="Areas\Share\Render\VueRender.cs" />
     <Compile Include="Areas\Share\Render\UndefineRender.cs" />
@@ -233,6 +234,7 @@
     <Content Include="Areas\Base\_DefineLayout.cshtml" />
     <Content Include="Areas\XTGL\PAY\Pay.cshtml" />
     <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.cshtml" />
+    <Content Include="Areas\Share\DateBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

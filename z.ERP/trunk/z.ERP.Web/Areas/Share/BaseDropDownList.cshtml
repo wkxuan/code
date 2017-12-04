@@ -1,22 +1,22 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @inherits z.MVC5.Views.ControlViewBase<DropDownListRender>
 
-<select>
+<i-select v-model="@Model.vModel">
     @{
         if (!Model.EmptyText.IsEmpty())
         {
-            <option value="">@Model.EmptyText</option>
+            <i-option value="">@Model.EmptyText</i-option>
         }
         foreach (var item in Model.Data)
         {
             if (item.IsSelected || item.Key == Model.Value)
             {
-                <option value="@item.Key" selected="selected">@item.Value</option>
+                <i-option value="@item.Key">@item.Value</i-option>
             }
             else
             {
-                <option value="@item.Key">@item.Value</option>
+                <i-option value="@item.Key">@item.Value</i-option>
             }
         }
     }
-</select>
+</i-select>

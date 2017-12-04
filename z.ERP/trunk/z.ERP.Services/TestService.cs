@@ -29,6 +29,8 @@ namespace z.ERP.Services
         {
 
             P1Entity d1 = DbHelper.Select(new P1Entity("111"));
+
+
             return "";
             P1Entity p1 = new P1Entity()
             {
@@ -65,8 +67,7 @@ namespace z.ERP.Services
                              }
                         }
             };
-            //DbHelper.Delete(p1);
-
+            DbHelper.Delete(p1);
 
             DbHelper.Save(p1);
 
