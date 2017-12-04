@@ -16,8 +16,8 @@ namespace z.ERP.Web
         /// 只有调试时生效
         /// </summary>
         public static LoaclePage DefaultPage = new LoaclePage
-            //("XTGL", "BRAND", "Brand");
-            ("XTGL", "BRANCH", "DefineModel");
-              //("HTGL", "ZLHT", "List");
+        //("XTGL", "test", "List");
+        ("XTGL", "BRANCH", "DefineModel");
+        //("HTGL", "ZLHT", "List");
     }
 }
