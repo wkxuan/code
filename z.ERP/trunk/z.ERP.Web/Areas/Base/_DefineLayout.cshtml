@@ -1,0 +1,51 @@
+﻿@inherits z.MVC5.Views.DefineViewBase
+
+@{
+    WebFiles = new string[] {
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js",
+                    "Content/LayOut/_DefineLayout.js"
+                };
+}
+
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+<style>
+    .RowTitle {
+        text-align: right;
+        font-size: large;
+    }
+</style>
+
+<div id="def_Main">
+     <row>
+         <i-button  v-on:click="add">添加</i-button>
+         <span>|</span>
+         <i-button  v-on:click="save">保存</i-button>
+     </row>
+
+     <row>
+        <i-col span="24">
+           <card :bordered="false">
+              <p slot="title">包含元素</p>
+              @RenderSection("element", true)
+           </card>
+        </i-col>
+     </row>
+
+     <row>
+         <i-col span="24">
+            <card :bordered="false">
+               <p slot="title">列表信息</p>
+                @RenderSection("list", true)
+            </card>
+         </i-col>
+     </row>
+</div>
+
+@section foot{
+    @RenderSection("foot", false)
+}

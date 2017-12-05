@@ -29,6 +29,8 @@ namespace z.ERP.Services
         {
 
             P1Entity d1 = DbHelper.Select(new P1Entity("111"));
+
+
             return "";
             P1Entity p1 = new P1Entity()
             {
@@ -65,8 +67,7 @@ namespace z.ERP.Services
                              }
                         }
             };
-            //DbHelper.Delete(p1);
-
+            DbHelper.Delete(p1);
 
             DbHelper.Save(p1);
 
@@ -77,9 +78,11 @@ namespace z.ERP.Services
         public DataGridResult GetData()
         {
             SearchItem item = SearchItem.GetAllPram();
-            string sql = $@"select * from bm where 1=1 ";
-            item.HasKey("DEPTID", a => sql += $" and DEPTID = '{a}' ");
-            item.HasKey("DEPT_NAME", a => sql += $" and DEPT_NAME = '{a}' ");
+            string sql = $@"select * from ORG where 1=1 ";
+            item.HasKey("ORGID", a => sql += $" and ORGID = '{a}' ");
+            item.HasKey("ORGCODE", a => sql += $" and ORGCODE = '{a}' ");
+            item.HasKey("ORG_TYPE", a => sql += $" and ORG_TYPE = '{a}' ");
+            item.HasKey("CREATE_TIME", a => sql += $" and CREATE_TIME = '{a}' ");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -89,7 +92,8 @@ namespace z.ERP.Services
         {
             SearchItem item = SearchItem.GetAllPram();
             string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
-            item.HasKey("NAME", a => sql += $" and B.NAME LIKE ' '{a}' %'");
+            item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
+            item.HasKey("CODE", a => sql += $" and B.CODE = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

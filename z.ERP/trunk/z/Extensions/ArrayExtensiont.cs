@@ -75,5 +75,19 @@ namespace z.Extensiont
             return list == null || list.Count() == 0;
         }
 
+        /// <summary>
+        /// 数组中存在某值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool Has<T>(this IEnumerable<T> list, T value)
+        {
+            if (list == null || value == null)
+                return false;
+            return list.Contains(value);
+        }
+
     }
 }

@@ -3,13 +3,7 @@
 @inherits z.MVC5.Views.ListViewPage
 
 @section tjbtn{
-    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "Search",
-            Text = "查询"
-        });
-    }
+    <i-button type="text" v-on:click="Search">查询</i-button>
     <span>|</span>
     <i-button type="text" v-on:click="Save">保存</i-button>
 }
@@ -45,10 +39,9 @@
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new EnumCheckBoxListRender<部门类型>()
+                RenderControl(new EnumDropDownListRender<部门类型>()
                 {
-                    vModel = "SearchData.ORG_TYPE",
-                    MultiSelect = true
+                    vModel = "SearchData.ORG_TYPE"
                 });
             }
         </i-col>
@@ -61,7 +54,7 @@
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
-                    ServiceMothod = m => m.b()
+                    ServiceMothod = m => m.a()
                 });
             }
         </i-col>
@@ -69,18 +62,13 @@
             创建日期
         </i-col>
         <i-col span="6">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "SearchData.CREATE_TIME"
-                });
-            }
+            <date-picker v-model="SearchData.CREATE_TIME"></date-picker>
         </i-col>
     </row>
 }
 
 @section jg{
     <row>
-        <i-table border :columns="colBm" :data="dataBm"></i-table>
+        <i-table border columns="colBm" data="dataBm"></i-table>
     </row>
 }

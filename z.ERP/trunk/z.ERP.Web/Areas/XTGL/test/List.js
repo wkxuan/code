@@ -2,15 +2,14 @@
     el: "#List_Main",
     data: {
         SearchData: {
-            DEPTID: '',
-            DEPT_NAME: ''
+            ORG_TYPE: 3
         },
         colBm: [
-            { title: 'ID', key: 'DEPTID' },
-            { title: '名称', key: 'DEPT_NAME' }
+            { title: 'ID', key: 'ORGID' },
+            { title: '名称', key: 'ORGNAME' }
         ],
         dataBm: [],
-        frameTar: 'tj', 
+        frameTar: 'tj',
     },
     methods: {
         Search: function (event) {

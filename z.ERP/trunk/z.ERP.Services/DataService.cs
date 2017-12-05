@@ -32,6 +32,13 @@ namespace z.ERP.Services
                  new SelectItem ("1","11")
             };
         }
-        
+
+        public List<SelectItem> b()
+        {
+            return new List<SelectItem>() {
+                 new SelectItem ("1","11")
+            };
+        }
+
     }
 }

@@ -32,17 +32,16 @@ namespace z.ERP.Web.Areas.XTGL.test
         //{
 
         //}
-        //public void Save1(BMEntity bm)
-        //{
-        //    var v = GetVerify(bm);
-        //    v.Require(a => a.DEPTID);
-        //    v.IsNumber(a => a.DEPTID);
-        //    v.Require(a => a.DEPT_NAME);
-        //    //v.Require(a => a.BMJB);
-        //    v.IsUnique(a => a.DEPTID);
-        //    v.Verify();
-        //    CommonSave(bm);
-        //}
+        public void Save1( ORGEntity ORG)
+        {
+            var v = GetVerify(ORG);
+            v.Require(a => a.ORGID);
+            v.IsNumber(a => a.ORGID);
+            v.Require(a => a.ORGNAME);
+            v.IsUnique(a => a.ORGCODE);
+            v.Verify();
+            CommonSave(ORG);
+        }
         public UIResult Func1(string s)
         {
             //return new JsonResult()
