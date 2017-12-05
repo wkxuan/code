@@ -108,6 +108,7 @@
     <Compile Include="Auto\WORKITEMEntity.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Enum\合同类型.cs" />
+    <Compile Include="Enum\支付方式类型.cs" />
     <Compile Include="Enum\部门类型.cs" />
     <Compile Include="P1Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,7 +4,8 @@
     WebFiles = new string[] {
                     "Content/VUE/styles/iview.css",
                     "Content/VUE/vue.js",
-                    "Content/VUE/iview.js"
+                    "Content/VUE/iview.js",
+                    "Content/LayOut/_DefineLayout.js"
                 };
 }
 
@@ -19,10 +20,12 @@
     }
 </style>
 
-<div>
-     <div style="float: right; width: 200px ;text-align: right;z-index:99">
-        @RenderSection("defbtn", false)
-     </div>
+<div id="def_Main">
+     <row>
+         <i-button  v-on:click="add">添加</i-button>
+         <span>|</span>
+         <i-button  v-on:click="save">保存</i-button>
+     </row>
 
      <row>
         <i-col span="24">

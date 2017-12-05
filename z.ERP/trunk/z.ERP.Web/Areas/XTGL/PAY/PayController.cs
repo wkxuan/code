@@ -1,5 +1,8 @@
 ﻿using z.ERP.Web.Areas.Base;
 using System.Web.Mvc;
+using z.ERP.Entities;
+using z.Extensions;
+using System;
 
 
 namespace z.ERP.Web.Areas.XTGL.PAY
@@ -9,6 +12,22 @@ namespace z.ERP.Web.Areas.XTGL.PAY
         public ActionResult Pay()
         {
             return View();
+        }
+
+        public void Save(PAYEntity pay)
+        {
+            var v = GetVerify(pay);
+            if (pay.CODE.IsEmpty()){
+                pay.CODE = pay.PAYID;
+            }
+            pay.CREATE_TIME = DateTime.Now.ToLongString();
+            pay.VOID_FLAG = "0";
+            pay.FK = "0";
+            pay.JF = "0";
+            pay.ZLFS = "0";
+            pay.FLAG = "0";
+
+            CommonSave(pay);
         }
     }
 }
