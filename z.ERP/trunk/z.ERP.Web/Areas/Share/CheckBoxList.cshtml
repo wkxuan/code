@@ -1,0 +1,40 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.Extensiont
+@inherits z.MVC5.Views.ControlViewBase<CheckBoxListRender>
+
+@if (Model.MultiSelect)
+{
+    <checkbox-group v-model="@Model.vModel">
+        @{
+            foreach (var item in Model.Data)
+            {
+                if (Model.DisableValue.Has(item.Value))
+                {
+                    <checkbox label="@item.Key" disabled="false">@item.Value</checkbox>
+                }
+                else
+                {
+                    <checkbox label="@item.Key">@item.Value</checkbox>
+                }
+            }
+        }
+    </checkbox-group>
+}
+else
+{
+    <radio-group v-model="@Model.vModel">
+        @{
+            foreach (var item in Model.Data)
+            {
+                if (Model.DisableValue.Has(item.Value))
+                {
+                    <radio label="@item.Key" disabled="false">@item.Value</radio>
+                }
+                else
+                {
+                    <radio label="@item.Key">@item.Value</radio>
+                }
+            }
+        }
+    </radio-group>
+}

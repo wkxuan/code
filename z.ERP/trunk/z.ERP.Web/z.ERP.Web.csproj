@@ -150,9 +150,12 @@
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\HTGL\LYHT\Class1.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
+    <Compile Include="Areas\Share\Render\CheckBoxListRender.cs" />
+    <Compile Include="Areas\Share\Render\EnumCheckBoxListRender.cs" />
     <Compile Include="Areas\Share\Render\ServiceDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\EnumDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\DateBoxRender.cs" />
+    <Compile Include="Areas\Share\Render\ButtonRender.cs" />
     <Compile Include="Areas\Share\Render\TextBoxRender.cs" />
     <Compile Include="Areas\Share\Render\VueRender.cs" />
     <Compile Include="Areas\Share\Render\UndefineRender.cs" />
@@ -235,6 +238,8 @@
     <Content Include="Areas\XTGL\PAY\Pay.cshtml" />
     <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.cshtml" />
     <Content Include="Areas\Share\DateBox.cshtml" />
+    <Content Include="Areas\Share\CheckBoxList.cshtml" />
+    <Content Include="Areas\Share\Button.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -20,6 +20,14 @@ namespace z.ERP.Web.Areas.Share
         {
             return View(render);
         }
+        public ActionResult Button(ButtonRender render)
+        {
+            return View(render);
+        }
+        public ActionResult CheckBoxList(CheckBoxListRender render)
+        {
+            return View(render);
+        }
         public ActionResult DateBox(DateBoxRender render)
         {
             return View(render);
