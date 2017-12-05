@@ -1,25 +1,49 @@
-﻿@inherits z.MVC5.Views.DefineViewPage
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@inherits z.MVC5.Views.DefineViewPage
 
 @section element{
-    <row>
-        <i-col span="2" class="RowTitle">
-            组织ID
-        </i-col>
+<row>
+    <i-col span="2" class="RowTitle">
+        代码
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "editData.CODE",
+                Id = "tb_code",
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        名称
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "editData.NAME"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        类型
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new EnumDropDownListRender<支付方式类型>()
+            {
+                vModel = "editData.TYPE"
+            });
+        }
+    </i-col>
+</row>
 
-        <i-col span="2" class="RowTitle">
-            组织CODE
-        </i-col>
-
-        <i-col span="2" class="RowTitle">
-            组织类型
-        </i-col>
-    </row>
 }
 
 @section list{
-    <row>
-        <i-col span="2" class="RowTitle">
-            组织类型
-        </i-col>
-    </row>
+ <row>
+     <i-table border :columns="colPay" :data="dataPay"></i-table>
+ </row>
 }
