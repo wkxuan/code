@@ -16,7 +16,7 @@ namespace z.ERP.Web.Areas.XTGL.PAY
 
         public void Save(PAYEntity pay)
         {
-            pay = HttpExtension.GetRequestParam<PAYEntity>("saveParam");
+            pay = HttpExtension.GetRequestParam<PAYEntity>("DefineSave");
             var v = GetVerify(pay);
             pay.PAYID = service.CommonService.NewINC("PAY");
 
