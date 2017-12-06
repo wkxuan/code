@@ -25,6 +25,11 @@
         var itemList = [];
         itemList.push({ ID: 1, NAME: '和' });
         define.screenParam.dataPay1 = itemList;
+
+
+        var itemList1 = [];
+        itemList1.push({ CODE: 1, NAME: '和和和和和和' });
+        define.screenParam.dataPay = itemList1;
     }
 }
 
