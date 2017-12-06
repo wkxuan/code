@@ -4,6 +4,11 @@
         { title: '支付方式名称', key: 'NAME', width: 250 }];
 
     define.dataParam.dataPay = [];
+
+    define.dataParam.sure = function () {
+        define.dataParam.CODE = "1";
+        define.dataParam.NAME = "就是这样";
+    }
 }
 
 

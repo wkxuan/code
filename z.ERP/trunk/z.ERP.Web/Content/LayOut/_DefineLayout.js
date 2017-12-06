@@ -1,10 +1,13 @@
 ﻿function _Define() {
+    //评估这个全局变量是否合适
     var _this = this;
-
-    //vue操作之前的方法
+    //界面打开的查询以及保存完之后调用的查询
     this.search = function () { }
+
+    //vue之前的操作
     this.beforeVue = function () { }
 
+    //vue操作
     this.vue = function VueOperate() {
         var ve = new Vue({
             el: '#def_Main',
@@ -31,11 +34,13 @@
         });
     }
 
+    //初始化vue绑定的对象
     this.vueInit = function () {
         _this.dataParam = {};
         _this.isShowBRANCHID = false;
     }
 
+    //延时
     setTimeout(function () {
         _this.vueInit();
         _this.beforeVue();
