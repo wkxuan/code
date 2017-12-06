@@ -6,6 +6,14 @@
     define.dataParam.dataPay = [];
 }
 
-define.afterSave = function (data) {
-    define.dataParam.dataPay = data.row;
+
+define.search = function () {
+    _.Search({
+        Service: 'TestService',
+        Method: 'GetPay',
+        Data: {},
+        Success: function (data) {
+            define.dataParam.dataPay = data.rows;
+        }
+    })
 }

@@ -2,8 +2,8 @@
     var _this = this;
 
     //vue操作之前的方法
+    this.search = function () { }
     this.beforeVue = function () { }
-    this.afterSave = function (data) { }
 
     this.vue = function VueOperate() {
         var ve = new Vue({
@@ -11,6 +11,9 @@
             data: {
                 dataParam: _this.dataParam,
                 isShowBRANCHID: _this.isShowBRANCHID,
+            },
+            mounted: function () {
+                _this.search();
             },
             methods: {
                 add: function (event) {
@@ -20,7 +23,7 @@
                     _.Ajax('save', {
                         DefineSave: ve.dataParam
                     }, function (data) {
-                        _this.afterSave(data);
+                        _this.search();
                         alert("成功");
                     });
                 },
@@ -32,8 +35,6 @@
         _this.dataParam = {};
         _this.isShowBRANCHID = false;
     }
-
-
 
     setTimeout(function () {
         _this.vueInit();
