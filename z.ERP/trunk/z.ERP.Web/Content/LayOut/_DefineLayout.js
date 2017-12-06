@@ -16,8 +16,8 @@
                     ve.dataParam = {};
                 },
                 save: function (event) {
-                    _.Ajax('DefineSave', {
-                        data: ve.dataParam
+                    _.Ajax('save', {
+                        DefineSave: ve.dataParam
                     }, function (a, b, c) {
                         alert("成功");
                     });
