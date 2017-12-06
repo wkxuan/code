@@ -29,7 +29,7 @@
 
      <row>
         <i-col span="24">
-           <card :bordered="false">
+           @*<card :bordered="false">*@
               <p slot="title">包含元素</p>
                <row>
                    <i-col span="2" v-if="isShowBRANCHID">分店编号</i-col>
@@ -38,16 +38,16 @@
                    </i-col>
                </row>
               @RenderSection("element", true)
-           </card>
+           @*</card>*@
         </i-col>
      </row>
 
      <row>
          <i-col span="24">
-            <card :bordered="false">
+            @*<card :bordered="false">*@
                <p slot="title">列表信息</p>
                 @RenderSection("list", true)
-            </card>
+            @*</card>*@
          </i-col>
      </row>
 </div>

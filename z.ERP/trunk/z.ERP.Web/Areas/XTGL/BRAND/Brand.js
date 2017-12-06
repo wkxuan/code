@@ -54,6 +54,15 @@
                 BRAND: Search.SearchData
             }, function (a,b,c) {
                 alert('成功！');
+                _.Search({
+                    Service: 'TestService',
+                    Method: 'GetBrandData',
+                    Data: Search.SearchData,
+                    Success: function (data) {
+                        Search.frameTar = 'jg';
+                        Search.dataBRAND = data.rows;
+                    }
+                })
             })
         }
     }
