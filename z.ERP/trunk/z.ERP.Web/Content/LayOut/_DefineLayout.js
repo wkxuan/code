@@ -3,6 +3,7 @@
 
     //vue操作之前的方法
     this.beforeVue = function () { }
+    this.afterSave = function (data) { }
 
     this.vue = function VueOperate() {
         var ve = new Vue({
@@ -18,7 +19,8 @@
                 save: function (event) {
                     _.Ajax('save', {
                         DefineSave: ve.dataParam
-                    }, function (a, b, c) {
+                    }, function (data) {
+                        _this.afterSave(data);
                         alert("成功");
                     });
                 },
