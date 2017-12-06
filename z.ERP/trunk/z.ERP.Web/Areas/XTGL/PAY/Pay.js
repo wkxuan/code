@@ -2,16 +2,29 @@
 
     define.dataParam.CODE = '';
 
-    define.dataParam.colPay = [
+    define.screenParam.colPay = [
         { title: '支付方式CODE', key: 'CODE', width: 150 },
         { title: '支付方式名称', key: 'NAME', width: 250 }];
 
-    define.dataParam.dataPay = [];
+    define.screenParam.dataPay = [];
 
-    define.dataParam.sure = function () {
+
+    define.screenParam.colPay1 = [
+    { title: 'ID', key: 'ID', width: 150 },
+    { title: '名称', key: 'NAME', width: 250 }];
+
+    define.screenParam.dataPay1 = [];
+
+    define.screenParam.sure = function () {
         define.dataParam.CODE = "1";
         define.dataParam.NAME = "就是这样";
         define.dataParam.TYPE = "1";
+    }
+
+    define.screenParam.table = function () {
+        var itemList = [];
+        itemList.push({ ID: 1, NAME: '和' });
+        define.screenParam.dataPay1 = itemList;
     }
 }
 
@@ -22,7 +35,7 @@ define.search = function () {
         Method: 'GetPay',
         Data: {},
         Success: function (data) {
-            define.dataParam.dataPay = data.rows;
+            define.screenParam.dataPay = data.rows;
         }
     })
 }

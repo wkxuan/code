@@ -14,13 +14,15 @@
             data: {
                 dataParam: _this.dataParam,
                 isShowBRANCHID: _this.isShowBRANCHID,
+                screenParam: _this.screenParam
             },
             mounted: function () {
                 _this.search();
             },
             methods: {
                 add: function (event) {
-                    ve.dataParam = {};
+                    _this.dataParam = {};
+                    ve.dataParam = _this.dataParam
                 },
                 save: function (event) {
                     _.Ajax('save', {
@@ -37,6 +39,7 @@
     //初始化vue绑定的对象
     this.vueInit = function () {
         _this.dataParam = {};
+        _this.screenParam = {};
         _this.isShowBRANCHID = false;
     }
 
