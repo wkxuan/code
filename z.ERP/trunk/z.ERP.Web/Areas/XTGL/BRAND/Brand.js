@@ -27,15 +27,25 @@
                 Method: 'GetBrandData',
                 Data: Search.SearchData,
                 Success: function (data) {
-                    Search.frameTar = 'jg';
-                    Search.dataBRAND = data.rows;
+                    if (data.total == 0)
+                    {
+                        Search.frameTar = 'tj';
+                        Search.dataBRAND = [];
+                        alert("查询无结果！");
+                    }
+                    else
+                    {
+                        Search.frameTar = 'jg';
+                        Search.dataBRAND = data.rows;
+                    }
+
                 }
             })
         },
         Clear: function (event) {
             event.stopPropagation();
             Search.frameTar = 'tj';
-            Search.SearchData = [];
+            Search.SearchData = {};
             Search.dataBRAND = [];
         },
         Save: function (event) {
