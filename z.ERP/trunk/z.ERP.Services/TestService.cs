@@ -97,5 +97,14 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+
+        public DataGridResult GetPay()
+        {
+            SearchItem item = SearchItem.GetAllPram();
+            string sql = $@"SELECT * FROM PAY";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 }

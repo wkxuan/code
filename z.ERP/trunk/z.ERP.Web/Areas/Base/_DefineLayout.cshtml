@@ -31,6 +31,12 @@
         <i-col span="24">
            <card :bordered="false">
               <p slot="title">包含元素</p>
+               <row>
+                   <i-col span="2" v-if="isShowBRANCHID">分店编号</i-col>
+                   <i-col span="6" v-if="isShowBRANCHID">
+                       <i-input v-model="dataParam.BRANCHID"></i-input>
+                   </i-col>
+               </row>
               @RenderSection("element", true)
            </card>
         </i-col>

@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.Extensions;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.XTGL.BRAND
 {
@@ -12,13 +14,16 @@ namespace z.ERP.Web.Areas.XTGL.BRAND
     {
         public ActionResult Brand()
         {
-            service.TestService.a();
+            //service.TestService.a();
 
             return View();
         }
 
         public void Save(BRANDEntity brand) {
+            //测试临时加入，需要共用处理
+            brand = HttpExtension.GetRequestParam<BRANDEntity>("BRAND");
             var v = GetVerify(brand);
+            brand.ID = service.CommonService.NewINC("BRAND");
             if (string.IsNullOrEmpty(brand.CODE))
                 brand.CODE = brand.ID;
             brand.CATEGORYID = "1";
