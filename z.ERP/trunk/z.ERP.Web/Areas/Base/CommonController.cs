@@ -18,7 +18,7 @@ namespace z.ERP.Web.Areas.Base
         {
         }
 
-        public DataGridResult Search(string Service, string Method)
+        public DataGridResult Search(string Service, string Method, SearchItem Data)
         {
             Type type = service.GetType();
             PropertyInfo propertyInfo = type.GetProperty(Service);
@@ -31,10 +31,13 @@ namespace z.ERP.Web.Areas.Base
             if (mi == null)
                 throw new Exception($"无效的Method:{Method}");
             if (!mi.ReturnType.BaseOn<UIResult>())
-                throw new Exception($"Method:{Method}返回值错误");
-            var d = mi.Invoke(list, null) as DataGridResult;
+                throw new Exception($"Method:{Method}返回值错误,必须返回UIResult");
+            ParameterInfo[] info = mi.GetParameters();
+            if (info == null || info.Count() != 1 || !info[0].ParameterType.BaseOn<SearchItem>())
+                throw new Exception($"Method:{Method}参数错误,必须只有一个参数SearchItem");
+            var d = mi.Invoke(list, new object[] { Data }) as DataGridResult;
             return d;
         }
-        
+
     }
 }

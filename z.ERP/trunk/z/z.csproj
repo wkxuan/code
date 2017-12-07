@@ -69,6 +69,7 @@
     <Compile Include="Exceptions\LogicException.cs" />
     <Compile Include="Exceptions\NoPermissionException.cs" />
     <Compile Include="Exceptions\NoLoginException.cs" />
+    <Compile Include="Extensions\Converters\DateTimeConverter.cs" />
     <Compile Include="Extensions\ExtensionExtension.cs" />
     <Compile Include="Extensions\DataTableExtension.cs" />
     <Compile Include="Extensions\DateTimeExtension.cs" />

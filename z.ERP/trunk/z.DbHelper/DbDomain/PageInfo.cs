@@ -8,22 +8,8 @@ namespace z.DbHelper.DbDomain
 {
     public class PageInfo
     {
-        private PageInfo()
+        public PageInfo()
         {
-        }
-        public static PageInfo GetPageinfoFormUI()
-        {
-            PageInfo p = new DbDomain.PageInfo();
-            if (string.IsNullOrEmpty(HttpExtension.GetRequestParam("page")))
-            {
-                p.PageIndex = p.PageSize = 0;
-            }
-            else
-            {
-                p.PageIndex = HttpExtension.GetRequestParam("page").ToInt() - 1;
-                p.PageSize = HttpExtension.GetRequestParam("rows").ToInt();
-            }
-            return p;
         }
         public int PageSize
         {

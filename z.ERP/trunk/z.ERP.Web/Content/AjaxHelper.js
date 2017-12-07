@@ -71,11 +71,11 @@ zQuery.extend({
                 error: arguments.length >= 3 ? arguments[3] : null
             }
         }
-        if (typeof options.data == 'object')
-            $.each(options.data, function (inx, obj) {
-                if (typeof obj == 'object')
-                    options.data[inx] = JSON.stringify(obj);
-            });
+        //if (typeof options.data == 'object')
+        //    $.each(options.data, function (inx, obj) {
+        //        if (typeof obj == 'object')
+        //            options.data[inx] = JSON.stringify(obj);
+        //    });
         var options_default = {
             type: "Post",
             url: _.AjaxUrl + options.action,
@@ -116,12 +116,17 @@ zQuery.extend({
             alert("必要的参数Service,Method");
             return;
         }
+        if (typeof Options.Data == 'object')
+            $.each(Options.Data, function (inx, obj) {
+                if (typeof obj == 'object')
+                    Options.Data[inx] = JSON.stringify(obj);
+            });
         this.Ajax({
             url: _.CommonAjaxUrl + "Search",
             data: {
                 Service: Options.Service,
                 Method: Options.Method,
-                Data: Options.Data
+                Data: { Values: Options.Data }
             },
             success: function (data) {
                 Options.Success && Options.Success(data);

@@ -240,3 +240,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/z.ERP/trunk/z.ERP.Web/App_Start/DebugSettings.cs
