@@ -98,9 +98,8 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
-        public DataGridResult GetPay()
+        public DataGridResult GetPay(SearchItem item)
         {
-            SearchItem item = SearchItem.GetAllPram();
             string sql = $@"SELECT * FROM PAY";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
