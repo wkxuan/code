@@ -165,6 +165,7 @@
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\XTGL\BRAND\BrandController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
+    <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
@@ -176,6 +177,7 @@
     <Content Include="Areas\HTGL\LYHT\JavaScript.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\BRAND\Brand.js" />
+    <Content Include="Areas\XTGL\FKFS\Fkfs.js" />
     <Content Include="Areas\XTGL\PAY\Pay.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
@@ -243,6 +245,7 @@
     <Content Include="Areas\Share\DateBox.cshtml" />
     <Content Include="Areas\Share\CheckBoxList.cshtml" />
     <Content Include="Areas\Share\Button.cshtml" />
+    <Content Include="Areas\XTGL\FKFS\Fkfs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
