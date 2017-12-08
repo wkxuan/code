@@ -34,7 +34,7 @@
         Save: function (event) {
             event.stopPropagation();
             _.Ajax('Save1', {
-                bm: Search.SearchData
+                ORG: Search.SearchData
             }, function (a, b, c) {
                 alert("成功");
             });

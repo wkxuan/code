@@ -14,20 +14,21 @@ namespace z.ERP.Web.Areas.XTGL.PAY
             return View();
         }
 
-        public void Save(PAYEntity pay)
+        public void Save(PAYEntity DefineSave)
         {
-            var v = GetVerify(pay);
-            if (pay.CODE.IsEmpty()){
-                pay.CODE = pay.PAYID;
-            }
-            pay.CREATE_TIME = DateTime.Now.ToLongString();
-            pay.VOID_FLAG = "0";
-            pay.FK = "0";
-            pay.JF = "0";
-            pay.ZLFS = "0";
-            pay.FLAG = "0";
+            var v = GetVerify(DefineSave);
+            DefineSave.PAYID = service.CommonService.NewINC("PAY");
 
-            CommonSave(pay);
+            if (DefineSave.CODE.IsEmpty()){
+                DefineSave.CODE = DefineSave.PAYID;
+            }
+            DefineSave.CREATE_TIME = DateTime.Now.ToLongString();
+            DefineSave.VOID_FLAG = "0";
+            DefineSave.FK = "0";
+            DefineSave.JF = "0";
+            DefineSave.ZLFS = "0";
+            DefineSave.FLAG = "0";
+            CommonSave(DefineSave);
         }
     }
 }

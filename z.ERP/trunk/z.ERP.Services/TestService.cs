@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using z.ERP.Entities;
 using z.Extensions;
+using z.Extensiont;
 using z.MVC5.Results;
 using z.WebPage;
 
@@ -75,25 +76,38 @@ namespace z.ERP.Services
             return "TestManager";
         }
 
-        public DataGridResult GetData()
+        public DataGridResult GetData(SearchItem item)
         {
-            SearchItem item = SearchItem.GetAllPram();
             string sql = $@"select * from ORG where 1=1 ";
             item.HasKey("ORGID", a => sql += $" and ORGID = '{a}' ");
             item.HasKey("ORGCODE", a => sql += $" and ORGCODE = '{a}' ");
-            item.HasKey("ORG_TYPE", a => sql += $" and ORG_TYPE = '{a}' ");
-            item.HasKey("CREATE_TIME", a => sql += $" and CREATE_TIME = '{a}' ");
+            item.HasArrayKey("ORG_TYPE", a => sql += $" and ORG_TYPE in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasTimeKey("CREATE_TIME", a => sql += $" and CREATE_TIME = to_date('{a}') ");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
 
-        public DataGridResult GetBrandData()
+        public DataGridResult GetBrandData(SearchItem item)
         {
-            SearchItem item = SearchItem.GetAllPram();
             string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
             item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("CODE", a => sql += $" and B.CODE = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetPay(SearchItem item)
+        {
+            string sql = $@"SELECT * FROM PAY";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetFkfs(SearchItem item) {
+            string sql = $@"select * from FKFS";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

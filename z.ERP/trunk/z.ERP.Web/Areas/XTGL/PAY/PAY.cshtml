@@ -11,7 +11,7 @@
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "editData.CODE",
+                vModel = "dataParam.CODE",
                 Id = "tb_code",
             });
         }
@@ -23,7 +23,7 @@
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "editData.NAME"
+                vModel = "dataParam.NAME"
             });
         }
     </i-col>
@@ -34,16 +34,27 @@
         @{
             RenderControl(new EnumDropDownListRender<支付方式类型>()
             {
-                vModel = "editData.TYPE"
+                vModel = "dataParam.TYPE"
             });
         }
     </i-col>
-</row>
+@*</row>
+   <i-button  v-on:click="screenParam.sure">测试按钮赋值</i-button>
+<row>
 
+</row>
+<i-button v-on:click="screenParam.table">测试表格赋值</i-button>
+<row>*@
+
+</row>
 }
 
 @section list{
  <row>
-     <i-table border :columns="colPay" :data="dataPay"></i-table>
+     <i-table size="small" border :columns="screenParam.colPay" :data="screenParam.dataPay"></i-table>
  </row>
+
+@*<row>
+    <i-table border :columns="screenParam.colPay1" :data="screenParam.dataPay1"></i-table>
+</row>*@
 }

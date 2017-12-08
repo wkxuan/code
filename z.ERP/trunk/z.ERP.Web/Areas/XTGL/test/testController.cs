@@ -32,12 +32,11 @@ namespace z.ERP.Web.Areas.XTGL.test
         //{
 
         //}
-        public void Save1( ORGEntity ORG)
+        public void Save1(ORGEntity ORG)
         {
             var v = GetVerify(ORG);
             v.Require(a => a.ORGID);
             v.IsNumber(a => a.ORGID);
-            v.Require(a => a.ORGNAME);
             v.IsUnique(a => a.ORGCODE);
             v.Verify();
             CommonSave(ORG);

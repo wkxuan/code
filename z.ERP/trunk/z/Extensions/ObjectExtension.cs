@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using z.Extensions.Converters;
 using z.Extensiont;
 
 namespace z.Extensions
@@ -35,6 +36,27 @@ namespace z.Extensions
         public static T ToObj<T>(this string str)
         {
             return JsonConvert.DeserializeObject<T>(str);
+        }
+
+        /// <summary>
+        /// 试图反序列化json
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="str"></param>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static bool TryToObj<T>(this string str, out T t)
+        {
+            try
+            {
+                t = ToObj<T>(str);
+                return true;
+            }
+            catch
+            {
+                t = default(T);
+                return false;
+            }
         }
 
         /// <summary>

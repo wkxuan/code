@@ -89,5 +89,17 @@ namespace z.Extensiont
             return list.Contains(value);
         }
 
+        /// <summary>
+        /// 超级合并字符串
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="separator"></param>
+        /// <param name="fun"></param>
+        /// <returns></returns>
+        public static string SuperJoin<T>(this IEnumerable<T> list, string separator, Func<T, string> fun = null)
+        {
+            return string.Join(separator, list.Select(a => fun == null ? a.ToString() : fun(a)));
+        }
     }
 }

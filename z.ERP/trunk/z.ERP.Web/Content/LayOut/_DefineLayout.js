@@ -1,50 +1,53 @@
 ﻿function _Define() {
+    //评估这个全局变量是否合适
     var _this = this;
+    //界面打开的查询以及保存完之后调用的查询
+    this.search = function () { }
 
-    //vue操作之前的方法
+    //vue之前的操作
     this.beforeVue = function () { }
 
-    //数据保存之前
-    this.beforeSave = function () { }
-
-    //数据维护之后的方法
-    this.afterSave = function () { }
-
-    this.afterAdd = function () { }
-
-
+    //vue操作
     this.vue = function VueOperate() {
         var ve = new Vue({
             el: '#def_Main',
             data: {
-                editData: {}
+                dataParam: _this.dataParam,
+                screenParam: _this.screenParam
             },
-            //mounted: function () {
-            //},
+            mounted: function () {
+                _this.search();
+            },
             methods: {
                 add: function (event) {
-                    ve.editData = {};
-                    _this.afterAdd();
+                    _this.dataParam = {};
+                    ve.dataParam = _this.dataParam
                 },
                 save: function (event) {
-                    _this.beforeSave();
-                    _.Ajax('Save', {
-                        saveParam: ve.editData
-                    }, function (callback) {
-                        _this.afterSave(callback);
-                        ve.$Message.info({
-                            title: '结果',
-                            content: '保存成功'
-                        });
+                    _.Ajax('save', {
+                        DefineSave: ve.dataParam
+                    }, function (data) {
+                        _this.search();
+                        alert("成功");
                     });
+                },
+                del: function (event) {
                 }
             }
         });
     }
 
+    //初始化vue绑定的对象
+    this.vueInit = function () {
+        _this.dataParam = {};
+        _this.screenParam = {};
+    }
+
+    //延时
     setTimeout(function () {
+        _this.vueInit();
         _this.beforeVue();
         _this.vue();
-    }, 10);
+    }, 200);
 }
 var define = new _Define();
