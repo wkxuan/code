@@ -13,24 +13,24 @@
     { title: 'ID', key: 'ID', width: 150 },
     { title: '名称', key: 'NAME', width: 250 }];
 
-    define.screenParam.dataPay1 = [];
+    //define.screenParam.dataPay1 = [];
 
-    define.screenParam.sure = function () {
-        define.dataParam.CODE = "1";
-        define.dataParam.NAME = "就是这样";
-        define.dataParam.TYPE = "1";
-    }
+    //define.screenParam.sure = function () {
+    //    define.dataParam.CODE = "1";
+    //    define.dataParam.NAME = "就是这样";
+    //    define.dataParam.TYPE = "1";
+    //}
 
-    define.screenParam.table = function () {
-        var itemList = [];
-        itemList.push({ ID: 1, NAME: '和' });
-        define.screenParam.dataPay1 = itemList;
+    //define.screenParam.table = function () {
+    //    var itemList = [];
+    //    itemList.push({ ID: 1, NAME: '和' });
+    //    define.screenParam.dataPay1 = itemList;
 
 
-        var itemList1 = [];
-        itemList1.push({ CODE: 1, NAME: '和和和和和和' });
-        define.screenParam.dataPay = itemList1;
-    }
+    //    var itemList1 = [];
+    //    itemList1.push({ CODE: 1, NAME: '和和和和和和' });
+    //    define.screenParam.dataPay = itemList1;
+    //}
 }
 
 

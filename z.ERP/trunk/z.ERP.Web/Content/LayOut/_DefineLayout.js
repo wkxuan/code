@@ -13,7 +13,6 @@
             el: '#def_Main',
             data: {
                 dataParam: _this.dataParam,
-                isShowBRANCHID: _this.isShowBRANCHID,
                 screenParam: _this.screenParam
             },
             mounted: function () {
@@ -32,6 +31,8 @@
                         alert("成功");
                     });
                 },
+                del: function (event) {
+                }
             }
         });
     }
@@ -40,7 +41,6 @@
     this.vueInit = function () {
         _this.dataParam = {};
         _this.screenParam = {};
-        _this.isShowBRANCHID = false;
     }
 
     //延时
@@ -48,7 +48,6 @@
         _this.vueInit();
         _this.beforeVue();
         _this.vue();
-    }, 100);
+    }, 200);
 }
-
 var define = new _Define();

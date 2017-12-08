@@ -38,23 +38,23 @@
             });
         }
     </i-col>
-</row>
+@*</row>
    <i-button  v-on:click="screenParam.sure">测试按钮赋值</i-button>
 <row>
 
 </row>
 <i-button v-on:click="screenParam.table">测试表格赋值</i-button>
-<row>
+<row>*@
 
 </row>
 }
 
 @section list{
  <row>
-     <i-table border :columns="screenParam.colPay" :data="screenParam.dataPay"></i-table>
+     <i-table size="small" border :columns="screenParam.colPay" :data="screenParam.dataPay"></i-table>
  </row>
 
-<row>
+@*<row>
     <i-table border :columns="screenParam.colPay1" :data="screenParam.dataPay1"></i-table>
-</row>
+</row>*@
 }
