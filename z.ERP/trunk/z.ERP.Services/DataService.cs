@@ -36,7 +36,9 @@ namespace z.ERP.Services
         public List<SelectItem> b()
         {
             return new List<SelectItem>() {
-                 new SelectItem ("1","11")
+                 new SelectItem ("1","11"),
+                 new SelectItem ("2","22"),
+                 new SelectItem ("3","33")
             };
         }
 
