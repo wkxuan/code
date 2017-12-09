@@ -4,98 +4,97 @@
 @inherits z.MVC5.Views.DefineViewPage
 
 @section element{
-<row>
-    <i-col span="2" class="RowTitle">
-        名称
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.NAME"
-            });
-        }
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        类型
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new EnumDropDownListRender<支付方式类型>()
-            {
-                vModel = "dataParam.TYPE"
-            });
-        }
-    </i-col>
-</row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.NAME"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            类型
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<支付方式类型>()
+                {
+                    vModel = "dataParam.TYPE"
+                });
+            }
+        </i-col>
+    </row>
 
-<br />
+    <br />
 
-<row>
-    <i-col span="2" class="RowTitle">
-        返款
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new EnumDropDownListRender<收款方式返款>()
-            {
-                vModel = "dataParam.FK"
-            });
-        }
-    </i-col>
+    <row>
+        <i-col span="2" class="RowTitle">
+            返款
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<收款方式返款>()
+                {
+                    vModel = "dataParam.FK"
+                });
+            }
+        </i-col>
 
-    <i-col span="2" class="RowTitle">
-        积分
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new EnumDropDownListRender<收款方式积分>()
-            {
-                vModel = "dataParam.JF"
-            });
-        }
-    </i-col>
-</row>
-<br />
-<row>
-    <i-col span="2" class="RowTitle">
-        找零方式
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new EnumDropDownListRender<收款方式找零方式>()
-            {
-                vModel = "dataParam.ZLFS"
-            });
-        }
-    </i-col>
+        <i-col span="2" class="RowTitle">
+            积分
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<收款方式积分>()
+                {
+                    vModel = "dataParam.JF"
+                });
+            }
+        </i-col>
+    </row>
+    <br />
+    <row>
+        <i-col span="2" class="RowTitle">
+            找零方式
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<收款方式找零方式>()
+                {
+                    vModel = "dataParam.ZLFS"
+                });
+            }
+        </i-col>
 
-    <i-col span="2" class="RowTitle">
-        显示序号
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.FLAG"
-            });
-        }
-    </i-col>
-</row>
-<br />
-<row>
-    <i-col span="2" class="RowTitle">
-        停用标记
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new CheckBoxListRender()
-            {
-                vModel = "dataParam.VOID_FLAG",
-                MultiSelect=true,
-                Data=EnumExtension.EnumToSelectItem<停用标记>()
-            });
-        }
-    </i-col>
-</row>
+        <i-col span="2" class="RowTitle">
+            显示序号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.FLAG"
+                });
+            }
+        </i-col>
+    </row>
+    <br />
+    <row>
+        <i-col span="2" class="RowTitle">
+            停用标记
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumCheckBoxListRender<停用标记>()
+                {
+                    vModel = "dataParam.VOID_FLAG",
+                    MultiSelect = true
+                });
+            }
+        </i-col>
+    </row>
 }

@@ -8,7 +8,7 @@ using System.Web.Routing;
 using z.MVC5;
 using z.MVC5.Controllers;
 
-namespace z.ERP.Web
+namespace z.ERP.Web 
 {
     public class MvcApplication : System.Web.HttpApplication
     {
