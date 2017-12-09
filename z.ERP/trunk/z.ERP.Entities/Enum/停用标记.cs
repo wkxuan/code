@@ -8,6 +8,7 @@ namespace z.ERP.Entities.Enum
 {
     public enum 停用标记
     {
-        停用 = 1,
+        在用 = 1,
+        停用 = 2,
     }
 }
