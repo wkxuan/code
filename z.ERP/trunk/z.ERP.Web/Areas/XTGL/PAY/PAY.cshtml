@@ -5,6 +5,8 @@
 
 @section element{
     <row>
+        @*<i-button type="text" v-on:click="screenParam.cs">测试</i-button>*@
+
         <i-col span="2" class="RowTitle">
             名称
         </i-col>
@@ -92,7 +94,7 @@
                 RenderControl(new EnumCheckBoxListRender<停用标记>()
                 {
                     vModel = "dataParam.VOID_FLAG",
-                    MultiSelect = true
+                    MultiSelect = false
                 });
             }
         </i-col>

@@ -62,7 +62,6 @@
                 currentData: function (currentRow, oldCurrentRow) {
                     _this.dataParam = currentRow;
                     ve.dataParam = _this.dataParam;
-
                     _this.afterCurrentData(currentRow);
                 }
             }
