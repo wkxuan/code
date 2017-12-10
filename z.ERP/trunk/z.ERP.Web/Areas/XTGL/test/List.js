@@ -2,7 +2,8 @@
     el: "#List_Main",
     data: {
         SearchData: {
-            ORG_TYPE: 3
+            ORG_TYPE: 3,
+            b: 2
         },
         colBm: [
             { title: 'ID', key: 'ORGID' },

@@ -61,6 +61,7 @@
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
+                    vModel = "SearchData.b",
                     ServiceMothod = m => m.b()
                 });
             }
@@ -77,21 +78,21 @@
             }
         </i-col>
     </row>
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 }
 
 @section jg{
     <row>
-        <i-table border :columns="colBm" :data="dataBm"></i-table>
+        <i-table border columns="colBm" data="dataBm"></i-table>
     </row>
 }

@@ -9,7 +9,6 @@
                     "Content/LayOut/_DefineLayout.js"
                 };
 }
-
 @section head{
     @InitFiles(WebFiles)
     @RenderSection("head", false)
@@ -17,48 +16,65 @@
 <style>
     .RowTitle {
         text-align: right;
-        font-size: large;
+        font-size: small;
     }
 </style>
 
 <div id="def_Main">
-     <row>
-         
-         @{
-             RenderControl(new ButtonRender()
-             {
-                 Click = "add",
-                 Text = "添加"
-             });
-         }
-         <span>|</span>
-         @{
-             RenderControl(new ButtonRender()
-             {
-                 Click = "save",
-                 Text = "保存"
-             });
-         }
-         <span>|</span>
-         @{
-             RenderControl(new ButtonRender()
-             {
-                 Click = "del",
-                 Text = "删除"
-             });
-         }
-     </row>
+    <row>
 
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "add",
+                Text = "新增"
+            });
+        }
+        <span>|</span>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "mod",
+                Text = "修改"
+            });
+        }
+        <span>|</span>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "save",
+                Text = "存档"
+            });
+        }
+        <span>|</span>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "quit",
+                Text = "放弃"
+            });
+        }
+        <span>|</span>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "del",
+                Text = "删除"
+            });
+        }
+    </row>
      <row>
          <i-col span="8">
-             <card bordered="false">
+             <card>
                  <p slot="title">列表信息</p>
-                 @RenderSection("list", true)
+                 <i-table :highlight-row="true" size="small" :border="true"
+                          :columns="screenParam.colDef" :data="screenParam.dataDef" 
+                          v-on:on-current-change="currentData"></i-table>
              </card>
          </i-col>
 
         <i-col span="16">
-           <card :bordered="false">
+           <card>
               <p slot="title">包含元素</p>
               @RenderSection("element", true)
            </card>
