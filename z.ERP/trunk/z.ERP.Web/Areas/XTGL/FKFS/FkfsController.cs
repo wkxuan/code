@@ -16,18 +16,25 @@ namespace z.ERP.Web.Areas.XTGL.FKFS
             return View();
         }
 
-        public void Save(FKFSEntity fkfs)
+        public void Save(FKFSEntity DefineSave)
         {
-            var v = GetVerify(fkfs);
-            if (string.IsNullOrEmpty(fkfs.ID))                
-                fkfs.ID = service.CommonService.NewINC("FKFS");
+            var v = GetVerify(DefineSave);
+            if (string.IsNullOrEmpty(DefineSave.ID))
+                DefineSave.ID = service.CommonService.NewINC("FKFS");
             v.Require(a => a.ID);
             v.Require(a => a.NAME);
             v.IsNumber(a => a.ID);
             v.IsUnique(a => a.ID);
             v.IsUnique(a => a.NAME);
             v.Verify();
-            CommonSave(fkfs);
+            CommonSave(DefineSave);
+        }
+        public void Delete(FKFSEntity DefineDelete)
+        {
+            var v = GetVerify(DefineDelete);
+            v.Require(a => a.ID);
+            v.Verify();
+            CommenDelete(DefineDelete);
         }
         
     }
