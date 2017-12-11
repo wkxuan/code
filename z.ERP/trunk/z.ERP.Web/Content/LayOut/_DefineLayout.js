@@ -51,18 +51,37 @@
                     ve.disabled = _this.enabled(true);
                 },
                 quit: function (event) {
-                    _this.dataParam = _this.dataOldParam;
-                    ve.dataParam = _this.dataParam;
+                    this.$Modal.confirm({
+                        title: '提示',
+                        content: '是否取消',
+                        onOk: () => {
+                            _this.dataParam = _this.dataOldParam;
+                            ve.dataParam = _this.dataParam;
+                        },
+                        onCancel: () => {
+                            this.id = "关闭"
+                        }
+                    });
                     ve.disabled = _this.enabled(true);
                 },
                 //删除
                 del: function (event) {
-                    _.Ajax('Delete', {
-                        DefineDelete: ve.dataParam
-                    }, function (data) {
-                        _this.search();
-                        alert("删除成功");
+                    this.$Modal.confirm({
+                        title: '提示',
+                        content: '是否删除',
+                        onOk: () => {
+                            _.Ajax('Delete', {
+                                DefineDelete: ve.dataParam
+                            }, function (data) {
+                                _this.search();
+                                alert("删除成功");
+                            });
+                        },
+                        onCancel: () => {
+                            this.id = "关闭"
+                        }
                     });
+
                 },
                 //列表选中
                 //参数:currentRow当前数据
