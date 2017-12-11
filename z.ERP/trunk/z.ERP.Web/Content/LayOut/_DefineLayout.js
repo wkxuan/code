@@ -11,6 +11,11 @@
     //控件是否可用，扩展函数
     this.enabled = function (val) { return val; }
 
+    //校验保存前数据是否合法
+    this.IsValidSave = function (_self) {
+        return true;
+    }
+
     //vue操作
     this.vue = function VueOperate() {
         var ve = new Vue({
@@ -42,11 +47,14 @@
                 },
                 //保存
                 save: function (event) {
+                    var _self = this;
+                    if (!_this.IsValidSave(_self))
+                        return;
                     _.Ajax('Save', {
                         DefineSave: ve.dataParam
                     }, function (data) {
                         _this.search();
-                        alert("保存成功");
+                        _self.$Message.info("保存成功");
                     });
                     ve.disabled = _this.enabled(true);
                 },
@@ -66,6 +74,7 @@
                 },
                 //删除
                 del: function (event) {
+                    var _self = this;
                     this.$Modal.confirm({
                         title: '提示',
                         content: '是否删除',
@@ -74,7 +83,7 @@
                                 DefineDelete: ve.dataParam
                             }, function (data) {
                                 _this.search();
-                                alert("删除成功");
+                                _self.$Message.info("删除成功");
                             });
                         },
                         onCancel: () => {
