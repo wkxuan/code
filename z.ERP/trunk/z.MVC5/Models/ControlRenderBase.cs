@@ -35,5 +35,10 @@ namespace z.MVC5.Models
             set;
         }
 
+        public string disabled
+        {
+            get;
+            set;
+        }
     }
 }
