@@ -8,6 +8,9 @@
     //功能页面有子表表格在列表信息选中后单独赋值处理
     this.afterCurrentData = function (currentRow) { }
 
+    //控件是否可用，扩展函数
+    this.enabled = function (val) { return val; }
+
     //vue操作
     this.vue = function VueOperate() {
         var ve = new Vue({
@@ -16,7 +19,8 @@
                 //dataParam 数据库交互需要传输的内容
                 //screenParam屏幕显示的内容
                 dataParam: _this.dataParam,
-                screenParam: _this.screenParam
+                screenParam: _this.screenParam,
+                disabled: _this.enabled(true),
             },
             mounted: function () {
                 //页面打开先查询列表信息
@@ -28,11 +32,13 @@
                 add: function (event) {
                     _this.dataOldParam = _this.dataParam;
                     _this.dataParam = {};
-                    ve.dataParam = _this.dataParam
+                    ve.dataParam = _this.dataParam;                   
+                    ve.disabled = _this.enabled(false);
                 },
                 //修改
                 mod: function (event) {
-                    _this.dataOldParam = _this.dataParam;
+                    _this.dataOldParam = _this.dataParam;                    
+                    ve.disabled = _this.enabled(false);
                 },
                 //保存
                 save: function (event) {
@@ -42,10 +48,12 @@
                         _this.search();
                         alert("保存成功");
                     });
+                    ve.disabled = _this.enabled(true);
                 },
                 quit: function (event) {
                     _this.dataParam = _this.dataOldParam;
-                    ve.dataParam = _this.dataParam
+                    ve.dataParam = _this.dataParam;
+                    ve.disabled = _this.enabled(true);
                 },
                 //删除
                 del: function (event) {
