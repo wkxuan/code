@@ -1,7 +1,7 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @inherits z.MVC5.Views.ControlViewBase<DropDownListRender>
 
-<i-select v-model="@Model.vModel">
+<i-select v-model="@Model.vModel" :disabled="@Model.disabled">
     @{
         if (!Model.EmptyText.IsEmpty())
         {

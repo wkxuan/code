@@ -18,15 +18,12 @@ namespace z.ERP.Web.Areas.XTGL.PAY
         {
             var v = GetVerify(DefineSave);
 
-            if (DefineSave.CODE.IsEmpty())
+            if (DefineSave.PAYID.IsEmpty())
             {
                 DefineSave.PAYID = service.CommonService.NewINC("PAY");
                 DefineSave.CODE = DefineSave.PAYID;
+                DefineSave.CREATE_TIME = DateTime.Now.ToLongString();
             }
-            else {
-                DefineSave.PAYID = DefineSave.CODE;
-            }
-            DefineSave.CREATE_TIME = DateTime.Now.ToLongString();
 
             DefineSave.UPDATE_TIME = DateTime.Now.ToLongString();
             v.Require(a => a.NAME);
@@ -38,13 +35,12 @@ namespace z.ERP.Web.Areas.XTGL.PAY
             v.IsNumber(a => a.FLAG);
             v.Verify();
             CommonSave(DefineSave);
+            //保存完之后是否可以返回当前记录的结果,要不非界面上录入的数据不能看到结果
         }
 
         public void Delete(PAYEntity DefineDelete)
         { 
             var v = GetVerify(DefineDelete);
-            v.IsUnique(a => a.CODE);
-            DefineDelete.PAYID = DefineDelete.CODE;
             CommenDelete(DefineDelete);
         }
     }

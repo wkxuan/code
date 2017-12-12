@@ -100,7 +100,7 @@ namespace z.ERP.Services
 
         public DataGridResult GetPay(SearchItem item)
         {
-            string sql = $@"SELECT * FROM PAY";
+            string sql = $@"SELECT * FROM PAY ORDER BY  PAYID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

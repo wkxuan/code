@@ -65,12 +65,14 @@
                         onOk: () => {
                             _this.dataParam = _this.dataOldParam;
                             ve.dataParam = _this.dataParam;
+                            ve.disabled = _this.enabled(true);
                         },
                         onCancel: () => {
+                            ve.disabled = _this.enabled(false);
                             this.id = "关闭"
                         }
                     });
-                    ve.disabled = _this.enabled(true);
+                    
                 },
                 //删除
                 del: function (event) {
@@ -83,6 +85,9 @@
                                 DefineDelete: ve.dataParam
                             }, function (data) {
                                 _this.search();
+                                //删除完,界面清空
+                                _this.dataParam = {};
+                                ve.dataParam = _this.dataParam;
                                 _self.$Message.info("删除成功");
                             });
                         },
@@ -90,7 +95,7 @@
                             this.id = "关闭"
                         }
                     });
-
+                    ve.disabled = _this.enabled(true);
                 },
                 //列表选中
                 //参数:currentRow当前数据

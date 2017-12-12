@@ -72,6 +72,14 @@
          <i-col span="8">
              <card>
                  <p slot="title">列表信息</p>
+                 @{
+                     RenderControl(new TextBoxRender()
+                     {
+                        vModel = "screenParam.SrchParam",
+                        disabled = "false"
+                     });
+                 }
+
                  <i-table :highlight-row="true" size="small" :border="true"
                           :columns="screenParam.colDef" :data="screenParam.dataDef" 
                           v-on:on-current-change="currentData"></i-table>

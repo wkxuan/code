@@ -6,13 +6,31 @@
 @section element{
     <row>
         <i-col span="2" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PAYID",
+                    disabled = "true"
+                });
+            }
+        </i-col>
+    </row>
+
+    <br />
+
+    <row>
+        <i-col span="2" class="RowTitle">
             名称
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.NAME"
+                    vModel = "dataParam.NAME",
+                    disabled = "disabled"
                 });
             }
         </i-col>
@@ -23,7 +41,8 @@
             @{
                 RenderControl(new EnumDropDownListRender<支付方式类型>()
                 {
-                    vModel = "dataParam.TYPE"
+                    vModel = "dataParam.TYPE",
+                    disabled = "disabled"
                 });
             }
         </i-col>
@@ -39,7 +58,8 @@
             @{
                 RenderControl(new EnumDropDownListRender<收款方式返款>()
                 {
-                    vModel = "dataParam.FK"
+                    vModel = "dataParam.FK",
+                    disabled = "disabled"
                 });
             }
         </i-col>
@@ -51,7 +71,8 @@
             @{
                 RenderControl(new EnumDropDownListRender<收款方式积分>()
                 {
-                    vModel = "dataParam.JF"
+                    vModel = "dataParam.JF",
+                    disabled = "disabled"
                 });
             }
         </i-col>
@@ -65,7 +86,8 @@
             @{
                 RenderControl(new EnumDropDownListRender<收款方式找零方式>()
                 {
-                    vModel = "dataParam.ZLFS"
+                    vModel = "dataParam.ZLFS",
+                    disabled = "disabled"
                 });
             }
         </i-col>
@@ -77,7 +99,8 @@
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.FLAG"
+                    vModel = "dataParam.FLAG",
+                    disabled = "disabled"
                 });
             }
         </i-col>
@@ -92,7 +115,8 @@
                 RenderControl(new EnumCheckBoxListRender<停用标记>()
                 {
                     vModel = "dataParam.VOID_FLAG",
-                    MultiSelect = false
+                    MultiSelect = false,
+                    disabled = "disabled"
                 });
             }
         </i-col>

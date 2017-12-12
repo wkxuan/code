@@ -3,8 +3,29 @@
     define.dataParam.CODE = '';
 
     define.screenParam.colDef = [
-        { title: '支付方式代码', key: 'CODE', width: 150 },
-        { title: '支付方式名称', key: 'NAME', width: 250 }];
+        {
+            title: '支付方式代码',
+            key: 'CODE', width: 150,
+            filters: [
+                { label: '过滤', value: define.screenParam.SrchParam }
+            ],
+            filterMultiple: false,
+            filterMethod (value, row) {
+                return row.CODE.indexOf(define.screenParam.SrchParam) > -1;
+            }
+        },
+        {
+            title: '支付方式名称',
+            key: 'NAME', width: 250,
+
+            filters: [
+                { label: '过滤', value: define.screenParam.SrchParam }
+            ],
+            filterMultiple: false,
+            filterMethod (value, row) {
+                return row.NAME.indexOf(define.screenParam.SrchParam) > -1;
+            }
+        }];
 
     define.screenParam.dataDef = [];
 }
