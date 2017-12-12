@@ -13,8 +13,10 @@
 
     //校验保存前数据是否合法
     this.IsValidSave = function (_self) {
-        return true;
+       
     }
+    //添加后初始化数据信息
+    this.newRecord = function () { }
 
     //vue操作
     this.vue = function VueOperate() {
@@ -37,6 +39,7 @@
                 add: function (event) {
                     _this.dataOldParam = _this.dataParam;
                     _this.dataParam = {};
+                    _this.newRecord();
                     ve.dataParam = _this.dataParam;                   
                     ve.disabled = _this.enabled(false);
                 },

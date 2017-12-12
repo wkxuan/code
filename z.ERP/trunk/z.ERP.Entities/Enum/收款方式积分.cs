@@ -8,7 +8,7 @@ namespace z.ERP.Entities.Enum
 {
     public enum 收款方式积分
     {
-        不积分 = 1,
-        积分 = 2
+        积分 = 1,
+        不积分 = 2
     }
 }

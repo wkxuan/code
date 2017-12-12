@@ -8,7 +8,7 @@ namespace z.ERP.Entities.Enum
 {
     public enum 收款方式返款
     {
-        不返款 = 1,
-        返款=2
+        返款 = 1,
+        不返款=2
     }
 }
