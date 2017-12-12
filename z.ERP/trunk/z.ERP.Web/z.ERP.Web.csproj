@@ -163,7 +163,7 @@
     <Compile Include="Areas\Share\Render\UndefineRender.cs" />
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
-    <Compile Include="Areas\XTGL\BRAND\BrandController.cs" />
+    <Compile Include="Areas\BRAND\BRAND\BrandController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
@@ -176,7 +176,7 @@
   <ItemGroup>
     <Content Include="Areas\HTGL\LYHT\JavaScript.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
-    <Content Include="Areas\XTGL\BRAND\Brand.js" />
+    <Content Include="Areas\BRAND\BRAND\Brand.js" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.js" />
     <Content Include="Areas\XTGL\PAY\Pay.js" />
     <Content Include="Areas\XTGL\test\List.js" />
@@ -235,7 +235,7 @@
     <Content Include="Config\Debug.config" />
     <Content Include="Areas\HTGL\ZLHT\List.cshtml" />
     <Content Include="Areas\Share\BaseDropDownList.cshtml" />
-    <Content Include="Areas\XTGL\BRAND\Brand.cshtml" />
+    <Content Include="Areas\BRAND\BRAND\Brand.cshtml" />
     <Content Include="Areas\HTGL\LYHT\ViewPage1.cshtml" />
     <Content Include="Areas\Share\Undefine.cshtml" />
     <Content Include="Areas\Share\TextBox.cshtml" />
@@ -251,6 +251,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Home\" />
     <Folder Include="Areas\HTGL\Views\ZLHT\" />
+    <Folder Include="Areas\MERCHANT\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
