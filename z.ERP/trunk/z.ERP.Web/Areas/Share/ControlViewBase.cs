@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Optimization;
 using z.MVC5.Models;
+using z.MVC5.Views;
 
-namespace z.MVC5.Views
+namespace z.ERP.Web.Areas.Share
 {
-    public class ListViewBase : ViewBase<dynamic>
+    public class ControlViewBase<TModel> : ViewBase<TModel>
     {
-        public ListViewBase()
+        public ControlViewBase()
         {
 
         }
@@ -19,15 +20,7 @@ namespace z.MVC5.Views
         {
             get
             {
-                return base.LayoutUrl;
-            }
-        }
-
-        public override string LayoutUrl
-        {
-            get
-            {
-                return "~/Areas/Base/_ListLayout.cshtml";
+                return null;
             }
         }
     }

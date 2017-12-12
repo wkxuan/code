@@ -8,7 +8,7 @@
                 { label: '过滤', value: define.screenParam.SrchParam }
             ],
             filterMultiple: false,
-            filterMethod (value, row) {
+            filterMethod: function (value, row) {
                 return row.CODE.indexOf(define.screenParam.SrchParam) > -1;
             }
         },
@@ -20,7 +20,7 @@
                 { label: '过滤', value: define.screenParam.SrchParam }
             ],
             filterMultiple: false,
-            filterMethod (value, row) {
+            filterMethod: function (value, row) {
                 return row.NAME.indexOf(define.screenParam.SrchParam) > -1;
             }
         }];

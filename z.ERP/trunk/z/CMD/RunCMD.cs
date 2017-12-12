@@ -28,16 +28,15 @@ namespace z.CMD
             CmdProcess.StartInfo.FileName = _cmdProcessName;
             CmdProcess.StartInfo.WorkingDirectory = @"c:\";
             CmdProcess.StartInfo.UseShellExecute = false;
-            CmdProcess.StartInfo.RedirectStandardInput = true;//可能接受来自调用程序的输入信息
-            CmdProcess.StartInfo.RedirectStandardOutput = true;//由调用程序获取输出信息
-            CmdProcess.StartInfo.RedirectStandardError = true;  // 重定向错误输出
+            CmdProcess.StartInfo.RedirectStandardInput = true;
+            CmdProcess.StartInfo.RedirectStandardOutput = true;
+            CmdProcess.StartInfo.RedirectStandardError = true;
             CmdProcess.OutputDataReceived += CmdProcess_OutputDataReceived;
             CmdProcess.ErrorDataReceived += CmdProcess_OutputDataReceived;
-            CmdProcess.EnableRaisingEvents = true;                      // 启用Exited事件
-            CmdProcess.Exited += CmdProcess_Exited;   // 注册进程结束事件
-            CmdProcess.StartInfo.CreateNoWindow = true;//不显示程序窗口
-            CmdProcess.Start();//启动程序
-            //向CMD窗口发送输入信息：
+            CmdProcess.EnableRaisingEvents = true;
+            CmdProcess.Exited += CmdProcess_Exited;
+            CmdProcess.StartInfo.CreateNoWindow = true;
+            CmdProcess.Start();
             CmdProcess.StandardInput.WriteLine(text);
             CmdProcess.BeginOutputReadLine();
             CmdProcess.BeginErrorReadLine();

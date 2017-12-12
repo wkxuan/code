@@ -35,10 +35,24 @@ namespace z.MVC5.Models
             set;
         }
 
-        public string disabled
+        /// <summary>
+        /// 可用性
+        /// </summary>
+        public bool Enable
         {
-            get;
-            set;
+            get
+            {
+                return _enable;
+            }
+            set
+            {
+                _enable = value;
+            }
         }
+
+        /// <summary>
+        /// 可用
+        /// </summary>
+        private bool _enable = true;
     }
 }

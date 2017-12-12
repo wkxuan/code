@@ -152,6 +152,9 @@
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\HTGL\LYHT\Class1.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
+    <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
+    <Compile Include="Areas\Layout\List\ListViewBase.cs" />
+    <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\CheckBoxListRender.cs" />
     <Compile Include="Areas\Share\Render\EnumCheckBoxListRender.cs" />
     <Compile Include="Areas\Share\Render\ServiceDropDownListRender.cs" />
@@ -182,7 +185,7 @@
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\jquery.min.js" />
-    <Content Include="Content\LayOut\_DefineLayout.js" />
+    <Content Include="Areas\Layout\Define\_DefineLayout.js" />
     <Content Include="Content\VUE\iview.js" />
     <Content Include="Content\VUE\iview.min.js" />
     <Content Include="Content\VUE\locale\de-DE.js" />
@@ -217,7 +220,7 @@
     <None Include="Areas\Base\Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Content Include="Areas\Base\_ListLayout.cshtml" />
+    <Content Include="Areas\Layout\List\_ListLayout.cshtml" />
     <Content Include="Content\VUE\styles\fonts\ionicons.eot" />
     <Content Include="Content\VUE\styles\fonts\ionicons.ttf" />
     <Content Include="Content\VUE\styles\fonts\ionicons.woff" />
@@ -239,7 +242,7 @@
     <Content Include="Areas\HTGL\LYHT\ViewPage1.cshtml" />
     <Content Include="Areas\Share\Undefine.cshtml" />
     <Content Include="Areas\Share\TextBox.cshtml" />
-    <Content Include="Areas\Base\_DefineLayout.cshtml" />
+    <Content Include="Areas\Layout\Define\_DefineLayout.cshtml" />
     <Content Include="Areas\XTGL\PAY\Pay.cshtml" />
     <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.cshtml" />
     <Content Include="Areas\Share\DateBox.cshtml" />

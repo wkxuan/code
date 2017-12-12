@@ -1,5 +1,5 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
-@inherits z.MVC5.Views.ControlViewBase<UndefineRender>
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<UndefineRender>
 
-<i-input id="@Model.Id" v-model="@Model.vModel" placeholder="这是临时控件,请直接输入值" :disabled="@Model.disabled">
+<i-input id="@Model.Id" v-model="@Model.vModel" placeholder="这是临时控件,请直接输入值" :disabled="@(Model.Enable?"!disabled":"disabled")">
 </i-input>

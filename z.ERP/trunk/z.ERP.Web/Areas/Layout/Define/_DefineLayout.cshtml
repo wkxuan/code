@@ -1,0 +1,93 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js",
+                    "Areas/Layout/Define/_DefineLayout.js"
+                };
+}
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+<style>
+    .RowTitle { text-align: right; font-size: small; }
+    .elementcard .ivu-row { height: 50px; }
+    .topbutton .ivu-btn { margin-left: 10px; }
+</style>
+
+<div id="def_Main">
+    <row class="topbutton">
+
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "add",
+                Text = "新增"
+            });
+        }
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "mod",
+                Text = "修改"
+            });
+        }
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "save",
+                Text = "存档",
+                Enable = false
+            });
+        }
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "quit",
+                Text = "放弃",
+                Enable = false
+            });
+        }
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "del",
+                Text = "删除"
+            });
+        }
+    </row>
+    <row>
+        <i-col span="8">
+            <card>
+                <p slot="title">列表信息</p>
+                @{
+                    RenderControl(new TextBoxRender()
+                    {
+                        vModel = "screenParam.SrchParam"
+                    });
+                }
+                <i-table :highlight-row="true" size="small" :border="true"
+                         :columns="screenParam.colDef" :data="screenParam.dataDef"
+                         v-on:on-current-change="currentData"></i-table>
+            </card>
+        </i-col>
+
+        <i-col span="16">
+            <card class="elementcard">
+                <p slot="title">包含元素</p>
+                @RenderSection("element", true)
+            </card>
+        </i-col>
+    </row>
+</div>
+
+@section foot{
+    @RenderSection("foot", false)
+}

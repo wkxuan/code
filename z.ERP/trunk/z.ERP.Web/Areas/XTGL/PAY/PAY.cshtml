@@ -1,6 +1,7 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@inherits z.MVC5.Views.DefineViewPage
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
 
 @section element{
     <row>
@@ -12,13 +13,11 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.PAYID",
-                    disabled = "true"
+                    Enable = false
                 });
             }
         </i-col>
     </row>
-
-    <br />
 
     <row>
         <i-col span="2" class="RowTitle">
@@ -29,7 +28,7 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.NAME",
-                    disabled = "disabled"
+                    Enable = false
                 });
             }
         </i-col>
@@ -41,13 +40,11 @@
                 RenderControl(new EnumDropDownListRender<支付方式类型>()
                 {
                     vModel = "dataParam.TYPE",
-                    disabled = "disabled"
+                    Enable = false
                 });
             }
         </i-col>
     </row>
-
-    <br />
 
     <row>
         <i-col span="2" class="RowTitle">
@@ -58,7 +55,7 @@
                 RenderControl(new EnumDropDownListRender<收款方式返款>()
                 {
                     vModel = "dataParam.FK",
-                    disabled = "disabled"
+                    Enable = false
                 });
             }
         </i-col>
@@ -71,12 +68,12 @@
                 RenderControl(new EnumDropDownListRender<收款方式积分>()
                 {
                     vModel = "dataParam.JF",
-                    disabled = "disabled"
+                    Enable = false
                 });
             }
         </i-col>
     </row>
-    <br />
+
     <row>
         <i-col span="2" class="RowTitle">
             找零方式
@@ -86,7 +83,7 @@
                 RenderControl(new EnumDropDownListRender<收款方式找零方式>()
                 {
                     vModel = "dataParam.ZLFS",
-                    disabled = "disabled"
+                    Enable = false
                 });
             }
         </i-col>
@@ -99,12 +96,12 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.FLAG",
-                    disabled = "disabled"
+                    Enable = false
                 });
             }
         </i-col>
     </row>
-    <br />
+
     <row>
         <i-col span="2" class="RowTitle">
             停用标记
@@ -115,7 +112,7 @@
                 {
                     vModel = "dataParam.VOID_FLAG",
                     MultiSelect = false,
-                    disabled = "disabled"
+                    Enable = false
                 });
             }
         </i-col>

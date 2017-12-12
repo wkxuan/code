@@ -1,4 +1,4 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
-@inherits z.MVC5.Views.ControlViewBase<DateBoxRender>
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<DateBoxRender>
 
-<date-picker v-model="@Model.vModel" :disabled="@Model.disabled"></date-picker>
+<date-picker v-model="@Model.vModel" :disabled="@(Model.Enable?"!disabled":"disabled")"></date-picker>

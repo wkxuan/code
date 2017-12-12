@@ -1,6 +1,6 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.Extensiont
-@inherits z.MVC5.Views.ControlViewBase<CheckBoxListRender>
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<CheckBoxListRender>
 
 @if (Model.MultiSelect)
 {
@@ -10,11 +10,11 @@
             {
                 if (Model.DisableValue.Has(item.Value))
                 {
-                    <checkbox label="@item.Key" :disabled="@Model.disabled">@item.Value</checkbox>
+                    <checkbox label="@item.Key" :disabled="@(Model.Enable?"!disabled":"disabled")">@item.Value</checkbox>
                 }
                 else
                 {
-                    <checkbox label="@item.Key" :disabled="@Model.disabled">@item.Value</checkbox>
+                    <checkbox label="@item.Key" :disabled="@(Model.Enable?"!disabled":"disabled")">@item.Value</checkbox>
                 }
             }
         }
@@ -28,11 +28,11 @@ else
             {
                 if (Model.DisableValue.Has(item.Value))
                 {
-                    <radio label="@item.Key" :disabled="@Model.disabled">@item.Value</radio>
+                    <radio label="@item.Key" :disabled="@(Model.Enable?"!disabled":"disabled")">@item.Value</radio>
                 }
                 else
                 {
-                    <radio label="@item.Key" :disabled="@Model.disabled">@item.Value</radio>
+                    <radio label="@item.Key" :disabled="@(Model.Enable?"!disabled":"disabled")">@item.Value</radio>
                 }
             }
         }

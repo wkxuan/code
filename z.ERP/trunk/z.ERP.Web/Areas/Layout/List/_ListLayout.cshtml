@@ -1,5 +1,9 @@
-﻿@inherits z.MVC5.Views.ListViewBase
-
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
 @{
     WebFiles = new string[] {
                     "Content/VUE/styles/iview.css",
