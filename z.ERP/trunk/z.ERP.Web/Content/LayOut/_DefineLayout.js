@@ -67,12 +67,12 @@
                     this.$Modal.confirm({
                         title: '提示',
                         content: '是否取消',
-                        onOk: () => {
+                        onOk: function(){
                             _this.dataParam = _this.dataOldParam;
                             ve.dataParam = _this.dataParam;
                             ve.disabled = _this.enabled(true);
                         },
-                        onCancel: () => {
+                        onCancel: function() {
                             ve.disabled = _this.enabled(false);
                             this.id = "关闭"
                         }
@@ -85,7 +85,7 @@
                     this.$Modal.confirm({
                         title: '提示',
                         content: '是否删除',
-                        onOk: () => {
+                        onOk: function() {
                             _.Ajax('Delete', {
                                 DefineDelete: ve.dataParam
                             }, function (data) {
@@ -96,7 +96,7 @@
                                 _self.$Message.info("删除成功");
                             });
                         },
-                        onCancel: () => {
+                        onCancel: function() {
                             this.id = "关闭"
                         }
                     });
