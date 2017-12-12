@@ -150,7 +150,7 @@
     <Compile Include="App_Start\DebugSettings.cs" />
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
-    <Compile Include="Areas\HTGL\LYHT\Class1.cs" />
+    <Compile Include="Areas\HTGL\LYHT\ZLHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
@@ -177,7 +177,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\HTGL\LYHT\JavaScript.js" />
+    <Content Include="Areas\HTGL\LYHT\Detail.js" />
+    <Content Include="Areas\HTGL\LYHT\List.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\BRAND\BRAND\Brand.js" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.js" />
@@ -239,7 +240,6 @@
     <Content Include="Areas\HTGL\ZLHT\List.cshtml" />
     <Content Include="Areas\Share\BaseDropDownList.cshtml" />
     <Content Include="Areas\BRAND\BRAND\Brand.cshtml" />
-    <Content Include="Areas\HTGL\LYHT\ViewPage1.cshtml" />
     <Content Include="Areas\Share\Undefine.cshtml" />
     <Content Include="Areas\Share\TextBox.cshtml" />
     <Content Include="Areas\Layout\Define\_DefineLayout.cshtml" />
@@ -249,6 +249,8 @@
     <Content Include="Areas\Share\CheckBoxList.cshtml" />
     <Content Include="Areas\Share\Button.cshtml" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.cshtml" />
+    <Content Include="Areas\HTGL\LYHT\List.cshtml" />
+    <Content Include="Areas\HTGL\LYHT\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

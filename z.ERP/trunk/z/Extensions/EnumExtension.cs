@@ -47,7 +47,6 @@ namespace z.Extensions
             return result;
         }
 
-
         /// <summary>
         /// 枚举下拉
         /// </summary>
@@ -78,5 +77,14 @@ namespace z.Extensions
             return res;
         }
 
+        /// <summary>
+        /// 获取枚举的汉字表示
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public static string ToLocalString(this Enum e)
+        {
+            return e.ToString();
+        }
     }
 }

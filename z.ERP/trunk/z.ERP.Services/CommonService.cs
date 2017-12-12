@@ -27,33 +27,38 @@ namespace z.ERP.Services
         /// 通用的单表存储方式
         /// </summary>
         /// <param name="infos"></param>
-        public void CommonSave(IEnumerable<EntityBase> infos)
+        public IEnumerable<string> CommonSave(IEnumerable<EntityBase> infos)
         {
+            List<string> res = new List<string>();
             using (var tran = DbHelper.BeginTransaction())
             {
-                infos.ForEach(CommonSave);
+                infos.ForEach(a => res.Add(CommonSave(a)));
                 tran.Commit();
             }
+            return res;
         }
 
         /// <summary>
         /// 通用的单表存储方式
         /// </summary>
         /// <param name="info"></param>
-        public void CommonSave(EntityBase info)
+        public string CommonSave(EntityBase info)
         {
+            string key = "";
             PropertyInfo[] pis = info.GetPrimaryKey();
             if (pis == null || pis.Length != 1)
             {
                 throw new LogicException("只有唯一主键的类适用于通用存储方法");
             }
             PropertyInfo pi = pis.FirstOrDefault();
-            string key = pi.GetValue(info, null)?.ToString();
+            key = pi.GetValue(info, null)?.ToString();
             if (string.IsNullOrWhiteSpace(key))
             {
-                pi.SetValue(info, NewINC(info), null);
+                key = NewINC(info);
+                pi.SetValue(info, key, null);
             }
             DbHelper.Save(info);
+            return key;
         }
 
         /// <summary>
