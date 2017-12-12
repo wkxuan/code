@@ -2,7 +2,7 @@
     var _this = this;
     //界面打开的查询以及保存完之后调用的查询
     this.search = function () { }
-    //vue之前的操作
+    //vue之前的操作(主要是实现v-model绑定数据的声明)
     this.beforeVue = function () { }
 
     //功能页面有子表表格在列表信息选中后单独赋值处理
@@ -37,7 +37,8 @@
                 //dataOldParam过渡信息,在添加,修改放弃后定位到原始信息
                 //添加
                 add: function (event) {
-                    _this.dataOldParam = _this.dataParam;
+                    //copy添加前界面绑定的数据(深拷贝,浅拷贝)
+                    _this.dataOldParam = JSON.parse(JSON.stringify(_this.dataParam));
                     _this.dataParam = {};
                     _this.newRecord();
                     ve.dataParam = _this.dataParam;                   
@@ -45,7 +46,8 @@
                 },
                 //修改
                 mod: function (event) {
-                    _this.dataOldParam = _this.dataParam;                    
+                    //copy修改前界面绑定的数据(深拷贝,浅拷贝)
+                    _this.dataOldParam = JSON.parse(JSON.stringify(_this.dataParam));
                     ve.disabled = _this.enabled(false);
                 },
                 //保存
