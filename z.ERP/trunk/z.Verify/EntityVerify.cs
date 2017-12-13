@@ -59,7 +59,7 @@ namespace z.Verify
         /// </summary>
         /// <param name="p"></param>
         /// <param name="ErrorModel"></param>
-        public void IsUnique(Expression<Func<TEntity, string>> p, string ErrorModel = "[{0}]表中字段[{1}]的值[{2}]已存在")
+        public void IsUnique(Expression<Func<TEntity, string>> p, int limit = 0, string ErrorModel = "[{0}]表中字段[{1}]的值[{2}]已存在")
         {
             if (p.Body is MemberExpression)
             {
@@ -67,8 +67,19 @@ namespace z.Verify
                 PropertyInfo prop = me.Member as PropertyInfo;
                 FieldAttribute fa = prop.GetAttribute<FieldAttribute>();
                 string str = prop.GetValue(_entity)?.ToString().Trim();
+                if (_entity.HasAllPrimaryKey() && _dbHelper.Select(_entity) != null)
+                {
+                    TEntity rest = _dbHelper.Select(_entity);
+                    if (rest != null)
+                    {
+                        if (prop.GetValue(rest)?.ToString().Trim() == str)
+                        {
+                            limit++;
+                        }
+                    }
+                }
                 string sql = $"select 1 from {_entity.GetTableName()} where {me.Member.Name}='{str}'";
-                if (_dbHelper.ExecuteTable(sql).Rows.Count != 0)
+                if (_dbHelper.ExecuteTable(sql).Rows.Count > limit)
                 {
                     SetError(string.Format(ErrorModel, _entity.GetComments(), fa == null ? me.Member.Name : fa.Fieldname, str));
                 }

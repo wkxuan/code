@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using z;
 using z.Extensions;
+using z.Extensiont;
 
 namespace z.DbHelper.DbDomain
 {
@@ -108,7 +109,7 @@ namespace z.DbHelper.DbDomain
                 .Where(a => a.GetAttribute<PrimaryKeyAttribute>() == null)
                 .ToArray();
         }
-        
+
         /// <summary>
         /// 获取所有外键
         /// </summary>
@@ -119,6 +120,23 @@ namespace z.DbHelper.DbDomain
                 .Where(a => a.PropertyType != typeof(string))
                 .Where(a => a.GetAttribute<ForeignKeyAttribute>() != null)
                 .ToArray();
+        }
+
+        /// <summary>
+        /// 所有的主键都拥有值,没有主键返回true
+        /// </summary>
+        /// <returns></returns>
+        public bool HasAllPrimaryKey()
+        {
+            PropertyInfo[] prop = GetPrimaryKey();
+            if (prop.IsEmpty())
+                return true;
+            foreach (var p in prop)
+            {
+                if (p.GetValue(this, null).ToString().IsEmpty())
+                    return false;
+            }
+            return true;
         }
 
     }
