@@ -14,7 +14,7 @@ namespace z.ERP.Web.Areas.XTGL.PAY
             return View();
         }
 
-        public void Save(PAYEntity DefineSave)
+        public string  Save(PAYEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
 
@@ -34,8 +34,7 @@ namespace z.ERP.Web.Areas.XTGL.PAY
             v.Require(a => a.VOID_FLAG);
             v.IsNumber(a => a.FLAG);
             v.Verify();
-            CommonSave(DefineSave);
-            //保存完之后是否可以返回当前记录的结果,要不非界面上录入的数据不能看到结果
+            return  CommonSave(DefineSave);
         }
 
         public void Delete(PAYEntity DefineDelete)
