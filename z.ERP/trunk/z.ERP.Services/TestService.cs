@@ -112,5 +112,12 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public DataGridResult GetOperationrule(SearchItem item)
+        {
+            string sql = $@"select * from OPERATIONRULE order by ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 }

@@ -1,0 +1,80 @@
+﻿@using z.ERP.Web.Areas.Layout.Define
+@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@inherits DefineViewBase
+
+@section element{
+    <row>
+        <i-col span="2" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="6">
+            @{ 
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ID",
+                    Id = "tb_id",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            @{ 
+                RenderControl(new TextBoxRender() {
+                    vModel = "dataParam.NAME",
+                    Id = "tb_name",
+                    Enable = false ,
+                    Placeholder = "请输入名称"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            物业标记
+        </i-col>
+        <i-col span="6">
+            @{ RenderControl(new EnumDropDownListRender<物业标记>(){
+                    vModel = "dataParam.WYSIGN",
+                    Id = "tb_wysign",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            合作方式
+        </i-col>
+        <i-col span="6">
+            @{ RenderControl(new EnumDropDownListRender<合作方式>() {
+                    vModel = "dataParam.PROCESSTYPE",
+                    Id = "tb_processtype",
+                    Enable = false
+                });
+
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            阶梯标记
+        </i-col>
+        <i-col span="6">
+            @{ RenderControl(new EnumDropDownListRender<阶梯式标记>(){
+                    vModel = "dataParam.LADDERSIGN",
+                    Id = "tb_ladder",
+                    Enable = false
+                });
+
+            }
+        </i-col>
+    </row>
+
+    
+}
