@@ -59,9 +59,9 @@
                         DefineSave: ve.dataParam
                     }, function (data) {
                         _this.search();
+                        ve.disabled = _this.enabled(true);
                         _self.$Message.info("保存成功");
                     });
-                    ve.disabled = _this.enabled(true);
                 },
                 quit: function (event) {
                     this.$Modal.confirm({
