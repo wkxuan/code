@@ -107,7 +107,7 @@ namespace z.ERP.Services
         }
 
         public DataGridResult GetFkfs(SearchItem item) {
-            string sql = $@"select * from FKFS";
+            string sql = $@"select * from FKFS order by ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

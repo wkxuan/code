@@ -21,10 +21,8 @@ namespace z.ERP.Web.Areas.XTGL.FKFS
             var v = GetVerify(DefineSave);
             if (string.IsNullOrEmpty(DefineSave.ID))
                 DefineSave.ID = service.CommonService.NewINC("FKFS");
-            v.Require(a => a.ID);
             v.Require(a => a.NAME);
-            v.IsNumber(a => a.ID);
-            v.IsUnique(a => a.ID);
+            v.IsNumber(a => a.ID);            
             v.IsUnique(a => a.NAME);
             v.Verify();
             CommonSave(DefineSave);
