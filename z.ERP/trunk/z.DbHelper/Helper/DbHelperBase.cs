@@ -460,7 +460,7 @@ namespace z.DBHelper.Helper
         /// <typeparam name="T"></typeparam>
         /// <param name="info"></param>
         /// <returns></returns>
-        public T Select<T>(T info) where T : EntityBase, new()
+        public T Select<T>(T info) where T : EntityBase
         {
             T res;
             if (_dbCommand.Connection.State != ConnectionState.Open)
@@ -720,7 +720,7 @@ namespace z.DBHelper.Helper
             }
         }
 
-        T _SelectChildren<T>(T info) where T : EntityBase, new()
+        T _SelectChildren<T>(T info) where T : EntityBase
         {
             if (info == null)
                 return info;

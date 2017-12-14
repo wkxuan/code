@@ -58,10 +58,11 @@
                     _.Ajax('Save', {
                         DefineSave: ve.dataParam
                     }, function (data) {
+                        //返回主键右边元素的数据可以,左边的列表数据如何刷新？
                         _this.search();
+                        ve.disabled = _this.enabled(true);
                         _self.$Message.info("保存成功");
                     });
-                    ve.disabled = _this.enabled(true);
                 },
                 quit: function (event) {
                     this.$Modal.confirm({
