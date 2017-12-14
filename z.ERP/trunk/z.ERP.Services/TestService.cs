@@ -100,9 +100,20 @@ namespace z.ERP.Services
 
         public DataGridResult GetPay(SearchItem item)
         {
-            string sql = $@"SELECT * FROM PAY";
-            item.HasKey("PAYID", a => sql += $" and B.PAYID = '{a}'");
+            string sql = $@"SELECT * FROM PAY WHERE 1=1 ";
+            item.HasKey("PAYID", a => sql += $" and PAYID = '{a}'");
             sql += " ORDER BY  PAYID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+
+        public DataGridResult GetFeeSubject(SearchItem item)
+        {
+            string sql = $@"SELECT * FROM FEESUBJECT WHERE 1=1 ";
+            item.HasKey("TRIMID", a => sql += $" and TRIMID = '{a}'");
+            sql += " ORDER BY  TRIMID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -117,6 +128,14 @@ namespace z.ERP.Services
         public DataGridResult GetOperationrule(SearchItem item)
         {
             string sql = $@"select * from OPERATIONRULE order by ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetBranch(SearchItem item)
+        {
+            string sql = $@"select * from BRANCH order by ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
