@@ -6,5 +6,133 @@
 @section element{
     <row>
         <i-col span="2" class="RowTitle">分店代码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ID"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">分店名称</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.NAME",
+                    Enable=false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">管理部门</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new UndefineRender()
+                {
+                    vModel = "dataParam.ORGID",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">建筑面积</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.AREA_BUILD",
+                    Enable=false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">使用面积</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.AREA_USABLE",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">租赁面积</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.AREA_RENTABLE",
+                    Enable=false
+                });
+            }
+        </i-col>
+    </row>
+
+    
+    <row>
+        <i-col span="2" class="RowTitle">停用标记</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumCheckBoxListRender<停用标记>()
+                {
+                    vModel = "dataParam.STATUS",
+                    MultiSelect = false,
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">打印标题</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PRINTNAME",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">联系人</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTACT",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">电话</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTACT_NUM",
+                    Enable=false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">地址</i-col>
+        <i-col span="14">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ADDRESS",
+                    Enable = false
+                });
+            }
+        </i-col>
     </row>
 }
