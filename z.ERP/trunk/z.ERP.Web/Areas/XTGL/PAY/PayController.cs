@@ -21,12 +21,12 @@ namespace z.ERP.Web.Areas.XTGL.PAY
             if (DefineSave.PAYID.IsEmpty())
             {
                 DefineSave.PAYID = service.CommonService.NewINC("PAY");
-                DefineSave.CODE = DefineSave.PAYID;
                 DefineSave.CREATE_TIME = DateTime.Now.ToLongString();
             }
-
+            DefineSave.CODE = DefineSave.PAYID;
             DefineSave.UPDATE_TIME = DateTime.Now.ToLongString();
             v.Require(a => a.NAME);
+            v.IsUnique(a => a.NAME);
             v.Require(a => a.TYPE);
             v.Require(a => a.JF);
             v.Require(a => a.FK);
