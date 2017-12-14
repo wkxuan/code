@@ -167,6 +167,7 @@
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\BRAND\BRAND\BrandController.cs" />
+    <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
@@ -255,6 +256,7 @@
     <Content Include="Areas\HTGL\LYHT\List.cshtml" />
     <Content Include="Areas\HTGL\LYHT\Detail.cshtml" />
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.cshtml" />
+    <Content Include="Areas\XTGL\BRANCH\Branch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
