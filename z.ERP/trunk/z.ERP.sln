@@ -23,6 +23,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.Services", "z.Services\z.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.Verify", "z.Verify\z.Verify.csproj", "{354DF4C7-5D94-4100-86D1-589F5CD5DF20}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pdm", "pdm", "{B519DCCD-F9B8-4362-A304-5C8256E5D428}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\MALLDB\20171130\DataBase\MallDb.pdb = ..\..\..\MALLDB\20171130\DataBase\MallDb.pdb
+		..\..\..\MALLDB\20171130\DataBase\MallDb.pdm = ..\..\..\MALLDB\20171130\DataBase\MallDb.pdm
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,15 +78,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 1
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://47.93.116.29:8080/tfs/defaultcollection
-		SccProjectUniqueName0 = z.DbHelper\\z.DbHelper.csproj
-		SccProjectName0 = z.DbHelper
-		SccAuxPath0 = http://47.93.116.29:8080/tfs/defaultcollection
-		SccLocalPath0 = z.DbHelper
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 	EndGlobalSection
 EndGlobal
