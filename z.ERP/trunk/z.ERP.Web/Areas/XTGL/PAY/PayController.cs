@@ -25,6 +25,8 @@ namespace z.ERP.Web.Areas.XTGL.PAY
             }
             DefineSave.CODE = DefineSave.PAYID;
             DefineSave.UPDATE_TIME = DateTime.Now.ToLongString();
+
+            v.IsUnique(a => a.PAYID);
             v.Require(a => a.NAME);
             v.IsUnique(a => a.NAME);
             v.Require(a => a.TYPE);

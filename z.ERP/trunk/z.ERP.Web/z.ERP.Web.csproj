@@ -182,6 +182,7 @@
     <Content Include="Areas\HTGL\LYHT\List.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\BRAND\BRAND\Brand.js" />
+    <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.js" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.js" />
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.js" />
     <Content Include="Areas\XTGL\PAY\Pay.js" />

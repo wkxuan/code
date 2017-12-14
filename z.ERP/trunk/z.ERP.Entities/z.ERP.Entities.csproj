@@ -114,6 +114,9 @@
     <Compile Include="Enum\收款方式找零方式.cs" />
     <Compile Include="Enum\收款方式积分.cs" />
     <Compile Include="Enum\收款方式返款.cs" />
+    <Compile Include="Enum\收费项目成本费用.cs" />
+    <Compile Include="Enum\收费项目现金货扣.cs" />
+    <Compile Include="Enum\收费项目类型.cs" />
     <Compile Include="Enum\部门类型.cs" />
     <Compile Include="P1Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
