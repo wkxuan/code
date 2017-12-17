@@ -49,6 +49,7 @@
     <Compile Include="DataService.cs" />
     <Compile Include="TestServiceOverride.cs" />
     <Compile Include="TestService.cs" />
+    <Compile Include="XtglService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\z.DbHelper\z.DbHelper.csproj">

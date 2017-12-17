@@ -19,10 +19,9 @@ namespace z.ERP.Web.Areas.XTGL.FEESUBJECT
             if (DefineSave.TRIMID.IsEmpty())
             {
                 DefineSave.TRIMID = service.CommonService.NewINC("FEESUBJECT");
-                DefineSave.CREATE_TIME = DateTime.Now.ToLongString();
+
             }
-            DefineSave.CODE = DefineSave.TRIMID;
-            DefineSave.UPDATE_TIME = DateTime.Now.ToLongString();
+
 
             v.IsUnique(a => a.TRIMID);
             v.Require(a => a.NAME);

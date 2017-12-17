@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:58:55
- * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 生成时间：2017-12-18 0:07:20
+ * 生成人：LinAJ
+ * 代码生成器版本号：1.2.6560.42822
  *
  */ 
 
@@ -18,16 +18,9 @@ namespace z.ERP.Entities
         {
         }
 
-        public CONTRACT_STATUSEntity(string contractid, string start_date)
-        {
-            CONTRACTID = contractid;
-            START_DATE = start_date;
-        }
-
         /// <summary>
         /// 
         /// <summary>
-        [PrimaryKey]
         public string CONTRACTID
         {
             get; set;
@@ -35,7 +28,6 @@ namespace z.ERP.Entities
         /// <summary>
         /// 
         /// <summary>
-        [PrimaryKey]
         [DbType(DbType.DateTime)]
         public string START_DATE
         {

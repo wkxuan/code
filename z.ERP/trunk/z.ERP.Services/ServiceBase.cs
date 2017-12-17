@@ -57,6 +57,14 @@ namespace z.ERP.Services
                 return ioc.Create<DataService>();
             }
         }
+
+        public XtglService XtglService
+        {
+            get
+            {
+                return ioc.Create<XtglService>();
+            }
+        }
         #endregion
 
         #region 通用方法

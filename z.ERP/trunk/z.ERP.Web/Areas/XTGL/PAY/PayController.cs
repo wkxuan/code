@@ -17,16 +17,10 @@ namespace z.ERP.Web.Areas.XTGL.PAY
         public string  Save(PAYEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
-
             if (DefineSave.PAYID.IsEmpty())
             {
                 DefineSave.PAYID = service.CommonService.NewINC("PAY");
-                DefineSave.CREATE_TIME = DateTime.Now.ToLongString();
             }
-            DefineSave.CODE = DefineSave.PAYID;
-            DefineSave.UPDATE_TIME = DateTime.Now.ToLongString();
-
-            v.IsUnique(a => a.PAYID);
             v.Require(a => a.NAME);
             v.IsUnique(a => a.NAME);
             v.Require(a => a.TYPE);

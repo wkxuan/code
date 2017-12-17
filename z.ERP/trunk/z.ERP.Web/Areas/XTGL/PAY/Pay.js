@@ -31,7 +31,7 @@
 
 define.search = function () {
     _.Search({
-        Service: 'TestService',
+        Service: 'XtglService',
         Method: 'GetPay',
         Data: {},
         Success: function (data) {

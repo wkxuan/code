@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:58:57
- * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 生成时间：2017-12-18 0:07:20
+ * 生成人：LinAJ
+ * 代码生成器版本号：1.2.6560.42822
  *
  */ 
 
@@ -11,88 +11,66 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("FEERULE", "")]
+    [DbTable("FEERULE", "收费规则")]
     public partial class FEERULEEntity : EntityBase
     {
         public FEERULEEntity()
         {
         }
 
-        public FEERULEEntity(string id)
-        {
-            ID = id;
-        }
-
         /// <summary>
-        /// 
+        /// 收费规则编号
         /// <summary>
-        [PrimaryKey]
+        [Field("收费规则编号")]
         public string ID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 收费规则名称
         /// <summary>
-        public string CODE
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
+        [Field("收费规则名称")]
         public string NAME
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 缴费截至日
         /// <summary>
+        [Field("缴费截至日")]
         public string UP_DATE
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 缴费周期
         /// <summary>
+        [Field("缴费周期")]
         public string PAY_CYCLE
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 缴费截至周期
         /// <summary>
+        [Field("缴费截至周期")]
         public string PAY_UP_CYCLE
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 提前周期
         /// <summary>
+        [Field("提前周期")]
         public string ADVANCE_CYCLE
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 作废标记
         /// <summary>
+        [Field("作废标记")]
         public string VOID_FLAG
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        [DbType(DbType.DateTime)]
-        public string CREATE_TIME
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        [DbType(DbType.DateTime)]
-        public string UPDATE_TIME
         {
             get; set;
         }

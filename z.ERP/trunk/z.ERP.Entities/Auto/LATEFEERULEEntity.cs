@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:58:59
- * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 生成时间：2017-12-18 0:07:21
+ * 生成人：LinAJ
+ * 代码生成器版本号：1.2.6560.42822
  *
  */ 
 
@@ -11,67 +11,42 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("LATEFEERULE", "")]
+    [DbTable("LATEFEERULE", "滞纳金规则")]
     public partial class LATEFEERULEEntity : EntityBase
     {
         public LATEFEERULEEntity()
         {
         }
 
-        public LATEFEERULEEntity(string id)
-        {
-            ID = id;
-        }
-
         /// <summary>
-        /// 
+        /// 收费规则编号
         /// <summary>
-        [PrimaryKey]
+        [Field("收费规则编号")]
         public string ID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 收费规则名称
         /// <summary>
-        public string CODE
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
+        [Field("收费规则名称")]
         public string NAME
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 宽限天数
         /// <summary>
+        [Field("宽限天数")]
         public string DAYS
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 宽限金额
         /// <summary>
+        [Field("宽限金额")]
         public string AMOUNTS
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        [DbType(DbType.DateTime)]
-        public string CREATE_TIME
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        [DbType(DbType.DateTime)]
-        public string UPDATE_TIME
         {
             get; set;
         }

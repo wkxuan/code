@@ -24,15 +24,12 @@ namespace z.ERP.Web.Areas.XTGL.BRAND
             brand = HttpExtension.GetRequestParam<BRANDEntity>("BRAND");
             var v = GetVerify(brand);
             brand.ID = service.CommonService.NewINC("BRAND");
-            if (string.IsNullOrEmpty(brand.CODE))
-                brand.CODE = brand.ID;
             brand.CATEGORYID = "1";
             brand.STATUS = "0";
             brand.REPORTER = "1";
             brand.REPORTER_NAME = "测试人员";
             brand.REPORTER_TIME = DateTime.Now.ToString();
             v.Require(a => a.ID);
-            v.Require(a => a.CODE);
             v.Require(a => a.NAME);
             v.Require(a => a.CATEGORYID);
             v.IsNumber(a => a.ID);

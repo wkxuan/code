@@ -46,7 +46,7 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT * FROM PAY WHERE VOID_FLAG=1 ORDER BY  PAYID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
-            return DataTableExtension.ToSelectItem(dt,"PAYID","NAME");
+            return dt.ToSelectItem("PAYID", "NAME");
         }
     }
 }

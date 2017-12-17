@@ -29,7 +29,7 @@ namespace z.ERP.Services
         public virtual string a()
         {
 
-            P1Entity d1 = DbHelper.Select(new P1Entity("111"));
+            //P1Entity d1 = DbHelper.Select(new P1Entity("111"));
 
 
             return "";
@@ -87,67 +87,5 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
-        public DataGridResult GetBrandData(SearchItem item)
-        {
-            string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
-            item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("CODE", a => sql += $" and B.CODE = '{a}'");
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-
-        public DataGridResult GetPay(SearchItem item)
-        {
-            string sql = $@"SELECT * FROM PAY WHERE 1=1 ";
-            item.HasKey("PAYID", a => sql += $" and PAYID = '{a}'");
-            sql += " ORDER BY  PAYID";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-
-
-        public DataGridResult GetFeeSubject(SearchItem item)
-        {
-            string sql = $@"SELECT * FROM FEESUBJECT WHERE 1=1 ";
-            item.HasKey("TRIMID", a => sql += $" and TRIMID = '{a}'");
-            sql += " ORDER BY  TRIMID";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-
-        public DataGridResult GetFkfs(SearchItem item) {
-            string sql = $@"select * from FKFS order by ID";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-        public DataGridResult GetOperationrule(SearchItem item)
-        {
-            string sql = $@"select * from OPERATIONRULE order by ID";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-
-        public DataGridResult GetBranch(SearchItem item)
-        {
-            string sql = $@"select * from BRANCH order by ID";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-        public DataGridResult GetFeeRule(SearchItem item)
-        {
-            string sql = $@"select * from FEERULE order by CODE";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-
-        
     }
 }
