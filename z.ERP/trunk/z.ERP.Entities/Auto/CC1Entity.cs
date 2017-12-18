@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017-12-18 23:51:15
+ * 生成时间：2017-12-19 0:12:00
  * 生成人：LinAJ
- * 代码生成器版本号：1.2.6537.1447
+ * 代码生成器版本号：1.2.6560.42822
  *
  */ 
 
@@ -14,10 +14,13 @@ namespace z.ERP.Entities
     [DbTable("CC1", "")]
     public partial class CC1Entity : EntityBase
     {
+        public CC1Entity()
+        {
+        }
+
         /// <summary>
         /// 
         /// <summary>
-        [PrimaryKey]
         public string CCF1
         {
             get; set;
@@ -25,7 +28,6 @@ namespace z.ERP.Entities
         /// <summary>
         /// 
         /// <summary>
-        [PrimaryKey]
         public string CCF2
         {
             get; set;
@@ -33,7 +35,6 @@ namespace z.ERP.Entities
         /// <summary>
         /// 
         /// <summary>
-        [PrimaryKey]
         public string CCF3
         {
             get; set;

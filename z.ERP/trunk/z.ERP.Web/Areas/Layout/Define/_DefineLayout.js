@@ -33,13 +33,14 @@ service层操作
 */
 function _Define() {
     var _this = this;
-    //界面打开的查询以及保存完之后调用的查询
+    //界面打开的查询
     this.search = function () { }
+
+    //保存完之后根据主键查询右边元素
+    this.searchElement = function (param) { }
+
     //vue之前的操作(主要是实现v-model绑定数据的声明)
     this.beforeVue = function () { }
-
-    //功能页面有子表表格在列表信息选中后单独赋值处理
-    this.afterCurrentData = function (currentRow) { }
 
     //控件是否可用，扩展函数
     this.enabled = function (val) { return val; }
@@ -50,6 +51,9 @@ function _Define() {
     }
     //添加后初始化数据信息
     this.newRecord = function () { }
+    
+    //添加,修改预存主键信息
+    this.getKey=function(){}
 
     //vue操作
     this.vue = function VueOperate() {
@@ -61,17 +65,18 @@ function _Define() {
                 dataParam: _this.dataParam,
                 screenParam: _this.screenParam,
                 disabled: _this.enabled(true),
+                _key: null
             },
             mounted: function () {
                 //页面打开先查询列表信息
                 _this.search();
             },
             methods: {
-                //dataOldParam过渡信息,在添加,修改放弃后定位到原始信息
                 //添加
                 add: function (event) {
-                    //copy添加前界面绑定的数据(深拷贝,浅拷贝)  ??????
-                    _this.dataOldParam = JSON.parse(JSON.stringify(_this.dataParam));
+                    if (!ve.dataParam) {
+                        ve._key = _this.getKey();
+                    }
                     _this.dataParam = {};
                     _this.newRecord();
                     ve.dataParam = _this.dataParam;
@@ -79,8 +84,10 @@ function _Define() {
                 },
                 //修改
                 mod: function (event) {
-                    //copy修改前界面绑定的数据(深拷贝,浅拷贝)
-                    _this.dataOldParam = JSON.parse(JSON.stringify(_this.dataParam));
+                    //点击修改肯定已经选中数据了
+                    if (!ve.dataParam) {
+                        ve._key = _this.getKey();
+                    }
                     ve.disabled = _this.enabled(false);
                 },
                 //保存
@@ -91,8 +98,10 @@ function _Define() {
                     _.Ajax('Save', {
                         DefineSave: ve.dataParam
                     }, function (data) {
-                        //返回主键右边元素的数据可以,左边的列表数据如何刷新????
+                        //返回左边列表
                         _this.search();
+                        //返回右边元素
+                        _this.searchElement(param);
                         ve.disabled = _this.enabled(true);
                         _self.$Message.info("保存成功");
                     });
@@ -102,7 +111,10 @@ function _Define() {
                         title: '提示',
                         content: '是否取消',
                         onOk: function () {
-                            _this.dataParam = _this.dataOldParam;
+                            //取消后查原来的元素列表
+                            if (!ve._key) {
+                                _this.dataParam = _this.searchElement(ve._key);
+                            }
                             ve.dataParam = _this.dataParam;
                             ve.disabled = _this.enabled(true);
                         },
@@ -141,9 +153,8 @@ function _Define() {
                 //oldCurrentRow上一次选中的数据
                 currentData: function (currentRow, oldCurrentRow) {
                     _this.dataParam = currentRow;
+                    _this.searchElement(_this.getKey());
                     ve.dataParam = _this.dataParam;
-                    _this.afterCurrentData(currentRow);
-                    ve.disabled = _this.enabled(true);
                 }
             }
         });
@@ -153,7 +164,6 @@ function _Define() {
     this.vueInit = function () {
         _this.dataParam = {};
         _this.screenParam = {};
-        _this.dataOldParam = {};
     }
 
     //延时

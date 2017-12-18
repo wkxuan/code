@@ -1,9 +1,8 @@
 ﻿define.beforeVue = function () {
-
     define.screenParam.colDef = [
         {
             title: '支付方式代码',
-            key: 'CODE', width: 150,
+            key: 'PAYID', width: 150,
             filters: [
                 { label: '过滤', value: define.screenParam.SrchParam }
             ],
@@ -38,6 +37,21 @@ define.search = function () {
             define.screenParam.dataDef = data.rows;
         }
     })
+}
+
+define.searchElement = function (param) {
+    _.Search({
+        Service: 'XtglService',
+        Method: 'GetPayElement',
+        Data: { PAYID: param },
+        Success: function (data) {
+            define.dataParam = data.rows[0];
+        }
+    })
+}
+
+define.getKey = function () {
+    return define.dataParam.PAYID;
 }
 
 define.newRecord = function () {
