@@ -8,7 +8,7 @@
 }
 define.search = function () {
     _.Search({
-        Service: "TestService",
+        Service: "XtglService",
         Method: "GetFeeRule",
         Data: {},
         Success: function (data) {

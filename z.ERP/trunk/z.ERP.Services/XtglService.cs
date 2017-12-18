@@ -80,7 +80,7 @@ namespace z.ERP.Services
         }
         public DataGridResult GetFeeRule(SearchItem item)
         {
-            string sql = $@"select CODE,NAME from FEERULE order by CODE";
+            string sql = $@"select ID,NAME from FEERULE order by ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
