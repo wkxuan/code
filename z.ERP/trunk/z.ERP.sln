@@ -23,10 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.Services", "z.Services\z.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.Verify", "z.Verify\z.Verify.csproj", "{354DF4C7-5D94-4100-86D1-589F5CD5DF20}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pdm", "pdm", "{B519DCCD-F9B8-4362-A304-5C8256E5D428}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pdm", "pdm", "{5B0D217C-0A01-4C50-BCE4-DE6D63B3E6C3}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\MALLDB\20171130\DataBase\MallDb.pdb = ..\..\..\MALLDB\20171130\DataBase\MallDb.pdb
-		..\..\..\MALLDB\20171130\DataBase\MallDb.pdm = ..\..\..\MALLDB\20171130\DataBase\MallDb.pdm
+		pdm\MallDb.pdb = pdm\MallDb.pdb
+		pdm\MallDb.pdm = pdm\MallDb.pdm
 	EndProjectSection
 EndProject
 Global
