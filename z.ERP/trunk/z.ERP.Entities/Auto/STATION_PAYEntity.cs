@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017-12-18 0:07:23
+ * 生成时间：2017-12-18 23:51:18
  * 生成人：LinAJ
- * 代码生成器版本号：1.2.6560.42822
+ * 代码生成器版本号：1.2.6537.1447
  *
  */ 
 
@@ -11,25 +11,21 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("STATION_PAY", "POS终端支付方式")]
+    [DbTable("STATION_PAY", "")]
     public partial class STATION_PAYEntity : EntityBase
     {
-        public STATION_PAYEntity()
-        {
-        }
-
         /// <summary>
-        /// POS终端编号
+        /// 
         /// <summary>
-        [Field("POS终端编号")]
+        [PrimaryKey]
         public string STATIONBH
         {
             get; set;
         }
         /// <summary>
-        /// 收款方式
+        /// 
         /// <summary>
-        [Field("收款方式")]
+        [PrimaryKey]
         public string PAYID
         {
             get; set;

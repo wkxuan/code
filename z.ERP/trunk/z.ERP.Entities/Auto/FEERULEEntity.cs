@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017.12.18 11:35:27
- * 生成人：szhPC
- * 代码生成器版本号：1.2.6560.42822
+ * 生成时间：2017-12-18 23:51:16
+ * 生成人：LinAJ
+ * 代码生成器版本号：1.2.6537.1447
  *
  */ 
 
@@ -14,13 +14,10 @@ namespace z.ERP.Entities
     [DbTable("FEERULE", "收费规则")]
     public partial class FEERULEEntity : EntityBase
     {
-        public FEERULEEntity()
-        {
-        }
-
         /// <summary>
         /// 收费规则编号
         /// <summary>
+        [PrimaryKey]
         [Field("收费规则编号")]
         public string ID
         {
@@ -75,9 +72,8 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
-        /// 出单日期
+        /// 
         /// <summary>
-		[Field("出单日期")]
         public string FEE_DAY
         {
             get; set;

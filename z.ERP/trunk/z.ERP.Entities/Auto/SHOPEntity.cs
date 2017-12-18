@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017-12-18 0:07:22
+ * 生成时间：2017-12-18 23:51:18
  * 生成人：LinAJ
- * 代码生成器版本号：1.2.6560.42822
+ * 代码生成器版本号：1.2.6537.1447
  *
  */ 
 
@@ -11,114 +11,131 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("SHOP", "店铺单元")]
+    [DbTable("SHOP", "")]
     public partial class SHOPEntity : EntityBase
     {
-        public SHOPEntity()
-        {
-        }
-
         /// <summary>
-        /// 单元编号
+        /// 
         /// <summary>
-        [Field("单元编号")]
+        [PrimaryKey]
         public string SHOPID
         {
             get; set;
         }
         /// <summary>
-        /// 单元代码
+        /// 
         /// <summary>
-        [Field("单元代码")]
         public string CODE
         {
             get; set;
         }
         /// <summary>
-        /// 单元名称
+        /// 
         /// <summary>
-        [Field("单元名称")]
         public string NAME
         {
             get; set;
         }
         /// <summary>
-        /// 门店编号
+        /// 
         /// <summary>
-        [Field("门店编号")]
         public string BRANCHID
         {
             get; set;
         }
         /// <summary>
-        /// 楼层编号
+        /// 
         /// <summary>
-        [Field("楼层编号")]
         public string FLOORID
         {
             get; set;
         }
         /// <summary>
-        /// 管理部门
+        /// 
         /// <summary>
-        [Field("管理部门")]
         public string ORGID
         {
             get; set;
         }
         /// <summary>
-        /// 业态
+        /// 
         /// <summary>
-        [Field("业态")]
         public string CATEGORYID
         {
             get; set;
         }
         /// <summary>
-        /// 单元类型
+        /// 
         /// <summary>
-        [Field("单元类型")]
         public string TYPE
         {
             get; set;
         }
         /// <summary>
-        /// 租用状态
+        /// 
         /// <summary>
-        [Field("租用状态")]
         public string RENT_STATUS
         {
             get; set;
         }
         /// <summary>
-        /// 状态
+        /// 
         /// <summary>
-        [Field("状态")]
         public string STATUS
         {
             get; set;
         }
         /// <summary>
-        /// 建筑面积
+        /// 
         /// <summary>
-        [Field("建筑面积")]
+        [DbType(DbType.DateTime)]
+        public string CREATE_TIME
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
         public string AREA_BUILD
         {
             get; set;
         }
         /// <summary>
-        /// 可使用面积
+        /// 
         /// <summary>
-        [Field("可使用面积")]
         public string AREA_USABLE
         {
             get; set;
         }
         /// <summary>
-        /// 可租赁面积
+        /// 
         /// <summary>
-        [Field("可租赁面积")]
         public string AREA_RENTABLE
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [DbType(DbType.DateTime)]
+        public string UPDATE_TIME
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [PrimaryKey]
+        [DbType(DbType.DateTime)]
+        public string VALIDITY_START
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [DbType(DbType.DateTime)]
+        public string VALIDITY_END
         {
             get; set;
         }
