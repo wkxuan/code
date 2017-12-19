@@ -477,6 +477,10 @@ namespace z.DBHelper.Helper
                 IDbDataParameter p = GetDbDataParameter(a, info);
                 return p;
             }).ToArray();
+            if (dbprams.IsEmpty())
+            {
+                throw new DataBaseException($"表{info.GetTableName()}没有主键,不能使用select方法");
+            }
             _dbCommand.Parameters.Clear();
             _dbCommand.Parameters.AddRange(dbprams);
             string tablename = info.GetTableName();

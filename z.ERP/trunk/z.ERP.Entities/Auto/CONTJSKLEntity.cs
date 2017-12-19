@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017-12-18 0:07:19
- * 生成人：LinAJ
- * 代码生成器版本号：1.2.6560.42822
+ * 生成时间：2017/12/19 20:30:43
+ * 生成人：书房
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -18,9 +18,18 @@ namespace z.ERP.Entities
         {
         }
 
+        public CONTJSKLEntity(string contractid, string groupno, string inx, string startdate)
+        {
+            CONTRACTID = contractid;
+            GROUPNO = groupno;
+            INX = inx;
+            STARTDATE = startdate;
+        }
+
         /// <summary>
         /// 合同号
         /// <summary>
+        [PrimaryKey]
         [Field("合同号")]
         public string CONTRACTID
         {
@@ -29,6 +38,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 扣率组
         /// <summary>
+        [PrimaryKey]
         [Field("扣率组")]
         public string GROUPNO
         {
@@ -37,6 +47,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 时间段
         /// <summary>
+        [PrimaryKey]
         [Field("时间段")]
         public string INX
         {
@@ -45,6 +56,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 开始日期
         /// <summary>
+        [PrimaryKey]
         [Field("开始日期")]
         [DbType(DbType.DateTime)]
         public string STARTDATE

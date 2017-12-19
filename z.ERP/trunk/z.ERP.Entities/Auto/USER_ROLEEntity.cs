@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017-12-18 0:07:23
- * 生成人：LinAJ
- * 代码生成器版本号：1.2.6560.42822
+ * 生成时间：2017/12/19 20:30:53
+ * 生成人：书房
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -18,9 +18,16 @@ namespace z.ERP.Entities
         {
         }
 
+        public USER_ROLEEntity(string userid, string roleid)
+        {
+            USERID = userid;
+            ROLEID = roleid;
+        }
+
         /// <summary>
         /// 用户编码
         /// <summary>
+        [PrimaryKey]
         [Field("用户编码")]
         public string USERID
         {
@@ -29,6 +36,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 角色编码
         /// <summary>
+        [PrimaryKey]
         [Field("角色编码")]
         public string ROLEID
         {

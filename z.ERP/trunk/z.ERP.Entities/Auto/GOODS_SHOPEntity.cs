@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017-12-18 0:07:21
- * 生成人：LinAJ
- * 代码生成器版本号：1.2.6560.42822
+ * 生成时间：2017/12/19 20:30:48
+ * 生成人：书房
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -18,9 +18,17 @@ namespace z.ERP.Entities
         {
         }
 
+        public GOODS_SHOPEntity(string goodsid, string branchid, string shopid)
+        {
+            GOODSID = goodsid;
+            BRANCHID = branchid;
+            SHOPID = shopid;
+        }
+
         /// <summary>
         /// 商品代码
         /// <summary>
+        [PrimaryKey]
         [Field("商品代码")]
         public string GOODSID
         {
@@ -29,6 +37,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 分店ID
         /// <summary>
+        [PrimaryKey]
         [Field("分店ID")]
         public string BRANCHID
         {
@@ -37,6 +46,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 店铺ID
         /// <summary>
+        [PrimaryKey]
         [Field("店铺ID")]
         public string SHOPID
         {

@@ -1,0 +1,11 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<WindowButtonRender>
+<div class="hide">
+    @{
+        RenderControl(new WindowRender()
+        {
+            vModel = Model.vModel + "_w"
+        });
+    }
+</div>
+<i-button id="@Model.Id" v-on:click="@(Model.vModel + "_w")=true" :disabled="@(Model.Enable?"!disabled":"disabled")">@Model.Text</i-button>

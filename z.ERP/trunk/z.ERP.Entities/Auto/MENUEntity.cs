@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017-12-18 0:07:21
- * 生成人：LinAJ
- * 代码生成器版本号：1.2.6560.42822
+ * 生成时间：2017/12/19 20:30:50
+ * 生成人：书房
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -18,14 +18,11 @@ namespace z.ERP.Entities
         {
         }
 
-        /// <summary>
-        /// 菜单编号
-        /// <summary>
-        [Field("菜单编号")]
-        public string MENUID
+        public MENUEntity(string menuid)
         {
-            get; set;
+            MENUID = menuid;
         }
+
         /// <summary>
         /// 菜单代码
         /// <summary>
@@ -47,6 +44,15 @@ namespace z.ERP.Entities
         /// <summary>
         [Field("启用标记")]
         public string ENABLE_FLAG
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 菜单编号
+        /// <summary>
+        [PrimaryKey]
+        [Field("菜单编号")]
+        public string MENUID
         {
             get; set;
         }

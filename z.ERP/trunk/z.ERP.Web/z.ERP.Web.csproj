@@ -155,6 +155,8 @@
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
+    <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
+    <Compile Include="Areas\Share\Render\WindowRender.cs" />
     <Compile Include="Areas\Share\Render\CheckBoxListRender.cs" />
     <Compile Include="Areas\Share\Render\EnumCheckBoxListRender.cs" />
     <Compile Include="Areas\Share\Render\ServiceDropDownListRender.cs" />
@@ -191,6 +193,7 @@
     <Content Include="Areas\XTGL\PAY\Pay.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
+    <Content Include="Content\Base.css" />
     <Content Include="Content\jquery.min.js" />
     <Content Include="Areas\Layout\Define\_DefineLayout.js" />
     <Content Include="Content\VUE\iview.js" />
@@ -260,6 +263,8 @@
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.cshtml" />
     <Content Include="Areas\XTGL\BRANCH\Branch.cshtml" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.cshtml" />
+    <Content Include="Areas\Share\Window.cshtml" />
+    <Content Include="Areas\Share\WindowButton.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

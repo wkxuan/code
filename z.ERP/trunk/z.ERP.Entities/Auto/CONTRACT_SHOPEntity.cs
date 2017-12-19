@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017-12-18 0:07:19
- * 生成人：LinAJ
- * 代码生成器版本号：1.2.6560.42822
+ * 生成时间：2017/12/19 20:30:45
+ * 生成人：书房
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -18,9 +18,16 @@ namespace z.ERP.Entities
         {
         }
 
+        public CONTRACT_SHOPEntity(string contractid, string shopid)
+        {
+            CONTRACTID = contractid;
+            SHOPID = shopid;
+        }
+
         /// <summary>
         /// 合同号
         /// <summary>
+        [PrimaryKey]
         [Field("合同号")]
         public string CONTRACTID
         {
@@ -29,6 +36,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 商铺ID
         /// <summary>
+        [PrimaryKey]
         [Field("商铺ID")]
         public string SHOPID
         {

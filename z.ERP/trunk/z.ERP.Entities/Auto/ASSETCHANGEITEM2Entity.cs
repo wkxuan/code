@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017-12-18 0:07:17
- * 生成人：LinAJ
- * 代码生成器版本号：1.2.6560.42822
+ * 生成时间：2017/12/19 20:30:40
+ * 生成人：书房
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -18,9 +18,17 @@ namespace z.ERP.Entities
         {
         }
 
+        public ASSETCHANGEITEM2Entity(string billid, string assetid_old, string assetcode_new)
+        {
+            BILLID = billid;
+            ASSETID_OLD = assetid_old;
+            ASSETCODE_NEW = assetcode_new;
+        }
+
         /// <summary>
         /// 序号
         /// <summary>
+        [PrimaryKey]
         [Field("序号")]
         public string BILLID
         {
@@ -29,6 +37,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 原资产编号
         /// <summary>
+        [PrimaryKey]
         [Field("原资产编号")]
         public string ASSETID_OLD
         {
@@ -45,6 +54,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 新资产代码
         /// <summary>
+        [PrimaryKey]
         [Field("新资产代码")]
         public string ASSETCODE_NEW
         {

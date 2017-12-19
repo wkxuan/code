@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017-12-18 0:07:23
- * 生成人：LinAJ
- * 代码生成器版本号：1.2.6560.42822
+ * 生成时间：2017/12/19 20:30:53
+ * 生成人：书房
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -18,9 +18,16 @@ namespace z.ERP.Entities
         {
         }
 
+        public STATION_PAYEntity(string stationbh, string payid)
+        {
+            STATIONBH = stationbh;
+            PAYID = payid;
+        }
+
         /// <summary>
         /// POS终端编号
         /// <summary>
+        [PrimaryKey]
         [Field("POS终端编号")]
         public string STATIONBH
         {
@@ -29,6 +36,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 收款方式
         /// <summary>
+        [PrimaryKey]
         [Field("收款方式")]
         public string PAYID
         {
