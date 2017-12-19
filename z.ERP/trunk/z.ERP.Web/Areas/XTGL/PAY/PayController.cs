@@ -7,14 +7,14 @@ using System;
 
 namespace z.ERP.Web.Areas.XTGL.PAY
 {
-    public class PayController:BaseController
+    public class PayController : BaseController
     {
         public ActionResult Pay()
         {
             return View();
         }
 
-        public string  Save(PAYEntity DefineSave)
+        public string Save(PAYEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
             if (DefineSave.PAYID.IsEmpty())
@@ -23,6 +23,7 @@ namespace z.ERP.Web.Areas.XTGL.PAY
             }
             v.Require(a => a.NAME);
             //v.IsUnique(a => a.NAME);
+            v.IsForeignKey<P1Entity>(a => a.NAME, b => b.F1);
             v.Require(a => a.TYPE);
             v.Require(a => a.JF);
             v.Require(a => a.FK);
@@ -30,11 +31,11 @@ namespace z.ERP.Web.Areas.XTGL.PAY
             v.Require(a => a.VOID_FLAG);
             v.IsNumber(a => a.FLAG);
             v.Verify();
-            return  CommonSave(DefineSave);
+            return CommonSave(DefineSave);
         }
 
         public void Delete(PAYEntity DefineDelete)
-        { 
+        {
             var v = GetVerify(DefineDelete);
             CommenDelete(DefineDelete);
         }
