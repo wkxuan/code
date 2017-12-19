@@ -67,14 +67,18 @@ namespace z.ERP.Services
 
         public DataGridResult GetFkfs(SearchItem item)
         {
-            string sql = $@"select ID,NAME from FKFS order by ID";
+            string sql = $@"select ID,NAME from FKFS where 1=1";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            sql += "order by ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
         public DataGridResult GetOperationrule(SearchItem item)
         {
-            string sql = $@"select ID,NAME from OPERATIONRULE order by ID";
+            string sql = $@"select * from OPERATIONRULE where 1=1 ";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            sql += "order by ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -89,7 +93,9 @@ namespace z.ERP.Services
         }
         public DataGridResult GetFeeRule(SearchItem item)
         {
-            string sql = $@"select ID,NAME from FEERULE order by ID";
+            string sql = $@"select * from FEERULE where 1=1 ";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            sql += "order by ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
