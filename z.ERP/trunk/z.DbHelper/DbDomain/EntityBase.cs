@@ -37,7 +37,7 @@ namespace z.DbHelper.DbDomain
         }
 
         /// <summary>
-        /// 获取表的中文名字
+        /// 获取表的字段名
         /// </summary>
         /// <returns></returns>
         public string GetFieldName<T>(Expression<Func<T, string>> p) where T : EntityBase
@@ -71,29 +71,7 @@ namespace z.DbHelper.DbDomain
             else
                 throw new Exception("属性类型不正确");
         }
-
-        /// <summary>
-        /// 字段中文名称
-        /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        public string FieldName<TEntity>(Expression<Func<TEntity, string>> p)
-        {
-            if (p.Body is MemberExpression)
-            {
-                MemberExpression me = p.Body as MemberExpression;
-                PropertyInfo prop = me.Member as PropertyInfo;
-                FieldAttribute f = prop.GetAttribute<FieldAttribute>();
-                string fieldname = me.Member.Name;
-                if (f != null)
-                    fieldname = f.Fieldname;
-                return fieldname;
-            }
-            else
-                throw new Exception("属性类型不正确");
-        }
-
+        
         /// <summary>
         /// 获取主键
         /// </summary>
