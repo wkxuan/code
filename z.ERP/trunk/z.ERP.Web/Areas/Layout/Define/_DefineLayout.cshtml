@@ -29,7 +29,8 @@
             RenderControl(new ButtonRender()
             {
                 Click = "add",
-                Text = "新增"
+                Text = "新增",
+                Enable = true
             });
         }
         @{
@@ -37,7 +38,7 @@
             {
                 Click = "mod",
                 Text = "修改",
-                Enable = false 
+                //Enable = false 
             });
         }
         @{
@@ -60,7 +61,8 @@
             RenderControl(new ButtonRender()
             {
                 Click = "del",
-                Text = "删除"
+                Text = "删除",
+                //Enable=false
             });
         }
     </row>

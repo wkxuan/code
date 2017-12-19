@@ -38,6 +38,15 @@ namespace z.ERP.Services
         public DataGridResult GetPay(SearchItem item)
         {
             string sql = $@"SELECT PAYID,NAME FROM PAY WHERE 1=1 ";
+            sql += " ORDER BY  PAYID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetPayElement(SearchItem item)
+        {
+            string sql = $@"SELECT * FROM PAY WHERE 1=1 ";
             item.HasKey("PAYID", a => sql += $" and PAYID = '{a}'");
             sql += " ORDER BY  PAYID";
             int count;

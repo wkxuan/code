@@ -22,7 +22,7 @@ namespace z.ERP.Web.Areas.XTGL.PAY
                 DefineSave.PAYID = service.CommonService.NewINC("PAY");
             }
             v.Require(a => a.NAME);
-            v.IsUnique(a => a.NAME);
+            //v.IsUnique(a => a.NAME);
             v.Require(a => a.TYPE);
             v.Require(a => a.JF);
             v.Require(a => a.FK);
