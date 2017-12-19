@@ -152,8 +152,13 @@ namespace z.DBHelper.Helper
                 if (_dbCommand.Connection.State != ConnectionState.Open)
                     Open();
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
-                IDataReader reader = _dbCommand.ExecuteReader();
-                dt = this.ReaderToTable(reader);
+                lock (ObjectExtension.Locker)
+                {
+                    using (IDataReader reader = _dbCommand.ExecuteReader())
+                    {
+                        dt = this.ReaderToTable(reader);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -178,15 +183,20 @@ namespace z.DBHelper.Helper
                 if (_dbCommand.Connection.State != ConnectionState.Open)
                     Open();
                 _dbCommand.CommandText = GetCountSql(sql);
-                IDataReader reader = _dbCommand.ExecuteReader();
-                DataTable dtcount = this.ReaderToTable(reader);
-                if (dtcount.IsOneLine())
+                lock (ObjectExtension.Locker)
                 {
-                    int.TryParse(dtcount.Rows[0][0].ToString(), out allCount);
-                }
-                else
-                {
-                    allCount = 0;
+                    using (IDataReader reader = _dbCommand.ExecuteReader())
+                    {
+                        DataTable dtcount = this.ReaderToTable(reader);
+                        if (dtcount.IsOneLine())
+                        {
+                            int.TryParse(dtcount.Rows[0][0].ToString(), out allCount);
+                        }
+                        else
+                        {
+                            allCount = 0;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -608,6 +618,7 @@ namespace z.DBHelper.Helper
         }
         #endregion
         #region 辅助方法
+
         /// <summary>
         /// 读取的内容转换为datatable
         /// </summary>
@@ -616,19 +627,15 @@ namespace z.DBHelper.Helper
         /// 
         private DataTable ReaderToTable(IDataReader reader)
         {
-
             DataTable dt = new DataTable();
-            int fieldCount = reader.FieldCount;
-
-            for (int count = 0; count < fieldCount; count++)
+            for (int count = 0; count < reader.FieldCount; count++)
             {
                 dt.Columns.Add(reader.GetName(count).ToUpper(), reader.GetFieldType(count));
             }
-
             while (reader.Read())
             {
                 DataRow row = dt.NewRow();
-                for (int i = 0; i < fieldCount; i++)
+                for (int i = 0; i < reader.FieldCount; i++)
                 {
                     row[i] = reader.GetValue(i);
                 }

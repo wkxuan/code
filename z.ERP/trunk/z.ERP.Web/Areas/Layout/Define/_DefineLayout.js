@@ -60,6 +60,7 @@
                     _.Ajax('Save', {
                         DefineSave: ve.dataParam
                     }, function (callback) {
+                        var res = 0;
                         //callback 返回的是主键
                         //返回左边列表
                         _.Search({
@@ -68,6 +69,12 @@
                             Data: {},
                             Success: function (data) {
                                 define.screenParam.dataDef = data.rows;
+                                res++;
+                                if (res > 1)
+                                {
+                                    ve.disabled = _this.enabled(true);
+                                    _self.$Message.info("保存成功");
+                                }
                             }
                         })
                         //返回右边元素
@@ -78,11 +85,14 @@
                             Success: function (data) {
                                 _this.dataParam = data.rows[0];
                                 ve.dataParam = _this.dataParam;
+                                res++;
+                                if (res > 1) {
+                                    ve.disabled = _this.enabled(true);
+                                    _self.$Message.info("保存成功");
+                                }
                             }
                         });
 
-                        ve.disabled = _this.enabled(true);
-                        _self.$Message.info("保存成功");
                     });
                 },
                 quit: function (event) {
