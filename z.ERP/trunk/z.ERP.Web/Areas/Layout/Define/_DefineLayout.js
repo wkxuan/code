@@ -37,7 +37,9 @@ function _Define() {
     this.search = function () { }
 
     //保存完之后根据主键查询右边元素
-    this.searchElement = function (param, callback) { }
+    this.searchElement = function (Service, Method, Data) {
+
+    }
 
     //vue之前的操作(主要是实现v-model绑定数据的声明)
     this.beforeVue = function () { }
@@ -149,9 +151,15 @@ function _Define() {
                 //oldCurrentRow上一次选中的数据
                 currentData: function (currentRow, oldCurrentRow) {
                     _this.dataParam = currentRow;
-                    _this.searchElement(_this.getKey(), function (data) {
-                        ve.dataParam = data;
-                    });
+                    
+                    _.Search({
+                        Service: _this.Service,
+                        Method: _this.Method,
+                        Data: _this.getKey(),
+                        Success: function (data) {
+                            ve.dataParam = data.rows[0];
+                        }
+                    });                                       
                     
                 }
             }
@@ -162,6 +170,8 @@ function _Define() {
     this.vueInit = function () {
         _this.dataParam = {};
         _this.screenParam = {};
+        _this.Service = "";
+        _this.Method = "";
     }
 
     //延时
