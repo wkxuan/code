@@ -39,16 +39,24 @@ define.search = function () {
     })
 }
 
-define.searchElement = function (param) {
+define.searchElement = function (param,callback) {
     _.Search({
         Service: 'XtglService',
         Method: 'GetPayElement',
         Data: { PAYID: param },
         Success: function (data) {
             define.dataParam = data.rows[0];
+            callback = function () {
+                return define.dataParam
+            }
         }
-    })
+    });
 }
+
+
+
+
+
 
 define.getKey = function () {
     return define.dataParam.PAYID;

@@ -37,7 +37,7 @@ function _Define() {
     this.search = function () { }
 
     //保存完之后根据主键查询右边元素
-    this.searchElement = function (param) { }
+    this.searchElement = function (param, callback) { }
 
     //vue之前的操作(主要是实现v-model绑定数据的声明)
     this.beforeVue = function () { }
@@ -53,7 +53,7 @@ function _Define() {
     this.newRecord = function () { }
     
     //添加,修改预存主键信息
-    this.getKey=function(){}
+    this.getKey = function () {}
 
     //vue操作
     this.vue = function VueOperate() {
@@ -74,9 +74,6 @@ function _Define() {
             methods: {
                 //添加
                 add: function (event) {
-                    if (!ve.dataParam) {
-                        ve._key = _this.getKey();
-                    }
                     _this.dataParam = {};
                     _this.newRecord();
                     ve.dataParam = _this.dataParam;
@@ -84,10 +81,6 @@ function _Define() {
                 },
                 //修改
                 mod: function (event) {
-                    //点击修改肯定已经选中数据了
-                    if (!ve.dataParam) {
-                        ve._key = _this.getKey();
-                    }
                     ve.disabled = _this.enabled(false);
                 },
                 //保存
@@ -101,7 +94,9 @@ function _Define() {
                         //返回左边列表
                         _this.search();
                         //返回右边元素
-                        _this.searchElement(param);
+                        _this.searchElement(data, function (data) {
+                            ve.dataParam = data;
+                        });
                         ve.disabled = _this.enabled(true);
                         _self.$Message.info("保存成功");
                     });
@@ -113,9 +108,10 @@ function _Define() {
                         onOk: function () {
                             //取消后查原来的元素列表
                             if (!ve._key) {
-                                _this.dataParam = _this.searchElement(ve._key);
+                                _this.dataParam = _this.searchElement(ve._key, function (data) {
+                                    ve.dataParam = data;
+                                });
                             }
-                            ve.dataParam = _this.dataParam;
                             ve.disabled = _this.enabled(true);
                         },
                         onCancel: function () {
@@ -153,8 +149,10 @@ function _Define() {
                 //oldCurrentRow上一次选中的数据
                 currentData: function (currentRow, oldCurrentRow) {
                     _this.dataParam = currentRow;
-                    _this.searchElement(_this.getKey());
-                    ve.dataParam = _this.dataParam;
+                    _this.searchElement(_this.getKey(), function (data) {
+                        ve.dataParam = data;
+                    });
+                    
                 }
             }
         });
