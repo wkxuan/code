@@ -19,7 +19,7 @@ namespace z.Extensions
         /// <summary>
         /// 公用线程锁
         /// </summary>
-        public  static readonly object Locker = new object();
+        public static readonly object Locker = new object();
         
         /// <summary>
         /// 序列化

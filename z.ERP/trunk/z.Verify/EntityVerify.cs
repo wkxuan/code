@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using z.DbHelper.DbDomain;
 using z.DBHelper.Helper;
 using z.Extensions;
+using z.Extensiont;
 
 namespace z.Verify
 {
@@ -65,7 +66,6 @@ namespace z.Verify
             {
                 MemberExpression me = p.Body as MemberExpression;
                 PropertyInfo prop = me.Member as PropertyInfo;
-                FieldAttribute fa = prop.GetAttribute<FieldAttribute>();
                 string str = prop.GetValue(_entity)?.ToString().Trim();
                 if (_entity.HasAllPrimaryKey() && _dbHelper.Select(_entity) != null)
                 {
@@ -81,7 +81,38 @@ namespace z.Verify
                 string sql = $"select 1 from {_entity.GetTableName()} where {me.Member.Name}='{str}'";
                 if (_dbHelper.ExecuteTable(sql).Rows.Count > limit)
                 {
-                    SetError(string.Format(ErrorModel, _entity.GetComments(), fa == null ? me.Member.Name : fa.Fieldname, str));
+                    SetError(string.Format(ErrorModel, _entity.GetComments(), _entity.GetFieldName(p), str));
+                }
+            }
+            else
+                throw new Exception("此校验只对字段属性生效");
+        }
+
+        /// <summary>
+        /// 外键约束
+        /// </summary>
+        /// <typeparam name="TTarget">目标表</typeparam>
+        /// <param name="p">本表字段</param>
+        /// <param name="t">目标表字段</param>
+        /// <param name="ErrorModel">错误信息</param>
+        public void IsForeignKey<TTarget>(Expression<Func<TEntity, string>> p, Expression<Func<TTarget, string>> t, string ErrorModel = "[{0}]表中字段[{1}]的值[{2}]在[{3}]表中的字段[{4}]已存在") where TTarget : EntityBase, new()
+        {
+            if (p.Body is MemberExpression && t.Body is MemberExpression)
+            {
+                MemberExpression tme = t.Body as MemberExpression;
+                MemberExpression me = p.Body as MemberExpression;
+                PropertyInfo prop = me.Member as PropertyInfo;
+                string str = prop.GetValue(_entity)?.ToString().Trim();
+                TTarget tar = (TTarget)Activator.CreateInstance(
+                                 typeof(TTarget),
+                                 BindingFlags.Instance | BindingFlags.Public,
+                                 null,
+                                 new object[] { },
+                                 null);
+                tar.SetPropertyValue(tme.Member.Name, prop.GetValue(_entity));
+                if (!_dbHelper.SelectList(tar).IsEmpty())
+                {
+                    SetError(string.Format(ErrorModel, _entity.GetComments(), _entity.GetFieldName(p), str, tar.GetTableName(), tar.GetFieldName(t)));
                 }
             }
             else

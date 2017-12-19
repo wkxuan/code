@@ -37,6 +37,23 @@ namespace z.DbHelper.DbDomain
         }
 
         /// <summary>
+        /// 获取表的中文名字
+        /// </summary>
+        /// <returns></returns>
+        public string GetFieldName<T>(Expression<Func<T, string>> p) where T : EntityBase
+        {
+            if (p.Body is MemberExpression)
+            {
+                MemberExpression me = p.Body as MemberExpression;
+                PropertyInfo prop = me.Member as PropertyInfo;
+                FieldAttribute fa = prop.GetAttribute<FieldAttribute>();
+                return fa == null ? me.Member.Name : fa.Fieldname;
+            }
+            else
+                throw new Exception("此校验只对字段属性生效");
+        }
+
+        /// <summary>
         /// 字段是主键
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
