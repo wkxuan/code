@@ -173,6 +173,7 @@
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
+    <Compile Include="Areas\XTGL\PERIOD\PeriodController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -189,6 +190,7 @@
     <Content Include="Areas\XTGL\FKFS\Fkfs.js" />
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.js" />
     <Content Include="Areas\XTGL\PAY\Pay.js" />
+    <Content Include="Areas\XTGL\PERIOD\Period.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\jquery.min.js" />
@@ -260,6 +262,7 @@
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.cshtml" />
     <Content Include="Areas\XTGL\BRANCH\Branch.cshtml" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.cshtml" />
+    <Content Include="Areas\XTGL\PERIOD\Period.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
