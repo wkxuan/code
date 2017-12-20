@@ -190,6 +190,7 @@
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.js" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.js" />
+    <Content Include="Areas\XTGL\LATEFEERULE\Feerule.js" />
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.js" />
     <Content Include="Areas\XTGL\PAY\Pay.js" />
     <Content Include="Areas\XTGL\PERIOD\Period.js" />
@@ -268,6 +269,7 @@
     <Content Include="Areas\XTGL\PERIOD\Period.cshtml" />
     <Content Include="Areas\Share\Window.cshtml" />
     <Content Include="Areas\Share\WindowButton.cshtml" />
+    <Content Include="Areas\XTGL\LATEFEERULE\Feerule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
