@@ -166,6 +166,8 @@
     <Compile Include="Areas\XTGL\BRAND\BrandController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
+    <Compile Include="Areas\XTGL\LATEFEERULE\PayController.cs" />
+    <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
@@ -177,7 +179,9 @@
     <Content Include="Areas\HTGL\LYHT\JavaScript.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\BRAND\Brand.js" />
+    <Content Include="Areas\XTGL\FEERULE\Feerule.js" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.js" />
+    <Content Include="Areas\XTGL\LATEFEERULE\Pay.js" />
     <Content Include="Areas\XTGL\PAY\Pay.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
@@ -246,11 +250,15 @@
     <Content Include="Areas\Share\CheckBoxList.cshtml" />
     <Content Include="Areas\Share\Button.cshtml" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.cshtml" />
+    <Content Include="Areas\XTGL\LATEFEERULE\PAY.cshtml" />
+    <Content Include="Areas\XTGL\FEERULE\Feerule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Home\" />
     <Folder Include="Areas\HTGL\Views\ZLHT\" />
+    <Folder Include="Areas\MERCHANT\" />
+    <Folder Include="Areas\XTGL\Share\Render\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
