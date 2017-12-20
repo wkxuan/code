@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:59:00
+ * 生成时间：2017/12/19 20:30:51
  * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -18,15 +18,9 @@ namespace z.ERP.Entities
         {
         }
 
-        public P1Entity(string f1)
-        {
-            F1 = f1;
-        }
-
         /// <summary>
         /// 
         /// <summary>
-        [PrimaryKey]
         public string F1
         {
             get; set;

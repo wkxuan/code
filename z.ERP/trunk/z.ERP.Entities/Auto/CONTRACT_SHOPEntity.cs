@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:58:55
+ * 生成时间：2017/12/19 20:30:45
  * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("CONTRACT_SHOP", "")]
+    [DbTable("CONTRACT_SHOP", "合同商铺")]
     public partial class CONTRACT_SHOPEntity : EntityBase
     {
         public CONTRACT_SHOPEntity()
@@ -25,31 +25,35 @@ namespace z.ERP.Entities
         }
 
         /// <summary>
-        /// 
+        /// 合同号
         /// <summary>
         [PrimaryKey]
+        [Field("合同号")]
         public string CONTRACTID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 商铺ID
         /// <summary>
         [PrimaryKey]
+        [Field("商铺ID")]
         public string SHOPID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 业态ID
         /// <summary>
+        [Field("业态ID")]
         public string CATEGORYID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 面积
         /// <summary>
+        [Field("面积")]
         public string AREA
         {
             get; set;

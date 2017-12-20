@@ -1,38 +1,37 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@inherits z.MVC5.Views.DefineViewPage
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
 
 @section element{
-   <row>
-       <i-col span="2" class="RowTitle">
-           代码
-       </i-col>
-       <i-col span="6">
-           @{ 
-               RenderControl(new TextBoxRender
-               {
-                   vModel = "dataParam.ID",
-                   Id = "tb_id"
-               });
-           }
-       </i-col>
-       <i-col span="2" class="RowTitle">
-           名称
-       </i-col>
-       <i-col span="6">
-           @{ 
-               RenderControl(new TextBoxRender
-               {
-                   vModel ="dataParam.NAME",
-                   Id = "tb_name"                   
-               });
-           }
-       </i-col>
-   </row> 
-}
-
-@section list{
     <row>
-        <i-table border :columns="screenParam.colFkfs" :data="screenParam.dataFkfs"></i-table>
+        <i-col span="2" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender
+                {
+                    vModel = "dataParam.ID",
+                    Id = "tb_id",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender
+                {
+                    vModel = "dataParam.NAME",
+                    Id = "tb_name",
+                    Enable = false
+                });
+            }
+        </i-col>
     </row>
 }

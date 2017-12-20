@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Share.Render;
+using z.MVC5.Models;
 using z.Results;
 
 namespace z.ERP.Web.Areas.Share
@@ -21,6 +22,14 @@ namespace z.ERP.Web.Areas.Share
             return View(render);
         }
         public ActionResult Button(ButtonRender render)
+        {
+            return View(render);
+        }
+        public ActionResult Window(WindowRender render)
+        {
+            return View(render);
+        }
+        public ActionResult WindowButton(WindowButtonRender render)
         {
             return View(render);
         }

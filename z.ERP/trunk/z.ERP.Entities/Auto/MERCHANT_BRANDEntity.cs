@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:59:00
+ * 生成时间：2017/12/19 20:30:50
  * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("MERCHANT_BRAND", "")]
+    [DbTable("MERCHANT_BRAND", "商户品牌")]
     public partial class MERCHANT_BRANDEntity : EntityBase
     {
         public MERCHANT_BRANDEntity()
@@ -25,17 +25,19 @@ namespace z.ERP.Entities
         }
 
         /// <summary>
-        /// 
+        /// 商户代码
         /// <summary>
         [PrimaryKey]
+        [Field("商户代码")]
         public string MERCHANTID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 品牌
         /// <summary>
         [PrimaryKey]
+        [Field("品牌")]
         public string BRANDID
         {
             get; set;

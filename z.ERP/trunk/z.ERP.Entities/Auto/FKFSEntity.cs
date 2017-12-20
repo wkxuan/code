@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:58:57
+ * 生成时间：2017/12/19 20:30:47
  * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("FKFS", "")]
+    [DbTable("FKFS", "付款方式")]
     public partial class FKFSEntity : EntityBase
     {
         public FKFSEntity()
@@ -24,16 +24,18 @@ namespace z.ERP.Entities
         }
 
         /// <summary>
-        /// 
+        /// 代码
         /// <summary>
         [PrimaryKey]
+        [Field("代码")]
         public string ID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 名称
         /// <summary>
+        [Field("名称")]
         public string NAME
         {
             get; set;

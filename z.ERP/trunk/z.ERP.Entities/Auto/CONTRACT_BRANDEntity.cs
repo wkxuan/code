@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:58:53
+ * 生成时间：2017/12/19 20:30:43
  * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("CONTRACT_BRAND", "")]
+    [DbTable("CONTRACT_BRAND", "合同品牌")]
     public partial class CONTRACT_BRANDEntity : EntityBase
     {
         public CONTRACT_BRANDEntity()
@@ -25,24 +25,27 @@ namespace z.ERP.Entities
         }
 
         /// <summary>
-        /// 
+        /// 合同号
         /// <summary>
         [PrimaryKey]
+        [Field("合同号")]
         public string CONTRACTID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 品牌
         /// <summary>
         [PrimaryKey]
+        [Field("品牌")]
         public string BRANDID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 分摊比例
         /// <summary>
+        [Field("分摊比例")]
         public string FTBL
         {
             get; set;

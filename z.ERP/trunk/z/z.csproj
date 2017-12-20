@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Cache\ICache.cs" />
     <Compile Include="Cache\WebCache.cs" />
+    <Compile Include="CMD\RunCMD.cs" />
     <Compile Include="Context\SingleInstance.cs" />
     <Compile Include="Exceptions\zExceptionBase.cs" />
     <Compile Include="Extensions\ConfigExtension.cs" />

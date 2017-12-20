@@ -20,18 +20,18 @@ namespace z.ERP.Web.Areas.Base
         /// 快速保存
         /// </summary>
         /// <param name="infos"></param>
-        public void CommonSave(IEnumerable<EntityBase> infos)
+        public IEnumerable<string> CommonSave(IEnumerable<EntityBase> infos)
         {
-            service.CommonService.CommonSave(infos);
-        }   
+            return service.CommonService.CommonSave(infos);
+        }
 
         /// <summary>
-                 /// 快速保存
-                 /// </summary>
-                 /// <param name="info"></param>
-        public void CommonSave(EntityBase info)
+        /// 快速保存
+        /// </summary>
+        /// <param name="info"></param>
+        public string CommonSave(EntityBase info)
         {
-            service.CommonService.CommonSave(info);
+            return service.CommonService.CommonSave(info);
         }
 
         /// <summary>

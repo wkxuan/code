@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:59:00
+ * 生成时间：2017/12/19 20:30:50
  * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("ORG", "")]
+    [DbTable("ORG", "组织机构")]
     public partial class ORGEntity : EntityBase
     {
         public ORGEntity()
@@ -24,67 +24,58 @@ namespace z.ERP.Entities
         }
 
         /// <summary>
-        /// 
+        /// 机构编码
         /// <summary>
         [PrimaryKey]
+        [Field("机构编码")]
         public string ORGID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 机构代码
         /// <summary>
+        [Field("机构代码")]
         public string ORGCODE
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 机构名称
         /// <summary>
+        [Field("机构名称")]
         public string ORGNAME
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 机构类型
         /// <summary>
+        [Field("机构类型")]
         public string ORG_TYPE
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 末级标志
         /// <summary>
+        [Field("末级标志")]
         public string LEVEL_LAST
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 卖场ID
         /// <summary>
-        [DbType(DbType.DateTime)]
-        public string CREATE_TIME
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
+        [Field("卖场ID")]
         public string BRANCHID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 作废标记
         /// <summary>
-        [DbType(DbType.DateTime)]
-        public string UPDATE_TIME
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
+        [Field("作废标记")]
         public string VOID_FLAG
         {
             get; set;

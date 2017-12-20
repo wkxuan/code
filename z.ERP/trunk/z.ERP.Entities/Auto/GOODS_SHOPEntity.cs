@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:58:58
+ * 生成时间：2017/12/19 20:30:48
  * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("GOODS_SHOP", "")]
+    [DbTable("GOODS_SHOP", "商品店铺")]
     public partial class GOODS_SHOPEntity : EntityBase
     {
         public GOODS_SHOPEntity()
@@ -26,32 +26,36 @@ namespace z.ERP.Entities
         }
 
         /// <summary>
-        /// 
+        /// 商品代码
         /// <summary>
         [PrimaryKey]
+        [Field("商品代码")]
         public string GOODSID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 分店ID
         /// <summary>
         [PrimaryKey]
+        [Field("分店ID")]
         public string BRANCHID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 店铺ID
         /// <summary>
         [PrimaryKey]
+        [Field("店铺ID")]
         public string SHOPID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 业态ID
         /// <summary>
+        [Field("业态ID")]
         public string CATEGORYID
         {
             get; set;

@@ -1,12 +1,36 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.Extensions
-@inherits z.MVC5.Views.DefineViewPage
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
 
 @section element{
     <row>
-        @*<i-button type="text" v-on:click="screenParam.cs">测试</i-button>*@
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new WindowButtonRender()
+                {
+                    Id = "terst",
+                    vModel = "dataParam.btn_w",
+                    //render = new WindowRender()
+                    //{
+                    //    Id = "",
+                    //    vModel = "11"
+                    //},
+                    Text = "代码"
+                });
+            }
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PAYID"
+                });
+            }
+        </i-col>
+    </row>
 
+    <row>
         <i-col span="2" class="RowTitle">
             名称
         </i-col>
@@ -14,7 +38,8 @@
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.NAME"
+                    vModel = "dataParam.NAME",
+                    Enable = false
                 });
             }
         </i-col>
@@ -25,13 +50,12 @@
             @{
                 RenderControl(new EnumDropDownListRender<支付方式类型>()
                 {
-                    vModel = "dataParam.TYPE"
+                    vModel = "dataParam.TYPE",
+                    Enable = false
                 });
             }
         </i-col>
     </row>
-
-    <br />
 
     <row>
         <i-col span="2" class="RowTitle">
@@ -41,7 +65,8 @@
             @{
                 RenderControl(new EnumDropDownListRender<收款方式返款>()
                 {
-                    vModel = "dataParam.FK"
+                    vModel = "dataParam.FK",
+                    Enable = false
                 });
             }
         </i-col>
@@ -53,12 +78,13 @@
             @{
                 RenderControl(new EnumDropDownListRender<收款方式积分>()
                 {
-                    vModel = "dataParam.JF"
+                    vModel = "dataParam.JF",
+                    Enable = false
                 });
             }
         </i-col>
     </row>
-    <br />
+
     <row>
         <i-col span="2" class="RowTitle">
             找零方式
@@ -67,7 +93,8 @@
             @{
                 RenderControl(new EnumDropDownListRender<收款方式找零方式>()
                 {
-                    vModel = "dataParam.ZLFS"
+                    vModel = "dataParam.ZLFS",
+                    Enable = false
                 });
             }
         </i-col>
@@ -79,12 +106,13 @@
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.FLAG"
+                    vModel = "dataParam.FLAG",
+                    Enable = false
                 });
             }
         </i-col>
     </row>
-    <br />
+
     <row>
         <i-col span="2" class="RowTitle">
             停用标记
@@ -94,7 +122,8 @@
                 RenderControl(new EnumCheckBoxListRender<停用标记>()
                 {
                     vModel = "dataParam.VOID_FLAG",
-                    MultiSelect = false
+                    MultiSelect = false,
+                    Enable = false
                 });
             }
         </i-col>

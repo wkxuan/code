@@ -20,13 +20,9 @@ namespace z.MVC5.Views
         {
 
         }
-        public virtual string LayoutUrl
-        {
-            get
-            {
-                return "~/Areas/Base/_LayoutBase.cshtml";
-            }
-        }
+
+        public static string ThisLayout = "~/Areas/Base/_LayoutBase.cshtml";
+        
         public virtual string[] WebFiles
         {
             get; set;

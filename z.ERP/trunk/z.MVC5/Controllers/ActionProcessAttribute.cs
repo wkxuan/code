@@ -12,21 +12,8 @@ using z.Results;
 
 namespace z.MVC5.Controllers
 {
-    /// <summary>
-    /// 异常持久化类
-    /// </summary>
     public class ActionProcessAttribute : ActionFilterAttribute
     {
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            base.OnActionExecuting(filterContext);
-        }
-
-        public override void OnResultExecuting(ResultExecutingContext filterContext)
-        {
-            base.OnResultExecuting(filterContext);
-        }
-
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             if (filterContext.HttpContext.Request.IsAjaxRequest())
@@ -82,6 +69,7 @@ namespace z.MVC5.Controllers
                     "Base",
                     "Common") + "/";
             }
+            base.OnActionExecuted(filterContext);
         }
     }
 }

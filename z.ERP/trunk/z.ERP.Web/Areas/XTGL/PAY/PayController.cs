@@ -7,29 +7,23 @@ using System;
 
 namespace z.ERP.Web.Areas.XTGL.PAY
 {
-    public class PayController:BaseController
+    public class PayController : BaseController
     {
         public ActionResult Pay()
         {
             return View();
         }
 
-        public void Save(PAYEntity DefineSave)
+        public string Save(PAYEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
-
-            if (DefineSave.CODE.IsEmpty())
+            if (DefineSave.PAYID.IsEmpty())
             {
                 DefineSave.PAYID = service.CommonService.NewINC("PAY");
-                DefineSave.CODE = DefineSave.PAYID;
             }
-            else {
-                DefineSave.PAYID = DefineSave.CODE;
-            }
-            DefineSave.CREATE_TIME = DateTime.Now.ToLongString();
-
-            DefineSave.UPDATE_TIME = DateTime.Now.ToLongString();
             v.Require(a => a.NAME);
+            //v.IsUnique(a => a.NAME);
+            v.IsForeignKey<P1Entity>(a => a.NAME, b => b.F1);
             v.Require(a => a.TYPE);
             v.Require(a => a.JF);
             v.Require(a => a.FK);
@@ -37,14 +31,12 @@ namespace z.ERP.Web.Areas.XTGL.PAY
             v.Require(a => a.VOID_FLAG);
             v.IsNumber(a => a.FLAG);
             v.Verify();
-            CommonSave(DefineSave);
+            return CommonSave(DefineSave);
         }
 
         public void Delete(PAYEntity DefineDelete)
-        { 
+        {
             var v = GetVerify(DefineDelete);
-            v.IsUnique(a => a.CODE);
-            DefineDelete.PAYID = DefineDelete.CODE;
             CommenDelete(DefineDelete);
         }
     }

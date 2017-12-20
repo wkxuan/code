@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:58:52
+ * 生成时间：2017/12/19 20:30:42
  * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("CATEGORY", "")]
+    [DbTable("CATEGORY", "业态")]
     public partial class CATEGORYEntity : EntityBase
     {
         public CATEGORYEntity()
@@ -24,47 +24,35 @@ namespace z.ERP.Entities
         }
 
         /// <summary>
-        /// 
+        /// 业态编码
         /// <summary>
         [PrimaryKey]
+        [Field("业态编码")]
         public string CATEGORYID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 业态代码
         /// <summary>
+        [Field("业态代码")]
         public string CATEGORYCODE
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 业态名称
         /// <summary>
+        [Field("业态名称")]
         public string CATEGORYNAME
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 末级标志
         /// <summary>
+        [Field("末级标志")]
         public string LEVEL_LAST
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        [DbType(DbType.DateTime)]
-        public string CREATE_TIME
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 
-        /// <summary>
-        [DbType(DbType.DateTime)]
-        public string UPDATE_TIME
         {
             get; set;
         }

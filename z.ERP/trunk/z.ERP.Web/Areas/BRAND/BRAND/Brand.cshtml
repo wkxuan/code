@@ -1,4 +1,7 @@
-﻿@inherits z.MVC5.Views.ListViewPage
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.List
+@inherits ListViewBase
 
 @section tjbtn{
     <i-button type="text" v-on:click="Search">查询</i-button>

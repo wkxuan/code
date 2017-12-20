@@ -41,6 +41,12 @@ namespace z.ERP.Services
                  new SelectItem ("3","33")
             };
         }
-
+        //测试控件SQL语句查询下拉收款方式
+        public List<SelectItem> pay()
+        {
+            string sql = $@"SELECT * FROM PAY WHERE VOID_FLAG=1 ORDER BY  PAYID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("PAYID", "NAME");
+        }
     }
 }

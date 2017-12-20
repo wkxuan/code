@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:59:01
+ * 生成时间：2017/12/19 20:30:51
  * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("PERIOD", "")]
+    [DbTable("PERIOD", "账期区间")]
     public partial class PERIODEntity : EntityBase
     {
         public PERIODEntity()
@@ -24,24 +24,27 @@ namespace z.ERP.Entities
         }
 
         /// <summary>
-        /// 
+        /// 年月
         /// <summary>
         [PrimaryKey]
+        [Field("年月")]
         public string YEARMONTH
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 开始日期
         /// <summary>
+        [Field("开始日期")]
         [DbType(DbType.DateTime)]
         public string DATE_START
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 结束日期
         /// <summary>
+        [Field("结束日期")]
         [DbType(DbType.DateTime)]
         public string DATE_END
         {

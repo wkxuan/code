@@ -15,6 +15,12 @@ namespace z.Extensions
     public static class ObjectExtension
     {
         #region 序列化
+
+        /// <summary>
+        /// 公用线程锁
+        /// </summary>
+        public static readonly object Locker = new object();
+        
         /// <summary>
         /// 序列化
         /// </summary>

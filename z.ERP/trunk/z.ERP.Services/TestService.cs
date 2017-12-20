@@ -29,7 +29,7 @@ namespace z.ERP.Services
         public virtual string a()
         {
 
-            P1Entity d1 = DbHelper.Select(new P1Entity("111"));
+            //P1Entity d1 = DbHelper.Select(new P1Entity("111"));
 
 
             return "";
@@ -83,31 +83,6 @@ namespace z.ERP.Services
             item.HasKey("ORGCODE", a => sql += $" and ORGCODE = '{a}' ");
             item.HasArrayKey("ORG_TYPE", a => sql += $" and ORG_TYPE in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
             item.HasTimeKey("CREATE_TIME", a => sql += $" and CREATE_TIME = to_date('{a}') ");
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-
-        public DataGridResult GetBrandData(SearchItem item)
-        {
-            string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
-            item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("CODE", a => sql += $" and B.CODE = '{a}'");
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-
-        public DataGridResult GetPay(SearchItem item)
-        {
-            string sql = $@"SELECT * FROM PAY";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-
-        public DataGridResult GetFkfs(SearchItem item) {
-            string sql = $@"select * from FKFS";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

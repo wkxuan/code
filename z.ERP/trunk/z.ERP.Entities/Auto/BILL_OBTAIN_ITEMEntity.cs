@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/2 16:58:50
+ * 生成时间：2017/12/19 20:30:41
  * 生成人：书房
- * 代码生成器版本号：1.2.6545.1474
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("BILL_OBTAIN_ITEM", "")]
+    [DbTable("BILL_OBTAIN_ITEM", "账单付款核销付款单子表")]
     public partial class BILL_OBTAIN_ITEMEntity : EntityBase
     {
         public BILL_OBTAIN_ITEMEntity()
@@ -26,39 +26,44 @@ namespace z.ERP.Entities
         }
 
         /// <summary>
-        /// 
+        /// 单号
         /// <summary>
         [PrimaryKey]
+        [Field("单号")]
         public string BILLID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 类型(0租赁账单1联营结算单)
         /// <summary>
         [PrimaryKey]
+        [Field("类型(0租赁账单1联营结算单)")]
         public string TYPE
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 账单单号
         /// <summary>
         [PrimaryKey]
+        [Field("账单单号")]
         public string FINAL_BILLID
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 应付金额
         /// <summary>
+        [Field("应付金额")]
         public string MUST_MONEY
         {
             get; set;
         }
         /// <summary>
-        /// 
+        /// 付款金额
         /// <summary>
+        [Field("付款金额")]
         public string RECEIVE_MONEY
         {
             get; set;
