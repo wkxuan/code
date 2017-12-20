@@ -43,9 +43,11 @@
             methods: {
                 //添加
                 add: function (event) {
-                    _this.dataParam = {};
+                    //清空dataParam会造成取消得不到key 直接清空vue
+                    //_this.dataParam = {};
+                    ////_this.dataParam;
                     _this.newRecord();
-                    ve.dataParam = _this.dataParam;
+                    ve.dataParam = {};
                     ve.disabled = _this.enabled(false);
                 },
                 //修改
@@ -62,6 +64,7 @@
                     }, function (callback) {
                         var res = 0;
                         //callback 返回的是主键
+                        var backKey = callback;
                         //返回左边列表
                         _.Search({
                             Service: _this.service,
@@ -81,7 +84,7 @@
                         _.Search({
                             Service: _this.service,
                             Method: _this.method,
-                            Data: _this.getKey(callback),
+                            Data: _this.getKey(backKey),
                             Success: function (data) {
                                 _this.dataParam = data.rows[0];
                                 ve.dataParam = _this.dataParam;
