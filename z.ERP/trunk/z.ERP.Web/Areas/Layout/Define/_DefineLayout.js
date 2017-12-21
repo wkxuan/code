@@ -28,6 +28,7 @@
                 dataParam: _this.dataParam,
                 screenParam: _this.screenParam,
                 disabled: _this.enabled(true),
+                _key: {},
             },
             mounted: function () {
                 //页面打开先查询左边列表信息
@@ -43,15 +44,15 @@
             methods: {
                 //添加
                 add: function (event) {
-                    //清空dataParam会造成取消得不到key 直接清空vue
-                    //_this.dataParam = {};
-                    ////_this.dataParam;
+                    ve._key = _this.getKey(),
+                    _this.dataParam = {};
                     _this.newRecord();
-                    ve.dataParam = {};
+                    ve.dataParam = _this.dataParam;
                     ve.disabled = _this.enabled(false);
                 },
                 //修改
                 mod: function (event) {
+                    ve._key = _this.getKey(),
                     ve.disabled = _this.enabled(false);
                 },
                 //保存
@@ -65,6 +66,7 @@
                         var res = 0;
                         //callback 返回的是主键
                         var backKey = callback;
+                        var elementKey = _this.getKey(backKey)
                         //返回左边列表
                         _.Search({
                             Service: _this.service,
@@ -84,7 +86,7 @@
                         _.Search({
                             Service: _this.service,
                             Method: _this.method,
-                            Data: _this.getKey(backKey),
+                            Data: elementKey,
                             Success: function (data) {
                                 _this.dataParam = data.rows[0];
                                 ve.dataParam = _this.dataParam;
@@ -99,27 +101,32 @@
                     });
                 },
                 quit: function (event) {
-                    this.$Modal.confirm({
-                        title: '提示',
-                        content: '是否取消',
-                        onOk: function () {
-                            //取消后查原来的元素列表
-                            _.Search({
-                                Service: _this.service,
-                                Method: _this.method,
-                                Data: _this.getKey(),
-                                Success: function (data) {
-                                    _this.dataParam = data.rows[0];
-                                    ve.dataParam = _this.dataParam;
-                                }
-                            });
-                            ve.disabled = _this.enabled(true);
-                        },
-                        onCancel: function () {
-                            ve.disabled = _this.enabled(false);
-                            this.id = "关闭"
-                        }
-                    });
+                    if (ve._key) {
+                        this.$Modal.confirm({
+                            title: '提示',
+                            content: '是否取消',
+                            onOk: function () {
+                                //取消后查原来的元素列表
+                                _.Search({
+                                    Service: _this.service,
+                                    Method: _this.method,
+                                    Data: ve._key,
+                                    Success: function (data) {
+                                        _this.dataParam = data.rows[0];
+                                        ve.dataParam = _this.dataParam;
+                                    }
+                                });
+                                ve.disabled = _this.enabled(true);
+                            },
+                            onCancel: function () {
+                                ve.disabled = _this.enabled(false);
+                                this.id = "关闭"
+                            }
+                        });
+                    }
+                    else {
+                        ve.disabled = _this.enabled(true);
+                    }
 
                 },
                 //删除

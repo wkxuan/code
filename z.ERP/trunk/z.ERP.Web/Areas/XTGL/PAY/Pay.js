@@ -36,7 +36,12 @@
 
 define.getKey = function (data) {
     if (typeof (data) == "undefined") {
-        return { PAYID: define.dataParam.PAYID }
+        if (typeof (define.dataParam.PAYID) == "undefined") {
+            return undefined;
+        }
+        else {
+            return { PAYID: define.dataParam.PAYID }
+        }
     }
     else {
         return { PAYID: data }
@@ -48,36 +53,33 @@ define.newRecord = function () {
 }
 
 
+define.IsValidSave = function (param) {
+    if (!define.dataParam.NAME) {
+        param.$Message.info("名称不能为空!");
+        return false;
+    }
+    if (!define.dataParam.TYPE) {
+        param.$Message.info("类型不能为空!");
+        return false;
+    }
 
+    if (!define.dataParam.FK) {
+        param.$Message.info("返款标记不能为空!");
+        return false;
+    }
+    if (!define.dataParam.JF) {
+        param.$Message.info("积分标记不能为空!");
+        return false;
+    }
 
+    if (!define.dataParam.ZLFS) {
+        param.$Message.info("找零方式不能为空!");
+        return false;
+    }
 
-//define.IsValidSave = function (param) {
-//    if (!define.dataParam.NAME) {
-//        param.$Message.info("名称不能为空!");
-//        return false;
-//    }
-//    if (!define.dataParam.TYPE) {
-//        param.$Message.info("类型不能为空!");
-//        return false;
-//    }
-
-//    if (!define.dataParam.FK) {
-//        param.$Message.info("返款标记不能为空!");
-//        return false;
-//    }
-//    if (!define.dataParam.JF) {
-//        param.$Message.info("积分标记不能为空!");
-//        return false;
-//    }
-
-//    if (!define.dataParam.ZLFS) {
-//        param.$Message.info("找零方式不能为空!");
-//        return false;
-//    }
-
-//    if (!define.dataParam.FLAG) {
-//        param.$Message.info("显示顺序不能为空!");
-//        return false;
-//    }
-//    return true;
-//}
+    if (!define.dataParam.FLAG) {
+        param.$Message.info("显示顺序不能为空!");
+        return false;
+    }
+    return true;
+}
