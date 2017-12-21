@@ -19,25 +19,11 @@
 }
 
 
-define.getKey = function (data) {
-    if (typeof (data) == "undefined") {
-        if (typeof (define.dataParam.ID) == "undefined") {
-            return undefined;
-        }
-        else {
-            return { ID: define.dataParam.ID }
-        }
-    }
-    else {
-        return { ID: data }
-    }
-}
+define.getKey = 'ID';
 
 define.newRecord = function () {
     define.dataParam.STATUS = "1";
 }
-
-
 
 define.IsValidSave = function (param) {
     if (!define.dataParam.NAME) {
