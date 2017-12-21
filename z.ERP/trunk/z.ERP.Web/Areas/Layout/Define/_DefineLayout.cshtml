@@ -28,6 +28,14 @@
         @{
             RenderControl(new ButtonRender()
             {
+                Click = "showlist",
+                Text = "查询",
+                Enable = true
+            });
+        }
+        @{
+            RenderControl(new ButtonRender()
+            {
                 Click = "add",
                 Text = "新增",
                 Enable = true
@@ -71,15 +79,9 @@
             <card>
                 <p slot="title">列表信息</p>
                 @RenderSection("search", false)
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "screenParam.SrchParam"
-                    });
-                }
                 <i-table :highlight-row="true" size="small" :border="true"
                          :columns="screenParam.colDef" :data="screenParam.dataDef"
-                         v-on:on-current-change="currentData"></i-table>
+                         v-on:on-current-change="showlist"></i-table>
             </card>
         </i-col>
 
