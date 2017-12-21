@@ -13,19 +13,13 @@ namespace z.ERP.Web.Areas.XTGL.BRANCH
             return View();
         }
 
-
         public string Save(BRANCHEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
-
-            //当ID是界面输入的话怎么判断这个创建时间
             if (DefineSave.ID.IsEmpty())
             {
                 DefineSave.ID = service.CommonService.NewINC("BRANCH");
-
             }
-
-
             v.IsUnique(a => a.ID);
             v.Require(a => a.NAME);
             v.IsUnique(a => a.NAME);
@@ -34,7 +28,6 @@ namespace z.ERP.Web.Areas.XTGL.BRANCH
             v.Require(a => a.STATUS);
             v.Verify();
             return CommonSave(DefineSave);
-            //这里返回主键
         }
 
         public void Delete(BRANCHEntity DefineDelete)
