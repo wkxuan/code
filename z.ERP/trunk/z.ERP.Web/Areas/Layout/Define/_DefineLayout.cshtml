@@ -70,6 +70,7 @@
         <i-col span="8">
             <card>
                 <p slot="title">列表信息</p>
+                @RenderSection("search", false)
                 @{
                     RenderControl(new TextBoxRender()
                     {

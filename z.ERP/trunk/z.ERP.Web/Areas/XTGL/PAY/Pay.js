@@ -32,21 +32,7 @@
 }
 
 
-
-
-define.getKey = function (data) {
-    if (typeof (data) == "undefined") {
-        if (typeof (define.dataParam.PAYID) == "undefined") {
-            return undefined;
-        }
-        else {
-            return { PAYID: define.dataParam.PAYID }
-        }
-    }
-    else {
-        return { PAYID: data }
-    }
-}
+define.Key = 'PAYID';
 
 define.newRecord = function () {
     define.dataParam.VOID_FLAG = "1";

@@ -124,3 +124,48 @@
         </i-col>
     </row>
 }
+
+@*@section search{
+    
+<row>
+    <i-col span="2" class="RowTitle">
+        组织ID
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "SearchData.ORGID",
+                Id = "tb_temp",
+                Placeholder = "hahahaha"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        组织CODE
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new UndefineRender()
+            {
+                vModel = "SearchData.ORGCODE"
+            });
+        }
+    </i-col>
+</row>
+<row>
+    <i-col span="2" class="RowTitle">
+        组织类型
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new EnumCheckBoxListRender<部门类型>()
+            {
+                vModel = "SearchData.ORG_TYPE",
+                MultiSelect = true
+            });
+        }
+    </i-col>
+</row>
+
+    }*@

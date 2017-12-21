@@ -15,8 +15,8 @@
     //添加后初始化数据信息
     this.newRecord = function () { }
 
-    //得到主键信息
-    this.getKey = function (data) { }
+    //得到主键
+    this.Key = undefined
 
     //vue操作
     this.vue = function VueOperate() {
@@ -44,7 +44,7 @@
             methods: {
                 //添加
                 add: function (event) {
-                    ve._key = _this.getKey(),
+                    ve._key = define.dataParam[_this.Key] = event,
                     _this.dataParam = {};
                     _this.newRecord();
                     ve.dataParam = _this.dataParam;
@@ -52,7 +52,8 @@
                 },
                 //修改
                 mod: function (event) {
-                    ve._key = _this.getKey(),
+                    ve._key = {};
+                    ve._key[_this.Key] = define.dataParam[_this.Key];
                     ve.disabled = _this.enabled(false);
                 },
                 //保存
@@ -65,7 +66,8 @@
                     }, function (callback) {
                         //callback 返回的是主键
                         var backKey = callback;
-                        var elementKey = _this.getKey(backKey)
+                        var elementKey = {};
+                        elementKey[_this.Key] = callback;
                         //返回左边列表
                         _.Search({
                             Service: _this.service,
@@ -155,10 +157,12 @@
                 //oldCurrentRow上一次选中的数据
                 currentData: function (currentRow, oldCurrentRow) {
                     _this.dataParam = currentRow;
+                    var data = {};
+                    data[_this.Key] = define.dataParam[_this.Key];
                     _.Search({
                         Service: _this.service,
                         Method: _this.method,
-                        Data: _this.getKey(),
+                        Data: data,
                         Success: function (callback) {
                             _this.dataParam = callback.rows[0];
                             ve.dataParam = _this.dataParam;
