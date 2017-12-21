@@ -117,6 +117,9 @@
                     _this.dataParam = currentRow;
                     ve._key = define.dataParam[_this.Key];
                     showone(ve._key);
+                },
+                seachList: function (event) {
+                    showlist();
                 }
             }
         });

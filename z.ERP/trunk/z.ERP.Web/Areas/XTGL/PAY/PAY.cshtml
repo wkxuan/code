@@ -129,31 +129,29 @@
     
 <row>
     <i-col span="2" class="RowTitle">
-        组织ID
+        代码
     </i-col>
     <i-col span="6">
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "searchParam.ORGID",
-                Id = "tb_temp",
-                Placeholder = "hahahaha"
+                vModel = "searchParam.PAYID",
             });
         }
     </i-col>
     <i-col span="2" class="RowTitle">
-        组织CODE
+        名称
     </i-col>
     <i-col span="6">
         @{
             RenderControl(new UndefineRender()
             {
-                vModel = "searchParam.ORGCODE"
+                vModel = "searchParam.NAME"
             });
         }
     </i-col>
 </row>
-<row>
+@*<row>
     <i-col span="2" class="RowTitle">
         组织类型
     </i-col>
@@ -166,6 +164,5 @@
             });
         }
     </i-col>
-</row>
-
-    }
+</row>*@
+}
