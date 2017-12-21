@@ -15,14 +15,10 @@ namespace z.ERP.Web.Areas.XTGL.FEESUBJECT
         public string Save(FEESUBJECTEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
-
             if (DefineSave.TRIMID.IsEmpty())
             {
                 DefineSave.TRIMID = service.CommonService.NewINC("FEESUBJECT");
-
             }
-
-
             v.IsUnique(a => a.TRIMID);
             v.Require(a => a.NAME);
             v.IsUnique(a => a.NAME);
