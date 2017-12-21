@@ -11,20 +11,48 @@
         }];
 
     define.screenParam.dataDef = [];
+
+
+    define.service = "XtglService";
+    define.method = "GetBranchElement";
+    define.methodList = "GetBranch";
 }
 
 
-define.search = function () {
-    _.Search({
-        Service: 'TestService',
-        Method: 'GetBranch',
-        Data: {},
-        Success: function (data) {
-            define.screenParam.dataDef = data.rows;
+define.getKey = function (data) {
+    if (typeof (data) == "undefined") {
+        if (typeof (define.dataParam.ID) == "undefined") {
+            return undefined;
         }
-    })
+        else {
+            return { ID: define.dataParam.ID }
+        }
+    }
+    else {
+        return { ID: data }
+    }
 }
 
 define.newRecord = function () {
     define.dataParam.STATUS = "1";
 }
+
+
+
+define.IsValidSave = function (param) {
+    if (!define.dataParam.NAME) {
+        param.$Message.info("名称不能为空!");
+        return false;
+    }
+    if (!define.dataParam.ORGID) {
+        param.$Message.info("管理部门不能为空!");
+        return false;
+    }
+
+    if (!define.dataParam.AREA_BUILD) {
+        param.$Message.info("建筑面积不能为空!");
+        return false;
+    }
+    return true;
+}
+

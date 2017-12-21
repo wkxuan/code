@@ -22,8 +22,7 @@ namespace z.ERP.Web.Areas.XTGL.PAY
                 DefineSave.PAYID = service.CommonService.NewINC("PAY");
             }
             v.Require(a => a.NAME);
-            //v.IsUnique(a => a.NAME);
-            v.IsForeignKey<P1Entity>(a => a.NAME, b => b.F1);
+            v.IsUnique(a => a.NAME);
             v.Require(a => a.TYPE);
             v.Require(a => a.JF);
             v.Require(a => a.FK);
@@ -37,6 +36,8 @@ namespace z.ERP.Web.Areas.XTGL.PAY
         public void Delete(PAYEntity DefineDelete)
         {
             var v = GetVerify(DefineDelete);
+            //外键验证应该是在删除的时候使用
+            //v.IsForeignKey<P1Entity>(a => a.NAME, b => b.F1);
             CommenDelete(DefineDelete);
         }
     }
