@@ -3,25 +3,25 @@
         {
             title: '支付方式代码',
             key: 'PAYID', width: 150,
-            filters: [
-                { label: '过滤', value: define.screenParam.SrchParam }
-            ],
-            filterMultiple: false,
-            filterMethod: function (value, row) {
-                return row.CODE.indexOf(define.screenParam.SrchParam) > -1;
-            }
+            //filters: [
+            //    { label: '过滤', value: define.screenParam.SrchParam }
+            //],
+            //filterMultiple: false,
+            //filterMethod: function (value, row) {
+            //    return row.CODE.indexOf(define.screenParam.SrchParam) > -1;
+            //}
         },
         {
             title: '支付方式名称',
             key: 'NAME', width: 250,
 
-            filters: [
-                { label: '过滤', value: define.screenParam.SrchParam }
-            ],
-            filterMultiple: false,
-            filterMethod: function (value, row) {
-                return row.NAME.indexOf(define.screenParam.SrchParam) > -1;
-            }
+            //filters: [
+            //    { label: '过滤', value: define.screenParam.SrchParam }
+            //],
+            //filterMultiple: false,
+            //filterMethod: function (value, row) {
+            //    return row.NAME.indexOf(define.screenParam.SrchParam) > -1;
+            //}
         }];
 
     define.screenParam.dataDef = [];
