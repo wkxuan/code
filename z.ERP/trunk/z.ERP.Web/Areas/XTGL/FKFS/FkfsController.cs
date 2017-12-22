@@ -12,7 +12,7 @@ namespace z.ERP.Web.Areas.XTGL.FKFS
             return View();
         }
 
-        public void Save(FKFSEntity DefineSave)
+        public string Save(FKFSEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
             if (DefineSave.ID.IsEmpty())
@@ -21,7 +21,7 @@ namespace z.ERP.Web.Areas.XTGL.FKFS
             v.IsNumber(a => a.ID);            
             v.IsUnique(a => a.NAME);
             v.Verify();
-            CommonSave(DefineSave);
+            return CommonSave(DefineSave);
         }
         public void Delete(FKFSEntity DefineDelete)
         {

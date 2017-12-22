@@ -11,7 +11,7 @@ namespace z.ERP.Web.Areas.XTGL.OPERATIONRULE
         {
             return View();
         }
-        public void Save(OPERATIONRULEEntity DefineSave)
+        public string Save(OPERATIONRULEEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
             if (DefineSave.ID.IsEmpty())
@@ -26,8 +26,7 @@ namespace z.ERP.Web.Areas.XTGL.OPERATIONRULE
             v.IsUnique(a => a.ID);
             v.IsUnique(a => a.NAME);
             v.Verify();
-            CommonSave(DefineSave);
-            
+            return CommonSave(DefineSave);            
         }
         public void Delete(OPERATIONRULEEntity DefineDelete)
         {
