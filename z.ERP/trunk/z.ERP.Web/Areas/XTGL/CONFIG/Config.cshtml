@@ -1,0 +1,93 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Define
+@using z.ERP.Entities.Enum
+@inherits DefineViewBase
+
+@section element{
+    <row>
+        <i-col span="2" class="RowTitle">
+            编号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ID",
+                });
+            }
+        </i-col>
+    </row>
+    
+    <row>
+        <i-col span="2" class="RowTitle">
+            缺省值
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DEF_VAL",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            当前值
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CUR_VAL",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            最大值
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MAX_VAL",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            最小值
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MIN_VAL",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            描述
+        </i-col>
+        <i-col span="14">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+}

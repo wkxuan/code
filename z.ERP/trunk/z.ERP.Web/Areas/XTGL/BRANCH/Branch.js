@@ -16,10 +16,10 @@
     define.service = "XtglService";
     define.method = "GetBranchElement";
     define.methodList = "GetBranch";
+
+    define.getKey = 'ID';
 }
 
-
-define.getKey = 'ID';
 
 define.newRecord = function () {
     define.dataParam.STATUS = "1";

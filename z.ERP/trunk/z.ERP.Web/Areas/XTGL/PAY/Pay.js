@@ -29,10 +29,10 @@
     define.service = "XtglService";
     define.method = "GetPayElement";
     define.methodList = "GetPay";
+    define.Key = 'PAYID';
 }
 
 
-define.Key = 'PAYID';
 
 define.newRecord = function () {
     define.dataParam.VOID_FLAG = "1";

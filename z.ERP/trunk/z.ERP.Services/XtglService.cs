@@ -97,6 +97,16 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
+
+        public DataGridResult GetConfig(SearchItem item)
+        {
+            string sql = $@"select * from CONFIG where 1=1 ";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
         public DataGridResult GetFkfs(SearchItem item)
         {
             string sql = $@"select ID,NAME from FKFS where 1=1";
