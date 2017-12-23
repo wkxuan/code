@@ -32,10 +32,10 @@
 </style>
 
 <div id="search">
-    <collapse v-model="frameTar">
-        <panel name="tj">
+    <collapse v-model="panelName">
+        <panel name="condition">
             查询条件
-            <row class="topbutton">
+            <div style="float: right; width: 400px ;text-align: right;z-index:99">
                 @{
                     RenderControl(new ButtonRender()
                     {
@@ -52,24 +52,22 @@
                         Enable = true
                     });
                 }
-                @*增加按钮*@
-                @RenderSection("tjbtn", false) 
-                
-            </row>
+                @RenderSection("conditionBtn", false)
+            </div>
             <p slot="content" class="element">
                 @*查询条件*@
-                @RenderSection("tj", true)
+                @RenderSection("conditionParam", true)
             </p>
         </panel>
-        <panel name="jg">
+        <panel name="result">
             查询结果
-            <row class="topbutton">
-                @{
+            <div style="float: right; width: 400px ;text-align: right;z-index:99">
+                 @{
                     RenderControl(new ButtonRender()
-                    {
-                        Click = "export",
+                   {
+                        Click = "exp",
                         Text = "导出",
-                        Enable = true
+                         Enable = true
                     });
                 }
                 @{
@@ -81,13 +79,13 @@
                     });
                 }
                 @*增加结果按钮*@
-                @RenderSection("jgbtn", false)
-            </row>
+                @RenderSection("resultBtn", false)
+            </div>
             <p slot="content">
                  @*结果显示*@
                 <i-table :highlight-row="true" size="small" :border="true"
                          :columns="screenParam.colDef" :data="screenParam.dataDef"></i-table>
-                @RenderSection("jg", false)
+                @RenderSection("resultOthers", false)
             </p>
         </panel>
     </collapse>
