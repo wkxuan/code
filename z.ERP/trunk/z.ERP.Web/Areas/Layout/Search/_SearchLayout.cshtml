@@ -1,0 +1,98 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js",
+                    "Areas/Layout/Search/_SearchLayout.js"
+                };
+}
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+<style>
+    .RowTitle {
+        text-align: right;
+        font-size: small;
+    }
+
+    .element .ivu-row {
+        height: 50px;
+    }
+
+    .topbutton .ivu-btn {
+        margin-left: 10px;
+    }
+</style>
+
+<div id="search">
+    <collapse v-model="frameTar">
+        <panel name="tj">
+            查询条件
+            <row class="topbutton">
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "seach",
+                        Text = "查询",
+                        Enable = true
+                    });
+                }
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "clear",
+                        Text = "清空",
+                        Enable = true
+                    });
+                }
+                @*增加按钮*@
+                @RenderSection("tjbtn", false) 
+                
+            </row>
+            <p slot="content" class="element">
+                @*查询条件*@
+                @RenderSection("tj", true)
+            </p>
+        </panel>
+        <panel name="jg">
+            查询结果
+            <row class="topbutton">
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "export",
+                        Text = "导出",
+                        Enable = true
+                    });
+                }
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "print",
+                        Text = "打印",
+                        Enable = true
+                    });
+                }
+                @*增加结果按钮*@
+                @RenderSection("jgbtn", false)
+            </row>
+            <p slot="content">
+                 @*结果显示*@
+                <i-table :highlight-row="true" size="small" :border="true"
+                         :columns="screenParam.colDef" :data="screenParam.dataDef"></i-table>
+                @RenderSection("jg", false)
+            </p>
+        </panel>
+    </collapse>
+</div>
+
+@section foot{
+    @RenderSection("foot", false)
+}
