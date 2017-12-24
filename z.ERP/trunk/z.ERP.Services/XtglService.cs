@@ -172,6 +172,25 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public DataGridResult GetShop(SearchItem item)
+        {
+            string sql = $@"SELECT A.CODE,A.NAME FROM SHOP A WHERE 1=1";
+            item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
+            item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
+            sql += " ORDER BY  A.CODE";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetShopElement(SearchItem item)
+        {
+            string sql = $@"select A.* from SHOP A where 1=1 ";
+            item.HasKey("SHOPID", a => sql += $" and A.SHOPID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 
 }
