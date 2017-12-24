@@ -145,6 +145,33 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public DataGridResult GetLateFeeRuleElement(SearchItem item)
+        {
+            string sql = $@"select A.ID,A.NAME,A.DAYS,A.AMOUNTS from LATEFEERULE A where 1=1 ";
+            item.HasKey("ID", a => sql += $" and A.ID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public DataGridResult GetFloor(SearchItem item)
+        {
+            string sql = $@"SELECT A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
+            item.HasKey("ID,", a => sql += $" and A.CODE = '{a}'");
+            item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
+            sql += " ORDER BY  A.CODE";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetFloorElement(SearchItem item)
+        {
+            string sql = $@"select A.* from FLOOR A where 1=1 ";
+            item.HasKey("ID", a => sql += $" and A.CODE = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 
 }

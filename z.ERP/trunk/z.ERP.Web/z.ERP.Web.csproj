@@ -176,6 +176,7 @@
     <Compile Include="Areas\XTGL\FEERULE\FeeRuleController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
+    <Compile Include="Areas\XTGL\FLOOR\Floor.cs" />
     <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
     <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
@@ -195,6 +196,7 @@
     <Content Include="Areas\BRAND\BRAND\Brand.js" />
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
+    <Content Include="Areas\XTGL\FLOOR\Floor.js" />
     <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.js" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.js" />
     <Content Include="Areas\XTGL\LATEFEERULE\LateFeeRule.js" />
@@ -277,6 +279,7 @@
     <Content Include="Areas\Share\Window.cshtml" />
     <Content Include="Areas\Share\WindowButton.cshtml" />
     <Content Include="Areas\XTGL\LATEFEERULE\LateFeeRule.cshtml" />
+    <Content Include="Areas\XTGL\FLOOR\Floor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
