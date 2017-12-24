@@ -9,19 +9,11 @@ using z.MVC5.Views;
 
 namespace z.ERP.Web.Areas.Share
 {
-    public class ControlViewBase<TModel> : ViewBase<TModel>
+    public class ControlViewBase<ControlRenderBase> : ViewBase<ControlRenderBase>
     {
         public ControlViewBase()
         {
 
-        }
-
-        public override string Layout
-        {
-            get
-            {
-                return null;
-            }
         }
     }
 }

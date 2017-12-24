@@ -158,6 +158,7 @@
     <Compile Include="Areas\MERCHANT\MERCHANT\Merchant.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
+    <Compile Include="Areas\Share\Render\UndefineWindowRender.cs" />
     <Compile Include="Areas\Share\Render\WindowRender.cs" />
     <Compile Include="Areas\Share\Render\CheckBoxListRender.cs" />
     <Compile Include="Areas\Share\Render\EnumCheckBoxListRender.cs" />
@@ -272,11 +273,11 @@
     <Content Include="Areas\XTGL\BRANCH\Branch.cshtml" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.cshtml" />
     <Content Include="Areas\XTGL\PERIOD\Period.cshtml" />
-    <Content Include="Areas\Share\Window.cshtml" />
     <Content Include="Areas\Share\WindowButton.cshtml" />
     <Content Include="Areas\XTGL\CONFIG\Config.cshtml" />
     <Content Include="Areas\Layout\Search\_SearchLayout.cshtml" />
     <Content Include="Areas\MERCHANT\MERCHANT\MerchantList.cshtml" />
+    <Content Include="Areas\Share\UndefineWindow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

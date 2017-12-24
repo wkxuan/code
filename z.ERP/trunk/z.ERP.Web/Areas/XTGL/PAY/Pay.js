@@ -25,6 +25,9 @@
         }];
 
     define.screenParam.dataDef = [];
+    define.windowParam = {
+        terst: false
+    }
 
     define.service = "XtglService";
     define.method = "GetPayElement";
@@ -69,3 +72,4 @@ define.IsValidSave = function (param) {
     }
     return true;
 }
+

@@ -6,14 +6,23 @@ using z.MVC5.Models;
 
 namespace z.ERP.Web.Areas.Share.Render
 {
-    public class WindowRender : VueRender
+    public class WindowBaseRender : VueRender
     {
         public override string ControllerMothod
         {
             get
             {
-                return "Window";
+                return "WindowBase";
             }
         }
+
+
+
+        public string Title
+        {
+            get;
+            set;
+        }
+        
     }
 }
