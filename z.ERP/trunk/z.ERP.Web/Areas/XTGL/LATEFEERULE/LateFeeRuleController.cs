@@ -11,7 +11,7 @@ namespace z.ERP.Web.Areas.XTGL.LATEFEERULE
 {
     public class LateFeeRuleController:BaseController
     {
-        public ActionResult LateLateFeeRule()
+        public ActionResult LateFeeRule()
         {
             return View();
         }
@@ -24,6 +24,8 @@ namespace z.ERP.Web.Areas.XTGL.LATEFEERULE
             v.IsUnique(a => a.ID);
             v.Require(a => a.NAME);
             v.IsUnique(a => a.NAME);
+            v.Require(a => a.DAYS);
+            v.Require(a => a.AMOUNTS);
             v.Verify();
             return CommonSave(DefineSave);
         }
