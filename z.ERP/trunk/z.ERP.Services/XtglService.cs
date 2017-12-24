@@ -136,6 +136,80 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public DataGridResult GetLateFeeRule(SearchItem item)
+        {
+            string sql = $@"select A.ID,A.NAME,A.DAYS,A.AMOUNTS from LATEFEERULE A where 1=1 ";
+            item.HasKey("ID", a => sql += $" and A.ID = '{a}'");
+            sql += "order by A.ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public DataGridResult GetLateFeeRuleElement(SearchItem item)
+        {
+            string sql = $@"select A.ID,A.NAME,A.DAYS,A.AMOUNTS from LATEFEERULE A where 1=1 ";
+            item.HasKey("ID", a => sql += $" and A.ID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public DataGridResult GetFloor(SearchItem item)
+        {
+            string sql = $@"SELECT A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
+            item.HasKey("ID,", a => sql += $" and A.CODE = '{a}'");
+            item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
+            sql += " ORDER BY  A.CODE";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetFloorElement(SearchItem item)
+        {
+            string sql = $@"select A.* from FLOOR A where 1=1 ";
+            item.HasKey("ID", a => sql += $" and A.CODE = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public DataGridResult GetShop(SearchItem item)
+        {
+            string sql = $@"SELECT A.CODE,A.NAME FROM SHOP A WHERE 1=1";
+            item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
+            item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
+            sql += " ORDER BY  A.CODE";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetShopElement(SearchItem item)
+        {
+            string sql = $@"select A.* from SHOP A where 1=1 ";
+            item.HasKey("SHOPID", a => sql += $" and A.SHOPID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public DataGridResult GetEnergyFiles(SearchItem item)
+        {
+            string sql = $@"SELECT A.FILECODE,A.FILENAME FROM ENERGY_FILES A WHERE 1=1";
+            item.HasKey("FILECODE,", a => sql += $" and A.FILECODE = '{a}'");
+            item.HasKey("FILENAME", a => sql += $" and A.FILENAME = '{a}'");
+            sql += " ORDER BY  A.FILECODE";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetEnergyFilesElement(SearchItem item)
+        {
+            string sql = $@"select A.* from ENERGY_FILES A where 1=1 ";
+            item.HasKey("FILEID", a => sql += $" and A.FILEID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 
 }
