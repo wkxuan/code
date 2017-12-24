@@ -15,11 +15,6 @@ namespace z.ERP.Web.Areas.Share.Render
                 return "WindowButton";
             }
         }
-
-        //public WindowRender render
-        //{
-        //    get;
-        //    set;
-        //}
+        
     }
 }

@@ -38,6 +38,8 @@ namespace z.ERP.Services
         public DataGridResult GetPay(SearchItem item)
         {
             string sql = $@"SELECT PAYID,NAME FROM PAY WHERE 1=1 ";
+            item.HasKey("PAYID", a => sql += $" and PAYID = '{a}'");
+            item.HasKey("NAME", a => sql += $" and NAME = '{a}'");
             sql += " ORDER BY  PAYID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -48,7 +50,6 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT * FROM PAY WHERE 1=1 ";
             item.HasKey("PAYID", a => sql += $" and PAYID = '{a}'");
-            sql += " ORDER BY  PAYID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -57,9 +58,50 @@ namespace z.ERP.Services
 
         public DataGridResult GetFeeSubject(SearchItem item)
         {
+            string sql = $@"SELECT TRIMID,NAME FROM FEESUBJECT  WHERE 1=1";
+            item.HasKey("TRIMID", a => sql += $" and TRIMID = '{a}'");
+            item.HasKey("NAME", a => sql += $" and NAME = '{a}'");
+            sql += " ORDER BY  TRIMID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetFeeSubjectElement(SearchItem item)
+        {
             string sql = $@"SELECT TRIMID,NAME FROM FEESUBJECT WHERE 1=1 ";
             item.HasKey("TRIMID", a => sql += $" and TRIMID = '{a}'");
-            sql += " ORDER BY  TRIMID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+
+        public DataGridResult GetBranch(SearchItem item)
+        {
+            string sql = $@"SELECT ID,NAME FROM BRANCH WHERE 1=1";
+            item.HasKey("ID,", a => sql += $" and ID = '{a}'");
+            item.HasKey("NAME", a => sql += $" and NAME = '{a}'");
+            sql += " ORDER BY  ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetBranchElement(SearchItem item)
+        {
+            string sql = $@"select * from BRANCH where 1=1 ";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+
+        public DataGridResult GetConfig(SearchItem item)
+        {
+            string sql = $@"select * from CONFIG where 1=1 ";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -84,13 +126,7 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
-        public DataGridResult GetBranch(SearchItem item)
-        {
-            string sql = $@"select ID,NAME from BRANCH order by ID";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
+
         public DataGridResult GetFeeRule(SearchItem item)
         {
             string sql = $@"select * from FEERULE where 1=1 ";

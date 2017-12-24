@@ -162,7 +162,7 @@ namespace z.DBHelper.Helper
             }
             catch (Exception ex)
             {
-                throw new DataBaseException(ex.Message, sql);
+                throw new DataBaseException(ex.InnerMessage(), sql);
             }
             return dt;
         }
@@ -201,7 +201,7 @@ namespace z.DBHelper.Helper
             }
             catch (Exception ex)
             {
-                throw new DataBaseException(ex.Message, sql);
+                throw new DataBaseException(ex.InnerMessage(), sql);
             }
             return dt;
         }
@@ -239,7 +239,7 @@ namespace z.DBHelper.Helper
             }
             catch (Exception ex)
             {
-                throw new DataBaseException(ex.Message, _dbCommand.CommandText);
+                throw new DataBaseException(ex.InnerMessage(), _dbCommand.CommandText);
             }
         }
 

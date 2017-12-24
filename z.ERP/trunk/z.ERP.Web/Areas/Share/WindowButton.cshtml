@@ -7,5 +7,15 @@
             vModel = Model.vModel + "_w"
         });
     }
+
+    <modal  v-model="dataParam.a"
+           title="11111111111111111111111"
+           @@on-ok="alert(1)"
+           @@on-cancel="alert(1)">
+        <p>Content of dialog</p>
+        <p>Content of dialog</p>
+        <p>Content of dialog</p>
+    </modal>
+
 </div>
-<i-button id="@Model.Id" v-on:click="@(Model.vModel + "_w")=true" :disabled="@(Model.Enable?"!disabled":"disabled")">@Model.Text</i-button>
+<i-button id="@Model.Id" v-on:click="dataParam.a=true" :disabled="@(Model.Enable?"!disabled":"disabled")">@Model.Text</i-button>

@@ -14,9 +14,9 @@
 
     //添加后初始化数据信息
     this.newRecord = function () { }
-    
-    //得到主键信息
-    this.getKey = function (data) {}
+
+    //得到主键
+    this.Key = undefined
 
     //vue操作
     this.vue = function VueOperate() {
@@ -27,31 +27,27 @@
                 //screenParam屏幕显示的内容
                 dataParam: _this.dataParam,
                 screenParam: _this.screenParam,
+                searchParam: _this.searchParam,
                 disabled: _this.enabled(true),
+                _key: undefined,
             },
-            mounted: function () {
-                //页面打开先查询左边列表信息
-                _.Search({
-                    Service: _this.service,
-                    Method: _this.methodList,
-                    Data: {},
-                    Success: function (data) {
-                        define.screenParam.dataDef = data.rows;
-                    }
-                })
-            },
+            mounted: showlist,
             methods: {
                 //添加
                 add: function (event) {
-                    //清空dataParam会造成取消得不到key 直接清空vue
-                    //_this.dataParam = {};
-                    ////_this.dataParam;
+                    ve._key = define.dataParam[_this.Key],
+                    _this.dataParam = {};
                     _this.newRecord();
-                    ve.dataParam = {};
+                    ve.dataParam = _this.dataParam;
                     ve.disabled = _this.enabled(false);
                 },
                 //修改
                 mod: function (event) {
+                    if (!ve._key) {
+                        this.$Message.error("请选择数据");
+                        return;
+                    }
+                    ve._key = define.dataParam[_this.Key];
                     ve.disabled = _this.enabled(false);
                 },
                 //保存
@@ -59,87 +55,49 @@
                     var _self = this;
                     if (!_this.IsValidSave(_self))
                         return;
-                    _.Ajax('Save', {
-                        DefineSave: ve.dataParam
-                    }, function (callback) {
-                        var res = 0;
-                        //callback 返回的是主键
-                        var backKey = callback;
-                        //返回左边列表
-                        _.Search({
-                            Service: _this.service,
-                            Method: _this.methodList,
-                            Data: {},
-                            Success: function (data) {
-                                define.screenParam.dataDef = data.rows;
-                                res++;
-                                if (res > 1)
-                                {
-                                    ve.disabled = _this.enabled(true);
-                                    _self.$Message.info("保存成功");
-                                }
-                            }
-                        })
-                        //返回右边元素
-                        _.Search({
-                            Service: _this.service,
-                            Method: _this.method,
-                            Data: _this.getKey(backKey),
-                            Success: function (data) {
-                                _this.dataParam = data.rows[0];
-                                ve.dataParam = _this.dataParam;
-                                res++;
-                                if (res > 1) {
-                                    ve.disabled = _this.enabled(true);
-                                    _self.$Message.info("保存成功");
-                                }
+                    save(function (data) {
+                        showlist(function () {
+                            showone(data, function () {
+                                ve.disabled = _this.enabled(true);
+                                _self.$Message.info("保存成功");
+                            });
+                        });
+                    })
+                },
+                //取消
+                quit: function (event) {
+                    if (ve._key) {
+                        this.$Modal.confirm({
+                            title: '提示',
+                            content: '是否取消',
+                            onOk: function () {
+                                showone(ve._key);
+                                ve.disabled = _this.enabled(true);
+                            },
+                            onCancel: function () {
+                                ve.disabled = _this.enabled(false);
+                                this.id = "关闭"
                             }
                         });
-
-                    });
-                },
-                quit: function (event) {
-                    this.$Modal.confirm({
-                        title: '提示',
-                        content: '是否取消',
-                        onOk: function () {
-                            //取消后查原来的元素列表
-                            _.Search({
-                                Service: _this.service,
-                                Method: _this.method,
-                                Data: _this.getKey(),
-                                Success: function (data) {
-                                    _this.dataParam = data.rows[0];
-                                    ve.dataParam = _this.dataParam;
-                                }
-                            });
-                            ve.disabled = _this.enabled(true);
-                        },
-                        onCancel: function () {
-                            ve.disabled = _this.enabled(false);
-                            this.id = "关闭"
-                        }
-                    });
+                    }
+                    else {
+                        ve.disabled = _this.enabled(true);
+                    }
 
                 },
                 //删除
                 del: function (event) {
                     var _self = this;
+                    if (!ve._key) {
+                        _self.$Message.error("请选择数据");
+                        return;
+                    }
                     this.$Modal.confirm({
                         title: '提示',
                         content: '是否删除',
                         onOk: function () {
-                            _.Ajax('Delete', {
-                                DefineDelete: ve.dataParam
-                            }, function (data) {
-                                _.Search({
-                                    Service: _this.service,
-                                    Method: _this.methodList,
-                                    Data: {},
-                                    Success: function (data) {
-                                        define.screenParam.dataDef = data.rows;
-                                    }
-                                })
+                            deleteone(ve.dataParam, function () {
+                                showlist();
                                 //删除完,界面清空
                                 _this.dataParam = {};
                                 ve.dataParam = _this.dataParam;
@@ -155,25 +113,67 @@
                 //列表选中
                 //参数:currentRow当前数据
                 //oldCurrentRow上一次选中的数据
-                currentData: function (currentRow, oldCurrentRow) {
+                showlist: function (currentRow, oldCurrentRow) {
                     _this.dataParam = currentRow;
-                    _.Search({
-                        Service: _this.service,
-                        Method: _this.method,
-                        Data: _this.getKey(),
-                        Success: function (callback) {
-                            _this.dataParam = callback.rows[0];
-                            ve.dataParam = _this.dataParam;
-                        }
-                    });                   
+                    ve._key = define.dataParam[_this.Key];
+                    showone(ve._key);
+                },
+                seachList: function (event) {
+                    showlist();
                 }
             }
         });
+
+        function showlist(callback) {
+            _.Search({
+                Service: _this.service,
+                Method: _this.methodList,
+                Data: _this.searchParam,
+                Success: function (data) {
+                    define.screenParam.dataDef = data.rows;
+                    callback && callback();
+                }
+            })
+        }
+
+        function showone(key, callback) {
+            if (key) {
+                var v = {};
+                v[_this.Key] = key;
+                _.Search({
+                    Service: _this.service,
+                    Method: _this.method,
+                    Data: v,
+                    Success: function (data) {
+                        _this.dataParam = data.rows[0];
+                        ve.dataParam = _this.dataParam;
+                        callback && callback();
+                    }
+                });
+            }
+        }
+
+        function save(callback) {
+            _.Ajax('Save', {
+                DefineSave: ve.dataParam
+            }, function (data) {
+                callback && callback(data);
+            });
+        }
+
+        function deleteone(data, callback) {
+            _.Ajax('Delete', {
+                DefineDelete: data
+            }, function (data) {
+                callback && callback();
+            });
+        }
     }
 
     //初始化vue绑定的对象
     this.vueInit = function () {
         _this.dataParam = {};
+        _this.searchParam = {};
         _this.screenParam = {};
         _this.service = "";
         _this.method = "";

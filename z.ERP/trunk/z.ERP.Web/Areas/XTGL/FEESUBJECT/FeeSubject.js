@@ -11,19 +11,13 @@
         }];
 
     define.screenParam.dataDef = [];
+
+    define.service = "XtglService";
+    define.method = "GetFeeSubjectElement";
+    define.methodList = "GetFeeSubject";
+    define.getKey = 'TRIMID';
 }
 
-
-define.search = function () {
-    _.Search({
-        Service: 'TestService',
-        Method: 'GetFeeSubject',
-        Data: {},
-        Success: function (data) {
-            define.screenParam.dataDef = data.rows;
-        }
-    })
-}
 
 define.newRecord = function () {
     define.dataParam.VOID_FLAG = "1";

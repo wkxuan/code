@@ -26,8 +26,16 @@ namespace z.ERP.Web.Areas.XTGL.FEERULE
             v.IsUnique(a => a.NAME);
             v.Require(a => a.PAY_CYCLE);        //缴费周期
             v.Require(a => a.ADVANCE_CYCLE);    //提前周期
-            v.Require(a => a.FEE_DAY);          //出单日期
-            v.Verify();
+            v.Require(a => a.FEE_DAY);          //出单日期            
+            v.Verify();            
+            if (Convert.ToInt32(DefineSave.FEE_DAY)<0 || Convert.ToInt32(DefineSave.FEE_DAY) > 28)
+            {
+                throw new Exception("出单日期不能小于0或者大于28");
+            }
+            if (Convert.ToInt32(DefineSave.UP_DATE) < 0 || Convert.ToInt32(DefineSave.UP_DATE) > 28)
+            {
+                throw new Exception("缴费截至日不能小于0或者大于28");
+            }
             return CommonSave(DefineSave);
         }
         public void Delete(FEERULEEntity DefineDelete)
