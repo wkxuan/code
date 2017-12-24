@@ -8,6 +8,7 @@
     define.service = "XtglService";
     define.method = "GetLateFeeRule";
     define.methodList = "GetLateFeeRule";
+    define.Key = "ID";
 }
 
 define.getKey = function (data) {

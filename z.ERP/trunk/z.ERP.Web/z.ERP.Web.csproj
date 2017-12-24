@@ -276,6 +276,7 @@
     <Content Include="Areas\XTGL\PERIOD\Period.cshtml" />
     <Content Include="Areas\Share\Window.cshtml" />
     <Content Include="Areas\Share\WindowButton.cshtml" />
+    <Content Include="Areas\XTGL\LATEFEERULE\LateFeeRule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
