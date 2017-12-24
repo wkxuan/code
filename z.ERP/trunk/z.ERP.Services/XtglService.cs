@@ -100,6 +100,15 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public DataGridResult GetLateFeeRule(SearchItem item)
+        {
+            string sql = $@"select A.ID,A.NAME,A.DAYS,A.AMOUNTS from LATEFEERULE A where 1=1 ";
+            item.HasKey("ID", a => sql += $" and A.ID = '{a}'");
+            sql += "order by A.ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 
 }
