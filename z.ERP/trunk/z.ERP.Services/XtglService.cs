@@ -191,6 +191,25 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public DataGridResult GetEnergyFiles(SearchItem item)
+        {
+            string sql = $@"SELECT A.FILECODE,A.FILENAME FROM ENERGY_FILES A WHERE 1=1";
+            item.HasKey("FILECODE,", a => sql += $" and A.FILECODE = '{a}'");
+            item.HasKey("FILENAME", a => sql += $" and A.FILENAME = '{a}'");
+            sql += " ORDER BY  A.FILECODE";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetEnergyFilesElement(SearchItem item)
+        {
+            string sql = $@"select A.* from ENERGY_FILES A where 1=1 ";
+            item.HasKey("FILEID", a => sql += $" and A.FILEID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 
 }

@@ -20,9 +20,11 @@
         <i-col span="2" class="RowTitle">楼层</i-col>
         <i-col span="6">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new ServiceDropDownListRender()
                 {
-                    vModel = "dataParam.FLOORID"
+                    vModel = "dataParam.FLOORID",
+                    ServiceMothod = m => m.floor(),
+                    Enable = false
                 });
             }
         </i-col>
@@ -53,7 +55,7 @@
     </row>
 
     <row>
-        <i-col span="2" class="RowTitle">楼层名称</i-col>
+        <i-col span="2" class="RowTitle">单元名称</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -99,31 +101,6 @@
             }
         </i-col>
     </row>
-    <row>
-        <i-col span="2" class="RowTitle">单元状态</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumCheckBoxListRender<单元状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                    MultiSelect = false,
-                    Enable = false
-                });
-            }
-        </i-col>
-
-        <i-col span="2" class="RowTitle">租用状态</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumCheckBoxListRender<租用状态>()
-                {
-                    vModel = "dataParam.RENT_STATUS",
-                    MultiSelect = false,
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
 
     <row>
         <i-col span="2" class="RowTitle">建筑面积</i-col>
@@ -161,6 +138,33 @@
             }
         </i-col>
     </row>
+
+<row>
+    <i-col span="2" class="RowTitle">单元状态</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new EnumCheckBoxListRender<单元状态>()
+            {
+                vModel = "dataParam.STATUS",
+                MultiSelect = false,
+                Enable = false
+            });
+        }
+    </i-col>
+
+    <i-col span="2" class="RowTitle">租用状态</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new EnumCheckBoxListRender<租用状态>()
+            {
+                vModel = "dataParam.RENT_STATUS",
+                MultiSelect = false,
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
 
 
 

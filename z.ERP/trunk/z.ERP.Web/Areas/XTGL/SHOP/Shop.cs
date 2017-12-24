@@ -6,7 +6,7 @@ using System;
 
 namespace z.ERP.Web.Areas.XTGL.SHOP
 {
-    public class FloorController: BaseController
+    public class ShopController: BaseController
     {
         public ActionResult Shop()
         {

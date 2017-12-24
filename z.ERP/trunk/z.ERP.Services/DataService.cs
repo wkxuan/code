@@ -54,5 +54,11 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
+        public List<SelectItem> floor()
+        {
+            string sql = $@"SELECT A.ID,A.NAME FROM FLOOR A WHERE 1=1 ORDER BY  A.ID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ID", "NAME");
+        }
     }
 }
