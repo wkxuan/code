@@ -280,7 +280,6 @@
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.cshtml" />
     <Content Include="Areas\XTGL\BRANCH\Branch.cshtml" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.cshtml" />
-    <Content Include="Areas\XTGL\PERIOD\Period.cshtml" />
     <Content Include="Areas\Share\WindowButton.cshtml" />
     <Content Include="Areas\XTGL\CONFIG\Config.cshtml" />
     <Content Include="Areas\Layout\Search\_SearchLayout.cshtml" />
