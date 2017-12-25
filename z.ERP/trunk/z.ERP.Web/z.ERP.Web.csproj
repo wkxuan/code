@@ -200,7 +200,6 @@
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
-    <Content Include="Areas\XTGL\PERIOD\test.js" />
     <Content Include="Areas\XTGL\SHOP\Shop.js" />
     <Content Include="Areas\XTGL\FLOOR\Floor.js" />
     <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.js" />

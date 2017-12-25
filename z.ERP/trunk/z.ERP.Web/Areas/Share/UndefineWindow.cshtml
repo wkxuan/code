@@ -1,0 +1,10 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<UndefineWindowRender>
+
+<modal v-model="@Model.vModel"
+       title="@Model.Title"
+       @@on-ok="@Model.ResVModel1 = $('#testid').val(); @Model.ResVModel2 = $('#testname').val();">
+    Id:<input id="testid" />
+    名称:<input id="testname" />
+</modal>
+

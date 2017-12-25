@@ -1,78 +1,36 @@
-﻿@inherits ViewBase<dynamic>
-@using z.ERP.Web.Areas.Share.Render
-@using z.MVC5.Views
-@{
-    Layout = ThisLayout;
-}
-@{
-    WebFiles = new string[] {
-                    "Content/VUE/styles/iview.css",
-                    "Content/VUE/vue.js",
-                    "Content/VUE/iview.js",
-                    "/Areas/XTGL/PERIOD/Period.js"                    
-                };
-}
-@section head{
-    @InitFiles(WebFiles)
-}
-@*<style>
-    .RowTitle {
-        text-align: right;
-        font-size: small;
-    }
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
 
-    .elementcard .ivu-row {
-        height: 50px;
-    }
-
-    .topbutton .ivu-btn {
-        margin-left: 10px;
-    }
-</style>*@
-
-<div id="def_Main">
-    @*<row class="topbutton">
-
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "mod",
-                Text = "修改",
-                //Enable = false
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "save",
-                Text = "存档",
-                Enable = false
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "quit",
-                Text = "放弃",
-                Enable = false
-            });
-        }
-    </row>*@
-    @*<row>
-        <i-col span="8">
-            <card>
-                <p slot="title">列表信息</p>
-       
-                <i-table highlight-row="true" size="small" border="true"
-                         columns="colDef" data="dataDef"></i-table>
-            </card>
+@section element{
+    <row>
+        <i-col span="2" class="RowTitle">
+            年度
         </i-col>
-
-        <i-col span="16">
-            <card class="elementcard">
-                <p slot="title">包含元素</p>
-         
-            </card>
+        <i-col span="6">
+            @{
+                RenderControl(new DropDownListRender
+                {
+                    vModel = "dataParam.ID",                    
+                    Enable = true
+                });
+            }
         </i-col>
-    </row>*@
-</div>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            每月结束日
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender
+                {
+                    vModel = "dataParam.NAME",
+                    Id = "tb_name",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+}
