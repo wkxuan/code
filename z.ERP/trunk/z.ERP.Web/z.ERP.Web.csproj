@@ -195,12 +195,11 @@
     <Content Include="Areas\HTGL\LYHT\List.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\MERCHANT\MERCHANT\MerchantList.js" />
-    <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\BRAND\BRAND\Brand.js" />
+    <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
-    <Content Include="Areas\XTGL\PERIOD\1.js" />
     <Content Include="Areas\XTGL\SHOP\Shop.js" />
     <Content Include="Areas\XTGL\FLOOR\Floor.js" />
     <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.js" />
