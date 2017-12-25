@@ -79,8 +79,8 @@
             <card>
                 <p slot="title">列表信息</p>
                 @RenderSection("search", false)
-                <i-table highlight-row="true" size="small" border="true"
-                         columns="screenParam.colDef" data="screenParam.dataDef"
+                <i-table :highlight-row="true" size="small" :border="true"
+                         :columns="screenParam.colDef" :data="screenParam.dataDef"
                          v-on:on-current-change="showlist"></i-table>
             </card>
         </i-col>
