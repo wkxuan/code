@@ -83,4 +83,20 @@ namespace z.ERP.Entities.Enum
         支付宝 = 5,
         微信 = 6
     }
+    public enum 单元类型
+    {
+        铺位 = 1,
+        临时场地 = 2,
+        广告位 = 3
+    }
+    public enum 单元状态
+    {
+        不可用 = 1,
+        正常 = 2
+    }
+    public enum 租用状态
+    {
+        空置 = 1,
+        出租 = 2
+    }
 }

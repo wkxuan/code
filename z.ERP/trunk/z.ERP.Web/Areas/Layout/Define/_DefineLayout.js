@@ -26,10 +26,11 @@
                 //dataParam 数据库交互需要传输的内容
                 //screenParam屏幕显示的内容
                 dataParam: _this.dataParam,
+                windowParam: _this.windowParam,
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 disabled: _this.enabled(true),
-                _key: undefined,
+                _key: undefined
             },
             mounted: showlist,
             methods: {
@@ -173,6 +174,7 @@
     //初始化vue绑定的对象
     this.vueInit = function () {
         _this.dataParam = {};
+        _this.windowParam = {};
         _this.searchParam = {};
         _this.screenParam = {};
         _this.service = "";

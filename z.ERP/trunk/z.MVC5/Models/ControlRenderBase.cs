@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using z.MVC5.Views;
 
 namespace z.MVC5.Models
 {
-    public abstract class ControlRenderBase
+    public abstract class ControlRenderBase 
     {
 
         /// <summary>

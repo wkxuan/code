@@ -15,9 +15,9 @@
     define.service = "XtglService";
     define.method = "GetFeeSubjectElement";
     define.methodList = "GetFeeSubject";
+    define.getKey = 'TRIMID';
 }
 
-define.getKey = 'TRIMID';
 
 define.newRecord = function () {
     define.dataParam.VOID_FLAG = "1";

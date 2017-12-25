@@ -25,7 +25,7 @@ namespace z.ERP.Web.Areas.Share
         {
             return View(render);
         }
-        public ActionResult Window(WindowRender render)
+        public ActionResult UndefineWindow(UndefineWindowRender render)
         {
             return View(render);
         }

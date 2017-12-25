@@ -15,6 +15,15 @@ namespace z.ERP.Web.Areas.Share.Render
                 return "WindowButton";
             }
         }
+
+        /// <summary>
+        /// 对应窗体绑定对象
+        /// </summary>
+        public string WindowModel
+        {
+            get;
+            set;
+        }
         
     }
 }

@@ -154,8 +154,11 @@
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
+    <Compile Include="Areas\Layout\Search\_SearchLayout.cs" />
+    <Compile Include="Areas\MERCHANT\MERCHANT\Merchant.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
+    <Compile Include="Areas\Share\Render\UndefineWindowRender.cs" />
     <Compile Include="Areas\Share\Render\WindowRender.cs" />
     <Compile Include="Areas\Share\Render\CheckBoxListRender.cs" />
     <Compile Include="Areas\Share\Render\EnumCheckBoxListRender.cs" />
@@ -170,9 +173,14 @@
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\BRAND\BRAND\BrandController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
+    <Compile Include="Areas\XTGL\CONFIG\Config.cs" />
     <Compile Include="Areas\XTGL\FEERULE\FeeRuleController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
+    <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cs" />
+    <Compile Include="Areas\XTGL\SHOP\Shop.cs" />
+    <Compile Include="Areas\XTGL\FLOOR\Floor.cs" />
+    <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
     <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
     <Compile Include="Areas\XTGL\PERIOD\PeriodController.cs" />
@@ -185,11 +193,18 @@
   <ItemGroup>
     <Content Include="Areas\HTGL\LYHT\Detail.js" />
     <Content Include="Areas\HTGL\LYHT\List.js" />
+    <Content Include="Areas\Layout\Search\_SearchLayout.js" />
+    <Content Include="Areas\MERCHANT\MERCHANT\MerchantList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\BRAND\BRAND\Brand.js" />
+    <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
+    <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
+    <Content Include="Areas\XTGL\SHOP\Shop.js" />
+    <Content Include="Areas\XTGL\FLOOR\Floor.js" />
     <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.js" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.js" />
+    <Content Include="Areas\XTGL\LATEFEERULE\LateFeeRule.js" />
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.js" />
     <Content Include="Areas\XTGL\PAY\Pay.js" />
     <Content Include="Areas\XTGL\PERIOD\Period.js" />
@@ -266,14 +281,20 @@
     <Content Include="Areas\XTGL\BRANCH\Branch.cshtml" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.cshtml" />
     <Content Include="Areas\XTGL\PERIOD\Period.cshtml" />
-    <Content Include="Areas\Share\Window.cshtml" />
     <Content Include="Areas\Share\WindowButton.cshtml" />
+    <Content Include="Areas\XTGL\CONFIG\Config.cshtml" />
+    <Content Include="Areas\Layout\Search\_SearchLayout.cshtml" />
+    <Content Include="Areas\MERCHANT\MERCHANT\MerchantList.cshtml" />
+    <Content Include="Areas\Share\UndefineWindow.cshtml" />
+    <Content Include="Areas\XTGL\LATEFEERULE\LateFeeRule.cshtml" />
+    <Content Include="Areas\XTGL\FLOOR\Floor.cshtml" />
+    <Content Include="Areas\XTGL\SHOP\Shop.cshtml" />
+    <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Home\" />
     <Folder Include="Areas\HTGL\Views\ZLHT\" />
-    <Folder Include="Areas\MERCHANT\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

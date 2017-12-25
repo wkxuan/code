@@ -46,7 +46,7 @@
             {
                 Click = "mod",
                 Text = "修改",
-                //Enable = false 
+                //Enable = false
             });
         }
         @{
@@ -79,8 +79,8 @@
             <card>
                 <p slot="title">列表信息</p>
                 @RenderSection("search", false)
-                <i-table :highlight-row="true" size="small" :border="true"
-                         :columns="screenParam.colDef" :data="screenParam.dataDef"
+                <i-table highlight-row="true" size="small" border="true"
+                         columns="screenParam.colDef" data="screenParam.dataDef"
                          v-on:on-current-change="showlist"></i-table>
             </card>
         </i-col>
@@ -92,7 +92,12 @@
             </card>
         </i-col>
     </row>
+
+    <div class="hide">
+        @RenderSection("hide", false)
+    </div>
 </div>
+
 
 @section foot{
     @RenderSection("foot", false)

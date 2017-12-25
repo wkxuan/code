@@ -9,8 +9,7 @@
             @{
                 RenderControl(new WindowButtonRender()
                 {
-                    Id = "terst",
-                    vModel = "dataParam.btn_w",
+                    WindowModel = "windowParam.terst",
                     Text = "代码"
                 });
             }
@@ -126,43 +125,55 @@
 }
 
 @section search{
-    
-<row>
-    <i-col span="2" class="RowTitle">
-        代码
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "searchParam.PAYID",
-            });
-        }
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        名称
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new UndefineRender()
-            {
-                vModel = "searchParam.NAME"
-            });
-        }
-    </i-col>
-</row>
-@*<row>
-    <i-col span="2" class="RowTitle">
-        组织类型
-    </i-col>
-    <i-col span="14">
-        @{
-            RenderControl(new EnumCheckBoxListRender<部门类型>()
-            {
-                vModel = "searchParam.ORG_TYPE",
-                MultiSelect = true
-            });
-        }
-    </i-col>
-</row>*@
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.PAYID",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new UndefineRender()
+                {
+                    vModel = "searchParam.NAME"
+                });
+            }
+        </i-col>
+    </row>
+    @*<row>
+            <i-col span="2" class="RowTitle">
+                组织类型
+            </i-col>
+            <i-col span="14">
+                @{
+                    RenderControl(new EnumCheckBoxListRender<部门类型>()
+                    {
+                        vModel = "searchParam.ORG_TYPE",
+                        MultiSelect = true
+                    });
+                }
+            </i-col>
+        </row>*@
+}
+
+@section hide{
+    @{
+        RenderControl(new UndefineWindowRender()
+        {
+            Title = "测试标题",
+            vModel = "windowParam.terst",
+            ResVModel1 = "dataParam.NAME",
+            ResVModel2 = "dataParam.PAYID"
+        });
+    }
 }
