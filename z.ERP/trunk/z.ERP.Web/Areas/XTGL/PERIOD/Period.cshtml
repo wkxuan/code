@@ -1,36 +1,44 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Define
-@inherits DefineViewBase
+@using z.ERP.Web.Areas.Layout.List
+@inherits ListViewBase
 
-@section element{
+@section tjbtn{
+    <i-button type="text" v-on:click="mod">修改</i-button>
+    <span>|</span>
+    <i-button type="text" v-on:click="save">保存</i-button>
+    <span>|</span>
+    <i-button type="text" v-on:click="quit">放弃</i-button>
+}
+
+@section tj{
     <row>
-        <i-col span="2" class="RowTitle">
-            年度
+        <i-col span="10" >
+            <i-table border :columns="colDef" :data="dataDef" size="small" style="width:450px"></i-table>
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new DropDownListRender
-                {
-                    vModel = "dataParam.ID",                    
-                    Enable = true
-                });
-            }
-        </i-col>
+        <i-col span="13">
+            <row>
+                <i-col span="5" class="RowTitle">年度</i-col>
+                <i-col span="8">
+                    @{
+                        RenderControl(new EnumDropDownListRender<支付方式类型>()
+                        {
+                            vModel = "jzqj.CODE",
+                            Enable = false
+                        });
+                    }
+                </i-col>
+            </row>
+            <row>
+                <i-col span="5" class="RowTitle">每月结束日</i-col>
+                <i-col span="8">
+                    <i-input v-model="jzqj.CODE"></i-input>
+                </i-col>
+            </row>
+        </i-col>    
+
     </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            每月结束日
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender
-                {
-                    vModel = "dataParam.NAME",
-                    Id = "tb_name",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
+}
+@section jg{
+
 }
