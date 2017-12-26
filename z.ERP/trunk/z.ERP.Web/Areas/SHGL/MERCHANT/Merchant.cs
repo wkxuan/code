@@ -4,7 +4,7 @@ using z.ERP.Entities;
 using z.Extensions;
 using System;
 
-namespace z.ERP.Web.Areas.MERCHANT.MERCHANT
+namespace z.ERP.Web.Areas.SHGL.MERCHANT
 {
     public class MerchantController : BaseController
     {

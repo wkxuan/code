@@ -155,7 +155,7 @@
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\Search\_SearchLayout.cs" />
-    <Compile Include="Areas\MERCHANT\MERCHANT\Merchant.cs" />
+    <Compile Include="Areas\SHGL\MERCHANT\Merchant.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
     <Compile Include="Areas\Share\Render\UndefineWindowRender.cs" />
@@ -194,7 +194,7 @@
     <Content Include="Areas\HTGL\LYHT\Detail.js" />
     <Content Include="Areas\HTGL\LYHT\List.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
-    <Content Include="Areas\MERCHANT\MERCHANT\MerchantList.js" />
+    <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\BRAND\BRAND\Brand.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
@@ -284,7 +284,7 @@
     <Content Include="Areas\Share\WindowButton.cshtml" />
     <Content Include="Areas\XTGL\CONFIG\Config.cshtml" />
     <Content Include="Areas\Layout\Search\_SearchLayout.cshtml" />
-    <Content Include="Areas\MERCHANT\MERCHANT\MerchantList.cshtml" />
+    <Content Include="Areas\SHGL\MERCHANT\MerchantList.cshtml" />
     <Content Include="Areas\Share\UndefineWindow.cshtml" />
     <Content Include="Areas\XTGL\LATEFEERULE\LateFeeRule.cshtml" />
     <Content Include="Areas\XTGL\FLOOR\Floor.cshtml" />
