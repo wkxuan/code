@@ -17,7 +17,7 @@
             <i-table border :columns="colDef" :data="dataDef" size="small" style="width:450px"></i-table>
         </i-col>
         <i-col span="13">
-            <row>
+            @*<row>
                 <i-col span="5" class="RowTitle">年度</i-col>
                 <i-col span="8">
                     @{
@@ -28,7 +28,7 @@
                         });
                     }
                 </i-col>
-            </row>
+            </row>*@
             <row>
                 <i-col span="5" class="RowTitle">每月结束日</i-col>
                 <i-col span="8">
@@ -36,7 +36,7 @@
                 </i-col>
             </row>
             <row>
-                <Checkbox v-model="jzqj.CODE">自然月</Checkbox>
+                <Checkbox v-model="jzqj.XXX" v-on:on-change="change()">自然月</Checkbox>
             </row>
         </i-col>    
 
