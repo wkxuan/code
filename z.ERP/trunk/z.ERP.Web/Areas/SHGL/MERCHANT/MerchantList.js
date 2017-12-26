@@ -11,5 +11,8 @@
         }];
 
     search.screenParam.dataDef = [];
+
+    search.service = "ShglService";
+    search.method = "GetMerchant";
 }
 
