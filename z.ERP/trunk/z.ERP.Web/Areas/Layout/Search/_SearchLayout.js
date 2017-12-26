@@ -15,6 +15,7 @@
                 searchParam: _this.searchParam,
                 panelName: 'condition',
                 disabled: _this.enabled(true),
+
             },
             methods: {
                 //查询
@@ -43,10 +44,9 @@
                 //清空
                 clear: function (event) {
                     event.stopPropagation();
-                    _this.screenParam = {};
                     _this.searchParam = {};
-                    ve.screenParam = _this.screenParam;
                     ve.searchParam = _this.searchParam;
+                    ve.screenParam.dataDef = [];
                     ve.panelName = 'condition';
                 },
                 //导出
@@ -65,6 +65,57 @@
         _this.screenParam = {};
         _this.service = "";
         _this.method = "";
+        _this.colBase = [
+            {
+                type: 'selection',
+                width: 60,
+                align: 'center',
+                fixed: 'left',
+            }
+            ,{
+            title: '操作',
+            key: 'action',
+            width: 200,
+            align: 'center',
+            fixed: 'right',
+            render: function(h, params){
+                return h('div',
+                    [
+                    h('Button', {
+                        props: { type: 'primary', size: 'small', disabled:false },
+
+                        style: { marginRight: '5px' },
+                        on: {
+                            click: function (event) {
+                                alert("1");
+                            }
+                        },
+                    }, '查看'),
+
+                    h('Button', {
+                        props: { type: 'primary', size: 'small', disabled: false },
+                        style: { marginRight: '5px' },
+                        on: {
+                            click: function (event) {
+                                alert("2");
+                            }
+                        },
+                        
+                    }, '编辑'),
+
+                    h('Button', {
+                        props: { type: 'error', size: 'small', disabled: false },
+                        style: { marginRight: '5px' },
+                        on: {
+                            click: function (event) {
+                                alert("3");
+                            }
+                        },
+                    }, '删除')
+
+                    ]);
+            }
+        }];
     }
     setTimeout(function () {
         _this.vueInit();
