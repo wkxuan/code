@@ -171,7 +171,7 @@
     <Compile Include="Areas\Share\Render\UndefineRender.cs" />
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
-    <Compile Include="Areas\BRAND\BRAND\BrandController.cs" />
+    <Compile Include="Areas\BRAND\PPGL\BrandController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\CONFIG\Config.cs" />
     <Compile Include="Areas\XTGL\FEERULE\FeeRuleController.cs" />
@@ -195,7 +195,7 @@
     <Content Include="Areas\HTGL\LYHT\List.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
-    <Content Include="Areas\BRAND\BRAND\Brand.js" />
+    <Content Include="Areas\BRAND\PPGL\Brand.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
@@ -265,7 +265,7 @@
     <Content Include="Config\Debug.config" />
     <Content Include="Areas\HTGL\ZLHT\List.cshtml" />
     <Content Include="Areas\Share\BaseDropDownList.cshtml" />
-    <Content Include="Areas\BRAND\BRAND\Brand.cshtml" />
+    <Content Include="Areas\BRAND\PPGL\Brand.cshtml" />
     <Content Include="Areas\Share\Undefine.cshtml" />
     <Content Include="Areas\Share\TextBox.cshtml" />
     <Content Include="Areas\Layout\Define\_DefineLayout.cshtml" />

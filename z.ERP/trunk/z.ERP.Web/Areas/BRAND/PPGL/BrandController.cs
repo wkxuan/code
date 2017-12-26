@@ -8,7 +8,7 @@ using z.ERP.Web.Areas.Base;
 using z.Extensions;
 using z.MVC5.Results;
 
-namespace z.ERP.Web.Areas.XTGL.BRAND
+namespace z.ERP.Web.Areas.PPGL.BRAND
 {
     public class BrandController : BaseController
     {
