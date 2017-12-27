@@ -1,5 +1,7 @@
 ﻿using System.Data;
 using z.MVC5.Results;
+using z.ERP.Entities;
+using System.Collections.Generic;
 
 namespace z.ERP.Services
 {
@@ -15,6 +17,16 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
+        }
+
+        public void DeleteMerchant(List<MERCHANTEntity> DeleteData)
+        {
+            foreach (var mer in DeleteData)
+            {
+                var v = GetVerify(mer);
+                //校验
+                DbHelper.Delete(mer);
+            }
         }
     }
 }

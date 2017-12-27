@@ -9,7 +9,7 @@
             key: 'NAME', width: 250
         },
     ];
-    search.screenParam.colDef = col.concat(search.colBase);
+    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "ShglService";
     search.method = "GetMerchant";
 }

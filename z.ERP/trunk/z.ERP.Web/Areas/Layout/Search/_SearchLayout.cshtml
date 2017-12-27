@@ -52,6 +52,31 @@
                         Enable = true
                     });
                 }
+
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "add",
+                        Text = "新增",
+                        Enable = true
+                    });
+                }
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "mod",
+                        Text = "修改",
+                        Enable = true
+                    });
+                }
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "del",
+                        Text = "删除",
+                        Enable = true
+                    });
+                }
                 @RenderSection("conditionBtn", false)
             </div>
             <p slot="content" class="element">
@@ -84,7 +109,8 @@
             <p slot="content">
                  @*结果显示*@
                 <i-table :highlight-row="true" size="small" :border="true"
-                         :columns="screenParam.colDef" :data="screenParam.dataDef"></i-table>
+                         :columns="screenParam.colDef" :data="screenParam.dataDef"
+                         ref="selectData"></i-table>
                 @RenderSection("resultOthers", false)
             </p>
         </panel>
