@@ -1,0 +1,21 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js",
+                    "/Areas/XTGL/STATION/Station.js"
+                };
+}
+
+@section head{
+    @InitFiles(WebFiles)   
+}
+<div id="List">
+      <i-input v-model="CODE"></i-input>
+</div>

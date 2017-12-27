@@ -184,6 +184,7 @@
     <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
     <Compile Include="Areas\XTGL\PERIOD\PeriodController.cs" />
+    <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -208,6 +209,7 @@
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.js" />
     <Content Include="Areas\XTGL\PAY\Pay.js" />
     <Content Include="Areas\XTGL\PERIOD\Period.js" />
+    <Content Include="Areas\XTGL\STATION\Station.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\Base.css" />
@@ -290,6 +292,7 @@
     <Content Include="Areas\XTGL\FLOOR\Floor.cshtml" />
     <Content Include="Areas\XTGL\SHOP\Shop.cshtml" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cshtml" />
+    <Content Include="Areas\XTGL\STATION\Station.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
