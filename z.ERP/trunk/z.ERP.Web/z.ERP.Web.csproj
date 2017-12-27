@@ -153,6 +153,7 @@
     <Compile Include="Areas\HTGL\LYHT\ZLHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
+    <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\Search\_SearchLayout.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\Merchant.cs" />
@@ -293,6 +294,7 @@
     <Content Include="Areas\XTGL\SHOP\Shop.cshtml" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cshtml" />
     <Content Include="Areas\XTGL\STATION\Station.cshtml" />
+    <Content Include="Areas\Layout\Empty\_EmptyLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

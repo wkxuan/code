@@ -1,21 +1,49 @@
-﻿@inherits ViewBase<dynamic>
-@using z.ERP.Web.Areas.Share.Render
-@using z.MVC5.Views
-@{
-    Layout = ThisLayout;
-}
-@{
-    WebFiles = new string[] {
-                    "Content/VUE/styles/iview.css",
-                    "Content/VUE/vue.js",
-                    "Content/VUE/iview.js",
-                    "/Areas/XTGL/STATION/Station.js"
-                };
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Empty
+@inherits EmptyViewBase
+
+@section tjbtn{
+    <i-button type="text" v-on:click="mod" :disabled="!disabled">修改</i-button>
+    <span>|</span>
+    <i-button type="text" v-on:click="save" :disabled="disabled">保存</i-button>
+    <span>|</span>
+    <i-button type="text" v-on:click="quit" :disabled="disabled">放弃</i-button>
 }
 
-@section head{
-    @InitFiles(WebFiles)   
+@section tj{
+    <row>
+        <i-col span="10">
+            <i-table border :columns="colDef" :data="dataDef" size="small" style="width:450px"></i-table>
+        </i-col>
+        <i-col span="13">
+            <row>
+                <i-col span="5" class="RowTitle">年度</i-col>
+                <i-col span="8">
+                    @*@{
+                            RenderControl(new EnumDropDownListRender<支付方式类型>()
+                            {
+                                vModel = "jzqj.CODE",
+                                Enable = false
+                            });
+                        }*@
+                    <i-select v-model="Year" v-on:on-change="getPeriod" :disabled="!disabled">
+                        <i-option v-for="item in nyList" :value="item.value">{{ item.label }}</i-option>
+                    </i-select>
+                </i-col>
+            </row>
+            <row>
+                <i-col span="5" class="RowTitle">每月结束日</i-col>
+                <i-col span="8">
+                    <i-input v-model="jzqj.LASTDAY" :disabled="disabled"></i-input>
+                </i-col>
+            </row>
+            <row>
+                <i-col span="5" class="RowTitle"></i-col>
+                <i-col span="8">
+                    <Checkbox v-model="jzqj.Natrual" v-on:on-change="change()" :disabled="disabled">自然月</Checkbox>
+                </i-col>
+            </row>
+        </i-col>
+
+    </row>
 }
-<div id="List">
-      <i-input v-model="CODE"></i-input>
-</div>

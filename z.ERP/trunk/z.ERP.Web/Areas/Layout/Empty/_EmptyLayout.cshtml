@@ -1,0 +1,50 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js"
+                };
+}
+
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+<style>
+    .RowTitle {
+        text-align: right;
+        font-size: small;
+    }
+
+    .elementcard .ivu-row {
+        height: 50px;
+    }
+
+    .topbutton .ivu-btn {
+        margin-left: 10px;
+    }
+</style>
+
+<div id="List_Main">
+    <collapse>
+        <row class="topbutton">
+            @RenderSection("tjbtn", false)
+        </row>
+        <row>
+            <card>
+                @RenderSection("tj", true)
+            </card>
+        </row>
+
+</collapse>
+</div>
+
+@section foot{
+    @RenderSection("foot", false)
+}
