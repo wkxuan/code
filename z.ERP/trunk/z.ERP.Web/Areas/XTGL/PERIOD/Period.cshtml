@@ -1,17 +1,36 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.List
-@inherits ListViewBase
+@using z.ERP.Web.Areas.Layout.Empty
+@inherits EmptyViewBase
 
-@section tjbtn{
-    <i-button type="text" v-on:click="mod" :disabled="!disabled">修改</i-button>
-    <span>|</span>
-    <i-button type="text" v-on:click="save" :disabled="disabled">保存</i-button>
-    <span>|</span>
-    <i-button type="text" v-on:click="quit" :disabled="disabled">放弃</i-button>
+@section btn{
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "mod",
+            Text = "修改",
+            //Enable = false
+        });
+    }
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "save",
+            Text = "存档",
+            Enable = false
+        });
+    }
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "quit",
+            Text = "放弃",
+            Enable = false
+        });
+    }
 }
 
-@section tj{
+@section content{
     <row>
         <i-col span="10" >
             <i-table border :columns="colDef" :data="dataDef" size="small" style="width:450px"></i-table>
@@ -34,8 +53,15 @@
             </row>
             <row>
                 <i-col span="5" class="RowTitle">每月结束日</i-col>
-                <i-col span="8">
-                    <i-input v-model="jzqj.LASTDAY" :disabled="disabled"></i-input>
+                <i-col span="8">                    
+                    @{
+                        RenderControl(new TextBoxRender
+                        {
+                            vModel = "jzqj.LASTDAY",
+                            Id = "tb_name",
+                            Enable = false
+                        });
+                    }
                 </i-col>
             </row>
             <row>
@@ -47,7 +73,4 @@
         </i-col>    
 
     </row>
-}
-@section jg{
-
 }
