@@ -210,6 +210,18 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+
+        public DataGridResult GetPeriod(SearchItem item)
+        {
+            string sql = $@"select YEARMONTH,to_char(DATE_START,'yyyy-mm-dd') DATE_START,to_char(DATE_END,'yyyy-mm-dd')"+
+                " DATE_END from PERIOD where 1=1";
+            item.HasKey("YEAR", a => sql += $" and substr(YEARMONTH,1,4) = '{a}'");
+            sql += "order by YEARMONTH";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
     }
 
 }
