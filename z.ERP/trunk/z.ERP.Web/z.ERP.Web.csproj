@@ -153,6 +153,7 @@
     <Compile Include="Areas\HTGL\LYHT\ZLHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
+    <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\Search\_SearchLayout.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\Merchant.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
     <Compile Include="Areas\XTGL\PERIOD\PeriodController.cs" />
+    <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -208,6 +210,7 @@
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.js" />
     <Content Include="Areas\XTGL\PAY\Pay.js" />
     <Content Include="Areas\XTGL\PERIOD\Period.js" />
+    <Content Include="Areas\XTGL\STATION\Station.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\Base.css" />
@@ -290,6 +293,8 @@
     <Content Include="Areas\XTGL\FLOOR\Floor.cshtml" />
     <Content Include="Areas\XTGL\SHOP\Shop.cshtml" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cshtml" />
+    <Content Include="Areas\XTGL\STATION\Station.cshtml" />
+    <Content Include="Areas\Layout\Empty\_EmptyLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

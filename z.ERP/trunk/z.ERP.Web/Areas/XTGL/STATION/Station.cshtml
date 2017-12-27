@@ -1,0 +1,15 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Empty
+@inherits EmptyViewBase
+
+@section btn{
+    <i-button type="text" v-on:click="mod" :disabled="!disabled">修改</i-button>
+    <span>|</span>
+    <i-button type="text" v-on:click="save" :disabled="disabled">保存</i-button>
+    <span>|</span>
+    <i-button type="text" v-on:click="quit" :disabled="disabled">放弃</i-button>
+}
+
+@section content{
+    
+}
