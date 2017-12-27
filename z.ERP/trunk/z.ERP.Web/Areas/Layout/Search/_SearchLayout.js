@@ -1,13 +1,21 @@
 ﻿function _Search() {
+
     var _this = this;
 
     this.beforeVue = function () { }
 
     this.enabled = function (val) { return val; }
 
+    //查询必须存在的条件,主要是一些赋值
     this.newCondition = function () { }
 
-    this.canEdit = function () {
+    //是否可以查询的判断
+    this.IsValidSrch = function (mess) {
+        return true;
+    }
+
+    //是否可以修改
+    this.canEdit = function (mess) {
         return true;
     }
 
@@ -21,27 +29,23 @@
                 disabled: _this.enabled(true),
             },
             methods: {
-                //查询
+                //查询OK
                 seach: function (event) {
                     event.stopPropagation();
-
                     var mess = this;
-                    _.Search({
-                        Service: _this.service,
-                        Method: _this.method,
-                        Data: _this.searchParam,
-                        Success: function (data) {
-                            if (data.rows.length > 0) {
-                                ve.screenParam.dataDef = data.rows;
-                                ve.panelName = 'result';
-                            }
-                            else {
-                                mess.$Message.info("没有满足当前查询条件的结果!");
-                            }
+
+                    if (!_this.IsValidSrch(mess))
+                        return;
+                    showList(function (data) {
+                        if (ve.screenParam.dataDef.length > 0) {
+                            ve.panelName = 'result';
                         }
-                    })
+                        else {
+                            mess.$Message.info("没有满足当前查询条件的结果!");
+                        }
+                    });
                 },
-                //清空
+                //清空OK
                 clear: function (event) {
                     event.stopPropagation();
                     _this.searchParam = {};
@@ -50,19 +54,19 @@
                     ve.panelName = 'condition';
                     _this.newCondition();
                 },
-                //导出
+                //导出待完善
                 exp: function (event) {
                     event.stopPropagation();
-                    if ( (!ve.screenParam.dataDef) || (ve.screenParam.dataDef.length == 0)) {
-                        this.$Message.info("没有要导出的数据!");
+                    if (notExistsData) {
+                        this.$Message.error("没有要导出的数据!");
                     };
                     //继续
                 },
-                //取消
+                //打印待完善
                 print: function (event) {
                     event.stopPropagation();
-                    if ((!ve.screenParam.dataDef) || (ve.screenParam.dataDef.length == 0)) {
-                        this.$Message.info("没有要打印的数据!");
+                    if (notExistsData) {
+                        this.$Message.error("没有要打印的数据!");
                     };
                     //继续
                 },
@@ -77,7 +81,7 @@
                     var _self = this;
                     var selectton = this.$refs.selectData.getSelection();
                     if (selectton.length != 1) {
-                        this.$Message.info("只能选择一条记录修改!");
+                        this.$Message.error("只能选择一条记录修改!");
                     }
                     else {
                         //这里就根据状态等信息判断
@@ -94,17 +98,18 @@
                     var _self = this;
                     var selectton = this.$refs.selectData.getSelection();
                     if (selectton.length == 0) {
-                        this.$Message.info("请选中要删除的数据!");
+                        this.$Message.error("请选中要删除的数据!");
                     }
                     else {
+
                         this.$Modal.confirm({
                             title: '提示',
                             content: '是否删除',
                             onOk: function () {
-                                _.Ajax('Delete', {
-                                    DeleteData: selectton
-                                }, function (data) {
-                                    _self.$Message.info("删除成功");
+                                deleteList(selectton, function () {
+                                    showList(function () {
+                                        _self.$Message.info("删除成功");
+                                    });
                                 });
                             },
                             onCancel: function () {
@@ -115,6 +120,31 @@
                 }
             }
         });
+
+        function showList(callback) {
+            _.Search({
+                Service: _this.service,
+                Method: _this.method,
+                Data: _this.searchParam,
+                Success: function (data) {
+                    ve.screenParam.dataDef = [];
+                    ve.screenParam.dataDef = data.rows;
+                    callback && callback();
+                }
+            })
+        }
+        function notExistsData() {
+            return (!ve.screenParam.dataDef) || (ve.screenParam.dataDef.length == 0)
+        }
+
+        function deleteList(data, callback) {
+            _.Ajax('Delete', {
+                DeleteData: data
+            }, function (data) {
+                callback && callback();
+            });
+        }
+
     }
     //新增链接的地址
     this.addHref = function () {

@@ -13,6 +13,8 @@ namespace z.ERP.Services
         public DataGridResult GetMerchant(SearchItem item)
         {
             string sql = $@"SELECT * FROM MERCHANT WHERE 1=1 ";
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANTID LIKE '%{a}%'");
+            item.HasKey("NAME", a => sql += $" and NAME  LIKE '%{a}%'");
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
