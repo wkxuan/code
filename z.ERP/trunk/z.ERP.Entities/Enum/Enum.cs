@@ -99,4 +99,10 @@ namespace z.ERP.Entities.Enum
         空置 = 1,
         出租 = 2
     }
+    public enum POS类型
+    {
+        统一收银 = 1,
+        商铺 = 2,
+        接口 = 3
+    }
 }

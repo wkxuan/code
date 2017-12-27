@@ -221,6 +221,15 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public DataGridResult GetPos(SearchItem item)
+        {
+            string sql = $@"select STATIONBH,TYPE,IP from STATION where 1=1 ";
+            item.HasKey("STATIONBH", a => sql += $" and STATIONBH = '{a}'");
+            sql += "order by STATIONBH";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
 
     }
 
