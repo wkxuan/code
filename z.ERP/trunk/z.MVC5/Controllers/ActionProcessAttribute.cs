@@ -68,6 +68,7 @@ namespace z.MVC5.Controllers
                     HttpExtension.GetWebBasePath(),
                     "Base",
                     "Common") + "/";
+                filterContext.Controller.ViewBag.BaseUrl = HttpExtension.GetWebBasePath();
             }
             base.OnActionExecuted(filterContext);
         }

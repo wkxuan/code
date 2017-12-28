@@ -15,6 +15,10 @@ namespace z.DbHelper.DbDomain
     /// </summary>
     public class EntityBase
     {
+        public EntityBase()
+        {
+        }
+
         /// <summary>
         /// 获取表的名字
         /// </summary>
@@ -71,7 +75,7 @@ namespace z.DbHelper.DbDomain
             else
                 throw new Exception("属性类型不正确");
         }
-        
+
         /// <summary>
         /// 获取主键
         /// </summary>

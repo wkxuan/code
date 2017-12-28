@@ -93,5 +93,15 @@ namespace z.ERP.Services
             }
             DbHelper.Delete(info);
         }
+
+        public T Select<T>(T t) where T : EntityBase
+        {
+            return DbHelper.Select(t);
+        }
+
+        public List<T> SelectList<T>(T t) where T : EntityBase, new()
+        {
+            return DbHelper.SelectList(t);
+        }
     }
 }

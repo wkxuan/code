@@ -52,6 +52,17 @@ namespace z.ERP.Web.Areas.Base
             service.CommonService.CommenDelete(info);
         }
 
+        public T Select<T>(T t) where T : EntityBase
+        {
+            return service.CommonService.Select(t);
+        }
+
+
+        public List<T> SelectList<T>(T t) where T : EntityBase, new()
+        {
+            return service.CommonService.SelectList(t);
+        }
+
         /// <summary>
         /// 获取对象的验证类
         /// </summary>

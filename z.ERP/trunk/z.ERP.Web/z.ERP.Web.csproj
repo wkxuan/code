@@ -153,10 +153,11 @@
     <Compile Include="Areas\HTGL\LYHT\ZLHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
+    <Compile Include="Areas\Layout\Detail\DetailViewBase.cs" />
     <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\Search\_SearchLayout.cs" />
-    <Compile Include="Areas\SHGL\MERCHANT\Merchant.cs" />
+    <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
     <Compile Include="Areas\Share\Render\UndefineWindowRender.cs" />
@@ -212,6 +213,7 @@
     <Content Include="Areas\XTGL\PERIOD\Period.js" />
     <Content Include="Areas\XTGL\STATION\Station.js" />
     <Content Include="Areas\XTGL\test\List.js" />
+    <Content Include="Content\PageBase.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\Base.css" />
     <Content Include="Content\jquery.min.js" />
@@ -233,6 +235,7 @@
     <Content Include="Content\VUE\styles\iview.css" />
     <Content Include="Content\VUE\vue.js" />
     <Content Include="Content\VUE\vue.min.js" />
+    <Content Include="Content\JsHelper.js" />
     <Content Include="Content\zBase.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -295,6 +298,8 @@
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cshtml" />
     <Content Include="Areas\XTGL\STATION\Station.cshtml" />
     <Content Include="Areas\Layout\Empty\_EmptyLayout.cshtml" />
+    <Content Include="Areas\SHGL\MERCHANT\Detail.cshtml" />
+    <Content Include="Areas\Layout\Detail\_DetailLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

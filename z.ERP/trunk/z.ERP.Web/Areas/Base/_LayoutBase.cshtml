@@ -7,7 +7,9 @@
             "Content/Base.css",
             "Content/jquery.min.js",
             "Content/zBase.js",
-            "Content/AjaxHelper.js"
+            "Content/AjaxHelper.js",
+            "Content/JsHelper.js",
+            "Content/PageBase.js"
         };
 }
 <!DOCTYPE html>
@@ -19,6 +21,7 @@
     <script type="text/javascript">
         __ControllerUrl = '@ViewBag.ControllerUrl';
         __CommonControllerUrl = '@ViewBag.CommonControllerUrl';
+        __BaseUrl = '@ViewBag.BaseUrl';
     </script>
     @InitFiles(WebFiles)
     @RenderSection("head", false)

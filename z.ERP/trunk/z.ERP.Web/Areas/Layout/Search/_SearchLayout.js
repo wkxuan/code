@@ -88,7 +88,7 @@
                         if (!_this.canEdit(_self))
                             return;
                         else
-                             //链接过去编辑页面之后在保存的后端在进行实际的判断
+                            //链接过去编辑页面之后在保存的后端在进行实际的判断
                             _this.modHref();
                     }
                 },
@@ -155,8 +155,8 @@
         return " ";
     }
     //查看链接的地址
-    this.browseHref = function () {
-        return " ";
+    this.browseHref = function (row, index) {
+
     }
 
     this.colDefInit = function () {
@@ -177,12 +177,12 @@
                 return h('div',
                     [
                     h('Button', {
-                        props: { type: 'primary', size: 'small', disabled:false },
+                        props: { type: 'primary', size: 'small', disabled: false },
 
                         style: { marginRight: '50px' },
                         on: {
                             click: function (event) {
-                                _this.browseHref();
+                                _this.browseHref(params.row, params.index);
                             }
                         },
                     }, '浏览')

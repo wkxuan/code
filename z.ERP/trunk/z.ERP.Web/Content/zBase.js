@@ -65,9 +65,5 @@
             define("zQuery", [], function () { return zQuery; });
         }
     }
-
-    String.prototype.trim = function () {
-        return this.replace(/(^\s*)|(\s*$)/g, '');
-    }
 })(window);
 

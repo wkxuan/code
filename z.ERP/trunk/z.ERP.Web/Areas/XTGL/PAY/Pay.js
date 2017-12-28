@@ -39,6 +39,9 @@
 
 define.newRecord = function () {
     define.dataParam.VOID_FLAG = "1";
+    _.OpenPage("XTGL/FKFS/FKFS", function (data) {
+        alert(1);
+    });
 }
 
 

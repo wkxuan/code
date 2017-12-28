@@ -10,7 +10,7 @@ namespace z.MVC5.Models
 {
     public class LoaclePage
     {
-        public LoaclePage(string _area, string _controller, string _action, UrlParameter _id = null)
+        public LoaclePage(string _area, string _controller, string _action, dynamic _id = null)
         {
             area = _area;
             controller = _controller;
@@ -31,7 +31,7 @@ namespace z.MVC5.Models
         {
             get; set;
         }
-        public UrlParameter id
+        public dynamic id
         {
             get; set;
         }

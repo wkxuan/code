@@ -113,7 +113,7 @@ namespace z.Extensions
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static Tenum GetEnum<Tenum>(this string str) where Tenum : struct
+        public static Tenum ToEnum<Tenum>(this string str) where Tenum : struct
         {
             Tenum res;
             Enum.TryParse(str, out res);

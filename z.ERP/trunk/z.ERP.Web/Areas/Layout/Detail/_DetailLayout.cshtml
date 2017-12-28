@@ -1,0 +1,42 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js"
+                };
+}
+
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+<div id="detail_Main">
+    <collapse v-model="Mainpanel">
+        <panel name="condition">
+            @RenderSection("Title", false)
+            <div style="float: right; width: 400px ;text-align: right;z-index:99">
+                @RenderSection("Btn", false)
+            </div>
+            <p slot="content" class="element">
+                @RenderSection("content", true)
+            </p>
+        </panel>
+    </collapse>
+</div>
+<script type="text/javascript">
+    var ve = new Vue({
+        el: '#detail_Main',
+        data: {
+            Mainpanel: 'condition'
+        }
+    });
+</script>
+@section foot{
+    @RenderSection("foot", false)
+}
