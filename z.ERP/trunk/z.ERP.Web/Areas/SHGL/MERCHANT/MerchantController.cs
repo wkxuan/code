@@ -16,7 +16,8 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
 
         public ActionResult Detail(string Id)
         {
-            return View(Select(new MERCHANTEntity(Id)));
+            MERCHANTEntity entity = Select(new MERCHANTEntity(Id));
+            return View(entity);
         }
 
         public void Delete(List<MERCHANTEntity> DeleteData)
