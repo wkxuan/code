@@ -7,6 +7,14 @@
     @{
         RenderControl(new ButtonRender()
         {
+            Click = "add",
+            Text = "新增",
+            Enable = true
+        });
+    }
+    @{
+        RenderControl(new ButtonRender()
+        {
             Click = "mod",
             Text = "修改",
             //Enable = false
@@ -26,6 +34,14 @@
             Click = "quit",
             Text = "放弃",
             Enable = false
+        });
+    }
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "del",
+            Text = "删除",
+            //Enable=false
         });
     }
 }
