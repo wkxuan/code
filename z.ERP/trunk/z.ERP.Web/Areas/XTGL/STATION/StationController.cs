@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.WebPages;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using static z.ERP.Services.XtglService;
 
 namespace z.ERP.Web.Areas.XTGL.STATION
 {
@@ -15,17 +16,14 @@ namespace z.ERP.Web.Areas.XTGL.STATION
         {
             return View();
         }
-        public string Save(STATIONEntity DefineSave)
+        public string Save(STATIONEntity DefineSave, List<STATION_PAYEntity> PaySave)
         {
-            var v = GetVerify(DefineSave);
-            if (DefineSave.STATIONBH.IsEmpty())
-            DefineSave.STATIONBH = service.CommonService.NewINC("STATION").PadLeft(6, '0');
-            v.Require(a => a.STATIONBH);
-            v.Require(a => a.TYPE);
-            v.Require(a => a.IP);            
-            v.IsUnique(a => a.IP);
-            v.Verify();
-            return CommonSave(DefineSave);
+           return service.XtglService.SaveSataion(DefineSave,PaySave);             
+        }
+
+        public STATIONEntityMoldel GetStaionElement(STATIONEntity Staion)
+        {            
+            return service.XtglService.GetStaionElement(Staion);
         }
     }
 }

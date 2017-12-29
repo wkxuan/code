@@ -221,16 +221,89 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public DataGridResult GetPos(SearchItem item)
+        public DataGridResult GetStaion(SearchItem item)
         {
-            string sql = $@"select STATIONBH,TYPE,IP from STATION where 1=1 ";
+            string sql = $@"select STATIONBH from STATION where 1=1 ";
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH = '{a}'");
             sql += "order by STATIONBH";
             int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);                        
             return new DataGridResult(dt, count);
         }
+        public STATIONEntityMoldel GetStaionElement(STATIONEntity DefineSave)
+        {
+            string sql = $@"select STATIONBH,TYPE,IP from STATION where 1=1 ";
+            sql += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
+            sql += "order by STATIONBH";
+            
 
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            if (dt.IsNotNull())
+            {
+                List<STATIONEntityMoldel> ii = dt.ToList<STATIONEntityMoldel>();
+
+                var sqlpay = $@"SELECT S.STATIONBH,S.PAYID,P.NAME from STATION_PAY S,PAY P WHERE S.PAYID=P.PAYID ";
+                sqlpay += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
+                sqlpay += "order by S.PAYID";
+
+                DataTable dt1 = DbHelper.ExecuteTable(sqlpay);
+                if (dt1.IsNotNull())
+                    ii[0].STATION_PAY = dt1.ToList<STATION_PAYEntityMoldel>();
+                return ii[0];
+            }
+
+
+
+
+            //STATIONEntityMoldel s = new STATIONEntityMoldel()
+            //{
+            //    IP = dt.Rows[0]["IP"].ToString(),
+            //    TYPE = dt.Rows[0]["TYPE"].ToString(),
+            //    STATIONBH = dt.Rows[0]["STATIONBH"].ToString(),
+            //    STATION_PAY = new List<STATION_PAYEntityMoldel>()
+            //    {
+            //        new STATION_PAYEntityMoldel()
+            //        {
+            //            PAYID = dt1.Rows[0]["PAYID"].ToString(),
+            //            NAME = dt1.Rows[0]["NAME"].ToString()
+            //        }
+            //    }
+            //};
+            return null;
+        }
+
+        public string SaveSataion(STATIONEntity DefineSave, List<STATION_PAYEntity> PaySave)
+        {
+            var v = GetVerify(DefineSave);
+            if (DefineSave.STATIONBH.IsEmpty())
+                DefineSave.STATIONBH = CommonService.NewINC("STATION").PadLeft(6, '0');
+            v.Require(a => a.STATIONBH);
+            v.Require(a => a.TYPE);
+            v.Require(a => a.IP);
+            v.IsUnique(a => a.IP);
+            v.Verify();
+            DbHelper.Save(DefineSave);
+
+            foreach (var pay in PaySave)
+            {
+                var w = GetVerify(pay);
+                pay.STATIONBH = DefineSave.STATIONBH;
+                //校验
+                DbHelper.Delete(pay);
+                DbHelper.Insert(pay);
+            }
+
+            return DefineSave.STATIONBH;
+        }
+
+        public class STATIONEntityMoldel: STATIONEntity
+        {
+            public List<STATION_PAYEntityMoldel> STATION_PAY;
+        }
+        public class STATION_PAYEntityMoldel : STATION_PAYEntity
+        {
+            public string NAME { get; set; }
+        }
     }
 
 }
