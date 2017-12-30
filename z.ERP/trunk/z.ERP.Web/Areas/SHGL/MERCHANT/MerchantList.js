@@ -21,7 +21,13 @@
 
 search.browseHref = function (row, index) {
     _.OpenPage("SHGL/MERCHANT/Detail/" + row.MERCHANTID, function (data) {
-        alert("打开的页面返回了");
+    });
+}
+
+search.addHref = function (row) {
+    //_.OpenPage("SHGL/MERCHANT/Detail/" + row.MERCHANTID, function (data) {
+    //});
+    _.OpenPage("SHGL/MERCHANT/MerchantEdit/", function (data) {
     });
 }
 

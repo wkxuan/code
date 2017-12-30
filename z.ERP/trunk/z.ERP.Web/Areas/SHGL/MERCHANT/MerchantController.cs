@@ -11,13 +11,21 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
     {
         public ActionResult MerchantList()
         {
+            ViewBag.Title = "商户列表信息";
             return View();
         }
 
         public ActionResult Detail(string Id)
         {
+            ViewBag.Title = "商户信息浏览";
             MERCHANTEntity entity = Select(new MERCHANTEntity(Id));
             return View(entity);
+        }
+
+        public ActionResult MerchantEdit()
+        {
+            ViewBag.Title = "商户信息编辑";
+            return View();
         }
 
         public void Delete(List<MERCHANTEntity> DeleteData)

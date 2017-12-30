@@ -2,9 +2,9 @@
 
 namespace z.ERP.Web.Areas.Layout.Search
 {
-    public class _SearchLayout : ViewBase<dynamic>
+    public class SearchViewBase : ViewBase<dynamic>
     {
-        public _SearchLayout()
+        public SearchViewBase()
         {
 
         }

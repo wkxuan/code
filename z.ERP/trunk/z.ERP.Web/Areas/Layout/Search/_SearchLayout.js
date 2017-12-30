@@ -148,11 +148,9 @@
     }
     //新增链接的地址
     this.addHref = function () {
-        return " ";
     }
     //修改链接的地址
     this.modHref = function () {
-        return " ";
     }
     //查看链接的地址
     this.browseHref = function (row, index) {
