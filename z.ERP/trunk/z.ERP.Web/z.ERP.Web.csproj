@@ -199,9 +199,10 @@
     <Content Include="Areas\HTGL\LYHT\List.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
+    <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
-    <Content Include="Areas\PPGL\BRAND\Brand.js" />
+    <Content Include="Areas\PPGL\BRAND\BrandList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
@@ -274,7 +275,7 @@
     <Content Include="Config\Debug.config" />
     <Content Include="Areas\HTGL\ZLHT\List.cshtml" />
     <Content Include="Areas\Share\BaseDropDownList.cshtml" />
-    <Content Include="Areas\PPGL\BRAND\Brand.cshtml" />
+    <Content Include="Areas\PPGL\BRAND\BrandList.cshtml" />
     <Content Include="Areas\Share\Undefine.cshtml" />
     <Content Include="Areas\Share\TextBox.cshtml" />
     <Content Include="Areas\Layout\Define\_DefineLayout.cshtml" />
@@ -305,6 +306,7 @@
     <Content Include="Areas\Layout\Detail\_DetailLayout.cshtml" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.cshtml" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.cshtml" />
+    <Content Include="Areas\PPGL\BRAND\BrandEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

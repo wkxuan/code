@@ -1,0 +1,3 @@
+﻿editDetail.beforeVue = function () {
+
+}

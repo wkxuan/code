@@ -12,6 +12,19 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
 {
     public class BrandController : BaseController
     {
+
+        public ActionResult BrandList()
+        {
+            ViewBag.Title = "品牌列表信息";
+            return View();
+        }
+
+        public ActionResult BrandEdit()
+        {
+            ViewBag.Title = "编辑列表信息";
+            return View();
+        }
+
         public ActionResult Brand()
         {
             //service.TestService.a();

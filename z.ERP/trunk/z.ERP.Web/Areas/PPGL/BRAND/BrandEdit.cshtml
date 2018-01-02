@@ -1,0 +1,102 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.EditDetail
+@inherits EditDetailViewBase
+
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.NAME",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            业态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CATEGORYID",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            地址
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ADRESS",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            联系人
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTACTPERSON",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            电话
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PHONENUM",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            微信
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.WEIXIN",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            邮编
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PIZ",
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            QQ
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.QQ",
+                });
+            }
+        </i-col>
+    </row>
+    
+}
