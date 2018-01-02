@@ -21,27 +21,19 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
 
         public ActionResult BrandEdit()
         {
-            ViewBag.Title = "编辑列表信息";
+            ViewBag.Title = "编辑品牌列表信息";
             return View();
         }
 
-        public ActionResult Brand()
-        {
-            //service.TestService.a();
-
-            return View();
-        }
-
-        public void Save(BRANDEntity brand) {
+        public string Save(BRANDEntity SaveData) {
             //测试临时加入，需要共用处理
-            brand = HttpExtension.GetRequestParam<BRANDEntity>("BRAND");
-            var v = GetVerify(brand);
-            brand.ID = service.CommonService.NewINC("BRAND");
-            brand.CATEGORYID = "1";
-            brand.STATUS = "0";
-            brand.REPORTER = "1";
-            brand.REPORTER_NAME = "测试人员";
-            brand.REPORTER_TIME = DateTime.Now.ToString();
+            var v = GetVerify(SaveData);
+            if (SaveData.ID.IsEmpty())
+                SaveData.ID = service.CommonService.NewINC("BRAND");
+            SaveData.STATUS = "0";
+            SaveData.REPORTER = "1";
+            SaveData.REPORTER_NAME = "测试人员";
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
             v.Require(a => a.ID);
             v.Require(a => a.NAME);
             v.Require(a => a.CATEGORYID);
@@ -50,7 +42,7 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
             v.IsUnique(a => a.ID);
             v.IsUnique(a => a.NAME);            
             v.Verify();
-            CommonSave(brand);
+            return CommonSave(SaveData);
         }
     }
 }

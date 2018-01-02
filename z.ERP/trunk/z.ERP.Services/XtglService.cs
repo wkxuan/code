@@ -28,8 +28,8 @@ namespace z.ERP.Services
         public DataGridResult GetBrandData(SearchItem item)
         {
             string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
-            item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("CODE", a => sql += $" and B.CODE = '{a}'");
+            item.HasKey("ID", a => sql += $" and B.ID = '{a}'");
+            item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");            
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

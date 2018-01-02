@@ -9,6 +9,9 @@
         return true;
     }
 
+    //控件是否可用，扩展函数,待完善
+    this.enabled = function (val) { return val; }
+
     //得到单号
     this.Key = undefined
 
@@ -21,7 +24,8 @@
                 panelName: 'base',
                 branchid: _this.branchid,
                 others: _this.others,
-                stepsCurrent: _this.stepsCurrent
+                stepsCurrent: _this.stepsCurrent,
+                disabled: _this.enabled(true),
             },
             methods: {
                 //保存
@@ -53,7 +57,7 @@
                     Method: _this.method,
                     Data: v,
                     Success: function (data) {
-                        _this.dataParam = data;
+                        _this.dataParam = data.rows[0];
                         ve.dataParam = _this.dataParam;
                         callback && callback();
                     }
