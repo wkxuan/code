@@ -26,23 +26,7 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
         }
 
         public string Save(BRANDEntity SaveData) {
-            //测试临时加入，需要共用处理
-            var v = GetVerify(SaveData);
-            if (SaveData.ID.IsEmpty())
-                SaveData.ID = service.CommonService.NewINC("BRAND");
-            SaveData.STATUS = "0";
-            SaveData.REPORTER = "1";
-            SaveData.REPORTER_NAME = "测试人员";
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            v.Require(a => a.ID);
-            v.Require(a => a.NAME);
-            v.Require(a => a.CATEGORYID);
-            v.IsNumber(a => a.ID);
-            v.IsNumber(a => a.CATEGORYID);
-            v.IsUnique(a => a.ID);
-            v.IsUnique(a => a.NAME);            
-            v.Verify();
-            return CommonSave(SaveData);
+            return service.XtglService.SaveBrand(SaveData);            
         }
 
         public  void Delete(List<BRANDEntity> DeleteData)
