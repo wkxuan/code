@@ -29,7 +29,14 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
             item.HasKey("ID", a => sql += $" and B.ID = '{a}'");
-            item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");            
+            item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '%{a}%'");
+            item.HasKey("ADRESS", a => sql += $" and B.ADRESS LIKE '%{a}%'");
+            item.HasKey("CONTACTPERSON", a => sql += $" and B.CONTACTPERSON = '{a}'");
+            item.HasKey("PHONENUM", a => sql += $" and B.PHONENUM = '{a}'");
+            item.HasKey("PIZ", a => sql += $" and B.PIZ = '{a}'");
+            item.HasKey("QQ", a => sql += $" and B.QQ = '{a}'");
+            
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
