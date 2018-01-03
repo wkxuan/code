@@ -7,7 +7,8 @@
     editDetail.stepsCurrent = 0;
     editDetail.others = false;
     editDetail.branchid = false;
-
+    editDetail.service = "ShglService";
+    editDetail.method = "GetMerchant";
 
     editDetail.screenParam.colDef = [
     {
@@ -52,23 +53,14 @@
     }
     ];
 
-
-    editDetail.dataParam.MERCHANT_BRAND = [{
-        BRANDID: '王小明',
-        NAME: 18,
-        CATEGORYID: '北京市朝阳区芍药居',
-        CATEGORYNAME: '2017-01-01'
-    }, {
-        BRANDID: '王小明',
-        NAME: 18,
-        CATEGORYID: '北京市朝阳区芍药居',
-        CATEGORYNAME: '2017-01-01'
-    }, {
-        BRANDID: '王小明',
-        NAME: 18,
-        CATEGORYID: '北京市朝阳区芍药居',
-        CATEGORYNAME: '2017-01-01'
-    }, ]
+    if (!editDetail.dataParam.MERCHANT_BRAND) {
+        editDetail.dataParam.MERCHANT_BRAND = [{
+            BRANDID: "",
+            NAME: "",
+            CATEGORYID: "",
+            CATEGORYNAME: ""
+        }]
+    }
 
     editDetail.screenParam.addCol = function () {
         var  temp = editDetail.dataParam.MERCHANT_BRAND||[];

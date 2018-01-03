@@ -2,6 +2,8 @@
 using z.MVC5.Results;
 using z.ERP.Entities;
 using System.Collections.Generic;
+using z.Extensions;
+using System;
 
 namespace z.ERP.Services
 {
@@ -29,6 +31,34 @@ namespace z.ERP.Services
                 //校验
                 DbHelper.Delete(mer);
             }
+        }
+
+        public string SaveMerchant(MerchantModuleEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.MERCHANTID.IsEmpty())
+                SaveData.MERCHANTID = NewINC("MERCHANT");
+            SaveData.STATUS = "0";
+            SaveData.REPORTER = "1";
+            SaveData.REPORTER_NAME = "测试人员";
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            v.Require(a => a.MERCHANTID);
+            v.Require(a => a.NAME);
+            v.IsUnique(a => a.MERCHANTID);
+            v.IsUnique(a => a.NAME);
+            v.Verify();
+
+            foreach (var shpp in SaveData.MERCHANT_BRAND)
+            {
+                var w = GetVerify(shpp);
+                shpp.MERCHANTID = SaveData.MERCHANTID;
+                w.Require(a => a.MERCHANTID);
+                w.Require(a => a.BRANDID);
+                //DbHelper.Delete(shpp);
+                //DbHelper.Insert(shpp);
+            }
+            DbHelper.Save(SaveData);
+            return SaveData.MERCHANTID;
         }
     }
 }

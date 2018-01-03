@@ -32,5 +32,11 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         {
             service.ShglService.DeleteMerchant(DeleteData);
         }
+
+
+        public string Save(MerchantModuleEntity SaveData)
+        {
+           return service.ShglService.SaveMerchant(SaveData);
+        }
     }
 }
