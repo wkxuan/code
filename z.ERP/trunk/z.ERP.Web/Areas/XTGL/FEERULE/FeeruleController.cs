@@ -13,6 +13,7 @@ namespace z.ERP.Web.Areas.XTGL.FEERULE
     {
         public ActionResult FeeRule()
         {
+            ViewBag.Title = "收费规则信息";
             return View();
         }
         public string Save(FEERULEEntity DefineSave)

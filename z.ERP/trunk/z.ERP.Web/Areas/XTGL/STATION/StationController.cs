@@ -14,6 +14,7 @@ namespace z.ERP.Web.Areas.XTGL.STATION
     {
         public ActionResult Station()
         {
+            ViewBag.Title = "收银终端信息";
             return View();
         }
         public string Save(STATIONEntity DefineSave, List<STATION_PAYEntity> PaySave)

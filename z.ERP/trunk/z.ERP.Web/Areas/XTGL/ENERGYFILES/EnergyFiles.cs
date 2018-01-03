@@ -10,6 +10,7 @@ namespace z.ERP.Web.Areas.XTGL.ENERGYFILES
     {
         public ActionResult EnergyFiles()
         {
+            ViewBag.Title = "能源设备信息";
             return View();
         }
 

@@ -12,6 +12,7 @@ namespace z.ERP.Web.Areas.XTGL.PERIOD
     {
         public ActionResult Period()
         {
+            ViewBag.Title = "月账区间信息";
             return View();
         }
         public void Save(List<PERIODEntity> listPeriod)

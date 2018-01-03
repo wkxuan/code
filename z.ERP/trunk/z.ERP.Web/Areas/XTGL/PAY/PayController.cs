@@ -11,6 +11,7 @@ namespace z.ERP.Web.Areas.XTGL.PAY
     {
         public ActionResult Pay()
         {
+            ViewBag.Title = "支付方式信息";
             return View();
         }
 

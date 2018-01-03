@@ -9,6 +9,7 @@ namespace z.ERP.Web.Areas.XTGL.FKFS
     {
         public ActionResult Fkfs() {
 
+            ViewBag.Title = "付款方式信息";
             return View();
         }
 

@@ -10,6 +10,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
     {
         public ActionResult Shop()
         {
+            ViewBag.Title = "资产单元信息";
             return View();
         }
 

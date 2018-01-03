@@ -9,6 +9,7 @@ namespace z.ERP.Web.Areas.XTGL.FEESUBJECT
     public class FeeSubjectController: BaseController
     {
         public ActionResult FeeSubject() {
+            ViewBag.Title = "收费项目信息";
             return View();
         }
 

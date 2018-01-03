@@ -10,6 +10,7 @@ namespace z.ERP.Web.Areas.XTGL.FLOOR
     {
         public ActionResult Floor()
         {
+            ViewBag.Title = "楼层信息";
             return View();
         }
 

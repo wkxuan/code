@@ -13,6 +13,7 @@ namespace z.ERP.Web.Areas.XTGL.CONFIG
     {
         public ActionResult Config()
         {
+            ViewBag.Title = "系统参数";
             return View();
         }
 

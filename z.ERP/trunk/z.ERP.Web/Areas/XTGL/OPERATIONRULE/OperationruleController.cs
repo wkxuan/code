@@ -9,6 +9,7 @@ namespace z.ERP.Web.Areas.XTGL.OPERATIONRULE
     {
         public ActionResult Operationrule()
         {
+            ViewBag.Title = "租赁收费规则信息";
             return View();
         }
         public string Save(OPERATIONRULEEntity DefineSave)

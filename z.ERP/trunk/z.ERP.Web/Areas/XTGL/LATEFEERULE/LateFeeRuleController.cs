@@ -13,6 +13,7 @@ namespace z.ERP.Web.Areas.XTGL.LATEFEERULE
     {
         public ActionResult LateFeeRule()
         {
+            ViewBag.Title = "滞纳规则信息";
             return View();
         }
         public string Save(LATEFEERULEEntity DefineSave)
