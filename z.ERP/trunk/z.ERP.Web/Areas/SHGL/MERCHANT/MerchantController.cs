@@ -34,9 +34,9 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         }
 
 
-        public string Save(MerchantModuleEntity SaveData)
+        public string Save(MERCHANTEntity SaveData)
         {
-           return service.ShglService.SaveMerchant(SaveData);
+            return service.ShglService.SaveMerchant(SaveData);
         }
     }
 }

@@ -7,8 +7,9 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    public partial class MerchantModuleEntity:MERCHANTEntity
+    public partial class MERCHANTEntity
     {
+        [ForeignKey(nameof(MERCHANTID), nameof(MERCHANT_BRANDEntity.MERCHANTID))]
         public List<MERCHANT_BRANDEntity> MERCHANT_BRAND
         {
             get;

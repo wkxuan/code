@@ -33,7 +33,7 @@ namespace z.ERP.Services
             }
         }
 
-        public string SaveMerchant(MerchantModuleEntity SaveData)
+        public string SaveMerchant(MERCHANTEntity SaveData)
         {
             var v = GetVerify(SaveData);
             if (SaveData.MERCHANTID.IsEmpty())
