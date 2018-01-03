@@ -44,5 +44,17 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
             v.Verify();
             return CommonSave(SaveData);
         }
+
+        public  void Delete(List<BRANDEntity> DeleteData)
+        {
+            foreach(var brand in DeleteData)
+            {
+                var v = GetVerify(brand);
+                v.Require(a => a.ID);
+                v.Verify();
+                CommenDelete(brand);
+            }
+
+        }
     }
 }
