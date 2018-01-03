@@ -20,6 +20,7 @@
             el: '#EditDetail',
             data: {
                 dataParam: _this.dataParam,
+                screenParam: _this.screenParam,
                 stepParam: _this.stepParam,
                 panelName: 'base',
                 branchid: _this.branchid,
@@ -68,6 +69,7 @@
 
     this.vueInit = function () {
         _this.dataParam = {};
+        _this.screenParam = {};
         _this.stepParam = [];
         _this.service = "";
         _this.method = "";

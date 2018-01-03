@@ -8,11 +8,24 @@
     <i-col span="2" class="RowTitle">
         名称
     </i-col>
-    <i-col span="22">
+    <i-col span="14">
         @{
             RenderControl(new TextBoxRender()
             {
                 vModel = "dataParam.NAME"
+            });
+        }
+    </i-col>
+
+    <i-col span="2" class="RowTitle">
+        状态
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.STATUS",
+                Enable=false
             });
         }
     </i-col>
@@ -54,4 +67,81 @@
     </i-col>
 </row>
 
+
+<row>
+    <i-col span="2" class="RowTitle">
+        地址
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.ADRESS"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        联系人
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.CONTACTPERSON"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        电话
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.PHONE"
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="2" class="RowTitle">
+        邮编
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.PIZ"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        微信
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.WEIXIN"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        QQ
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.QQ"
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-table  size="small" :border="true"
+             :columns="screenParam.colDef" :data="dataParam.MERCHANT_BRAND"></i-table>
+</row>
 }
