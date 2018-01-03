@@ -85,6 +85,8 @@ namespace z.ERP.Services
             item.HasTimeKey("CREATE_TIME", a => sql += $" and CREATE_TIME = to_date('{a}') ");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            List<MERCHANTEntity> list = dt.ToList<MERCHANTEntity>();
+            list.ForEach(a => a = DbHelper.Select(a));
             return new DataGridResult(dt, count);
         }
     }

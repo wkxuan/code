@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pdm", "pdm", "{5B0D217C-0A0
 		pdm\MallDb.pdm = pdm\MallDb.pdm
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.ERP.Model", "z.ERP.Model\z.ERP.Model.csproj", "{4ED4509F-7960-4F05-9661-62B6ABDEB532}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{354DF4C7-5D94-4100-86D1-589F5CD5DF20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{354DF4C7-5D94-4100-86D1-589F5CD5DF20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{354DF4C7-5D94-4100-86D1-589F5CD5DF20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ED4509F-7960-4F05-9661-62B6ABDEB532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ED4509F-7960-4F05-9661-62B6ABDEB532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ED4509F-7960-4F05-9661-62B6ABDEB532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ED4509F-7960-4F05-9661-62B6ABDEB532}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

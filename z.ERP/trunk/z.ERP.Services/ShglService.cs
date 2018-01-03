@@ -4,10 +4,11 @@ using z.ERP.Entities;
 using System.Collections.Generic;
 using z.Extensions;
 using System;
+using z.ERP.Entities.Enum;
 
 namespace z.ERP.Services
 {
-    public class ShglService: ServiceBase
+    public class ShglService : ServiceBase
     {
         internal ShglService()
         {
@@ -38,9 +39,9 @@ namespace z.ERP.Services
             var v = GetVerify(SaveData);
             if (SaveData.MERCHANTID.IsEmpty())
                 SaveData.MERCHANTID = NewINC("MERCHANT");
-            SaveData.STATUS = "0";
-            SaveData.REPORTER = "1";
-            SaveData.REPORTER_NAME = "测试人员";
+            SaveData.STATUS = ((int)物业标记.保底租金).ToString();
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
             v.Require(a => a.MERCHANTID);
             v.Require(a => a.NAME);
@@ -48,15 +49,10 @@ namespace z.ERP.Services
             v.IsUnique(a => a.NAME);
             v.Verify();
 
-            foreach (var shpp in SaveData.MERCHANT_BRAND)
+            SaveData.MERCHANT_BRAND.ForEach(shpp =>
             {
-                var w = GetVerify(shpp);
-                shpp.MERCHANTID = SaveData.MERCHANTID;
-                w.Require(a => a.MERCHANTID);
-                w.Require(a => a.BRANDID);
-                //DbHelper.Delete(shpp);
-                //DbHelper.Insert(shpp);
-            }
+                GetVerify(shpp).Require(a => a.BRANDID);
+            });
             DbHelper.Save(SaveData);
             return SaveData.MERCHANTID;
         }

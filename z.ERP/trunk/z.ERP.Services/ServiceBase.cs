@@ -116,6 +116,19 @@ namespace z.ERP.Services
             return v;
         }
         #endregion
+
+        #region 属性
+        /// <summary>
+        /// 当前登录对象
+        /// </summary>
+        protected Employee employee
+        {
+            get
+            {
+                return LoginHelper.GetLogin();
+            }
+        }
+        #endregion
     }
     #endregion
     #region 透明的实现
