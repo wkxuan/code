@@ -19,12 +19,60 @@
                 },
                 on: {
                     'on-blur': function (event) {
-                        app.dataParam.MERCHANT_BRAND[params.index].BRANDID = event.target.value;
+                        editDetail.dataParam.MERCHANT_BRAND[params.index].BRANDID = event.target.value;
                     }
                 },
             })
         },
     },
-    { title: '品牌名称', key: 'NAME', width: 200 }
+    { title: '品牌名称', key: 'NAME', width: 200 },
+    { title: '业态代码', key: 'CATEGORYID', width: 200 },
+    { title: '业态名称', key: 'CATEGORYNAME', width: 200 },
+
+    {
+        title: '操作',
+        key: 'action',
+        width: 80,
+        align: 'center',
+        render: function (h, params) {
+            return h('div',
+                [
+                h('Button', {
+                    props: { type: 'primary', size: 'small', disabled: false },
+
+                    style: { marginRight: '50px' },
+                    on: {
+                        click: function (event) {
+                            editDetail.dataParam.MERCHANT_BRAND.splice(params.index,1);
+                        }
+                    },
+                }, '删除')
+                ]);
+        }
+    }
     ];
+
+
+    editDetail.dataParam.MERCHANT_BRAND = [{
+        BRANDID: '王小明',
+        NAME: 18,
+        CATEGORYID: '北京市朝阳区芍药居',
+        CATEGORYNAME: '2017-01-01'
+    }, {
+        BRANDID: '王小明',
+        NAME: 18,
+        CATEGORYID: '北京市朝阳区芍药居',
+        CATEGORYNAME: '2017-01-01'
+    }, {
+        BRANDID: '王小明',
+        NAME: 18,
+        CATEGORYID: '北京市朝阳区芍药居',
+        CATEGORYNAME: '2017-01-01'
+    }, ]
+
+    editDetail.screenParam.addCol = function () {
+        var  temp = editDetail.dataParam.MERCHANT_BRAND||[];
+        temp.push({});
+        editDetail.dataParam.MERCHANT_BRAND = temp;
+    }
 }

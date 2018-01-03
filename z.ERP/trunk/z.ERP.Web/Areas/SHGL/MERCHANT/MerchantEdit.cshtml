@@ -139,9 +139,18 @@
         }
     </i-col>
 </row>
-
 <row>
-    <i-table  size="small" :border="true"
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "screenParam.addCol",
+            Text = "添加一行",
+            Enable = true
+        });
+    }
+</row>
+<row>
+    <i-table  size="small" :border="true" 
              :columns="screenParam.colDef" :data="dataParam.MERCHANT_BRAND"></i-table>
 </row>
 }
