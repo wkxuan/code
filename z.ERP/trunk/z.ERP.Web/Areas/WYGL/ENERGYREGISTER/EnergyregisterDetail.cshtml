@@ -1,17 +1,17 @@
-﻿@{
-    Layout = null;
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Detail
+@using z.ERP.Entities
+
+@inherits DetailLayout<ENERGY_REGISTEREntity>
+
+@section Titile{
+    @Html.Raw("详情")
 }
 
-<!DOCTYPE html>
+@section btn{
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
-    </div>
-</body>
-</html>
+}
+
+@section content{
+
+}

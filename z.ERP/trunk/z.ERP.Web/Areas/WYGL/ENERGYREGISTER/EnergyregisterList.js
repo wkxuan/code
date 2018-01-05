@@ -9,7 +9,16 @@
         { title: "审核时间", key: "VERIFY_TIME", width: 100 },
         { title: "状态", key: "STATUS", width: 100 },
     ]
-    search.screemParam.colDef = col.concat(search.colOperate).concat(search.colMul);
-    search.service = "";
-    search.method = "";
+    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
+    search.service = "WyglService";
+    search.method = "GetEnergyreGister";
+}
+
+search.browseHref = function (row, index) {
+    _.OpenPage("WYGL/ENERGYREGISTER/EnergyreGisterDetail/" + row.BILLID, function (data) {
+    })
+}
+search.addHref = function (row) {
+    _.OpenPage("WYGL/ENERGYREGISTER/EnergyreGisterEdit/", function (data) {
+    })
 }
