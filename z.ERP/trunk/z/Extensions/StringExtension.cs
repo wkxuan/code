@@ -289,6 +289,22 @@ namespace z.Extensions
             }
             return s;
         }
+
+        /// <summary>
+        /// 针对数字的遍历方法
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="act"></param>
+        public static void ForEach(this int number, Action<int> act)
+        {
+            if (number >= 0)
+            {
+                for (int i = 0; i < number; i++)
+                {
+                    act(i);
+                }
+            }
+        }
         #endregion
         #region 反射
 

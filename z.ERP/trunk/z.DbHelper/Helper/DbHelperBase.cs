@@ -121,7 +121,6 @@ namespace z.DBHelper.Helper
         #endregion
         #region 数据操作
         #region 查表
-
         public DataTable ExecuteTable(string sql)
         {
             return ExecuteTable(sql, 0, 0);
@@ -137,13 +136,6 @@ namespace z.DBHelper.Helper
             return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount);
         }
 
-        /// <summary>
-        /// 查
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
-        /// <returns></returns>
         public DataTable ExecuteTable(string sql, int pageSize, int pageIndex)
         {
             DataTable dt = new DataTable();
@@ -167,14 +159,6 @@ namespace z.DBHelper.Helper
             return dt;
         }
 
-        /// <summary>
-        /// 查
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="allCount"></param>
-        /// <returns></returns>
         public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount)
         {
             DataTable dt = ExecuteTable(sql, pageSize, pageIndex);
@@ -205,7 +189,81 @@ namespace z.DBHelper.Helper
             }
             return dt;
         }
+        #endregion
+        #region 查对象
+        public T ExecuteOneObject<T>(string sql) where T : new()
+        {
+            return ExecuteObject<T>(sql, 0, 0).FirstOrDefault();
+        }
 
+        public List<T> ExecuteObject<T>(string sql) where T : new()
+        {
+            return ExecuteObject<T>(sql, 0, 0);
+        }
+
+        public List<T> ExecuteObject<T>(string sql, PageInfo pageinfo) where T : new()
+        {
+            return ExecuteObject<T>(sql, pageinfo.PageSize, pageinfo.PageIndex);
+        }
+
+        public List<T> ExecuteObject<T>(string sql, PageInfo pageinfo, out int allCount) where T : new()
+        {
+            return ExecuteObject<T>(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount);
+        }
+
+        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex) where T : new()
+        {
+            List<T> list = new List<T>();
+            try
+            {
+                if (_dbCommand.Connection.State != ConnectionState.Open)
+                    Open();
+                _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
+                lock (ObjectExtension.Locker)
+                {
+                    using (IDataReader reader = _dbCommand.ExecuteReader())
+                    {
+                        list = this.ReaderToObject<T>(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DataBaseException(ex.InnerMessage(), sql);
+            }
+            return list;
+        }
+
+        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, out int allCount) where T : new()
+        {
+            List<T> list = ExecuteObject<T>(sql, pageSize, pageIndex);
+            try
+            {
+                if (_dbCommand.Connection.State != ConnectionState.Open)
+                    Open();
+                _dbCommand.CommandText = GetCountSql(sql);
+                lock (ObjectExtension.Locker)
+                {
+                    using (IDataReader reader = _dbCommand.ExecuteReader())
+                    {
+                        DataTable dtcount = this.ReaderToTable(reader);
+                        if (dtcount.IsOneLine())
+                        {
+                            int.TryParse(dtcount.Rows[0][0].ToString(), out allCount);
+                        }
+                        else
+                        {
+                            allCount = 0;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DataBaseException(ex.InnerMessage(), sql);
+            }
+            return list;
+        }
         #endregion
         #region 增删改
         /// <summary>
@@ -618,6 +676,21 @@ namespace z.DBHelper.Helper
         }
         #endregion
         #region 辅助方法
+        private List<T> ReaderToObject<T>(IDataReader reader) where T : new()
+        {
+            List<T> res = new List<T>();
+            while (reader.Read())
+            {
+                T t = new T();
+                reader.FieldCount.ForEach(i =>
+               {
+                   t.SetPropertyValue(reader.GetName(i), reader.GetValue(i).ToString());
+               });
+                res.Add(t);
+            }
+            reader.Close();
+            return res;
+        }
 
         /// <summary>
         /// 读取的内容转换为datatable
@@ -646,7 +719,7 @@ namespace z.DBHelper.Helper
         }
 
         /// <summary>
-        /// 读取的内容转换为datatable
+        /// 读取的内容转换为Entity
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
