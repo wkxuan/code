@@ -5,7 +5,7 @@ using System.Web;
 
 namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
 {
-    public class EnergyregisterController
+    public class EnergyreGisterController
     {
     }
 }

@@ -50,6 +50,7 @@
     <Compile Include="ShglService.cs" />
     <Compile Include="TestServiceOverride.cs" />
     <Compile Include="TestService.cs" />
+    <Compile Include="WyglService.cs" />
     <Compile Include="XtglService.cs" />
   </ItemGroup>
   <ItemGroup>
