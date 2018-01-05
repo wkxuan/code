@@ -311,6 +311,27 @@ namespace z.ERP.Services
         {
             public string NAME { get; set; }
         }
+
+        public string SaveBrand(BRANDEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.ID.IsEmpty())
+                SaveData.ID = CommonService.NewINC("BRAND");
+            SaveData.STATUS = "0";
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            v.Require(a => a.ID);
+            v.Require(a => a.NAME);
+            v.Require(a => a.CATEGORYID);
+            v.IsNumber(a => a.ID);
+            v.IsNumber(a => a.CATEGORYID);
+            v.IsUnique(a => a.ID);
+            v.IsUnique(a => a.NAME);
+            v.Verify();
+            DbHelper.Save(SaveData);
+            return SaveData.ID;
+        }
     }
 
 }

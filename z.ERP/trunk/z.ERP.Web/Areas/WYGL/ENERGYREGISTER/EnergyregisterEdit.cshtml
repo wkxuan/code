@@ -1,0 +1,34 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.EditDetail
+@inherits EditDetailViewBase
+
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            抄表日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.CHECK_DATE",
+                    Id="ckdate",
+                });
+
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            年月
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.YEARMONTH",
+                    Id = "ckdate",
+                });
+
+            }
+        </i-col>
+    </row>
+}

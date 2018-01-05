@@ -73,6 +73,13 @@ namespace z.ERP.Services
                 return ioc.Create<ShglService>();
             }
         }
+        public WyglService WyglService
+        {
+            get
+            {
+                return ioc.Create<WyglService>();
+            }
+        }
         #endregion
 
         #region 通用方法

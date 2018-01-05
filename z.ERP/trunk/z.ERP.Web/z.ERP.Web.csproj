@@ -175,6 +175,7 @@
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\PPGL\BRAND\BrandController.cs" />
+    <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\CONFIG\Config.cs" />
     <Compile Include="Areas\XTGL\FEERULE\FeeRuleController.cs" />
@@ -203,6 +204,8 @@
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
+    <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
+    <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
@@ -307,6 +310,9 @@
     <Content Include="Areas\Layout\EditDetail\_EditDetail.cshtml" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.cshtml" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.cshtml" />
+    <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.cshtml" />
+    <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.cshtml" />
+    <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
