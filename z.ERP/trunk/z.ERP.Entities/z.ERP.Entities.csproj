@@ -107,6 +107,7 @@
     <Compile Include="Auto\USER_ROLEEntity.cs" />
     <Compile Include="Auto\WORKITEMEntity.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="ENERGY_REGISTEREntity.cs" />
     <Compile Include="Enum\Enum.cs" />
     <Compile Include="P1Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
