@@ -42,6 +42,17 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Vue\TreeModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\z.DbHelper\z.DbHelper.csproj">
+      <Project>{DA64E4E3-1857-4B57-A6D9-ABBDB092E7E4}</Project>
+      <Name>z.DbHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\z\z.csproj">
+      <Project>{68597FEB-8FF8-486E-B603-CE7E8DE57F5B}</Project>
+      <Name>z</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\z.ERP.Entities\z.ERP.Entities.csproj">

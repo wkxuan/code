@@ -36,7 +36,6 @@ namespace z.ERP.Services
 
         public string SaveMerchant(MERCHANTEntity SaveData)
         {
-            var sdfg = DbHelper.ExecuteObject<MERCHANTEntity>("select * from MERCHANT");
             var v = GetVerify(SaveData);
             if (SaveData.MERCHANTID.IsEmpty())
                 SaveData.MERCHANTID = NewINC("MERCHANT");

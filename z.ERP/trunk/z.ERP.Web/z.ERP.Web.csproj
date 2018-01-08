@@ -331,6 +331,10 @@
       <Project>{4115fe85-9e35-45e1-bfe9-c19f62bab612}</Project>
       <Name>z.ERP.Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.ERP.Model\z.ERP.Model.csproj">
+      <Project>{4ED4509F-7960-4F05-9661-62B6ABDEB532}</Project>
+      <Name>z.ERP.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.ERP.Services\z.ERP.Services.csproj">
       <Project>{4F92BE72-D196-4EE6-903C-10A1D7B0FADF}</Project>
       <Name>z.ERP.Services</Name>

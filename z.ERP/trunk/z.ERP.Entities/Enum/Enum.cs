@@ -105,4 +105,9 @@ namespace z.ERP.Entities.Enum
         商铺 = 2,
         接口 = 3
     }
+    public enum 普通单据状态
+    {
+        未审核 = 1,
+        审核 = 2,
+    }
 }

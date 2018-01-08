@@ -25,10 +25,56 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.YEARMONTH",
-                    Id = "ckdate",
+                    Id = "tdny",
                 });
 
             }
         </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            描述
+        </i-col>
+        <i-col span="14">
+            @{ 
+                RenderControl(new TextBoxRender()
+                {
+                    vModel= "dataParam.DESCRIPTION",
+                    Id = "tdbz",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            描述
+        </i-col>
+        <i-col span="14">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION",
+                    Id = "tdbz",
+                });
+            }
+        </i-col>
+    </row>
+
+}
+
+@section detailParam{
+    <row>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "screenParam.addCol",
+                Text = "添加一行",
+                Enable = true
+            });
+        }
+    </row>
+    <row>
+    <i-table size="small" :border="true"
+         :columns="screenParam.colDef" :data="dataParam.ENERGY_REGISTER_ITEM"></i-table>
     </row>
 }

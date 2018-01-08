@@ -20,6 +20,18 @@ namespace z.Extensions
         {
             return string.IsNullOrWhiteSpace(str?.Trim());
         }
+
+        /// <summary>
+        /// 是空的,含null,empty,纯空格
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="defaultValue">默认值</param>
+        /// <returns></returns>
+        public static string IsEmpty(this string str, string defaultValue)
+        {
+            return str.IsEmpty() ? defaultValue : str;
+        }
+
         /// <summary>
         /// 不是空的,含null,empty,纯空格
         /// </summary>
@@ -50,6 +62,16 @@ namespace z.Extensions
         }
 
         /// <summary>
+        /// 是数字,含小数
+        /// </summary>
+        /// <returns></returns>
+        public static double IsNumber(this string str, double defaultValue)
+        {
+            double d;
+            return str.IsNumber(out d) ? d : defaultValue;
+        }
+
+        /// <summary>
         /// 是数字,不含小数,如果是小数,返回false
         /// </summary>
         /// <returns></returns>
@@ -69,6 +91,16 @@ namespace z.Extensions
         {
             int d;
             return str.IsInt(out d);
+        }
+
+        /// <summary>
+        /// 是数字,含小数
+        /// </summary>
+        /// <returns></returns>
+        public static int IsInt(this string str, int defaultValue)
+        {
+            int d;
+            return str.IsInt(out d) ? d : defaultValue;
         }
         #endregion
         #region 转换方法
@@ -304,6 +336,17 @@ namespace z.Extensions
                     act(i);
                 }
             }
+        }
+
+        /// <summary>
+        /// 左相似
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="strleft"></param>
+        /// <returns></returns>
+        public static bool LeftLike(this string str, string strleft)
+        {
+            return str.IndexOf(strleft) == 0;
         }
         #endregion
         #region 反射
