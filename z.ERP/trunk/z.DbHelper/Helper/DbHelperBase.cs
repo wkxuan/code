@@ -593,7 +593,7 @@ namespace z.DBHelper.Helper
             string tablename = info.GetTableName();
             string select = string.Join(",", info.GetAllField().Select(a => a.Name));
             string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
-            _dbCommand.CommandText = string.Format(_select, select, tablename, where);
+            _dbCommand.CommandText = string.Format(_select, select, tablename, where.IsEmpty(" 1=1 "));
             try
             {
                 IDataReader reader = _dbCommand.ExecuteReader();

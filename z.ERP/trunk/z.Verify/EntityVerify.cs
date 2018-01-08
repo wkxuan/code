@@ -126,12 +126,11 @@ namespace z.Verify
             {
                 MemberExpression me = p.Body as MemberExpression;
                 PropertyInfo prop = me.Member as PropertyInfo;
-                string str = prop.GetValue(_entity)?.ToString().Trim();
                 FieldAttribute f = prop.GetAttribute<FieldAttribute>();
                 string fieldname = me.Member.Name;
                 if (f != null)
                     fieldname = f.Fieldname;
-                if (!verify(str))
+                if (!verify(p.Compile()(_entity).Trim()))
                 {
                     SetError(geterror(fieldname));
                 }

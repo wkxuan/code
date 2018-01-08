@@ -3,7 +3,9 @@ using System.Web.Mvc;
 using z.ERP.Entities;
 using z.Extensions;
 using System;
-
+using System.Collections.Generic;
+using z.ERP.Model.Vue;
+using System.Linq;
 
 namespace z.ERP.Web.Areas.XTGL.PAY
 {
@@ -11,6 +13,12 @@ namespace z.ERP.Web.Areas.XTGL.PAY
     {
         public ActionResult Pay()
         {
+            List<MENUEntity> p = SelectList(new MENUEntity());
+            TreeModel[] tt = TreeModel.Create(p, a => a.MENUCODE, a => new TreeModel()
+            {
+                code = a.MENUCODE,
+                title = a.MENUNAME
+            }).ToArray();
             ViewBag.Title = "支付方式信息";
             return View();
         }
