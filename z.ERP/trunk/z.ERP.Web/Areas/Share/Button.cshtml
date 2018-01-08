@@ -1,10 +1,4 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<ButtonRender>
-@{
-    string disabled = "";
-    if (!Model.Enable)
-    {
-        disabled = ":disabled='disabled'";
-    }
-}
-<i-button id="@Model.Id" type="primary" v-on:click="@Model.Click" @disabled>@Model.Text</i-button>
+
+<i-button id="@Model.Id" v-on:click="@Model.Click" :disabled="@(Model.Enable?"!disabled":"disabled")">@Model.Text</i-button>

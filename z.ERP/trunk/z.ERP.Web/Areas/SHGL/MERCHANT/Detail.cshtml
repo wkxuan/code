@@ -12,10 +12,17 @@
 
 @section btn{
     @{
-        RenderControl(new ButtonRender()
+        if (Model.STATUS == "0")
         {
-            Text = "审核"
-        });
+            RenderControl(new ButtonRender()
+            {
+                Text = "审核"
+            });
+        }
+        else
+        {
+
+        }
     }
 }
 
