@@ -260,25 +260,25 @@ namespace z.ERP.Services
             }
 
 
-            var aa=new {
+            //var aa=new {
 
-            }
+            //}
 
-            var s = new 
-            {
-                ipsdfsdfds = dt.rows[0]["ip"].tostring(),
-                type = dt.rows[0]["type"].tostring(),
-                stationbh = dt.rows[0]["stationbh"].tostring(),
-                station_pay = new dynamic[]
-                {
-                    new 
-                    {
-                        payid = dt1.rows[0]["payid"].tostring(),
-                        name = dt1.rows[0]["name"].tostring(),
-                        vv=aa
-                    }
-                }
-            };
+            //var s = new 
+            //{
+            //    ipsdfsdfds = dt.rows[0]["ip"].tostring(),
+            //    type = dt.rows[0]["type"].tostring(),
+            //    stationbh = dt.rows[0]["stationbh"].tostring(),
+            //    station_pay = new dynamic[]
+            //    {
+            //        new 
+            //        {
+            //            payid = dt1.rows[0]["payid"].tostring(),
+            //            name = dt1.rows[0]["name"].tostring(),
+            //            vv=aa
+            //        }
+            //    }
+            //};
             return null;
         }
 
