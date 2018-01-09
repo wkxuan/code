@@ -75,4 +75,12 @@
         temp.push({});
         editDetail.dataParam.ENERGY_REGISTER_ITEM = temp;
     }
+    editDetail.IsValidSave = function () {
+        var d = new Date(editDetail.dataParam.CHECK_DATE);
+        editDetail.dataParam.CHECK_DATE = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+        return true;
+    }
+
+   
 }

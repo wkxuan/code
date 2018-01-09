@@ -22,10 +22,11 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
             return View();
         }
 
-        public ActionResult EnergyreGisterDetail()
+        public ActionResult EnergyreGisterDetail(string Id)
         {
             ViewBag.Title = "浏览能源设备登记(抄表)";
-            return View();
+            ENERGY_REGISTEREntity entity = Select(new ENERGY_REGISTEREntity(Id));
+            return View(entity);
         }
 
         public string Save(ENERGY_REGISTEREntity SaveData)

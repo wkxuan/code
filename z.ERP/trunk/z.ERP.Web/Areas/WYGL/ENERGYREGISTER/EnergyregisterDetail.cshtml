@@ -1,17 +1,60 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Web.Areas.Layout.Detail
 @using z.ERP.Entities
+@using z.ERP.Entities.Enum
+@using z.Extensions;
 
 @inherits DetailLayout<ENERGY_REGISTEREntity>
 
-@section Titile{
+@section Title{
     @Html.Raw("详情")
 }
 
 @section btn{
+    @{
+        if (Model.STATUS == "1")
+        {
+            RenderControl(new ButtonRender()
+            {
+                Text = "审核",
+                Enable =false,
+                Click = "exec"
+            });
+        }
+        else
+        {
 
+        }
+    }
 }
 
 @section content{
-
+    <row>
+        <i-col span="2" class="RowTitle">单据号</i-col>
+        <i-col span="6" class="RowText">@Model.BILLID </i-col>
+        <i-col span="2" class="RowTitle">商场名称</i-col>
+        <i-col span="6" class="RowText">@Model.BILLID </i-col>
+        <i-col span="2" class="RowTitle">抄表日期</i-col>
+        <i-col span="6" class="RowText">@Model.CHECK_DATE </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">年月</i-col>
+        <i-col span="6" class="RowText">@Model.YEARMONTH </i-col>
+        <i-col span="2" class="RowTitle">描述</i-col>
+        <i-col span="14" class="RowText">@Model.DESCRIPTION </i-col>        
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">登记人</i-col>
+        <i-col span="6" class="RowText">@Model.REPORTER_NAME </i-col>
+        <i-col span="2" class="RowTitle">登记时间</i-col>
+        <i-col span="6" class="RowText">@Model.REPORTER_TIME </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="6" class="RowText">@(Model.STATUS.ToEnum<普通单据状态>().ToString()) </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">审核人</i-col>
+        <i-col span="6" class="RowText">@Model.VERIFY_NAME </i-col>
+        <i-col span="2" class="RowTitle">审核时间</i-col>
+        <i-col span="6" class="RowText">@Model.VERIFY_TIME </i-col>
+    </row>
 }

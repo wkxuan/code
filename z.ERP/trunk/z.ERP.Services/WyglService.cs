@@ -32,14 +32,18 @@ namespace z.ERP.Services
         public string SaveEnergyreGister(ENERGY_REGISTEREntity SaveData)
         {
             var v = GetVerify(SaveData);
+            
+            SaveData.CHECK_DATE.ToDateTime();
             if (SaveData.BILLID.IsEmpty())
             {
                 SaveData.BILLID = NewINC("ENERGY_REGISTER");
             }
+            
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
             SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            
             v.Require(a => a.BILLID);
             v.Require(a => a.CHECK_DATE);
             v.Require(a => a.YEARMONTH);
@@ -47,7 +51,6 @@ namespace z.ERP.Services
 
             SaveData.ENERGY_REGISTER_ITEM.ForEach(sdb =>
             {
-                GetVerify(sdb).Require(a => a.BILLID);
                 GetVerify(sdb).Require(a => a.FILEID);
                 GetVerify(sdb).Require(a => a.AMOUNT);
             });
@@ -55,6 +58,7 @@ namespace z.ERP.Services
             DbHelper.Save(SaveData);
             return SaveData.BILLID;
         }
+
 
 
     }
