@@ -21,8 +21,8 @@ namespace z.ERP.Services
         {
             string sql = $@"select * from ENERGY_REGISTER where 1=1 ";
             item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
-            item.HasKey("CHECK_DATE_START", a => sql += $" and CHECK_DATE>= '{a}'");
-            item.HasKey("CHECK_DATE_END", a => sql += $" and CHECK_DATE<= '{a}'");
+            item.HasKey("CHECK_DATE_START", a => sql += $" and CHECK_DATE>= '{a[0]}' and CHECK_DATE<= '{a[1]}'");
+            item.HasKey("CHECK_DATE_END", a => sql += $" and CHECK_DATE<= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             sql += " order by BILLID desc";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
