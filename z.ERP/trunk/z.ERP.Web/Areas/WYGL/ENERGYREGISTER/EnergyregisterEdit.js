@@ -1,7 +1,7 @@
 ﻿editDetail.beforeVue = function () {
 
     editDetail.service = "WyglService";
-    editDetail.method = "GetEnergyreGister"
+    editDetail.method = "GetEnergyreGisterElement"
     editDetail.Key = 'BILLID';
 
     editDetail.screenParam.colDef = [

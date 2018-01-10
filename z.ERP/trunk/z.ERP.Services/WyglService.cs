@@ -21,7 +21,7 @@ namespace z.ERP.Services
         {
             string sql = $@"select * from ENERGY_REGISTER where 1=1 ";
             item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
-            item.HasKey("CHECK_DATE_START", a => sql += $" and CHECK_DATE>= '{a[0]}' and CHECK_DATE<= '{a[1]}'");
+            item.HasKey("CHECK_DATE_START", a => sql += $" and CHECK_DATE>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             item.HasKey("CHECK_DATE_END", a => sql += $" and CHECK_DATE<= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             sql += " order by BILLID desc";
             int count;
@@ -58,7 +58,24 @@ namespace z.ERP.Services
             DbHelper.Save(SaveData);
             return SaveData.BILLID;
         }
+        
 
+        public object GetEnergyreGisterElement(SearchItem item)
+        {
+            string sql = $@"select * from ENERGY_REGISTER where 1=1 ";
+            item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");            
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+
+            string sqlitem = $@"SELECT M.*,E.FILECODE,E.FILENAME,P.CODE,P.NAME " +
+                " FROM ENERGY_REGISTER_ITEM M,ENERGY_FILES E,SHOP P " +
+                " where M.FILEID = E.FILEID and M.SHOPID = P.SHOPID";
+            item.HasKey("BILLID", a => sql += $" and M.BILLID = '{a}'");
+
+            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
+
+            return new { main = new DataGridResult(dt, count),item = new DataGridResult(dtitem, count)};
+        }
 
 
     }
