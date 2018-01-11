@@ -33,5 +33,9 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
         {
             return service.WyglService.SaveEnergyreGister(SaveData);
         }
+        public object SearchElement(string BILLID)
+        {
+            return service.WyglService.GetEnergyreGisterElement(BILLID);
+        }
     }
 }
