@@ -39,6 +39,38 @@ namespace z.Extensiont
         }
 
         /// <summary>
+        /// 针对更多类型的遍历方法,返回false跳出循环
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="arr"></param>
+        /// <param name="act"></param>
+        public static void ForEachWithBreak<T>(this IEnumerable<T> arr, Func<T, bool> act)
+        {
+            if (!arr.IsEmpty())
+                for (int i = 0; i < arr.Count(); i++)
+                {
+                    if (!act(arr.ElementAt(i)))
+                        break;
+                }
+        }
+
+        /// <summary>
+        /// 针对更多类型的遍历方法,返回false跳出循环
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="arr"></param>
+        /// <param name="act"></param>
+        public static void ForEachWithBreak<T>(this IEnumerable<T> arr, Func<int, T, bool> act)
+        {
+            if (!arr.IsEmpty())
+                for (int i = 0; i < arr.Count(); i++)
+                {
+                    if (!act(i, arr.ElementAt(i)))
+                        break;
+                }
+        }
+
+        /// <summary>
         /// 修饰数组
         /// </summary>
         /// <typeparam name="T"></typeparam>

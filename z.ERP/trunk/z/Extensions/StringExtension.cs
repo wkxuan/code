@@ -223,7 +223,7 @@ namespace z.Extensions
         /// <param name="c">补足位</param>
         /// <param name="length">长度</param>
         /// <returns></returns>
-        public static string Fill(this string str, char c, int length)
+        public static string FillRight(this string str, char c, int length)
         {
             if (str.Length >= length)
             {
@@ -231,7 +231,26 @@ namespace z.Extensions
             }
             else
             {
-                return Fill(str + c, c, length);
+                return FillRight(str + c, c, length);
+            }
+        }
+
+        /// <summary>
+        /// 补齐字符串
+        /// </summary>
+        /// <param name="str">字符串</param>
+        /// <param name="c">补足位</param>
+        /// <param name="length">长度</param>
+        /// <returns></returns>
+        public static string FillLeft(this string str, char c, int length)
+        {
+            if (str.Length >= length)
+            {
+                return str.Substring(str.Length - length);
+            }
+            else
+            {
+                return FillLeft(c + str, c, length);
             }
         }
 
@@ -347,6 +366,32 @@ namespace z.Extensions
         public static bool LeftLike(this string str, string strleft)
         {
             return str.IndexOf(strleft) == 0;
+        }
+
+        /// <summary>
+        /// 从右边切掉指定个字符
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static string CutRight(this string str, int length)
+        {
+            if (str.IsEmpty() || str.Length <= length)
+                return str;
+            return str.SubstringSafe(0, str.Length - length);
+        }
+
+        /// <summary>
+        /// 从左边切掉指定个字符
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static string CutLeft(this string str, int length)
+        {
+            if (str.IsEmpty() || str.Length <= length)
+                return str;
+            return str.SubstringSafe(length);
         }
         #endregion
         #region 反射

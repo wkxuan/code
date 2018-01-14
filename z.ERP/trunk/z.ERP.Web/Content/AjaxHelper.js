@@ -132,5 +132,21 @@ zQuery.extend({
                 Options.Success && Options.Success(data);
             }
         });
+    },
+    SearchNoQuery: function (Options) {
+        if (!Options.Service || !Options.Method) {
+            alert("必要的参数Service,Method");
+            return;
+        }
+        this.Ajax({
+            url: _.CommonAjaxUrl + "SearchNoQuery",
+            data: {
+                Service: Options.Service,
+                Method: Options.Method
+            },
+            success: function (data) {
+                Options.Success && Options.Success(data);
+            }
+        });
     }
 });

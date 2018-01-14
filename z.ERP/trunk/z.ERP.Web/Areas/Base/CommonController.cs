@@ -39,5 +39,26 @@ namespace z.ERP.Web.Areas.Base
             return d;
         }
 
+
+        public UIResult SearchNoQuery(string Service, string Method)
+        {
+            Type type = service.GetType();
+            PropertyInfo propertyInfo = type.GetProperty(Service);
+            if (propertyInfo == null)
+                throw new Exception($"无效的Service:{Service}");
+            if (!propertyInfo.PropertyType.BaseOn<ServiceBase>())
+                throw new Exception($"Service:{Service}不继承于ServiceBase");
+            ServiceBase list = propertyInfo.GetValue(service, null) as ServiceBase;
+            MethodInfo mi = propertyInfo.PropertyType.GetMethod(Method);
+            if (mi == null)
+                throw new Exception($"无效的Method:{Method}");
+            if (!mi.ReturnType.BaseOn<UIResult>())
+                throw new Exception($"Method:{Method}返回值错误,必须返回UIResult");
+            ParameterInfo[] info = mi.GetParameters();
+            if (info.Count() != 0)
+                throw new Exception($"Method:{Method}不能有参数");
+            var d = mi.Invoke(list, null) as UIResult;
+            return d;
+        }
     }
 }

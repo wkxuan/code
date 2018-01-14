@@ -29,7 +29,7 @@ namespace z.ERP.Services
         {
             get
             {
-                return _db;
+                return new OracleDbHelper(ConfigExtension.GetConfig("connection"));
             }
         }
 

@@ -48,11 +48,18 @@ namespace z.MVC5.Controllers
                 {
                     filterContext.Result = new UIResult();
                 }
-                if (filterContext.Result is UIResult)
+                else if (filterContext.Result is UIResult)
                 {
                     filterContext.Result = new UIResult()
                     {
                         Data = (filterContext.Result as UIResult).GetData()
+                    };
+                }
+                else if (filterContext.Result is ContentResult)
+                {
+                    filterContext.Result = new UIResult()
+                    {
+                        Data = (filterContext.Result as ContentResult).Content
                     };
                 }
             }

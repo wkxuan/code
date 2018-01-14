@@ -13,12 +13,7 @@ namespace z.ERP.Web.Areas.XTGL.PAY
     {
         public ActionResult Pay()
         {
-            List<MENUEntity> p = SelectList(new MENUEntity());
-            TreeModel[] tt = TreeModel.Create(p, a => a.MENUCODE, a => new TreeModel()
-            {
-                code = a.MENUCODE,
-                title = a.MENUNAME
-            }).ToArray();
+
             ViewBag.Title = "支付方式信息";
             return View();
         }

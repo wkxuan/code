@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using z.ERP.Entities;
+using z.ERP.Model.Vue;
 using z.Extensions;
 using z.Extensiont;
 using z.MVC5.Results;
@@ -74,6 +75,28 @@ namespace z.ERP.Services
 
 
             return "TestManager";
+        }
+
+        public virtual UIResult Treelist()
+        {
+            List<MENUEntity> p = DbHelper.SelectList(new MENUEntity());
+            return new UIResult(TreeModel.Create(p,
+                a => a.MENUCODE,
+                a => new TreeModel()
+                {
+                    code = a.MENUCODE,
+                    title = a.MENUNAME,
+                    expand = true
+                }).ToArray());
+        }
+
+        public virtual UIResult TreeData(SearchItem item)
+        {
+            string sql = $@"select * from MENU where 1=1 ";
+            item.HasKey("code", a => sql += $" and MENUCODE = '{a}' ");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
         }
 
         public DataGridResult GetData(SearchItem item)

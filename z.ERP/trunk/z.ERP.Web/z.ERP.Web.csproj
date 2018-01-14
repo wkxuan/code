@@ -158,6 +158,7 @@
     <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
+    <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Areas\XTGL\PERIOD\PeriodController.cs" />
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
+    <Compile Include="Areas\XTGL\TreeTest\TreeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -200,6 +202,7 @@
     <Content Include="Areas\HTGL\LYHT\List.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
+    <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
@@ -220,6 +223,7 @@
     <Content Include="Areas\XTGL\PERIOD\Period.js" />
     <Content Include="Areas\XTGL\STATION\Station.js" />
     <Content Include="Areas\XTGL\test\List.js" />
+    <Content Include="Areas\XTGL\TreeTest\List.js" />
     <Content Include="Content\PageBase.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\Base.css" />
@@ -313,11 +317,14 @@
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.cshtml" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.cshtml" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterDetail.cshtml" />
+    <Content Include="Areas\Layout\Tree\_TreeLayout.cshtml" />
+    <Content Include="Areas\XTGL\TreeTest\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Home\" />
     <Folder Include="Areas\HTGL\Views\ZLHT\" />
+    <Folder Include="Areas\XTGL\Views\Tree\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

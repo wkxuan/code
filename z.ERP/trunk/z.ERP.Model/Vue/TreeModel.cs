@@ -88,5 +88,56 @@ namespace z.ERP.Model.Vue
                 return v;
             }).ToArray();
         }
+
+        public static string GetNewKey<TEntity>(List<TEntity> infos, Expression<Func<TEntity, string>> code, string key, string Tar) where TEntity : EntityBase
+        {
+            if (Tar.ToLower() == "tj")
+            {
+                List<string> keys = infos.Where(info => code.Compile()(info).LeftLike(key.Substring(0, key.Length - 2)) && code.Compile()(info).Length == key.Length).Select(info => code.Compile()(info)).ToList();
+                if (keys.IsEmpty())
+                    return "01";
+                else
+                {
+                    return _NewKey(keys);
+                }
+            }
+            else if (Tar.ToLower() == "xj")
+            {
+                List<string> keys = infos.Where(info => code.Compile()(info).LeftLike(key) && code.Compile()(info).Length == key.Length + 2).Select(info => code.Compile()(info)).ToList();
+                if (keys.IsEmpty())
+                    return key + "01";
+                else
+                {
+                    return _NewKey(keys);
+                }
+            }
+            else
+            {
+                return key;
+            }
+        }
+
+        public static string _NewKey(List<string> keys)
+        {
+            if (keys.IsEmpty())
+                return "";
+            else
+            {
+                string left = keys.FirstOrDefault().CutRight(2);
+                int k = 1;
+                keys.Select(a => a.Substring(a.Length - 2).ToInt()).OrderBy(a => a).ForEachWithBreak(a =>
+                {
+                    if (a == k)
+                    {
+                        k++;
+                        return true;
+                    }
+                    else
+                        return false;
+                });
+                return left + k.ToString().FillLeft('0', 2);
+            }
+        }
     }
+
 }

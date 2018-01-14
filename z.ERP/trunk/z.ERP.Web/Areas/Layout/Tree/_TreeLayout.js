@@ -12,11 +12,13 @@
         return true;
     }
 
+    //添加的标记
+    this.AddTar;
+
+    this.Key;
+
     //添加后初始化数据信息
     this.newRecord = function () { }
-
-    //得到主键
-    this.Key = undefined
 
     //vue操作
     this.vue = function VueOperate() {
@@ -30,19 +32,22 @@
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 disabled: _this.enabled(true),
-                _key: undefined,
-                tdata: [{
-                    title: 'parent 1',
-                    expand: true
-                }]
+                _key: undefined
             },
             mounted: showlist,
             methods: {
                 //添加
-                add: function (event) {
-                    ve._key = define.dataParam[_this.Key],
+                addtj: function (event) {
                     _this.dataParam = {};
                     _this.newRecord();
+                    this.AddTar = 'tj';
+                    ve.dataParam = _this.dataParam;
+                    ve.disabled = _this.enabled(false);
+                },
+                addxj: function (event) {
+                    _this.dataParam = {};
+                    _this.newRecord();
+                    this.AddTar = 'xj';
                     ve.dataParam = _this.dataParam;
                     ve.disabled = _this.enabled(false);
                 },
@@ -58,8 +63,6 @@
                 //保存
                 save: function (event) {
                     var _self = this;
-                    if (!_this.IsValidSave(_self))
-                        return;
                     save(function (data) {
                         showlist(function () {
                             showone(data, function () {
@@ -119,9 +122,10 @@
                 //参数:currentRow当前数据
                 //oldCurrentRow上一次选中的数据
                 showlist: function (currentRow, oldCurrentRow) {
-                    _this.dataParam = currentRow;
-                    ve._key = define.dataParam[_this.Key];
-                    showone(ve._key);
+                    var p = currentRow && currentRow[0] && currentRow[0];
+                    this.Key = p.code;
+                    if (p.children.length == 0)
+                        showone(p.code);
                 },
                 seachList: function (event) {
                     showlist();
@@ -130,12 +134,11 @@
         });
 
         function showlist(callback) {
-            _.Search({
+            _.SearchNoQuery({
                 Service: _this.service,
                 Method: _this.methodList,
-                Data: _this.searchParam,
                 Success: function (data) {
-                    define.screenParam.dataDef = data.rows;
+                    define.screenParam.dataDef = data;
                     callback && callback();
                 }
             })
@@ -144,11 +147,12 @@
         function showone(key, callback) {
             if (key) {
                 var v = {};
-                v[_this.Key] = key;
                 _.Search({
                     Service: _this.service,
                     Method: _this.method,
-                    Data: v,
+                    Data: {
+                        code: key
+                    },
                     Success: function (data) {
                         _this.dataParam = data.rows[0];
                         ve.dataParam = _this.dataParam;
@@ -160,6 +164,8 @@
 
         function save(callback) {
             _.Ajax('Save', {
+                Tar: ve.AddTar,
+                Key: ve.Key,
                 DefineSave: ve.dataParam
             }, function (data) {
                 callback && callback(data);

@@ -62,6 +62,10 @@
       <Project>{4115fe85-9e35-45e1-bfe9-c19f62bab612}</Project>
       <Name>z.ERP.Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.ERP.Model\z.ERP.Model.csproj">
+      <Project>{4ED4509F-7960-4F05-9661-62B6ABDEB532}</Project>
+      <Name>z.ERP.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.IOC\z.IOC.csproj">
       <Project>{34b3dd30-91d0-4e47-ab99-9ebd4bb51747}</Project>
       <Name>z.IOC</Name>
