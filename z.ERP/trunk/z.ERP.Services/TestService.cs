@@ -30,6 +30,14 @@ namespace z.ERP.Services
         public virtual string a()
         {
 
+            var a = new
+            {
+                a = 1,
+                b = new {
+
+                }
+            };
+
             //P1Entity d1 = DbHelper.Select(new P1Entity("111"));
 
 

@@ -53,16 +53,23 @@
             if (key) {
                 var v = {};
                 v[_this.Key] = key;
-                _.Search({
-                    Service: _this.service,
-                    Method: _this.method,
-                    Data: v,
-                    Success: function (data) {
-                        _this.dataParam = data.rows[0];
-                        ve.dataParam = _this.dataParam;
-                        callback && callback();
-                    }
+                _.Ajax('SearchElement', {
+                    BILLID: key
+                }, function (data) {
+                    _this.dataParam = data.rows[0];
+                    ve.dataParam = _this.dataParam;
+                    callback && callback();
                 });
+                //_.Search({
+                //    Service: _this.service,
+                //    Method: _this.method,
+                //    Data: v,
+                //    Success: function (data) {
+                //        _this.dataParam = data.rows[0];
+                //        ve.dataParam = _this.dataParam;
+                //        callback && callback();
+                //    }
+                //});
             }
         }
     }

@@ -74,14 +74,14 @@
             <card>
                 <p slot="title">列表信息</p>
                 @RenderSection("search", false)
-                <i-table :highlight-row="true" size="small" :border="true"
+                <i-table :highlight-row="true" size="small" :border="true" height="200" 
                          :columns="screenParam.colDef" :data="screenParam.dataDef"
                          v-on:on-current-change="showlist"></i-table>
             </card>
         </i-col>
 
         <i-col span="16">
-            <card class="elementcard">
+            <card class="elementcard" style="height:500px">
                 <p slot="title">包含元素</p>
                 @RenderSection("element", true)
             </card>

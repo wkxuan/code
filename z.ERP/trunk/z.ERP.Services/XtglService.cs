@@ -260,19 +260,22 @@ namespace z.ERP.Services
             }
 
 
+            //var aa=new {
 
+            //}
 
-            //STATIONEntityMoldel s = new STATIONEntityMoldel()
+            //var s = new 
             //{
-            //    IP = dt.Rows[0]["IP"].ToString(),
-            //    TYPE = dt.Rows[0]["TYPE"].ToString(),
-            //    STATIONBH = dt.Rows[0]["STATIONBH"].ToString(),
-            //    STATION_PAY = new List<STATION_PAYEntityMoldel>()
+            //    ipsdfsdfds = dt.rows[0]["ip"].tostring(),
+            //    type = dt.rows[0]["type"].tostring(),
+            //    stationbh = dt.rows[0]["stationbh"].tostring(),
+            //    station_pay = new dynamic[]
             //    {
-            //        new STATION_PAYEntityMoldel()
+            //        new 
             //        {
-            //            PAYID = dt1.Rows[0]["PAYID"].ToString(),
-            //            NAME = dt1.Rows[0]["NAME"].ToString()
+            //            payid = dt1.rows[0]["payid"].tostring(),
+            //            name = dt1.rows[0]["name"].tostring(),
+            //            vv=aa
             //        }
             //    }
             //};
