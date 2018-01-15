@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
 {
-    public class EnergyreGisterController: BaseController
+    public class EnergyreGisterController : BaseController
     {
         public ActionResult EnergyreGisterList()
         {
@@ -33,9 +34,9 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
         {
             return service.WyglService.SaveEnergyreGister(SaveData);
         }
-        public object SearchElement(string BILLID)
+        public UIResult SearchElement(string BILLID)
         {
-            return service.WyglService.GetEnergyreGisterElement(BILLID);
+            return new UIResult(service.WyglService.GetEnergyreGisterElement(BILLID));
         }
     }
 }
