@@ -130,7 +130,7 @@ namespace z.Verify
                 string fieldname = me.Member.Name;
                 if (f != null)
                     fieldname = f.Fieldname;
-                if (!verify(p.Compile()(_entity).Trim()))
+                if (!verify(p.Compile()(_entity)?.Trim()))
                 {
                     SetError(geterror(fieldname));
                 }
