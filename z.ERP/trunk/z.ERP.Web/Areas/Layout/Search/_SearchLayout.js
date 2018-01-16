@@ -99,14 +99,6 @@
             return (!ve.screenParam.dataDef) || (ve.screenParam.dataDef.length == 0)
         }
 
-        function deleteList(data, callback) {
-            _.Ajax('Delete', {
-                DeleteData: data
-            }, function (data) {
-                callback && callback();
-            });
-        }
-
     }
     //新增链接的地址
     this.addHref = function () {
@@ -156,7 +148,7 @@
                         style: { marginRight: '5px' },
                         on: {
                             click: function (event) {
-                                _this.deleteData(params.row, params.index);
+                                _this.deleteData(params.row, params.index,this);
                             }
                         },
                     }, '删除')

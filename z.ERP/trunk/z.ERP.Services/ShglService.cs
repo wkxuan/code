@@ -24,14 +24,11 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
-        public void DeleteMerchant(List<MERCHANTEntity> DeleteData)
+        public void DeleteMerchant(MERCHANTEntity DeleteData)
         {
-            foreach (var mer in DeleteData)
-            {
-                var v = GetVerify(mer);
-                //校验
-                DbHelper.Delete(mer);
-            }
+            var v = GetVerify(DeleteData);
+            //校验
+            DbHelper.Delete(DeleteData);
         }
 
         public string SaveMerchant(MERCHANTEntity SaveData)
@@ -39,7 +36,7 @@ namespace z.ERP.Services
             var v = GetVerify(SaveData);
             if (SaveData.MERCHANTID.IsEmpty())
                 SaveData.MERCHANTID = NewINC("MERCHANT");
-            SaveData.STATUS = ((int)物业标记.保底租金).ToString();
+            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
@@ -55,6 +52,34 @@ namespace z.ERP.Services
             });
             DbHelper.Save(SaveData);
             return SaveData.MERCHANTID;
+        }
+
+
+        public object GetMerchantElement(MERCHANTEntity Data)
+        {
+             //此处校验一次只能查询一个单号,校验单号必须存在
+            string sql = $@"SELECT * FROM MERCHANT WHERE 1=1 ";
+            if (!Data.MERCHANTID.IsEmpty())
+                sql += (" AND MERCHANTID= " + Data.MERCHANTID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+
+
+            string sqlitem = $@"SELECT M.BRANDID,C.NAME " +
+                " FROM MERCHANT_BRAND M,MERCHANT E,BRAND C " +
+                " where M.MERCHANTID = E.MERCHANTID AND M.BRANDID=C.ID";
+            if (!Data.MERCHANTID.IsEmpty())
+                sqlitem += (" and E.MERCHANTID= " + Data.MERCHANTID);
+            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
+
+            var result = new
+            {
+                main = dt,
+                //new {
+                //    main.MERCHANT_BRAND = dtitem
+                //}
+            };
+            return result;
         }
     }
 }

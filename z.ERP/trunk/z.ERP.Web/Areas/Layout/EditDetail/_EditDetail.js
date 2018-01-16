@@ -53,9 +53,9 @@
                 var v = {};
                 v[_this.Key] = key;
                 _.Ajax('SearchElement', {
-                    BILLID: key
+                    Data: v,
                 }, function (data) {
-                    _this.dataParam = data.rows[0];
+                    _this.dataParam = data;
                     ve.dataParam = _this.dataParam;
                     callback && callback();
                 });

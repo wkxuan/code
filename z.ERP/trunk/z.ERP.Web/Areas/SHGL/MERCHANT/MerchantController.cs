@@ -4,6 +4,7 @@ using z.ERP.Entities;
 using z.Extensions;
 using System;
 using System.Collections.Generic;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.SHGL.MERCHANT
 {
@@ -28,7 +29,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             return View();
         }
 
-        public void Delete(List<MERCHANTEntity> DeleteData)
+        public void Delete(MERCHANTEntity DeleteData)
         {
             service.ShglService.DeleteMerchant(DeleteData);
         }
@@ -37,6 +38,11 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         public string Save(MERCHANTEntity SaveData)
         {
             return service.ShglService.SaveMerchant(SaveData);
+        }
+
+        public UIResult SearchElement(MERCHANTEntity Data)
+        {
+            return new UIResult(service.ShglService.GetMerchantElement(Data));
         }
     }
 }

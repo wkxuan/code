@@ -18,14 +18,28 @@
     search.service = "ShglService";
     search.method = "GetMerchant";
 }
-
+//浏览双击跳转页面
 search.browseHref = function (row, index) {
     _.OpenPage("SHGL/MERCHANT/Detail/" + row.MERCHANTID, function (data) {
     });
 }
-
+//添加跳转页面
 search.addHref = function (row) {
     _.OpenPage("SHGL/MERCHANT/MerchantEdit/", function (data) {
     });
 }
+//修改跳转页面,并且要根据单号查出来相关的数据信息
+search.modHref = function (row, index) {
+    _.OpenPage("SHGL/MERCHANT/MerchantEdit/"+ row.MERCHANTID, function (data) {
+    });
+}
+search.deleteData = function (row, index,_self) {
+    _.Ajax('Delete', {
+        DeleteData: {MERCHANTID:row.MERCHANTID}
+    }, function (data) {
+        _self.remove(params.index)
+    });
+}
+
+
 

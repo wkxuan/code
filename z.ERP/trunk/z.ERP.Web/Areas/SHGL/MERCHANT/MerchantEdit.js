@@ -9,6 +9,7 @@
     editDetail.branchid = false;
     editDetail.service = "ShglService";
     editDetail.method = "GetMerchant";
+    editDetail.Key = 'MERCHANTID';
 
     editDetail.screenParam.colDef = [
     {
