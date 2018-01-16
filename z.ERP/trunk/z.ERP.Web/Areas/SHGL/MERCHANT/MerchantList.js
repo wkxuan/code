@@ -25,8 +25,6 @@ search.browseHref = function (row, index) {
 }
 
 search.addHref = function (row) {
-    //_.OpenPage("SHGL/MERCHANT/Detail/" + row.MERCHANTID, function (data) {
-    //});
     _.OpenPage("SHGL/MERCHANT/MerchantEdit/", function (data) {
     });
 }

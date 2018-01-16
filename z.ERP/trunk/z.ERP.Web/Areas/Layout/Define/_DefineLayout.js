@@ -36,7 +36,22 @@
                     expand: true
                 }]
             },
-            mounted: showlist,
+            mounted: function () {
+                //页面打开先查询左边列表信息
+                let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+                this.$refs.cardHeigth.style.height = (h - 40) + 'px';
+                this.$refs.tableHeight.style.height = (h - 40) + 'px';
+
+                _.Search({
+                    Service: _this.service,
+                    Method: _this.methodList,
+                    Data: {},
+                    Success: function (data) {
+                        define.screenParam.dataDef = data.rows;
+                    }
+                })
+            },
             methods: {
                 //添加
                 add: function (event) {

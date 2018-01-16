@@ -28,6 +28,8 @@
                 panelName: 'condition',
                 disabled: _this.enabled(true),
             },
+            mounted: function () {
+            },
             methods: {
                 //查询OK
                 seach: function (event) {
@@ -75,49 +77,6 @@
                     event.stopPropagation();
                     _this.addHref();
                 },
-                //修改
-                mod: function (event) {
-                    event.stopPropagation();
-                    var _self = this;
-                    var selectton = this.$refs.selectData.getSelection();
-                    if (selectton.length != 1) {
-                        this.$Message.error("只能选择一条记录修改!");
-                    }
-                    else {
-                        //这里就根据状态等信息判断
-                        if (!_this.canEdit(_self))
-                            return;
-                        else
-                            //链接过去编辑页面之后在保存的后端在进行实际的判断
-                            _this.modHref();
-                    }
-                },
-                del: function (event) {
-                    //删除可以批量删除
-                    event.stopPropagation();
-                    var _self = this;
-                    var selectton = this.$refs.selectData.getSelection();
-                    if (selectton.length == 0) {
-                        this.$Message.error("请选中要删除的数据!");
-                    }
-                    else {
-
-                        this.$Modal.confirm({
-                            title: '提示',
-                            content: '是否删除',
-                            onOk: function () {
-                                deleteList(selectton, function () {
-                                    showList(function () {
-                                        _self.$Message.info("删除成功");
-                                    });
-                                });
-                            },
-                            onCancel: function () {
-                                this.id = "关闭"
-                            }
-                        });
-                    }
-                }
             }
         });
 
@@ -150,11 +109,14 @@
     this.addHref = function () {
     }
     //修改链接的地址
-    this.modHref = function () {
+    this.modHref = function (row, index) {
     }
     //查看链接的地址
     this.browseHref = function (row, index) {
 
+    }
+    //删除对应的操作
+    this.deleteData = function (row, index) {
     }
 
     this.colDefInit = function () {
@@ -168,7 +130,7 @@
         _this.colOperate = [{
             title: '操作',
             key: 'action',
-            width: 60,
+            width: 200,
             align: 'center',
             fixed: 'right',
             render: function (h, params) {
@@ -177,13 +139,35 @@
                     h('Button', {
                         props: { type: 'primary', size: 'small', disabled: false },
 
-                        style: { marginRight: '50px' },
+                        style: { marginRight: '5px' },
                         on: {
                             click: function (event) {
                                 _this.browseHref(params.row, params.index);
                             }
                         },
-                    }, '浏览')
+                    }, '查看'),
+
+                    h('Button', {
+                        props: { type: 'primary', size: 'small', disabled: false },
+
+                        style: { marginRight: '5px' },
+                        on: {
+                            click: function (event) {
+                                _this.modHref(params.row, params.index);
+                            }
+                        },
+                    }, '修改'),
+
+                    h('Button', {
+                        props: { type: 'error', size: 'small', disabled: false },
+
+                        style: { marginRight: '5px' },
+                        on: {
+                            click: function (event) {
+                                _this.deleteData(params.row, params.index);
+                            }
+                        },
+                    }, '删除')
                     ]);
             }
         }]

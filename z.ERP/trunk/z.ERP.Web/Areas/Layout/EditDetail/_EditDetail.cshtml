@@ -23,13 +23,15 @@
             RenderControl(new ButtonRender()
             {
                 Click = "save",
-                Text = "存档"
+                Text = "存档",
+                Enable=true,
+                Type= "primary"
             });
         }
     </row>
 
     <row>
-        <i-col span="20">
+        <i-col span="24">
             <collapse v-model="panelName">
                 <panel name="base">
                     基本信息
@@ -74,13 +76,6 @@
 
                 @RenderSection("panelParam", false)
             </collapse>
-        </i-col>
-        <i-col span="4">
-            <steps :current=stepsCurrent size="small" direction="vertical">
-                @*<step title=item.DESCRIPTION content=item.OPERATION  v-for="item in stepParam"></step>*@
-                <step title="已完成" content="张三  2019-01-01"></step>
-                <step title="待完成" content="审核待完成"></step>
-            </steps>
         </i-col>
     </row>
 </div>

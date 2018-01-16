@@ -25,7 +25,8 @@
             {
                 Click = "seachList",
                 Text = "查询",
-                Enable = true
+                Enable = true,
+                Type= "primary"
             });
         }
         @{
@@ -33,7 +34,8 @@
             {
                 Click = "add",
                 Text = "新增",
-                Enable = true
+                Enable = true,
+                Type = "primary"
             });
         }
         @{
@@ -41,7 +43,8 @@
             {
                 Click = "mod",
                 Text = "修改",
-                //Enable = false
+                Enable = true,
+                Type = "primary"
             });
         }
         @{
@@ -49,7 +52,8 @@
             {
                 Click = "save",
                 Text = "存档",
-                Enable = false
+                Enable = false,
+                Type = "primary"
             });
         }
         @{
@@ -57,7 +61,8 @@
             {
                 Click = "quit",
                 Text = "放弃",
-                Enable = false
+                Enable = false,
+                Type = "warning"
             });
         }
         @{
@@ -65,26 +70,34 @@
             {
                 Click = "del",
                 Text = "删除",
-                //Enable=false
+                Enable= true,
+                Type = "error"
             });
         }
     </row>
     <row>
         <i-col span="8">
-            <card>
-                <p slot="title">列表信息</p>
-                @RenderSection("search", false)
-                <i-table :highlight-row="true" size="small" :border="true" height="200" 
-                         :columns="screenParam.colDef" :data="screenParam.dataDef"
-                         v-on:on-current-change="showlist"></i-table>
-            </card>
+            <div ref="tableHeight">
+                <card style="height:100%">
+                    <p slot="title">列表信息</p>
+                    <div style="height:10%">
+                        @RenderSection("search", false)
+                    </div>
+                    <i-table :highlight-row="true" :size="small" border="true"  height="500"
+                             :columns="screenParam.colDef" :data="screenParam.dataDef"
+                             v-on:on-current-change="showlist"></i-table>
+
+                </card>
+            </div>
         </i-col>
 
         <i-col span="16">
-            <card class="elementcard" style="height:500px">
-                <p slot="title">包含元素</p>
-                @RenderSection("element", true)
-            </card>
+            <div ref="cardHeigth">
+                <card class="elementcard" style="height:100%">
+                    <p slot="title">包含元素</p>
+                    @RenderSection("element", true)
+                </card>
+            </div>
         </i-col>
     </row>
 

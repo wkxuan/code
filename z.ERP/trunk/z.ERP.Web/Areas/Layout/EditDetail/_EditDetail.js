@@ -25,7 +25,6 @@
                 panelName: 'base',
                 branchid: _this.branchid,
                 others: _this.others,
-                stepsCurrent: _this.stepsCurrent,
                 disabled: _this.enabled(true),
             },
             methods: {
@@ -60,16 +59,6 @@
                     ve.dataParam = _this.dataParam;
                     callback && callback();
                 });
-                //_.Search({
-                //    Service: _this.service,
-                //    Method: _this.method,
-                //    Data: v,
-                //    Success: function (data) {
-                //        _this.dataParam = data.rows[0];
-                //        ve.dataParam = _this.dataParam;
-                //        callback && callback();
-                //    }
-                //});
             }
         }
     }
@@ -82,7 +71,6 @@
         _this.method = "";
         _this.branchid = true;
         _this.others = true;
-        _this.stepsCurrent = 0;
     };
 
     setTimeout(function () {

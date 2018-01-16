@@ -27,7 +27,8 @@
                     {
                         Click = "seach",
                         Text = "查询",
-                        Enable = true
+                        Enable = true,
+                        Type = "primary"
                     });
                 }
                 @{
@@ -35,7 +36,8 @@
                     {
                         Click = "clear",
                         Text = "清空",
-                        Enable = true
+                        Enable = true,
+                        Type = "primary"
                     });
                 }
 
@@ -44,23 +46,8 @@
                     {
                         Click = "add",
                         Text = "新增",
-                        Enable = true
-                    });
-                }
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "mod",
-                        Text = "修改",
-                        Enable = true
-                    });
-                }
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "del",
-                        Text = "删除",
-                        Enable = true
+                        Enable = true,
+                        Type = "primary"
                     });
                 }
                 @RenderSection("conditionBtn", false)
@@ -78,7 +65,8 @@
                    {
                         Click = "exp",
                         Text = "导出",
-                         Enable = true
+                        Enable = true,
+                        Type = "primary"
                     });
                 }
                 @{
@@ -86,7 +74,8 @@
                     {
                         Click = "print",
                         Text = "打印",
-                        Enable = true
+                        Enable = true,
+                        Type = "primary"
                     });
                 }
                 @*增加结果按钮*@
@@ -94,9 +83,11 @@
             </div>
             <p slot="content">
                  @*结果显示*@
-                <i-table :highlight-row="true" size="small" :border="true"
-                         :columns="screenParam.colDef" :data="screenParam.dataDef"
-                         ref="selectData"></i-table>
+                    <i-table :highlight-row="true" size="small" :border="true" height="500"
+                             :columns="screenParam.colDef" :data="screenParam.dataDef"
+                             ref="selectData"></i-table>
+
+
                 @RenderSection("resultOthers", false)
             </p>
         </panel>
