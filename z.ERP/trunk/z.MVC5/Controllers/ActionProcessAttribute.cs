@@ -48,7 +48,7 @@ namespace z.MVC5.Controllers
                 {
                     filterContext.Result = new UIResult();
                 }
-                else if (filterContext.Result is UIResult)
+                if (filterContext.Result is UIResult)
                 {
                     filterContext.Result = new UIResult()
                     {
