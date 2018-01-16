@@ -85,8 +85,7 @@
                  @*结果显示*@
                     <i-table :highlight-row="true" size="small" :border="true" height="500"
                              :columns="screenParam.colDef" :data="screenParam.dataDef"
-                             ref="selectData"></i-table>
-
+                             v-on:on-row-dblclick="browse" ></i-table>
 
                 @RenderSection("resultOthers", false)
             </p>

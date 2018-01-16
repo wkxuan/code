@@ -77,6 +77,9 @@
                     event.stopPropagation();
                     _this.addHref();
                 },
+                browse: function (row,index) {
+                    _this.browseHref(row, index);
+                }
             }
         });
 
@@ -130,23 +133,12 @@
         _this.colOperate = [{
             title: '操作',
             key: 'action',
-            width: 200,
+            width: 130,
             align: 'center',
             fixed: 'right',
             render: function (h, params) {
                 return h('div',
                     [
-                    h('Button', {
-                        props: { type: 'primary', size: 'small', disabled: false },
-
-                        style: { marginRight: '5px' },
-                        on: {
-                            click: function (event) {
-                                _this.browseHref(params.row, params.index);
-                            }
-                        },
-                    }, '查看'),
-
                     h('Button', {
                         props: { type: 'primary', size: 'small', disabled: false },
 
