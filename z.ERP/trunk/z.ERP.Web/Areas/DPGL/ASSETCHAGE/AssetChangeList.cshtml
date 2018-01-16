@@ -1,0 +1,49 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
+@section conditionParam{
+<row>
+    <i-col span="2" class="RowTitle">门店</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "searchParam.BRANCHID" ,
+            });
+        }
+    </i-col>
+
+    <i-col span="2" class="RowTitle">变更类型</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "searchParam.CHANGE_TYPE",
+            });
+        }
+    </i-col>
+
+    <i-col span="2" class="RowTitle">备注</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "searchParam.DISCRIPTION"
+            });
+        }
+    </i-col>
+</row>
+
+ <row>
+     <i-col span="2" class="RowTitle">状态</i-col>
+     <i-col span="6">
+         @{
+             RenderControl(new TextBoxRender()
+             {
+                 vModel = "searchParam.STATUS",
+             });
+         }
+     </i-col>
+ </row>
+}

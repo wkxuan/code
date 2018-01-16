@@ -1,0 +1,75 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.EditDetail;
+@inherits EditDetailViewBase
+
+@section baseParam{
+<row>
+    <i-col span="2" class="RowTitle">
+        门店
+    </i-col>
+    <i-col span="14">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.BRANCHID"
+            });
+        }
+    </i-col>
+
+    <i-col span="2" class="RowTitle">
+        状态
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.STATUS",
+                Enable=false
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="2" class="RowTitle">
+        变更类型
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.CHANGE_TYPE"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        备注
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.DISCRIPTION"
+            });
+        }
+    </i-col>
+</row>
+
+
+<row>
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "screenParam.addCol",
+            Text = "添加一行",
+            Enable = true,
+            Type = "primary"
+        });
+    }
+</row>
+<row>
+    <i-table  size="small" :border="true" 
+             :columns="screenParam.colDef" :data="dataParam.ASEETCHANGEITEM"></i-table>
+</row>
+}

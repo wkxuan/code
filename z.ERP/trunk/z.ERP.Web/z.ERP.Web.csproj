@@ -150,6 +150,7 @@
     <Compile Include="App_Start\DebugSettings.cs" />
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
+    <Compile Include="Areas\DPGL\ASSETCHAGE\AssetChangeController.cs" />
     <Compile Include="Areas\HTGL\LYHT\ZLHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
@@ -198,6 +199,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\DPGL\ASSETCHAGE\AssetChangeEdit.js" />
+    <Content Include="Areas\DPGL\ASSETCHAGE\AssetChangeList.js" />
     <Content Include="Areas\HTGL\LYHT\Detail.js" />
     <Content Include="Areas\HTGL\LYHT\List.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
@@ -319,6 +322,9 @@
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterDetail.cshtml" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.cshtml" />
     <Content Include="Areas\XTGL\TreeTest\List.cshtml" />
+    <Content Include="Areas\DPGL\ASSETCHAGE\Detail.cshtml" />
+    <Content Include="Areas\DPGL\ASSETCHAGE\AssetChangeEdit.cshtml" />
+    <Content Include="Areas\DPGL\ASSETCHAGE\AssetChangeList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

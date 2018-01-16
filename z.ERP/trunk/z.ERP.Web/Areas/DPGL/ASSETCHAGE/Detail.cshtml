@@ -1,0 +1,46 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Detail;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@inherits DetailLayout<MERCHANTEntity> 
+
+@section Title{
+    @Html.Raw("详情");
+}
+
+@section btn{
+    @{
+        if (Model.STATUS == "0")
+        {
+            RenderControl(new ButtonRender()
+            {
+                Text = "审核"
+            });
+        }
+        else
+        {
+
+        }
+    }
+}
+
+@section content{
+    <row>
+        <i-col span="2" class="RowTitle">商户代码</i-col>
+        <i-col span="4" class="RowText"> @Model.MERCHANTID </i-col>
+        <i-col span="2" class="RowTitle">商户名称</i-col>
+        <i-col span="4" class="RowText"> @Model.NAME </i-col>
+        <i-col span="2" class="RowTitle">手机</i-col>
+        <i-col span="4" class="RowText"> @Model.PHONE </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">银行名称</i-col>
+        <i-col span="4" class="RowText"> @Model.BANK_NAME   </i-col>
+        <i-col span="2" class="RowTitle">地址</i-col>
+        <i-col span="4" class="RowText"> @Model.ADRESS   </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="4" class="RowText"> @(Model.STATUS.ToEnum<支付方式类型>().ToLocalString()) </i-col>
+    </row>
+}
