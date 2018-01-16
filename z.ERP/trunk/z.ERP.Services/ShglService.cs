@@ -74,10 +74,16 @@ namespace z.ERP.Services
 
             var result = new
             {
-                main = dt,
-                //new {
-                //    main.MERCHANT_BRAND = dtitem
-                //}
+                MERCHANTID = dt.Rows[0]["MERCHANTID"].ToString(),
+                NAME = dt.Rows[0]["NAME"].ToString(),
+                MERCHANT_BRAND = new dynamic[]
+                {
+                    new
+                    {
+                        BRANDID = dtitem.Rows[0]["BRANDID"].ToString(),
+                        NAME = dtitem.Rows[0]["NAME"].ToString(),
+                    }
+                }
             };
             return result;
         }

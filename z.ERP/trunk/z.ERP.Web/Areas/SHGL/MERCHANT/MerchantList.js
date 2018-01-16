@@ -33,11 +33,12 @@ search.modHref = function (row, index) {
     _.OpenPage("SHGL/MERCHANT/MerchantEdit/"+ row.MERCHANTID, function (data) {
     });
 }
-search.deleteData = function (row, index,_self) {
+search.deleteData = function (row, index) {
     _.Ajax('Delete', {
         DeleteData: {MERCHANTID:row.MERCHANTID}
     }, function (data) {
-        _self.remove(params.index)
+        //表格数组长度发生变化,要实现重新渲染???
+        search.screenParam.dataDef.splice(index, 1);
     });
 }
 
