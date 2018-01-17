@@ -13,21 +13,21 @@
 
     editDetail.screenParam.colDef = [
     {
-        title: "店铺代码", key: 'SHOPID', width: 100,
+        title: "店铺代码", key: 'ASSETID', width: 100,
         render: function (h, params) {
             return h('Input', {
                 props: {
-                    value: params.row.BRANDID
+                    value: params.row.ASSETID
                 },
                 on: {
                     'on-blur': function (event) {
-                        editDetail.dataParam.ASSETCHANGEITEM[params.index].SHOPID = event.target.value;
+                        editDetail.dataParam.ASSETCHANGEITEM[params.index].ASSETID = event.target.value;
                     }
                 },
             })
         },
     },
-    { title: '品牌名称', key: 'SHOPNAME', width: 200 },
+    { title: '资产类型', key: 'ASSET_TYPE_OLD', width: 200 },
 
     {
         title: '操作',
@@ -43,7 +43,7 @@
                     style: { marginRight: '50px' },
                     on: {
                         click: function (event) {
-                            editDetail.dataParam.MERCHANT_BRAND.splice(params.index,1);
+                            editDetail.dataParam.ASSETCHANGEITEM.splice(params.index, 1);
                         }
                     },
                 }, '删除')
@@ -52,18 +52,16 @@
     }
     ];
 
-    if (!editDetail.dataParam.MERCHANT_BRAND) {
-        editDetail.dataParam.MERCHANT_BRAND = [{
-            BRANDID: "",
-            NAME: "",
-            CATEGORYID: "",
-            CATEGORYNAME: ""
+    if (!editDetail.dataParam.ASSETCHANGEITEM) {
+        editDetail.dataParam.ASSETCHANGEITEM = [{
+            SHOPID: "",
+            ASSET_TYPE_OLD: "",
         }]
     }
 
     editDetail.screenParam.addCol = function () {
-        var  temp = editDetail.dataParam.MERCHANT_BRAND||[];
+        var temp = editDetail.dataParam.ASSETCHANGEITEM || [];
         temp.push({});
-        editDetail.dataParam.MERCHANT_BRAND = temp;
+        editDetail.dataParam.ASSETCHANGEITEM = temp;
     }
 }

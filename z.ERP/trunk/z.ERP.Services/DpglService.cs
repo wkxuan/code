@@ -40,9 +40,10 @@ namespace z.ERP.Services
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            SaveData.VERIFY = employee.Id;
             v.Require(a => a.BILLID);
             v.Require(a => a.CHANGE_TYPE);
-            v.IsUnique(a => a.BRANCHID);
+            v.Require(a => a.BRANCHID);
             v.Verify();
 
             //SaveData.ASSETCHANGEITEM.ForEach(dpxx =>
@@ -66,7 +67,7 @@ namespace z.ERP.Services
 
             string sqlitem = $@"SELECT M.ASSETID,P.CODE " +
                 " FROM ASSETCHANGEITEM M,SHOP P " +
-                " where M.SEETID = P.SHOPID ";
+                " where M.ASSETID = P.SHOPID ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
