@@ -13,7 +13,7 @@
 
     editDetail.screenParam.colDef = [
     {
-        title: "品牌代码", key: 'BRANDID', width: 100,
+        title: "店铺代码", key: 'SHOPID', width: 100,
         render: function (h, params) {
             return h('Input', {
                 props: {
@@ -21,15 +21,13 @@
                 },
                 on: {
                     'on-blur': function (event) {
-                        editDetail.dataParam.MERCHANT_BRAND[params.index].BRANDID = event.target.value;
+                        editDetail.dataParam.ASSETCHANGEITEM[params.index].SHOPID = event.target.value;
                     }
                 },
             })
         },
     },
-    { title: '品牌名称', key: 'NAME', width: 200 },
-    { title: '业态代码', key: 'CATEGORYID', width: 200 },
-    { title: '业态名称', key: 'CATEGORYNAME', width: 200 },
+    { title: '品牌名称', key: 'SHOPNAME', width: 200 },
 
     {
         title: '操作',

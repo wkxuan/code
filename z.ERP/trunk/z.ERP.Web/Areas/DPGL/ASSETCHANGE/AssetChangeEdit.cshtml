@@ -16,7 +16,17 @@
             });
         }
     </i-col>
-
+    <i-col span="2" class="RowTitle">
+        变更类型
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.CHANGE_TYPE"
+            });
+        }
+    </i-col>
     <i-col span="2" class="RowTitle">
         状态
     </i-col>
@@ -30,19 +40,7 @@
         }
     </i-col>
 </row>
-
 <row>
-    <i-col span="2" class="RowTitle">
-        变更类型
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.CHANGE_TYPE"
-            });
-        }
-    </i-col>
     <i-col span="2" class="RowTitle">
         备注
     </i-col>
@@ -50,7 +48,7 @@
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "dataParam.DISCRIPTION"
+                vModel = "dataParam.DESCRIPTION"
             });
         }
     </i-col>
