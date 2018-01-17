@@ -7,9 +7,9 @@
     editDetail.stepsCurrent = 0;
     editDetail.others = false;
     editDetail.branchid = false;
-    editDetail.service = "ShglService";
-    editDetail.method = "GetMerchant";
-    editDetail.Key = 'MERCHANTID';
+    editDetail.service = "DpglService";
+    editDetail.method = "GetAssetChange";
+    editDetail.Key = 'BILLID';
 
     editDetail.screenParam.colDef = [
     {

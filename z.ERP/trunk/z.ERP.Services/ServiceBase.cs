@@ -80,6 +80,13 @@ namespace z.ERP.Services
                 return ioc.Create<WyglService>();
             }
         }
+        public DpglService DpglService
+        {
+            get
+            {
+                return ioc.Create<DpglService>();
+            }
+        }
         #endregion
 
         #region 通用方法
