@@ -31,7 +31,7 @@ namespace z.ERP.Services
             DbHelper.Delete(DeleteData);
         }
 
-        public string SaveMerchant(ASSETCHANGEEntity SaveData)
+        public string SaveAssetChange(ASSETCHANGEEntity SaveData)
         {
             var v = GetVerify(SaveData);
             if (SaveData.BILLID.IsEmpty())
