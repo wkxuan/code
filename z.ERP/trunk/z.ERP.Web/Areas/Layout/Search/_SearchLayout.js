@@ -148,7 +148,7 @@
                         style: { marginRight: '5px' },
                         on: {
                             click: function (event) {
-                                _this.deleteData(params.row, params.index,this);
+                                _this.deleteData(params.row, params.index);
                             }
                         },
                     }, '删除')
