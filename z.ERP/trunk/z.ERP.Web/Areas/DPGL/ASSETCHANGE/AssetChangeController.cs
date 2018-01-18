@@ -25,7 +25,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
 
         public ActionResult AssetChangeEdit()
         {
-            ViewBag.Title = "商户信息编辑";
+            ViewBag.Title = "编辑资产调整单";
             return View();
         }
 

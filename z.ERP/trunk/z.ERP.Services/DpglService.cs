@@ -65,9 +65,9 @@ namespace z.ERP.Services
 
 
 
-            string sqlitem = $@"SELECT M.ASSETID,P.CODE " +
-                " FROM ASSETCHANGEITEM M,SHOP P " +
-                " where M.ASSETID = P.SHOPID ";
+            string sqlitem = $@"SELECT M.* " +
+                " FROM ASSETCHANGEITEM M " +
+                " where 1=1 ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
