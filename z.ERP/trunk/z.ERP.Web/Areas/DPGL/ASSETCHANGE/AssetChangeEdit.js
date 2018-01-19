@@ -13,18 +13,31 @@
 
     editDetail.screenParam.colDef = [
     {
-        title: "店铺ID", key: 'ASSETID', width: 100,
+        title: "店铺ID", key: 'ASSETID', width: 160,
         render: function (h, params) {
-            return h('Input', {
+            return h('div',
+                [
+            h('Input', {
                 props: {
                     value: params.row.ASSETID
                 },
+                style: { marginRight: '5px',width:'80px' },
                 on: {
                     'on-blur': function (event) {
                         editDetail.dataParam.ASSETCHANGEITEM[params.index].ASSETID = event.target.value;
                     }
                 },
-            })
+            }),
+            h('Button', {
+                props: { type: 'primary', size: 'small', disabled: false },
+
+                style: { marginRight: '5px',width:'30px' },
+                on: {
+                    click: editDetail.screenParam.openPop
+                },
+            }, '...'),
+
+            ])
         },
     },
     {
@@ -299,6 +312,16 @@
     }
 
     editDetail.screenParam.addCol = function () {
+        var temp = editDetail.dataParam.ASSETCHANGEITEM || [];
+        temp.push({});
+        editDetail.dataParam.ASSETCHANGEITEM = temp;
+    }
+    editDetail.screenParam.addCol2 = function () {
+        var temp = editDetail.dataParam.ASSETCHANGEITEM2 || [];
+        temp.push({});
+        editDetail.dataParam.ASSETCHANGEITEM2 = temp;
+    }
+    editDetail.screenParam.openPop = function () {
         var temp = editDetail.dataParam.ASSETCHANGEITEM2 || [];
         temp.push({});
         editDetail.dataParam.ASSETCHANGEITEM2 = temp;

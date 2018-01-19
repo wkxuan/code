@@ -77,7 +77,7 @@
                     event.stopPropagation();
                     _this.addHref();
                 },
-                browse: function (row,index) {
+                browse: function (row, index) {
                     _this.browseHref(row, index);
                 }
             }
@@ -113,6 +113,17 @@
     //删除对应的操作
     this.deleteData = function (row, index) {
     }
+    //删除对应的操作
+    this.deleteDb = function (row) {
+    }
+    this.callback = function (index) {
+        this.screenParam.dataDef.splice(index, 1);
+    }
+    this.deleteData1 = function (callback, row, inx) {
+        _this.deleteDb(row);
+        _this.callback(inx);
+    }
+
 
     this.colDefInit = function () {
         _this.colMul = [{
@@ -148,7 +159,8 @@
                         style: { marginRight: '5px' },
                         on: {
                             click: function (event) {
-                                _this.deleteData(params.row, params.index);
+                                //_this.deleteData(params.row, params.index);
+                                _this.deleteData1(_this.callback, params.row, params.index);
                             }
                         },
                     }, '删除')

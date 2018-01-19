@@ -16,7 +16,7 @@
 }
 //浏览双击跳转页面
 search.browseHref = function (row, index) {
-    _.OpenPage("DPGL/ASEETCHANGE/Detail/" + row.BILLID, function (data) {
+    _.OpenPage("DPGL/ASSETCHANGE/Detail/" + row.BILLID, function (data) {
     });
 }
 //添加跳转页面
@@ -26,16 +26,19 @@ search.addHref = function (row) {
 }
 //修改跳转页面,并且要根据单号查出来相关的数据信息
 search.modHref = function (row, index) {
-    _.OpenPage("DPGL/MASSETCHANGEERCHANT/AssetChangeEdit/"+ row.BILLID, function (data) {
+    _.OpenPage("DPGL/ASSETCHANGE/AssetChangeEdit/"+ row.BILLID, function (data) {
     });
 }
-search.deleteData = function (row, index,_self) {
+
+
+search.deleteDb=function(row)
+{
     _.Ajax('Delete', {
-        DeleteData: {BILLID:row.BILLID}
-    }, function (data) {
-        _self.remove(params.index)
+        DeleteData: { BILLID: row.BILLID }
     });
 }
 
-
+//function callback (index) {
+//    search.screenParam.dataDef.splice(index, 1);
+//}
 
