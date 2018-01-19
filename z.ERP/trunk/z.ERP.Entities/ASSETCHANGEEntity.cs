@@ -15,8 +15,8 @@ namespace z.ERP.Entities
             get;
             set;
         }
-        [ForeignKey(nameof(BILLID), nameof(ASSETCHANGEITEMEntity.BILLID))]
-        public List<ASSETCHANGEITEMEntity> ASSETCHANGEITEM2
+        [ForeignKey(nameof(BILLID), nameof(ASSETCHANGEITEM2Entity.BILLID))]
+        public List<ASSETCHANGEITEM2Entity> ASSETCHANGEITEM2
         {
             get;
             set;

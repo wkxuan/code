@@ -9,10 +9,12 @@
         变更类型
     </i-col>
     <i-col span="6">
+
         @{
-            RenderControl(new TextBoxRender()
+            RenderControl(new EnumDropDownListRender<资产调整类型>()
             {
-                vModel = "dataParam.CHANGE_TYPE"
+                vModel = "dataParam.CHANGE_TYPE",
+                Enable = true
             });
         }
     </i-col>
@@ -55,11 +57,11 @@
     }
 </row>
 <row>
-    <i-col span="12">
+    <i-col span="11">
     <i-table  size="small" :border="true" 
              :columns="screenParam.colDef" :data="dataParam.ASSETCHANGEITEM"></i-table>
     </i-col>
-    <i-col span="10">
+    <i-col span="13">
 
     <i-table size="small" border="true"
              :columns="screenParam.colDef2" :data="dataParam.ASSETCHANGEITEM2"></i-table>

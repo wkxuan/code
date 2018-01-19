@@ -110,4 +110,10 @@ namespace z.ERP.Entities.Enum
         未审核 = 1,
         审核 = 2,
     }
+    public enum 资产调整类型
+    {
+        资产类型 = 1,
+        资产面积 = 2,
+        资产拆分=3,
+    }
 }

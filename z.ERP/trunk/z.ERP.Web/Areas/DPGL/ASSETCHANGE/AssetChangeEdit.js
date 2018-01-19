@@ -13,7 +13,7 @@
 
     editDetail.screenParam.colDef = [
     {
-        title: "店铺代码", key: 'ASSETID', width: 100,
+        title: "店铺ID", key: 'ASSETID', width: 100,
         render: function (h, params) {
             return h('Input', {
                 props: {
@@ -118,7 +118,7 @@
         //            },
         //        },
         //                        {
-        //                            title: "原使用面积", key: 'AREA_USABLE_NEW', width: 100,
+        //                            title: "新使用面积", key: 'AREA_USABLE_NEW', width: 100,
         //                            render: function (h, params) {
         //                                return h('Input', {
         //                                    props: {
@@ -133,7 +133,7 @@
         //                            },
         //                        },
         //                {
-        //                    title: "原租赁面积", key: 'AREA_RENTABLE_NEW', width: 100,
+        //                    title: "新租赁面积", key: 'AREA_RENTABLE_NEW', width: 100,
         //                    render: function (h, params) {
         //                        return h('Input', {
         //                            props: {
@@ -147,7 +147,7 @@
         //                        })
         //                    },
         //                },
-//    { title: '资产类型', key: 'ASSET_TYPE_OLD', width: 200 },
+    //{ title: '资产类型', key: 'ASSET_TYPE_OLD', width: 200 },
 
     {
         title: '操作',
@@ -172,7 +172,36 @@
     }
     ];
     editDetail.screenParam.colDef2 = [
-
+    {
+        title: "店铺ID", key: 'ASSETID', width: 100,
+        render: function (h, params) {
+            return h('Input', {
+                props: {
+                    value: params.row.ASSETID
+                },
+                on: {
+                    'on-blur': function (event) {
+                        editDetail.dataParam.ASSETCHANGEITEM2[params.index].ASSETID = event.target.value;
+                    }
+                },
+            })
+        },
+    },
+        {
+            title: "新店铺代码", key: 'ASSETCODE_NEW', width: 100,
+            render: function (h, params) {
+                return h('Input', {
+                    props: {
+                        value: params.row.ASSETCODE_NEW
+                    },
+                    on: {
+                        'on-blur': function (event) {
+                            editDetail.dataParam.ASSETCHANGEITEM2[params.index].ASSETCODE_NEW = event.target.value;
+                        }
+                    },
+                })
+            },
+        },
     {
         title: "新资产类型", key: 'ASSET_TYPE_NEW', width: 100,
         render: function (h, params) {
@@ -204,7 +233,7 @@
                 },
             },
                             {
-                                title: "原使用面积", key: 'AREA_USABLE_NEW', width: 100,
+                                title: "新使用面积", key: 'AREA_USABLE_NEW', width: 100,
                                 render: function (h, params) {
                                     return h('Input', {
                                         props: {
@@ -219,7 +248,7 @@
                                 },
                             },
                     {
-                        title: "原租赁面积", key: 'AREA_RENTABLE_NEW', width: 100,
+                        title: "新租赁面积", key: 'AREA_RENTABLE_NEW', width: 100,
                         render: function (h, params) {
                             return h('Input', {
                                 props: {

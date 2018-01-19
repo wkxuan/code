@@ -18,10 +18,10 @@ namespace z.ERP.Entities
         {
         }
 
-        public ASSETCHANGEITEM2Entity(string billid, string assetid_old, string assetcode_new)
+        public ASSETCHANGEITEM2Entity(string billid, string assetid, string assetcode_new)
         {
             BILLID = billid;
-            ASSETID_OLD = assetid_old;
+            ASSETID = assetid;
             ASSETCODE_NEW = assetcode_new;
         }
 
@@ -39,7 +39,7 @@ namespace z.ERP.Entities
         /// <summary>
         [PrimaryKey]
         [Field("原资产编号")]
-        public string ASSETID_OLD
+        public string ASSETID
         {
             get; set;
         }
@@ -81,6 +81,14 @@ namespace z.ERP.Entities
         /// <summary>
         [Field("可租赁面积")]
         public string AREA_RENTABLE_NEW
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 新资产类型
+        /// <summary>
+        [Field("可租赁面积")]
+        public string ASSET_TYPE_NEW
         {
             get; set;
         }
