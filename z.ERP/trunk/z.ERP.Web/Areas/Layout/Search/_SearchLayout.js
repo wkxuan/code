@@ -22,11 +22,13 @@
     this.vue = function VueOperate() {
         var ve = new Vue({
             el: '#search',
-            data: {
-                screenParam: _this.screenParam,
-                searchParam: _this.searchParam,
-                panelName: 'condition',
-                disabled: _this.enabled(true),
+            data() {
+                return {
+                    screenParam: _this.screenParam,
+                    searchParam: _this.searchParam,
+                    panelName: 'condition',
+                    disabled: _this.enabled(true),
+                }
             },
             mounted: function () {
             },
@@ -89,7 +91,6 @@
                 Method: _this.method,
                 Data: _this.searchParam,
                 Success: function (data) {
-                    ve.screenParam.dataDef = [];
                     ve.screenParam.dataDef = data.rows;
                     callback && callback();
                 }
@@ -113,17 +114,6 @@
     //删除对应的操作
     this.deleteData = function (row, index) {
     }
-    //删除对应的操作
-    this.deleteDb = function (row) {
-    }
-    this.callback = function (index) {
-        this.screenParam.dataDef.splice(index, 1);
-    }
-    this.deleteData1 = function (callback, row, inx) {
-        _this.deleteDb(row);
-        _this.callback(inx);
-    }
-
 
     this.colDefInit = function () {
         _this.colMul = [{
@@ -158,9 +148,19 @@
 
                         style: { marginRight: '5px' },
                         on: {
-                            click: function (event) {
-                                //_this.deleteData(params.row, params.index);
-                                _this.deleteData1(_this.callback, params.row, params.index);
+                            click: function () {
+                                this.iview.Modal.confirm({
+                                    title: '提示',
+                                    content: '是否删除',
+                                    onOk: function () {
+                                        _this.deleteData(params.row, params.index, function (data) {
+                                            _this.screenParam.dataDef.splice(params.index, 1);
+                                        });
+                                    },
+                                    onCancel: function () {
+                                        this.id = "关闭"
+                                    }
+                                });
                             }
                         },
                     }, '删除')
