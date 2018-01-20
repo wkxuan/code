@@ -12,7 +12,7 @@
     //控件是否可用，扩展函数,待完善
     this.enabled = function (val) { return val; }
 
-    //为了清空非BILLID主键表的主键
+    //为了清空非BILLID主键表的主键,或者可以根据需要清空想清空的内容,节间可以实现复制功能
     this.clearKey = function () { }
 
     this.vue = function VueOperate() {
