@@ -12,8 +12,8 @@
     //控件是否可用，扩展函数,待完善
     this.enabled = function (val) { return val; }
 
-    //得到单号
-    this.Key = undefined
+    //为了清空非BILLID主键表的主键
+    this.clearKey = function () { }
 
     this.vue = function VueOperate() {
         var ve = new Vue({
@@ -21,20 +21,26 @@
             data: {
                 dataParam: _this.dataParam,
                 screenParam: _this.screenParam,
-                stepParam: _this.stepParam,
                 panelName: 'base',
                 branchid: _this.branchid,
                 others: _this.others,
                 disabled: _this.enabled(true),
             },
             methods: {
+                add: function (event) {
+                    //新增暂时先将单号清空
+                    _this.dataParam.BILLID = null;
+                    _this.clearKey();
+                    ve.dataParam = _this.dataParam;
+                },
                 //保存
                 save: function (event) {
                     var _self = this;
                     if (!_this.IsValidSave(_self))
                         return;
                     save(function (data) {
-                        showone(data, function () {
+                        _this.showOne(data, function () {
+                            ve.dataParam = _this.dataParam;
                             _self.$Message.info("保存成功");
                         });
                     })
@@ -48,25 +54,14 @@
                 callback && callback(data);
             });
         }
-        function showone(key, callback) {
-            if (key) {
-                var v = {};
-                v[_this.Key] = key;
-                _.Ajax('SearchElement', {
-                    Data: v,
-                }, function (data) {
-                    _this.dataParam = data;
-                    ve.dataParam = _this.dataParam;
-                    callback && callback();
-                });
-            }
-        }
+    }
+
+    this.showOne = function (data,callback) {
     }
 
     this.vueInit = function () {
         _this.dataParam = {};
         _this.screenParam = {};
-        _this.stepParam = [];
         _this.service = "";
         _this.method = "";
         _this.branchid = true;

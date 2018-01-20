@@ -40,7 +40,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             return service.ShglService.SaveMerchant(SaveData);
         }
 
-        public UIResult SearchElement(MERCHANTEntity Data)
+        public UIResult SearchMerchant(MERCHANTEntity Data)
         {
             return new UIResult(service.ShglService.GetMerchantElement(Data));
         }
