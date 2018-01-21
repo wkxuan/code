@@ -18,6 +18,13 @@
 }
 
 <div id="EditDetail">
+    @{
+        <script type="text/javascript">
+            $(function () {
+                editDetail.showOne(@Model);
+            });
+        </script>
+    }
     <row class="topbutton">
         @{
             RenderControl(new ButtonRender()

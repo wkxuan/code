@@ -5,6 +5,7 @@ using z.Extensions;
 using System;
 using System.Collections.Generic;
 using z.MVC5.Results;
+using z.ERP.Model;
 
 namespace z.ERP.Web.Areas.SHGL.MERCHANT
 {
@@ -32,7 +33,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         public ActionResult MerchantEdit(string Id)
         {
             ViewBag.Title = "商户信息编辑";
-            return View();
+            return View(model: Id);
         }
 
         public void Delete(MERCHANTEntity DeleteData)

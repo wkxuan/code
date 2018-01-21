@@ -22,7 +22,7 @@
     this.vue = function VueOperate() {
         var ve = new Vue({
             el: '#search',
-            data() {
+            data: function () {
                 return {
                     screenParam: _this.screenParam,
                     searchParam: _this.searchParam,

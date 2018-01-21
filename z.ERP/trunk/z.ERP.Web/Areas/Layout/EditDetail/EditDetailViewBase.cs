@@ -1,7 +1,7 @@
 ﻿using z.MVC5.Views;
 namespace z.ERP.Web.Areas.Layout.EditDetail
 {
-    public class EditDetailViewBase : ViewBase<dynamic>
+    public class EditDetailViewBase<T> : ViewBase<dynamic>
     {
         public EditDetailViewBase()
         {
