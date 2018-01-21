@@ -25,7 +25,7 @@ search.browseHref = function (row, index) {
 }
 //添加跳转页面
 search.addHref = function (row) {
-    _.OpenPage("SHGL/MERCHANT/MerchantEdit/", function (data) {
+    _.OpenPage("SHGL/MERCHANT/MerchantAdd/", function (data) {
     });
 }
 //修改跳转页面,并且要根据单号查出来相关的数据信息
@@ -33,12 +33,11 @@ search.modHref = function (row, index) {
     _.OpenPage("SHGL/MERCHANT/MerchantEdit/"+ row.MERCHANTID, function (data) {
     });
 }
-search.deleteData = function (row, index) {
+search.deleteData = function (row, index, callback) {
     _.Ajax('Delete', {
         DeleteData: {MERCHANTID:row.MERCHANTID}
     }, function (data) {
-        //表格数组长度发生变化,要实现重新渲染???
-        search.screenParam.dataDef.splice(index, 1);
+        callback && callback(data);
     });
 }
 

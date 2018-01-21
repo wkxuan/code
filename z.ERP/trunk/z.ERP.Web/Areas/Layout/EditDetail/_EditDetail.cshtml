@@ -22,6 +22,16 @@
         @{
             RenderControl(new ButtonRender()
             {
+                Click = "add",
+                Text = "新增",
+                Enable = true,
+                Type = "primary"
+            });
+        }
+
+        @{
+            RenderControl(new ButtonRender()
+            {
                 Click = "save",
                 Text = "存档",
                 Enable=true,
@@ -44,7 +54,8 @@
                                 @{
                                     RenderControl(new TextBoxRender()
                                     {
-                                        vModel = "dataParam.BILLID"
+                                        vModel = "dataParam.BILLID",
+                                        Enable = false
                                     });
                                 }
                             </i-col>

@@ -1,5 +1,5 @@
 ﻿editDetail.beforeVue = function () {
-    editDetail.stepsCurrent = 0;
+
     editDetail.others = false;
     editDetail.branchid = false;
     editDetail.service = "ShglService";
@@ -63,4 +63,19 @@
         temp.push({});
         editDetail.dataParam.MERCHANT_BRAND = temp;
     }
+}
+
+editDetail.showOne = function (data, callback) {
+    _.Ajax('SearchMerchant', {
+        Data: { MERCHANTID: data }
+    }, function (data) {
+        editDetail.dataParam = data.merchant[0];
+        editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
+        editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand[0];
+        callback && callback(data);
+    });
+}
+
+editDetail.clearKey = function () {
+    editDetail.dataParam.MERCHANTID = null;
 }
