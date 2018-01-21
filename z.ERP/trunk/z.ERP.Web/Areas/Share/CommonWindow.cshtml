@@ -1,0 +1,29 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<CommonWindowRender>
+
+<modal v-model="@Model.vModel"
+       title="@Model.Title"
+       @@on-ok="window['@Model.Id'].DoCallBack">
+    Id:<input id="testid" />
+    名称:<input id="testname" />
+</modal>
+
+<script type="text/javascript">
+    window['@Model.Id'] = {
+        CallBack: null,
+        Open: function (callback) {
+            @Model.vModel = true;
+            window['@Model.Id'].CallBack=callback
+        },
+        close: function () {
+            window['@Model.vModel'] = false;
+        },
+        DoCallBack: function () {
+            var res = {
+                Key: $('#testid').val(),
+                Name: $('#testname').val()
+            };
+            window['@Model.Id'].CallBack && window['@Model.Id'].CallBack(res);
+        }
+    }
+</script>

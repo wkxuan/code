@@ -20,6 +20,7 @@
             el: '#EditDetail',
             data: {
                 dataParam: _this.dataParam,
+                windowParam: _this.windowParam,
                 screenParam: _this.screenParam,
                 stepParam: _this.stepParam,
                 panelName: 'base',

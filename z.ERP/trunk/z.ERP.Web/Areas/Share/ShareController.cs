@@ -33,6 +33,10 @@ namespace z.ERP.Web.Areas.Share
         {
             return View(render);
         }
+        public ActionResult CommonWindow(CommonWindowRender render)
+        {
+            return View(render);
+        }
         public ActionResult CheckBoxList(CheckBoxListRender render)
         {
             return View(render);
