@@ -1,6 +1,7 @@
 ﻿@inherits ViewBase<dynamic>
 @using z.ERP.Web.Areas.Share.Render
 @using z.MVC5.Views
+@using z.Extensions;
 @{
     Layout = ThisLayout;
 }
@@ -98,7 +99,7 @@
     @RenderSection("foot", false)
 }
 @{
-    if (Model != null && !Model.IsEmpty())
+    if (Model != null && string.IsNullOrEmpty(Model))
     {
         <script type="text/javascript">
             $(function() {
