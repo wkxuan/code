@@ -25,7 +25,7 @@ search.browseHref = function (row, index) {
 }
 //添加跳转页面
 search.addHref = function (row) {
-    _.OpenPage("SHGL/MERCHANT/MerchantAdd/", function (data) {
+    _.OpenPage("SHGL/MERCHANT/MerchantEdit/", function (data) {
     });
 }
 //修改跳转页面,并且要根据单号查出来相关的数据信息

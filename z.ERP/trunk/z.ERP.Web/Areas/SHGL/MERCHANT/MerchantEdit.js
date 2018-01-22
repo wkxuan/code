@@ -5,7 +5,7 @@
     editDetail.service = "ShglService";
     editDetail.method = "GetMerchant";
     editDetail.Key = 'MERCHANTID';
-
+    //这里需要初始化一个
     editDetail.dataParam.STATUS = "1";
 
 
@@ -72,6 +72,7 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchMerchant', {
         Data: { MERCHANTID: data }
     }, function (data) {
+        //需要一个一个赋值
         editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
         editDetail.dataParam.NAME = data.merchant[0].NAME;
         editDetail.dataParam.ADRESS = data.merchant[0].ADRESS;

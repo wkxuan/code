@@ -24,11 +24,6 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             return View(entity);
         }
 
-        public ActionResult MerchantAdd()
-        {
-            ViewBag.Title = "商户信息新增";
-            return View("MerchantEdit");
-        }
 
         public ActionResult MerchantEdit(string Id)
         {
