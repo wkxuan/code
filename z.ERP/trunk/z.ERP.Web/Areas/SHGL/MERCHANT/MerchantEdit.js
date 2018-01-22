@@ -69,9 +69,10 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchMerchant', {
         Data: { MERCHANTID: data }
     }, function (data) {
-        editDetail.dataParam = data.merchant[0];
-        editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
-        editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand[0];
+        editDetail.dataParam.ADRESS = "1111111";
+        //editDetail.dataParam = data.merchant[0];
+        //editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
+        //editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand[0];
         callback && callback(data);
     });
 }

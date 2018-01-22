@@ -34,8 +34,8 @@
             {
                 Click = "save",
                 Text = "存档",
-                Enable=true,
-                Type= "primary"
+                Enable = true,
+                Type = "primary"
             });
         }
     </row>
@@ -77,7 +77,7 @@
                         @RenderSection("baseParam", false)
                     </p>
                 </panel>
-               
+
                 <panel name="detail" v-if="others">
                     详细信息
                     <p slot="content">
@@ -99,8 +99,8 @@
 }
 @{
     <script type="text/javascript">
-            $(function () {
-                editDetail.showOne(@Model);
-            });
+        $(function () {
+            editDetail.Id=@Model ;
+        });
     </script>
 }

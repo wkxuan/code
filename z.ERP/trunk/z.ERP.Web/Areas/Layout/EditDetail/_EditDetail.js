@@ -57,6 +57,8 @@
         }
     }
 
+    this.Id = "";
+
     this.showOne = function (data,callback) {
     }
 
@@ -73,6 +75,10 @@
         _this.vueInit();
         _this.beforeVue();
         _this.vue();
+        if (editDetail.Id)
+        {
+            editDetail.showOne(editDetail.Id);
+        }
     }, 100);
 }
 var editDetail = new _EditDetail();
