@@ -98,9 +98,12 @@
     @RenderSection("foot", false)
 }
 @{
-    <script type="text/javascript">
-        $(function () {
-            editDetail.Id=@Model ;
-        });
-    </script>
+    if (Model != null && !Model.IsEmpty())
+    {
+        <script type="text/javascript">
+            $(function() {
+                editDetail.Id = @Model;
+            });
+        </script>
+    }
 }
