@@ -17,10 +17,10 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
             return View();
         }
 
-        public ActionResult EnergyreGisterEdit()
+        public ActionResult EnergyreGisterEdit(string Id)
         {
             ViewBag.Title = "编辑能源设备登记(抄表)";
-            return View();
+            return View(model: Id);
         }
 
         public ActionResult EnergyreGisterDetail(string Id)
@@ -34,9 +34,9 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
         {
             return service.WyglService.SaveEnergyreGister(SaveData);
         }
-        public UIResult SearchElement(string BILLID)
+        public UIResult SearchElement(ENERGY_REGISTEREntity Data)
         {
-            return new UIResult(service.WyglService.GetEnergyreGisterElement(BILLID));
+            return new UIResult(service.WyglService.GetEnergyreGisterElement(Data));
         }
     }
 }

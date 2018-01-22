@@ -84,3 +84,15 @@
 
    
 }
+
+
+editDetail.showOne = function (data, callback) {
+    _.Ajax('SearchElement', {
+        Data: { BILLID: data }
+    }, function (data) {
+        editDetail.dataParam = data.main[0];
+        editDetail.dataParam.BILLID = data.main[0].BILLID;
+        editDetail.dataParam.ENERGY_REGISTER_ITEM = data.item;
+        callback && callback(data);
+    });
+}

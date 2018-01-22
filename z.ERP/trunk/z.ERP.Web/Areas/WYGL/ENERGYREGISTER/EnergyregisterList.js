@@ -22,3 +22,8 @@ search.addHref = function (row) {
     _.OpenPage("WYGL/ENERGYREGISTER/EnergyreGisterEdit/", function (data) {
     })
 }
+
+search.modHref = function (row, index) {
+    _.OpenPage("WYGL/ENERGYREGISTER/EnergyreGisterEdit/" + row.BILLID, function (data) {
+    });
+}

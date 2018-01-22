@@ -60,11 +60,11 @@ namespace z.ERP.Services
         }
         
 
-        public object GetEnergyreGisterElement(string BILLID)
+        public object GetEnergyreGisterElement(ENERGY_REGISTEREntity Data)
         {
             string sql = $@"select * from ENERGY_REGISTER where 1=1 ";
-            if (!BILLID.IsEmpty())
-                sql += (" and BILLID= " + BILLID);         
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and BILLID= " + Data.BILLID);         
             DataTable dt = DbHelper.ExecuteTable(sql);
 
 
@@ -72,17 +72,17 @@ namespace z.ERP.Services
             string sqlitem = $@"SELECT M.*,E.FILECODE,E.FILENAME,P.CODE,P.NAME " +
                 " FROM ENERGY_REGISTER_ITEM M,ENERGY_FILES E,SHOP P " +
                 " where M.FILEID = E.FILEID and M.SHOPID = P.SHOPID";
-            if (!BILLID.IsEmpty())
-                sqlitem += (" and BILLID= " + BILLID);            
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and BILLID= " + Data.BILLID);            
             DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
 
             var result = new
             {
                 main = dt,
-                item = dtitem
-            };
-
-            //return new { main = new DataGridResult(dt,1),item = new DataGridResult(dtitem)};
+                item = new dynamic[] {
+                   dtitem
+                }
+            };           
             return result;
         }
 
