@@ -99,7 +99,7 @@
     @RenderSection("foot", false)
 }
 @{
-    if (Model != null && string.IsNullOrEmpty(Model))
+    if (Model != null && !string.IsNullOrEmpty(Model))
     {
         <script type="text/javascript">
             $(function() {
