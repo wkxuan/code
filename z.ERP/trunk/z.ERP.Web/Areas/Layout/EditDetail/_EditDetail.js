@@ -63,7 +63,7 @@
     }
 
     this.vueInit = function () {
-        _this.dataParam = { NAME: '' };
+        _this.dataParam = {};
         _this.screenParam = {};
         _this.service = "";
         _this.method = "";

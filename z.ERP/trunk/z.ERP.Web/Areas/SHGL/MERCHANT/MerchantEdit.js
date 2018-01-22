@@ -6,6 +6,9 @@
     editDetail.method = "GetMerchant";
     editDetail.Key = 'MERCHANTID';
 
+    editDetail.dataParam.STATUS = "1";
+
+
     editDetail.screenParam.colDef = [
     {
         title: "品牌代码", key: 'BRANDID', width: 100,
@@ -69,11 +72,11 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchMerchant', {
         Data: { MERCHANTID: data }
     }, function (data) {
-        editDetail.dataParam.ADRESS = "1111111";
-        editDetail.dataParam.NAME = "1111111";
+        editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
+        editDetail.dataParam.NAME = data.merchant[0].NAME;
+        editDetail.dataParam.ADRESS = data.merchant[0].ADRESS;
         //editDetail.dataParam = data.merchant[0];
-        //editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
-        //editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand[0];
+        editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand[0];
         callback && callback(data);
     });
 }
