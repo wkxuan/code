@@ -15,32 +15,18 @@ function _Define() {
         { type: 'selection', width: 55,align: 'center'},
         { title: '代码', key: 'PAYID', width: 62 },
         { title: '名称', key: 'NAME', width: 148 }];
-
-        //_.Search({
-        //    Service: "XtglService",
-        //    Method: "GetPay",
-        //    Data: "",
-        //    Success: function (data) {                
-        //        for (var i = 0; i < data.rows.length; i++) {
-        //            _this.screenParam.payDataDef.push({
-        //                _checked: false,
-        //                PAYID: data.rows[i]["PAYID"],
-        //                NAME: data.rows[i]["NAME"],
-        //            });
-        //        }
-        //    }
-        //})
-
-        _this.screenParam.payDataDef = [{
-            _checked:false,
-            PAYID: '1',
-            NAME: '现金',
-        }, {
-            _checked: false,
-            PAYID: '2',
-            NAME: '银行卡',
-        }, ];
-
+        _this.screenParam.payDataDef = [];
+        
+        _.Ajax('GetStaionPayList', {
+        }, function (data) {
+            for (var i = 0; i < data.pay.length; i++) {
+                _this.screenParam.payDataDef.push({
+                    _checked: false,
+                    PAYID: data.pay[i]["PAYID"],
+                    NAME: data.pay[i]["NAME"],
+                });
+            }
+        });
         _this.service = "XtglService";
         _this.method = "GetStaionElement";
         _this.methodList = "GetStaion";
@@ -75,12 +61,29 @@ function _Define() {
                 disabled: _this.enabled(true),
                 _key: undefined
             },
-            mounted: showlist,
+            mounted: function(){
+                //页面打开先查询左边列表信息
+                let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+                this.$refs.cardHeigth.style.height = (h - 80) + 'px';
+                this.$refs.tableHeight.style.height = (h - 80) + 'px';
+                _.Search({
+                    Service: _this.service,
+                    Method: _this.methodList,
+                    Data: {},
+                    Success: function (data) {
+                        _this.screenParam.dataDef = data.rows;
+                    }
+                })
+                },
             methods: {
                 //添加
                 add: function (event) {
                     ve._key = define.dataParam[_this.Key],
                     _this.dataParam = {};
+                    for (var j = 0; j < ve.screenParam.payDataDef.length; j++) {
+                        ve.screenParam.payDataDef[j]._checked = false;
+                    };
                     _this.newRecord();
                     ve.dataParam = _this.dataParam;
                     ve.disabled = _this.enabled(false);
@@ -139,6 +142,7 @@ function _Define() {
                         _self.$Message.error("请选择数据");
                         return;
                     }
+                    _self.dataParam.STATION_PAY = this.$refs.selection.getSelection();
                     this.$Modal.confirm({
                         title: '提示',
                         content: '是否删除',
@@ -190,27 +194,20 @@ function _Define() {
                 _.Ajax('GetStaionElement', {
                     Staion: v
                 }, function (data) {
-                    _this.dataParam = data.rows[0];
+                    _this.dataParam = data.staion[0];
                     ve.dataParam = _this.dataParam;
-                    for (var i = 0; i < ve.screenParam.payDataDef.length; i++) {
-                        ve.screenParam.payDataDef[i]._checked = true;
-                    }
+                    for (var j = 0; j < ve.screenParam.payDataDef.length; j++)
+                    {
+                        ve.screenParam.payDataDef[j]._checked = false;
+                         for (var i = 0; i < data.station_pay[0].length; i++) {
+                            if (data.station_pay[0][i].PAYID == ve.screenParam.payDataDef[j].PAYID)
+                            {
+                                ve.screenParam.payDataDef[j]._checked = true;
+                            }                            
+                        }                        
+                    };
+                    callback && callback();
                 })
-
-                //_.Search({
-                //    Service: _this.service,
-                //    Method: _this.method,
-                //    Data: v,
-                //    Success: function (data) {
-                //        _this.dataParam = data.rows[0];
-                //        ve.dataParam = _this.dataParam;
-                //        for (var i = 0; i < ve.screenParam.payDataDef.length; i++) {
-                //            ve.screenParam.payDataDef[i]._checked = true;
-                //        }
-
-                //        callback && callback();
-                //    }
-                //});
             }
         }
 

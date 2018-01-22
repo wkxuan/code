@@ -237,7 +237,7 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);                        
             return new DataGridResult(dt, count);
         }
-        public STATIONEntityMoldel GetStaionElement(STATIONEntity DefineSave)
+        public object GetStaionElement(STATIONEntity DefineSave)
         {
             string sql = $@"select STATIONBH,TYPE,IP from STATION where 1=1 ";
             sql += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
@@ -245,44 +245,39 @@ namespace z.ERP.Services
             
 
             DataTable dt = DbHelper.ExecuteTable(sql);
-            if (dt.IsNotNull())
+
+            var sqlpay = $@"SELECT S.STATIONBH,S.PAYID,P.NAME from STATION_PAY S,PAY P WHERE S.PAYID=P.PAYID ";
+            sqlpay += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
+            sqlpay += " order by S.PAYID";
+            DataTable dt1 = DbHelper.ExecuteTable(sqlpay);
+
+            var result = new
             {
-                List<STATIONEntityMoldel> ii = dt.ToList<STATIONEntityMoldel>();
-
-                var sqlpay = $@"SELECT S.STATIONBH,S.PAYID,P.NAME from STATION_PAY S,PAY P WHERE S.PAYID=P.PAYID ";
-                sqlpay += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
-                sqlpay += "order by S.PAYID";
-
-                DataTable dt1 = DbHelper.ExecuteTable(sqlpay);
-                if (dt1.IsNotNull())
-                    ii[0].STATION_PAY = dt1.ToList<STATION_PAYEntityMoldel>();
-                return ii[0];
-            }
-
-
-            //var aa=new {
-
-            //}
-
-            //var s = new 
-            //{
-            //    ipsdfsdfds = dt.rows[0]["ip"].tostring(),
-            //    type = dt.rows[0]["type"].tostring(),
-            //    stationbh = dt.rows[0]["stationbh"].tostring(),
-            //    station_pay = new dynamic[]
-            //    {
-            //        new 
-            //        {
-            //            payid = dt1.rows[0]["payid"].tostring(),
-            //            name = dt1.rows[0]["name"].tostring(),
-            //            vv=aa
-            //        }
-            //    }
-            //};
-            return null;
+                staion = dt,
+                station_pay = new dynamic[]
+                {
+                    dt1
+                }
+            };
+            return result;
         }
 
-        public string SaveSataion(STATIONEntity DefineSave, List<STATION_PAYEntity> PaySave)
+        public object GetStaionPayList()
+        {
+            string sql = $@"SELECT PAYID,NAME FROM PAY  ";
+            sql += "order by PAYID";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            var result = new
+            {
+                pay = dt
+            };
+            return result;
+        }
+        
+
+        public string SaveSataion(STATIONEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
             if (DefineSave.STATIONBH.IsEmpty())
@@ -291,19 +286,25 @@ namespace z.ERP.Services
             v.Require(a => a.TYPE);
             v.Require(a => a.IP);
             v.IsUnique(a => a.IP);
+
+            DefineSave.STATION_PAY.ForEach(sdb =>
+            {
+                GetVerify(sdb).Require(a => a.PAYID);                
+            });
+
             v.Verify();
             DbHelper.Save(DefineSave);
 
-            foreach (var pay in PaySave)
-            {
-                var w = GetVerify(pay);
-                pay.STATIONBH = DefineSave.STATIONBH;
-                //校验
-                DbHelper.Delete(pay);
-                DbHelper.Insert(pay);
-            }
-
             return DefineSave.STATIONBH;
+        }
+
+        public void DeleteStation(STATIONEntity DeleteData)
+        {
+            var v = GetVerify(DeleteData);
+            string sql = $@"delete from STATION_PAY where  STATIONBH="  + DeleteData.STATIONBH.ToString();
+            DbHelper.ExecuteNonQuery(sql);
+            //校验
+            DbHelper.Delete(DeleteData);
         }
 
         public class STATIONEntityMoldel: STATIONEntity
