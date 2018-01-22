@@ -59,11 +59,11 @@
 
     this.Id = "";
 
-    this.showOne = function (data,callback) {
+    this.showOne = function (data, callback) {
     }
 
     this.vueInit = function () {
-        _this.dataParam = {};
+        _this.dataParam = { NAME: '' };
         _this.screenParam = {};
         _this.service = "";
         _this.method = "";
@@ -75,8 +75,7 @@
         _this.vueInit();
         _this.beforeVue();
         _this.vue();
-        if (editDetail.Id)
-        {
+        if (editDetail.Id) {
             editDetail.showOne(editDetail.Id);
         }
     }, 100);

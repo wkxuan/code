@@ -40,7 +40,7 @@
                     style: { marginRight: '50px' },
                     on: {
                         click: function (event) {
-                            editDetail.dataParam.MERCHANT_BRAND.splice(params.index,1);
+                            editDetail.dataParam.MERCHANT_BRAND.splice(params.index, 1);
                         }
                     },
                 }, '删除')
@@ -59,7 +59,7 @@
     }
 
     editDetail.screenParam.addCol = function () {
-        var  temp = editDetail.dataParam.MERCHANT_BRAND||[];
+        var temp = editDetail.dataParam.MERCHANT_BRAND || [];
         temp.push({});
         editDetail.dataParam.MERCHANT_BRAND = temp;
     }
@@ -70,6 +70,7 @@ editDetail.showOne = function (data, callback) {
         Data: { MERCHANTID: data }
     }, function (data) {
         editDetail.dataParam.ADRESS = "1111111";
+        editDetail.dataParam.NAME = "1111111";
         //editDetail.dataParam = data.merchant[0];
         //editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
         //editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand[0];
