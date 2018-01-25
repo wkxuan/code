@@ -332,7 +332,7 @@ namespace z.ERP.Services
         public virtual UIResult TreeCategoryData(SearchItem item)
         {
             string sql = $@"select * from CATEGORY where 1=1 ";
-            item.HasKey("CATEGORYCODE", a => sql += $" and CATEGORYCODE = '{a}' ");
+            item.HasKey("code", a => sql += $" and CATEGORYCODE = '{a}' ");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
