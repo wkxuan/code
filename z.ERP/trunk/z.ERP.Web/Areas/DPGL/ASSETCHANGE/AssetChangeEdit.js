@@ -37,11 +37,12 @@
 
                 style: { marginRight: '5px', width: '30px' },
                 on: {
-                    click: function () {
-                        testwin1.Open(function (data) {
-                            alert(data.Key);
-                        });
-                    }
+                    click: editDetail.screenParam.openPop
+                    //    function () {
+                    //    testwin1.Open(function (data) {
+                    //        alert(data.Key);
+                    //    });
+                    //}
                 },
             }, '...'),
 
@@ -334,4 +335,15 @@
         temp.push({});
         editDetail.dataParam.ASSETCHANGEITEM2 = temp;
     }
+    editDetail.showOne = function (data, callback) {
+        _.Ajax('SearchAssetChange', {
+            Data: { BILLID: data }
+        }, function (data) {
+            editDetail.dataParam = data.merchant[0];
+            editDetail.dataParam.BILLID = data.assetchange[0].BILLID;
+            editDetail.dataParam.ASSETCHANGEITEM = data.assetchangeitem[0];
+            callback && callback(data);
+        });
+    }
+
 }

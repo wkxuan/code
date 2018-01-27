@@ -23,10 +23,10 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
             return View(entity);
         }
 
-        public ActionResult AssetChangeEdit()
+        public ActionResult AssetChangeEdit(string Id)
         {
             ViewBag.Title = "编辑资产调整单";
-            return View();
+            return View(model:Id);
         }
 
         public void Delete(ASSETCHANGEEntity DeleteData)
@@ -40,7 +40,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
             return service.DpglService.SaveAssetChange(SaveData);
         }
 
-        public UIResult SearchElement(ASSETCHANGEEntity Data)
+        public UIResult SearchAssetChange(ASSETCHANGEEntity Data)
         {
             return new UIResult(service.DpglService.GetAssetChangeElement(Data));
         }
