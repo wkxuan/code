@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using z.ERP.Entities;
+using z.ERP.Model.Vue;
 using z.Extensions;
 using z.Extensiont;
 using z.MVC5.Results;
@@ -307,15 +308,6 @@ namespace z.ERP.Services
             DbHelper.Delete(DeleteData);
         }
 
-        public class STATIONEntityMoldel: STATIONEntity
-        {
-            public List<STATION_PAYEntityMoldel> STATION_PAY;
-        }
-        public class STATION_PAYEntityMoldel : STATION_PAYEntity
-        {
-            public string NAME { get; set; }
-        }
-
         public string SaveBrand(BRANDEntity SaveData)
         {
             var v = GetVerify(SaveData);
@@ -336,6 +328,29 @@ namespace z.ERP.Services
             DbHelper.Save(SaveData);
             return SaveData.ID;
         }
+
+        public virtual UIResult TreeCategoryData(SearchItem item)
+        {
+            string sql = $@"select * from CATEGORY where 1=1 ";
+            item.HasKey("code", a => sql += $" and CATEGORYCODE = '{a}' ");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public virtual UIResult TreeCategoryList()
+        {
+            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity());
+            return new UIResult(TreeModel.Create(p,
+                a => a.CATEGORYCODE,
+                a => new TreeModel()
+                {
+                    code = a.CATEGORYCODE,
+                    title = a.CATEGORYNAME,                    
+                    expand = true
+                }).ToArray());
+        }
+
     }
 
 }

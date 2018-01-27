@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using z.MVC5.Results;
 using z.ERP.Model;
+using z.ERP.Entities.Enum;
+using System.Data;
 
 namespace z.ERP.Web.Areas.SHGL.MERCHANT
 {
@@ -24,11 +26,6 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             return View(entity);
         }
 
-        public ActionResult MerchantAdd()
-        {
-            ViewBag.Title = "商户信息新增";
-            return View();
-        }
 
         public ActionResult MerchantEdit(string Id)
         {
@@ -36,7 +33,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             return View(model: Id);
         }
 
-        public void Delete(MERCHANTEntity DeleteData)
+        public void Delete(List<MERCHANTEntity> DeleteData)
         {
             service.ShglService.DeleteMerchant(DeleteData);
         }

@@ -1,6 +1,7 @@
 ﻿@inherits ViewBase<dynamic>
 @using z.ERP.Web.Areas.Share.Render
 @using z.MVC5.Views
+@using z.Extensions;
 @{
     Layout = ThisLayout;
 }
@@ -18,13 +19,6 @@
 }
 
 <div id="EditDetail">
-    @{
-        <script type="text/javascript">
-            $(function () {
-                editDetail.showOne(@Model);
-            });
-        </script>
-    }
     <row class="topbutton">
         @{
             RenderControl(new ButtonRender()
@@ -41,8 +35,8 @@
             {
                 Click = "save",
                 Text = "存档",
-                Enable=true,
-                Type= "primary"
+                Enable = true,
+                Type = "primary"
             });
         }
     </row>
@@ -84,7 +78,7 @@
                         @RenderSection("baseParam", false)
                     </p>
                 </panel>
-               
+
                 <panel name="detail" v-if="others">
                     详细信息
                     <p slot="content">
@@ -103,4 +97,14 @@
 
 @section foot{
     @RenderSection("foot", false)
+}
+@{
+    if (Model != null && !string.IsNullOrEmpty(Model))
+    {
+        <script type="text/javascript">
+            $(function() {
+                editDetail.Id = @Model;
+            });
+        </script>
+    }
 }

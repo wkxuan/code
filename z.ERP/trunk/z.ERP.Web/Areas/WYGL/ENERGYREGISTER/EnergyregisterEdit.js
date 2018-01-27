@@ -89,10 +89,13 @@
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchElement', {
         Data: { BILLID: data }
-    }, function (data) {
-        editDetail.dataParam = data.main[0];
+    }, function (data) {   
+        editDetail.dataParam.YEARMONTH = data.main[0].YEARMONTH;
+        editDetail.dataParam.CHECK_DATE = data.main[0].CHECK_DATE;        
         editDetail.dataParam.BILLID = data.main[0].BILLID;
-        editDetail.dataParam.ENERGY_REGISTER_ITEM = data.item;
+        editDetail.dataParam.DESCRIPTION = data.main[0].DESCRIPTION;
+        
+        editDetail.dataParam.ENERGY_REGISTER_ITEM = data.item[0];
         callback && callback(data);
     });
 }

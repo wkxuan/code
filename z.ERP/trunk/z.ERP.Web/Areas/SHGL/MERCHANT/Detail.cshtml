@@ -41,6 +41,6 @@
         <i-col span="2" class="RowTitle">地址</i-col>
         <i-col span="4" class="RowText"> @Model.ADRESS   </i-col>
         <i-col span="2" class="RowTitle">状态</i-col>
-        <i-col span="4" class="RowText"> @(Model.STATUS.ToEnum<支付方式类型>().ToLocalString()) </i-col>
+        <i-col span="4" class="RowText"> @(Model.STATUS.ToEnum<普通单据状态>().ToLocalString()) </i-col>
     </row>
 }

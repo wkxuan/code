@@ -5,6 +5,8 @@
     editDetail.service = "ShglService";
     editDetail.method = "GetMerchant";
     editDetail.Key = 'MERCHANTID';
+    editDetail.dataParam.STATUS = "1";
+
 
     editDetail.screenParam.colDef = [
     {
@@ -40,7 +42,7 @@
                     style: { marginRight: '50px' },
                     on: {
                         click: function (event) {
-                            editDetail.dataParam.MERCHANT_BRAND.splice(params.index,1);
+                            editDetail.dataParam.MERCHANT_BRAND.splice(params.index, 1);
                         }
                     },
                 }, '删除')
@@ -59,7 +61,7 @@
     }
 
     editDetail.screenParam.addCol = function () {
-        var  temp = editDetail.dataParam.MERCHANT_BRAND||[];
+        var temp = editDetail.dataParam.MERCHANT_BRAND || [];
         temp.push({});
         editDetail.dataParam.MERCHANT_BRAND = temp;
     }
@@ -69,8 +71,18 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchMerchant', {
         Data: { MERCHANTID: data }
     }, function (data) {
-        editDetail.dataParam = data.merchant[0];
         editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
+        editDetail.dataParam.NAME = data.merchant[0].NAME;
+        editDetail.dataParam.SH = data.merchant[0].SH;
+        editDetail.dataParam.BANK = data.merchant[0].BANK;
+        editDetail.dataParam.BANK_NAME = data.merchant[0].BANK_NAME;
+        editDetail.dataParam.ADRESS = data.merchant[0].ADRESS;
+        editDetail.dataParam.CONTACTPERSON = data.merchant[0].CONTACTPERSON;
+        editDetail.dataParam.PHONE = data.merchant[0].PHONE;
+        editDetail.dataParam.PIZ = data.merchant[0].PIZ;
+        editDetail.dataParam.WEIXIN = data.merchant[0].WEIXIN;
+        editDetail.dataParam.QQ = data.merchant[0].QQ;
+        editDetail.dataParam.STATUS = data.merchant[0].STATUS;
         editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand[0];
         callback && callback(data);
     });
@@ -78,4 +90,5 @@ editDetail.showOne = function (data, callback) {
 
 editDetail.clearKey = function () {
     editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.NAME = null;
 }

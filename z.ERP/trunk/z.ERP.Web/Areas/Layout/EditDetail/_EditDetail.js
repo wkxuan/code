@@ -33,6 +33,8 @@
                     _this.dataParam.BILLID = null;
                     _this.clearKey();
                     ve.dataParam = _this.dataParam;
+                    this.$set(ve.dataParam, _this.dataParam);
+
                 },
                 //保存
                 save: function (event) {
@@ -57,7 +59,9 @@
         }
     }
 
-    this.showOne = function (data,callback) {
+    this.Id = "";
+
+    this.showOne = function (data, callback) {
     }
 
     this.vueInit = function () {
@@ -74,6 +78,9 @@
         _this.vueInit();
         _this.beforeVue();
         _this.vue();
+        if (editDetail.Id) {
+            editDetail.showOne(editDetail.Id);
+        }
     }, 100);
 }
 var editDetail = new _EditDetail();

@@ -1,0 +1,47 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Tree
+@inherits TreeViewBase
+
+@section element{
+    <row>
+        <i-col span="2" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="6">
+            &nbsp;{{dataParam.CATEGORYCODE}}
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CATEGORYNAME",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            末级标记
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<末级标记>()
+                {
+                    vModel = "dataParam.LEVEL_LAST",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+
+
+}
