@@ -26,10 +26,10 @@
     </i-col>
     <i-col span="6">
         @{
-            RenderControl(new TextBoxRender()
+            RenderControl(new EnumDropDownListRender<普通单据状态>()
             {
                 vModel = "dataParam.STATUS",
-                Enable=false
+                Enable = false
             });
         }
     </i-col>

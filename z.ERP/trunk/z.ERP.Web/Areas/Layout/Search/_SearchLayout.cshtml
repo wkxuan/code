@@ -50,6 +50,17 @@
                         Type = "primary"
                     });
                 }
+
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "del",
+                        Text = "删除",
+                        Enable = true,
+                        Type = "error"
+                    });
+                }
+
                 @RenderSection("conditionBtn", false)
             </div>
             <p slot="content" class="element">
@@ -85,7 +96,7 @@
                  @*结果显示*@
                     <i-table :highlight-row="true" size="small" :border="true" height="500"
                              :columns="screenParam.colDef" :data="screenParam.dataDef"
-                             v-on:on-row-dblclick="browse" ></i-table>
+                             v-on:on-row-dblclick="browse"  ref="selectData"></i-table>
 
                 @RenderSection("resultOthers", false)
             </p>

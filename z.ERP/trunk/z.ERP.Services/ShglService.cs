@@ -21,14 +21,22 @@ namespace z.ERP.Services
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS","STATUSMC");
             return new DataGridResult(dt, count);
         }
 
-        public void DeleteMerchant(MERCHANTEntity DeleteData)
+        public void DeleteMerchant(List<MERCHANTEntity> DeleteData)
         {
-            var v = GetVerify(DeleteData);
-            //校验
-            DbHelper.Delete(DeleteData);
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var mer in DeleteData)
+                {
+                    var v = GetVerify(mer);
+                    //校验
+                    DbHelper.Delete(mer);
+                }
+                Tran.Commit();
+            }
         }
 
         public string SaveMerchant(MERCHANTEntity SaveData)
@@ -45,12 +53,14 @@ namespace z.ERP.Services
             v.IsUnique(a => a.MERCHANTID);
             v.IsUnique(a => a.NAME);
             v.Verify();
-
-            SaveData.MERCHANT_BRAND.ForEach(shpp =>
+            using (var Tran = DbHelper.BeginTransaction())
             {
-                GetVerify(shpp).Require(a => a.BRANDID);
-            });
-            DbHelper.Save(SaveData);
+                SaveData.MERCHANT_BRAND.ForEach(shpp =>
+                {
+                    GetVerify(shpp).Require(a => a.BRANDID);
+                });
+                DbHelper.Save(SaveData);
+            }
             return SaveData.MERCHANTID;
         }
 

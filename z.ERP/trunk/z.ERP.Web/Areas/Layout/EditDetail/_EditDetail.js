@@ -33,6 +33,8 @@
                     _this.dataParam.BILLID = null;
                     _this.clearKey();
                     ve.dataParam = _this.dataParam;
+                    this.$set(ve.dataParam, _this.dataParam);
+
                 },
                 //保存
                 save: function (event) {
@@ -63,7 +65,7 @@
     }
 
     this.vueInit = function () {
-        _this.dataParam = { NAME: '' };
+        _this.dataParam = {};
         _this.screenParam = {};
         _this.service = "";
         _this.method = "";
