@@ -83,7 +83,7 @@
                     <div style="height:10%">
                         @RenderSection("search", false)
                     </div>
-                    <i-table :highlight-row="true" :size="small" border="true"  height="500"
+                    <i-table :highlight-row="true" size="small" border="true"  height="500"
                              :columns="screenParam.colDef" :data="screenParam.dataDef"
                              v-on:on-current-change="showlist"></i-table>
 
