@@ -124,8 +124,8 @@
                 showlist: function (currentRow, oldCurrentRow) {
                     var p = currentRow && currentRow[0] && currentRow[0];
                     this.Key = p.code;
-                    if (p.children.length == 0)
-                        showone(p.code);
+                    //if (p.children.length == 0)
+                    showone(p.code);
                 },
                 seachList: function (event) {
                     showlist();

@@ -376,8 +376,10 @@ namespace z.Extensions
         /// <returns></returns>
         public static string CutRight(this string str, int length)
         {
-            if (str.IsEmpty() || str.Length <= length)
+            if (str.IsEmpty() || str.Length < length)
                 return str;
+            else if (str.Length == length)
+                return "";
             return str.SubstringSafe(0, str.Length - length);
         }
 
@@ -389,8 +391,10 @@ namespace z.Extensions
         /// <returns></returns>
         public static string CutLeft(this string str, int length)
         {
-            if (str.IsEmpty() || str.Length <= length)
+            if (str.IsEmpty() || str.Length < length)
                 return str;
+            else if (str.Length == length)
+                return "";
             return str.SubstringSafe(length);
         }
         #endregion
