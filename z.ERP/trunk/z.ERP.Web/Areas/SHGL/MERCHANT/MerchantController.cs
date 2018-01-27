@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using z.MVC5.Results;
 using z.ERP.Model;
+using z.ERP.Entities.Enum;
 
 namespace z.ERP.Web.Areas.SHGL.MERCHANT
 {
@@ -31,7 +32,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             return View(model: Id);
         }
 
-        public void Delete(MERCHANTEntity DeleteData)
+        public void Delete(List<MERCHANTEntity> DeleteData)
         {
             service.ShglService.DeleteMerchant(DeleteData);
         }

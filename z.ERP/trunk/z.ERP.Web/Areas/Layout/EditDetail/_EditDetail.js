@@ -33,6 +33,8 @@
                     _this.dataParam.BILLID = null;
                     _this.clearKey();
                     ve.dataParam = _this.dataParam;
+                    this.$set(ve.dataParam, _this.dataParam);
+
                 },
                 //保存
                 save: function (event) {

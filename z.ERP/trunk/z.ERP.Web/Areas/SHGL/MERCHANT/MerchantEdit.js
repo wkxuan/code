@@ -5,7 +5,6 @@
     editDetail.service = "ShglService";
     editDetail.method = "GetMerchant";
     editDetail.Key = 'MERCHANTID';
-    //这里需要初始化一个
     editDetail.dataParam.STATUS = "1";
 
 
@@ -72,11 +71,18 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchMerchant', {
         Data: { MERCHANTID: data }
     }, function (data) {
-        //需要一个一个赋值
         editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
         editDetail.dataParam.NAME = data.merchant[0].NAME;
+        editDetail.dataParam.SH = data.merchant[0].SH;
+        editDetail.dataParam.BANK = data.merchant[0].BANK;
+        editDetail.dataParam.BANK_NAME = data.merchant[0].BANK_NAME;
         editDetail.dataParam.ADRESS = data.merchant[0].ADRESS;
-        //editDetail.dataParam = data.merchant[0];
+        editDetail.dataParam.CONTACTPERSON = data.merchant[0].CONTACTPERSON;
+        editDetail.dataParam.PHONE = data.merchant[0].PHONE;
+        editDetail.dataParam.PIZ = data.merchant[0].PIZ;
+        editDetail.dataParam.WEIXIN = data.merchant[0].WEIXIN;
+        editDetail.dataParam.QQ = data.merchant[0].QQ;
+        editDetail.dataParam.STATUS = data.merchant[0].STATUS;
         editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand[0];
         callback && callback(data);
     });
@@ -84,4 +90,5 @@ editDetail.showOne = function (data, callback) {
 
 editDetail.clearKey = function () {
     editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.NAME = null;
 }

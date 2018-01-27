@@ -41,8 +41,10 @@
                     if (!_this.IsValidSrch(mess))
                         return;
                     showList(function (data) {
+                        ve.screenParam.dataDef = _this.screenParam.dataDef;
                         if (ve.screenParam.dataDef.length > 0) {
                             ve.panelName = 'result';
+                            mess.$set(ve.screenParam, _this.screenParam);
                         }
                         else {
                             mess.$Message.info("没有满足当前查询条件的结果!");
@@ -81,17 +83,45 @@
                 },
                 browse: function (row, index) {
                     _this.browseHref(row, index);
+                },
+                //删除
+                del: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    var selectton = this.$refs.selectData.getSelection();
+                    if (selectton.length == 0) {
+                        this.$Message.info("请选中要删除的数据!");
+                    }
+                    else {
+                        this.$Modal.confirm({
+                            title: '提示',
+                            content: '是否删除',
+                            onOk: function () {
+                                _.Ajax('Delete', {
+                                    DeleteData: selectton
+                                }, function (data) {
+                                    showList();
+                                    _self.$set(ve.screenParam, _this.screenParam);
+                                    _self.$Message.info("删除成功");
+                                });
+                            },
+                            onCancel: function () {
+                                this.id = "关闭"
+                            }
+                        });
+                    }
                 }
             }
         });
 
         function showList(callback) {
+            ve.searchParam = _this.searchParam;
             _.Search({
                 Service: _this.service,
                 Method: _this.method,
-                Data: _this.searchParam,
+                Data: ve.searchParam,
                 Success: function (data) {
-                    ve.screenParam.dataDef = data.rows;
+                    _this.screenParam.dataDef = data.rows;
                     callback && callback();
                 }
             })
@@ -111,9 +141,7 @@
     this.browseHref = function (row, index) {
 
     }
-    //删除对应的操作
-    this.deleteData = function (row, index) {
-    }
+
 
     this.colDefInit = function () {
         _this.colMul = [{
@@ -126,7 +154,7 @@
         _this.colOperate = [{
             title: '操作',
             key: 'action',
-            width: 130,
+            width: 80,
             align: 'center',
             fixed: 'right',
             render: function (h, params) {
@@ -142,28 +170,6 @@
                             }
                         },
                     }, '修改'),
-
-                    h('Button', {
-                        props: { type: 'error', size: 'small', disabled: false },
-
-                        style: { marginRight: '5px' },
-                        on: {
-                            click: function () {
-                                this.iview.Modal.confirm({
-                                    title: '提示',
-                                    content: '是否删除',
-                                    onOk: function () {
-                                        _this.deleteData(params.row, params.index, function (data) {
-                                            _this.screenParam.dataDef.splice(params.index, 1);
-                                        });
-                                    },
-                                    onCancel: function () {
-                                        this.id = "关闭"
-                                    }
-                                });
-                            }
-                        },
-                    }, '删除')
                     ]);
             }
         }]
