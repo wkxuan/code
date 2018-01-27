@@ -60,6 +60,8 @@ namespace z.ERP.Services
                     GetVerify(shpp).Require(a => a.BRANDID);
                 });
                 DbHelper.Save(SaveData);
+
+                Tran.Commit();
             }
             return SaveData.MERCHANTID;
         }
