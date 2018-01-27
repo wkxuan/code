@@ -348,7 +348,7 @@ namespace z.ERP.Services
                     code = a.CATEGORYCODE,
                     title = a.CATEGORYNAME,                    
                     expand = true
-                }).ToArray());
+                })?.ToArray());
         }
 
     }
