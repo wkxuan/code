@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using z.MVC5.Results;
 using z.ERP.Model;
+using z.ERP.Entities.Enum;
+using System.Data;
 
 namespace z.ERP.Web.Areas.SHGL.MERCHANT
 {
