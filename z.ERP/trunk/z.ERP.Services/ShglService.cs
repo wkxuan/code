@@ -55,7 +55,7 @@ namespace z.ERP.Services
             v.Verify();
             using (var Tran = DbHelper.BeginTransaction())
             {
-                SaveData.MERCHANT_BRAND.ForEach(shpp =>
+                SaveData.MERCHANT_BRAND?.ForEach(shpp =>
                 {
                     GetVerify(shpp).Require(a => a.BRANDID);
                 });
