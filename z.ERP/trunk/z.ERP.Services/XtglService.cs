@@ -340,7 +340,11 @@ namespace z.ERP.Services
 
         public virtual UIResult TreeCategoryList()
         {
-            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity());
+           // List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity());
+
+            string sql = $@"select * from CATEGORY order by CATEGORYCODE";
+            List<CATEGORYEntity> p = DbHelper.ExecuteObject<CATEGORYEntity>(sql);
+            
             return new UIResult(TreeModel.Create(p,
                 a => a.CATEGORYCODE,
                 a => new TreeModel()
