@@ -10,6 +10,7 @@ using z.DBHelper.Helper;
 using z.Extensions;
 using z.IOC.RealProxyIOC;
 using z.IOC.Simple;
+using z.LogFactory;
 using z.Verify;
 
 namespace z.ERP.Services
@@ -140,6 +141,14 @@ namespace z.ERP.Services
             get
             {
                 return LoginHelper.GetLogin();
+            }
+        }
+
+        protected LogWriter Log
+        {
+            get
+            {
+                return new LogWriter("Controller");
             }
         }
         #endregion

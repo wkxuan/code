@@ -11,7 +11,7 @@ using z.MVC5.Results;
 
 namespace z.ERP.Services
 {
-    public class WyglService:ServiceBase
+    public class WyglService : ServiceBase
     {
         internal WyglService()
         {
@@ -32,22 +32,22 @@ namespace z.ERP.Services
         public string SaveEnergyreGister(ENERGY_REGISTEREntity SaveData)
         {
             var v = GetVerify(SaveData);
-            
+
             SaveData.CHECK_DATE.ToDateTime();
             if (SaveData.BILLID.IsEmpty())
             {
                 SaveData.BILLID = NewINC("ENERGY_REGISTER");
             }
-            
+
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
             SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
-            
+
             v.Require(a => a.BILLID);
             v.Require(a => a.CHECK_DATE);
             v.Require(a => a.YEARMONTH);
-                        
+
             using (var tran = DbHelper.BeginTransaction())
             {
                 SaveData.ENERGY_REGISTER_ITEM.ForEach(sdb =>
@@ -62,20 +62,20 @@ namespace z.ERP.Services
             }
             return SaveData.BILLID;
         }
-        
+
 
         public object GetEnergyreGisterElement(ENERGY_REGISTEREntity Data)
         {
             string sql = $@"select * from ENERGY_REGISTER where 1=1 ";
             if (!Data.BILLID.IsEmpty())
-                sql += (" and BILLID= " + Data.BILLID);         
+                sql += (" and BILLID= " + Data.BILLID);
             DataTable dt = DbHelper.ExecuteTable(sql);
-            
+
             string sqlitem = $@"SELECT M.*,E.FILECODE,E.FILENAME,P.CODE,P.NAME " +
                 " FROM ENERGY_REGISTER_ITEM M,ENERGY_FILES E,SHOP P " +
                 " where M.FILEID = E.FILEID and M.SHOPID = P.SHOPID";
             if (!Data.BILLID.IsEmpty())
-                sqlitem += (" and BILLID= " + Data.BILLID);            
+                sqlitem += (" and BILLID= " + Data.BILLID);
             DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
 
             var result = new
@@ -84,7 +84,7 @@ namespace z.ERP.Services
                 item = new dynamic[] {
                    dtitem
                 }
-            };           
+            };
             return result;
         }
         public void DeleteEnergyreGister(List<ENERGY_REGISTEREntity> DeleteData)

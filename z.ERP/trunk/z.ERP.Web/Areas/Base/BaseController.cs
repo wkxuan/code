@@ -85,13 +85,13 @@ namespace z.ERP.Web.Areas.Base
                 return LoginHelper.GetLogin();
             }
         }
-        public ServiceBase service
+        protected ServiceBase service
         {
             get;
             set;
         }
 
-        public LogWriter Log
+        protected LogWriter Log
         {
             get
             {
