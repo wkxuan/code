@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.ERP.Model", "z.ERP.Model\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.LogFactory", "z.LogFactory\z.LogFactory.csproj", "{31E4C7DC-E998-4068-AEC8-0AFAC6BBE68D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.SuperLambda", "z.SuperLambda\z.SuperLambda.csproj", "{097CADAD-D8A2-4D5C-99CE-D20F869C9DC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{31E4C7DC-E998-4068-AEC8-0AFAC6BBE68D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31E4C7DC-E998-4068-AEC8-0AFAC6BBE68D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31E4C7DC-E998-4068-AEC8-0AFAC6BBE68D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{097CADAD-D8A2-4D5C-99CE-D20F869C9DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{097CADAD-D8A2-4D5C-99CE-D20F869C9DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{097CADAD-D8A2-4D5C-99CE-D20F869C9DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{097CADAD-D8A2-4D5C-99CE-D20F869C9DC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

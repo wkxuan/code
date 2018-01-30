@@ -38,8 +38,7 @@ namespace z.DBHelper.Helper
         /// </summary>
         protected DbCommand _dbCommand;
         /// <summary>
-        /// 起始事务
-        /// </summary>
+        [ThreadStatic]
         static bool isFirstTransaction = false;
         /// <summary>
         /// 事务对象

@@ -20,7 +20,7 @@ namespace z.Extensions
         /// 公用线程锁
         /// </summary>
         public static readonly object Locker = new object();
-        
+
         /// <summary>
         /// 序列化
         /// </summary>
@@ -362,6 +362,39 @@ namespace z.Extensions
             }
         }
 
+        /// <summary>
+        /// 获取去掉可空类型（Nullable）的类型.
+        /// </summary>
+        /// <param name="type">当前类型的实例对象.</param>
+        /// <returns>去掉可空类型（Nullable）的类型.</returns>
+        public static Type ToNotNullable(this Type type)
+        {
+            if (IsNullable(type))
+                return Nullable.GetUnderlyingType(type);
+            return type;
+        }
+
+        /// <summary>
+        /// 获取可空类型（Nullable）的类型.
+        /// </summary>
+        /// <param name="type">当前类型的实例对象.</param>
+        /// <returns>可空类型（Nullable）的类型.</returns>
+        public static Type ToNullable(this Type type)
+        {
+            if (!IsNullable(type) && type.IsValueType)
+                return typeof(Nullable<>).MakeGenericType(type);
+            return type;
+        }
+
+        /// <summary>
+        /// 判断是可空类型
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsNullable(this Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
         #endregion
     }
 }

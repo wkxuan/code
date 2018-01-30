@@ -9,6 +9,7 @@ using z.DbHelper.DbDomain;
 using z.DBHelper.Helper;
 using z.Extensions;
 using z.Extensiont;
+using z.SuperLambda;
 
 namespace z.Verify
 {
@@ -32,6 +33,18 @@ namespace z.Verify
         /// <param name="ErrorModel"></param>
         public void Require(Expression<Func<TEntity, string>> p, string ErrorModel = "字段[{0}]不能为空")
         {
+            //var aa = new
+            //{
+            //    a = 1,
+            //    b = 2,
+            //    c = new int[] { 1, 2, 3 }
+            //};
+            //aa.c.First();
+            //Expression<Func<dynamic, int>> exp = LambdaParser.Parse<Func<dynamic, int>>("a=>a.c.First()");
+            //exp.Compile()(aa);
+
+
+
             CommonString(p, StringExtension.IsNotEmpty, a => string.Format(ErrorModel, a));
         }
 
@@ -52,6 +65,7 @@ namespace z.Verify
         /// <param name="ErrorModel"></param>
         public void IsInt(Expression<Func<TEntity, string>> p, string ErrorModel = "字段[{0}]必须是整数")
         {
+
             CommonString(p, a => a.IsEmpty() || a.IsInt(), a => string.Format(ErrorModel, a));
         }
 
