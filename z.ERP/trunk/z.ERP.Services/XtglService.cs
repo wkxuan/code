@@ -340,14 +340,10 @@ namespace z.ERP.Services
 
         public virtual UIResult TreeCategoryList()
         {
-            List<CATEGORYEntity> p1 = DbHelper.SelectList(new CATEGORYEntity());
-            var ss = (from pp in p1 orderby pp.CATEGORYCODE select pp).Reverse<CATEGORYEntity>();
-            var ss1 = from pp in p1 orderby pp.CATEGORYCODE select pp;
-            var ss2 = (from pp in p1 orderby pp.CATEGORYCODE select pp).ToArray();
+            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();              
 
-            string sql = $@"select * from CATEGORY order by CATEGORYCODE";
-            List<CATEGORYEntity> p = DbHelper.ExecuteObject<CATEGORYEntity>(sql);
-
+            //string sql = $@"select * from CATEGORY order by CATEGORYCODE";
+            //List<CATEGORYEntity> p = DbHelper.ExecuteObject<CATEGORYEntity>(sql);
             return new UIResult(TreeModel.Create(p,
                 a => a.CATEGORYCODE,
                 a => new TreeModel()
