@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using z.Context;
 using z.DbHelper.DbDomain;
 using z.ERP.Services;
+using z.LogFactory;
 using z.Verify;
 
 namespace z.ERP.Web.Areas.Base
@@ -88,6 +89,14 @@ namespace z.ERP.Web.Areas.Base
         {
             get;
             set;
+        }
+
+        public LogWriter Log
+        {
+            get
+            {
+                return new LogWriter("Controller");
+            }
         }
     }
 }

@@ -473,6 +473,7 @@ namespace z.DBHelper.Helper
             _dbCommand.Parameters.Clear();
             _dbCommand.Parameters.AddRange(dbprams);
             _dbCommand.CommandText = string.Format(_delete, tablename, where);
+            _DeleteChildren(info);
             try
             {
                 res = _dbCommand.ExecuteNonQuery();
@@ -481,7 +482,6 @@ namespace z.DBHelper.Helper
             {
                 throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
             }
-            _DeleteChildren(info);
             return res;
         }
 

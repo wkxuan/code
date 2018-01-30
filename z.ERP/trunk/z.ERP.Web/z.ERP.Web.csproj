@@ -361,6 +361,10 @@
       <Project>{34b3dd30-91d0-4e47-ab99-9ebd4bb51747}</Project>
       <Name>z.IOC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.LogFactory\z.LogFactory.csproj">
+      <Project>{31e4c7dc-e998-4068-aec8-0afac6bbe68d}</Project>
+      <Name>z.LogFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.MVC5\z.MVC5.csproj">
       <Project>{A8E30B43-EF68-4D4A-AF11-2ECBFB8B227F}</Project>
       <Name>z.MVC5</Name>
