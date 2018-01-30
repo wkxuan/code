@@ -91,29 +91,36 @@ namespace z.ERP.Model.Vue
 
         public static string GetNewKey<TEntity>(List<TEntity> infos, Expression<Func<TEntity, string>> code, string key, string Tar) where TEntity : EntityBase
         {
-            if (Tar.ToLower() == "tj")
-            {
-                List<string> keys = infos.Where(info => code.Compile()(info).LeftLike(key.Substring(0, key.Length - 2)) && code.Compile()(info).Length == key.Length).Select(info => code.Compile()(info)).ToList();
-                if (keys.IsEmpty())
-                    return "01";
-                else
-                {
-                    return _NewKey(keys);
-                }
-            }
-            else if (Tar.ToLower() == "xj")
-            {
-                List<string> keys = infos.Where(info => code.Compile()(info).LeftLike(key) && code.Compile()(info).Length == key.Length + 2).Select(info => code.Compile()(info)).ToList();
-                if (keys.IsEmpty())
-                    return key + "01";
-                else
-                {
-                    return _NewKey(keys);
-                }
-            }
-            else
+            if (Tar == null)
             {
                 return key;
+            }
+            else
+            {            
+                if (Tar.ToLower() == "tj")
+                {
+                    List<string> keys = infos.Where(info => code.Compile()(info).LeftLike(key.Substring(0, key.Length - 2)) && code.Compile()(info).Length == key.Length).Select(info => code.Compile()(info)).ToList();
+                    if (keys.IsEmpty())
+                        return "01";
+                    else
+                    {
+                        return _NewKey(keys);
+                    }
+                }
+                else if (Tar.ToLower() == "xj")
+                {
+                    List<string> keys = infos.Where(info => code.Compile()(info).LeftLike(key) && code.Compile()(info).Length == key.Length + 2).Select(info => code.Compile()(info)).ToList();
+                    if (keys.IsEmpty())
+                        return key + "01";
+                    else
+                    {
+                        return _NewKey(keys);
+                    }
+                }
+                else
+                {
+                    return key;
+                }
             }
         }
 

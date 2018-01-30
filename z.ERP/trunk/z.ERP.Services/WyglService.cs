@@ -47,15 +47,19 @@ namespace z.ERP.Services
             v.Require(a => a.BILLID);
             v.Require(a => a.CHECK_DATE);
             v.Require(a => a.YEARMONTH);
-            v.Verify();
-
-            SaveData.ENERGY_REGISTER_ITEM.ForEach(sdb =>
+                        
+            using (var tran = DbHelper.BeginTransaction())
             {
-                GetVerify(sdb).Require(a => a.FILEID);
-                GetVerify(sdb).Require(a => a.AMOUNT);
-            });
-            v.Verify();
-            DbHelper.Save(SaveData);
+                SaveData.ENERGY_REGISTER_ITEM.ForEach(sdb =>
+                {
+                    GetVerify(sdb).Require(a => a.FILEID);
+                    GetVerify(sdb).Require(a => a.AMOUNT);
+                });
+                v.Verify();
+                DbHelper.Save(SaveData);
+
+                tran.Commit();
+            }
             return SaveData.BILLID;
         }
         
@@ -66,8 +70,6 @@ namespace z.ERP.Services
             if (!Data.BILLID.IsEmpty())
                 sql += (" and BILLID= " + Data.BILLID);         
             DataTable dt = DbHelper.ExecuteTable(sql);
-
-
             
             string sqlitem = $@"SELECT M.*,E.FILECODE,E.FILENAME,P.CODE,P.NAME " +
                 " FROM ENERGY_REGISTER_ITEM M,ENERGY_FILES E,SHOP P " +
@@ -85,7 +87,29 @@ namespace z.ERP.Services
             };           
             return result;
         }
+        public void DeleteEnergyreGister(List<ENERGY_REGISTEREntity> DeleteData)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var mer in DeleteData)
+                {
+                    var v = GetVerify(mer);
+                    //校验
+                    DbHelper.Delete(mer);
+                }
+                Tran.Commit();
+            }
+            //using (var tran = DbHelper.BeginTransaction())
+            //{
+            //    foreach( var en in DeleteData)
+            //    {
+            //        var v = GetVerify(en);
 
+            //        DbHelper.Delete(en);
+            //    }
+            //    tran.Commit();
+            //}
+        }
 
     }
 }

@@ -123,7 +123,8 @@
                 //oldCurrentRow上一次选中的数据
                 showlist: function (currentRow, oldCurrentRow) {
                     var p = currentRow && currentRow[0] && currentRow[0];
-                    this.Key = p.code;
+                    //this.Key = p.code;
+                    ve._key = p.code;
                     //if (p.children.length == 0)
                     showone(p.code);
                 },
@@ -166,7 +167,7 @@
         function save(callback) {
             _.Ajax('Save', {
                 Tar: ve.AddTar,
-                Key: ve.Key,
+                Key: ve._key,
                 DefineSave: ve.dataParam
             }, function (data) {
                 callback && callback(data);

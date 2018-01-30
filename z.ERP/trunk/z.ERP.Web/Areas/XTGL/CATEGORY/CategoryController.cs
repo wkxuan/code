@@ -30,5 +30,12 @@ namespace z.ERP.Web.Areas.XTGL.CATEGORY
             CommonSave(DefineSave);
             return newkey;
         }
+        public void Delete(CATEGORYEntity DefineDelete)
+        {
+            var v = GetVerify(DefineDelete);
+            v.Require(a => a.CATEGORYID);
+            v.Verify();
+            CommenDelete(DefineDelete);
+        }
     }
 }

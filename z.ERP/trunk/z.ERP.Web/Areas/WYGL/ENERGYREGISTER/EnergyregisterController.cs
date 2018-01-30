@@ -38,5 +38,10 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
         {
             return new UIResult(service.WyglService.GetEnergyreGisterElement(Data));
         }
+
+        public void Delete(List<ENERGY_REGISTEREntity> DeleteData)
+        {
+            service.WyglService.DeleteEnergyreGister(DeleteData);
+        }
     }
 }

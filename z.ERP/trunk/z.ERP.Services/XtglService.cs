@@ -323,7 +323,7 @@ namespace z.ERP.Services
             v.IsNumber(a => a.ID);
             v.IsNumber(a => a.CATEGORYID);
             v.IsUnique(a => a.ID);
-            v.IsUnique(a => a.NAME);
+            v.IsUnique(a => a.NAME);           
             v.Verify();
             DbHelper.Save(SaveData);
             return SaveData.ID;
@@ -340,7 +340,10 @@ namespace z.ERP.Services
 
         public virtual UIResult TreeCategoryList()
         {
-            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity());
+            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();              
+
+            //string sql = $@"select * from CATEGORY order by CATEGORYCODE";
+            //List<CATEGORYEntity> p = DbHelper.ExecuteObject<CATEGORYEntity>(sql);
             return new UIResult(TreeModel.Create(p,
                 a => a.CATEGORYCODE,
                 a => new TreeModel()
