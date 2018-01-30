@@ -16,6 +16,11 @@ namespace z.ERP.Web.Areas.Share.Render
             }
         }
 
+        public string VueDom
+        {
+            get;
+            set;
+        }
 
 
         public string Title

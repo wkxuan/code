@@ -20,7 +20,7 @@
 
     //vue操作
     this.vue = function VueOperate() {
-        var ve = new Vue({
+        var options = {
             el: '#def_Main',
             data: {
                 //dataParam 数据库交互需要传输的内容
@@ -142,7 +142,9 @@
                     showlist();
                 }
             }
-        });
+        };
+        _this.otherMethods && $.extend(options.methods, _this.otherMethods);
+        var ve = new Vue(options);
 
         function showlist(callback) {
             _.Search({

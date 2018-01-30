@@ -55,16 +55,18 @@ namespace z.ERP.Services
             v.Verify();
             using (var Tran = DbHelper.BeginTransaction())
             {
-                SaveData.MERCHANT_BRAND.ForEach(shpp =>
+                SaveData.MERCHANT_BRAND?.ForEach(shpp =>
                 {
                     GetVerify(shpp).Require(a => a.BRANDID);
                 });
+            
                 DbHelper.Save(SaveData);
 
                 Tran.Commit();
             }
             return SaveData.MERCHANTID;
         }
+        
 
         public object GetMerchantElement(MERCHANTEntity Data)
         {

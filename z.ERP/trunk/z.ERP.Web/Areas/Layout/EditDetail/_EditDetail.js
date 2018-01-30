@@ -16,7 +16,7 @@
     this.clearKey = function () { }
 
     this.vue = function VueOperate() {
-        var ve = new Vue({
+        var options = {
             el: '#EditDetail',
             data: {
                 dataParam: _this.dataParam,
@@ -49,7 +49,9 @@
                     })
                 },
             }
-        });
+        };
+        _this.otherMethods && $.extend(options.methods, _this.otherMethods);
+        var ve = new Vue(options);
         function save(callback) {
             _.Ajax('Save', {
                 SaveData: ve.dataParam

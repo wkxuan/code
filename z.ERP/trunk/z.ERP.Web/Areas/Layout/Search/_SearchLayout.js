@@ -20,7 +20,7 @@
     }
 
     this.vue = function VueOperate() {
-        var ve = new Vue({
+        var options = {
             el: '#search',
             data: function () {
                 return {
@@ -112,8 +112,9 @@
                     }
                 }
             }
-        });
-
+        }
+        _this.otherMethods && $.extend(options.methods, _this.otherMethods);
+        var ve = new Vue(options);
         function showList(callback) {
             ve.searchParam = _this.searchParam;
             _.Search({
