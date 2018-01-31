@@ -26,6 +26,7 @@ namespace z.ERP.Services
             sql += " order by BILLID desc";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
 
