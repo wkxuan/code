@@ -111,6 +111,23 @@ namespace z.ERP.Services
             //    tran.Commit();
             //}
         }
+        public object GetRegister(ENERGY_FILESEntity Data)
+        {
+            string sql = "SELECT S.FILENAME,S.SHOPID,P.CODE SHOPDM,S.VALUE_LAST,S.PRICE FROM ENERGY_FILES S,SHOP P " +
+                "  where S.SHOPID = P.SHOPID ";
+            if (!Data.FILEID.IsEmpty())
+                sql += (" and S.FILEID= " + Data.FILEID);
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            
+
+            return new
+            {
+                dt
+            };
+        }
+
 
     }
 }
