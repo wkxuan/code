@@ -48,5 +48,9 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
         {
             return new UIResult(service.WyglService.GetRegister(Data));
         }
+        public void ExecData(ENERGY_REGISTEREntity Data)
+        {
+            service.WyglService.ExecData(Data);
+        }
     }
 }

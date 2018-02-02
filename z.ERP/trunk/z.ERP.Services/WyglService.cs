@@ -128,6 +128,18 @@ namespace z.ERP.Services
             };
         }
 
-
+        public void ExecData(ENERGY_REGISTEREntity Data)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                //string sql = "update ENERGY_REGISTER set VERIFY=:VERIFY,VERIFY_NAME=:VERIFY_NAME,VERIFY_TIME=:VERIFY_TIME" +
+                //    " where BILLID=:BILLID";
+                Data.VERIFY = employee.Id;
+                Data.VERIFY_NAME = employee.Name;
+                Data.VERIFY_TIME = DateTime.Now.ToString();
+                DbHelper.Update(Data);
+                Tran.Commit();
+            }
+        }
     }
 }
