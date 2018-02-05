@@ -4,8 +4,6 @@
 <modal id="win_@Model.VueDom" v-model="@Model.vModel"
        title="@Model.Title"
        @@on-ok="ok">
-    Id:<input id="ID" />
-    名称:<input id="NAME" />
     <row>
         <i-col span="2" class="RowTitle">
             ID
@@ -16,7 +14,7 @@
                 RenderControl(new TextBoxRender()
                 {
                     Id = "testid",
-                    vModel = "NAME"
+                    vModel = "windowParam.MERCHANTID"
                 });
             }
         </i-col>
@@ -29,14 +27,18 @@
                 RenderControl(new TextBoxRender()
                 {
                     Id = "testname",
-                    vModel = "NAME"
+                    vModel = "windowParam.NAME"
                 });
             }
         </i-col>
     </row>
+    @*<row>
+        <i-table size="small" :border :columns="windowParam.payColDef" :data="windowParam.payDataDef" height="300"></i-table>
+    </row>*@
 </modal>
 
-<script type="text/javascript">
+
+@*<script type="text/javascript">
     window['@Model.VueDom'].otherMethods={
         ok:function(){
             window['@Model.VueDom'].@Model.ResVModel1 = $('#ID').val();
@@ -44,4 +46,4 @@
             window['@Model.VueDom'].@Model.ResVModel3 = $('#testname').val();
         }
     };
-</script>
+</script>*@
