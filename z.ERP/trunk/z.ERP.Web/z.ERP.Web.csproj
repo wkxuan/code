@@ -161,6 +161,7 @@
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
+    <Compile Include="Areas\Share\Render\MerchantWindowRender.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
@@ -330,6 +331,7 @@
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.cshtml" />
     <Content Include="Areas\Share\CommonWindow.cshtml" />
     <Content Include="Areas\XTGL\CATEGORY\Category.cshtml" />
+    <Content Include="Areas\Share\MerchantWindow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

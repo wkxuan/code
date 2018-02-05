@@ -26,6 +26,7 @@
                 return {
                     screenParam: _this.screenParam,
                     searchParam: _this.searchParam,
+                    windowParam: _this.windowParam,
                     panelName: 'condition',
                     disabled: _this.enabled(true),
                 }
@@ -179,6 +180,7 @@
     this.vueInit = function () {
         _this.searchParam = {};
         _this.screenParam = {};
+        _this.windowParam = {};
         _this.service = "";
         _this.method = "";
     };

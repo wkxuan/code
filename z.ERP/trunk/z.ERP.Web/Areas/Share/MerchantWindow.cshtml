@@ -1,0 +1,47 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<MerchantWindowRender>
+
+<modal id="win_@Model.VueDom" v-model="@Model.vModel"
+       title="@Model.Title"
+       @@on-ok="ok">
+    Id:<input id="ID" />
+    名称:<input id="NAME" />
+    <row>
+        <i-col span="2" class="RowTitle">
+            ID
+        </i-col>
+        <i-col span="6">
+
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    Id = "testid",
+                    vModel = "NAME"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    Id = "testname",
+                    vModel = "NAME"
+                });
+            }
+        </i-col>
+    </row>
+</modal>
+
+<script type="text/javascript">
+    window['@Model.VueDom'].otherMethods={
+        ok:function(){
+            window['@Model.VueDom'].@Model.ResVModel1 = $('#ID').val();
+            window['@Model.VueDom'].@Model.ResVModel2 = $('#NAME').val();
+            window['@Model.VueDom'].@Model.ResVModel3 = $('#testname').val();
+        }
+    };
+</script>
