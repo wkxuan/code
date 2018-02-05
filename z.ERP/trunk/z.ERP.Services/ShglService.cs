@@ -92,5 +92,19 @@ namespace z.ERP.Services
             };
             return result;
         }
+
+
+        public object GetBrand(BRANDEntity Data)
+        {
+            string sql = " SELECT  NAME FROM BRAND " +
+                "  WHERE  1 = 1 ";
+            if (!Data.ID.IsEmpty())
+                sql += (" and ID= " + Data.ID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt
+            };
+        }
     }
 }

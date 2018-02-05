@@ -92,7 +92,7 @@
             <p slot="content">
                  @*结果显示*@
                     <i-table :highlight-row="true" size="small" :border="true" height="500"
-                             :columns="screenParam.colDef" :data="screenParam.dataDef"
+                             :columns="screenParam.colDef" :data="screenParam1.dataDef"
                              v-on:on-row-dblclick="browse"  ref="selectData"></i-table>
 
                 @RenderSection("resultOthers", false)
