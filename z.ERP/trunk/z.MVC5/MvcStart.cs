@@ -21,6 +21,7 @@ namespace z.MVC5
         {
             //AreaRegistration.RegisterAllAreas();
 
+            GlobalFilters.Filters.Add(new UserAuthorizeAttribute());
             GlobalFilters.Filters.Add(new ActionProcessAttribute());
             GlobalFilters.Filters.Add(new ExceptionLogAttribute()
             {

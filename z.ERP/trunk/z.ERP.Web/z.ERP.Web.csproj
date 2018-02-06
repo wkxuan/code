@@ -264,6 +264,7 @@
     <Content Include="Areas\XTGL\test\List.cshtml" />
     <Content Include="Areas\Base\Web.config" />
     <Content Include="Areas\Base\Error.cshtml" />
+    <Content Include="Areas\Base\NoPermission.cshtml" />
     <None Include="Areas\Base\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
