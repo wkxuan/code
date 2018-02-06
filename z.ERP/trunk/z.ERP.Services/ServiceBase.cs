@@ -26,14 +26,21 @@ namespace z.ERP.Services
             ioc = new SimpleIOC(mrs);
         }
 
+        //protected DbHelperBase DbHelper
+        //{
+        //    get
+        //    {
+        //        return new OracleDbHelper(ConfigExtension.GetConfig("connection"));
+        //    }
+        //}
+
         protected DbHelperBase DbHelper
         {
             get
             {
-                return new OracleDbHelper(ConfigExtension.GetConfig("connection"));
+                return _db;
             }
         }
-
         static readonly DbHelperBase _db = new OracleDbHelper(ConfigExtension.GetConfig("connection"));
 
         #region Service  
