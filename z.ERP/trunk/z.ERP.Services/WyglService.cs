@@ -26,6 +26,7 @@ namespace z.ERP.Services
             sql += " order by BILLID desc";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
 
@@ -110,6 +111,35 @@ namespace z.ERP.Services
             //    tran.Commit();
             //}
         }
+        public object GetRegister(ENERGY_FILESEntity Data)
+        {
+            string sql = "SELECT S.FILENAME,S.SHOPID,P.CODE SHOPDM,S.VALUE_LAST,S.PRICE FROM ENERGY_FILES S,SHOP P " +
+                "  where S.SHOPID = P.SHOPID ";
+            if (!Data.FILEID.IsEmpty())
+                sql += (" and S.FILEID= " + Data.FILEID);
 
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            
+
+            return new
+            {
+                dt
+            };
+        }
+
+        public void ExecData(ENERGY_REGISTEREntity Data)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                //string sql = "update ENERGY_REGISTER set VERIFY=:VERIFY,VERIFY_NAME=:VERIFY_NAME,VERIFY_TIME=:VERIFY_TIME" +
+                //    " where BILLID=:BILLID";
+                Data.VERIFY = employee.Id;
+                Data.VERIFY_NAME = employee.Name;
+                Data.VERIFY_TIME = DateTime.Now.ToString();
+                DbHelper.Update(Data);
+                Tran.Commit();
+            }
+        }
     }
 }

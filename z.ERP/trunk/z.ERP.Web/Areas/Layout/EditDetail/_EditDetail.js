@@ -22,6 +22,7 @@
                 dataParam: _this.dataParam,
                 windowParam: _this.windowParam,
                 screenParam: _this.screenParam,
+                windowParam: _this.windowParam,
                 panelName: 'base',
                 branchid: _this.branchid,
                 others: _this.others,
@@ -69,6 +70,7 @@
     this.vueInit = function () {
         _this.dataParam = {};
         _this.screenParam = {};
+        _this.windowParam = {};
         _this.service = "";
         _this.method = "";
         _this.branchid = true;

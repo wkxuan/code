@@ -22,14 +22,18 @@
     this.vue = function VueOperate() {
         var options = {
             el: '#search',
-            data: function () {
-                return {
+            data: {
                     screenParam: _this.screenParam,
                     searchParam: _this.searchParam,
+                    windowParam: _this.windowParam,
                     panelName: 'condition',
                     disabled: _this.enabled(true),
-                }
+
+                    screenParam1: {
+                        dataDef: []
+                    }
             },
+
             mounted: function () {
             },
             methods: {
@@ -41,10 +45,10 @@
                     if (!_this.IsValidSrch(mess))
                         return;
                     showList(function (data) {
-                        ve.screenParam.dataDef = _this.screenParam.dataDef;
                         if (ve.screenParam.dataDef.length > 0) {
                             ve.panelName = 'result';
-                            mess.$set(ve.screenParam, _this.screenParam);
+                            ve.screenParam.dataDef = _this.screenParam.dataDef;
+                            ve.screenParam1.dataDef = ve.screenParam.dataDef;
                         }
                         else {
                             mess.$Message.info("没有满足当前查询条件的结果!");
@@ -99,10 +103,16 @@
                             onOk: function () {
                                 _.Ajax('Delete', {
                                     DeleteData: selectton
-                                }, function (data) {
-                                    showList();
-                                    _self.$set(ve.screenParam, _this.screenParam);
-                                    _self.$Message.info("删除成功");
+                                }, function (data){ 
+
+                                   // this.$set(this.div_show, "legend", ['a1', 'a2', 'a3']);
+                                    //或者 Vue.set(this.div_show,"legend",['a1', 'a2', 'a3']);
+
+                                    showList(function (data){ 
+                                       // ve.$set(ve.screenParam1, "dataDef", []);
+                                        ve.$set(ve.screenParam1, "dataDef", _this.screenParam.dataDef);
+                                        _self.$Message.info("删除成功");
+                                    });
                                 });
                             },
                             onCancel: function () {
@@ -179,6 +189,7 @@
     this.vueInit = function () {
         _this.searchParam = {};
         _this.screenParam = {};
+        _this.windowParam = {};
         _this.service = "";
         _this.method = "";
     };

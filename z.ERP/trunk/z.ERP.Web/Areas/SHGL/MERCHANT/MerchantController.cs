@@ -38,7 +38,6 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             service.ShglService.DeleteMerchant(DeleteData);
         }
 
-
         public string Save(MERCHANTEntity SaveData)
         {
             return service.ShglService.SaveMerchant(SaveData);
@@ -47,6 +46,12 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         public UIResult SearchMerchant(MERCHANTEntity Data)
         {
             return new UIResult(service.ShglService.GetMerchantElement(Data));
+        }
+
+
+        public UIResult GetBrand(BRANDEntity Data)
+        {
+            return new UIResult(service.ShglService.GetBrand(Data));
         }
     }
 }

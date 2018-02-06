@@ -7,8 +7,13 @@
         { title: "登记时间", key: "REPORTER_TIME", width: 100 },
         { title: "审核人", key: "VERIFY_NAME", width: 100 },
         { title: "审核时间", key: "VERIFY_TIME", width: 100 },
-        { title: "状态", key: "STATUS", width: 100 },
+        { title: "状态", key: "STATUSMC", width: 100 },
     ]
+
+    search.windowParam = {
+        terst: false
+    }
+
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "WyglService";
     search.method = "GetEnergyreGister";
