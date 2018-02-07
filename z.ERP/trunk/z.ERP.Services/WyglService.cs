@@ -134,6 +134,12 @@ namespace z.ERP.Services
             {
                 //string sql = "update ENERGY_REGISTER set VERIFY=:VERIFY,VERIFY_NAME=:VERIFY_NAME,VERIFY_TIME=:VERIFY_TIME" +
                 //    " where BILLID=:BILLID";
+                //string sql = " update ENERGY_REGISTER set" +
+                //    " VERIFY = "+ employee.Id +
+                //    " VERIFY_NAME = " + employee.Name +
+                //    " VERIFY_TIME =" + DateTime.Now.ToString() +
+                //    " where BILLID = " + Data.BILLID.ToString();
+                //DbHelper.ExecuteNonQuery(sql);
                 Data.VERIFY = employee.Id;
                 Data.VERIFY_NAME = employee.Name;
                 Data.VERIFY_TIME = DateTime.Now.ToString();
