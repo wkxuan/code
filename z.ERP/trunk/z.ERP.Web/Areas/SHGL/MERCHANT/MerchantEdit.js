@@ -26,10 +26,9 @@ editDetail.beforeVue = function () {
                         _.Ajax('GetBrand', {
                             Data: { ID: event.target.value }
                         }, function (data) {
-                            editDetail.dataParam.MERCHANT_BRAND[params.index].NAME = data.dt[0].NAME;
-                            //_self.Vue.set(editDetail.dataParam, editDetail.dataParam);
-                            // _self.Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'NAME', data.dt[0].NAME);
-                            //editDetail.screenParam.addCol();
+                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'NAME', data.dt[0].NAME);
+                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYCODE', data.dt[0].CATEGORYCODE);
+                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYNAME', data.dt[0].CATEGORYNAME);
                         });
                     }
                 },
@@ -37,7 +36,7 @@ editDetail.beforeVue = function () {
         },
     },
     { title: '品牌名称', key: 'NAME', width: 200 },
-    { title: '业态代码', key: 'CATEGORYID', width: 200 },
+    { title: '业态代码', key: 'CATEGORYCODE', width: 200 },
     { title: '业态名称', key: 'CATEGORYNAME', width: 200 },
 
     {

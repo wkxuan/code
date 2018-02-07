@@ -75,9 +75,9 @@ namespace z.ERP.Services
                 sql += (" AND MERCHANTID= " + Data.MERCHANTID);
             DataTable merchant = DbHelper.ExecuteTable(sql);
 
-            string sqlitem = $@"SELECT M.BRANDID,C.NAME " +
-                " FROM MERCHANT_BRAND M,MERCHANT E,BRAND C " +
-                " where M.MERCHANTID = E.MERCHANTID AND M.BRANDID=C.ID";
+            string sqlitem = $@"SELECT M.BRANDID,C.NAME,D.CATEGORYCODE,D.CATEGORYNAME " +
+                " FROM MERCHANT_BRAND M,MERCHANT E,BRAND C,CATEGORY D " +
+                " where M.MERCHANTID = E.MERCHANTID AND M.BRANDID=C.ID AND  C.CATEGORYID = D.CATEGORYID ";
             if (!Data.MERCHANTID.IsEmpty())
                 sqlitem += (" and E.MERCHANTID= " + Data.MERCHANTID);
             DataTable merchantBrand = DbHelper.ExecuteTable(sqlitem);
@@ -95,10 +95,10 @@ namespace z.ERP.Services
 
         public object GetBrand(BRANDEntity Data)
         {
-            string sql = " SELECT  NAME FROM BRAND " +
-                "  WHERE  1 = 1 ";
+            string sql = " SELECT  A.NAME,B.CATEGORYCODE,B.CATEGORYNAME FROM BRAND A,CATEGORY B " +
+                "  WHERE  A.CATEGORYID = B.CATEGORYID ";
             if (!Data.ID.IsEmpty())
-                sql += (" and ID= " + Data.ID);
+                sql += (" and A.ID= " + Data.ID);
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new
             {

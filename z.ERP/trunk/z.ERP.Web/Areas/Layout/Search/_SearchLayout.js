@@ -28,8 +28,9 @@
                     windowParam: _this.windowParam,
                     panelName: 'condition',
                     disabled: _this.enabled(true),
-
-                    screenParam1: {
+                    
+                    //鉴于功能已经开始做了,故而将table的数据绑定的对象重新命名一个对象，进而刷新使用
+                    screenParamData: {
                         dataDef: []
                     }
             },
@@ -44,11 +45,11 @@
 
                     if (!_this.IsValidSrch(mess))
                         return;
+                    Vue.set(ve.screenParamData, "dataDef", []);
                     showList(function (data) {
                         if (ve.screenParam.dataDef.length > 0) {
                             ve.panelName = 'result';
-                            ve.screenParam.dataDef = _this.screenParam.dataDef;
-                            ve.screenParam1.dataDef = ve.screenParam.dataDef;
+                            Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
                         }
                         else {
                             mess.$Message.info("没有满足当前查询条件的结果!");
@@ -104,13 +105,9 @@
                                 _.Ajax('Delete', {
                                     DeleteData: selectton
                                 }, function (data){ 
-
-                                   // this.$set(this.div_show, "legend", ['a1', 'a2', 'a3']);
-                                    //或者 Vue.set(this.div_show,"legend",['a1', 'a2', 'a3']);
-
                                     showList(function (data){ 
-                                       // ve.$set(ve.screenParam1, "dataDef", []);
-                                        ve.$set(ve.screenParam1, "dataDef", _this.screenParam.dataDef);
+                                        // ve.$set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
+                                        Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
                                         _self.$Message.info("删除成功");
                                     });
                                 });
