@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using z.Extensions;
 using System;
 using z.ERP.Entities.Enum;
+using z.Exceptions;
+
 
 namespace z.ERP.Services
 {
@@ -33,9 +35,8 @@ namespace z.ERP.Services
             {
                 MERCHANTEntity Data = DbHelper.Select(mer);
                 if (Data.STATUS == ((int)普通单据状态.审核).ToString()) {
-                    throw new Exception("已经审核不能删除!");
+                    throw new LogicException("已经审核不能删除!");
                 }
-
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
