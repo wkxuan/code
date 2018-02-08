@@ -29,17 +29,24 @@ namespace z.ERP.Services
 
         public void DeleteMerchant(List<MERCHANTEntity> DeleteData)
         {
+            foreach (var mer in DeleteData)
+            {
+                MERCHANTEntity Data = DbHelper.Select(mer);
+                if (Data.STATUS == "2") {
+                    throw new Exception("此校验只对字段属性生效");
+                }
+
+            }
             using (var Tran = DbHelper.BeginTransaction())
             {
                 foreach (var mer in DeleteData)
                 {
-                    var v = GetVerify(mer);
-                    //校验
                     DbHelper.Delete(mer);
                 }
                 Tran.Commit();
             }
         }
+
 
         public string SaveMerchant(MERCHANTEntity SaveData)
         {
@@ -92,6 +99,22 @@ namespace z.ERP.Services
                 }
             };
             return result;
+        }
+
+
+        public string ExecData(MERCHANTEntity Data)
+        {
+            MERCHANTEntity mer = DbHelper.Select(Data);
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                mer.VERIFY = employee.Id;
+                mer.VERIFY_NAME = employee.Name;
+                mer.VERIFY_TIME = DateTime.Now.ToString();
+                mer.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(mer);
+                Tran.Commit();
+            }
+            return mer.MERCHANTID;
         }
 
 

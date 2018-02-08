@@ -84,6 +84,7 @@ editDetail.showOne = function (data, callback) {
         Data: { MERCHANTID: data }
     }, function (data) {
         editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
+        editDetail.dataParam.MERCHANTID = data.merchant[0].MERCHANTID;
         editDetail.dataParam.NAME = data.merchant[0].NAME;
         editDetail.dataParam.SH = data.merchant[0].SH;
         editDetail.dataParam.BANK = data.merchant[0].BANK;

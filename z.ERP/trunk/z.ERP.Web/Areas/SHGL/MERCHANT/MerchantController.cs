@@ -53,5 +53,10 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         {
             return new UIResult(service.ShglService.GetBrand(Data));
         }
+
+        public void ExecData(MERCHANTEntity Data)
+        {
+            service.ShglService.ExecData(Data);
+        }
     }
 }
