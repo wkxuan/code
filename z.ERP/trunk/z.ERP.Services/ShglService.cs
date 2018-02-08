@@ -32,8 +32,8 @@ namespace z.ERP.Services
             foreach (var mer in DeleteData)
             {
                 MERCHANTEntity Data = DbHelper.Select(mer);
-                if (Data.STATUS == "2") {
-                    throw new Exception("此校验只对字段属性生效");
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString()) {
+                    throw new Exception("已经审核不能删除!");
                 }
 
             }
