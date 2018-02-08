@@ -1,6 +1,4 @@
-﻿//_self.iview.Message.info('请先确定年度!');
-
-editDetail.beforeVue = function () {
+﻿editDetail.beforeVue = function () {
 
     editDetail.others = false;
     editDetail.branchid = false;
@@ -19,7 +17,8 @@ editDetail.beforeVue = function () {
                     value: params.row.BRANDID
                 },
                 on: {
-                    'on-blur': function (event) {
+                    // 'on-blur': 焦点离开 'on-enter' 回车事件
+                    'on-enter': function (event) {
                         _self = this;
                         editDetail.dataParam.MERCHANT_BRAND[params.index].BRANDID = event.target.value;
 
@@ -61,7 +60,8 @@ editDetail.beforeVue = function () {
         }
     }
     ];
-
+    
+    //相当于初始化
     if (!editDetail.dataParam.MERCHANT_BRAND) {
         editDetail.dataParam.MERCHANT_BRAND = [{
             BRANDID: "",
@@ -71,6 +71,7 @@ editDetail.beforeVue = function () {
         }]
     }
 
+    //新增加一行
     editDetail.screenParam.addCol = function () {
         var temp = editDetail.dataParam.MERCHANT_BRAND || [];
         temp.push({});
