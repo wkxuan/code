@@ -12,7 +12,7 @@
 
 @section btn{
     @{
-        if (Model.STATUS == "1")
+        if (@Model.STATUS == "1")
         {
             RenderControl(new ButtonRender()
             {
@@ -43,10 +43,13 @@
 
 
     <row>
-       <i-col span="2" class="RowTitle">品牌名称</i-col>
-       @*<i-col span="4" class="RowText"> @Model.BANK_NAME   </i-col>*@
-       <i-col span="2" class="RowTitle">业态名称</i-col>
-       @*<i-col span="4" class="RowText"> @Model.ADRESS   </i-col>*@
+        @{
+            MERCHANTEntity mer = ViewBag.Data as MERCHANTEntity;
+            foreach (var Brand in mer.MERCHANT_BRAND)
+            {
+                <i-col span="4" class="RowTitle">品牌名称(@Brand.BRANDID)</i-col>
+            }
+        }
     </row>
 }
 
@@ -65,12 +68,8 @@
                     _.Ajax('ExecData', {
                         Data: {MERCHANTID: @Model.MERCHANTID},
                     }, function (data) {
-                        _.Ajax('SearchMerchant', {
-                            Data: { MERCHANTID: @Model.MERCHANTID }
-                        }, function (data) {
-                            @Model = data;
-                            _self.$Message.info("审核成功");
-                        });
+                        _self.$Message.info("审核成功");
+                        window.location.reload(); 
                     });
                 }
             }

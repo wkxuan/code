@@ -22,7 +22,10 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         public ActionResult Detail(string Id)
         {
             ViewBag.Title = "商户信息浏览";
-            MERCHANTEntity entity = Select(new MERCHANTEntity(Id));
+
+            var  entity =  service.ShglService.GetMerchantElement(new MERCHANTEntity(Id)) ;
+           // MERCHANTEntity entity = Select(new MERCHANTEntity(Id));
+            ViewBag.Data = entity;
             return View(entity);
         }
 
