@@ -12,16 +12,13 @@
 
 @section btn{
     @{
-        if (Model.STATUS == "0")
+        if (@Model.STATUS == "1")
         {
             RenderControl(new ButtonRender()
             {
-                Text = "审核"
+                Text = "审核",
+                Click = "exec",
             });
-        }
-        else
-        {
-
         }
     }
 }
@@ -43,4 +40,39 @@
         <i-col span="2" class="RowTitle">状态</i-col>
         <i-col span="4" class="RowText"> @(Model.STATUS.ToEnum<普通单据状态>().ToLocalString()) </i-col>
     </row>
+
+
+    <row>
+        @{
+            MERCHANTEntity mer = ViewBag.Data as MERCHANTEntity;
+            foreach (var Brand in mer.MERCHANT_BRAND)
+            {
+                <i-col span="4" class="RowTitle">品牌名称(@Brand.BRANDID)</i-col>
+            }
+        }
+    </row>
+}
+
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true
+            },
+            methods: {
+                exec: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: {MERCHANTID: @Model.MERCHANTID},
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        window.location.reload(); 
+                    });
+                }
+            }
+        });
+    </script>
 }

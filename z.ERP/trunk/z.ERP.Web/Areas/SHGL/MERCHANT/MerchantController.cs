@@ -22,7 +22,10 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         public ActionResult Detail(string Id)
         {
             ViewBag.Title = "商户信息浏览";
-            MERCHANTEntity entity = Select(new MERCHANTEntity(Id));
+
+            var  entity =  service.ShglService.GetMerchantElement(new MERCHANTEntity(Id)) ;
+           // MERCHANTEntity entity = Select(new MERCHANTEntity(Id));
+            ViewBag.Data = entity;
             return View(entity);
         }
 
@@ -38,7 +41,6 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             service.ShglService.DeleteMerchant(DeleteData);
         }
 
-
         public string Save(MERCHANTEntity SaveData)
         {
             return service.ShglService.SaveMerchant(SaveData);
@@ -47,6 +49,17 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         public UIResult SearchMerchant(MERCHANTEntity Data)
         {
             return new UIResult(service.ShglService.GetMerchantElement(Data));
+        }
+
+
+        public UIResult GetBrand(BRANDEntity Data)
+        {
+            return new UIResult(service.ShglService.GetBrand(Data));
+        }
+
+        public void ExecData(MERCHANTEntity Data)
+        {
+            service.ShglService.ExecData(Data);
         }
     }
 }

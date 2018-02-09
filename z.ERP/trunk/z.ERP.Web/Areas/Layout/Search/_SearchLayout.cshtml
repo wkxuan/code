@@ -6,9 +6,6 @@
 }
 @{
     WebFiles = new string[] {
-                    "Content/VUE/styles/iview.css",
-                    "Content/VUE/vue.js",
-                    "Content/VUE/iview.js",
                     "Areas/Layout/Search/_SearchLayout.js"
                 };
 }
@@ -95,15 +92,18 @@
             <p slot="content">
                  @*结果显示*@
                     <i-table :highlight-row="true" size="small" :border="true" height="500"
-                             :columns="screenParam.colDef" :data="screenParam.dataDef"
+                             :columns="screenParam.colDef" :data="screenParamData.dataDef"
                              v-on:on-row-dblclick="browse"  ref="selectData"></i-table>
 
                 @RenderSection("resultOthers", false)
             </p>
         </panel>
     </collapse>
+    @RenderSection("hide", false)
+    
 </div>
 
 @section foot{
     @RenderSection("foot", false)
+     
 }

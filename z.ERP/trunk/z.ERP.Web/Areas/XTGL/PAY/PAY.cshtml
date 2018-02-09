@@ -150,20 +150,6 @@
             }
         </i-col>
     </row>
-    @*<row>
-            <i-col span="2" class="RowTitle">
-                组织类型
-            </i-col>
-            <i-col span="14">
-                @{
-                    RenderControl(new EnumCheckBoxListRender<部门类型>()
-                    {
-                        vModel = "searchParam.ORG_TYPE",
-                        MultiSelect = true
-                    });
-                }
-            </i-col>
-        </row>*@
 }
 
 @section hide{
@@ -173,7 +159,8 @@
             Title = "测试标题",
             vModel = "windowParam.terst",
             ResVModel1 = "dataParam.NAME",
-            ResVModel2 = "dataParam.PAYID"
+            ResVModel2 = "dataParam.PAYID",
+            VueDom = "define"
         });
     }
 }

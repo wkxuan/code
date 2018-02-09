@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.MVC5.Attributes;
 using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
@@ -34,9 +36,25 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
         {
             return service.WyglService.SaveEnergyreGister(SaveData);
         }
+
+        [Permission(1)]
         public UIResult SearchElement(ENERGY_REGISTEREntity Data)
         {
             return new UIResult(service.WyglService.GetEnergyreGisterElement(Data));
+        }
+
+        public void Delete(List<ENERGY_REGISTEREntity> DeleteData)
+        {
+            service.WyglService.DeleteEnergyreGister(DeleteData);
+        }
+
+        public UIResult GetRegister(ENERGY_FILESEntity Data)
+        {
+            return new UIResult(service.WyglService.GetRegister(Data));
+        }
+        public void ExecData(ENERGY_REGISTEREntity Data)
+        {
+            service.WyglService.ExecData(Data);
         }
     }
 }

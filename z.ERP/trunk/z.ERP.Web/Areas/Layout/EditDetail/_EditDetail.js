@@ -16,12 +16,13 @@
     this.clearKey = function () { }
 
     this.vue = function VueOperate() {
-        var ve = new Vue({
+        var options = {
             el: '#EditDetail',
             data: {
                 dataParam: _this.dataParam,
                 windowParam: _this.windowParam,
                 screenParam: _this.screenParam,
+                windowParam: _this.windowParam,
                 panelName: 'base',
                 branchid: _this.branchid,
                 others: _this.others,
@@ -49,7 +50,9 @@
                     })
                 },
             }
-        });
+        };
+        _this.otherMethods && $.extend(options.methods, _this.otherMethods);
+        var ve = new Vue(options);
         function save(callback) {
             _.Ajax('Save', {
                 SaveData: ve.dataParam
@@ -67,6 +70,7 @@
     this.vueInit = function () {
         _this.dataParam = {};
         _this.screenParam = {};
+        _this.windowParam = {};
         _this.service = "";
         _this.method = "";
         _this.branchid = true;

@@ -161,6 +161,7 @@
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
+    <Compile Include="Areas\Share\Render\MerchantWindowRender.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
@@ -209,6 +210,7 @@
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
+    <Content Include="Areas\Share\MerchantWindow.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
@@ -264,6 +266,7 @@
     <Content Include="Areas\XTGL\test\List.cshtml" />
     <Content Include="Areas\Base\Web.config" />
     <Content Include="Areas\Base\Error.cshtml" />
+    <Content Include="Areas\Base\NoPermission.cshtml" />
     <None Include="Areas\Base\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -330,6 +333,7 @@
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.cshtml" />
     <Content Include="Areas\Share\CommonWindow.cshtml" />
     <Content Include="Areas\XTGL\CATEGORY\Category.cshtml" />
+    <Content Include="Areas\Share\MerchantWindow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -360,6 +364,10 @@
     <ProjectReference Include="..\z.IOC\z.IOC.csproj">
       <Project>{34b3dd30-91d0-4e47-ab99-9ebd4bb51747}</Project>
       <Name>z.IOC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\z.LogFactory\z.LogFactory.csproj">
+      <Project>{31e4c7dc-e998-4068-aec8-0afac6bbe68d}</Project>
+      <Name>z.LogFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\z.MVC5\z.MVC5.csproj">
       <Project>{A8E30B43-EF68-4D4A-AF11-2ECBFB8B227F}</Project>

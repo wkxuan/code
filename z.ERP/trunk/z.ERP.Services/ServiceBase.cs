@@ -10,6 +10,7 @@ using z.DBHelper.Helper;
 using z.Extensions;
 using z.IOC.RealProxyIOC;
 using z.IOC.Simple;
+using z.LogFactory;
 using z.Verify;
 
 namespace z.ERP.Services
@@ -25,14 +26,21 @@ namespace z.ERP.Services
             ioc = new SimpleIOC(mrs);
         }
 
+        //protected DbHelperBase DbHelper
+        //{
+        //    get
+        //    {
+        //        return new OracleDbHelper(ConfigExtension.GetConfig("connection"));
+        //    }
+        //}
+
         protected DbHelperBase DbHelper
         {
             get
             {
-                return new OracleDbHelper(ConfigExtension.GetConfig("connection"));
+                return _db;
             }
         }
-
         static readonly DbHelperBase _db = new OracleDbHelper(ConfigExtension.GetConfig("connection"));
 
         #region Service  
@@ -140,6 +148,14 @@ namespace z.ERP.Services
             get
             {
                 return LoginHelper.GetLogin();
+            }
+        }
+
+        protected LogWriter Log
+        {
+            get
+            {
+                return new LogWriter("Controller");
             }
         }
         #endregion

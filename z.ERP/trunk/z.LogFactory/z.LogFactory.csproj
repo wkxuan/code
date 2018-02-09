@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{31E4C7DC-E998-4068-AEC8-0AFAC6BBE68D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>zLogFactory</RootNamespace>
+    <AssemblyName>zLogFactory</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET;NET_2_0;NET_4_0</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\zLogFactory.xml</DocumentationFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\BFB2C\dll\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helper\log4netCode\Appender\AdoNetAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\AnsiColorTerminalAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\AppenderCollection.cs" />
+    <Compile Include="Helper\log4netCode\Appender\AppenderSkeleton.cs" />
+    <Compile Include="Helper\log4netCode\Appender\AspNetTraceAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\BufferingAppenderSkeleton.cs" />
+    <Compile Include="Helper\log4netCode\Appender\BufferingForwardingAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\ColoredConsoleAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\ConsoleAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\DebugAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\EventLogAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\FileAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\ForwardingAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\IAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\IBulkAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\LocalSyslogAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\MemoryAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\NetSendAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\OutputDebugStringAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\RemoteSyslogAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\RemotingAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\RollingFileAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\SmtpAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\SmtpPickupDirAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\TelnetAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\TextWriterAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\TraceAppender.cs" />
+    <Compile Include="Helper\log4netCode\Appender\UdpAppender.cs" />
+    <Compile Include="Helper\log4netCode\Config\AliasDomainAttribute.cs" />
+    <Compile Include="Helper\log4netCode\Config\AliasRepositoryAttribute.cs" />
+    <Compile Include="Helper\log4netCode\Config\BasicConfigurator.cs" />
+    <Compile Include="Helper\log4netCode\Config\ConfiguratorAttribute.cs" />
+    <Compile Include="Helper\log4netCode\Config\DomainAttribute.cs" />
+    <Compile Include="Helper\log4netCode\Config\DOMConfigurator.cs" />
+    <Compile Include="Helper\log4netCode\Config\DOMConfiguratorAttribute.cs" />
+    <Compile Include="Helper\log4netCode\Config\Log4NetConfigurationSectionHandler.cs" />
+    <Compile Include="Helper\log4netCode\Config\PluginAttribute.cs" />
+    <Compile Include="Helper\log4netCode\Config\RepositoryAttribute.cs" />
+    <Compile Include="Helper\log4netCode\Config\SecurityContextProviderAttribute.cs" />
+    <Compile Include="Helper\log4netCode\Config\XmlConfigurator.cs" />
+    <Compile Include="Helper\log4netCode\Config\XmlConfiguratorAttribute.cs" />
+    <Compile Include="Helper\log4netCode\Core\CompactRepositorySelector.cs" />
+    <Compile Include="Helper\log4netCode\Core\DefaultRepositorySelector.cs" />
+    <Compile Include="Helper\log4netCode\Core\ErrorCode.cs" />
+    <Compile Include="Helper\log4netCode\Core\ExceptionEvaluator.cs" />
+    <Compile Include="Helper\log4netCode\Core\IAppenderAttachable.cs" />
+    <Compile Include="Helper\log4netCode\Core\IErrorHandler.cs" />
+    <Compile Include="Helper\log4netCode\Core\IFixingRequired.cs" />
+    <Compile Include="Helper\log4netCode\Core\ILogger.cs" />
+    <Compile Include="Helper\log4netCode\Core\ILoggerWrapper.cs" />
+    <Compile Include="Helper\log4netCode\Core\IOptionHandler.cs" />
+    <Compile Include="Helper\log4netCode\Core\IRepositorySelector.cs" />
+    <Compile Include="Helper\log4netCode\Core\ITriggeringEventEvaluator.cs" />
+    <Compile Include="Helper\log4netCode\Core\Level.cs" />
+    <Compile Include="Helper\log4netCode\Core\LevelCollection.cs" />
+    <Compile Include="Helper\log4netCode\Core\LevelEvaluator.cs" />
+    <Compile Include="Helper\log4netCode\Core\LevelMap.cs" />
+    <Compile Include="Helper\log4netCode\Core\LocationInfo.cs" />
+    <Compile Include="Helper\log4netCode\Core\LogException.cs" />
+    <Compile Include="Helper\log4netCode\Core\LoggerManager.cs" />
+    <Compile Include="Helper\log4netCode\Core\LoggerWrapperImpl.cs" />
+    <Compile Include="Helper\log4netCode\Core\LoggingEvent.cs" />
+    <Compile Include="Helper\log4netCode\Core\LogImpl.cs" />
+    <Compile Include="Helper\log4netCode\Core\SecurityContext.cs" />
+    <Compile Include="Helper\log4netCode\Core\SecurityContextProvider.cs" />
+    <Compile Include="Helper\log4netCode\Core\TimeEvaluator.cs" />
+    <Compile Include="Helper\log4netCode\Core\WrapperMap.cs" />
+    <Compile Include="Helper\log4netCode\DateFormatter\AbsoluteTimeDateFormatter.cs" />
+    <Compile Include="Helper\log4netCode\DateFormatter\DateTimeDateFormatter.cs" />
+    <Compile Include="Helper\log4netCode\DateFormatter\IDateFormatter.cs" />
+    <Compile Include="Helper\log4netCode\DateFormatter\Iso8601DateFormatter.cs" />
+    <Compile Include="Helper\log4netCode\DateFormatter\SimpleDateFormatter.cs" />
+    <Compile Include="Helper\log4netCode\Filter\DenyAllFilter.cs" />
+    <Compile Include="Helper\log4netCode\Filter\FilterDecision.cs" />
+    <Compile Include="Helper\log4netCode\Filter\FilterSkeleton.cs" />
+    <Compile Include="Helper\log4netCode\Filter\IFilter.cs" />
+    <Compile Include="Helper\log4netCode\Filter\LevelMatchFilter.cs" />
+    <Compile Include="Helper\log4netCode\Filter\LevelRangeFilter.cs" />
+    <Compile Include="Helper\log4netCode\Filter\LoggerMatchFilter.cs" />
+    <Compile Include="Helper\log4netCode\Filter\MdcFilter.cs" />
+    <Compile Include="Helper\log4netCode\Filter\NdcFilter.cs" />
+    <Compile Include="Helper\log4netCode\Filter\PropertyFilter.cs" />
+    <Compile Include="Helper\log4netCode\Filter\StringMatchFilter.cs" />
+    <Compile Include="Helper\log4netCode\GlobalContext.cs" />
+    <Compile Include="Helper\log4netCode\ILog.cs" />
+    <Compile Include="Helper\log4netCode\Layout\ExceptionLayout.cs" />
+    <Compile Include="Helper\log4netCode\Layout\ILayout.cs" />
+    <Compile Include="Helper\log4netCode\Layout\IRawLayout.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Layout2RawLayoutAdapter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\LayoutSkeleton.cs" />
+    <Compile Include="Helper\log4netCode\Layout\PatternLayout.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\AppDomainPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\AspNetCachePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\AspNetContextPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\AspNetPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\AspNetRequestPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\AspNetSessionPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\DatePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\ExceptionPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\FileLocationPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\FullLocationPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\IdentityPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\LevelPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\LineLocationPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\LoggerPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\MessagePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\MethodLocationPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\NamedPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\NdcPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\PatternLayoutConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\PropertyPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\RelativeTimePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\StackTraceDetailPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\StackTracePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\ThreadPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\TypeNamePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\UserNamePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\Pattern\UtcDatePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\RawLayoutConverter.cs" />
+    <Compile Include="Helper\log4netCode\Layout\RawPropertyLayout.cs" />
+    <Compile Include="Helper\log4netCode\Layout\RawTimeStampLayout.cs" />
+    <Compile Include="Helper\log4netCode\Layout\RawUtcTimeStampLayout.cs" />
+    <Compile Include="Helper\log4netCode\Layout\SimpleLayout.cs" />
+    <Compile Include="Helper\log4netCode\Layout\XMLLayout.cs" />
+    <Compile Include="Helper\log4netCode\Layout\XMLLayoutBase.cs" />
+    <Compile Include="Helper\log4netCode\Layout\XmlLayoutSchemaLog4j.cs" />
+    <Compile Include="Helper\log4netCode\Log4netAssemblyInfo.cs" />
+    <Compile Include="Helper\log4netCode\LogicalThreadContext.cs" />
+    <Compile Include="Helper\log4netCode\LogManager.cs" />
+    <Compile Include="Helper\log4netCode\MDC.cs" />
+    <Compile Include="Helper\log4netCode\NDC.cs" />
+    <Compile Include="Helper\log4netCode\ObjectRenderer\DefaultRenderer.cs" />
+    <Compile Include="Helper\log4netCode\ObjectRenderer\IObjectRenderer.cs" />
+    <Compile Include="Helper\log4netCode\ObjectRenderer\RendererMap.cs" />
+    <Compile Include="Helper\log4netCode\Plugin\IPlugin.cs" />
+    <Compile Include="Helper\log4netCode\Plugin\IPluginFactory.cs" />
+    <Compile Include="Helper\log4netCode\Plugin\PluginCollection.cs" />
+    <Compile Include="Helper\log4netCode\Plugin\PluginMap.cs" />
+    <Compile Include="Helper\log4netCode\Plugin\PluginSkeleton.cs" />
+    <Compile Include="Helper\log4netCode\Plugin\RemoteLoggingServerPlugin.cs" />
+    <Compile Include="Helper\log4netCode\Repository\ConfigurationChangedEventArgs.cs" />
+    <Compile Include="Helper\log4netCode\Repository\Hierarchy\DefaultLoggerFactory.cs" />
+    <Compile Include="Helper\log4netCode\Repository\Hierarchy\Hierarchy.cs" />
+    <Compile Include="Helper\log4netCode\Repository\Hierarchy\ILoggerFactory.cs" />
+    <Compile Include="Helper\log4netCode\Repository\Hierarchy\Logger.cs" />
+    <Compile Include="Helper\log4netCode\Repository\Hierarchy\LoggerKey.cs" />
+    <Compile Include="Helper\log4netCode\Repository\Hierarchy\ProvisionNode.cs" />
+    <Compile Include="Helper\log4netCode\Repository\Hierarchy\RootLogger.cs" />
+    <Compile Include="Helper\log4netCode\Repository\Hierarchy\XmlHierarchyConfigurator.cs" />
+    <Compile Include="Helper\log4netCode\Repository\IBasicRepositoryConfigurator.cs" />
+    <Compile Include="Helper\log4netCode\Repository\ILoggerRepository.cs" />
+    <Compile Include="Helper\log4netCode\Repository\IXmlRepositoryConfigurator.cs" />
+    <Compile Include="Helper\log4netCode\Repository\LoggerRepositorySkeleton.cs" />
+    <Compile Include="Helper\log4netCode\ThreadContext.cs" />
+    <Compile Include="Helper\log4netCode\Util\AppenderAttachedImpl.cs" />
+    <Compile Include="Helper\log4netCode\Util\CompositeProperties.cs" />
+    <Compile Include="Helper\log4netCode\Util\ContextPropertiesBase.cs" />
+    <Compile Include="Helper\log4netCode\Util\ConverterInfo.cs" />
+    <Compile Include="Helper\log4netCode\Util\CountingQuietTextWriter.cs" />
+    <Compile Include="Helper\log4netCode\Util\CyclicBuffer.cs" />
+    <Compile Include="Helper\log4netCode\Util\EmptyCollection.cs" />
+    <Compile Include="Helper\log4netCode\Util\EmptyDictionary.cs" />
+    <Compile Include="Helper\log4netCode\Util\FormattingInfo.cs" />
+    <Compile Include="Helper\log4netCode\Util\GlobalContextProperties.cs" />
+    <Compile Include="Helper\log4netCode\Util\LevelMapping.cs" />
+    <Compile Include="Helper\log4netCode\Util\LevelMappingEntry.cs" />
+    <Compile Include="Helper\log4netCode\Util\LogicalThreadContextProperties.cs" />
+    <Compile Include="Helper\log4netCode\Util\LogLog.cs" />
+    <Compile Include="Helper\log4netCode\Util\NativeError.cs" />
+    <Compile Include="Helper\log4netCode\Util\NullDictionaryEnumerator.cs" />
+    <Compile Include="Helper\log4netCode\Util\NullEnumerator.cs" />
+    <Compile Include="Helper\log4netCode\Util\NullSecurityContext.cs" />
+    <Compile Include="Helper\log4netCode\Util\OnlyOnceErrorHandler.cs" />
+    <Compile Include="Helper\log4netCode\Util\OptionConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternParser.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternString.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\AppDomainPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\DatePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\EnvironmentFolderPathPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\EnvironmentPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\IdentityPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\LiteralPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\NewLinePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\ProcessIdPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\PropertyPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\RandomStringPatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\UserNamePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PatternStringConverters\UtcDatePatternConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\PropertiesDictionary.cs" />
+    <Compile Include="Helper\log4netCode\Util\PropertyEntry.cs" />
+    <Compile Include="Helper\log4netCode\Util\ProtectCloseTextWriter.cs" />
+    <Compile Include="Helper\log4netCode\Util\QuietTextWriter.cs" />
+    <Compile Include="Helper\log4netCode\Util\ReaderWriterLock.cs" />
+    <Compile Include="Helper\log4netCode\Util\ReadOnlyPropertiesDictionary.cs" />
+    <Compile Include="Helper\log4netCode\Util\ReusableStringWriter.cs" />
+    <Compile Include="Helper\log4netCode\Util\SystemInfo.cs" />
+    <Compile Include="Helper\log4netCode\Util\SystemStringFormat.cs" />
+    <Compile Include="Helper\log4netCode\Util\TextWriterAdapter.cs" />
+    <Compile Include="Helper\log4netCode\Util\ThreadContextProperties.cs" />
+    <Compile Include="Helper\log4netCode\Util\ThreadContextStack.cs" />
+    <Compile Include="Helper\log4netCode\Util\ThreadContextStacks.cs" />
+    <Compile Include="Helper\log4netCode\Util\Transform.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\BooleanConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\ConversionNotSupportedException.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\ConverterRegistry.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\EncodingConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\IConvertFrom.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\IConvertTo.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\IPAddressConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\PatternLayoutConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\PatternStringConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\TypeConverter.cs" />
+    <Compile Include="Helper\log4netCode\Util\TypeConverters\TypeConverterAttribute.cs" />
+    <Compile Include="Helper\log4netCode\Util\WindowsSecurityContext.cs" />
+    <Compile Include="LogConfigBase.cs" />
+    <Compile Include="LogLevel.cs" />
+    <Compile Include="utils\Log4Net.cs" />
+    <Compile Include="LogUtils.cs" />
+    <Compile Include="LogWriter.cs" />
+    <Compile Include="LogWriter_Info.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LogWriter_Debug.cs" />
+    <Compile Include="LogWriter_Woring.cs" />
+    <Compile Include="LogWriter_Error.cs" />
+    <Compile Include="utils\LogUtilsBase.cs" />
+    <Compile Include="LogWriter_Fatal.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Helper\log4netCode\site\apt\download.apt" />
+    <None Include="Helper\log4netCode\site\apt\roadmap.apt" />
+    <None Include="Helper\log4netCode\site\site.vm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Helper\log4netCode\assembly\bin.xml" />
+    <Content Include="Helper\log4netCode\changes\changes.xml" />
+    <Content Include="Helper\log4netCode\log4net.xml" />
+    <Content Include="Helper\log4netCode\site\resources\css\maven-base.css" />
+    <Content Include="Helper\log4netCode\site\resources\css\site.css" />
+    <Content Include="Helper\log4netCode\site\resources\images\logo.jpg" />
+    <Content Include="Helper\log4netCode\site\resources\images\logos\maven-feather.png" />
+    <Content Include="Helper\log4netCode\site\resources\images\ls-logo.jpg" />
+    <Content Include="Helper\log4netCode\site\resources\images\od.gif" />
+    <Content Include="Helper\log4netCode\site\site.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\history.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\index.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\building.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\config-examples.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\example-apps.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\faq.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\features.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\framework-support.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\howto\chainsaw.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\howto\index.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\manual\configuration.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\manual\contexts.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\manual\internals.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\manual\introduction.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\manual\plugins.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\manual\repositories.xml" />
+    <Content Include="Helper\log4netCode\site\xdoc\release\release-notes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\z\z.csproj">
+      <Project>{68597feb-8ff8-486e-b603-ce7e8de57f5b}</Project>
+      <Name>z</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -49,6 +49,10 @@
       <Project>{DA64E4E3-1857-4B57-A6D9-ABBDB092E7E4}</Project>
       <Name>z.DbHelper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.SuperLambda\z.SuperLambda.csproj">
+      <Project>{097cadad-d8a2-4d5c-99ce-d20f869c9dc7}</Project>
+      <Name>z.SuperLambda</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z\z.csproj">
       <Project>{68597FEB-8FF8-486E-B603-CE7E8DE57F5B}</Project>
       <Name>z</Name>

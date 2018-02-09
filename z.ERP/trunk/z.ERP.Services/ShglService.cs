@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using z.Extensions;
 using System;
 using z.ERP.Entities.Enum;
+using z.Exceptions;
+
 
 namespace z.ERP.Services
 {
@@ -16,8 +18,10 @@ namespace z.ERP.Services
         public DataGridResult GetMerchant(SearchItem item)
         {
             string sql = $@"SELECT * FROM MERCHANT WHERE 1=1 ";
-            item.HasKey("MERCHANTID", a => sql += $" and MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANTID = '{a}'");
             item.HasKey("NAME", a => sql += $" and NAME  LIKE '%{a}%'");
+            item.HasKey("SH",a=>sql+=$" and SH={a}");
+            item.HasKey("BANK", a => sql += $" and BANK={a}");
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -27,17 +31,23 @@ namespace z.ERP.Services
 
         public void DeleteMerchant(List<MERCHANTEntity> DeleteData)
         {
+            foreach (var mer in DeleteData)
+            {
+                MERCHANTEntity Data = DbHelper.Select(mer);
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString()) {
+                    throw new LogicException("已经审核不能删除!");
+                }
+            }
             using (var Tran = DbHelper.BeginTransaction())
             {
                 foreach (var mer in DeleteData)
                 {
-                    var v = GetVerify(mer);
-                    //校验
                     DbHelper.Delete(mer);
                 }
                 Tran.Commit();
             }
         }
+
 
         public string SaveMerchant(MERCHANTEntity SaveData)
         {
@@ -55,14 +65,17 @@ namespace z.ERP.Services
             v.Verify();
             using (var Tran = DbHelper.BeginTransaction())
             {
-                SaveData.MERCHANT_BRAND.ForEach(shpp =>
+                SaveData.MERCHANT_BRAND?.ForEach(shpp =>
                 {
                     GetVerify(shpp).Require(a => a.BRANDID);
                 });
                 DbHelper.Save(SaveData);
+
+                Tran.Commit();
             }
             return SaveData.MERCHANTID;
         }
+        
 
         public object GetMerchantElement(MERCHANTEntity Data)
         {
@@ -72,9 +85,9 @@ namespace z.ERP.Services
                 sql += (" AND MERCHANTID= " + Data.MERCHANTID);
             DataTable merchant = DbHelper.ExecuteTable(sql);
 
-            string sqlitem = $@"SELECT M.BRANDID,C.NAME " +
-                " FROM MERCHANT_BRAND M,MERCHANT E,BRAND C " +
-                " where M.MERCHANTID = E.MERCHANTID AND M.BRANDID=C.ID";
+            string sqlitem = $@"SELECT M.BRANDID,C.NAME,D.CATEGORYCODE,D.CATEGORYNAME " +
+                " FROM MERCHANT_BRAND M,MERCHANT E,BRAND C,CATEGORY D " +
+                " where M.MERCHANTID = E.MERCHANTID AND M.BRANDID=C.ID AND  C.CATEGORYID = D.CATEGORYID ";
             if (!Data.MERCHANTID.IsEmpty())
                 sqlitem += (" and E.MERCHANTID= " + Data.MERCHANTID);
             DataTable merchantBrand = DbHelper.ExecuteTable(sqlitem);
@@ -87,6 +100,36 @@ namespace z.ERP.Services
                 }
             };
             return result;
+        }
+
+
+        public string ExecData(MERCHANTEntity Data)
+        {
+            MERCHANTEntity mer = DbHelper.Select(Data);
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                mer.VERIFY = employee.Id;
+                mer.VERIFY_NAME = employee.Name;
+                mer.VERIFY_TIME = DateTime.Now.ToString();
+                mer.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(mer);
+                Tran.Commit();
+            }
+            return mer.MERCHANTID;
+        }
+
+
+        public object GetBrand(BRANDEntity Data)
+        {
+            string sql = " SELECT  A.NAME,B.CATEGORYCODE,B.CATEGORYNAME FROM BRAND A,CATEGORY B " +
+                "  WHERE  A.CATEGORYID = B.CATEGORYID ";
+            if (!Data.ID.IsEmpty())
+                sql += (" and A.ID= " + Data.ID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt
+            };
         }
     }
 }

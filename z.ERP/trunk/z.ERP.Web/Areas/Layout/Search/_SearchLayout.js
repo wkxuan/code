@@ -20,16 +20,21 @@
     }
 
     this.vue = function VueOperate() {
-        var ve = new Vue({
+        var options = {
             el: '#search',
-            data: function () {
-                return {
+            data: {
                     screenParam: _this.screenParam,
                     searchParam: _this.searchParam,
+                    windowParam: _this.windowParam,
                     panelName: 'condition',
                     disabled: _this.enabled(true),
-                }
+                    
+                    //鉴于功能已经开始做了,故而将table的数据绑定的对象重新命名一个对象，进而刷新使用
+                    screenParamData: {
+                        dataDef: []
+                    }
             },
+
             mounted: function () {
             },
             methods: {
@@ -40,11 +45,13 @@
 
                     if (!_this.IsValidSrch(mess))
                         return;
+                    //先清空结果
+                    Vue.set(ve.screenParamData, "dataDef", []);
+                    //查询
                     showList(function (data) {
-                        ve.screenParam.dataDef = _this.screenParam.dataDef;
-                        if (ve.screenParam.dataDef.length > 0) {
+                        if (_this.screenParam.dataDef.length > 0) {
                             ve.panelName = 'result';
-                            mess.$set(ve.screenParam, _this.screenParam);
+                            Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
                         }
                         else {
                             mess.$Message.info("没有满足当前查询条件的结果!");
@@ -56,24 +63,28 @@
                     event.stopPropagation();
                     _this.searchParam = {};
                     ve.searchParam = _this.searchParam;
-                    ve.screenParam.dataDef = [];
+                    ve.screenParamData.dataDef = [];
                     ve.panelName = 'condition';
                     _this.newCondition();
                 },
                 //导出待完善
                 exp: function (event) {
                     event.stopPropagation();
-                    if (notExistsData) {
+                    if (notExistsData()) {
                         this.$Message.error("没有要导出的数据!");
-                    };
+                    } else {
+                        this.$Message.error("尚未提供导出方法!");
+                    }
                     //继续
                 },
                 //打印待完善
                 print: function (event) {
                     event.stopPropagation();
-                    if (notExistsData) {
+                    if (notExistsData()) {
                         this.$Message.error("没有要打印的数据!");
-                    };
+                    } else {
+                        this.$Message.error("尚未提供打印方法!");
+                    }
                     //继续
                 },
                 //新增
@@ -99,10 +110,12 @@
                             onOk: function () {
                                 _.Ajax('Delete', {
                                     DeleteData: selectton
-                                }, function (data) {
-                                    showList();
-                                    _self.$set(ve.screenParam, _this.screenParam);
-                                    _self.$Message.info("删除成功");
+                                }, function (data){ 
+                                    showList(function (data){ 
+                                        // ve.$set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
+                                        Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
+                                        _self.$Message.info("删除成功");
+                                    });
                                 });
                             },
                             onCancel: function () {
@@ -112,8 +125,9 @@
                     }
                 }
             }
-        });
-
+        }
+        _this.otherMethods && $.extend(options.methods, _this.otherMethods);
+        var ve = new Vue(options);
         function showList(callback) {
             ve.searchParam = _this.searchParam;
             _.Search({
@@ -125,11 +139,10 @@
                     callback && callback();
                 }
             })
-        }
+        };
         function notExistsData() {
-            return (!ve.screenParam.dataDef) || (ve.screenParam.dataDef.length == 0)
+            return (!ve.screenParamData.dataDef) || (ve.screenParamData.dataDef.length == 0)
         }
-
     }
     //新增链接的地址
     this.addHref = function () {
@@ -178,6 +191,7 @@
     this.vueInit = function () {
         _this.searchParam = {};
         _this.screenParam = {};
+        _this.windowParam = {};
         _this.service = "";
         _this.method = "";
     };

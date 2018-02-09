@@ -17,15 +17,25 @@
                     value: params.row.BRANDID
                 },
                 on: {
-                    'on-blur': function (event) {
+                    // 'on-blur': 焦点离开 'on-enter' 回车事件
+                    'on-enter': function (event) {
+                        _self = this;
                         editDetail.dataParam.MERCHANT_BRAND[params.index].BRANDID = event.target.value;
+
+                        _.Ajax('GetBrand', {
+                            Data: { ID: event.target.value }
+                        }, function (data) {
+                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'NAME', data.dt[0].NAME);
+                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYCODE', data.dt[0].CATEGORYCODE);
+                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYNAME', data.dt[0].CATEGORYNAME);
+                        });
                     }
                 },
             })
         },
     },
     { title: '品牌名称', key: 'NAME', width: 200 },
-    { title: '业态代码', key: 'CATEGORYID', width: 200 },
+    { title: '业态代码', key: 'CATEGORYCODE', width: 200 },
     { title: '业态名称', key: 'CATEGORYNAME', width: 200 },
 
     {
@@ -50,7 +60,8 @@
         }
     }
     ];
-
+    
+    //相当于初始化
     if (!editDetail.dataParam.MERCHANT_BRAND) {
         editDetail.dataParam.MERCHANT_BRAND = [{
             BRANDID: "",
@@ -60,6 +71,7 @@
         }]
     }
 
+    //新增加一行
     editDetail.screenParam.addCol = function () {
         var temp = editDetail.dataParam.MERCHANT_BRAND || [];
         temp.push({});
@@ -72,6 +84,7 @@ editDetail.showOne = function (data, callback) {
         Data: { MERCHANTID: data }
     }, function (data) {
         editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
+        editDetail.dataParam.MERCHANTID = data.merchant[0].MERCHANTID;
         editDetail.dataParam.NAME = data.merchant[0].NAME;
         editDetail.dataParam.SH = data.merchant[0].SH;
         editDetail.dataParam.BANK = data.merchant[0].BANK;

@@ -37,6 +37,13 @@ namespace z.DBHelper.Helper
         /// 数据库命令对象
         /// </summary>
         protected DbCommand _dbCommand;
+        /// <summary>
+        [ThreadStatic]
+        static bool isFirstTransaction = false;
+        /// <summary>
+        /// 事务对象
+        /// </summary>
+        protected DbTransaction _Transaction = null;
 
         string _select = "SELECT {0} FROM {1} WHERE {2}";
         string _insert = "INSERT INTO {0}({1}) VALUES({2})";
@@ -452,6 +459,7 @@ namespace z.DBHelper.Helper
         public int Delete(EntityBase info)
         {
             int res;
+            _DeleteChildren(info);
             IDbDataParameter[] dbprams = info.GetPrimaryKey().Select(a =>
             {
                 if (a.GetAttribute<PrimaryKeyAttribute>() != null)
@@ -481,7 +489,6 @@ namespace z.DBHelper.Helper
             {
                 throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
             }
-            _DeleteChildren(info);
             return res;
         }
 
@@ -610,6 +617,7 @@ namespace z.DBHelper.Helper
         #endregion
         #region 事务操作
 
+
         /// <summary>
         /// 判断是否在事务中
         /// </summary>
@@ -622,15 +630,20 @@ namespace z.DBHelper.Helper
         /// <summary>
         /// 开启事务
         /// </summary>
-        public virtual DbTransaction BeginTransaction()
+        public virtual DbTransaction BeginTransaction(IsolationLevel? iso = null)
         {
-            if (_dbCommand == null || _dbCommand.Transaction == null)
+            //if (!isFirstTransaction)
             {
-                if (_dbConnection == null || _dbConnection.State != ConnectionState.Open)
-                    Open();
-                _dbCommand.Transaction = _dbConnection.BeginTransaction();
+                if (_dbCommand == null || _dbCommand.Transaction == null)
+                {
+                    if (_dbConnection == null || _dbConnection.State != ConnectionState.Open)
+                        Open();
+                    _dbCommand.Transaction = iso.HasValue ? _dbConnection.BeginTransaction(iso.Value) : _dbConnection.BeginTransaction();
+                    isFirstTransaction = true;
+                }
             }
-            return _dbCommand.Transaction;
+            _Transaction = _dbCommand.Transaction;
+            return _Transaction;
         }
 
 

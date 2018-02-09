@@ -6,9 +6,6 @@
 }
 @{
     WebFiles = new string[] {
-                    "Content/VUE/styles/iview.css",
-                    "Content/VUE/vue.js",
-                    "Content/VUE/iview.js"
                 };
 }
 
@@ -29,14 +26,14 @@
         </panel>
     </collapse>
 </div>
-<script type="text/javascript">
+@*<script type="text/javascript">
     var ve = new Vue({
         el: '#detail_Main',
         data: {
             Mainpanel: 'condition'
         }
     });
-</script>
+</script>*@
 @section foot{
     @RenderSection("foot", false)
 }
