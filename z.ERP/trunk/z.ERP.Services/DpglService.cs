@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using z.Extensions;
 using System;
 using z.ERP.Entities.Enum;
+using z.Exceptions;
 
 namespace z.ERP.Services
 {
@@ -24,11 +25,24 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
-        public void DeleteAssetChange(ASSETCHANGEEntity DeleteData)
+        public void DeleteAssetChange(List<ASSETCHANGEEntity> DeleteData)
         {
-            var v = GetVerify(DeleteData);
-            //校验
-            DbHelper.Delete(DeleteData);
+            foreach (var item in DeleteData)
+            {
+                ASSETCHANGEEntity Data = DbHelper.Select(item);
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString())
+                {
+                    throw new LogicException("已经审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    DbHelper.Delete(item);
+                }
+                Tran.Commit();
+            }
         }
 
         public string SaveAssetChange(ASSETCHANGEEntity SaveData)

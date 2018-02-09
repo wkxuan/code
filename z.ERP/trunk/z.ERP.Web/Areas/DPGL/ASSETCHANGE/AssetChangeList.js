@@ -1,4 +1,5 @@
 ﻿search.beforeVue = function () {
+    search.searchParam.BILLID = "";
     var col = [
         { title: "单据编号", key: 'BILLID', width: 100 },
         { title: '门店', key: 'BRANCHID', width: 200 },
@@ -30,15 +31,19 @@ search.modHref = function (row, index) {
     });
 }
 
+search.modHref = function (row, index) {
 
-search.deleteDb=function(row)
-{
-    _.Ajax('Delete', {
-        DeleteData: { BILLID: row.BILLID }
-    });
+    _.Search({
+        Service: search.service,
+        Method: search.method,
+        Data: { BILLID: row.BILLID },
+        Success: function (data) {
+            if (1== 1) {
+                _.OpenPage("DPGL/ASSETCHANGE/AssetChangeEdit/" + row.BILLID, function (data) {
+                });
+            } else {
+                iview.Message.info('不能编辑!');
+            }
+        }
+    })
 }
-
-//function callback (index) {
-//    search.screenParam.dataDef.splice(index, 1);
-//}
-

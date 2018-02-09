@@ -29,7 +29,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
             return View(model:Id);
         }
 
-        public void Delete(ASSETCHANGEEntity DeleteData)
+        public void Delete(List<ASSETCHANGEEntity> DeleteData)
         {
             service.DpglService.DeleteAssetChange(DeleteData);
         }
