@@ -25,11 +25,6 @@ search.addHref = function (row) {
     _.OpenPage("DPGL/ASSETCHANGE/AssetChangeEdit/", function (data) {
     });
 }
-//修改跳转页面,并且要根据单号查出来相关的数据信息
-search.modHref = function (row, index) {
-    _.OpenPage("DPGL/ASSETCHANGE/AssetChangeEdit/"+ row.BILLID, function (data) {
-    });
-}
 
 search.modHref = function (row, index) {
 

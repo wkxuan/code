@@ -60,11 +60,16 @@ namespace z.ERP.Services
             v.Require(a => a.BRANCHID);
             v.Verify();
 
-            //SaveData.ASSETCHANGEITEM.ForEach(dpxx =>
-            //{
-            //    GetVerify(dpxx).Require(a => a.ASSETID);
-            //});
-            DbHelper.Save(SaveData);
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                SaveData.ASSETCHANGEITEM2?.ForEach( newasset=>
+                {
+                    GetVerify(newasset).Require(a => a.ASSETID);
+                });
+                DbHelper.Save(SaveData);
+
+                Tran.Commit();
+            }
             return SaveData.BILLID;
         }
 
@@ -75,7 +80,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT * FROM ASSETCHANGE WHERE 1=1 ";
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND BILLID= " + Data.BILLID);
-            DataTable dt = DbHelper.ExecuteTable(sql);
+            DataTable assetchange = DbHelper.ExecuteTable(sql);
 
 
 
@@ -84,11 +89,12 @@ namespace z.ERP.Services
                 " where 1=1 ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
-            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
+            DataTable assetchangeitem = DbHelper.ExecuteTable(sqlitem);
 
             var result = new
             {
-                main = dt,
+                assetchange = assetchange,
+                assetchangeitem= assetchange
             };
             return result;
         }
