@@ -151,8 +151,6 @@
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
-    <Compile Include="Areas\HTGL\LYHT\ZLHTController.cs" />
-    <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\Detail\DetailViewBase.cs" />
     <Compile Include="Areas\Layout\EditDetail\EditDetailViewBase.cs" />
@@ -204,8 +202,6 @@
   <ItemGroup>
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.js" />
-    <Content Include="Areas\HTGL\LYHT\Detail.js" />
-    <Content Include="Areas\HTGL\LYHT\List.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
@@ -289,7 +285,6 @@
     <Content Include="Config\Connection.config" />
     <Content Include="Config\IOC.config" />
     <Content Include="Config\Debug.config" />
-    <Content Include="Areas\HTGL\ZLHT\List.cshtml" />
     <Content Include="Areas\Share\BaseDropDownList.cshtml" />
     <Content Include="Areas\PPGL\BRAND\BrandList.cshtml" />
     <Content Include="Areas\Share\Undefine.cshtml" />
@@ -301,8 +296,6 @@
     <Content Include="Areas\Share\CheckBoxList.cshtml" />
     <Content Include="Areas\Share\Button.cshtml" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.cshtml" />
-    <Content Include="Areas\HTGL\LYHT\List.cshtml" />
-    <Content Include="Areas\HTGL\LYHT\Detail.cshtml" />
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.cshtml" />
     <Content Include="Areas\XTGL\BRANCH\Branch.cshtml" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.cshtml" />
@@ -338,7 +331,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Home\" />
-    <Folder Include="Areas\HTGL\Views\ZLHT\" />
+    <Folder Include="Areas\HTGL\LYHT\" />
+    <Folder Include="Areas\HTGL\ZLHT\" />
     <Folder Include="Areas\XTGL\Views\Tree\" />
   </ItemGroup>
   <ItemGroup>

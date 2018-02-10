@@ -15,6 +15,11 @@ namespace z.ERP.Services
         internal ShglService()
         {
         }
+        /// <summary>
+        /// 列表页的查询
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public DataGridResult GetMerchant(SearchItem item)
         {
             string sql = $@"SELECT * FROM MERCHANT WHERE 1=1 ";
@@ -29,13 +34,17 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
+        /// <summary>
+        /// 列表页的删除,可以批量删除
+        /// </summary>
+        /// <param name="DeleteData"></param>
         public void DeleteMerchant(List<MERCHANTEntity> DeleteData)
         {
             foreach (var mer in DeleteData)
             {
                 MERCHANTEntity Data = DbHelper.Select(mer);
                 if (Data.STATUS == ((int)普通单据状态.审核).ToString()) {
-                    throw new LogicException("已经审核不能删除!");
+                    throw new LogicException("商户("+ Data.NAME + ")已经审核不能删除!");
                 }
             }
             using (var Tran = DbHelper.BeginTransaction())
@@ -48,13 +57,31 @@ namespace z.ERP.Services
             }
         }
 
-
+        /// <summary>
+        /// 编辑页的保存
+        /// </summary>
+        /// <param name="SaveData"></param>
+        /// <returns></returns>
         public string SaveMerchant(MERCHANTEntity SaveData)
         {
+            //因为商户可以审核之后还可以修改所以这里要分开处理通常如何判断处理应该便可
+            //MERCHANTEntity mer = DbHelper.Select(SaveData);
+            //if (mer.STATUS == ((int)普通单据状态.审核).ToString()) {
+            //    throw new LogicException("商户(" + SaveData.NAME + ")已经审核!");
+            //}
             var v = GetVerify(SaveData);
             if (SaveData.MERCHANTID.IsEmpty())
+            {
                 SaveData.MERCHANTID = NewINC("MERCHANT");
-            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+                SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            }
+            else {
+                //这里这样写是不是麻烦了?
+                MERCHANTEntity mer = DbHelper.Select(SaveData);
+                SaveData.VERIFY = mer.VERIFY;
+                SaveData.VERIFY_NAME = mer.VERIFY_NAME;
+                SaveData.VERIFY_TIME = mer.VERIFY_TIME;
+            }
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
@@ -75,11 +102,17 @@ namespace z.ERP.Services
             }
             return SaveData.MERCHANTID;
         }
-        
-
+        /// <summary>
+        /// 从列表页编辑跳转到编辑页数据的展示查询
+        /// 这里需要和详情页数据展示保持一直如何处理????
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
         public object GetMerchantElement(MERCHANTEntity Data)
         {
-            //此处校验一次只能查询一个单号,校验单号必须存在
+            if (Data.MERCHANTID.IsEmpty()) {
+                throw new LogicException("请确认商户编号!");
+            }
             string sql = $@"SELECT * FROM MERCHANT WHERE 1=1 ";
             if (!Data.MERCHANTID.IsEmpty())
                 sql += (" AND MERCHANTID= " + Data.MERCHANTID);
@@ -101,11 +134,17 @@ namespace z.ERP.Services
             };
             return result;
         }
-
-
+        /// <summary>
+        /// 详情页的删除
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
         public string ExecData(MERCHANTEntity Data)
         {
             MERCHANTEntity mer = DbHelper.Select(Data);
+            if (mer.STATUS == ((int)普通单据状态.审核).ToString()) {
+                throw new LogicException("商户(" + Data.NAME + ")已经审核不能再次审核!");
+            }
             using (var Tran = DbHelper.BeginTransaction())
             {
                 mer.VERIFY = employee.Id;
@@ -117,8 +156,12 @@ namespace z.ERP.Services
             }
             return mer.MERCHANTID;
         }
-
-
+        /// <summary>
+        /// 编辑页输入品牌ID查询相关数据返回给前端展示
+        /// 这里需要和弹窗合并成一个请求语句????
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
         public object GetBrand(BRANDEntity Data)
         {
             string sql = " SELECT  A.NAME,B.CATEGORYCODE,B.CATEGORYNAME FROM BRAND A,CATEGORY B " +
