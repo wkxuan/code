@@ -4,7 +4,7 @@
 @using z.ERP.Entities;
 @using z.Extensions;
 @using z.ERP.Entities.Enum
-@inherits DetailLayout<MERCHANTEntity> 
+@inherits DetailLayout<dynamic> 
 
 @section Title{
     @Html.Raw("详情");
@@ -12,7 +12,10 @@
 
 @section btn{
     @{
-        if (@Model.STATUS == "1")
+
+        dynamic mer = ViewBag.Data.Get("merchant");
+        MERCHANTEntity mer1 = ViewBag.Data.merchant as MERCHANTEntity;
+        if (@mer.STATUS == "1")
         {
             RenderControl(new ButtonRender()
             {
