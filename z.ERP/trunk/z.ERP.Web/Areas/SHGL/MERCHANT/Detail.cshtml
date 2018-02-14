@@ -15,19 +15,17 @@
     var merchant = ViewBag.merchant;
     var merchantBrand = ViewBag.merchantBrand as DataTable;
 }
+
 @section btn{
     @{
-
-//dynamic mer = ViewBag.Data.Get("merchant");
-//MERCHANTEntity mer1 = ViewBag.Data.merchant as MERCHANTEntity;
-//if (@mer.STATUS == "1")
-//{
-//    RenderControl(new ButtonRender()
-//    {
-//        Text = "审核",
-//        Click = "exec",
-//    });
-//}
+        if (@merchant.STATUS == "1")
+        {
+            RenderControl(new ButtonRender()
+            {
+                Text = "审核",
+                Click = "exec",
+            });
+        }
     }
 }
 
@@ -76,7 +74,9 @@
                         Data: {MERCHANTID: @merchant.MERCHANTID},
                     }, function (data) {
                         _self.$Message.info("审核成功");
-                        window.location.reload();
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
                     });
                 }
             }
