@@ -28,6 +28,7 @@ namespace z.ERP.Web.Areas.XTGL.BRANCH
             v.Require(a => a.AREA_BUILD);
             v.Require(a => a.STATUS);
             v.Verify();
+            //这里要写SQL语句反写另外一个表ORG上面的分店信息
             return CommonSave(DefineSave);
         }
 

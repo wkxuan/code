@@ -135,5 +135,15 @@ namespace z.Extensions
             }
             return res;
         }
+
+        /// <summary>
+        /// 将dt的第一行提取出来
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static dynamic ToOneLine(this DataTable dt)
+        {
+            return dt.ToList<dynamic>().FirstOrDefault();
+        }
     }
 }

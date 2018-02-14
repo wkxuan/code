@@ -25,9 +25,10 @@
                         _.Ajax('GetBrand', {
                             Data: { ID: event.target.value }
                         }, function (data) {
-                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'NAME', data.dt[0].NAME);
-                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYCODE', data.dt[0].CATEGORYCODE);
-                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYNAME', data.dt[0].CATEGORYNAME);
+                            //$.extend(editDetail.dataParam.MERCHANT_BRAND[params.index], data.dt[0]);
+                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'NAME', data.dt.NAME);
+                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYCODE', data.dt.CATEGORYCODE);
+                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYNAME', data.dt.CATEGORYNAME);
                         });
                     }
                 },
@@ -60,7 +61,7 @@
         }
     }
     ];
-    
+
     //相当于初始化
     if (!editDetail.dataParam.MERCHANT_BRAND) {
         editDetail.dataParam.MERCHANT_BRAND = [{
@@ -83,20 +84,9 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchMerchant', {
         Data: { MERCHANTID: data }
     }, function (data) {
-        editDetail.dataParam.BILLID = data.merchant[0].MERCHANTID;
-        editDetail.dataParam.MERCHANTID = data.merchant[0].MERCHANTID;
-        editDetail.dataParam.NAME = data.merchant[0].NAME;
-        editDetail.dataParam.SH = data.merchant[0].SH;
-        editDetail.dataParam.BANK = data.merchant[0].BANK;
-        editDetail.dataParam.BANK_NAME = data.merchant[0].BANK_NAME;
-        editDetail.dataParam.ADRESS = data.merchant[0].ADRESS;
-        editDetail.dataParam.CONTACTPERSON = data.merchant[0].CONTACTPERSON;
-        editDetail.dataParam.PHONE = data.merchant[0].PHONE;
-        editDetail.dataParam.PIZ = data.merchant[0].PIZ;
-        editDetail.dataParam.WEIXIN = data.merchant[0].WEIXIN;
-        editDetail.dataParam.QQ = data.merchant[0].QQ;
-        editDetail.dataParam.STATUS = data.merchant[0].STATUS;
-        editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand[0];
+        $.extend(editDetail.dataParam, data.merchant);
+        editDetail.dataParam.BILLID = data.merchant.MERCHANTID;
+        editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand;
         callback && callback(data);
     });
 }

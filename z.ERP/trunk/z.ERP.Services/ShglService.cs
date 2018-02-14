@@ -6,7 +6,7 @@ using z.Extensions;
 using System;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
-
+using System.Linq;
 
 namespace z.ERP.Services
 {
@@ -25,12 +25,12 @@ namespace z.ERP.Services
             string sql = $@"SELECT * FROM MERCHANT WHERE 1=1 ";
             item.HasKey("MERCHANTID", a => sql += $" and MERCHANTID = '{a}'");
             item.HasKey("NAME", a => sql += $" and NAME  LIKE '%{a}%'");
-            item.HasKey("SH",a=>sql+=$" and SH={a}");
+            item.HasKey("SH", a => sql += $" and SH={a}");
             item.HasKey("BANK", a => sql += $" and BANK={a}");
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            dt.NewEnumColumns<普通单据状态>("STATUS","STATUSMC");
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
 
@@ -43,8 +43,9 @@ namespace z.ERP.Services
             foreach (var mer in DeleteData)
             {
                 MERCHANTEntity Data = DbHelper.Select(mer);
-                if (Data.STATUS == ((int)普通单据状态.审核).ToString()) {
-                    throw new LogicException("商户("+ Data.NAME + ")已经审核不能删除!");
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString())
+                {
+                    throw new LogicException("商户(" + Data.NAME + ")已经审核不能删除!");
                 }
             }
             using (var Tran = DbHelper.BeginTransaction())
@@ -75,8 +76,9 @@ namespace z.ERP.Services
                 SaveData.MERCHANTID = NewINC("MERCHANT");
                 SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
             }
-            else {
-                //这里这样写是不是麻烦了?
+            else
+            {
+                //这里这样写是不是麻烦了?(界面上显示审核人信息)
                 MERCHANTEntity mer = DbHelper.Select(SaveData);
                 SaveData.VERIFY = mer.VERIFY;
                 SaveData.VERIFY_NAME = mer.VERIFY_NAME;
@@ -104,19 +106,22 @@ namespace z.ERP.Services
         }
         /// <summary>
         /// 从列表页编辑跳转到编辑页数据的展示查询
-        /// 这里需要和详情页数据展示保持一直如何处理????
+        /// 这里需要和详情页数据展示保持一直如何处理????(已经OK)
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
-        public object GetMerchantElement(MERCHANTEntity Data)
+        public Tuple<dynamic, DataTable> GetMerchantElement(MERCHANTEntity Data)
         {
-            if (Data.MERCHANTID.IsEmpty()) {
+            if (Data.MERCHANTID.IsEmpty())
+            {
                 throw new LogicException("请确认商户编号!");
             }
             string sql = $@"SELECT * FROM MERCHANT WHERE 1=1 ";
             if (!Data.MERCHANTID.IsEmpty())
                 sql += (" AND MERCHANTID= " + Data.MERCHANTID);
             DataTable merchant = DbHelper.ExecuteTable(sql);
+
+             merchant.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
             string sqlitem = $@"SELECT M.BRANDID,C.NAME,D.CATEGORYCODE,D.CATEGORYNAME " +
                 " FROM MERCHANT_BRAND M,MERCHANT E,BRAND C,CATEGORY D " +
@@ -125,24 +130,26 @@ namespace z.ERP.Services
                 sqlitem += (" and E.MERCHANTID= " + Data.MERCHANTID);
             DataTable merchantBrand = DbHelper.ExecuteTable(sqlitem);
 
-            var result = new
-            {
-                merchant,
-                merchantBrand = new dynamic[] {
-                   merchantBrand
-                }
-            };
-            return result;
+            //var result = new
+            //{
+            //    merchant = 1,//merchant.ToOneLine(),
+            //    merchantBrand = merchantBrand
+            //};
+            return new Tuple<dynamic, DataTable>(merchant.ToOneLine(), merchantBrand);
         }
+
+    
+
         /// <summary>
-        /// 详情页的删除
+        /// 详情页的审核
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
         public string ExecData(MERCHANTEntity Data)
         {
             MERCHANTEntity mer = DbHelper.Select(Data);
-            if (mer.STATUS == ((int)普通单据状态.审核).ToString()) {
+            if (mer.STATUS == ((int)普通单据状态.审核).ToString())
+            {
                 throw new LogicException("商户(" + Data.NAME + ")已经审核不能再次审核!");
             }
             using (var Tran = DbHelper.BeginTransaction())
@@ -171,7 +178,7 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new
             {
-                dt
+                dt = dt.ToOneLine()
             };
         }
     }
