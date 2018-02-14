@@ -25,10 +25,11 @@ namespace z.ERP.Web.Areas.XTGL.BRANCH
             v.Require(a => a.NAME);
             v.IsUnique(a => a.NAME);
             v.Require(a => a.ORGID);
+            v.IsUnique(a => a.ORGID);
             v.Require(a => a.AREA_BUILD);
             v.Require(a => a.STATUS);
             v.Verify();
-            //这里要写SQL语句反写另外一个表ORG上面的分店信息
+            service.XtglService.Org_Update(DefineSave.ORGID, DefineSave.ID.ToInt());
             return CommonSave(DefineSave);
         }
 

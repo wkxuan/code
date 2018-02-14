@@ -304,7 +304,6 @@ namespace z.ERP.Services
             var v = GetVerify(DeleteData);
             string sql = $@"delete from STATION_PAY where  STATIONBH="  + DeleteData.STATIONBH.ToString();
             DbHelper.ExecuteNonQuery(sql);
-            //校验
             DbHelper.Delete(DeleteData);
         }
 
@@ -341,9 +340,6 @@ namespace z.ERP.Services
         public virtual UIResult TreeCategoryList()
         {
             List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();              
-
-            //string sql = $@"select * from CATEGORY order by CATEGORYCODE";
-            //List<CATEGORYEntity> p = DbHelper.ExecuteObject<CATEGORYEntity>(sql);
             return new UIResult(TreeModel.Create(p,
                 a => a.CATEGORYCODE,
                 a => new TreeModel()
@@ -354,6 +350,45 @@ namespace z.ERP.Services
                 })?.ToArray());
         }
 
+
+        public virtual UIResult TreeOrgData(SearchItem item)
+        {
+            string sql = $@"select * from ORG where 1=1 ";
+            item.HasKey("code", a => sql += $" and ORGCODE = '{a}' ");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public virtual UIResult TreeOrgList()
+        {
+            List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
+            return new UIResult(TreeModel.Create(p,
+                a => a.ORGCODE,
+                a => new TreeModel()
+                {
+                    code = a.ORGCODE,
+                    title = a.ORGNAME,
+                    expand = true
+                })?.ToArray());
+        }
+
+        public void Org_Update(string ID,int BRANCHID) {
+            ORGEntity Data = new ORGEntity
+            {
+                ORGID = ID
+            };
+            ORGEntity org = DbHelper.Select(Data);
+            string sqlUpdate = $@"update ORG set BRANCHID=" + BRANCHID + " where  ORGCODE like '" + org.ORGCODE + "%'";
+            DbHelper.ExecuteNonQuery(sqlUpdate);
+        }
+
+        public string Org_BRANCHID(string CODE)
+        {
+            var sql = " select BRANCHID from ORG where ORGCODE='"+ CODE + "'";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.Rows[0][0].ToString();
+        }
     }
 
 }

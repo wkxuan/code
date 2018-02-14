@@ -185,6 +185,7 @@
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cs" />
+    <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
     <Compile Include="Areas\XTGL\SHOP\Shop.cs" />
     <Compile Include="Areas\XTGL\FLOOR\Floor.cs" />
     <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
@@ -217,6 +218,7 @@
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
+    <Content Include="Areas\XTGL\ORG\Org.js" />
     <Content Include="Areas\XTGL\SHOP\Shop.js" />
     <Content Include="Areas\XTGL\FLOOR\Floor.js" />
     <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.js" />
@@ -327,6 +329,7 @@
     <Content Include="Areas\Share\CommonWindow.cshtml" />
     <Content Include="Areas\XTGL\CATEGORY\Category.cshtml" />
     <Content Include="Areas\Share\MerchantWindow.cshtml" />
+    <Content Include="Areas\XTGL\ORG\Org.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
