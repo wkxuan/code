@@ -1,0 +1,113 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Entities;
+@using z.ERP.Model;
+@using z.Extensions;
+@inherits EditDetailViewBase<string>
+
+
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            商户代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERCHANTID"
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            纸质合同号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACTID_PAPER"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<合同状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            原合同号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACT_OLD"
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            招商部门
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.ORGID",
+                    ServiceMothod = m => m.org_zs()
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            开始日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.CONT_START",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            结束日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.CONT_END",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            合作方式
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<联营合同合作方式>()
+                {
+                    vModel = "dataParam.OPERATERULE"
+                });
+            }
+        </i-col>
+    </row>
+}

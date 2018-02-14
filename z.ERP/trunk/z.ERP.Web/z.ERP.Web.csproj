@@ -151,6 +151,7 @@
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
+    <Compile Include="Areas\HTGL\LYHT\LYHTController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\Detail\DetailViewBase.cs" />
     <Compile Include="Areas\Layout\EditDetail\EditDetailViewBase.cs" />
@@ -203,6 +204,8 @@
   <ItemGroup>
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.js" />
+    <Content Include="Areas\HTGL\LYHT\HtEdit.js" />
+    <Content Include="Areas\HTGL\LYHT\HtList.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
@@ -330,11 +333,13 @@
     <Content Include="Areas\XTGL\CATEGORY\Category.cshtml" />
     <Content Include="Areas\Share\MerchantWindow.cshtml" />
     <Content Include="Areas\XTGL\ORG\Org.cshtml" />
+    <Content Include="Areas\HTGL\LYHT\HtList.cshtml" />
+    <Content Include="Areas\HTGL\LYHT\HtDetail.cshtml" />
+    <Content Include="Areas\HTGL\LYHT\HtEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Home\" />
-    <Folder Include="Areas\HTGL\LYHT\" />
     <Folder Include="Areas\HTGL\ZLHT\" />
     <Folder Include="Areas\XTGL\Views\Tree\" />
   </ItemGroup>

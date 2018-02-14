@@ -95,6 +95,14 @@ namespace z.ERP.Services
                 return ioc.Create<DpglService>();
             }
         }
+
+        public HtglService HtglService
+        {
+            get
+            {
+                return ioc.Create<HtglService>();
+            }
+        }
         #endregion
 
         #region 通用方法
