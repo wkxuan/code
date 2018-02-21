@@ -24,5 +24,21 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
             ViewBag.Title = "租约信息编辑";
             return View(model: Id);
         }
+
+        public string Save(CONTRACTEntity SaveData)
+        {
+            return service.HtglService.SaveContract(SaveData);
+        }
+
+        public UIResult SearchContract(CONTRACTEntity Data)
+        {
+            var res = service.HtglService.GetContractElement(Data);
+            return new UIResult(
+                new
+                {
+                    contract = res.Item1,
+                }
+            );
+        }
     }
 }

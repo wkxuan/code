@@ -111,3 +111,58 @@
         </i-col>
     </row>
 }
+
+@section detailParam{
+    <row>
+        <i-col span="12">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "screenParam.addColPP",
+                    Text = "添加一行品牌",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+            <row>
+                <i-table size="small" :border="true"
+                         :columns="screenParam.colDefPP" :data="dataParam.CONTRACT_BRAND"></i-table>
+            </row>
+        </i-col>
+        <i-col span="12">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "screenParam.addColSHOP",
+                    Text = "添加一行商铺",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+            <row>
+                <i-table size="small" :border="true"
+                         :columns="screenParam.colDefSHOP" :data="dataParam.CONTRACT_SHOP"></i-table>
+            </row>
+        </i-col>
+    </row>
+}
+
+@section panelParam{
+<panel name="detailSYTK">
+    商业条款信息
+    <p slot="content">
+    </p>
+</panel>
+
+<panel name="detailSFQK">
+    租约收费项目信息
+    <p slot="content">
+    </p>
+</panel>
+
+<panel name="detailSXF">
+    租约收款方式手续费
+    <p slot="content">
+    </p>
+</panel>
+}
