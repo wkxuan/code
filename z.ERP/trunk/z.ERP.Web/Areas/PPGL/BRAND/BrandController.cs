@@ -19,9 +19,18 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
             return View();
         }
 
-        public ActionResult BrandEdit()
+        public ActionResult BrandEdit(string Id)
         {
             ViewBag.Title = "编辑品牌列表信息";
+            return View(model: Id);
+        }
+
+        public ActionResult BrandDetail(string Id)
+        {
+            ViewBag.Title = "浏览品牌列表信息";
+
+            var entity = service.XtglService.GetBrandDetail(new BRANDEntity(Id));            
+            ViewBag.brand = entity.Item1;
             return View();
         }
 
@@ -40,5 +49,15 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
             }
 
         }
+        public UIResult SearchElement(BRANDEntity Data)
+        {
+            return new UIResult(service.XtglService.GetBrandElement(Data));
+        }
+
+        public void ExecData(BRANDEntity Data)
+        {
+            service.XtglService.BrandExecData(Data);
+        }
+
     }
 }

@@ -28,7 +28,9 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
         public ActionResult EnergyreGisterDetail(string Id)
         {
             ViewBag.Title = "浏览能源设备登记(抄表)";
-            ENERGY_REGISTEREntity entity = Select(new ENERGY_REGISTEREntity(Id));
+            var entity = service.WyglService.GetRegisterDetail(new ENERGY_REGISTEREntity(Id));
+            ViewBag.regist = entity.Item1;
+            ViewBag.item = entity.Item2;
             return View(entity);
         }
 

@@ -336,6 +336,7 @@
     <Content Include="Areas\HTGL\LYHT\HtList.cshtml" />
     <Content Include="Areas\HTGL\LYHT\HtDetail.cshtml" />
     <Content Include="Areas\HTGL\LYHT\HtEdit.cshtml" />
+    <Content Include="Areas\PPGL\BRAND\BrandDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

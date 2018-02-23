@@ -12,7 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using z.ERP.Entities;
+using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
+using z.Exceptions;
 using z.Extensions;
 using z.Extensiont;
 using z.MVC5.Results;
@@ -312,7 +314,7 @@ namespace z.ERP.Services
             var v = GetVerify(SaveData);
             if (SaveData.ID.IsEmpty())
                 SaveData.ID = CommonService.NewINC("BRAND");
-            SaveData.STATUS = "0";
+            SaveData.STATUS = "1";
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
@@ -389,6 +391,50 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.Rows[0][0].ToString();
         }
+
+
+        public object GetBrandElement(BRANDEntity Data)
+        {
+            string sql = $@"select * from BRAND where 1=1 ";
+            if (!Data.ID.IsEmpty())
+                sql += (" and ID= " + Data.ID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            var result = new
+            {
+                main = dt,
+            };
+            return result;
+        }
+        public Tuple<dynamic> GetBrandDetail(BRANDEntity Data)
+        {
+            string sql = $@"select * from BRAND where 1=1 ";
+            if (!Data.ID.IsEmpty())
+                sql += (" and ID= " + Data.ID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            return new Tuple<dynamic>(dt.ToOneLine());
+        }
+
+        public string BrandExecData(BRANDEntity Data)
+        {
+            BRANDEntity brand = DbHelper.Select(Data);
+            if (brand.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("品牌(" + Data.NAME + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                brand.VERIFY = employee.Id;
+                brand.VERIFY_NAME = employee.Name;
+                brand.VERIFY_TIME = DateTime.Now.ToString();
+                brand.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(brand);
+                Tran.Commit();
+            }
+            return brand.ID;
+        }
+        
     }
 
 }
