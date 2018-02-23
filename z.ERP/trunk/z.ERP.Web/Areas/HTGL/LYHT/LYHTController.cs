@@ -40,5 +40,15 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
                 }
             );
         }
+
+        public UIResult GetBrand(BRANDEntity Data)
+        {
+            return new UIResult(service.DataService.GetBrand(Data));
+        }
+        public UIResult GetShop(SHOPEntity Data)
+        {
+            return new UIResult(service.DataService.GetShop(Data));
+        }
+        
     }
 }

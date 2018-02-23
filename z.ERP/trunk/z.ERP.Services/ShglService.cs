@@ -163,23 +163,6 @@ namespace z.ERP.Services
             }
             return mer.MERCHANTID;
         }
-        /// <summary>
-        /// 编辑页输入品牌ID查询相关数据返回给前端展示
-        /// 这里需要和弹窗合并成一个请求语句????
-        /// </summary>
-        /// <param name="Data"></param>
-        /// <returns></returns>
-        public object GetBrand(BRANDEntity Data)
-        {
-            string sql = " SELECT  A.NAME,B.CATEGORYCODE,B.CATEGORYNAME FROM BRAND A,CATEGORY B " +
-                "  WHERE  A.CATEGORYID = B.CATEGORYID ";
-            if (!Data.ID.IsEmpty())
-                sql += (" and A.ID= " + Data.ID);
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            return new
-            {
-                dt = dt.ToOneLine()
-            };
-        }
+
     }
 }
