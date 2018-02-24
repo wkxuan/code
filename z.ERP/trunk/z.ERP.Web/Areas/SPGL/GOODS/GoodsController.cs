@@ -29,5 +29,14 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
             return View(entity);
         }
 
+        public string Save(GOODSEntity SaveData)
+        {
+            return service.SpglService.SaveGoods(SaveData);
+        }
+
+        public void Delete(List<GOODSEntity> DeleteData)
+        {
+            service.SpglService.DeleteGoods(DeleteData);
+        }
     }
 }

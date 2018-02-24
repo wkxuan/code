@@ -1,17 +1,103 @@
-﻿@{
-    Layout = null;
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Search
+@using z.ERP.Entities.Enum
+
+@inherits SearchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            商品名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.NAME"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            商品代码
+        </i-col>
+        <i-col span="6">
+
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.GOODSDM"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            商品条码
+        </i-col>
+        <i-col span="6">            
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.BARCODE"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            拼音码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.PYM"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            商户号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTID"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            租约号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.CONTRACTID"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            商品分类
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.KINDID"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            类型
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<商品类型>
+                {
+                    vModel = "searchParam.TYPE",
+                });
+            }
+        </i-col>
+    </row>
+
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
-    </div>
-</body>
-</html>

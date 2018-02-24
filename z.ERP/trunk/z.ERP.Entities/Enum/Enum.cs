@@ -144,4 +144,9 @@ namespace z.ERP.Entities.Enum
         非末级 = 1,
         末级 = 2,
     }
+    public enum 商品类型
+    {
+        品种 = 1,
+        大类 = 2
+    }
 }
