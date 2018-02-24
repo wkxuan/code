@@ -103,6 +103,13 @@ namespace z.ERP.Services
                 return ioc.Create<HtglService>();
             }
         }
+        public SpglService SpglService
+        {
+            get
+            {
+                return ioc.Create<SpglService>();
+            }
+        }
         #endregion
 
         #region 通用方法
