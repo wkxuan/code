@@ -80,7 +80,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
 
         public UIResult GetBrand(BRANDEntity Data)
         {
-            return new UIResult(service.ShglService.GetBrand(Data));
+            return new UIResult(service.DataService.GetBrand(Data));
         }
 
         public void ExecData(MERCHANTEntity Data)
