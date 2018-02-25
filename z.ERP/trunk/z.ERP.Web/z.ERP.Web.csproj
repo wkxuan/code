@@ -179,6 +179,7 @@
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\PPGL\BRAND\BrandController.cs" />
+    <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\CATEGORY\CategoryController.cs" />
@@ -217,6 +218,8 @@
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
+    <Content Include="Areas\SPGL\GOODS\GoodsEdit.js" />
+    <Content Include="Areas\SPGL\GOODS\GoodsList.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
@@ -340,9 +343,6 @@
     <Content Include="Areas\HTGL\LYHT\HtDetail.cshtml" />
     <Content Include="Areas\HTGL\LYHT\HtEdit.cshtml" />
     <Content Include="Areas\PPGL\BRAND\BrandDetail.cshtml" />
-    <Content Include="Areas\DPGL\ASSETSPLIT\AssetSpiltEdit.cshtml" />
-    <Content Include="Areas\DPGL\ASSETSPLIT\AssetSpiltList.cshtml" />
-    <Content Include="Areas\DPGL\ASSETSPLIT\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

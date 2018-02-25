@@ -75,5 +75,37 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
+
+        /// <summary>
+        /// 编辑页输入品牌ID查询相关数据返回给前端展示
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public object GetBrand(BRANDEntity Data)
+        {
+            string sql = " SELECT  A.NAME,B.CATEGORYCODE,B.CATEGORYNAME FROM BRAND A,CATEGORY B " +
+                "  WHERE  A.CATEGORYID = B.CATEGORYID ";
+            if (!Data.ID.IsEmpty())
+                sql += (" and A.ID= " + Data.ID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
+        }
+
+        public object GetShop(SHOPEntity Data)
+        {
+            string sql = " SELECT  A.SHOPID,A.CODE,B.CATEGORYID,B.CATEGORYCODE,B.CATEGORYNAME FROM " +
+                "  SHOP A,CATEGORY B " +
+                "  WHERE  A.CATEGORYID = B.CATEGORYID ";
+            if (!Data.CODE.IsEmpty())
+                sql += " AND A.CODE='"+ Data.CODE + "'";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
+        }
     }
 }

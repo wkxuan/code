@@ -121,7 +121,8 @@
                     Click = "screenParam.addColPP",
                     Text = "添加一行品牌",
                     Enable = true,
-                    Type = "primary"
+                    Type = "primary",
+                    Icon= "plus-circled"
                 });
             }
             <row>
@@ -136,7 +137,8 @@
                     Click = "screenParam.addColSHOP",
                     Text = "添加一行商铺",
                     Enable = true,
-                    Type = "primary"
+                    Type = "primary",
+                    Icon = "plus-circled"
                 });
             }
             <row>
@@ -151,6 +153,22 @@
 <panel name="detailSYTK">
     商业条款信息
     <p slot="content">
+        <row>
+            <i-col span="24">
+                <row>
+                    <i-table size="small" :border="true"
+                             :columns="screenParam.colDefRENT" :data="dataParam.CONTRACT_RENT"></i-table>
+                </row>
+            </i-col>
+        </row>
+        <row>
+            <i-col span="24">
+                <row>
+                    <i-table size="small" :border="true"
+                             :columns="screenParam.colDefRENTITEM" :data="dataParam.CONTRACT_RENTITEM"></i-table>
+                </row>
+            </i-col>
+        </row>
     </p>
 </panel>
 
