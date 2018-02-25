@@ -14,14 +14,29 @@ namespace z.ERP.Services
         internal DpglService()
         {
         }
+
+        public object GetShop(SHOPEntity Data)
+        {
+            string sql = " SELECT  A.* FROM SHOP A " +
+                "  WHERE  1=1 ";
+            if (!Data.SHOPID.IsEmpty())
+                sql += (" and A.SHOPID= " + Data.SHOPID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
+        }
         public DataGridResult GetAssetChange(SearchItem item)
         {
             string sql = $@"SELECT * FROM ASSETCHANGE WHERE 1=1 ";
-            item.HasKey("BILLID", a => sql += $" and BILLID LIKE '%{a}%'");
-            item.HasKey("BRANCHID", a => sql += $" and BRANCHID  LIKE '%{a}%'");
+            item.HasKey("STATUS", a => sql += $" and STATUS = '{a}'");
+            item.HasKey("BRANCHID", a => sql += $" and BRANCHID  = '{a}'");
+            item.HasKey("DISCRIPTION", a => sql += $" and DISCRIPTION  LIKE '%{a}%'");
             sql += " ORDER BY  BILLID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
 
@@ -74,29 +89,41 @@ namespace z.ERP.Services
         }
 
 
-        public object GetAssetChangeElement(ASSETCHANGEEntity Data)
+        public Tuple<dynamic, DataTable> GetAssetChangeElement(ASSETCHANGEEntity Data)
         {
              //此处校验一次只能查询一个单号,校验单号必须存在
-            string sql = $@"SELECT * FROM ASSETCHANGE WHERE 1=1 ";
+            string sql = $@"SELECT A.*,B.NAME BRANCHNAME FROM ASSETCHANGE A,BRANCH B  WHERE A.BRANCHID=B.ID ";
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND BILLID= " + Data.BILLID);
             DataTable assetchange = DbHelper.ExecuteTable(sql);
+            assetchange.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-
-
-            string sqlitem = $@"SELECT M.* " +
-                " FROM ASSETCHANGEITEM M " +
-                " where 1=1 ";
+            string sqlitem = $@"SELECT M.*,P.CODE " +
+                " FROM ASSETCHANGEITEM M，SHOP P " +
+                " where M.ASSETID=P.SHOPID ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             DataTable assetchangeitem = DbHelper.ExecuteTable(sqlitem);
 
-            var result = new
+            return new Tuple<dynamic, DataTable>(assetchange.ToOneLine(), assetchangeitem);
+        }
+        public string ExecData(ASSETCHANGEEntity Data)
+        {
+            ASSETCHANGEEntity assetchange = DbHelper.Select(Data);
+            if (assetchange.STATUS == ((int)普通单据状态.审核).ToString())
             {
-                assetchange = assetchange,
-                assetchangeitem= assetchange
-            };
-            return result;
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                assetchange.VERIFY = employee.Id;
+                assetchange.VERIFY_NAME = employee.Name;
+                assetchange.VERIFY_TIME = DateTime.Now.ToString();
+                assetchange.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(assetchange);
+                Tran.Commit();
+            }
+            return assetchange.BILLID;
         }
     }
 }

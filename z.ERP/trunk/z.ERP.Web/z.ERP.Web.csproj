@@ -150,6 +150,7 @@
     <Compile Include="App_Start\DebugSettings.cs" />
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
+    <Compile Include="Areas\DPGL\ASSETSPLIT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
     <Compile Include="Areas\HTGL\LYHT\LYHTController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
@@ -202,6 +203,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\DPGL\ASSETSPLIT\AssetSpiltEdit.js" />
+    <Content Include="Areas\DPGL\ASSETSPLIT\AssetSpiltList.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.js" />
     <Content Include="Areas\HTGL\LYHT\HtEdit.js" />
@@ -337,6 +340,9 @@
     <Content Include="Areas\HTGL\LYHT\HtDetail.cshtml" />
     <Content Include="Areas\HTGL\LYHT\HtEdit.cshtml" />
     <Content Include="Areas\PPGL\BRAND\BrandDetail.cshtml" />
+    <Content Include="Areas\DPGL\ASSETSPLIT\AssetSpiltEdit.cshtml" />
+    <Content Include="Areas\DPGL\ASSETSPLIT\AssetSpiltList.cshtml" />
+    <Content Include="Areas\DPGL\ASSETSPLIT\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
