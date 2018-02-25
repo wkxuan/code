@@ -9,38 +9,29 @@ using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
 
-namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
+namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
 {
-    public class AssetChangeController : BaseController
+    public class AssetSpiltController : BaseController
     {
-        //public ActionResult AssetTypeChangeList()
-        //{
-        //    ViewBag.Title = "资产类型变更单";
-        //    return View();
-        //}
-        //public ActionResult AssetAreaChangeList()
-        //{
-        //    ViewBag.Title = "资产面积变更单";
-        //    return View();
-        //}
-        public ActionResult AssetChangeList(string type)
+        public ActionResult AssetSpiltList(string type)
         {
-            ViewBag.Title = "资产变更单";
-            ViewBag.Type = "1";
+            ViewBag.Title = "店铺拆分处理";
+            ViewBag.Type = "3";
             return View();
         }
         public ActionResult Detail(string Id)
         {
-            ViewBag.Title = "资产变更单浏览";
+            ViewBag.Title = "店铺拆分浏览";
             var entity = service.DpglService.GetAssetChangeElement(new ASSETCHANGEEntity(Id));
             ViewBag.assetchange = entity.Item1;
             ViewBag.assetchangeitem = entity.Item2;
+            ViewBag.assetchangeitem2 = entity.Item3;
             return View(entity);
         }
 
-        public ActionResult AssetChangeEdit(string Id)
+        public ActionResult AssetSpiltEdit(string Id)
         {
-            ViewBag.Title = "编辑资产调整单";
+            ViewBag.Title = "编辑店铺拆分单";
             return View(model:Id);
         }
 
@@ -55,14 +46,15 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
             return service.DpglService.SaveAssetChange(SaveData);
         }
 
-        public UIResult SearchAssetChange(ASSETCHANGEEntity Data)
+        public UIResult SearchAssetSpilt(ASSETCHANGEEntity Data)
         {
             var res = service.DpglService.GetAssetChangeElement(Data);
             return new UIResult(
                 new
                 {
-                    assetchange = res.Item1,
-                    assetchangeitem = res.Item2
+                    assetspilt = res.Item1,
+                    assetspiltitem = res.Item2,
+                    assetspiltitem2 = res.Item3
                 }
                 );
         }

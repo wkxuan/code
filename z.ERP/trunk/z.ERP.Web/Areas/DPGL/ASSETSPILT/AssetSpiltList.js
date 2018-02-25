@@ -1,6 +1,6 @@
 ﻿search.beforeVue = function () {
     search.searchParam.BILLID = "";
-    CHANGE_TYPE = "";
+    search.searchParam.CHANGE_TYPE = 3;
     search.searchParam.TYPE = true;
     var col = [
         { title: "单据编号", key: 'BILLID', width: 100 },
@@ -21,16 +21,16 @@
 //searchParam.CHANGE_TYPE = ViewBag.Type;
 //浏览双击跳转页面
 search.browseHref = function (row, index) {
-    _.OpenPage("DPGL/ASSETCHANGE/Detail/" + row.BILLID, function (data) {
+    _.OpenPage("DPGL/ASSETSPILT/Detail/" + row.BILLID, function (data) {
     });
 }
 //添加跳转页面
 search.addHref = function (row) {
-    _.OpenPage("DPGL/ASSETCHANGE/AssetChangeEdit/", function (data) {
+    _.OpenPage("DPGL/ASSETSPILT/AssetSpiltEdit/", function (data) {
     });
 }
 
 search.modHref = function (row, index) {
-   _.OpenPage("DPGL/ASSETCHANGE/AssetChangeEdit/" + row.BILLID, function (data) {
+    _.OpenPage("DPGL/ASSETSPILT/AssetSpiltEdit/" + row.BILLID, function (data) {
    });
 }
