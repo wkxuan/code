@@ -285,13 +285,24 @@ editDetail.clearKey = function () {
 
 editDetail.IsValidSave = function () {
     var d = new Date(editDetail.dataParam.CONT_START);
-    editDetail.dataParam.CONT_START = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    editDetail.dataParam.CONT_START =formatDate(editDetail.dataParam.CONT_START);
 
     var d = new Date(editDetail.dataParam.CONT_END);
-    editDetail.dataParam.CONT_END = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    editDetail.dataParam.CONT_END = formatDate(editDetail.dataParam.CONT_END);
 
     return true;
 }
+
+
+function formatDate( date, isfull ) {
+    if ( !date )
+        return '';
+    var d = new Date(date);
+    if (!isfull){
+        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    }
+}
+
 
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchContract', {

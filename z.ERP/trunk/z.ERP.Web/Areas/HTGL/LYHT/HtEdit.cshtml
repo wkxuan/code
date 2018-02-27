@@ -12,7 +12,7 @@
         <i-col span="2" class="RowTitle">
             商户代码
         </i-col>
-        <i-col span="6">
+        <i-col span="2">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -20,9 +20,15 @@
                 });
             }
         </i-col>
-    </row>
-
-    <row>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERNAME",
+                    Readonly="true"
+                });
+            }
+        </i-col>
         <i-col span="2" class="RowTitle">
             纸质合同号
         </i-col>
@@ -47,33 +53,9 @@
                 });
             }
         </i-col>
-
-        <i-col span="2" class="RowTitle">
-            原合同号
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CONTRACT_OLD"
-                });
-            }
-        </i-col>
     </row>
 
     <row>
-        <i-col span="2" class="RowTitle">
-            招商部门
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.ORGID",
-                    ServiceMothod = m => m.org_zs()
-                });
-            }
-        </i-col>
         <i-col span="2" class="RowTitle">
             开始日期
         </i-col>
@@ -93,6 +75,34 @@
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "dataParam.CONT_END",
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            原合同号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACT_OLD",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            招商部门
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.ORGID",
+                    ServiceMothod = m => m.org_zs()
                 });
             }
         </i-col>
