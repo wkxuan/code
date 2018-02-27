@@ -30,7 +30,7 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            纸质合同号
+            纸质编号
         </i-col>
         <i-col span="6">
             @{
@@ -106,8 +106,6 @@
                 });
             }
         </i-col>
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
             合作方式
         </i-col>
@@ -116,6 +114,19 @@
                 RenderControl(new EnumDropDownListRender<联营合同合作方式>()
                 {
                     vModel = "dataParam.OPERATERULE"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            其他条款
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION"
                 });
             }
         </i-col>

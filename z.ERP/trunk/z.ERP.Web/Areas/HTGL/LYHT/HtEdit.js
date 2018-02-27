@@ -56,7 +56,7 @@
     ];
 
     editDetail.screenParam.colDefSHOP = [
-    { title: '单元ID', key: 'SHOPID', width: 100 },
+    //{ title: '单元ID', key: 'SHOPID', width: 100 },
     {
         title: "单元代码", key: 'CODE', width: 100,
         render: function (h, params) {
@@ -81,7 +81,7 @@
             })
         },
     },
-    { title: '业态ID', key: 'CATEGORYID', width: 100 },
+    //{ title: '业态ID', key: 'CATEGORYID', width: 100 },
     { title: '业态代码', key: 'CATEGORYCODE', width: 100 },
     { title: '业态名称', key: 'CATEGORYNAME', width: 100 },
     {
