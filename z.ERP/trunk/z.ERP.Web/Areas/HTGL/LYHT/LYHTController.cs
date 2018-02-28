@@ -37,6 +37,8 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
                 new
                 {
                     contract = res.Item1,
+                    contractBrand =res.Item2,
+                    contractShop=res.Item3,
                 }
             );
         }

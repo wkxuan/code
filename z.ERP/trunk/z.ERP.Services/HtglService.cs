@@ -60,11 +60,6 @@ namespace z.ERP.Services
 
             SaveData.QZRQ = SaveData.CONT_START;
 
-            SaveData.AREAR = "100";
-            SaveData.JXSL = "0.17";
-            SaveData.XXSL = "0.17";
-
-
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
@@ -79,21 +74,32 @@ namespace z.ERP.Services
         }
 
 
-        public Tuple<dynamic> GetContractElement(CONTRACTEntity Data)
+        public Tuple<dynamic, DataTable,DataTable> GetContractElement(CONTRACTEntity Data)
         {
             if (Data.CONTRACTID.IsEmpty())
             {
                 throw new LogicException("请确认租约编号!");
             }
             string sql = $@"SELECT * FROM CONTRACT WHERE 1=1 ";
-            if (!Data.CONTRACTID.IsEmpty())
-                sql += (" AND CONTRACTID= " + Data.CONTRACTID);
+            sql += (" AND CONTRACTID= " + Data.CONTRACTID);
             DataTable contract = DbHelper.ExecuteTable(sql);
 
             contract.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
 
-            return new Tuple<dynamic>(contract.ToOneLine());
+            string sqlitem = $@"SELECT B.BRANDID,C.NAME " +
+                             " FROM  CONTRACT A,CONTRACT_BRAND B,BRAND C " +
+                             " where A.CONTRACTID = B.CONTRACTID AND B.BRANDID=C.ID  ";
+            sqlitem += (" and A.CONTRACTID= " + Data.CONTRACTID);
+            DataTable contract_brand = DbHelper.ExecuteTable(sqlitem);
+
+            string sqlshop = $@"SELECT B.SHOPID,C.CODE,D.CATEGORYCODE,D.CATEGORYID," +
+                           " D.CATEGORYNAME,B.AREA,B.AREA_RENTABLE" +
+                           " FROM CONTRACT A,CONTRACT_SHOP B,SHOP C,CATEGORY D" +
+                           " WHERE A.CONTRACTID=B.CONTRACTID AND B.SHOPID=C.SHOPID AND B.CATEGORYID=D.CATEGORYID";
+            sqlshop += (" and A.CONTRACTID= " + Data.CONTRACTID);
+            DataTable contract_shop = DbHelper.ExecuteTable(sqlshop);
+            return new Tuple<dynamic, DataTable, DataTable>(contract.ToOneLine(), contract_brand, contract_shop);
         }
     }
 }

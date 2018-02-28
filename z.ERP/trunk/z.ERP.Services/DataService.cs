@@ -76,11 +76,6 @@ namespace z.ERP.Services
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
 
-        /// <summary>
-        /// 编辑页输入品牌ID查询相关数据返回给前端展示
-        /// </summary>
-        /// <param name="Data"></param>
-        /// <returns></returns>
         public object GetBrand(BRANDEntity Data)
         {
             string sql = " SELECT  A.NAME,B.CATEGORYCODE,B.CATEGORYNAME FROM BRAND A,CATEGORY B " +
@@ -96,11 +91,14 @@ namespace z.ERP.Services
 
         public object GetShop(SHOPEntity Data)
         {
-            string sql = " SELECT  A.SHOPID,A.CODE,B.CATEGORYID,B.CATEGORYCODE,B.CATEGORYNAME FROM " +
+            string sql = " SELECT  A.SHOPID,A.CODE,B.CATEGORYID,B.CATEGORYCODE,B.CATEGORYNAME,A.AREA_BUILD,A.AREA_RENTABLE FROM " +
                 "  SHOP A,CATEGORY B " +
                 "  WHERE  A.CATEGORYID = B.CATEGORYID ";
             if (!Data.CODE.IsEmpty())
                 sql += " AND A.CODE='"+ Data.CODE + "'";
+            if (!Data.BRANCHID.IsEmpty())
+                sql += " AND A.BRANCHID=" + Data.BRANCHID + "";
+            
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new
             {

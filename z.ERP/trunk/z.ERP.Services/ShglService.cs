@@ -130,11 +130,6 @@ namespace z.ERP.Services
                 sqlitem += (" and E.MERCHANTID= " + Data.MERCHANTID);
             DataTable merchantBrand = DbHelper.ExecuteTable(sqlitem);
 
-            //var result = new
-            //{
-            //    merchant = 1,//merchant.ToOneLine(),
-            //    merchantBrand = merchantBrand
-            //};
             return new Tuple<dynamic, DataTable>(merchant.ToOneLine(), merchantBrand);
         }
 
