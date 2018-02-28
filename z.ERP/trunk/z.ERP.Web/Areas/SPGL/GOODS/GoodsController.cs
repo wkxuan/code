@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.SPGL.GOODS
 {
@@ -25,7 +26,7 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
         {
             ViewBag.Title = "浏览商品信息";
             var entity = service.SpglService.GetGoodsDetail(new GOODSEntity(Id));
-            ViewBag.good = entity.Item1;
+            ViewBag.goods = entity.Item1;
             return View(entity);
         }
 
@@ -37,6 +38,11 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
         public void Delete(List<GOODSEntity> DeleteData)
         {
             service.SpglService.DeleteGoods(DeleteData);
+        }
+
+        public UIResult ShowOneEdit(GOODSEntity Data)
+        {
+            return new UIResult(service.SpglService.ShowOneEdit(Data));
         }
     }
 }

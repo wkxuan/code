@@ -39,7 +39,8 @@ namespace z.ERP.Services
             if (!Data.GOODSDM.IsEmpty())
                 sql += (" and GOODSDM= " + Data.GOODSDM);
             DataTable dt = DbHelper.ExecuteTable(sql);
-
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<商品类型>("TYPE", "TYPEMC");
             return new Tuple<dynamic>(dt.ToOneLine());
         }
 
@@ -88,6 +89,20 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
         }
+        public object ShowOneEdit(GOODSEntity Data)
+        {
+            string sql = $@"select * from GOODS where 1=1 ";
+            if (!Data.GOODSID.IsEmpty())
+                sql += (" and GOODSID= " + Data.GOODSID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            var result = new
+            {
+                goods = dt,
+            };
+            return result;
+        }
+        
 
     }
 }
