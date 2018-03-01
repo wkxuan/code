@@ -99,6 +99,7 @@
                 del: function (event) {
                     event.stopPropagation();
                     var _self = this;
+                    console.log(this);
                     var selectton = this.$refs.selectData.getSelection();
                     if (selectton.length == 0) {
                         this.$Message.info("请选中要删除的数据!");

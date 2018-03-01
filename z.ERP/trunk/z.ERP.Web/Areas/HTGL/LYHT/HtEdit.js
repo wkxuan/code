@@ -10,7 +10,9 @@
     editDetail.dataParam.XXSL = 0.17;
     editDetail.dataParam.othersName = "品牌商铺信息";
 
+    //品牌表格
     editDetail.screenParam.colDefPP = [
+    { type: 'selection', width: 60, align: 'center'},
     {
         title: "品牌代码", key: 'BRANDID', width: 100,
         render: function (h, params) {
@@ -39,37 +41,16 @@
         },
     },
     { title: '品牌名称', key: 'NAME', width: 200 },
-    {
-        title: '操作',
-        key: 'action',
-        width: 80,
-        align: 'center',
-        fixed: 'right',
-        render: function (h, params) {
-            return h('div',
-                [
-                h('Button', {
-                    props: { type: 'primary', size: 'small', disabled: false, icon: "minus-circled" },
-
-                    style: { marginRight: '5px' },
-                    on: {
-                        click: function (event) {
-                            editDetail.dataParam.CONTRACT_BRAND.splice(params.index, 1);
-                        }
-                    },
-                }, '删除')
-                ]);
-        }
-    }
     ];
 
-    //面积合计
 
 
+
+    //商铺表格
     editDetail.screenParam.colDefSHOP = [
-    //{ title: '单元ID', key: 'SHOPID', width: 100 },
+    { type: 'selection', width: 60, align: 'center'},
     {
-        title: "单元代码", key: 'CODE', width: 100,
+        title: "商铺代码", key: 'CODE', width: 100,
         render: function (h, params) {
             return h('Input', {
                 props: {
@@ -102,47 +83,26 @@
             })
         },
     },
-    //{ title: '业态ID', key: 'CATEGORYID', width: 100 },
     { title: '业态代码', key: 'CATEGORYCODE', width: 100 },
     { title: '业态名称', key: 'CATEGORYNAME', width: 100 },
     { title: '建筑面积', key: 'AREA', width: 100 },
-    { title: '租用面积', key: 'AREA_RENTABLE', width: 100 },
-    {
-        title: '操作',
-        key: 'action',
-        fixed: 'rigth',
-        width: 80,
-        align: 'center',
-        fixed: 'right',
-        render: function (h, params) {
-            return h('div',
-                [
-                h('Button', {
-                    props: { type: "primary", size: "small", disabled: false, icon: "minus-circled" },
-                    style: { marginRight: '50px' },
-                    on: {
-                        click: function (event) {
-                            editDetail.dataParam.CONTRACT_SHOP.splice(params.index, 1);
-                            calculateArea();
-                        }
-                    },
-                }, '删除')
-                ]);
-        }
-    }
+    { title: '租用面积', key: 'AREA_RENTABLE', width: 100 }
     ];
 
+
+    //保底表格
     editDetail.screenParam.colDefRENT = [
-       { title: '时间段', key: 'INX', width: 100 },
+       { type: 'selection', width: 60, align: 'center'},
+       { title: '时间段', key: 'INX', width: 80 },
        {
             title: '开始日期',
             key: 'STARTDATE',
-            width: 170,
+            width: 150,
         },
         {
            title: '结束日期',
            key: 'ENDDATE',
-           width: 170,
+           width: 150,
            render: function (h, params) {
                return h('DatePicker', {
                    props: {
@@ -156,43 +116,6 @@
                })
            },
         },
-        //联营合同不需要
-        //{
-        //    title: '单价类型',
-        //    key: 'DJLX',
-        //    width: 150,
-        //    render: function(h, params){
-        //        return h('Select',{
-        //            props:{
-        //                value:params.row.DJLX
-        //            },
-        //            on:{
-        //                'on-change':function(event){
-        //                    Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'DJLX', event);
-        //                }
-        //            }},
-        //            [ h('Option', {props: {value: '1'} }, '建筑面积'),
-        //              h('Option', {props: {value: '2'} }, '租用面积')
-        //            ],
-        //        )}
-        //},
-        //联营合同不需要
-        //{
-        //    title: "单价", key: 'PRICE', width: 100,
-        //    render: function (h, params) {
-        //        return h('Input', {
-        //            props: {
-        //                value: params.row.PRICE
-        //            },
-        //            on: {
-        //                 'on-enter': function (event) {
-        //                editDetail.dataParam.CONTRACT_RENT[params.index].PRICE = event.target.value;
-        //                }
-        //            },
-        //        })
-        //    },           
-        //},
-
         {
             title: "保底(毛利or销售)", key: 'RENTS', width: 150,
             render: function (h, params) {
@@ -225,12 +148,15 @@
         },
         { title: "总保底(毛利or销售)", key: 'SUMRENTS', width: 150},
     ];
+
+
+    //月度分解表格
     editDetail.screenParam.colDefRENTITEM = [
-        { title: '时间段', key: 'INX', width: 100 },
-        { title: '开始日期', key: 'STARTDATE',width: 170},
-        { title: '结束日期', key: 'ENDDATE', width: 170},
-        { title: '年月', key: 'YEARMONTH', width: 150},
-        { title: '租金', key: 'RENTS', width: 200},
+        { title: '时间段', key: 'INX', width: 80 },
+        { title: '开始日期', key: 'STARTDATE',width: 150},
+        { title: '结束日期', key: 'ENDDATE', width: 150},
+        { title: '年月', key: 'YEARMONTH', width: 100},
+        { title: '保底销售or毛利', key: 'RENTS', width: 200},
         { title: '生成日期', key: 'CREATEDATE',width: 170},
         {  title: '清算标记', key: 'QSBJ',width: 150,
            render: function(h, params){
@@ -251,7 +177,7 @@
     ];
 
 
-
+    //表格数据初始化
     if (!editDetail.dataParam.CONTRACT_BRAND) {
         editDetail.dataParam.CONTRACT_BRAND = [{
             BRANDID: ""
@@ -274,30 +200,13 @@
         editDetail.dataParam.CONTRACT_RENTITEM = [{
             RENTS: 0
         }]
-    };
-
+    }; 
     
-    editDetail.screenParam.addColPP = function () {
-        var temp = editDetail.dataParam.CONTRACT_BRAND || [];
-        temp.push({});
-        editDetail.dataParam.CONTRACT_BRAND = temp;
-    };
-    editDetail.screenParam.addColSHOP = function () {
-        if (!editDetail.dataParam.BRANCHID){
-            iview.Message.info('请先确认分店!');
-            return;
-        }
-        var temp = editDetail.dataParam.CONTRACT_SHOP || [];
-        temp.push({});
-        editDetail.dataParam.CONTRACT_SHOP = temp;
-    };
-
-
     calculateArea = function(){
         editDetail.dataParam.AREA_BUILD = 0;
         editDetail.dataParam.AREAR = 0;
         for (var i = 0; i < editDetail.dataParam.CONTRACT_SHOP.length; i++) {
-            if (editDetail.dataParam.CONTRACT_SHOP[i].CODE){
+            if (editDetail.dataParam.CONTRACT_SHOP[i].SHOPID){
                 editDetail.dataParam.AREA_BUILD+=editDetail.dataParam.CONTRACT_SHOP[i].AREA;
                 editDetail.dataParam.AREAR+=editDetail.dataParam.CONTRACT_SHOP[i].AREA_RENTABLE;
             }
@@ -305,7 +214,128 @@
     }
 }
 
+editDetail.otherMethods={
 
+    //添加品牌
+    addColPP: function () {
+        var temp = editDetail.dataParam.CONTRACT_BRAND || [];
+        temp.push({});
+        editDetail.dataParam.CONTRACT_BRAND = temp;
+    },
+    //删除品牌
+    delColPP:function(){
+        var selectton = this.$refs.selectBrand.getSelection();
+        if (selectton.length == 0) {
+            iview.Message.info("请选中要删除的品牌!");
+        }else{
+            for(var i=0;i<selectton.length;i++){
+                for (var j = 0; j < editDetail.dataParam.CONTRACT_BRAND.length; j++) {
+                    if (editDetail.dataParam.CONTRACT_BRAND[j].BRANDID==selectton[i].BRANDID){
+                        editDetail.dataParam.CONTRACT_BRAND.splice(j, 1);
+                    }
+                }
+            }
+        }
+    },
+    //添加商铺
+    addColSHOP : function () {
+        if (!editDetail.dataParam.BRANCHID){
+            iview.Message.info('请先确认分店!');
+            return;
+        }
+        var temp = editDetail.dataParam.CONTRACT_SHOP || [];
+        temp.push({});
+        editDetail.dataParam.CONTRACT_SHOP = temp;
+    },
+    //删除商铺
+    delColSHOP:function(){
+        var selectton = this.$refs.selectShop.getSelection();
+        if (selectton.length == 0) {
+            iview.Message.info("请选中要删除的商铺!");
+        }else{
+            for(var i=0;i<selectton.length;i++){
+                for (var j = 0; j < editDetail.dataParam.CONTRACT_SHOP.length; j++) {
+                    if (editDetail.dataParam.CONTRACT_SHOP[j].SHOPID==selectton[i].SHOPID){
+                        editDetail.dataParam.CONTRACT_SHOP.splice(j, 1);
+                        calculateArea();
+                    }
+                }
+            }
+        }
+    },
+    //添加一行保底信息
+    addColDefRENT:function(){
+        var temp = editDetail.dataParam.CONTRACT_RENT || [];
+        temp.push({});
+        editDetail.dataParam.CONTRACT_RENT = temp;
+    },
+
+    //删除一行保底
+    delColDefRENT:function(){
+        var selectton = this.$refs.selectRent.getSelection();
+        if (selectton.length == 0) {
+            iview.Message.info("请选中要删除的数据!");
+        }else{
+            for(var i=0;i<selectton.length;i++){
+                for (var j = 0; j < editDetail.dataParam.CONTRACT_RENT.length; j++) {
+                    if (editDetail.dataParam.CONTRACT_RENT[j].INX==selectton[i].INX){
+                        editDetail.dataParam.CONTRACT_RENT.splice(j, 1);
+                        calculateArea();
+                    }
+                }
+            }
+        }
+    },
+
+    //按年度分解
+    operPeriod : function(){
+        if (!editDetail.dataParam.CONT_START || !editDetail.dataParam.CONT_END) {
+            iview.Message.info("请先维护租约开始结束日期!");
+            return;
+        }
+        if (editDetail.dataParam.CONT_START > editDetail.dataParam.CONT_END) {
+            iview.Message.info("租约结束日期不能小于开始日期！");
+            return;
+        }
+        editDetail.dataParam.CONTRACT_RENT = [];
+        var yearsValue = getYears(new Date(editDetail.dataParam.CONT_START), new Date(editDetail.dataParam.CONT_END)); 
+        var nestYear = null;
+        var rentData = null;
+        var beginHtq = editDetail.dataParam.CONT_START; 
+        
+        //循环年数
+        for (var i = 0; i <= yearsValue; i++) {
+            var copyHtQsr = formatDate(beginHtq); 
+            nestYear = getNextYears(beginHtq);
+            if (nestYear < formatDate(editDetail.dataParam.CONT_END)) { 
+                rentData = {
+                   INX: i + 1,
+                   STARTDATE: copyHtQsr,
+                   ENDDATE: nestYear,
+                   RENTS: 0,
+                   RENTS_JSKL: 0,
+                   SUMRENTS: 0
+                }
+               editDetail.dataParam.CONTRACT_RENT.push(rentData);
+               beginHtq = addDate(nestYear);
+            } else {
+                rentData = {
+                   INX: i + 1,
+                   STARTDATE: copyHtQsr,
+                   ENDDATE: editDetail.dataParam.CONT_END,
+                   RENTS: 0,
+                   RENTS_JSKL: 0,
+                   SUMRENTS: 0
+                }
+                editDetail.dataParam.CONTRACT_RENT.push(rentData);
+                break;
+            }
+        }
+    },
+
+    //分解月度数据
+    decompose:function(){},
+}
 
 editDetail.showOne = function (data, callback) {
 }
@@ -325,16 +355,6 @@ editDetail.IsValidSave = function () {
 }
 
 
-function formatDate( date, isfull ) {
-    if ( !date )
-        return '';
-    var d = new Date(date);
-    if (!isfull){
-        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-    }
-}
-
-
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchContract', {
         Data: { CONTRACTID: data }
@@ -346,3 +366,34 @@ editDetail.showOne = function (data, callback) {
         callback && callback(data);
     });
 }
+
+function formatDate( date, isfull ) {
+    if ( !date )
+        return '';
+    var d = new Date(date);
+    if (!isfull){
+        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    }
+}
+
+
+function getYears(date1, date2) { //获取两个年份之差
+    var years = date2.getFullYear() - date1.getFullYear();
+    return years;
+};
+
+function getNextYears(date) { //获取当前日前的下一年上一天
+    var tomYear = new Date(date);
+    tomYear.setFullYear(tomYear.getFullYear() + 1); //下一年的今天
+    tomYear.setDate(tomYear.getDate() - 1); //下一年的昨天
+    return formatDate(tomYear);
+};
+
+function addDate(date, days) {
+    if (days == undefined || days == '') {
+        days = 1;
+    }
+    var lastDay = new Date(date); //日前复制防止原来日期发生变化
+    lastDay.setDate(lastDay.getDate() + days); //日期加天数
+    return lastDay;
+};
