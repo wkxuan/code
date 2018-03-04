@@ -11,11 +11,10 @@
         }];
 
     define.screenParam.dataDef = [];
-
     define.service = "XtglService";
     define.method = "GetShopElement";
     define.methodList = "GetShop";
-    define.getKey = 'SHOPID';
+    define.Key = 'SHOPID';
 }
 
 

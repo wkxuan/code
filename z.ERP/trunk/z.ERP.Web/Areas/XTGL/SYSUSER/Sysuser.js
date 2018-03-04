@@ -3,22 +3,21 @@
     define.screenParam.colDef = [
         {
             title: "代码",
-            key: 'CODE', width: 150
+            key: 'USERCODE', width: 150
         },
         {
             title: '名称',
-            key: 'NAME', width: 250
+            key: 'USERNAME', width: 250
         }];
 
     define.screenParam.dataDef = [];
-
     define.service = "XtglService";
-    define.method = "GetFloorElement";
-    define.methodList = "GetFloor";
-    define.Key = 'ID';
+    define.method = "GetUserElement";
+    define.methodList = "GetUser";
+    define.Key = "USERID";
 }
 
-
 define.newRecord = function () {
-    define.dataParam.VOID_FLAG = "1";
+    define.dataParam.USER_FLAG = "1";
+    define.dataParam.VOID_FLAG = "2";
 }

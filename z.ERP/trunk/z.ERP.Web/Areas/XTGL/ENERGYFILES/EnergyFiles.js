@@ -15,7 +15,7 @@
     define.service = "XtglService";
     define.method = "GetEnergyFilesElement";
     define.methodList = "GetEnergyFiles";
-    define.getKey = 'FILEID';
+    define.Key = 'FILEID';
 }
 
 

@@ -115,6 +115,11 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic, DataTable, DataTable>(assetchange.ToOneLine(), assetchangeitem, assetchangeitem2);
         }
+        /// <summary>
+        /// 资产变更审核
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
         public string ExecData(ASSETCHANGEEntity Data)
         {
             ASSETCHANGEEntity assetchange = DbHelper.Select(Data);
@@ -133,5 +138,6 @@ namespace z.ERP.Services
             }
             return assetchange.BILLID;
         }
+
     }
 }
