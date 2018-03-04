@@ -15,13 +15,13 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
     {
         public ActionResult HtList()
         {
-            ViewBag.Title = "租约列表信息";
+            ViewBag.Title = "联营租约列表信息";
             return View();
         }
 
         public ActionResult HtEdit(string Id)
         {
-            ViewBag.Title = "租约信息编辑";
+            ViewBag.Title = "联营租约信息编辑";
             return View(model: Id);
         }
 
@@ -39,6 +39,10 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
                     contract = res.Item1,
                     contractBrand =res.Item2,
                     contractShop=res.Item3,
+                    contract_rent = res.Item4,
+                    contract_group = res.Item5,
+                    contract_jskl = res.Item6,
+                    contract_rentitem = res.Item7,
                 }
             );
         }
