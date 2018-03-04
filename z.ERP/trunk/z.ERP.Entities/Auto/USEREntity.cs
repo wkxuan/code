@@ -11,14 +11,14 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("USER", "用户")]
-    public partial class USEREntity : EntityBase
+    [DbTable("SYSUSER", "用户")]
+    public partial class SYSUSEREntity : EntityBase
     {
-        public USEREntity()
+        public SYSUSEREntity()
         {
         }
 
-        public USEREntity(string userid)
+        public SYSUSEREntity(string userid)
         {
             USERID = userid;
         }

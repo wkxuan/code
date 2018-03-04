@@ -1,4 +1,5 @@
-﻿var tempitem2;
+﻿var tempItem2;
+var itemCurRow;
 editDetail.beforeVue = function () {
     //测试
     editDetail.stepParam = [
@@ -18,21 +19,22 @@ editDetail.beforeVue = function () {
     }
 
     editDetail.otherMethods = {
-        filter: function (row, index) {
-            if (tempitem2 === undefined) {
-                tempitem2 = editDetail.dataParam.ASSETCHANGEITEM2
+        filter: function (curRow, oldRow) {
+            itemCurRow = curRow;
+            if (tempItem2 === undefined) {
+                tempItem2 = editDetail.dataParam.ASSETCHANGEITEM2
             }
             else {
                 for (inx in editDetail.dataParam.ASSETCHANGEITEM2)
-                { tempitem2.push(editDetail.dataParam.ASSETCHANGEITEM2[inx]); }
-            }          
-            filterdata = tempitem2.filter(function (row2) {
-                return parseInt(row2.ASSETID) === row.ASSETID;
+                { tempItem2.push(editDetail.dataParam.ASSETCHANGEITEM2[inx]); }
+            }
+            filterdata = tempItem2.filter(function (row2) {
+                return parseInt(row2.ASSETID) === curRow.ASSETID;
             });
             Vue.set(editDetail.dataParam, "ASSETCHANGEITEM2", filterdata);
-            if (tempitem2 !== undefined) {
-                  tempitem2 = tempitem2.filter(function (row2) {
-                      return parseInt(row2.ASSETID) !== row.ASSETID;
+            if (tempItem2 !== undefined) {
+                tempItem2 = tempItem2.filter(function (row2) {
+                    return parseInt(row2.ASSETID) !== curRow.ASSETID;
                 })
             }
 
@@ -86,15 +88,13 @@ editDetail.beforeVue = function () {
                     //}
                 },
             }, '...'),
-
                 ])
         },
     },
-            { title: '店铺代码', key: 'CODE', width: 100 },
-        { title: '原建筑面积', key: 'AREA_BUILD_OLD', width: 100 },
-        { title: '原使用面积', key: 'AREA_USABLE_OLD', width: 100 },
-        { title: '原租赁面积', key: 'AREA_RENTABLE_OLD', width: 100 },
-
+    { title: '店铺代码', key: 'CODE', width: 100 },
+    { title: '原建筑面积', key: 'AREA_BUILD_OLD', width: 100 },
+    { title: '原使用面积', key: 'AREA_USABLE_OLD', width: 100 },
+    { title: '原租赁面积', key: 'AREA_RENTABLE_OLD', width: 100 },
     {
         title: '操作',
         key: 'action',
@@ -118,21 +118,21 @@ editDetail.beforeVue = function () {
     }
     ];
     editDetail.screenParam.colDef2 = [
-    {
-        title: "店铺ID", key: 'ASSETID', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.ASSETID
-                },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.ASSETCHANGEITEM2[params.index].ASSETID = event.target.value;
-                    }
-                },
-            })
-        },
-    },
+    //{
+    //    title: "店铺ID", key: 'ASSETID', width: 100,
+    //    render: function (h, params) {
+    //        return h('Input', {
+    //            props: {
+    //                value: params.row.ASSETID
+    //            },
+    //            on: {
+    //                'on-blur': function (event) {
+    //                    editDetail.dataParam.ASSETCHANGEITEM2[params.index].ASSETID = event.target.value;
+    //                }
+    //            },
+    //        })
+    //    },
+    //},
         {
             title: "新店铺代码", key: 'ASSETCODE_NEW', width: 100,
             render: function (h, params) {
@@ -143,6 +143,7 @@ editDetail.beforeVue = function () {
                     on: {
                         'on-blur': function (event) {
                             editDetail.dataParam.ASSETCHANGEITEM2[params.index].ASSETCODE_NEW = event.target.value;
+                            editDetail.dataParam.ASSETCHANGEITEM2[params.index].ASSETID = itemrow.ASSETID;
                         }
                     },
                 })
@@ -249,15 +250,15 @@ editDetail.beforeVue = function () {
         editDetail.dataParam.ASSETCHANGEITEM = temp;
     }
 
-editDetail.screenParam.addCol2 = function () {
-    var temp = editDetail.dataParam.ASSETCHANGEITEM2 || [];
-    temp.push({});
-    editDetail.dataParam.ASSETCHANGEITEM2 = temp;
-}
-//editDetail.screenParam.openPop = function () {
-//    var temp = editDetail.dataParam.ASSETCHANGEITEM2 || [];
-//    temp.push({});
-//    editDetail.dataParam.ASSETCHANGEITEM2 = temp;
+    editDetail.screenParam.addCol2 = function () {
+        var temp = editDetail.dataParam.ASSETCHANGEITEM2 || [];
+        temp.push({});
+        editDetail.dataParam.ASSETCHANGEITEM2 = temp;
+    }
+    //editDetail.screenParam.openPop = function () {
+    //    var temp = editDetail.dataParam.ASSETCHANGEITEM2 || [];
+    //    temp.push({});
+    //    editDetail.dataParam.ASSETCHANGEITEM2 = temp;
     //}
 }
 editDetail.showOne = function (data, callback) {
@@ -268,15 +269,17 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILLID = data.assetspilt.BILLID;
         editDetail.dataParam.ASSETCHANGEITEM = data.assetspiltitem;
         editDetail.dataParam.ASSETCHANGEITEM2 = data.assetspiltitem2;
-        editDetail.filter(editDetail.dataParam.ASSETCHANGEITEM[0],1);
+        editDetail.filter(editDetail.dataParam.ASSETCHANGEITEM[0], 1);
         callback && callback(data);
     });
 }
 editDetail.IsValidSave = function () {
-    for (inx in editDetail.dataParam.ASSETCHANGEITEM2)
-    {
-        tempitem2.push(editDetail.dataParam.ASSETCHANGEITEM2[inx]);
+    tempItem2 = tempItem2.filter(function (row2) {
+        return parseInt(row2.ASSETID) !== itemCurRow.ASSETID;
+    })
+    for (inx in editDetail.dataParam.ASSETCHANGEITEM2) {
+        tempItem2.push(editDetail.dataParam.ASSETCHANGEITEM2[inx]);
     }
-    editDetail.dataParam.ASSETCHANGEITEM2 = tempitem2;
+    editDetail.dataParam.ASSETCHANGEITEM2 = tempItem2;
     return true;
 }
