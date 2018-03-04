@@ -1,0 +1,37 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
+@section conditionParam{
+<row>
+    <i-col span="2" class="RowTitle">所属机构</i-col>
+    <i-col span="6">
+            @{
+                RenderControl(new UndefineRender()
+                {
+                    vModel = "searchParam.ORGID",
+                });
+            }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        角色代码
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "searchParam.ROLECODE",
+            });
+        }
+    </i-col>
+     <i-col span="2" class="RowTitle">角色名称</i-col>
+     <i-col span="6">
+         @{
+             RenderControl(new TextBoxRender()
+             {
+                 vModel = "searchParam.ROLENAME"
+             });
+         }
+     </i-col>
+ </row>
+}

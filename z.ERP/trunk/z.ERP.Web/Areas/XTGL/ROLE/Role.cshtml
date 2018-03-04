@@ -1,0 +1,66 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+
+@section element{
+    <row>
+        <i-col span="2" class="RowTitle">角色编码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ROLEID"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">角色代码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ROLECODE",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">角色名称</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ROLENAME",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">所属机构</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new UndefineRender()
+                {
+                    vModel = "dataParam.ORGID",
+                    Enable = false
+                });
+            }
+        </i-col>
+    <i-col span="2" class="RowTitle">作废标记</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new EnumCheckBoxListRender<标记>()
+            {
+                vModel = "dataParam.VOID_FLAG",
+                MultiSelect = false,
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+
+
+}
