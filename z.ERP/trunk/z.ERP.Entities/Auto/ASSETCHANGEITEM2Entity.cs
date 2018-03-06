@@ -1,6 +1,6 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/19 20:30:40
+ * 生成时间：2018/3/5 22:24:25
  * 生成人：书房
  * 代码生成器版本号：1.2.6562.36915
  *
@@ -35,19 +35,11 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
-        /// 原资产编号
+        /// 新资产类型
         /// <summary>
         [PrimaryKey]
-        [Field("原资产编号")]
+        [Field("新资产类型")]
         public string ASSETID
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 新资产编号
-        /// <summary>
-        [Field("新资产编号")]
-        public string ASSETID_NEW
         {
             get; set;
         }
@@ -57,6 +49,22 @@ namespace z.ERP.Entities
         [PrimaryKey]
         [Field("新资产代码")]
         public string ASSETCODE_NEW
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 原资产编号
+        /// <summary>
+        [Field("原资产编号")]
+        public string ASSET_TYPE_NEW
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 新资产编号
+        /// <summary>
+        [Field("新资产编号")]
+        public string ASSETID_NEW
         {
             get; set;
         }
@@ -81,14 +89,6 @@ namespace z.ERP.Entities
         /// <summary>
         [Field("可租赁面积")]
         public string AREA_RENTABLE_NEW
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 新资产类型
-        /// <summary>
-        [Field("可租赁面积")]
-        public string ASSET_TYPE_NEW
         {
             get; set;
         }

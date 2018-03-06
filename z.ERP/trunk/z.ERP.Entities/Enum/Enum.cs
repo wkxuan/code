@@ -114,11 +114,16 @@ namespace z.ERP.Entities.Enum
     {
         资产类型 = 1,
         资产面积 = 2,
-        资产拆分=3,
+        资产拆分 = 3,
     }
     public enum 末级标记
     {
         非末级 = 1,
         末级 = 2,
+    }
+    public enum 用户标记
+    {
+        正常 = 1,
+        停用 = 2
     }
 }

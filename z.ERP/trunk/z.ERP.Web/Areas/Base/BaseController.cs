@@ -5,8 +5,12 @@ using System.Web;
 using System.Web.Mvc;
 using z.Context;
 using z.DbHelper.DbDomain;
+using z.DBHelper.Helper;
 using z.ERP.Services;
+using z.Extensions;
 using z.LogFactory;
+using z.SSO;
+using z.SSO.Model;
 using z.Verify;
 
 namespace z.ERP.Web.Areas.Base
@@ -15,8 +19,12 @@ namespace z.ERP.Web.Areas.Base
     {
         public BaseController()
         {
+            //_db = new OracleDbHelper(ConfigExtension.GetConfig("connection"));
             service = new ServiceBase();
+            //service.SetDb(_db);
         }
+
+        //DbHelperBase _db;
 
         /// <summary>
         /// 快速保存
@@ -82,7 +90,7 @@ namespace z.ERP.Web.Areas.Base
         {
             get
             {
-                return LoginHelper.GetLogin();
+                return UserApplication.GetUser<Employee>();
             }
         }
         protected ServiceBase service

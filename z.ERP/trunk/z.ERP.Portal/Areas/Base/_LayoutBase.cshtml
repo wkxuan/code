@@ -1,0 +1,38 @@
+﻿@inherits z.MVC5.Views.ViewBase<dynamic>
+@{
+    Layout = null;
+}
+@{
+    WebFiles = new string[] {
+            "Content/Base.css",
+            "Content/jquery.min.js",
+            "Content/zBase.js",
+            "Content/AjaxHelper.js",
+            "Content/JsHelper.js",
+            "Content/PageBase.js",
+            "Content/VUE/styles/iview.css",
+            "Content/VUE/vue.js",
+            "Content/VUE/iview.js"
+        };
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        __ControllerUrl = '@ViewBag.ControllerUrl';
+        __CommonControllerUrl = '@ViewBag.CommonControllerUrl';
+        __BaseUrl = '@ViewBag.BaseUrl';
+    </script>
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    @RenderBody()
+    @InitThisJs()
+    @RenderSection("foot", false)
+</body>
+</html>

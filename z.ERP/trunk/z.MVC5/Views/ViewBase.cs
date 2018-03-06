@@ -11,6 +11,8 @@ using z.Context;
 using z.Extensions;
 using z.Extensiont;
 using z.MVC5.Models;
+using z.SSO;
+using z.SSO.Model;
 
 namespace z.MVC5.Views
 {
@@ -22,7 +24,7 @@ namespace z.MVC5.Views
         }
 
         public static string ThisLayout = "~/Areas/Base/_LayoutBase.cshtml";
-        
+
         public virtual string[] WebFiles
         {
             get; set;
@@ -35,7 +37,7 @@ namespace z.MVC5.Views
         {
             get
             {
-                return LoginHelper.GetLogin();
+                return UserApplication.GetUser<Employee>();
             }
         }
 

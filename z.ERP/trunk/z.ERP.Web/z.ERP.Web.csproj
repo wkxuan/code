@@ -232,6 +232,7 @@
     <Content Include="Areas\XTGL\STATION\Station.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Areas\XTGL\TreeTest\List.js" />
+    <Content Include="Content\jquery-1.7.2.min.js" />
     <Content Include="Content\PageBase.js" />
     <Content Include="Content\AjaxHelper.js" />
     <Content Include="Content\Base.css" />
@@ -334,10 +335,10 @@
     <Content Include="Areas\Share\CommonWindow.cshtml" />
     <Content Include="Areas\XTGL\CATEGORY\Category.cshtml" />
     <Content Include="Areas\Share\MerchantWindow.cshtml" />
+    <None Include="Properties\PublishProfiles\zgy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Home\" />
     <Folder Include="Areas\HTGL\Views\ZLHT\" />
     <Folder Include="Areas\XTGL\Views\Tree\" />
   </ItemGroup>
@@ -372,6 +373,10 @@
     <ProjectReference Include="..\z.MVC5\z.MVC5.csproj">
       <Project>{A8E30B43-EF68-4D4A-AF11-2ECBFB8B227F}</Project>
       <Name>z.MVC5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\z.SSO\z.SSO.csproj">
+      <Project>{DF833680-D044-4C57-96F9-217A1812C0B3}</Project>
+      <Name>z.SSO</Name>
     </ProjectReference>
     <ProjectReference Include="..\z.Verify\z.Verify.csproj">
       <Project>{354df4c7-5d94-4100-86d1-589f5cd5df20}</Project>

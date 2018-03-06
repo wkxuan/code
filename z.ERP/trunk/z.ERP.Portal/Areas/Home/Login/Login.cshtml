@@ -1,0 +1,49 @@
+﻿@inherits ViewBase<dynamic>
+@using z.MVC5.Views
+@{
+    Layout = null;
+}
+@{
+    WebFiles = new string[] {
+              @"Content/Login/reset.css",
+              @"Content/Login/style.css",
+              @"Content/Login/supersized.css",
+                     "Content/jquery.min.js",
+                    "Content/zBase.js",
+                    "Content/AjaxHelper.js",
+                    "Content/JsHelper.js",
+                    "Content/PageBase.js",
+                     @"Content/Login/supersized.3.2.7.min.js",
+                };
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head >
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" type="image/x-icon" href="\Themes\default\DWZ\default\images\newlogo.ico" media="screen" />
+    <title>登录</title>
+    <script type="text/javascript">
+        __ControllerUrl = '@ViewBag.ControllerUrl';
+        __CommonControllerUrl = '@ViewBag.CommonControllerUrl';
+        __BaseUrl = '@ViewBag.BaseUrl';
+    </script>
+    @InitFiles(WebFiles)
+    @InitThisJs()
+</head>
+<body>
+
+    <div class="page-container">
+        <h1>ERP</h1>
+        <form>
+            <input type="text" name="username" class="username" placeholder="用户名" />
+            <input type="password" name="password" class="password" placeholder="密码" />
+            <button id="btn_login" type="submit">登录</button>
+            <div class="error"><span>+</span></div>
+        </form>
+        <div class="connect">
+            <p>测试库</p>
+        </div>
+    </div>
+</body>
+</html>

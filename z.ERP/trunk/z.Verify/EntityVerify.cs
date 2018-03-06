@@ -81,19 +81,20 @@ namespace z.Verify
                 MemberExpression me = p.Body as MemberExpression;
                 PropertyInfo prop = me.Member as PropertyInfo;
                 string str = prop.GetValue(_entity)?.ToString().Trim();
-                if (_entity.HasAllPrimaryKey() && _dbHelper.Select(_entity) != null)
-                {
-                    TEntity rest = _dbHelper.Select(_entity);
-                    if (rest != null)
-                    {
-                        if (prop.GetValue(rest)?.ToString().Trim() == str)
-                        {
-                            limit++;
-                        }
-                    }
-                }
-                string sql = $"select 1 from {_entity.GetTableName()} where {me.Member.Name}='{str}'";
-                if (_dbHelper.ExecuteTable(sql).Rows.Count > limit)
+                //if (_entity.HasAllPrimaryKey() && _dbHelper.Select(_entity) != null)
+                //{
+                //    TEntity rest = _dbHelper.Select(_entity);
+                //    if (rest != null)
+                //    {
+                //        if (prop.GetValue(rest)?.ToString().Trim() == str)
+                //        {
+                //            limit++;
+                //        }
+                //    }
+                //}
+                string sql = $"select {_entity.GetPrimaryKey().Select(s => s.Name).ToArray().SuperJoin(",")} from {_entity.GetTableName()} where {me.Member.Name}='{str}'";
+                List<TEntity> res = _dbHelper.ExecuteTable(sql).ToList<TEntity>();
+                if (res.Where(a => !a.EqualWithPrimary(_entity)).Count() > limit)
                 {
                     SetError(string.Format(ErrorModel, _entity.GetComments(), _entity.GetFieldName(p), str));
                 }

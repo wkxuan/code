@@ -138,6 +138,27 @@ namespace z.DbHelper.DbDomain
             return true;
         }
 
+        /// <summary>
+        /// 两个对象相等
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public bool EqualWithPrimary<TEntity>(TEntity t) where TEntity : EntityBase
+        {
+            if (this.GetType() != t.GetType())
+                return false;
+            PropertyInfo[] p1 = this.GetPrimaryKey();
+            if (p1.IsEmpty())
+                return false;
+            bool equal = true;
+            p1.ForEach(p =>
+           {
+               if (!p.GetValue(this, null).Equals( p.GetValue(t, null)))
+                   equal = false;
+           });
+            return equal;
+        }
     }
 
 }

@@ -21,7 +21,7 @@ namespace z.ERP.Services
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            dt.NewEnumColumns<普通单据状态>("STATUS","STATUSMC");
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
 
@@ -65,7 +65,7 @@ namespace z.ERP.Services
             }
             return SaveData.MERCHANTID;
         }
-        
+
 
         public object GetMerchantElement(MERCHANTEntity Data)
         {
