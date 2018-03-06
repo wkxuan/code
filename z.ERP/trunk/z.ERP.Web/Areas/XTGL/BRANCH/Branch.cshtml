@@ -31,9 +31,10 @@
         <i-col span="2" class="RowTitle">管理部门</i-col>
         <i-col span="6">
             @{
-                RenderControl(new UndefineRender()
+                RenderControl(new ServiceDropDownListRender()
                 {
                     vModel = "dataParam.ORGID",
+                    ServiceMothod = m => m.org_hs(),
                     Enable = false
                 });
             }

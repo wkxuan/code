@@ -150,9 +150,9 @@
     <Compile Include="App_Start\DebugSettings.cs" />
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
+    <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
-    <Compile Include="Areas\HTGL\LYHT\ZLHTController.cs" />
-    <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
+    <Compile Include="Areas\HTGL\LYHT\LYHTController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\Detail\DetailViewBase.cs" />
     <Compile Include="Areas\Layout\EditDetail\EditDetailViewBase.cs" />
@@ -179,6 +179,7 @@
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\PPGL\BRAND\BrandController.cs" />
+    <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\CATEGORY\CategoryController.cs" />
@@ -187,6 +188,8 @@
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cs" />
+    <Compile Include="Areas\XTGL\SYSUSER\Sysuser.cs" />
+    <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
     <Compile Include="Areas\XTGL\SHOP\Shop.cs" />
     <Compile Include="Areas\XTGL\FLOOR\Floor.cs" />
     <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
@@ -202,10 +205,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
+    <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.js" />
-    <Content Include="Areas\HTGL\LYHT\Detail.js" />
-    <Content Include="Areas\HTGL\LYHT\List.js" />
+    <Content Include="Areas\HTGL\LYHT\HtEdit.js" />
+    <Content Include="Areas\HTGL\LYHT\HtList.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
@@ -214,6 +219,8 @@
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
+    <Content Include="Areas\SPGL\GOODS\GoodsEdit.js" />
+    <Content Include="Areas\SPGL\GOODS\GoodsList.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
@@ -221,6 +228,8 @@
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
+    <Content Include="Areas\XTGL\SYSUSER\Sysuser.js" />
+    <Content Include="Areas\XTGL\ORG\Org.js" />
     <Content Include="Areas\XTGL\SHOP\Shop.js" />
     <Content Include="Areas\XTGL\FLOOR\Floor.js" />
     <Content Include="Areas\XTGL\FEESUBJECT\FeeSubject.js" />
@@ -290,7 +299,6 @@
     <Content Include="Config\Connection.config" />
     <Content Include="Config\IOC.config" />
     <Content Include="Config\Debug.config" />
-    <Content Include="Areas\HTGL\ZLHT\List.cshtml" />
     <Content Include="Areas\Share\BaseDropDownList.cshtml" />
     <Content Include="Areas\PPGL\BRAND\BrandList.cshtml" />
     <Content Include="Areas\Share\Undefine.cshtml" />
@@ -302,8 +310,6 @@
     <Content Include="Areas\Share\CheckBoxList.cshtml" />
     <Content Include="Areas\Share\Button.cshtml" />
     <Content Include="Areas\XTGL\FKFS\Fkfs.cshtml" />
-    <Content Include="Areas\HTGL\LYHT\List.cshtml" />
-    <Content Include="Areas\HTGL\LYHT\Detail.cshtml" />
     <Content Include="Areas\XTGL\OPERATIONRULE\Operationrule.cshtml" />
     <Content Include="Areas\XTGL\BRANCH\Branch.cshtml" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.cshtml" />
@@ -335,11 +341,24 @@
     <Content Include="Areas\Share\CommonWindow.cshtml" />
     <Content Include="Areas\XTGL\CATEGORY\Category.cshtml" />
     <Content Include="Areas\Share\MerchantWindow.cshtml" />
+    <Content Include="Areas\XTGL\ORG\Org.cshtml" />
+    <Content Include="Areas\HTGL\LYHT\HtList.cshtml" />
+    <Content Include="Areas\HTGL\LYHT\HtDetail.cshtml" />
+    <Content Include="Areas\HTGL\LYHT\HtEdit.cshtml" />
+    <Content Include="Areas\PPGL\BRAND\BrandDetail.cshtml" />
+    <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.cshtml" />
+    <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.cshtml" />
+    <Content Include="Areas\DPGL\ASSETSPILT\Detail.cshtml" />
+    <Content Include="Areas\SPGL\GOODS\GoodsDetail.cshtml" />
+    <Content Include="Areas\SPGL\GOODS\GoodsEdit.cshtml" />
+    <Content Include="Areas\SPGL\GOODS\GoodsList.cshtml" />
+    <Content Include="Areas\XTGL\SYSUSER\Sysuser.cshtml" />
     <None Include="Properties\PublishProfiles\zgy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\HTGL\Views\ZLHT\" />
+    <Folder Include="Areas\Home\" />
+    <Folder Include="Areas\HTGL\ZLHT\" />
     <Folder Include="Areas\XTGL\Views\Tree\" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
+using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
 
@@ -128,18 +129,55 @@ namespace z.ERP.Services
             };
         }
 
-        public void ExecData(ENERGY_REGISTEREntity Data)
+        public string ExecData(ENERGY_REGISTEREntity Data)
         {
+            ENERGY_REGISTEREntity brand = DbHelper.Select(Data);
+            if (brand.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+
             using (var Tran = DbHelper.BeginTransaction())
             {
                 //string sql = "update ENERGY_REGISTER set VERIFY=:VERIFY,VERIFY_NAME=:VERIFY_NAME,VERIFY_TIME=:VERIFY_TIME" +
                 //    " where BILLID=:BILLID";
-                Data.VERIFY = employee.Id;
-                Data.VERIFY_NAME = employee.Name;
-                Data.VERIFY_TIME = DateTime.Now.ToString();
-                DbHelper.Update(Data);
+                //string sql = " update ENERGY_REGISTER set" +
+                //    " VERIFY = "+ employee.Id +
+                //    " VERIFY_NAME = " + employee.Name +
+                //    " VERIFY_TIME =" + DateTime.Now.ToString() +
+                //    " where BILLID = " + Data.BILLID.ToString();
+                //DbHelper.ExecuteNonQuery(sql);
+                brand.VERIFY = employee.Id;
+                brand.VERIFY_NAME = employee.Name;
+                brand.VERIFY_TIME = DateTime.Now.ToString();
+                brand.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(brand);
                 Tran.Commit();
             }
+            return brand.BILLID;
+        }
+
+        public Tuple<dynamic, DataTable> GetRegisterDetail(ENERGY_REGISTEREntity Data)
+        {
+            if (Data.BILLID.IsEmpty())
+            {
+                throw new LogicException("请确认记录编号!");
+            }
+            string sql = $@"select * from ENERGY_REGISTER where 1=1 ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT M.*,E.FILECODE,E.FILENAME,P.CODE,P.NAME " +
+                " FROM ENERGY_REGISTER_ITEM M,ENERGY_FILES E,SHOP P " +
+                " where M.FILEID = E.FILEID and M.SHOPID = P.SHOPID";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and BILLID= " + Data.BILLID);
+            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
+
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtitem);
         }
     }
 }

@@ -32,11 +32,18 @@ namespace z.ERP.Entities.Enum
         其他部门 = 3
     }
 
-    public enum 合同类型
+    public enum 核算方式
     {
         租赁合同 = 1,
         联营合同 = 2
     }
+
+    public enum 合同类型
+    {
+        原始合同 = 1,
+        变更合同 = 2
+    }
+
     public enum 收费项目成本费用
     {
         记成本 = 1,
@@ -110,6 +117,22 @@ namespace z.ERP.Entities.Enum
         未审核 = 1,
         审核 = 2,
     }
+
+    public enum 合同状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        启动 = 3,
+        到期 = 4,
+        清退 = 5,
+    }
+
+    public enum 联营合同合作方式
+    {
+        扣点 = 1,
+        保底销售 = 2,
+        保底毛利 = 3
+    }
     public enum 资产调整类型
     {
         资产类型 = 1,
@@ -120,6 +143,27 @@ namespace z.ERP.Entities.Enum
     {
         非末级 = 1,
         末级 = 2,
+    }
+    public enum 商品类型
+    {
+        品种 = 1,
+        大类 = 2
+    }
+    public enum 用户类型
+    {
+        收款员 = 1,
+        营业员 = 2,
+        采购员 = 3,
+        保管员 = 4,
+        物价员 = 5,
+        财务人员 = 6,
+        合同员 = 7,
+        核算员 = 8
+    }
+    public enum 标记
+    {
+        是 = 1,
+        否=2
     }
     public enum 用户标记
     {

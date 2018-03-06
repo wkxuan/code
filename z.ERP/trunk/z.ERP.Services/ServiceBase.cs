@@ -107,6 +107,21 @@ namespace z.ERP.Services
                 return ioc.Create<DpglService>();
             }
         }
+
+        public HtglService HtglService
+        {
+            get
+            {
+                return ioc.Create<HtglService>();
+            }
+        }
+        public SpglService SpglService
+        {
+            get
+            {
+                return ioc.Create<SpglService>();
+            }
+        }
         public HomeService HomeService
         {
             get

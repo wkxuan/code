@@ -12,7 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using z.ERP.Entities;
+using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
+using z.Exceptions;
 using z.Extensions;
 using z.Extensiont;
 using z.MVC5.Results;
@@ -182,19 +184,36 @@ namespace z.ERP.Services
         }
         public DataGridResult GetShop(SearchItem item)
         {
-            string sql = $@"SELECT A.CODE,A.NAME FROM SHOP A WHERE 1=1";
-            item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
-            item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
+            string sql = $@"select A.SHOPID,A.CODE,A.NAME FROM SHOP A WHERE 1=1";
+            item.HasKey("CODE,", a => sql += $" and A.CODE like '%{a}%'");
+            item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             sql += " ORDER BY  A.CODE";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public DataGridResult GetShopElement(SearchItem item)
         {
             string sql = $@"select A.* from SHOP A where 1=1 ";
             item.HasKey("SHOPID", a => sql += $" and A.SHOPID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public DataGridResult GetUser(SearchItem item)
+        {
+            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME FROM SYSUSER A WHERE 1=1";
+            item.HasKey("USERCODE,", a => sql += $" and A.USERCODE = '{a}'");
+            item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");
+            sql += " ORDER BY  A.USERCODE";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public DataGridResult GetUserElement(SearchItem item)
+        {
+            string sql = $@"select A.* from SYSUSER A where 1=1 ";
+            item.HasKey("USERID", a => sql += $" and A.USERID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -304,7 +323,6 @@ namespace z.ERP.Services
             var v = GetVerify(DeleteData);
             string sql = $@"delete from STATION_PAY where  STATIONBH="  + DeleteData.STATIONBH.ToString();
             DbHelper.ExecuteNonQuery(sql);
-            //校验
             DbHelper.Delete(DeleteData);
         }
 
@@ -313,7 +331,7 @@ namespace z.ERP.Services
             var v = GetVerify(SaveData);
             if (SaveData.ID.IsEmpty())
                 SaveData.ID = CommonService.NewINC("BRAND");
-            SaveData.STATUS = "0";
+            SaveData.STATUS = "1";
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
@@ -341,9 +359,6 @@ namespace z.ERP.Services
         public virtual UIResult TreeCategoryList()
         {
             List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();              
-
-            //string sql = $@"select * from CATEGORY order by CATEGORYCODE";
-            //List<CATEGORYEntity> p = DbHelper.ExecuteObject<CATEGORYEntity>(sql);
             return new UIResult(TreeModel.Create(p,
                 a => a.CATEGORYCODE,
                 a => new TreeModel()
@@ -354,6 +369,89 @@ namespace z.ERP.Services
                 })?.ToArray());
         }
 
+
+        public virtual UIResult TreeOrgData(SearchItem item)
+        {
+            string sql = $@"select * from ORG where 1=1 ";
+            item.HasKey("code", a => sql += $" and ORGCODE = '{a}' ");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public virtual UIResult TreeOrgList()
+        {
+            List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
+            return new UIResult(TreeModel.Create(p,
+                a => a.ORGCODE,
+                a => new TreeModel()
+                {
+                    code = a.ORGCODE,
+                    title = a.ORGNAME,
+                    expand = true
+                })?.ToArray());
+        }
+
+        public void Org_Update(string ID,int BRANCHID) {
+            ORGEntity Data = new ORGEntity
+            {
+                ORGID = ID
+            };
+            ORGEntity org = DbHelper.Select(Data);
+            string sqlUpdate = $@"update ORG set BRANCHID=" + BRANCHID + " where  ORGCODE like '" + org.ORGCODE + "%'";
+            DbHelper.ExecuteNonQuery(sqlUpdate);
+        }
+
+        public string Org_BRANCHID(string CODE)
+        {
+            var sql = " select BRANCHID from ORG where ORGCODE='"+ CODE + "'";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.Rows[0][0].ToString();
+        }
+
+
+        public object GetBrandElement(BRANDEntity Data)
+        {
+            string sql = $@"select * from BRAND where 1=1 ";
+            if (!Data.ID.IsEmpty())
+                sql += (" and ID= " + Data.ID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            var result = new
+            {
+                main = dt,
+            };
+            return result;
+        }
+        public Tuple<dynamic> GetBrandDetail(BRANDEntity Data)
+        {
+            string sql = $@"select * from BRAND where 1=1 ";
+            if (!Data.ID.IsEmpty())
+                sql += (" and ID= " + Data.ID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            return new Tuple<dynamic>(dt.ToOneLine());
+        }
+
+        public string BrandExecData(BRANDEntity Data)
+        {
+            BRANDEntity brand = DbHelper.Select(Data);
+            if (brand.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("品牌(" + Data.NAME + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                brand.VERIFY = employee.Id;
+                brand.VERIFY_NAME = employee.Name;
+                brand.VERIFY_TIME = DateTime.Now.ToString();
+                brand.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(brand);
+                Tran.Commit();
+            }
+            return brand.ID;
+        }
+        
     }
 
 }

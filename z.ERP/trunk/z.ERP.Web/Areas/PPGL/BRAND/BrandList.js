@@ -22,11 +22,15 @@
 }
 
 search.browseHref = function (row, index) {
-    _.OpenPage("PPGL/BRAND/BrandEdit/" + row.ID, function (data) {
+    _.OpenPage("PPGL/BRAND/BrandDetail/" + row.ID, function (data) {
     });
 }
 
 search.addHref = function (row) {
     _.OpenPage("PPGL/BRAND/BrandEdit/", function (data) {
+    });
+}
+search.modHref = function (row, index) {
+    _.OpenPage("PPGL/BRAND/BrandEdit/" + row.ID, function (data) {
     });
 }

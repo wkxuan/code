@@ -1,0 +1,90 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Entities;
+@inherits EditDetailViewBase<string>
+@section baseParam{
+<row>
+
+    <i-col span="2" class="RowTitle">
+        备注
+    </i-col>
+    <i-col span="14">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.DESCRIPTION"
+            });
+        }
+    </i-col>
+        @*<i-col span="2" class="RowTitle">
+            变更类型
+        </i-col>
+        <i-col span="6">
+
+            @{
+                RenderControl(new EnumDropDownListRender<资产调整类型>()
+                {
+                    vModel = "dataParam.CHANGE_TYPE",
+                    Enable = true
+                });
+            }
+        </i-col>*@
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "screenParam.addCol",
+                Text = "添加一行",
+                Enable = true,
+                Type = "primary"
+            });
+            RenderControl(new ButtonRender()
+            {
+                Click = "screenParam.addCol2",
+                Text = "再加一行",
+                Enable = true,
+                Type = "primary"
+            });
+        }
+    </row>
+    <row>
+        <i-col span="12">
+            <i-table highlight-row size="small" border="true"
+                     :columns="screenParam.colDef" :data="dataParam.ASSETCHANGEITEM"
+                     v-on:on-current-change="filter"></i-table>
+        </i-col>
+        <i-col span="12">
+
+            <i-table highlight-row  size="small" border="true"
+                     :columns="screenParam.colDef2" :data="dataParam.ASSETCHANGEITEM2" ></i-table>
+        </i-col>
+    </row>
+}
+
+@*@section hide{
+        @{
+            RenderControl(new CommonWindowRender()
+            {
+                Title = "测试标题",
+                vModel= "windowParam.testwin1",
+                Id = "testwin1"
+            });
+        }
+    }*@
+
+

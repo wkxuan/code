@@ -1,0 +1,190 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.EditDetail
+@using z.ERP.Entities.Enum
+@inherits EditDetailViewBase<string>
+
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            商品代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.GOODDM",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            商品条码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.BARCODE",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            类型
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<商品类型>
+                {
+                    vModel = "dataParam.TYPE",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.NAME",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            拼音码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PYM",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            经营方式
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.STYLE",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            租约号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACTID",
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            商户
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERCHANTID",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            商品分类
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.KINDID",
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            地区
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.REGION",
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            进项税率
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.JXSL",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            单价
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PRICE",
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            会员单价
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MEMBER_PRICE",
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            销项税率
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.XXSL",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            描述
+        </i-col>
+        <i-col span="16">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION",
+                });
+            }
+        </i-col>       
+    </row>
+
+}

@@ -17,6 +17,7 @@ using z.Extensions;
 using z.MVC5.Results;
 using z.Results;
 using z.WebPage;
+using z.ERP.Entities.Enum;
 
 namespace z.ERP.Services
 {
@@ -59,6 +60,50 @@ namespace z.ERP.Services
             string sql = $@"SELECT A.ID,A.NAME FROM FLOOR A WHERE 1=1 ORDER BY  A.ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
+        }
+
+        public List<SelectItem> org_hs()
+        {
+            string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE  ORG_TYPE=" + ((int)部门类型.核算部门).ToString() + "   ORDER BY  A.ORGID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ORGID", "ORGNAME");
+        }
+
+        public List<SelectItem> org_zs()
+        {
+            string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE LEVEL_LAST="+ ((int)末级标记.末级).ToString() + " AND  ORG_TYPE=" + ((int)部门类型.招商部门).ToString() + "   ORDER BY  A.ORGID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ORGID", "ORGNAME");
+        }
+
+        public object GetBrand(BRANDEntity Data)
+        {
+            string sql = " SELECT  A.NAME,B.CATEGORYCODE,B.CATEGORYNAME FROM BRAND A,CATEGORY B " +
+                "  WHERE  A.CATEGORYID = B.CATEGORYID ";
+            if (!Data.ID.IsEmpty())
+                sql += (" and A.ID= " + Data.ID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
+        }
+
+        public object GetShop(SHOPEntity Data)
+        {
+            string sql = " SELECT  A.SHOPID,A.CODE,B.CATEGORYID,B.CATEGORYCODE,B.CATEGORYNAME,A.AREA_BUILD,A.AREA_RENTABLE FROM " +
+                "  SHOP A,CATEGORY B " +
+                "  WHERE  A.CATEGORYID = B.CATEGORYID ";
+            if (!Data.CODE.IsEmpty())
+                sql += " AND A.CODE='"+ Data.CODE + "'";
+            if (!Data.BRANCHID.IsEmpty())
+                sql += " AND A.BRANCHID=" + Data.BRANCHID + "";
+            
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
         }
     }
 }

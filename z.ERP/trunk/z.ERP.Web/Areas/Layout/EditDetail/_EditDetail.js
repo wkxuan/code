@@ -75,6 +75,7 @@
         _this.method = "";
         _this.branchid = true;
         _this.others = true;
+        _this.windowParam = {};
     };
 
     setTimeout(function () {

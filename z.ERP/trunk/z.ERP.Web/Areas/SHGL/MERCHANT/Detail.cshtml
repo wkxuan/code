@@ -4,24 +4,27 @@
 @using z.ERP.Entities;
 @using z.Extensions;
 @using z.ERP.Entities.Enum
-@inherits DetailLayout<MERCHANTEntity> 
+@using System.Data
+@inherits DetailLayout<dynamic>
 
 @section Title{
     @Html.Raw("详情");
 }
 
+@{
+    var merchant = ViewBag.merchant;
+    var merchantBrand = ViewBag.merchantBrand as DataTable;
+}
+
 @section btn{
     @{
-        if (Model.STATUS == "0")
+        if (@merchant.STATUS == "1")
         {
             RenderControl(new ButtonRender()
             {
-                Text = "审核"
+                Text = "审核",
+                Click = "exec",
             });
-        }
-        else
-        {
-
         }
     }
 }
@@ -29,18 +32,54 @@
 @section content{
     <row>
         <i-col span="2" class="RowTitle">商户代码</i-col>
-        <i-col span="4" class="RowText"> @Model.MERCHANTID </i-col>
+        <i-col span="4" class="RowText"> @merchant.MERCHANTID </i-col>
         <i-col span="2" class="RowTitle">商户名称</i-col>
-        <i-col span="4" class="RowText"> @Model.NAME </i-col>
+        <i-col span="4" class="RowText"> @merchant.NAME </i-col>
         <i-col span="2" class="RowTitle">手机</i-col>
-        <i-col span="4" class="RowText"> @Model.PHONE </i-col>
+        <i-col span="4" class="RowText"> @merchant.PHONE </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">银行名称</i-col>
-        <i-col span="4" class="RowText"> @Model.BANK_NAME   </i-col>
+        <i-col span="4" class="RowText"> @merchant.BANK_NAME   </i-col>
         <i-col span="2" class="RowTitle">地址</i-col>
-        <i-col span="4" class="RowText"> @Model.ADRESS   </i-col>
+        <i-col span="4" class="RowText"> @merchant.ADRESS   </i-col>
         <i-col span="2" class="RowTitle">状态</i-col>
-        <i-col span="4" class="RowText"> @(Model.STATUS.ToEnum<普通单据状态>().ToLocalString()) </i-col>
+        <i-col span="4" class="RowText"> @merchant.STATUSMC </i-col>
     </row>
+
+
+    <row>
+        @{
+            foreach (DataRow brand in merchantBrand.Rows)
+            {
+                <i-col span="4" class="rowtitle">品牌名称(@brand["NAME"].ToString())</i-col>
+            }
+        }
+    </row>
+}
+
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true
+            },
+            methods: {
+                exec: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: {MERCHANTID: @merchant.MERCHANTID},
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                }
+            }
+        });
+    </script>
 }

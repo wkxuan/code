@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HtglService.cs" />
     <Compile Include="ServiceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommonService.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="DpglService.cs" />
     <Compile Include="HomeService.cs" />
     <Compile Include="ShglService.cs" />
+    <Compile Include="SpglService.cs" />
     <Compile Include="TestServiceOverride.cs" />
     <Compile Include="TestService.cs" />
     <Compile Include="WyglService.cs" />

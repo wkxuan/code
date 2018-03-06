@@ -106,5 +106,42 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        /// <summary>
+        /// 新资产类型
+        /// <summary>
+        [Field("新资产类型")]
+        public string ASSET_TYPE_NEW
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 新建筑面积
+        /// <summary>
+        [Field("新建筑面积")]
+        public string AREA_BUILD_NEW
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 新可使用面积
+        /// <summary>
+        [Field("新可使用面积")]
+        public string AREA_USABLE_NEW
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 新可租赁面积
+        /// <summary>
+        [Field("新可租赁面积")]
+        public string AREA_RENTABLE_NEW
+        {
+            get; set;
+        }
+
+
     }
 }

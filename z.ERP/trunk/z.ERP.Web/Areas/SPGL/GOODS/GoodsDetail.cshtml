@@ -1,0 +1,101 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Detail;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits DetailLayout<dynamic>
+
+@section Title{
+    @Html.Raw("详情");
+}
+
+@{
+    var goods = ViewBag.goods;
+}
+
+@section btn{
+    @{
+        if (@goods.STATUS == "1")
+        {
+            RenderControl(new ButtonRender()
+            {
+                Text = "审核",
+                Click = "exec",
+            });
+        }
+    }
+}
+
+@section content{
+    <row>
+        <i-col span="2" class="RowTitle">商品代码</i-col>
+        <i-col span="4" class="RowText"> @goods.GOODSDM </i-col>
+        <i-col span="2" class="RowTitle">商品条码</i-col>
+        <i-col span="4" class="RowText"> @goods.BARCODE </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="4" class="RowText"> @goods.STATUSMC </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">名称</i-col>
+        <i-col span="4" class="RowText"> @goods.NAME   </i-col>
+        <i-col span="2" class="RowTitle">拼音码</i-col>
+        <i-col span="4" class="RowText"> @goods.PYM   </i-col>
+        <i-col span="2" class="RowTitle">类型</i-col>
+        <i-col span="4" class="RowText"> @goods.TYPEMC </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">合同</i-col>
+        <i-col span="4" class="RowText"> @goods.CONTRACTID   </i-col>
+        <i-col span="2" class="RowTitle">商户</i-col>
+        <i-col span="4" class="RowText"> (@goods.MERCHANTID)@goods.SHMC   </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">品类</i-col>
+        <i-col span="4" class="RowText"> @goods.KINDID   </i-col>
+        <i-col span="2" class="RowTitle">地区</i-col>
+        <i-col span="4" class="RowText"> @goods.REGION   </i-col>
+        <i-col span="2" class="RowTitle">进项税率</i-col>
+        <i-col span="4" class="RowText"> @goods.JXSL </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">单价</i-col>
+        <i-col span="4" class="RowText"> @goods.PRICE   </i-col>
+        <i-col span="2" class="RowTitle">会员价</i-col>
+        <i-col span="4" class="RowText"> @goods.MEMBER_PRICE   </i-col>
+        <i-col span="2" class="RowTitle">销项税率</i-col>
+        <i-col span="4" class="RowText"> @goods.XXSL </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">描述</i-col>
+        <i-col span="4" class="RowText"> @goods.DESCRIPTION   </i-col>
+    </row>
+
+}
+
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true
+            },
+            methods: {
+                exec: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: {GOODID: @goods.GOODSID},
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                }
+            }
+        });
+    </script>
+}

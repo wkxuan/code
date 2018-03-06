@@ -20,14 +20,12 @@
                                 Data: { FILEID: event.target.value }
                             }, function (data) {
                                 //editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index].VALUE_LAST = data.
-                                var ss = data;
-                                editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index].INX = params.index;
-                                editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index].FILENAME = data.dt[0].FILENAME;
-                                editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index].SHOPID = data.dt[0].SHOPID;
-                                editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index].SHOPDM = data.dt[0].SHOPDM;
-                                editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index].VALUE_LAST = data.dt[0].VALUE_LAST;
-                                editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index].PRICE = data.dt[0].PRICE;
-                                editDetail.$set(editDetail.dataParam, editDetail.dataParam);
+                                Vue.set(editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index], 'INX', params.index);
+                                Vue.set(editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index], 'FILENAME', data.dt[0].FILENAME);
+                                Vue.set(editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index], 'SHOPID', data.dt[0].SHOPID);
+                                Vue.set(editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index], 'SHOPDM', data.dt[0].SHOPDM);
+                                Vue.set(editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index], 'VALUE_LAST', data.dt[0].VALUE_LAST);
+                                Vue.set(editDetail.dataParam.ENERGY_REGISTER_ITEM[params.index], 'PRICE', data.dt[0].PRICE);
                             });                            
                         }
                     }

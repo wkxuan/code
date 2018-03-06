@@ -1,0 +1,71 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">商户代码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTID"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">商户名称</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.NAME"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">合同号</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.CONTRACTID"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">核算方式</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumCheckBoxListRender<合同类型>()
+                {
+                    vModel = "searchParam.STYLE",
+                    MultiSelect = true
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">合同类型</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumCheckBoxListRender<合同类型>()
+                {
+                    vModel = "searchParam.HTLX",
+                    MultiSelect = true
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">商场</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch()
+                });
+            }
+        </i-col>
+    </row>
+}

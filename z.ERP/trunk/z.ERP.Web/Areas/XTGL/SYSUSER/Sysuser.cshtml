@@ -1,0 +1,105 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+
+@section element{
+    <row>
+        <i-col span="2" class="RowTitle">用户编码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.USERID"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">用户代码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.USERCODE",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">用户名称</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.USERNAME",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+
+
+    <row>
+        <i-col span="2" class="RowTitle">用户类型</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<用户类型>()
+                {
+                    vModel = "dataParam.USER_TYPE",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">所属机构</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new UndefineRender()
+                {
+                    vModel = "dataParam.ORGID",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">用户标记</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumCheckBoxListRender<标记>()
+                {
+                    vModel = "dataParam.USER_FLAG",
+                    MultiSelect = false,
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">用户密码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PASSWORD",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+<row>
+    <i-col span="2" class="RowTitle">作废标记</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new EnumCheckBoxListRender<标记>()
+            {
+                vModel = "dataParam.VOID_FLAG",
+                MultiSelect = false,
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+
+
+}

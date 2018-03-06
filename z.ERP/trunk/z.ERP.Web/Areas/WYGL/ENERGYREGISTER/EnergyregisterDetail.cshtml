@@ -3,22 +3,28 @@
 @using z.ERP.Entities
 @using z.ERP.Entities.Enum
 @using z.Extensions;
+@using System.Data
 
-@inherits DetailLayout<ENERGY_REGISTEREntity>
+@inherits DetailLayout<dynamic>
 
 @section Title{
     @Html.Raw("详情")
 }
 
+@{
+    var regist = ViewBag.regist;
+    var item = ViewBag.item as DataTable;
+}
+
 @section btn{
     @{
-        if (Model.STATUS == "1")
+        if (regist.STATUS == "1")
         {
+
             RenderControl(new ButtonRender()
             {
-                Text = "审核",
-                Enable =false,
-                Click = "exec"
+                Click = "exec",
+                Text = "审核",             
             });
         }
         else
@@ -31,30 +37,57 @@
 @section content{
     <row>
         <i-col span="2" class="RowTitle">单据号</i-col>
-        <i-col span="6" class="RowText">@Model.BILLID </i-col>
+        <i-col span="6" class="RowText">@regist.BILLID </i-col>
         <i-col span="2" class="RowTitle">商场名称</i-col>
-        <i-col span="6" class="RowText">@Model.BILLID </i-col>
+        <i-col span="6" class="RowText">@regist.BILLID </i-col>
         <i-col span="2" class="RowTitle">抄表日期</i-col>
-        <i-col span="6" class="RowText">@Model.CHECK_DATE </i-col>
+        <i-col span="6" class="RowText">@regist.CHECK_DATE </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">年月</i-col>
-        <i-col span="6" class="RowText">@Model.YEARMONTH </i-col>
+        <i-col span="6" class="RowText">@regist.YEARMONTH </i-col>
         <i-col span="2" class="RowTitle">描述</i-col>
-        <i-col span="14" class="RowText">@Model.DESCRIPTION </i-col>        
+        <i-col span="14" class="RowText">@regist.DESCRIPTION </i-col>        
     </row>
     <row>
         <i-col span="2" class="RowTitle">登记人</i-col>
-        <i-col span="6" class="RowText">@Model.REPORTER_NAME </i-col>
+        <i-col span="6" class="RowText">@regist.REPORTER_NAME </i-col>
         <i-col span="2" class="RowTitle">登记时间</i-col>
-        <i-col span="6" class="RowText">@Model.REPORTER_TIME </i-col>
+        <i-col span="6" class="RowText">@regist.REPORTER_TIME </i-col>
         <i-col span="2" class="RowTitle">状态</i-col>
-        <i-col span="6" class="RowText">@(Model.STATUS.ToEnum<普通单据状态>().ToString()) </i-col>
+        <i-col span="6" class="RowText">@regist.STATUSMC </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">审核人</i-col>
-        <i-col span="6" class="RowText">@Model.VERIFY_NAME </i-col>
+        <i-col span="6" class="RowText">@regist.VERIFY_NAME </i-col>
         <i-col span="2" class="RowTitle">审核时间</i-col>
-        <i-col span="6" class="RowText">@Model.VERIFY_TIME </i-col>
+        <i-col span="6" class="RowText">@regist.VERIFY_TIME </i-col>
     </row>
+}
+
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true
+            },
+            methods: {
+
+                exec: function () {
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: {BILLID:@regist.BILLID},
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                }
+            }
+
+        });
+    </script>
 }

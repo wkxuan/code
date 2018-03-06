@@ -15,7 +15,7 @@
     define.service = "XtglService";
     define.method = "GetFloorElement";
     define.methodList = "GetFloor";
-    define.getKey = 'ID';
+    define.Key = 'ID';
 }
 
 
