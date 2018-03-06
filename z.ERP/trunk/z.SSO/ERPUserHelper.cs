@@ -25,7 +25,7 @@ namespace z.SSO
             T e = ApplicationContextBase.GetContext().GetData<T>(LoginKey + key);
             if (!key.IsEmpty() && e == null && ApplicationContextBase.GetContext().principal != null)
             {
-                USERSEntity user = _db.Select(new USERSEntity(key));
+                USEREntity user = _db.Select(new USEREntity(key));
                 if (user == null)
                     throw new NoLoginException();
                 return new Employee()
@@ -54,7 +54,7 @@ namespace z.SSO
 
         public override void Login(string username, string password)
         {
-            List<USERSEntity> users = _db.SelectList(new USERSEntity()
+            List<USEREntity> users = _db.SelectList(new USEREntity()
             {
                 USERCODE = username
             });
@@ -68,7 +68,7 @@ namespace z.SSO
             }
             else
             {
-                USERSEntity user = users.First();
+                USEREntity user = users.First();
                 if (Verify(user, password))
                 {
                     Employee e = new Employee()
@@ -88,9 +88,9 @@ namespace z.SSO
             }
         }
 
-        bool Verify(USERSEntity user, string password)
+        bool Verify(USEREntity user, string password)
         {
-            Func<USERSEntity, string, string> salt = (u, p) =>
+            Func<USEREntity, string, string> salt = (u, p) =>
               {
                   return (u.USERID + LoginSalt + p).ToMD5();
               };
