@@ -22,5 +22,53 @@ namespace z.ERP.Entities
             get;
             set;
         }
+
+
+        [ForeignKey(nameof(CONTRACTID), nameof(CONTRACT_GROUPEntity.CONTRACTID))]
+        public List<CONTRACT_GROUPEntity> CONTRACT_GROUP
+        {
+            get;
+            set;
+        }
+
+
+        [ForeignKey(nameof(CONTRACTID), nameof(CONTRACT_RENTEntity.CONTRACTID))]
+        public List<CONTRACT_RENTEntity> CONTRACT_RENT
+        {
+            get;
+            set;
+        }
+
+    }
+
+    public partial class CONTRACT_RENTEntity
+    {
+        [ForeignKey(nameof(CONTRACTID), nameof(CONTRACT_RENTITEMEntity.CONTRACTID))]
+        [ForeignKey(nameof(INX), nameof(CONTRACT_RENTITEMEntity.INX))]
+        public List<CONTRACT_RENTITEMEntity> CONTRACT_RENTITEM
+        {
+            get;
+            set;
+        }
+        //[ForeignKey(nameof(CONTRACTID), nameof(CONTJSKLEntity.CONTRACTID))]
+        //[ForeignKey(nameof(INX), nameof(CONTJSKLEntity.INX))]
+        //public List<CONTJSKLEntity> CONTJSKL
+        //{
+        //    get;
+        //    set;
+        //}
+
+    }
+
+    public partial class CONTRACT_GROUPEntity
+    {
+        [ForeignKey(nameof(CONTRACTID), nameof(CONTJSKLEntity.CONTRACTID))]
+        [ForeignKey(nameof(GROUPNO), nameof(CONTJSKLEntity.GROUPNO))]
+        public List<CONTJSKLEntity> CONTJSKL
+        {
+            get;
+            set;
+        }
+
     }
 }

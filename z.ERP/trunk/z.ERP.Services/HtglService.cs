@@ -74,7 +74,7 @@ namespace z.ERP.Services
         }
 
 
-        public Tuple<dynamic, DataTable,DataTable> GetContractElement(CONTRACTEntity Data)
+        public Tuple<dynamic, DataTable,DataTable, DataTable, DataTable, DataTable, DataTable> GetContractElement(CONTRACTEntity Data)
         {
             if (Data.CONTRACTID.IsEmpty())
             {
@@ -99,7 +99,27 @@ namespace z.ERP.Services
                            " WHERE A.CONTRACTID=B.CONTRACTID AND B.SHOPID=C.SHOPID AND B.CATEGORYID=D.CATEGORYID";
             sqlshop += (" and A.CONTRACTID= " + Data.CONTRACTID);
             DataTable contract_shop = DbHelper.ExecuteTable(sqlshop);
-            return new Tuple<dynamic, DataTable, DataTable>(contract.ToOneLine(), contract_brand, contract_shop);
+
+
+            string sqlRENT = $@"SELECT * FROM CONTRACT_RENT WHERE 1=1 ";
+            sqlRENT += (" AND CONTRACTID= " + Data.CONTRACTID);
+            DataTable contract_rent = DbHelper.ExecuteTable(sqlRENT);
+
+            string sqlGroup = $@"SELECT * FROM CONTRACT_GROUP WHERE 1=1 ";
+            sqlGroup += (" AND CONTRACTID= " + Data.CONTRACTID);
+            DataTable contract_group = DbHelper.ExecuteTable(sqlGroup);
+
+            string sqlJskl = $@"SELECT * FROM CONTJSKL WHERE 1=1 ";
+            sqlJskl += (" AND CONTRACTID= " + Data.CONTRACTID);
+            DataTable contract_jskl = DbHelper.ExecuteTable(sqlJskl);
+
+
+            string sqlRentItem = $@"SELECT * FROM CONTRACT_RENTITEM WHERE 1=1 ";
+            sqlRentItem += (" AND CONTRACTID= " + Data.CONTRACTID);
+            DataTable contract_rentitem = DbHelper.ExecuteTable(sqlRentItem);
+            return new Tuple<dynamic,
+                DataTable, DataTable, DataTable, DataTable, DataTable, DataTable>(contract.ToOneLine(),
+                contract_brand, contract_shop, contract_rent, contract_group, contract_jskl, contract_rentitem);
         }
     }
 }
