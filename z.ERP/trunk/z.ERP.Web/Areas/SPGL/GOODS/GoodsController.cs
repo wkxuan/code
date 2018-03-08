@@ -44,5 +44,10 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
         {
             return new UIResult(service.SpglService.ShowOneEdit(Data));
         }
+
+        public UIResult GetContract(CONTRACTEntity Data)
+        {
+            return new UIResult(service.SpglService.GetContract(Data));
+        }
     }
 }

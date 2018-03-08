@@ -111,6 +111,7 @@
     <Compile Include="ENERGY_REGISTEREntity.cs" />
     <Compile Include="Enum\Enum.cs" />
     <Compile Include="ASSETCHANGEEntity.cs" />
+    <Compile Include="GOODSEntity.cs" />
     <Compile Include="P1Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MERCHANTEntity.cs" />
