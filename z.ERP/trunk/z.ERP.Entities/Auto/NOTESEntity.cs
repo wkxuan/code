@@ -4,7 +4,7 @@
  * 生成人：书房
  * 代码生成器版本号：1.2.6562.36915
  *
- */ 
+ */
 
 using System.Data;
 using z.DbHelper.DbDomain;
@@ -28,6 +28,11 @@ namespace z.ERP.Entities
         /// <summary>
         [PrimaryKey]
         public string ID
+        {
+            get; set;
+        }
+
+        public string CREATENAME
         {
             get; set;
         }

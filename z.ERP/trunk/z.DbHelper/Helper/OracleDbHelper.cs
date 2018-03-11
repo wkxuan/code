@@ -217,6 +217,11 @@ namespace z.DBHelper.Helper
         {
             return ":" + cols;
         }
+
+        protected override string GetFieldName(string FieldName)
+        {
+            return $"\"{FieldName}\"";
+        }
         #endregion
         #region 链接操作
         protected override DbConnection GetDbConnection(string _dbConnectionInfoStr)

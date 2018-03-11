@@ -105,6 +105,16 @@ namespace z.DBHelper.Helper
         /// <param name="info"></param>
         /// <returns></returns>
         protected abstract IDbDataParameter GetDbDataParameter(PropertyInfo p, EntityBase info);
+
+        /// <summary>
+        /// 获取select中字段的名称
+        /// </summary>
+        /// <param name="FieldName"></param>
+        /// <returns></returns>
+        protected virtual string GetFieldName(string FieldName)
+        {
+            return FieldName;
+        }
         #endregion
         #region 构造
 
@@ -430,7 +440,7 @@ namespace z.DBHelper.Helper
             _dbCommand.Parameters.AddRange(dbprams);
             string tablename = info.GetTableName();
             string set = string.Join(",", info.GetFieldWithoutPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
-            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
+            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => GetFieldName(a.Name) + "=" + GetPramCols(a.Name)));
             if (string.IsNullOrEmpty(where))
             {
                 throw new DataBaseException("没有主键,不能更新");
@@ -473,7 +483,7 @@ namespace z.DBHelper.Helper
                 return p;
             }).ToArray();
             string tablename = info.GetTableName();
-            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
+            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => GetFieldName(a.Name) + "=" + GetPramCols(a.Name)));
             if (string.IsNullOrEmpty(where))
             {
                 throw new DataBaseException("没有主键,不能删除");
@@ -511,7 +521,7 @@ namespace z.DBHelper.Helper
                    return p;
                }).ToArray();
             string tablename = info.GetTableName();
-            string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
+            string where = string.Join(" and ", Allprop.Select(a => GetFieldName(a.Name) + "=" + GetPramCols(a.Name)));
             if (string.IsNullOrEmpty(where))
             {
                 throw new DataBaseException("没有删除条件，不能删除");
@@ -559,8 +569,8 @@ namespace z.DBHelper.Helper
             _dbCommand.Parameters.Clear();
             _dbCommand.Parameters.AddRange(dbprams);
             string tablename = info.GetTableName();
-            string select = string.Join(",", info.GetAllField().Select(a => a.Name));
-            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
+            string select = string.Join(",", info.GetAllField().Select(a => GetFieldName(a.Name)));
+            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => GetFieldName(a.Name) + "=" + GetPramCols(a.Name)));
             _dbCommand.CommandText = string.Format(_select, select, tablename, where);
             try
             {
@@ -598,8 +608,8 @@ namespace z.DBHelper.Helper
             _dbCommand.Parameters.Clear();
             _dbCommand.Parameters.AddRange(dbprams);
             string tablename = info.GetTableName();
-            string select = string.Join(",", info.GetAllField().Select(a => a.Name));
-            string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
+            string select = string.Join(",", info.GetAllField().Select(a => GetFieldName(a.Name)));
+            string where = string.Join(" and ", Allprop.Select(a => GetFieldName(a.Name) + "=" + GetPramCols(a.Name)));
             _dbCommand.CommandText = string.Format(_select, select, tablename, where.IsEmpty(" 1=1 "));
             try
             {

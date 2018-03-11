@@ -396,5 +396,11 @@ namespace z.Extensions
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
         #endregion
+        #region 程序集
+        public static void GetAllType(this Assembly ass,Func<Type,bool> func)
+        {
+            Assembly.Load()
+        }
+        #endregion
     }
 }
