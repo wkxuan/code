@@ -397,9 +397,15 @@ namespace z.Extensions
         }
         #endregion
         #region 程序集
-        public static void GetAllType(this Assembly ass,Func<Type,bool> func)
+        /// <summary>
+        /// 获取程序集下所有的符合条件的类
+        /// </summary>
+        /// <param name="ass"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static IEnumerable<Type> FindAllType(this Assembly ass, Func<Type, bool> func)
         {
-            //Assembly.Load()
+            return ass.GetTypes().Where(func);
         }
         #endregion
     }

@@ -163,7 +163,7 @@ namespace z.ERP.Entities.Enum
     public enum 标记
     {
         是 = 1,
-        否=2
+        否 = 2
     }
     public enum 用户标记
     {
