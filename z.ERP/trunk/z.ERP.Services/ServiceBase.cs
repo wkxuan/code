@@ -123,11 +123,11 @@ namespace z.ERP.Services
                 return ioc.Create<SpglService>();
             }
         }
-        public HomeService HomeService
+        public UserService UserService
         {
             get
             {
-                return ioc.Create<HomeService>();
+                return ioc.Create<UserService>();
             }
         }
         #endregion
