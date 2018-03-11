@@ -74,8 +74,10 @@ namespace z.ERP.Services
         }
 
 
-        public Tuple<dynamic, DataTable,DataTable, DataTable, DataTable, DataTable, DataTable> GetContractElement(CONTRACTEntity Data)
+        public Tuple<dynamic, DataTable,DataTable,  CONTRACTEntity, CONTRACT_RENTEntity, DataTable, DataTable > GetContractElement(CONTRACTEntity Data)
         {
+            //只显示本表数据的用module
+            //要显示本表之外的数据用DataTable
             if (Data.CONTRACTID.IsEmpty())
             {
                 throw new LogicException("请确认租约编号!");
@@ -101,25 +103,79 @@ namespace z.ERP.Services
             DataTable contract_shop = DbHelper.ExecuteTable(sqlshop);
 
 
-            string sqlRENT = $@"SELECT * FROM CONTRACT_RENT WHERE 1=1 ";
-            sqlRENT += (" AND CONTRACTID= " + Data.CONTRACTID);
-            DataTable contract_rent = DbHelper.ExecuteTable(sqlRENT);
+            CONTRACTEntity ContractParm = new CONTRACTEntity();
 
-            string sqlGroup = $@"SELECT * FROM CONTRACT_GROUP WHERE 1=1 ";
-            sqlGroup += (" AND CONTRACTID= " + Data.CONTRACTID);
-            DataTable contract_group = DbHelper.ExecuteTable(sqlGroup);
+            //全表查询,程序层面过滤
+            //ContractParm.CONTRACT_GROUP = DbHelper.SelectList(new CONTRACT_GROUPEntity()).Where(a => a.CONTRACTID==Data.CONTRACTID).ToList();
 
-            string sqlJskl = $@"SELECT * FROM CONTJSKL WHERE 1=1 ";
-            sqlJskl += (" AND CONTRACTID= " + Data.CONTRACTID);
-            DataTable contract_jskl = DbHelper.ExecuteTable(sqlJskl);
+            //查询数据库的时候已经参数过滤
+            ContractParm.CONTRACT_GROUP = DbHelper.SelectList(new CONTRACT_GROUPEntity() { CONTRACTID=Data.CONTRACTID }).ToList();
+
+            ContractParm.CONTRACT_RENT = DbHelper.SelectList(new CONTRACT_RENTEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
+
+            ContractParm.CONTJSKL = DbHelper.SelectList(new CONTJSKLEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
 
 
-            string sqlRentItem = $@"SELECT * FROM CONTRACT_RENTITEM WHERE 1=1 ";
-            sqlRentItem += (" AND CONTRACTID= " + Data.CONTRACTID);
-            DataTable contract_rentitem = DbHelper.ExecuteTable(sqlRentItem);
-            return new Tuple<dynamic,
-                DataTable, DataTable, DataTable, DataTable, DataTable, DataTable>(contract.ToOneLine(),
-                contract_brand, contract_shop, contract_rent, contract_group, contract_jskl, contract_rentitem);
+            CONTRACT_RENTEntity ContractRentParm = new CONTRACT_RENTEntity();
+            ContractRentParm.CONTRACT_RENTITEM= DbHelper.SelectList(new CONTRACT_RENTITEMEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
+
+
+            string sqlPay = $@"SELECT * FROM CONTRACT_PAY WHERE 1=1 ";
+            sqlPay += (" AND CONTRACTID= " + Data.CONTRACTID);
+            sqlPay += " ORDER BY PAYID,STARTDATE";
+            DataTable contract_pay = DbHelper.ExecuteTable(sqlPay);
+
+
+            string sqlCost = $@"SELECT * FROM CONTRACT_COST WHERE 1=1 ";
+            sqlCost += (" AND CONTRACTID= " + Data.CONTRACTID);
+            sqlCost += " ORDER BY TERMID,STARTDATE";
+            DataTable contract_cost = DbHelper.ExecuteTable(sqlCost);
+
+
+            return new Tuple<dynamic,DataTable, DataTable, CONTRACTEntity, CONTRACT_RENTEntity,DataTable, DataTable>(
+                contract.ToOneLine(),
+                contract_brand, 
+                contract_shop,
+                ContractParm,
+                ContractRentParm,
+                contract_pay,
+                contract_cost
+                );
         }
+
+        public Object LyYdfj(List<CONTRACT_RENTEntity> Data) {
+
+            List<CONTRACT_RENTITEMEntity> zjfj = new List<CONTRACT_RENTITEMEntity>();
+
+            foreach (var ydfj in Data)
+            {
+                var zjitem = Jefj(ydfj);
+                zjfj.Add(zjitem);  //循环插入数据
+            };
+            return new
+            {
+                Obj = zjfj
+            };
+        }
+
+        private CONTRACT_RENTITEMEntity Jefj(CONTRACT_RENTEntity ydfj)
+        {
+            var ret = new CONTRACT_RENTITEMEntity()
+            {
+                INX = ydfj.INX
+            };
+
+            var  sql = "SELECT * FROM PERIOD WHERE DATE_END>="+ydfj.STARTDATE+" AND "+ 
+                        " DATE_START<="+ydfj.ENDDATE+" ORDER BY DATE_START";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            for (int inx = 0; inx < dt.Rows.Count; inx++)
+            {
+                //查出来数据了
+
+            }
+            return ret;
+        }
+
     }
 }

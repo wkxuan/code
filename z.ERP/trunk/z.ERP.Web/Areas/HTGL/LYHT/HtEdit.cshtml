@@ -344,12 +344,69 @@
 <panel name="detailSFQK">
     租约收费项目信息
     <p slot="content">
+        <row>
+                <i-col>
+                    @{
+                        RenderControl(new ButtonRender()
+                        {
+                            Click = "addColCost",
+                            Text = "添加一行",
+                            Enable = true,
+                            Type = "primary",
+                            Icon = "plus-circled"
+                        });
+                    }
+                    @{
+                        RenderControl(new ButtonRender()
+                        {
+                            Click = "delColCost",
+                            Text = "删除",
+                            Enable = true,
+                            Type = "error",
+                            Icon = "minus-circled"
+                        });
+                    }
+                </i-col>
+                <i-col span="24">
+                    <i-table height="300" size="small" :border="true"
+                             :columns="screenParam.colDefCOST" :data="dataParam.CONTRACT_COST" ref="selectCost"></i-table>
+                </i-col>
+        </row>
     </p>
 </panel>
 
 <panel name="detailSXF">
     租约收款方式手续费
     <p slot="content">
+        <row>
+            <i-col>
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "addColPay",
+                        Text = "添加一行",
+                        Enable = true,
+                        Type = "primary",
+                        Icon = "plus-circled"
+                    });
+                }
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "delColPay",
+                        Text = "删除",
+                        Enable = true,
+                        Type = "error",
+                        Icon = "minus-circled"
+                    });
+                }
+
+            </i-col>
+            <i-col span="24">
+                <i-table height="300" size="small" :border="true"
+                         :columns="screenParam.colDefPAY" :data="dataParam.CONTRACT_PAY" ref="selectPay"></i-table>
+            </i-col>
+        </row>
     </p>
 </panel>
 }
