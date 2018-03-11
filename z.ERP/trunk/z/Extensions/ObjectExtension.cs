@@ -396,5 +396,17 @@ namespace z.Extensions
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
         #endregion
+        #region 程序集
+        /// <summary>
+        /// 获取程序集下所有的符合条件的类
+        /// </summary>
+        /// <param name="ass"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static IEnumerable<Type> FindAllType(this Assembly ass, Func<Type, bool> func)
+        {
+            return ass.GetTypes().Where(func);
+        }
+        #endregion
     }
 }

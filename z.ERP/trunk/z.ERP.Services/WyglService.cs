@@ -121,7 +121,7 @@ namespace z.ERP.Services
 
             DataTable dt = DbHelper.ExecuteTable(sql);
 
-            
+
 
             return new
             {
@@ -152,6 +152,7 @@ namespace z.ERP.Services
                 brand.VERIFY_TIME = DateTime.Now.ToString();
                 brand.STATUS = ((int)普通单据状态.审核).ToString();
                 DbHelper.Save(brand);
+                Notes(nameof(ENERGY_REGISTEREntity), brand.BILLID, $"已审核");
                 Tran.Commit();
             }
             return brand.BILLID;

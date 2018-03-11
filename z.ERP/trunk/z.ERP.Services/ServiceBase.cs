@@ -194,6 +194,7 @@ namespace z.ERP.Services
                 ID = NewINC(nameof(NOTESEntity)),
                 CREATED = DateTime.Now.ToLongString(),
                 CREATER = employee.Id,
+                CREATENAME = employee.Name,
                 NOTES = Context,
                 TITLE = title,
                 TKEY = Key,
