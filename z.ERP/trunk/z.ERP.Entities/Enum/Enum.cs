@@ -170,4 +170,11 @@ namespace z.ERP.Entities.Enum
         正常 = 1,
         停用 = 2
     }
+    public enum 结算单状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        部分付款 = 3,
+        全部付款 = 4
+    }
 }
