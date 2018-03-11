@@ -1,6 +1,6 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/19 20:30:45
+ * 生成时间：2018/3/5 22:24:31
  * 生成人：书房
  * 代码生成器版本号：1.2.6562.36915
  *
@@ -24,6 +24,14 @@ namespace z.ERP.Entities
             INX = inx;
         }
 
+        /// <summary>
+        /// 保底扣率
+        /// <summary>
+        [Field("保底扣率")]
+        public string RENTS_JSKL
+        {
+            get; set;
+        }
         /// <summary>
         /// 合同号
         /// <summary>

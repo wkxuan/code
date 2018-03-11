@@ -85,18 +85,18 @@ namespace z.ERP.Services
             return "TestManager";
         }
 
-        public virtual UIResult Treelist()
-        {
-            List<MENUEntity> p = DbHelper.SelectList(new MENUEntity());
-            return new UIResult(TreeModel.Create(p,
-                a => a.MENUCODE,
-                a => new TreeModel()
-                {
-                    code = a.MENUCODE,
-                    title = a.MENUNAME,
-                    expand = true
-                }).ToArray());
-        }
+        //public virtual UIResult Treelist()
+        //{
+        //    List<MENUEntity> p = DbHelper.SelectList(new MENUEntity());
+        //    return new UIResult(TreeModel.Create(p,
+        //        a => a.MENUCODE,
+        //        a => new TreeModel()
+        //        {
+        //            code = a.MENUCODE,
+        //            title = a.MENUNAME,
+        //            expand = true
+        //        }).ToArray());
+        //}
 
         public virtual UIResult TreeData(SearchItem item)
         {

@@ -61,11 +61,11 @@
     <Compile Include="Cache\ICache.cs" />
     <Compile Include="Cache\WebCache.cs" />
     <Compile Include="CMD\RunCMD.cs" />
+    <Compile Include="Context\ApplicationContextBase.cs" />
+    <Compile Include="Context\HttpApplicationContext.cs" />
     <Compile Include="Context\SingleInstance.cs" />
     <Compile Include="Exceptions\zExceptionBase.cs" />
     <Compile Include="Extensions\ConfigExtension.cs" />
-    <Compile Include="Context\LoginHelper.cs" />
-    <Compile Include="Context\Employee.cs" />
     <Compile Include="Exceptions\DataBaseException.cs" />
     <Compile Include="Exceptions\LogicException.cs" />
     <Compile Include="Exceptions\NoPermissionException.cs" />
@@ -81,6 +81,7 @@
     <Compile Include="Extensions\ObjectExtension.cs" />
     <Compile Include="Extensions\HttpExtension.cs" />
     <Compile Include="Extensions\IOExtensiont.cs" />
+    <Compile Include="Math\FinanceTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebPage\OperationInfo.cs" />
     <Compile Include="WebPage\PageInfo.cs" />

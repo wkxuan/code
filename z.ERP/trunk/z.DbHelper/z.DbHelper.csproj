@@ -36,9 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data">
-      <HintPath>..\DLL\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\Lib\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>

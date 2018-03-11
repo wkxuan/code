@@ -5,7 +5,7 @@
 
 @section baseParam{
     <row>
-        <i-col span="2" class="RowTitle">
+        @*<i-col span="2" class="RowTitle">
             商品代码
         </i-col>
         <i-col span="6">
@@ -15,7 +15,7 @@
                     vModel = "dataParam.GOODDM",
                 });
             }
-        </i-col>
+        </i-col>*@
         <i-col span="2" class="RowTitle">
             商品条码
         </i-col>
@@ -69,7 +69,8 @@
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.STYLE",
+                    vModel = "dataParam.STYLEMC",
+                    Readonly = "true"
                 });
             }
         </i-col>
@@ -79,51 +80,37 @@
             租约号
         </i-col>
         <i-col span="6">
-            @{
+            <i-input v-model="dataParam.CONTRACTID"  v-on:on-enter="changge">
+            </i-input>
+            @*@{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.CONTRACTID",
                 });
-            }
+            }*@
         </i-col>
 
         <i-col span="2" class="RowTitle">
             商户
         </i-col>
-        <i-col span="6">
+        <i-col span="2">
             @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.MERCHANTID",
+                    Readonly = "true"
                 });
             }
         </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            商品分类
-        </i-col>
-        <i-col span="6">
+        <i-col span="4">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.KINDID",
+                    vModel = "dataParam.SHMC",
+                    Readonly = "true"
                 });
             }
         </i-col>
-
-        <i-col span="2" class="RowTitle">
-            地区
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.REGION",
-                });
-            }
-        </i-col>
-
         <i-col span="2" class="RowTitle">
             进项税率
         </i-col>
@@ -137,6 +124,53 @@
         </i-col>
     </row>
     <row>
+        <i-col span="2" class="RowTitle">
+            品牌
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.BRANDID",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            商品分类
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.KINDID",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            销项税率
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.XXSL",
+                });
+            }
+        </i-col>
+
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            地区
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.REGION",
+                });
+            }
+        </i-col>
         <i-col span="2" class="RowTitle">
             单价
         </i-col>
@@ -160,24 +194,13 @@
                 });
             }
         </i-col>
-
-        <i-col span="2" class="RowTitle">
-            销项税率
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.XXSL",
-                });
-            }
-        </i-col>
     </row>
+
     <row>
         <i-col span="2" class="RowTitle">
             描述
         </i-col>
-        <i-col span="16">
+        <i-col span="14">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -187,4 +210,11 @@
         </i-col>       
     </row>
 
+}
+
+@section detailParam{
+    <row>
+        <i-table size="small" :border="true"
+                 :columns="screenParam.colDef" :data="dataParam.GOODS_SHOP"></i-table>
+    </row>
 }

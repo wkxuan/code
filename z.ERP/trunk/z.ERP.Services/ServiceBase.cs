@@ -11,6 +11,8 @@ using z.Extensions;
 using z.IOC.RealProxyIOC;
 using z.IOC.Simple;
 using z.LogFactory;
+using z.SSO;
+using z.SSO.Model;
 using z.Verify;
 
 namespace z.ERP.Services
@@ -26,21 +28,31 @@ namespace z.ERP.Services
             ioc = new SimpleIOC(mrs);
         }
 
-        //protected DbHelperBase DbHelper
-        //{
-        //    get
-        //    {
-        //        return new OracleDbHelper(ConfigExtension.GetConfig("connection"));
-        //    }
-        //}
-
         protected DbHelperBase DbHelper
         {
             get
             {
-                return _db;
+                return new OracleDbHelper(ConfigExtension.GetConfig("connection"));
             }
         }
+
+        //public void SetDb(DbHelperBase db)
+        //{
+        //    _db = db;
+        //}
+        //DbHelperBase _db;
+
+        //public DbHelperBase DbHelper
+        //{
+        //    get
+        //    {
+        //        if (_db == null)
+        //        {
+        //            throw new Exception("初始化异常");
+        //        }
+        //        return _db;
+        //    }
+        //}
         static readonly DbHelperBase _db = new OracleDbHelper(ConfigExtension.GetConfig("connection"));
 
         #region Service  
@@ -110,13 +122,6 @@ namespace z.ERP.Services
                 return ioc.Create<SpglService>();
             }
         }
-        public UserService UserService
-        {
-            get
-            {
-                return ioc.Create<UserService>();
-            }
-        }
         #endregion
 
         #region 通用方法
@@ -169,7 +174,7 @@ namespace z.ERP.Services
         {
             get
             {
-                return LoginHelper.GetLogin();
+                return UserApplication.GetUser<Employee>();
             }
         }
 
@@ -180,6 +185,8 @@ namespace z.ERP.Services
                 return new LogWriter("Controller");
             }
         }
+
+
         #endregion
     }
     #endregion

@@ -1,6 +1,6 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/19 20:30:53
+ * 生成时间：2018/3/5 22:24:40
  * 生成人：书房
  * 代码生成器版本号：1.2.6562.36915
  *
@@ -11,14 +11,14 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("SYSUSER", "用户")]
-    public partial class SYSUSEREntity : EntityBase
+    [DbTable("USERS", "用户")]
+    public partial class USEREntity : EntityBase
     {
-        public SYSUSEREntity()
+        public USEREntity()
         {
         }
 
-        public SYSUSEREntity(string userid)
+        public USEREntity(string userid)
         {
             USERID = userid;
         }

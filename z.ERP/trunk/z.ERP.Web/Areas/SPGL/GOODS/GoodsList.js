@@ -2,7 +2,7 @@
     search.searchParam.GOODSID = "";
     var col = [
         { title: '商品代码', key: 'GOODSDM', width: 80 },
-        { title: "商品条码", key: 'BARCODE', width: 90 },
+        { title: "商品条码", key: 'BARCODE', width: 150 },
         { title: '商品名称', key: 'NAME', width: 100 },
         { title: '拼音码', key: 'PYM', width: 100 },
         { title: '租约号', key: 'CONTRACTID', width: 100 },

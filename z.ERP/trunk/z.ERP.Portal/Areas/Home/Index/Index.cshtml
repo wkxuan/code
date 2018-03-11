@@ -1,0 +1,96 @@
+﻿@inherits ViewBase<dynamic>
+@using z.MVC5.Views
+@{
+    Layout = null;
+}
+@{
+    WebFiles = new string[] {
+                    "Content/Base.css",
+                     "Content/jquery.min.js",
+                    "Content/zBase.js",
+                    "Content/AjaxHelper.js",
+                    "Content/JsHelper.js",
+                    "Content/PageBase.js",
+                    "Content/DWZ/dwz.js",
+                    "Content/DWZ/default/style.css",
+                    "Content/DWZ/css/core.css"
+                };
+}
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>admin</title>
+    <script type="text/javascript">
+        __ControllerUrl = '@ViewBag.ControllerUrl';
+        __CommonControllerUrl = '@ViewBag.CommonControllerUrl';
+        __BaseUrl = '@ViewBag.BaseUrl';
+    </script>
+    @InitFiles(WebFiles)
+    @InitThisJs()
+</head>
+<body scroll="no">
+    <div id="layout">
+        <div id="header">
+            <div class="headerNav">
+                <a class="logo">标志</a>
+                <ul class="nav">
+                    <li><a id="a_timenow" href="javascript:"></a></li>
+                    <li class="line"><a href="javascript:employee()">欢迎:@employee.Name</a></li>
+                    <li class="line"><a id="btn_ChangePassword" target="navTab" external="true" fresh="false">修改密码</a></li>
+                    <li class="line"><a href="javascript:loginout()">退出</a></li>
+                </ul>
+            </div>
+
+            <div id="navMenu">
+                <ul id="menu_top">
+                    <li><a><span>加载中...</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="leftside">
+            <div id="sidebar_s">
+                <div class="collapse">
+                    <div class="toggleCollapse">
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div id="sidebar">
+                <div class="accordion" fillspace="sidebar" id="menu_2">
+                    <div class="accordionHeader">
+                        <h2><span>Folder</span>加载中...</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="container">
+            <div id="navTab" class="tabsPage">
+                <div class="tabsPageHeader">
+                    <div class="tabsPageHeaderContent">
+                        <!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
+                        <ul class="navTab-tab"></ul>
+                    </div>
+                    <div class="tabsLeft">left</div>
+                    <!-- 禁用只需要添加一个样式 class="tabsLeft tabsLeftDisabled" -->
+                    <div class="tabsRight">right</div>
+                    <!-- 禁用只需要添加一个样式 class="tabsRight tabsRightDisabled" -->
+                    <div class="tabsMore">more</div>
+                </div>
+                <ul class="tabsMoreList"></ul>
+                <div class="navTab-panel tabsPageContent layoutBox">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style type="text/css">
+        #header { height: 85px; }
+
+        #leftside, #container, #splitBar, #splitBarProxy { top: 90px; }
+    </style>
+</body>
+
+</html>

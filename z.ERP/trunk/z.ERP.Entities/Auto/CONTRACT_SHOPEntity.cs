@@ -1,6 +1,6 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2017/12/19 20:30:45
+ * 生成时间：2018/3/5 22:24:31
  * 生成人：书房
  * 代码生成器版本号：1.2.6562.36915
  *
@@ -24,6 +24,14 @@ namespace z.ERP.Entities
             SHOPID = shopid;
         }
 
+        /// <summary>
+        /// 租用面积
+        /// <summary>
+        [Field("租用面积")]
+        public string AREA_RENTABLE
+        {
+            get; set;
+        }
         /// <summary>
         /// 合同号
         /// <summary>
@@ -51,9 +59,9 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
-        /// 面积
+        /// 建筑面积
         /// <summary>
-        [Field("面积")]
+        [Field("建筑面积")]
         public string AREA
         {
             get; set;

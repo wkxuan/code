@@ -133,5 +133,51 @@ namespace z.Extensiont
         {
             return string.Join(separator, list.Select(a => fun == null ? a.ToString() : fun(a)));
         }
+
+        /// <summary>
+        /// 获取集合中最小的值的集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public static T Min2<T>(this IEnumerable<T> list, Func<T, double> selector)
+        {
+            if (list.IsEmpty())
+                return default(T);
+            double key = double.MaxValue;
+            T outT = default(T);
+            list.ForEach(l =>
+            {
+                if (selector(l) < key)
+                {
+                    outT = l;
+                }
+            });
+            return outT;
+        }
+
+        /// <summary>
+        /// 获取集合中最大的值的集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public static T Max2<T>(this IEnumerable<T> list, Func<T, double> selector)
+        {
+            if (list.IsEmpty())
+                return default(T);
+            double key = double.MaxValue;
+            T outT = default(T);
+            list.ForEach(l =>
+            {
+                if (selector(l) > key)
+                {
+                    outT = l;
+                }
+            });
+            return outT;
+        }
     }
 }

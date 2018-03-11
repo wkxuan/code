@@ -1,0 +1,62 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@using z.MVC5.Models
+@{
+    Layout = null;
+}
+@{
+    ErrorModel Model = ViewData["Model"] as ErrorModel;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>页面发生异常了</title>
+    <style>
+        body { font-family: Helvetica,Arial,sans-serif; margin: 0; background-color: #CCC; background: -webkit-linear-gradient(#CCC,#AAA); background-attachment: fixed; }
+        #cell { padding: 40px; }
+        #box { background-color: white; color: black; font-size: 10pt; line-height: 18px; margin: auto; max-width: 800px; border-radius: 5px; -webkit-box-shadow: 2px 5px 12px#555; padding: 20px; }
+        ul { margin: 0; padding-bottom: 0; }
+        li { padding-top: 2px; }
+        h1 { font-size: 18pt; line-height: 30px; margin: 0; }
+        .right { color: #B5B5B5; text-align: right; }
+        a { color: #B5B5B5; }
+    </style>
+</head>
+@{
+    if (z.Extensions.ConfigExtension.TestModel)
+    {
+        <body id="t">
+            <div id="cell">
+                <div id="box">
+                    <h1>@Model.Site 处报错了</h1>
+                    <p>
+                        <ul>
+                            <li>消息类型：@Model.Ex.GetType().Name</li>
+                            <li>消息内容：@Model.Ex.Message</li>
+                            <li>引发异常的方法：@Model.Ex.TargetSite</li>
+                            <li>引发异常的对象：@Model.Ex.Source</li>
+                            <li>错误堆栈：@Model.Ex.StackTrace</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </body>
+    }
+    else
+    {
+        <body id="t">
+            <div id="cell">
+                <div id="box">
+                    <h1>出错了!</h1>
+                    <p>
+                        <ul>
+                            <li>@Model.Ex.Message</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </body>
+    }
+}
+</html>

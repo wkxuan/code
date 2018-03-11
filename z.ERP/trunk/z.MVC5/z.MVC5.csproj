@@ -35,10 +35,6 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\私活\ERP\源码\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -108,6 +104,10 @@
     <ProjectReference Include="..\z.DbHelper\z.DbHelper.csproj">
       <Project>{da64e4e3-1857-4b57-a6d9-abbdb092e7e4}</Project>
       <Name>z.DbHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\z.SSO\z.SSO.csproj">
+      <Project>{DF833680-D044-4C57-96F9-217A1812C0B3}</Project>
+      <Name>z.SSO</Name>
     </ProjectReference>
     <ProjectReference Include="..\z\z.csproj">
       <Project>{68597feb-8ff8-486e-b603-ce7e8de57f5b}</Project>

@@ -17,15 +17,15 @@ namespace z.ERP.Web.Areas.XTGL.TreeTest
             return View();
         }
 
-        public string Save(string Tar, string Key, MENUEntity DefineSave)
-        {
-            var allenum = SelectList(new MENUEntity());
-            string newkey = TreeModel.GetNewKey(allenum, a => a.MENUCODE, Key, Tar);
-            DefineSave.MENUCODE = newkey;
+        //public string Save(string Tar, string Key, MENUEntity DefineSave)
+        //{
+        //    var allenum = SelectList(new MENUEntity());
+        //    //string newkey = TreeModel.GetNewKey(allenum, a => a.MENUCODE, Key, Tar);
+        //    //DefineSave.MENUCODE = newkey;
 
-            DefineSave.ENABLE_FLAG = "1";
-            CommonSave(DefineSave);
-            return newkey;
-        }
+        //    //DefineSave.ENABLE_FLAG = "1";
+        //    CommonSave(DefineSave);
+        //    return newkey;
+        //}
     }
 }
