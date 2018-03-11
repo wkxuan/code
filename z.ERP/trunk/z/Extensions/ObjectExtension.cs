@@ -399,7 +399,7 @@ namespace z.Extensions
         #region 程序集
         public static void GetAllType(this Assembly ass,Func<Type,bool> func)
         {
-            Assembly.Load()
+            //Assembly.Load()
         }
         #endregion
     }
