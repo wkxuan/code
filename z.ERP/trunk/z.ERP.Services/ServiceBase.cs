@@ -122,6 +122,13 @@ namespace z.ERP.Services
                 return ioc.Create<SpglService>();
             }
         }
+        public UserService UserService
+        {
+            get
+            {
+                return ioc.Create<UserService>();
+            }
+        }
         #endregion
 
         #region 通用方法
