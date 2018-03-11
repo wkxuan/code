@@ -153,6 +153,7 @@
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
     <Compile Include="Areas\HTGL\LYHT\LYHTController.cs" />
+    <Compile Include="Areas\JSGL\JOINBILL\JoinBillController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\Detail\DetailViewBase.cs" />
     <Compile Include="Areas\Layout\EditDetail\EditDetailViewBase.cs" />
@@ -212,6 +213,8 @@
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.js" />
     <Content Include="Areas\HTGL\LYHT\HtEdit.js" />
     <Content Include="Areas\HTGL\LYHT\HtList.js" />
+    <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.js" />
+    <Content Include="Areas\JSGL\JOINBILL\JoinBillList.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
@@ -356,6 +359,9 @@
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsList.cshtml" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.cshtml" />
+    <Content Include="Areas\JSGL\JOINBILL\JoinBillList.cshtml" />
+    <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.cshtml" />
+    <Content Include="Areas\JSGL\JOINBILL\JoinBillDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

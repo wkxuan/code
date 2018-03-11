@@ -1,0 +1,59 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Detail;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits DetailLayout<dynamic>
+
+@section Title{
+    @Html.Raw("详情");
+}
+
+@{
+    var goods = ViewBag.goods;
+}
+
+@section btn{
+    @{
+        if (@goods.STATUS == "1")
+        {
+            RenderControl(new ButtonRender()
+            {
+                Text = "审核",
+                Click = "exec",
+            });
+        }
+    }
+}
+
+@section content{
+    
+}
+
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true
+            },
+            methods: {
+                exec: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: {GOODID: @goods.GOODSID},
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                }
+            }
+        });
+    </script>
+}

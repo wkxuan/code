@@ -123,6 +123,13 @@ namespace z.ERP.Services
                 return ioc.Create<SpglService>();
             }
         }
+        public JsglService JsglService
+        {
+            get
+            {
+                return ioc.Create<JsglService>();
+            }
+        }
         public UserService UserService
         {
             get
