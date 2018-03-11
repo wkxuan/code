@@ -90,6 +90,7 @@
     <Compile Include="Auto\MENUEntity.cs" />
     <Compile Include="Auto\MERCHANTEntity.cs" />
     <Compile Include="Auto\MERCHANT_BRANDEntity.cs" />
+    <Compile Include="Auto\NOTESEntity.cs" />
     <Compile Include="Auto\OPERATIONRULEEntity.cs" />
     <Compile Include="Auto\ORGEntity.cs" />
     <Compile Include="Auto\P1Entity.cs" />

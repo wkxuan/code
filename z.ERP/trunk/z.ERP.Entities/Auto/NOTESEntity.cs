@@ -11,56 +11,66 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("OPERATIONRULE", "合作经营方式")]
-    public partial class OPERATIONRULEEntity : EntityBase
+    [DbTable("NOTES", "")]
+    public partial class NOTESEntity : EntityBase
     {
-        public OPERATIONRULEEntity()
+        public NOTESEntity()
         {
         }
 
-        public OPERATIONRULEEntity(string id)
+        public NOTESEntity(string id)
         {
             ID = id;
         }
 
         /// <summary>
-        /// ID
+        /// 
         /// <summary>
         [PrimaryKey]
-        [Field("ID")]
         public string ID
         {
             get; set;
         }
         /// <summary>
-        /// 名称
+        /// 
         /// <summary>
-        [Field("名称")]
-        public string NAME
+        public string TKEY
         {
             get; set;
         }
         /// <summary>
-        /// 物业标记
+        /// 
         /// <summary>
-        [Field("物业标记")]
-        public string WYSIGN
+        public string TVALUE
         {
             get; set;
         }
         /// <summary>
-        /// 合作方式
+        /// 
         /// <summary>
-        [Field("合作方式")]
-        public string PROCESSTYPE
+        public string TITLE
         {
             get; set;
         }
         /// <summary>
-        /// 阶梯标记
+        /// 
         /// <summary>
-        [Field("阶梯标记")]
-        public string LADDERSIGN
+        public string NOTES
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        public string CREATER
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [DbType(DbType.DateTime)]
+        public string CREATED
         {
             get; set;
         }
