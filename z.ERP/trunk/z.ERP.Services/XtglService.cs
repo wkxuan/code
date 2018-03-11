@@ -218,24 +218,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public DataGridResult GetRole(SearchItem item)
-        {
-            string sql = $@"select A.ROLEID,A.ROLECODE,A.ROLENAME FROM ROLE A WHERE 1=1";
-            item.HasKey("ROLECODE,", a => sql += $" and A.ROLECODE = '{a}'");
-            item.HasKey("ROLENAME", a => sql += $" and A.ROLENAME like '%{a}%'");
-            sql += " ORDER BY  A.ROLECODE";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-        public DataGridResult GetRoleElement(SearchItem item)
-        {
-            string sql = $@"select A.* from ROLE A where 1=1 ";
-            item.HasKey("ROLEID", a => sql += $" and A.ROLEID = '{a}'");
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
         public DataGridResult GetEnergyFiles(SearchItem item)
         {
             string sql = $@"SELECT A.FILECODE,A.FILENAME FROM ENERGY_FILES A WHERE 1=1";

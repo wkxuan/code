@@ -4,15 +4,6 @@
 @inherits SearchViewBase
 @section conditionParam{
 <row>
-    <i-col span="2" class="RowTitle">所属机构</i-col>
-    <i-col span="6">
-            @{
-                RenderControl(new UndefineRender()
-                {
-                    vModel = "searchParam.ORGID",
-                });
-            }
-    </i-col>
     <i-col span="2" class="RowTitle">
         角色代码
     </i-col>
@@ -33,5 +24,15 @@
              });
          }
      </i-col>
+    <i-col span="2" class="RowTitle">所属机构</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new UndefineRender()
+            {
+                vModel = "searchParam.ORGID",
+            });
+        }
+    </i-col>
+
  </row>
 }

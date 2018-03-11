@@ -188,7 +188,7 @@
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cs" />
-    <Compile Include="Areas\XTGL\ROLE\Role.cs" />
+    <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
     <Compile Include="Areas\XTGL\SYSUSER\Sysuser.cs" />
     <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
     <Compile Include="Areas\XTGL\SHOP\Shop.cs" />
@@ -229,7 +229,8 @@
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
-    <Content Include="Areas\XTGL\ROLE\Role.js" />
+    <Content Include="Areas\XTGL\ROLE\RoleEdit.js" />
+    <Content Include="Areas\XTGL\ROLE\RoleList.js" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.js" />
     <Content Include="Areas\XTGL\ORG\Org.js" />
     <Content Include="Areas\XTGL\SHOP\Shop.js" />
@@ -354,7 +355,9 @@
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsList.cshtml" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.cshtml" />
-    <Content Include="Areas\XTGL\ROLE\Role.cshtml" />
+    <Content Include="Areas\XTGL\ROLE\RoleEdit.cshtml" />
+    <Content Include="Areas\XTGL\ROLE\RoleList.cshtml" />
+    <Content Include="Areas\XTGL\ROLE\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

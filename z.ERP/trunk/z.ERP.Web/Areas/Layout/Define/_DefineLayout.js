@@ -16,7 +16,7 @@
     this.newRecord = function () { }
 
     //得到主键
-    this.Key = undefined
+    this.Key = undefined;
 
     //vue操作
     this.vue = function VueOperate() {
@@ -77,7 +77,7 @@
                         return;
                     save(function (data) {
                         showlist(function () {
-                            showone(data, function () {
+                            _this.showone(data, function () {
                                 ve.disabled = _this.enabled(true);
                                 _self.$Message.info("保存成功");
                             });
@@ -91,7 +91,7 @@
                             title: '提示',
                             content: '是否取消',
                             onOk: function () {
-                                showone(ve._key);
+                                _this.showone(ve._key);
                                 ve.disabled = _this.enabled(true);
                             },
                             onCancel: function () {
@@ -134,9 +134,11 @@
                 //参数:currentRow当前数据
                 //oldCurrentRow上一次选中的数据
                 showlist: function (currentRow, oldCurrentRow) {
-                    _this.dataParam = currentRow;
+                    //_this.dataParam = currentRow;
+                    $.extend(_this.dataParam , currentRow);
                     ve._key = define.dataParam[_this.Key];
-                    showone(ve._key);
+                    _this.showone(ve._key);
+                    ve.dataParam = _this.dataParam;
                 },
                 seachList: function (event) {
                     showlist();
@@ -158,23 +160,6 @@
             })
         }
 
-        function showone(key, callback) {
-            if (key) {
-                var v = {};
-                v[_this.Key] = key;
-                _.Search({
-                    Service: _this.service,
-                    Method: _this.method,
-                    Data: v,
-                    Success: function (data) {
-                        _this.dataParam = data.rows[0];
-                        ve.dataParam = _this.dataParam;
-                        callback && callback();
-                    }
-                });
-            }
-        }
-
         function save(callback) {
             _.Ajax('Save', {
                 DefineSave: ve.dataParam
@@ -188,6 +173,22 @@
                 DefineDelete: data
             }, function (data) {
                 callback && callback();
+            });
+        }
+    }
+
+    this.showone=function (key, callback) {
+        if (key) {
+            var v = {};
+            v[_this.Key] = key;
+            _.Search({
+                Service: _this.service,
+                Method: _this.method,
+                Data: v,
+                Success: function (data) {
+                    _this.dataParam = data.rows[0];
+                    callback && callback();
+                }
             });
         }
     }

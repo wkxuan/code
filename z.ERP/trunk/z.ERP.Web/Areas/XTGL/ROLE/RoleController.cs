@@ -1,8 +1,16 @@
 ﻿using z.ERP.Web.Areas.Base;
 using System.Web.Mvc;
 using z.ERP.Entities;
+using z.ERP.Web.Areas.Base;
+using System.Web.Mvc;
+using z.ERP.Entities;
 using z.Extensions;
 using System;
+using System.Collections.Generic;
+using z.MVC5.Results;
+using z.ERP.Model;
+using z.ERP.Entities.Enum;
+using System.Data;
 
 namespace z.ERP.Web.Areas.XTGL.ROLE
 {
@@ -33,6 +41,19 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
         {
             var v = GetVerify(DefineDelete);
             CommenDelete(DefineDelete);
+        }
+
+        public UIResult SearchRole(ROLEEntity Data)
+        {
+            var res = service.UserService.GetRoleElement(Data);
+            return new UIResult(
+                new
+                {
+                    role = res.Item1,
+                    menu = res.Item2,
+                    sfxm = res.Item3
+                }
+                );
         }
     }
 }
