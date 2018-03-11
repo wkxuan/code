@@ -1,6 +1,6 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2018/3/5 22:24:40
+ * 生成时间：2018/3/11 22:19:02
  * 生成人：书房
  * 代码生成器版本号：1.2.6562.36915
  *
@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("USERS", "用户")]
+    [DbTable("USER", "用户")]
     public partial class USEREntity : EntityBase
     {
         public USEREntity()

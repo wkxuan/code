@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using z.Context;
 using z.DbHelper.DbDomain;
 using z.DBHelper.Helper;
+using z.ERP.Entities;
 using z.Extensions;
 using z.IOC.RealProxyIOC;
 using z.IOC.Simple;
@@ -122,6 +123,13 @@ namespace z.ERP.Services
                 return ioc.Create<SpglService>();
             }
         }
+        public JsglService JsglService
+        {
+            get
+            {
+                return ioc.Create<JsglService>();
+            }
+        }
         public UserService UserService
         {
             get
@@ -170,6 +178,29 @@ namespace z.ERP.Services
             EntityVerify<TEntity> v = new EntityVerify<TEntity>(entity);
             v.SetDb(DbHelper);
             return v;
+        }
+
+        /// <summary>
+        /// 记录用户可见的日志
+        /// </summary>
+        /// <param name="Key">记录类型,一般为涉及的Entity名</param>
+        /// <param name="Value">记录的主键,一般为单据id</param>
+        /// <param name="Context">内容</param>
+        /// <param name="title">标题,选填</param>
+        public void Notes(string Key, string Value, string Context, string title = "")
+        {
+            NOTESEntity note = new NOTESEntity()
+            {
+                ID = NewINC(nameof(NOTESEntity)),
+                CREATED = DateTime.Now.ToLongString(),
+                CREATER = employee.Id,
+                CREATENAME = employee.Name,
+                NOTES = Context,
+                TITLE = title,
+                TKEY = Key,
+                TVALUE = Value
+            };
+            DbHelper.Insert(note);
         }
         #endregion
 

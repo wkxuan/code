@@ -39,10 +39,10 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
                     contract = res.Item1,
                     contractBrand =res.Item2,
                     contractShop=res.Item3,
-                    contract_rent = res.Item4,
-                    contract_group = res.Item5,
-                    contract_jskl = res.Item6,
-                    contract_rentitem = res.Item7,
+                    ContractParm = res.Item4,
+                    ContractRentParm=res.Item5,
+                    contract_pay = res.Item6,
+                    contract_cost = res.Item7
                 }
             );
         }
@@ -55,6 +55,12 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         {
             return new UIResult(service.DataService.GetShop(Data));
         }
-        
+
+
+        public UIResult lyYdFj(List<CONTRACT_RENTEntity> Data)
+        {
+            return new UIResult(service.HtglService.LyYdfj(Data));
+        }
+
     }
 }
