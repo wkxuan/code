@@ -26,6 +26,7 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
             return new DataGridResult(dt, count);
         }
 

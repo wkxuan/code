@@ -15,14 +15,22 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
     {
         public ActionResult HtList()
         {
-            ViewBag.Title = "联营租约列表信息";
+            ViewBag.Title = "租约列表信息";
             return View();
         }
 
         public ActionResult HtEdit(string Id)
         {
             ViewBag.Title = "联营租约信息编辑";
-            return View(model: Id);
+            ViewBag.STYLE = 2;
+            return View("HtEdit",model: Id);
+        }
+
+        public ActionResult HtEditZl(string Id)
+        {
+            ViewBag.Title = "租赁租约信息编辑";
+            ViewBag.STYLE = 1;
+            return View("HtEdit",model: Id);
         }
 
         public string Save(CONTRACTEntity SaveData)
