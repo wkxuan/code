@@ -255,11 +255,6 @@ editDetail.beforeVue = function () {
         temp.push({});
         editDetail.dataParam.ASSETCHANGEITEM2 = temp;
     }
-    //editDetail.screenParam.openPop = function () {
-    //    var temp = editDetail.dataParam.ASSETCHANGEITEM2 || [];
-    //    temp.push({});
-    //    editDetail.dataParam.ASSETCHANGEITEM2 = temp;
-    //}
 }
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchAssetSpilt', {

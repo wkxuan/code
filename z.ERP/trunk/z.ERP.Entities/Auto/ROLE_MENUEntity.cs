@@ -18,10 +18,10 @@ namespace z.ERP.Entities
         {
         }
 
-        public ROLE_MENUEntity(string roleid, string moduleid, string menuid)
+        public ROLE_MENUEntity(string roleid, string modulecode, string menuid)
         {
             ROLEID = roleid;
-            MODULEID = moduleid;
+            MODULECODE = modulecode;
             MENUID = menuid;
         }
 
@@ -39,7 +39,7 @@ namespace z.ERP.Entities
         /// <summary>
         [PrimaryKey]
         [Field("位置编号")]
-        public string MODULEID
+        public string MODULECODE
         {
             get; set;
         }
