@@ -4,7 +4,7 @@
 @using z.ERP.Entities;
 @inherits EditDetailViewBase<string>
 @section baseParam{
-    <row>
+    @*<row>
         <i-col span="2" class="RowTitle">角色编码</i-col>
         <i-col span="6">
             @{
@@ -14,15 +14,14 @@
                 });
             }
         </i-col>
-    </row>
+    </row>*@
     <row>
         <i-col span="2" class="RowTitle">角色代码</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.ROLECODE",
-                    Enable = false
+                    vModel = "dataParam.ROLECODE"
                 });
             }
         </i-col>
@@ -31,8 +30,7 @@
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.ROLENAME",
-                    Enable = false
+                    vModel = "dataParam.ROLENAME"
                 });
             }
         </i-col>
@@ -43,8 +41,7 @@
             @{
                 RenderControl(new UndefineRender()
                 {
-                    vModel = "dataParam.ORGID",
-                    Enable = false
+                    vModel = "dataParam.ORGID"
                 });
             }
         </i-col>
@@ -54,25 +51,29 @@
                 RenderControl(new EnumCheckBoxListRender<标记>()
                 {
                     vModel = "dataParam.VOID_FLAG",
-                    MultiSelect = false,
-                    Enable = false
+                    MultiSelect = false
                 });
             }
         </i-col>
     </row>
-    <card>
-        <p>功能权限</p>
-        <Tree :data="dataParam.MENU" show-checkbox multiple></Tree>
-    </card>
-    <card>
-        <p>收费项目权限</p>
-    @*<i-table highlight-row size="small" border="true" ref="selectData"
-             :columns="screenParam.colDefFeeSubject" :data="screenParam.FEESUBJECT"></i-table>*@
-        <CheckboxGroup v-for="item in screenParam.FEESUBJECT"> 
-                <Checkbox  label="item.NAME" :disabled="item.DISABLED" v-model="item.CHECKED">{{item.NAME}}</Checkbox>
- <br />                
-        </CheckboxGroup>
-</card>
-
-    
 }
+@section detailParam{
+    @*<row>
+        <i-col span="2" class="RowTitle">功能菜单</i-col>
+        <i-col span="6"></i-col>
+        <i-col span="2" class="RowTitle">收费项目</i-col>
+        <i-col span="6"></i-col>
+    </row>*@
+    <row>
+        <i-col span="8">
+            <Tree :data="dataParam.ROLE_MENU" show-checkbox multiple></Tree>
+        </i-col>
+        <i-col span="8">
+            <CheckboxGroup v-for="item in dataParam.ROLE_FEE">
+                <Checkbox label="item.NAME" :disabled="item.DISABLED" v-model="item.CHECKED">{{item.NAME}}</Checkbox>
+                <br />
+            </CheckboxGroup>
+        </i-col>
+    </row>
+}
+

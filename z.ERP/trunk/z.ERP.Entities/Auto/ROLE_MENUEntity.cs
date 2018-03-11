@@ -38,7 +38,7 @@ namespace z.ERP.Entities
         /// 位置代码
         /// <summary>
         [PrimaryKey]
-        [Field("位置代码")]
+        [Field("位置编号")]
         public string MODULECODE
         {
             get; set;

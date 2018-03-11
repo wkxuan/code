@@ -1,6 +1,6 @@
-﻿define.beforeVue = function () {
+﻿editDetail.beforeVue = function () {
 
-    define.screenParam.colDef = [
+    editDetail.dataParam.colDef = [
         {
             title: "代码",
             key: 'ROLECODE', width: 100
@@ -9,27 +9,26 @@
             title: '名称',
             key: 'ROLENAME', width: 150
         }];
-
-    define.screenParam.dataDef = [];
-    define.service = "XtglService";
-    define.method = "GetRoleElement";
-    define.methodList = "GetRole";
-    define.Key = "ROLEID";
-    define.screenParam.MENU = [];
-    if (!define.screenParam.FEESUBJECT) {
-        define.screenParam.FEESUBJECT = [{
+    editDetail.dataParam.dataDef = [];
+    editDetail.branchid = false;
+    editDetail.service = "UserService";
+    editDetail.method = "GetRoleElement";
+    editDetail.methodList = "GetRole";
+    editDetail.Key = "ROLEID";
+    editDetail.dataParam.ROLE_MENU = [];
+    if (!editDetail.dataParam.ROLE_FEE) {
+        editDetail.dataParam.ROLE_FEE = [{
             CHECKED: "false",
             TRIMID: "",
             NAME: "",
         }]
     }
-    define.screenParam.colDefFeeSubject = [
+    editDetail.dataParam.colDefFeeSubject = [
         {
             type: 'selection',
             width: 60,
             align: 'center',
-            key: 'CHECKED',
-            _checked: define.screenParam.FEESUBJECT[0]["CHECKED"]
+            _checked: editDetail.dataParam.ROLE_FEE[0]["CHECKED"]
         },
         {
             title: "收费项目代码",
@@ -41,45 +40,42 @@
         }];
     //define.dataParam.FeeSubject = [];
 
-    define.dataParam.value = "1";
-    define.dataParam.MENU = [];
-    define.dataParam.FEESUBJECT = [];
+    editDetail.dataParam.value = "1";
+    editDetail.dataParam.ROLE_MENU = [];
+    editDetail.dataParam.ROLE_FEE = [];
 
 }
 
-define.newRecord = function () {
-    define.dataParam.VOID_FLAG = "2";
+editDetail.newRecord = function () {
+    editDetail.dataParam.VOID_FLAG = "2";
 }
 
-define.showone = function (key, callback) {
-    if (key) {
-        var v = {};
-        v["ROLEID"] = key;
+editDetail.showOne = function (data, callback) {
         _.Ajax('SearchRole', {
-            Data: v
+            Data: {ROLEID:data}
         }, function (data) {
-            $.extend(define.screenParam, data.role);
-            define.screenParam.MENU = data.menu.Obj;
-            define.screenParam.FEESUBJECT = data.sfxm;
-            for (var i = 0; i < define.screenParam.FEESUBJECT.length; i++) {
-                if (define.screenParam.FEESUBJECT[i].DISABLED == 0) {
-                    define.screenParam.FEESUBJECT[i].DISABLED = true;
+            $.extend(editDetail.dataParam, data.role);
+            editDetail.dataParam.BILLID = data.role.ROLEID;
+            editDetail.dataParam.ROLE_MENU = data.menu.Obj;
+            editDetail.dataParam.ROLE_FEE = data.sfxm;
+            for (var i = 0; i < editDetail.dataParam.ROLE_FEE.length; i++) {
+                if (editDetail.dataParam.ROLE_FEE[i].DISABLED == 0) {
+                    editDetail.dataParam.ROLE_FEE[i].DISABLED = true;
                 }
                 else {
-                    define.screenParam.FEESUBJECT[i].DISABLED = false;
+                    editDetail.dataParam.ROLE_FEE[i].DISABLED = false;
                 }
-                if (define.screenParam.FEESUBJECT[i].CHECKED == 0) {
-                    define.screenParam.FEESUBJECT[i].CHECKED = false;
+                if (editDetail.dataParam.ROLE_FEE[i].CHECKED == 0) {
+                    editDetail.dataParam.ROLE_FEE[i].CHECKED = false;
                 }
                 else {
-                    define.screenParam.FEESUBJECT[i].CHECKED = true;
+                    editDetail.dataParam.ROLE_FEE[i].CHECKED = true;
                 }
             }
             callback && callback();
-        });
-    }
+        });    
 }
 
-define.IsValidSave = function () {
-    define.dataParam.FEESUBJECT = this.$refs.selectData.getSelection();
-}
+//editDetail.IsValidSave = function () {
+//    editDetail.dataParam.FEESUBJECT = this.$refs.selectData.getSelection();
+//}

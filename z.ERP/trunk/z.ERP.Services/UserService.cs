@@ -45,14 +45,14 @@ namespace z.ERP.Services
             DataTable role = DbHelper.ExecuteTable(sql);
 
             string sqlLoginRoleMenu = $@"select A.*  FROM USERMODULE A,ROLE_MENU B where  A.MODULECODE like B.MODULECODE||'%' ";
-            if (!Data.ROLEID.IsEmpty())
-                sqlLoginRoleMenu += (" AND ROLEID= 1");//" + Data.ROLEID);
+            //if (!employee.Id.IsEmpty())
+                sqlLoginRoleMenu += (" AND ROLEID= 1");
             DataTable loginRoleMenu = DbHelper.ExecuteTable(sqlLoginRoleMenu);
 
             string sqlSelectRoleMenu = $@"select A.*  FROM USERMODULE A,ROLE_MENU B where  A.MODULECODE like B.MODULECODE||'%'  ";
             if (!Data.ROLEID.IsEmpty())
                 sqlSelectRoleMenu += (" AND ROLEID= " + Data.ROLEID);
-            DataTable selectRoleMenu = DbHelper.ExecuteTable(sqlLoginRoleMenu);
+            DataTable selectRoleMenu = DbHelper.ExecuteTable(sqlSelectRoleMenu);
 
             List<USERMODULEEntity> p = DbHelper.SelectList(new USERMODULEEntity()).OrderBy(a => a.MODULECODE).ToList();
             UIResult tree = new UIResult(TreeModel.Create(p,
@@ -62,8 +62,8 @@ namespace z.ERP.Services
                     code = a.MODULECODE,
                     title = a.MODULENAME,
                     expand = true,
-                    selected = (selectRoleMenu.Select(" MODULECODE='" +a.MODULECODE + "' and MENUID=" + a.MENUID).Length > 0),
-                    disabled = (loginRoleMenu.Select(" MODULECODE='" + a.MODULECODE + "' and MENUID=" + a.MENUID).Length==0)
+                    selected = (selectRoleMenu.Select(" MODULECODE='" +a.MODULECODE + "' and MENUID=" + a.MENUID).Length > 0)
+                    //disabled = (loginRoleMenu.Select(" MODULECODE='" + a.MODULECODE + "' and MENUID=" + a.MENUID).Length==0)
                 })?.ToArray());
 
             string sqlitem2 = $@"select A.TRIMID,A.NAME,
@@ -74,17 +74,31 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic, dynamic, DataTable>(role.ToOneLine(), tree, sfxm);
         }
-        public virtual UIResult GetCategoryList()
+        public string SaveRole(ROLEEntity SaveData)
         {
-            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
-            return new UIResult(TreeModel.Create(p,
-                a => a.CATEGORYCODE,
-                a => new TreeModel()
+            var v = GetVerify(SaveData);
+            if (SaveData.ROLEID.IsEmpty())
+                SaveData.ROLEID = NewINC("ROLE");
+            v.IsUnique(a => a.ROLEID);
+            v.IsUnique(a => a.ROLECODE);
+            v.Require(a => a.ROLENAME);
+            v.Require(a => a.ORGID);
+            v.Verify();
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                SaveData.ROLE_MENU?.ForEach(rolemenu =>
                 {
-                    code = a.CATEGORYCODE,
-                    title = a.CATEGORYNAME,
-                    expand = true
-                })?.ToArray());
+                    GetVerify(rolemenu).Require(a => a.ROLEID);
+                });
+                SaveData.ROLE_FEE?.ForEach(rolefee =>
+                {
+                    GetVerify(rolefee).Require(a => a.ROLEID);
+                });
+                DbHelper.Save(SaveData);
+
+                Tran.Commit();
+            }
+            return SaveData.ROLEID;
         }
 
     }

@@ -359,9 +359,6 @@
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsList.cshtml" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.cshtml" />
-    <Content Include="Areas\JSGL\JOINBILL\JoinBillList.cshtml" />
-    <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.cshtml" />
-    <Content Include="Areas\JSGL\JOINBILL\JoinBillDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

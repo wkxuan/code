@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ROLEEntity.cs" />
     <Compile Include="Auto\ASSETCHANGEEntity.cs" />
     <Compile Include="Auto\ASSETCHANGEITEM2Entity.cs" />
     <Compile Include="Auto\ASSETCHANGEITEMEntity.cs" />
