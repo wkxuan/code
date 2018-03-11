@@ -39,7 +39,7 @@ namespace z.ERP.Entities
         /// <summary>
         [PrimaryKey]
         [Field("位置编号")]
-        public string MODULEID
+        public string MODULECODE
         {
             get; set;
         }
