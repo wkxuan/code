@@ -365,6 +365,9 @@
     <Content Include="Areas\HTGL\ZLHT\HtDetail.cshtml" />
     <Content Include="Areas\HTGL\ZLHT\HtEdit.cshtml" />
     <Content Include="Areas\HTGL\ZLHT\HtList.cshtml" />
+    <Content Include="Areas\JSGL\JOINBILL\JoinBillDetail.cshtml" />
+    <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.cshtml" />
+    <Content Include="Areas\JSGL\JOINBILL\JoinBillList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
