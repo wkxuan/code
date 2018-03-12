@@ -177,4 +177,10 @@ namespace z.ERP.Entities.Enum
         部分付款 = 3,
         全部付款 = 4
     }
+
+    public enum 周期方式
+    {
+        合同起始日期 = 1,
+        自然周期 = 2
+    }
 }

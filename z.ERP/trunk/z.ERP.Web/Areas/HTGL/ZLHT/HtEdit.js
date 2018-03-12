@@ -6,9 +6,9 @@
     editDetail.method = "GetContract";
     editDetail.Key = 'CONTRACTID';
     editDetail.dataParam.STATUS = 1;
-    editDetail.dataParam.STYLE = 2;
-    editDetail.dataParam.JXSL = 0.17;
-    editDetail.dataParam.XXSL = 0.17;
+    editDetail.dataParam.JXSL = 0;
+    editDetail.dataParam.XXSL = 0;
+    editDetail.dataParam.STYLE = 1;
     editDetail.dataParam.CONT_START=formatDate(new Date());
     editDetail.dataParam.othersName = "品牌商铺信息";
 
@@ -148,7 +148,7 @@
         },
     ]
 
-    //保底表格
+    //租金表格
     editDetail.screenParam.colDefRENT = [
        { type: 'selection', width: 60, align: 'center',},
        { title: '时间段', key: 'INX', width: 80 },
@@ -174,8 +174,27 @@
                })
            },
         },
+
         {
-            title: "保底(毛利or销售)", key: 'RENTS', width: 150,
+            title: '金额类型', key: 'DJLX', width: 150,
+            render: function(h, params){
+                return h('Select', {
+                    props: {
+                        value: params.row.DJLX
+                    },
+                    on: {
+                        'on-change': function (event) {
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'DJLX', event);
+                        }
+                    }
+                },
+                [ h('Option', {props: {value: '1'} }, '日金额'),
+                  h('Option', {props: {value: '2'} }, '月金额')
+                ])
+            }
+        },
+        {
+            title: "租金", key: 'RENTS', width: 150,
             render: function (h, params) {
                 return h('Input', {
                     props: {
@@ -189,22 +208,7 @@
                 })
             },           
         },
-        {
-            title: "保底扣点", key: 'RENTS_JSKL', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.RENTS_JSKL
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            editDetail.dataParam.CONTRACT_RENT[params.index].RENTS_JSKL = event.target.value;
-                        }
-                    },
-                })
-            },           
-        },
-        { title: "总保底(毛利or销售)", key: 'SUMRENTS', width: 150},
+        { title: "总租金", key: 'SUMRENTS', width: 150 },
     ];
 
     //月度分解表格
@@ -213,9 +217,8 @@
         { title: '开始日期', key: 'STARTDATE',width: 150},
         { title: '结束日期', key: 'ENDDATE', width: 150},
         { title: '年月', key: 'YEARMONTH', width: 100},
-        { title: '保底销售or毛利', key: 'RENTS', width: 200},
+        { title: '租金', key: 'RENTS', width: 200},
         { title: '生成日期', key: 'CREATEDATE',width: 170},
-
         {  title: '清算标记', key: 'QSBJ',width: 150,
             render: function(h, params){
                 return h('Select', {
@@ -523,7 +526,7 @@ editDetail.otherMethods={
             }
         }
     },
-    //添加一行保底信息
+    //添加一行租金信息
     addColDefRENT:function(){
         //判断是否存在并且结束日期是否有值
         if( editDetail.dataParam.CONTRACT_RENT){
@@ -536,7 +539,7 @@ editDetail.otherMethods={
         }
         var temp = editDetail.dataParam.CONTRACT_RENT || [];
         var maxINX=1;
-        var maxSTARTDATE=null;
+        var maxSTARTDATE = null;
         if (editDetail.dataParam.CONTRACT_RENT){
             for (var j = 0; j < editDetail.dataParam.CONTRACT_RENT.length; j++) {
                 maxINX = editDetail.dataParam.CONTRACT_RENT[0].INX;
@@ -556,11 +559,11 @@ editDetail.otherMethods={
         else {
             temp.push({ INX: maxINX, STARTDATE: formatDate(addDate(maxSTARTDATE)) });
         }
-
+      
         editDetail.dataParam.CONTRACT_RENT = temp;
     },
 
-    //删除一行保底
+    //删除一行租金
     delColDefRENT:function(){
         var selectton = this.$refs.selectRent.getSelection();
         if (selectton.length == 0) {
@@ -661,13 +664,9 @@ editDetail.otherMethods={
         }
 
         _.Ajax('lyYdFj', {
-            Data: editDetail.dataParam.CONTRACT_RENT,
-            ContractData: {
-                CONT_START: editDetail.dataParam.CONT_START,
-                CONT_END: editDetail.dataParam.CONT_END,
-            }
+            Data: editDetail.dataParam.CONTRACT_RENT
         }, function (data) {
-            editDetail.dataParam.CONTRACT_RENTITEM = data;
+ 
         });
     },
 

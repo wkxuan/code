@@ -50,7 +50,6 @@ namespace z.ERP.Services
                 SaveData.VERIFY_NAME = con.VERIFY_NAME;
                 SaveData.VERIFY_TIME = con.VERIFY_TIME;
             }
-            SaveData.STYLE= ((int)核算方式.联营合同).ToString();
             if (SaveData.CONTRACT_OLD.IsEmpty())
             {
                 SaveData.HTLX = ((int)合同类型.原始合同).ToString();
@@ -144,39 +143,45 @@ namespace z.ERP.Services
                 );
         }
 
-        public Object LyYdfj(List<CONTRACT_RENTEntity> Data) {
+        public List<CONTRACT_RENTITEMEntity> LyYdfj(List<CONTRACT_RENTEntity> Data,CONTRACTEntity ContractData) {
 
-            List<CONTRACT_RENTITEMEntity> zjfj = new List<CONTRACT_RENTITEMEntity>();
+            List<CONTRACT_RENTITEMEntity> zjfjList = new List<CONTRACT_RENTITEMEntity>();
 
             foreach (var ydfj in Data)
             {
-                var zjitem = Jefj(ydfj);
-                zjfj.Add(zjitem);  //循环插入数据
+                List<PERIODEntity> Period = new List<PERIODEntity>();
+
+                //月度分解的数据量不是太多可以这样处理，先全查出来,然后数据层面去过滤需要的数据
+                Period = DbHelper.SelectList(new PERIODEntity()).
+                    Where(a => (a.DATE_START.ToDateTime() <= ydfj.ENDDATE.ToDateTime())
+                  && (a.DATE_END.ToDateTime() >= ydfj.STARTDATE.ToDateTime())).ToList();
+
+                foreach (var per in Period)
+                {
+                    CONTRACT_RENTITEMEntity zjfj = new CONTRACT_RENTITEMEntity();
+
+                    if ((per.DATE_START.ToDateTime() < ContractData.CONT_START.ToDateTime())
+                        ||(per.DATE_START.ToDateTime()<ydfj.STARTDATE.ToDateTime()))
+                    {
+                        per.DATE_START = ydfj.STARTDATE;
+                    };
+
+                    if ((per.DATE_END.ToDateTime() > ContractData.CONT_END.ToDateTime())
+                        || (per.DATE_END.ToDateTime() > ydfj.ENDDATE.ToDateTime()))
+                    {
+                        per.DATE_END = ydfj.ENDDATE;
+                    };
+
+                    zjfj.STARTDATE = per.DATE_START;
+                    zjfj.ENDDATE = per.DATE_END;
+                    zjfj.INX = ydfj.INX;
+                    zjfj.RENTS = ydfj.RENTS;
+                    zjfj.CREATEDATE = per.DATE_END;
+                    zjfj.YEARMONTH = per.YEARMONTH;
+                    zjfjList.Add(zjfj);
+                }
             };
-            return new
-            {
-                Obj = zjfj
-            };
+            return zjfjList;
         }
-
-        private CONTRACT_RENTITEMEntity Jefj(CONTRACT_RENTEntity ydfj)
-        {
-            var ret = new CONTRACT_RENTITEMEntity()
-            {
-                INX = ydfj.INX
-            };
-
-            var  sql = "SELECT * FROM PERIOD WHERE DATE_END>="+ydfj.STARTDATE+" AND "+ 
-                        " DATE_START<="+ydfj.ENDDATE+" ORDER BY DATE_START";
-
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            for (int inx = 0; inx < dt.Rows.Count; inx++)
-            {
-                //查出来数据了
-
-            }
-            return ret;
-        }
-
     }
 }

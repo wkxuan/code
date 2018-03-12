@@ -75,6 +75,14 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
+        public List<SelectItem> feeRule()
+        {
+            string sql = $@"SELECT ID,NAME FROM FEERULE   ORDER BY  ID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ID", "NAME");
+        }
+
+        
 
         public object GetBrand(BRANDEntity Data)
         {

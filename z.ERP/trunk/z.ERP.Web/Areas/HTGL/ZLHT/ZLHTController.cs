@@ -9,9 +9,9 @@ using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
 
-namespace z.ERP.Web.Areas.HTGL.LYHT
+namespace z.ERP.Web.Areas.HTGL.ZLHT
 {
-    public class LYHTController: BaseController
+    public class ZLHTController: BaseController
     {
         public ActionResult HtList()
         {
@@ -21,7 +21,8 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
 
         public ActionResult HtEdit(string Id)
         {
-            ViewBag.Title = "联营租约信息编辑";
+            ViewBag.Title = "租赁租约信息编辑";
+            ViewBag.STYLE = 2;
             return View("HtEdit",model: Id);
         }
 
@@ -57,7 +58,7 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         }
 
 
-        public UIResult lyYdFj(List<CONTRACT_RENTEntity> Data,CONTRACTEntity ContractData)
+        public UIResult lyYdFj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
         {
             return new UIResult(service.HtglService.LyYdfj(Data, ContractData));
         }

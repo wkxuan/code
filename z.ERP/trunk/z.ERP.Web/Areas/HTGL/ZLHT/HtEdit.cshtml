@@ -54,6 +54,7 @@
             }
         </i-col>
 
+
         <i-col span="2" class="RowTitle">
             核算方式
         </i-col>
@@ -124,7 +125,7 @@
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new EnumDropDownListRender<联营合同合作方式>()
+                RenderControl(new EnumDropDownListRender<合作方式>()
                 {
                     vModel = "dataParam.OPERATERULE"
                 });
@@ -161,13 +162,27 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            其他条款
+            租金收费规则
         </i-col>
-        <i-col span="14">
+        <i-col span="6">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new ServiceDropDownListRender()
                 {
-                    vModel = "dataParam.DESCRIPTION"
+                    vModel = "dataParam.FEERULE_RENT",
+                    ServiceMothod = m => m.feeRule()
+                });
+            }
+        </i-col>
+
+
+        <i-col span="2" class="RowTitle">
+            周期方式
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<周期方式>()
+                {
+                    vModel = "dataParam.STANDARD"
                 });
             }
         </i-col>
@@ -192,6 +207,19 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.XXSL",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            其他条款
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION"
                 });
             }
         </i-col>
