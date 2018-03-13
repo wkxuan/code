@@ -224,7 +224,7 @@
                     },
                     on: {
                         'on-change': function (event) {
-                            Vue.set(editDetail.dataParam.CONTRACT_RENTITEM[params.index], 'QSBJ', event);
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM[params.index], 'QSBJ', event);
                         }
                     }
                 },
@@ -432,9 +432,10 @@
         }]
     };
 
-    if (!editDetail.dataParam.CONTRACT_RENTITEM) {
-        editDetail.dataParam.CONTRACT_RENTITEM = [{
-            INX: 1
+    if (!editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM) {
+        editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM = [{
+            INX: 1,
+            RENTS:0
         }]
     }; 
 
@@ -667,7 +668,29 @@ editDetail.otherMethods={
                 CONT_END: editDetail.dataParam.CONT_END,
             }
         }, function (data) {
-            editDetail.dataParam.CONTRACT_RENTITEM = data;
+
+            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                var localItem = [];
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j].INX == editDetail.dataParam.CONTRACT_RENT[i].INX) {
+                        localItem.push(data[j]);
+                    };
+                };
+                editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM = localItem;
+      
+            };
+
+            Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data);
+   
+            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                var sumRents = 0;
+                for (var j = 0; j < editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM.length; j++) {
+                    if (editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM[j].INX == editDetail.dataParam.CONTRACT_RENT[i].INX) {
+                        sumRents += parseFloat(editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM[j].RENTS);
+                    };
+                };
+                Vue.set(editDetail.dataParam.CONTRACT_RENT[i], 'SUMRENTS', sumRents);
+            };
         });
     },
 
@@ -809,7 +832,6 @@ editDetail.IsValidSave = function () {
 
     var d = new Date(editDetail.dataParam.CONT_END);
     editDetail.dataParam.CONT_END = formatDate(editDetail.dataParam.CONT_END);
-
     return true;
 }
 
@@ -825,7 +847,8 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.CONTRACT_RENT = data.ContractParm.CONTRACT_RENT;
         editDetail.dataParam.CONTRACT_GROUP = data.ContractParm.CONTRACT_GROUP;
         editDetail.dataParam.CONTJSKL = data.ContractParm.CONTJSKL;
-        editDetail.dataParam.CONTRACT_RENTITEM = data.ContractRentParm.CONTRACT_RENTITEM;
+       // editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM = data.ContractRentParm.CONTRACT_RENTITEM;
+        Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data.ContractRentParm.CONTRACT_RENTITEM);
         editDetail.dataParam.CONTRACT_COST = data.contract_cost;
         editDetail.dataParam.CONTRACT_PAY = data.contract_pay;
         callback && callback(data);

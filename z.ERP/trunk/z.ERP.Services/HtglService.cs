@@ -145,6 +145,7 @@ namespace z.ERP.Services
 
         public List<CONTRACT_RENTITEMEntity> LyYdfj(List<CONTRACT_RENTEntity> Data,CONTRACTEntity ContractData) {
 
+            //当月度分解没定义的时候抛出异常提示待完善
             List<CONTRACT_RENTITEMEntity> zjfjList = new List<CONTRACT_RENTITEMEntity>();
 
             foreach (var ydfj in Data)
@@ -154,11 +155,14 @@ namespace z.ERP.Services
                 //月度分解的数据量不是太多可以这样处理，先全查出来,然后数据层面去过滤需要的数据
                 Period = DbHelper.SelectList(new PERIODEntity()).
                     Where(a => (a.DATE_START.ToDateTime() <= ydfj.ENDDATE.ToDateTime())
-                  && (a.DATE_END.ToDateTime() >= ydfj.STARTDATE.ToDateTime())).ToList();
+                  && (a.DATE_END.ToDateTime() >= ydfj.STARTDATE.ToDateTime())).OrderBy(b=>b.YEARMONTH).ToList();
 
                 foreach (var per in Period)
                 {
                     CONTRACT_RENTITEMEntity zjfj = new CONTRACT_RENTITEMEntity();
+
+                    double allTs = Math.Abs((per.DATE_END.ToDateTime() - per.DATE_START.ToDateTime()).Days) + 1;
+
 
                     if ((per.DATE_START.ToDateTime() < ContractData.CONT_START.ToDateTime())
                         ||(per.DATE_START.ToDateTime()<ydfj.STARTDATE.ToDateTime()))
@@ -174,8 +178,13 @@ namespace z.ERP.Services
 
                     zjfj.STARTDATE = per.DATE_START;
                     zjfj.ENDDATE = per.DATE_END;
+
+                    double zjfjTs = Math.Abs((zjfj.ENDDATE.ToDateTime() - zjfj.STARTDATE.ToDateTime()).Days) + 1;
+
                     zjfj.INX = ydfj.INX;
-                    zjfj.RENTS = ydfj.RENTS;
+                    var je = Convert.ToDouble(ydfj.RENTS);
+                    var zzJe = Math.Round(je * (zjfjTs / allTs), 2, MidpointRounding.AwayFromZero);
+                    zjfj.RENTS = Convert.ToString(zzJe);
                     zjfj.CREATEDATE = per.DATE_END;
                     zjfj.YEARMONTH = per.YEARMONTH;
                     zjfjList.Add(zjfj);
