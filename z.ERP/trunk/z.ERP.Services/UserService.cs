@@ -74,7 +74,7 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic, dynamic, DataTable>(role.ToOneLine(), tree, sfxm);
         }
-        public string SaveRole(ROLEEntity SaveData)
+        public string SaveRole(ROLEEntity SaveData,string Key)
         {
             var v = GetVerify(SaveData);
             if (SaveData.ROLEID.IsEmpty())
@@ -86,9 +86,13 @@ namespace z.ERP.Services
             v.Verify();
             using (var Tran = DbHelper.BeginTransaction())
             {
+                int i = 0;
+                string code = "";
                 SaveData.ROLE_MENU?.ForEach(rolemenu =>
                 {
                     GetVerify(rolemenu).Require(a => a.ROLEID);
+                    //code=TreeModel.GetNewKey(rolemenu, a => a.MODULECODE, Key, Key);
+                    SaveData.ROLE_MENU[i].MODULECODE = code;
                 });
                 SaveData.ROLE_FEE?.ForEach(rolefee =>
                 {

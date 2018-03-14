@@ -23,27 +23,7 @@
             NAME: "",
         }]
     }
-    editDetail.dataParam.colDefFeeSubject = [
-        {
-            type: 'selection',
-            width: 60,
-            align: 'center',
-            _checked: editDetail.dataParam.ROLE_FEE[0]["CHECKED"]
-        },
-        {
-            title: "收费项目代码",
-            key: 'TRIMID', width: 150
-        },
-        {
-            title: '收费项目名称',
-            key: 'NAME', width: 250
-        }];
-    //define.dataParam.FeeSubject = [];
-
     editDetail.dataParam.value = "1";
-    editDetail.dataParam.ROLE_MENU = [];
-    editDetail.dataParam.ROLE_FEE = [];
-
 }
 
 editDetail.newRecord = function () {
@@ -57,7 +37,7 @@ editDetail.showOne = function (data, callback) {
             $.extend(editDetail.dataParam, data.role);
             editDetail.dataParam.BILLID = data.role.ROLEID;
             editDetail.dataParam.ROLE_MENU = data.menu.Obj;
-            editDetail.dataParam.ROLE_FEE = data.sfxm;
+            editDetail.dataParam.ROLE_FEE = data.fee;
             for (var i = 0; i < editDetail.dataParam.ROLE_FEE.length; i++) {
                 if (editDetail.dataParam.ROLE_FEE[i].DISABLED == 0) {
                     editDetail.dataParam.ROLE_FEE[i].DISABLED = true;
@@ -76,6 +56,8 @@ editDetail.showOne = function (data, callback) {
         });    
 }
 
-//editDetail.IsValidSave = function () {
-//    editDetail.dataParam.FEESUBJECT = this.$refs.selectData.getSelection();
-//}
+editDetail.IsValidSave = function () {
+    //editDetail.dataParam.FEESUBJECT = this.$refs.selectData.getSelection();
+    var ss = editDetail.dataParam.ROLE_MENU;
+    return true;
+}

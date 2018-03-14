@@ -52,9 +52,9 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
             return new UIResult(
                 new
                 {
-                    assetspilt = res.Item1,
-                    assetspiltitem = res.Item2,
-                    assetspiltitem2 = res.Item3
+                    assetSpilt = res.Item1,
+                    assetSpiltitem = res.Item2,
+                    assetSpiltitem2 = res.Item3
                 }
                 );
         }

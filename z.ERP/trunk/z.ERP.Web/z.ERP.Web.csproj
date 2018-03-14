@@ -184,6 +184,7 @@
     <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
+    <Compile Include="Areas\XTGL\GOODS_KIND\Goods_KindController.cs" />
     <Compile Include="Areas\XTGL\CATEGORY\CategoryController.cs" />
     <Compile Include="Areas\XTGL\CONFIG\Config.cs" />
     <Compile Include="Areas\XTGL\FEERULE\FeeRuleController.cs" />
@@ -231,6 +232,7 @@
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
+    <Content Include="Areas\XTGL\GOODS_KIND\Goods_Kind.js" />
     <Content Include="Areas\XTGL\CATEGORY\Category.js" />
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
@@ -371,6 +373,7 @@
     <Content Include="Areas\XTGL\ROLE\Detail.cshtml" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.cshtml" />
     <Content Include="Areas\XTGL\ROLE\RoleList.cshtml" />
+    <Content Include="Areas\XTGL\GOODS_KIND\Goods_Kind.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

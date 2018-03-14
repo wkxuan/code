@@ -260,10 +260,10 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchAssetSpilt', {
         Data: { BILLID: data }
     }, function (data) {
-        $.extend(editDetail.dataParam, data.assetspilt);
-        editDetail.dataParam.BILLID = data.assetspilt.BILLID;
-        editDetail.dataParam.ASSETCHANGEITEM = data.assetspiltitem;
-        editDetail.dataParam.ASSETCHANGEITEM2 = data.assetspiltitem2;
+        $.extend(editDetail.dataParam, data.assetSpilt);
+        editDetail.dataParam.BILLID = data.assetSpilt.BILLID;
+        editDetail.dataParam.ASSETCHANGEITEM = data.assetSpiltitem;
+        editDetail.dataParam.ASSETCHANGEITEM2 = data.assetSpiltitem2;
         //editDetail.filter(editDetail.dataParam.ASSETCHANGEITEM[0], 1);
         callback && callback(data);
     });

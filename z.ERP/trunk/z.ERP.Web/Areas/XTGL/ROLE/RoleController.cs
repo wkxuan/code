@@ -37,7 +37,7 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
         }
         public string Save(ROLEEntity SaveData)
         {
-            return service.UserService.SaveRole(SaveData);
+            return service.UserService.SaveRole(SaveData,"MODULECODE");
         }
 
         public void Delete(ROLEEntity DefineDelete)
@@ -54,7 +54,7 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                 {
                     role = res.Item1,
                     menu = res.Item2,
-                    sfxm = res.Item3
+                    fee = res.Item3
                 }
                 );
         }

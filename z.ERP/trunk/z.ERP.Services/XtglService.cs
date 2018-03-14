@@ -392,6 +392,27 @@ namespace z.ERP.Services
                 })?.ToArray());
         }
 
+        public virtual UIResult TreeGoodsKindData(SearchItem item)
+        {
+            string sql = $@"select * from GOODS_KIND where 1=1 ";
+            item.HasKey("code", a => sql += $" and CODE = '{a}' ");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public virtual UIResult TreeGoodsKindList()
+        {
+            List<GOODS_KINDEntity> p = DbHelper.SelectList(new GOODS_KINDEntity()).OrderBy(a => a.CODE).ToList();
+            return new UIResult(TreeModel.Create(p,
+                a => a.CODE,
+                a => new TreeModel()
+                {
+                    code = a.CODE,
+                    title = a.NAME,
+                    expand = true
+                })?.ToArray());
+        }
         public void Org_Update(string ID,int BRANCHID) {
             ORGEntity Data = new ORGEntity
             {
