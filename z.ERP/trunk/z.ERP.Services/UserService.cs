@@ -55,24 +55,24 @@ namespace z.ERP.Services
             DataTable selectRoleMenu = DbHelper.ExecuteTable(sqlSelectRoleMenu);
 
             List<USERMODULEEntity> p = DbHelper.SelectList(new USERMODULEEntity()).OrderBy(a => a.MODULECODE).ToList();
-            UIResult tree = new UIResult(TreeModel.Create(p,
+            var treemenu = new UIResult(TreeModel.Create(p,
                 a => a.MODULECODE,
                 a => new TreeModel()
                 {
                     code = a.MODULECODE,
                     title = a.MODULENAME,
                     expand = true,
-                    selected = (selectRoleMenu.Select(" MODULECODE='" +a.MODULECODE + "' and MENUID=" + a.MENUID).Length > 0)
-                    //disabled = (loginRoleMenu.Select(" MODULECODE='" + a.MODULECODE + "' and MENUID=" + a.MENUID).Length==0)
+                    @checked = (selectRoleMenu.Select(" MODULECODE='" +a.MODULECODE + "' and MENUID=" + a.MENUID).Length > 0),
+                    disableCheckbox = (loginRoleMenu.Select(" MODULECODE='" + a.MODULECODE + "' and MENUID=" + a.MENUID).Length==0)
                 })?.ToArray());
 
             string sqlitem2 = $@"select A.TRIMID,A.NAME,
                                 (select count(1) from ROLE_FEE B WHERE A.TRIMID=B.TRIMID and B.ROLEID=1) as DISABLED,
                                 (select count(1) from ROLE_FEE B WHERE A.TRIMID=B.TRIMID and B.ROLEID=2) as CHECKED
                                 from FEESUBJECT A where 1=1 order by A.TRIMID ";
-            DataTable sfxm = DbHelper.ExecuteTable(sqlitem2);
+            DataTable fee = DbHelper.ExecuteTable(sqlitem2);
 
-            return new Tuple<dynamic, dynamic, DataTable>(role.ToOneLine(), tree, sfxm);
+            return new Tuple<dynamic, dynamic, DataTable>(role.ToOneLine(), treemenu, fee);
         }
         public string SaveRole(ROLEEntity SaveData,string Key)
         {
@@ -86,18 +86,18 @@ namespace z.ERP.Services
             v.Verify();
             using (var Tran = DbHelper.BeginTransaction())
             {
-                int i = 0;
-                string code = "";
-                SaveData.ROLE_MENU?.ForEach(rolemenu =>
-                {
-                    GetVerify(rolemenu).Require(a => a.ROLEID);
-                    //code=TreeModel.GetNewKey(rolemenu, a => a.MODULECODE, Key, Key);
-                    SaveData.ROLE_MENU[i].MODULECODE = code;
-                });
-                SaveData.ROLE_FEE?.ForEach(rolefee =>
-                {
-                    GetVerify(rolefee).Require(a => a.ROLEID);
-                });
+                //int i = 0;
+                //string code = "";
+                //SaveData.ROLE_MENU?.ForEach(rolemenu =>
+                //{
+                //    GetVerify(rolemenu).Require(a => a.ROLEID);
+                //    //code=TreeModel.GetNewKey(rolemenu, a => a.MODULECODE, Key, Key);
+                //    SaveData.ROLE_MENU[i].MODULECODE = code;
+                //});
+                //SaveData.ROLE_FEE?.ForEach(rolefee =>
+                //{
+                //    GetVerify(rolefee).Require(a => a.ROLEID);
+                //});
                 DbHelper.Save(SaveData);
 
                 Tran.Commit();

@@ -66,10 +66,10 @@
     </row>*@
     <row>
         <i-col span="8">
-            <Tree :data="dataParam.ROLE_MENU" show-checkbox multiple></Tree>
+            <Tree :data="screenParam.ROLE_MENU" show-checkbox multiple></Tree>
         </i-col>
         <i-col span="8">
-            <CheckboxGroup v-for="item in dataParam.ROLE_FEE">
+            <CheckboxGroup v-for="item in screenParam.ROLE_FEE">
                 <Checkbox label="item.NAME" :disabled="item.DISABLED" v-model="item.CHECKED">{{item.NAME}}</Checkbox>
                 <br />
             </CheckboxGroup>
