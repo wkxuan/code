@@ -214,7 +214,7 @@
         { title: '结束日期', key: 'ENDDATE', width: 150},
         { title: '年月', key: 'YEARMONTH', width: 100},
         { title: '保底销售or毛利', key: 'RENTS', width: 200},
-        { title: '生成日期', key: 'CREATEDATE',width: 170},
+        //{ title: '生成日期', key: 'CREATEDATE',width: 170},
 
         {  title: '清算标记', key: 'QSBJ',width: 150,
             render: function(h, params){
@@ -664,8 +664,8 @@ editDetail.otherMethods={
         _.Ajax('lyYdFj', {
             Data: editDetail.dataParam.CONTRACT_RENT,
             ContractData: {
-                CONT_START: editDetail.dataParam.CONT_START,
-                CONT_END: editDetail.dataParam.CONT_END,
+                CONT_START: formatDate(editDetail.dataParam.CONT_START),
+                CONT_END: formatDate(editDetail.dataParam.CONT_END),
             }
         }, function (data) {
 

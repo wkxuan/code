@@ -58,9 +58,9 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         }
 
 
-        public UIResult lyYdFj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
+        public UIResult zlYdFj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
         {
-            return new UIResult(service.HtglService.LyYdfj(Data, ContractData));
+            return new UIResult(service.HtglService.zlYdFj(Data, ContractData));
         }
 
     }

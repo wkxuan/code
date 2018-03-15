@@ -6,15 +6,16 @@
     editDetail.method = "GetContract";
     editDetail.Key = 'CONTRACTID';
     editDetail.dataParam.STATUS = 1;
-    editDetail.dataParam.JXSL = 0;
-    editDetail.dataParam.XXSL = 0;
-    editDetail.dataParam.STYLE = 1;
-    editDetail.dataParam.CONT_START=formatDate(new Date());
+    editDetail.dataParam.STYLE = 2;
+    editDetail.dataParam.JXSL = 0.17;
+    editDetail.dataParam.XXSL = 0.17;
+    editDetail.dataParam.STANDARD = 1;
+    editDetail.dataParam.CONT_START = formatDate(new Date());
     editDetail.dataParam.othersName = "品牌商铺信息";
 
     //品牌表格
     editDetail.screenParam.colDefPP = [
-    { type: 'selection', width: 60, align: 'center'},
+    { type: 'selection', width: 60, align: 'center' },
     {
         title: "品牌代码", key: 'BRANDID', width: 100,
         render: function (h, params) {
@@ -30,9 +31,9 @@
                         _.Ajax('GetBrand', {
                             Data: { ID: event.target.value }
                         }, function (data) {
-                            if(data.dt){
+                            if (data.dt) {
                                 Vue.set(editDetail.dataParam.CONTRACT_BRAND[params.index], 'NAME', data.dt.NAME);
-                            }else{
+                            } else {
                                 iview.Message.info('当前品牌不存在!');
                                 Vue.set(editDetail.dataParam.CONTRACT_BRAND[params.index], 'BRANDID', "");
                             }
@@ -47,7 +48,7 @@
 
     //商铺表格
     editDetail.screenParam.colDefSHOP = [
-    { type: 'selection', width: 60, align: 'center'},
+    { type: 'selection', width: 60, align: 'center' },
     {
         title: "商铺代码", key: 'CODE', width: 100,
         render: function (h, params) {
@@ -60,9 +61,9 @@
                         _self = this;
                         editDetail.dataParam.CONTRACT_SHOP[params.index].CODE = event.target.value;
                         _.Ajax('GetShop', {
-                            Data: { CODE: event.target.value,BRANCHID:editDetail.dataParam.BRANCHID }
+                            Data: { CODE: event.target.value, BRANCHID: editDetail.dataParam.BRANCHID }
                         }, function (data) {
-                            if(data.dt){
+                            if (data.dt) {
                                 Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'SHOPID', data.dt.SHOPID);
                                 Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'CATEGORYID', data.dt.CATEGORYID);
                                 Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'CATEGORYCODE', data.dt.CATEGORYCODE);
@@ -71,7 +72,7 @@
                                 Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'AREA_RENTABLE', data.dt.AREA_RENTABLE);
                                 calculateArea();
                             }
-                            else{
+                            else {
                                 iview.Message.info('当前单元代码不存在或者不属于当前分店卖场!');
                                 Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'CODE', "");
                                 Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'SHOPID', "");
@@ -89,8 +90,8 @@
     ];
 
     //扣率组
-    editDetail.screenParam.colGroup=[
-        { type: 'selection', width: 60, align: 'center',},
+    editDetail.screenParam.colGroup = [
+        { type: 'selection', width: 60, align: 'center', },
         { title: '扣点序号', key: 'GROUPNO', width: 100 },
         {
             title: "基础扣点", key: 'JSKL', width: 120,
@@ -105,7 +106,7 @@
                         }
                     },
                 })
-            },           
+            },
         },
 
         {
@@ -121,16 +122,16 @@
                         }
                     },
                 })
-            },           
+            },
         },
     ]
 
     //扣率信息
-    editDetail.screenParam.colDefJskl=[
+    editDetail.screenParam.colDefJskl = [
         { title: '扣点序号', key: 'GROUPNO', width: 100 },
         { title: '时间段', key: 'INX', width: 80 },
-        { title: '开始日期', key: 'STARTDATE',width: 150},
-        { title: '结束日期', key: 'ENDDATE', width: 150},
+        { title: '开始日期', key: 'STARTDATE', width: 150 },
+        { title: '结束日期', key: 'ENDDATE', width: 150 },
         {
             title: "扣点", key: 'JSKL', width: 120,
             render: function (h, params) {
@@ -144,13 +145,13 @@
                         }
                     },
                 })
-            },           
+            },
         },
     ]
 
     //租金表格
     editDetail.screenParam.colDefRENT = [
-       { type: 'selection', width: 60, align: 'center',},
+       { type: 'selection', width: 60, align: 'center', },
        { title: '时间段', key: 'INX', width: 80 },
         {
             title: '开始日期',
@@ -158,26 +159,26 @@
             width: 150,
         },
         {
-           title: '结束日期',
-           key: 'ENDDATE',
-           width: 150,
-           render: function (h, params) {
-               return h('DatePicker', {
-                   props: {
-                       value: params.row.ENDDATE
-                   },
-                   on: {
-                       'on-change': function (event) {
-                           Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'ENDDATE', event);
-                       }
-                   },
-               })
-           },
+            title: '结束日期',
+            key: 'ENDDATE',
+            width: 150,
+            render: function (h, params) {
+                return h('DatePicker', {
+                    props: {
+                        value: params.row.ENDDATE
+                    },
+                    on: {
+                        'on-change': function (event) {
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'ENDDATE', event);
+                        }
+                    },
+                })
+            },
         },
 
         {
             title: '金额类型', key: 'DJLX', width: 150,
-            render: function(h, params){
+            render: function (h, params) {
                 return h('Select', {
                     props: {
                         value: params.row.DJLX
@@ -188,8 +189,8 @@
                         }
                     }
                 },
-                [ h('Option', {props: {value: '1'} }, '日金额'),
-                  h('Option', {props: {value: '2'} }, '月金额')
+                [h('Option', { props: { value: '1' } }, '日金额'),
+                  h('Option', { props: { value: '2' } }, '月金额')
                 ])
             }
         },
@@ -206,7 +207,7 @@
                         }
                     },
                 })
-            },           
+            },
         },
         { title: "总租金", key: 'SUMRENTS', width: 150 },
     ];
@@ -214,13 +215,14 @@
     //月度分解表格
     editDetail.screenParam.colDefRENTITEM = [
         { title: '时间段', key: 'INX', width: 80 },
-        { title: '开始日期', key: 'STARTDATE',width: 150},
-        { title: '结束日期', key: 'ENDDATE', width: 150},
-        { title: '年月', key: 'YEARMONTH', width: 100},
-        { title: '租金', key: 'RENTS', width: 200},
-        { title: '生成日期', key: 'CREATEDATE',width: 170},
-        {  title: '清算标记', key: 'QSBJ',width: 150,
-            render: function(h, params){
+        { title: '开始日期', key: 'STARTDATE', width: 150 },
+        { title: '结束日期', key: 'ENDDATE', width: 150 },
+        { title: '年月', key: 'YEARMONTH', width: 100 },
+        { title: '租金', key: 'RENTS', width: 200 },
+        { title: '生成日期', key: 'CREATEDATE', width: 170 },
+        {
+            title: '清算标记', key: 'QSBJ', width: 150,
+            render: function (h, params) {
                 return h('Select', {
                     props: {
                         value: params.row.QSBJ
@@ -231,8 +233,8 @@
                         }
                     }
                 },
-                [ h('Option', {props: {value: '1'} }, '√'),
-                  h('Option', {props: {value: '2'} }, '')
+                [h('Option', { props: { value: '1' } }, '√'),
+                  h('Option', { props: { value: '2' } }, '')
                 ])
             }
         },
@@ -245,17 +247,17 @@
         {
             title: "费用项目", key: 'TERMID', width: 120,
             render: function (h, params) {
-               return h('Input', {
-                   props: {
-                       value: params.row.TERMID
-                   },
-                   on: {
-                       'on-blur': function (event) {
-                           editDetail.dataParam.CONTRACT_COST[params.index].TERMID = event.target.value;
-                       }
-                   },
-               })
-           },
+                return h('Input', {
+                    props: {
+                        value: params.row.TERMID
+                    },
+                    on: {
+                        'on-blur': function (event) {
+                            editDetail.dataParam.CONTRACT_COST[params.index].TERMID = event.target.value;
+                        }
+                    },
+                })
+            },
         },
         { title: "费用项目名称", key: 'TERMNAME', width: 120 },
         {
@@ -263,16 +265,16 @@
             key: 'STARTDATE',
             width: 150,
             render: function (h, params) {
-              return h('DatePicker', {
-                  props: {
-                      value: params.row.STARTDATE
-                  },
-                  on: {
-                       'on-change': function (event) {
-                           Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'STARTDATE', event);
-                      }
-                  },
-              })
+                return h('DatePicker', {
+                    props: {
+                        value: params.row.STARTDATE
+                    },
+                    on: {
+                        'on-change': function (event) {
+                            Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'STARTDATE', event);
+                        }
+                    },
+                })
             },
         },
         {
@@ -294,7 +296,7 @@
         },
         {
             title: '收费方式', key: 'SFFS', width: 150,
-            render: function(h, params){
+            render: function (h, params) {
                 return h('Select', {
                     props: {
                         value: params.row.SFFS
@@ -305,7 +307,7 @@
                         }
                     }
                 },
-                [ h('Option', { props: { value: '1' } }, '按日计算固定金额'),
+                [h('Option', { props: { value: '1' } }, '按日计算固定金额'),
                   h('Option', { props: { value: '2' } }, '月固定金额')
                 ])
             }
@@ -313,17 +315,17 @@
         {
             title: "金额", key: 'COST', width: 120,
             render: function (h, params) {
-               return h('Input', {
-                   props: {
-                       value: params.row.COST
-                   },
-                   on: {
-                       'on-blur': function (event) {
-                           editDetail.dataParam.CONTRACT_COST[params.index].COST = event.target.value;
-                       }
-                   },
-               })
-           },
+                return h('Input', {
+                    props: {
+                        value: params.row.COST
+                    },
+                    on: {
+                        'on-blur': function (event) {
+                            editDetail.dataParam.CONTRACT_COST[params.index].COST = event.target.value;
+                        }
+                    },
+                })
+            },
         },
     ]
 
@@ -368,16 +370,16 @@
             key: 'STARTDATE',
             width: 150,
             render: function (h, params) {
-              return h('DatePicker', {
-                  props: {
-                      value: params.row.STARTDATE
-                  },
-                  on: {
-                       'on-change': function (event) {
-                           Vue.set(editDetail.dataParam.CONTRACT_PAY[params.index], 'STARTDATE', event);
-                      }
-                  },
-              })
+                return h('DatePicker', {
+                    props: {
+                        value: params.row.STARTDATE
+                    },
+                    on: {
+                        'on-change': function (event) {
+                            Vue.set(editDetail.dataParam.CONTRACT_PAY[params.index], 'STARTDATE', event);
+                        }
+                    },
+                })
             },
         },
         {
@@ -400,17 +402,17 @@
         {
             title: "比例", key: 'KL', width: 120,
             render: function (h, params) {
-               return h('Input', {
-                   props: {
-                       value: params.row.KL
-                   },
-                   on: {
-                       'on-blur': function (event) {
-                           editDetail.dataParam.CONTRACT_PAY[params.index].KL = event.target.value;
-                       }
-                   },
-               })
-           },
+                return h('Input', {
+                    props: {
+                        value: params.row.KL
+                    },
+                    on: {
+                        'on-blur': function (event) {
+                            editDetail.dataParam.CONTRACT_PAY[params.index].KL = event.target.value;
+                        }
+                    },
+                })
+            },
         },
     ]
 
@@ -431,26 +433,27 @@
     if (!editDetail.dataParam.CONTRACT_RENT) {
         editDetail.dataParam.CONTRACT_RENT = [{
             INX: 1,
-            STARTDATE:editDetail.dataParam.CONT_START
+            STARTDATE: editDetail.dataParam.CONT_START
         }]
     };
 
-    if (!editDetail.dataParam.CONTRACT_RENTITEM) {
-        editDetail.dataParam.CONTRACT_RENTITEM = [{
-            INX: 1
+    if (!editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM) {
+        editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM = [{
+            INX: 1,
+            RENTS: 0
         }]
-    }; 
+    };
 
     if (!editDetail.dataParam.CONTRACT_GROUP) {
         editDetail.dataParam.CONTRACT_GROUP = [{
-            GROUPNO:1
+            GROUPNO: 1
         }]
     };
 
     if (!editDetail.dataParam.CONTJSKL) {
         editDetail.dataParam.CONTJSKL = [{
             GROUPNO: 1,
-            INX:1
+            INX: 1
         }]
     };
     if (!editDetail.dataParam.CONTRACT_COST) {
@@ -464,20 +467,20 @@
             KL: 0
         }]
     };
-    
-    calculateArea = function(){
+
+    calculateArea = function () {
         editDetail.dataParam.AREA_BUILD = 0;
         editDetail.dataParam.AREAR = 0;
         for (var i = 0; i < editDetail.dataParam.CONTRACT_SHOP.length; i++) {
-            if (editDetail.dataParam.CONTRACT_SHOP[i].SHOPID){
-                editDetail.dataParam.AREA_BUILD+=editDetail.dataParam.CONTRACT_SHOP[i].AREA;
-                editDetail.dataParam.AREAR+=editDetail.dataParam.CONTRACT_SHOP[i].AREA_RENTABLE;
+            if (editDetail.dataParam.CONTRACT_SHOP[i].SHOPID) {
+                editDetail.dataParam.AREA_BUILD += editDetail.dataParam.CONTRACT_SHOP[i].AREA;
+                editDetail.dataParam.AREAR += editDetail.dataParam.CONTRACT_SHOP[i].AREA_RENTABLE;
             }
         }
     }
 }
 
-editDetail.otherMethods={
+editDetail.otherMethods = {
 
     //添加品牌
     addColPP: function () {
@@ -486,14 +489,14 @@ editDetail.otherMethods={
         editDetail.dataParam.CONTRACT_BRAND = temp;
     },
     //删除品牌
-    delColPP:function(){
+    delColPP: function () {
         var selectton = this.$refs.selectBrand.getSelection();
         if (selectton.length == 0) {
             iview.Message.info("请选中要删除的品牌!");
-        }else{
-            for(var i=0;i<selectton.length;i++){
+        } else {
+            for (var i = 0; i < selectton.length; i++) {
                 for (var j = 0; j < editDetail.dataParam.CONTRACT_BRAND.length; j++) {
-                    if (editDetail.dataParam.CONTRACT_BRAND[j].BRANDID==selectton[i].BRANDID){
+                    if (editDetail.dataParam.CONTRACT_BRAND[j].BRANDID == selectton[i].BRANDID) {
                         editDetail.dataParam.CONTRACT_BRAND.splice(j, 1);
                     }
                 }
@@ -501,8 +504,8 @@ editDetail.otherMethods={
         }
     },
     //添加商铺
-    addColSHOP : function () {
-        if (!editDetail.dataParam.BRANCHID){
+    addColSHOP: function () {
+        if (!editDetail.dataParam.BRANCHID) {
             iview.Message.info('请先确认分店!');
             return;
         }
@@ -511,14 +514,14 @@ editDetail.otherMethods={
         editDetail.dataParam.CONTRACT_SHOP = temp;
     },
     //删除商铺
-    delColSHOP:function(){
+    delColSHOP: function () {
         var selectton = this.$refs.selectShop.getSelection();
         if (selectton.length == 0) {
             iview.Message.info("请选中要删除的商铺!");
-        }else{
-            for(var i=0;i<selectton.length;i++){
+        } else {
+            for (var i = 0; i < selectton.length; i++) {
                 for (var j = 0; j < editDetail.dataParam.CONTRACT_SHOP.length; j++) {
-                    if (editDetail.dataParam.CONTRACT_SHOP[j].SHOPID==selectton[i].SHOPID){
+                    if (editDetail.dataParam.CONTRACT_SHOP[j].SHOPID == selectton[i].SHOPID) {
                         editDetail.dataParam.CONTRACT_SHOP.splice(j, 1);
                         calculateArea();
                     }
@@ -526,29 +529,29 @@ editDetail.otherMethods={
             }
         }
     },
-    //添加一行租金信息
-    addColDefRENT:function(){
+    //添加一行保底信息
+    addColDefRENT: function () {
         //判断是否存在并且结束日期是否有值
-        if( editDetail.dataParam.CONTRACT_RENT){
-            for(var i=0;i<editDetail.dataParam.CONTRACT_RENT.length;i++){
-                if(!editDetail.dataParam.CONTRACT_RENT[i].ENDDATE){
-                    iview.Message.info("请先维护结束日期!"); 
+        if (editDetail.dataParam.CONTRACT_RENT) {
+            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                if (!editDetail.dataParam.CONTRACT_RENT[i].ENDDATE) {
+                    iview.Message.info("请先维护结束日期!");
                     return;
                 }
             }
         }
         var temp = editDetail.dataParam.CONTRACT_RENT || [];
-        var maxINX=1;
+        var maxINX = 1;
         var maxSTARTDATE = null;
-        if (editDetail.dataParam.CONTRACT_RENT){
+        if (editDetail.dataParam.CONTRACT_RENT) {
             for (var j = 0; j < editDetail.dataParam.CONTRACT_RENT.length; j++) {
                 maxINX = editDetail.dataParam.CONTRACT_RENT[0].INX;
-                maxSTARTDATE=editDetail.dataParam.CONTRACT_RENT[0].ENDDATE;
-                if (editDetail.dataParam.CONTRACT_RENT[j].INX>maxINX){
-                    maxINX=editDetail.dataParam.CONTRACT_RENT[j].INX
+                maxSTARTDATE = editDetail.dataParam.CONTRACT_RENT[0].ENDDATE;
+                if (editDetail.dataParam.CONTRACT_RENT[j].INX > maxINX) {
+                    maxINX = editDetail.dataParam.CONTRACT_RENT[j].INX
                 }
-                if (editDetail.dataParam.CONTRACT_RENT[j].ENDDATE>maxSTARTDATE){
-                    maxSTARTDATE=editDetail.dataParam.CONTRACT_RENT[j].ENDDATE
+                if (editDetail.dataParam.CONTRACT_RENT[j].ENDDATE > maxSTARTDATE) {
+                    maxSTARTDATE = editDetail.dataParam.CONTRACT_RENT[j].ENDDATE
                 }
                 maxINX++;
             }
@@ -559,37 +562,37 @@ editDetail.otherMethods={
         else {
             temp.push({ INX: maxINX, STARTDATE: formatDate(addDate(maxSTARTDATE)) });
         }
-      
+
         editDetail.dataParam.CONTRACT_RENT = temp;
     },
 
-    //删除一行租金
-    delColDefRENT:function(){
+    //删除一行保底
+    delColDefRENT: function () {
         var selectton = this.$refs.selectRent.getSelection();
         if (selectton.length == 0) {
             iview.Message.info("请选中要删除的数据!");
-        }else{
-            var maxRentInx=1;
+        } else {
+            var maxRentInx = 1;
             for (var j = 0; j < editDetail.dataParam.CONTRACT_RENT.length; j++) {
-                if (editDetail.dataParam.CONTRACT_RENT[j].INX>maxRentInx){
-                    maxRentInx=editDetail.dataParam.CONTRACT_RENT[j].INX;
+                if (editDetail.dataParam.CONTRACT_RENT[j].INX > maxRentInx) {
+                    maxRentInx = editDetail.dataParam.CONTRACT_RENT[j].INX;
                 }
             }
 
-            for(var i=0;i<selectton.length;i++){
-                if(selectton[i].INX<maxRentInx){
+            for (var i = 0; i < selectton.length; i++) {
+                if (selectton[i].INX < maxRentInx) {
                     iview.Message.info("只能按照时间段序号从大到小删除!");
                     return;
                 }
             }
 
-            for(var i=0;i<selectton.length;i++){
-                if(selectton[i].STARTDATE==formatDate(editDetail.dataParam.CONT_START)){
+            for (var i = 0; i < selectton.length; i++) {
+                if (selectton[i].STARTDATE == formatDate(editDetail.dataParam.CONT_START)) {
                     iview.Message.info("开始日期和租约开始日期相同不能删除!");
                     return;
                 }
                 for (var j = 0; j < editDetail.dataParam.CONTRACT_RENT.length; j++) {
-                    if (editDetail.dataParam.CONTRACT_RENT[j].INX==selectton[i].INX){
+                    if (editDetail.dataParam.CONTRACT_RENT[j].INX == selectton[i].INX) {
                         editDetail.dataParam.CONTRACT_RENT.splice(j, 1);
                         calculateArea();
                     }
@@ -599,7 +602,7 @@ editDetail.otherMethods={
     },
 
     //按年度分解
-    operPeriod : function(){
+    operPeriod: function () {
         if (!editDetail.dataParam.CONT_START || !editDetail.dataParam.CONT_END) {
             iview.Message.info("请先维护租约开始结束日期!");
             return;
@@ -609,34 +612,34 @@ editDetail.otherMethods={
             return;
         }
         editDetail.dataParam.CONTRACT_RENT = [];
-        var yearsValue = getYears(new Date(editDetail.dataParam.CONT_START), new Date(editDetail.dataParam.CONT_END)); 
+        var yearsValue = getYears(new Date(editDetail.dataParam.CONT_START), new Date(editDetail.dataParam.CONT_END));
         var nestYear = null;
         var rentData = null;
-        var beginHtq = editDetail.dataParam.CONT_START; 
-        
+        var beginHtq = editDetail.dataParam.CONT_START;
+
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
-            var copyHtQsr = formatDate(beginHtq); 
+            var copyHtQsr = formatDate(beginHtq);
             nestYear = getNextYears(beginHtq);
-            if (nestYear < formatDate(editDetail.dataParam.CONT_END)) { 
+            if (nestYear < formatDate(editDetail.dataParam.CONT_END)) {
                 rentData = {
-                   INX: i + 1,
-                   STARTDATE: copyHtQsr,
-                   ENDDATE: nestYear,
-                   RENTS: 0,
-                   RENTS_JSKL: 0,
-                   SUMRENTS: 0
+                    INX: i + 1,
+                    STARTDATE: copyHtQsr,
+                    ENDDATE: nestYear,
+                    RENTS: 0,
+                    RENTS_JSKL: 0,
+                    SUMRENTS: 0
                 }
-               editDetail.dataParam.CONTRACT_RENT.push(rentData);
-               beginHtq = addDate(nestYear);
+                editDetail.dataParam.CONTRACT_RENT.push(rentData);
+                beginHtq = addDate(nestYear);
             } else {
                 rentData = {
-                   INX: i + 1,
-                   STARTDATE: copyHtQsr,
-                   ENDDATE: formatDate(editDetail.dataParam.CONT_END),
-                   RENTS: 0,
-                   RENTS_JSKL: 0,
-                   SUMRENTS: 0
+                    INX: i + 1,
+                    STARTDATE: copyHtQsr,
+                    ENDDATE: formatDate(editDetail.dataParam.CONT_END),
+                    RENTS: 0,
+                    RENTS_JSKL: 0,
+                    SUMRENTS: 0
                 }
                 editDetail.dataParam.CONTRACT_RENT.push(rentData);
                 break;
@@ -645,7 +648,7 @@ editDetail.otherMethods={
     },
 
     //分解月度数据
-    decompose:function(){
+    decompose: function () {
         if (editDetail.dataParam.CONTRACT_RENT.length == 0) {
             iview.Message.info("请先维护时间段信息!");
             return;
@@ -661,41 +664,77 @@ editDetail.otherMethods={
                 iview.Message.info("日期段中结束日期不能小于开始日期");
                 return;
             }
-        }
+        };
+        if (!editDetail.dataParam.FEERULE_RENT) {
+            iview.Message.info("请先维护租金收费规则!");
+            return;
+        };
+        if (!editDetail.dataParam.STANDARD) {
+            iview.Message.info("请先维护周期方式!");
+            return;
+        };
 
-        _.Ajax('lyYdFj', {
-            Data: editDetail.dataParam.CONTRACT_RENT
+        _.Ajax('zlYdFj', {
+            Data: editDetail.dataParam.CONTRACT_RENT,
+            ContractData: {
+                CONT_START: formatDate(editDetail.dataParam.CONT_START),
+                CONT_END: formatDate(editDetail.dataParam.CONT_END),
+                FEERULE_RENT: editDetail.dataParam.FEERULE_RENT,
+                STANDARD: editDetail.dataParam.STANDARD
+            }
         }, function (data) {
- 
+
+            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                var localItem = [];
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j].INX == editDetail.dataParam.CONTRACT_RENT[i].INX) {
+                        localItem.push(data[j]);
+                    };
+                };
+                editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM = localItem;
+
+            };
+
+            Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data);
+
+            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                var sumRents = 0;
+                for (var j = 0; j < editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM.length; j++) {
+                    if (editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM[j].INX == editDetail.dataParam.CONTRACT_RENT[i].INX) {
+                        sumRents += parseFloat(editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM[j].RENTS);
+                    };
+                };
+                Vue.set(editDetail.dataParam.CONTRACT_RENT[i], 'SUMRENTS', sumRents);
+            };
         });
     },
 
     //添加扣率组
-    addColGroup:function(){
+    addColGroup: function () {
         var temp = editDetail.dataParam.CONTRACT_GROUP || [];
-        var maxGROUPNO=1;
-        if (editDetail.dataParam.CONTRACT_GROUP){
+        var maxGROUPNO = 1;
+        if (editDetail.dataParam.CONTRACT_GROUP) {
             for (var j = 0; j < editDetail.dataParam.CONTRACT_GROUP.length; j++) {
                 maxGROUPNO = editDetail.dataParam.CONTRACT_GROUP[0].GROUPNO;
-                if (editDetail.dataParam.CONTRACT_GROUP[j].GROUPNO>maxGROUPNO){
-                    maxGROUPNO=editDetail.dataParam.CONTRACT_GROUP[j].GROUPNO
+                if (editDetail.dataParam.CONTRACT_GROUP[j].GROUPNO > maxGROUPNO) {
+                    maxGROUPNO = editDetail.dataParam.CONTRACT_GROUP[j].GROUPNO
                 }
                 maxGROUPNO++;
             }
         }
-        temp.push({GROUPNO:maxGROUPNO});
+        temp.push({ GROUPNO: maxGROUPNO });
         editDetail.dataParam.CONTRACT_GROUP = temp;
 
     },
     //删除扣率组
-    delColGroup:function(){
+    delColGroup: function () {
         var selectton = this.$refs.selectGroup.getSelection();
         if (selectton.length == 0) {
             iview.Message.info("请选中要删除的扣点组!");
-        }else{
-            for(var i=0;i<selectton.length;i++){
+        } else {
+            for (var i = 0; i < selectton.length; i++) {
                 for (var j = 0; j < editDetail.dataParam.CONTRACT_GROUP.length; j++) {
-                    if (editDetail.dataParam.CONTRACT_GROUP[j].GROUPNO==selectton[i].GROUPNO){
+                    if (editDetail.dataParam.CONTRACT_GROUP[j].GROUPNO == selectton[i].GROUPNO) {
                         editDetail.dataParam.CONTRACT_GROUP.splice(j, 1);
                     }
                 }
@@ -703,38 +742,38 @@ editDetail.otherMethods={
         }
     },
     //自动生成扣率信息
-    autoMakeGroup:function(){
+    autoMakeGroup: function () {
         editDetail.dataParam.CONTJSKL = [];
-        if(editDetail.dataParam.CONTRACT_RENT.length==0){
+        if (editDetail.dataParam.CONTRACT_RENT.length == 0) {
             iview.Message.info("请先维护时间段信息!");
             return;
         }
-        if(editDetail.dataParam.CONTRACT_GROUP.length==0){
+        if (editDetail.dataParam.CONTRACT_GROUP.length == 0) {
             iview.Message.info("请先维护扣点组信息!");
             return;
         }
 
-        if( editDetail.dataParam.CONTRACT_RENT){
-            for(var i=0;i<editDetail.dataParam.CONTRACT_RENT.length;i++){
-                if(!editDetail.dataParam.CONTRACT_RENT[i].ENDDATE){
+        if (editDetail.dataParam.CONTRACT_RENT) {
+            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                if (!editDetail.dataParam.CONTRACT_RENT[i].ENDDATE) {
                     iview.Message.info("请先维护时间段完整结束日期!");
                     return;
                 }
-                if(!editDetail.dataParam.CONTRACT_RENT[i].STARTDATE){
+                if (!editDetail.dataParam.CONTRACT_RENT[i].STARTDATE) {
                     iview.Message.info("请先维护时间段完整开始日期!");
                     return;
                 }
             }
         }
         //先循环时间段信息,再循环扣点组信息
-        for(var i=0;i<editDetail.dataParam.CONTRACT_RENT.length;i++){
-            for(j=0;j<editDetail.dataParam.CONTRACT_GROUP.length;j++){
+        for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+            for (j = 0; j < editDetail.dataParam.CONTRACT_GROUP.length; j++) {
                 editDetail.dataParam.CONTJSKL.push({
-                    GROUPNO:editDetail.dataParam.CONTRACT_GROUP[j].GROUPNO,
-                    INX:editDetail.dataParam.CONTRACT_RENT[i].INX,
+                    GROUPNO: editDetail.dataParam.CONTRACT_GROUP[j].GROUPNO,
+                    INX: editDetail.dataParam.CONTRACT_RENT[i].INX,
                     STARTDATE: formatDate(editDetail.dataParam.CONTRACT_RENT[i].STARTDATE),
-                    ENDDATE:formatDate(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE),
-                    JSKL:editDetail.dataParam.CONTRACT_GROUP[j].JSKL
+                    ENDDATE: formatDate(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE),
+                    JSKL: editDetail.dataParam.CONTRACT_GROUP[j].JSKL
                 });
             }
         }
@@ -762,8 +801,8 @@ editDetail.otherMethods={
         var selectton = this.$refs.selectCost.getSelection();
         if (selectton.length == 0) {
             iview.Message.info("请选中要删除的数据!");
-        }else{
-            for(var i=0;i<selectton.length;i++){
+        } else {
+            for (var i = 0; i < selectton.length; i++) {
                 for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
                     if (editDetail.dataParam.CONTRACT_COST[j].PAYID == selectton[i].PAYID) {
                         editDetail.dataParam.CONTRACT_COST.splice(j, 1);
@@ -804,11 +843,10 @@ editDetail.clearKey = function () {
 
 editDetail.IsValidSave = function () {
     var d = new Date(editDetail.dataParam.CONT_START);
-    editDetail.dataParam.CONT_START =formatDate(editDetail.dataParam.CONT_START);
+    editDetail.dataParam.CONT_START = formatDate(editDetail.dataParam.CONT_START);
 
     var d = new Date(editDetail.dataParam.CONT_END);
     editDetail.dataParam.CONT_END = formatDate(editDetail.dataParam.CONT_END);
-
     return true;
 }
 
@@ -824,18 +862,19 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.CONTRACT_RENT = data.ContractParm.CONTRACT_RENT;
         editDetail.dataParam.CONTRACT_GROUP = data.ContractParm.CONTRACT_GROUP;
         editDetail.dataParam.CONTJSKL = data.ContractParm.CONTJSKL;
-        editDetail.dataParam.CONTRACT_RENTITEM = data.ContractRentParm.CONTRACT_RENTITEM;
+        // editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM = data.ContractRentParm.CONTRACT_RENTITEM;
+        Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data.ContractRentParm.CONTRACT_RENTITEM);
         editDetail.dataParam.CONTRACT_COST = data.contract_cost;
         editDetail.dataParam.CONTRACT_PAY = data.contract_pay;
         callback && callback(data);
     });
 }
 
-function formatDate( date, isfull ) {
-    if ( !date )
+function formatDate(date, isfull) {
+    if (!date)
         return '';
     var d = new Date(date);
-    if (!isfull){
+    if (!isfull) {
         return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
     }
 }

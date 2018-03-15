@@ -151,8 +151,6 @@ namespace z.ERP.Services
             foreach (var ydfj in Data)
             {
                 List<PERIODEntity> Period = new List<PERIODEntity>();
-
-                //月度分解的数据量不是太多可以这样处理，先全查出来,然后数据层面去过滤需要的数据
                 Period = DbHelper.SelectList(new PERIODEntity()).
                     Where(a => (a.DATE_START.ToDateTime() <= ydfj.ENDDATE.ToDateTime())
                   && (a.DATE_END.ToDateTime() >= ydfj.STARTDATE.ToDateTime())).OrderBy(b=>b.YEARMONTH).ToList();
@@ -192,5 +190,135 @@ namespace z.ERP.Services
             };
             return zjfjList;
         }
+
+        public List<CONTRACT_RENTITEMEntity> zlYdFj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
+        {
+            List<CONTRACT_RENTITEMEntity> zjfjList = new List<CONTRACT_RENTITEMEntity>();
+            //当月度分解没定义的时候抛出异常提示待完善
+
+            FEERULEEntity feeRule = new FEERULEEntity();
+            feeRule = DbHelper.Select(new FEERULEEntity() { ID = ContractData.FEERULE_RENT });
+
+            //PAY_CYCLE缴费周期
+            //ADVANCE_CYCLE 提前周期
+            //FEE_DAY 出单日
+
+            //先计算出来每个年月对应的生成日期
+            DateTime dt = ContractData.CONT_START.ToDateTime();
+            var ym = Convert.ToInt32(dt.Year.ToString()) * 100 + Convert.ToInt32(dt.Month.ToString());
+
+            List<PERIODEntity> Perio = new List<PERIODEntity>();
+            Perio = DbHelper.SelectList(new PERIODEntity()).
+                Where(a => (a.DATE_START.ToDateTime() <= ContractData.CONT_END.ToDateTime())
+                && (a.DATE_END.ToDateTime() >= ContractData.CONT_START.ToDateTime())).OrderBy(b => b.YEARMONTH).ToList();
+
+            List<CONTRACT_RENTITEMEntity> zjfjListGd = new List<CONTRACT_RENTITEMEntity>();
+            foreach (var per in Perio)
+            {
+                CONTRACT_RENTITEMEntity zjfj = new CONTRACT_RENTITEMEntity();
+
+                var scny = 0;
+                if ((ym.ToString().Substring(4, 2).ToInt() - feeRule.ADVANCE_CYCLE.ToInt()) <= 0){
+                    scny = (ym.ToString().Substring(0, 4).ToInt() - 1) * 100+
+                        ((ym.ToString().Substring(4, 2).ToInt() + 12 - feeRule.ADVANCE_CYCLE.ToInt()));
+                }
+                else {
+                    scny = ym - feeRule.ADVANCE_CYCLE.ToInt();
+                }
+
+                var ymLast = 0;
+                if ((ym.ToString().Substring(4, 2).ToInt() + feeRule.PAY_CYCLE.ToInt()) > 12)
+                {
+                    ymLast = (ym.ToString().Substring(0, 4).ToInt() + 1) * 100
+                        + ((ym.ToString().Substring(4, 2).ToInt() + feeRule.PAY_CYCLE.ToInt()) - 12);
+                }
+                else
+                {
+                    ymLast = ym + feeRule.PAY_CYCLE.ToInt();
+                }
+
+
+                var scn = scny.ToString().Substring(0, 4).ToInt();
+                var scy = scny.ToString().Substring(4, 2).ToInt();
+
+
+                zjfj.YEARMONTH = per.YEARMONTH;
+                zjfj.CREATEDATE = (new DateTime(scn, scy, feeRule.FEE_DAY.ToInt())).ToString().ToDateTime().ToString();
+                zjfjListGd.Add(zjfj);
+
+                if ((per.YEARMONTH.ToString().Substring(4, 2).ToInt() + 1) > 12)
+                {
+                    per.YEARMONTH = ((per.YEARMONTH.ToString().Substring(0, 4).ToInt() + 1) * 100
+                        + ((per.YEARMONTH.ToString().Substring(4, 2).ToInt() + 1) - 12)).ToString();
+                }
+                else
+                {
+                    per.YEARMONTH = (per.YEARMONTH.ToInt() + 1).ToString();
+                }
+
+
+                if (per.YEARMONTH.ToInt() == ymLast)
+                {
+                    ym = ymLast;
+                };
+            }
+
+            foreach (var ydfj in Data)
+            {
+                List<PERIODEntity> Period = new List<PERIODEntity>();
+
+                Period = DbHelper.SelectList(new PERIODEntity()).
+                    Where(a => (a.DATE_START.ToDateTime() <= ydfj.ENDDATE.ToDateTime())
+                  && (a.DATE_END.ToDateTime() >= ydfj.STARTDATE.ToDateTime())).OrderBy(b => b.YEARMONTH).ToList();
+
+                foreach (var per in Period)
+                {
+
+                    CONTRACT_RENTITEMEntity zjfj = new CONTRACT_RENTITEMEntity();
+                    if ((per.DATE_START.ToDateTime() < ContractData.CONT_START.ToDateTime())
+                        || (per.DATE_START.ToDateTime() < ydfj.STARTDATE.ToDateTime()))
+                    {
+                        per.DATE_START = ydfj.STARTDATE;
+                    };
+
+                    if ((per.DATE_END.ToDateTime() > ContractData.CONT_END.ToDateTime())
+                        || (per.DATE_END.ToDateTime() > ydfj.ENDDATE.ToDateTime()))
+                    {
+                        per.DATE_END = ydfj.ENDDATE;
+                    };
+
+                    zjfj.STARTDATE = per.DATE_START;
+                    zjfj.ENDDATE = per.DATE_END;
+
+                    double zjfjTs = Math.Abs((zjfj.ENDDATE.ToDateTime() - zjfj.STARTDATE.ToDateTime()).Days) + 1;
+
+                    zjfj.INX = ydfj.INX;
+                    var je = Convert.ToDouble(ydfj.RENTS);
+                    switch (ydfj.DJLX.ToInt())
+                    {
+                        case 1://日租金
+                            zjfj.RENTS = Math.Round(je * zjfjTs, 2, MidpointRounding.AwayFromZero).ToString();
+                            break;
+                        case 2://月租金
+                            zjfj.RENTS = je.ToString();
+                            break;
+                    };
+                    foreach (var scrq in zjfjListGd)
+                    {
+                        if (per.YEARMONTH.ToInt() == scrq.YEARMONTH.ToInt())
+                        {
+                            zjfj.CREATEDATE = scrq.CREATEDATE;
+                        }
+                    }
+
+
+                    zjfj.YEARMONTH = per.YEARMONTH;
+                    zjfjList.Add(zjfj);
+
+                }
+
+            }
+            return zjfjList;
+        }        
     }
 }
