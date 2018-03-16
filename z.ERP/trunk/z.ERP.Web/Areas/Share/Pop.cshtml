@@ -2,15 +2,19 @@
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<PopRender>
 
 <Modal v-model="@Model.vModel" width="@Model.Width">
-    @*<"@Model.PopLx" v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></"@Model.PopLx">*@
-
-    <Contract v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></Contract>
-        <p slot="header" style="color:#f60;text-align:center">
-            <Icon type="information-circled"></Icon>
-            <span>@Model.Caption</span>
-        </p>
-        <div style="text-align:center">
-        </div>
-        <div slot="footer">
-        </div>
+    @switch (Model.PopLx)
+    {
+        case "Contract":
+            <Contract v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></Contract>
+            break;
+    };
+    
+    <p slot="header" style="color:#f60;text-align:center">
+        <Icon type="information-circled"></Icon>
+        <span>@Model.Caption</span>
+    </p>
+    <div style="text-align:center">
+    </div>
+    <div slot="footer">
+    </div>
 </Modal>
