@@ -6,8 +6,34 @@
 @using z.Extensions;
 @inherits EditDetailViewBase<string>
 
-
+@section head{
+   <script src="~/Areas/Pop/Contract.js"></script> 
+}
 @section baseParam{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "Merchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+            @*@{
+                RenderControl(new PopRender()
+                {
+                    vModel = "dataParam.PopMerchant", //当前页面随便写
+                    Caption = "商户查询",   //随便写切实实际情况
+                    Width = "760",          //随便写切实实际情况
+                    PopLx = "Contract",     //需要调用的弹窗
+                    CallBack = "MerchantBack", //返回后方法
+                    ParentObj= "screenParam.ParentMerchant" //传入参数随便写
+                });
+            }*@
+        </i-col>
+    </row>
     <row>
         <i-col span="2" class="RowTitle">
             商户代码

@@ -218,6 +218,7 @@ namespace z.ERP.Services
                 CONTRACT_RENTITEMEntity zjfj = new CONTRACT_RENTITEMEntity();
 
                 var scny = 0;
+                //可以通过日期上加月份处理
                 if ((ym.ToString().Substring(4, 2).ToInt() - feeRule.ADVANCE_CYCLE.ToInt()) <= 0){
                     scny = (ym.ToString().Substring(0, 4).ToInt() - 1) * 100+
                         ((ym.ToString().Substring(4, 2).ToInt() + 12 - feeRule.ADVANCE_CYCLE.ToInt()));

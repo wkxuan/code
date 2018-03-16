@@ -59,6 +59,10 @@ function _Define() {
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 disabled: _this.enabled(true),
+                PopMerchant: false,
+                PopMerchant2:false,
+                ParentMerchant: {},
+                ParentMerchant2:{},
                 _key: undefined
             },
             mounted: function(){
@@ -171,7 +175,25 @@ function _Define() {
                 },
                 seachList: function (event) {
                     showlist();
-                }
+                },
+                Merchant: function () {
+                    this.ParentMerchant = { A: '1', B: '2' }
+                    this.PopMerchant = true;
+                },
+                MerchantBack: function (val) {
+                    this.PopMerchant = val.modal; 
+                    console.log(val);
+                },
+
+                Merchant2: function () {
+                    this.ParentMerchant2 = { A1111: '1', B2222: '2' }
+                    this.PopMerchant2 = true;
+                },
+                MerchantBack2: function (val) {
+                    this.PopMerchant2 = val.modal;
+                    console.log(val);
+                },
+
             }
         });
 

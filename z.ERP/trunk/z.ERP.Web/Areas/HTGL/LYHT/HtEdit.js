@@ -11,6 +11,9 @@
     editDetail.dataParam.XXSL = 0.17;
     editDetail.dataParam.CONT_START=formatDate(new Date());
     editDetail.dataParam.othersName = "品牌商铺信息";
+    editDetail.screenParam.ParentMerchant = {};
+
+    editDetail.dataParam.PopMerchant = false;
 
     //品牌表格
     editDetail.screenParam.colDefPP = [
@@ -463,19 +466,30 @@
         }]
     };
     
-    calculateArea = function(){
+    calculateArea = function () {
         editDetail.dataParam.AREA_BUILD = 0;
         editDetail.dataParam.AREAR = 0;
         for (var i = 0; i < editDetail.dataParam.CONTRACT_SHOP.length; i++) {
-            if (editDetail.dataParam.CONTRACT_SHOP[i].SHOPID){
-                editDetail.dataParam.AREA_BUILD+=editDetail.dataParam.CONTRACT_SHOP[i].AREA;
-                editDetail.dataParam.AREAR+=editDetail.dataParam.CONTRACT_SHOP[i].AREA_RENTABLE;
+            if (editDetail.dataParam.CONTRACT_SHOP[i].SHOPID) {
+                editDetail.dataParam.AREA_BUILD += editDetail.dataParam.CONTRACT_SHOP[i].AREA;
+                editDetail.dataParam.AREAR += editDetail.dataParam.CONTRACT_SHOP[i].AREA_RENTABLE;
             }
         }
-    }
+    };
 }
 
-editDetail.otherMethods={
+editDetail.otherMethods = {
+
+
+    MerchantBack :function (val) {
+        console.log(val);
+    },
+
+
+    Merchant :function () {
+        editDetail.dataParam.PopMerchant = true;
+        editDetail.screenParam.ParentMerchant = { A: '1', B: '2' };
+    },
 
     //添加品牌
     addColPP: function () {

@@ -163,7 +163,7 @@
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
-    <Compile Include="Areas\Share\Render\MerchantWindowRender.cs" />
+    <Compile Include="Areas\Share\Render\PopRender.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
@@ -222,8 +222,8 @@
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
+    <Content Include="Areas\Pop\Contract.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
-    <Content Include="Areas\Share\MerchantWindow.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
@@ -351,7 +351,6 @@
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.cshtml" />
     <Content Include="Areas\Share\CommonWindow.cshtml" />
     <Content Include="Areas\XTGL\CATEGORY\Category.cshtml" />
-    <Content Include="Areas\Share\MerchantWindow.cshtml" />
     <Content Include="Areas\XTGL\ORG\Org.cshtml" />
     <Content Include="Areas\HTGL\LYHT\HtList.cshtml" />
     <Content Include="Areas\HTGL\LYHT\HtDetail.cshtml" />
@@ -374,6 +373,7 @@
     <Content Include="Areas\XTGL\ROLE\RoleEdit.cshtml" />
     <Content Include="Areas\XTGL\ROLE\RoleList.cshtml" />
     <Content Include="Areas\XTGL\GOODS_KIND\Goods_Kind.cshtml" />
+    <Content Include="Areas\Share\Pop.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
