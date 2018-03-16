@@ -10,15 +10,42 @@
         }];
 
     define.screenParam.dataDef = [];
-    define.windowParam = {
-        terst: false
-    }
+
+
+
+    define.screenParam.ParentMerchant = {};
 
     define.service = "XtglService";
     define.method = "GetPayElement";
     define.methodList = "GetPay";
     define.Key = 'PAYID';
+
+
+
+    define.screenParam.MerchantBack = function (val) {
+        Vue.set(define.screenParam, "PopMerchant",false);
+        console.log(val);
+    };
+
+    //点击打开弹窗
+    define.screenParam.Merchant = function () {
+        Vue.set(define.screenParam, "PopMerchant", true);
+        define.screenParam.ParentMerchant = { A: '1', B: '2' };
+    };
 }
+
+//define.otherMethods = {
+//    MerchantBack: function (val) {
+//        editDetail.screenParam.PopMerchant = false;
+//        console.log(val);
+//    },
+
+//    //点击打开弹窗
+//    Merchant: function () {
+//        editDetail.screenParam.PopMerchant = true;
+//        editDetail.screenParam.ParentMerchant = { A: '1', B: '2' };
+//    },
+//}
 
 
 

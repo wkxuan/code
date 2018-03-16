@@ -3,16 +3,45 @@
 @using z.ERP.Web.Areas.Layout.Define
 @inherits DefineViewBase
 
+@section head{
+    <script src="~/Areas/Pop/PopContract/PopContract.js"></script>
+}
+
 @section element{
+
+    <row>
+        <i-col>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "screenParam.Merchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopMerchant", //当前页面随便写
+                    Caption = "商户查询",   //随便写切实实际情况
+                    Width = "760",          //随便写切实实际情况
+                    PopLx = "Contract",     //需要调用的弹窗
+                    CallBack = "screenParam.MerchantBack", //返回后方法
+                    ParentObj= "screenParam.ParentMerchant" //传入参数随便写在按钮点击的时候给其值
+                });
+            }
+        </i-col>
+    </row>
     <row>
         <i-col span="2" class="RowTitle">
-            @{
+            @*@{
                 RenderControl(new WindowButtonRender()
                 {
                     WindowModel = "windowParam.terst",
                     Text = "代码"
                 });
-            }
+            }*@
         </i-col>
         <i-col span="6">
             @{
@@ -152,7 +181,7 @@
     </row>
 }
 
-@section hide{
+@*@section hide{
     @{
         RenderControl(new UndefineWindowRender()
         {
@@ -163,4 +192,4 @@
             VueDom = "define"
         });
     }
-}
+}*@

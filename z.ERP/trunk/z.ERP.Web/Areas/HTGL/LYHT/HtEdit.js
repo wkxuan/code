@@ -13,7 +13,7 @@
     editDetail.dataParam.othersName = "品牌商铺信息";
     editDetail.screenParam.ParentMerchant = {};
 
-    editDetail.dataParam.PopMerchant = false;
+    editDetail.screenParam.PopMerchant = false;
 
     //品牌表格
     editDetail.screenParam.colDefPP = [
@@ -476,21 +476,21 @@
             }
         }
     };
+
 }
 
 editDetail.otherMethods = {
 
-
-    MerchantBack :function (val) {
+    MerchantBack : function (val) {
+        Vue.set(editDetail.screenParam, "PopMerchant", false);
         console.log(val);
     },
 
-
-    Merchant :function () {
-        editDetail.dataParam.PopMerchant = true;
-        editDetail.screenParam.ParentMerchant = { A: '1', B: '2' };
+//点击打开弹窗
+    Merchant : function () {
+       Vue.set(editDetail.screenParam, "PopMerchant", true);
+       editDetail.screenParam.ParentMerchant = { A: '1', B: '2' };
     },
-
     //添加品牌
     addColPP: function () {
         var temp = editDetail.dataParam.CONTRACT_BRAND || [];
