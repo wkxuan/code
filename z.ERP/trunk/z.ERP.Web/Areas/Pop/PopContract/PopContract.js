@@ -2,6 +2,8 @@
     template: '<div>' +
                     '<i-input v-model="hehe1" style="width: 150px"></i-input>' +
                     '<i-input v-model="hehe2" style="width: 150px"></i-input>' +
+                    '<i-input v-model="parenttochild.A" style="width: 150px"></i-input>' +
+                    '<i-input v-model="parenttochild.A1111" style="width: 150px"></i-input>' +
                     '<i-table border highlight-row  ref="currentRowTable" :columns="perColumn" :data="perData" ></i-table>' +
                     '<i-button id="asd" a="b" v-on:click="cx">查询</i-button>' +
                     '<i-button v-on:click="qk">清空</i-button>' +
@@ -19,19 +21,19 @@
               },
 
         {
-            title: '年月',
-            key: 'YEARMONTH',
+            title: '租约号',
+            key: 'CONTRACTID',
             width: 150,
         },
         {
-            title: '开始日期',
-            key: 'START_DATE',
+            title: '分店名称',
+            key: 'NAME',
             width: 150,
 
         },
         {
-            title: '结束日期',
-            key: 'END_DATE',
+            title: '商户名称',
+            key: 'MERNAME',
             width: 150,
         }
             ],
@@ -55,12 +57,16 @@
             this.$emit('setdialog', data)
         },
         cx: function () {
+            _self = this;
             this.perData = [];
-            this.perData = [
-          { YEARMONTH: '201201', START_DATE: '2012-01-01', END_DATE: '2012-01-31' },
-          { YEARMONTH: '201202', START_DATE: '2012-02-01', END_DATE: '2012-02-28' },
-          { YEARMONTH: '201203', START_DATE: '2012-03-01', END_DATE: '2012-03-31' },
-          ];
+            _.Search({
+                Service: "HtglService",
+                Method: "GetContract",
+                Data: {  },
+                Success: function (data) {
+                    Vue.set(_self, "perData", data.rows);   
+                }
+            })
             console.log(this.parenttochild);
         },
         qk: function () {

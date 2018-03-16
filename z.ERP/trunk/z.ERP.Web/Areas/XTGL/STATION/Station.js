@@ -177,21 +177,24 @@ function _Define() {
                     showlist();
                 },
                 Merchant: function () {
-                    this.ParentMerchant = { A: '1', B: '2' }
+                    this.ParentMerchant = { A: '第一次传参数参数1', B: '2' }
                     this.PopMerchant = true;
                 },
                 MerchantBack: function (val) {
-                    this.PopMerchant = val.modal; 
+                    this.PopMerchant = val.modal;
+
                     console.log(val);
+                    alert(val.sj);
                 },
 
                 Merchant2: function () {
-                    this.ParentMerchant2 = { A1111: '1', B2222: '2' }
+                    this.ParentMerchant2 = { A1111: '第一次传参数参数2', B2222: '2' }
                     this.PopMerchant2 = true;
                 },
                 MerchantBack2: function (val) {
                     this.PopMerchant2 = val.modal;
                     console.log(val);
+                    alert(val.sj);
                 },
 
             }

@@ -222,7 +222,7 @@
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
-    <Content Include="Areas\Pop\Contract.js" />
+    <Content Include="Areas\Pop\PopContract\PopContract.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
