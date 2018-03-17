@@ -24,15 +24,8 @@ search.browseHref = function (row, index) {
 //添加跳转页面
 search.addHref = function (row) {
     //联营
-    if (row.STYLE = 2) {
-        _.OpenPage("HTGL/LYHT/HtEdit/", function (data) {
-        });
-    }
-    //租赁
-    if (row.STYLE = 1) {
-        _.OpenPage("HTGL/ZLHT/HtEdit/", function (data) {
-        });
-    }
+    _.OpenPage("HTGL/LYHT/HtEdit/", function (data) {
+    });
 }
 
 //修改跳转页面,并且要根据单号查出来相关的数据信息

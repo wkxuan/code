@@ -6,15 +6,14 @@
 
     this.enabled = function (val) { return val; }
 
-    //查询必须存在的条件,主要是一些赋值
     this.newCondition = function () { }
 
-    //是否可以查询的判断
-    this.IsValidSrch = function (mess) {
+
+    this.IsValidSrch = function () {
         return true;
     }
 
-    //是否可以修改
+
     this.canEdit = function (mess) {
         return true;
     }
@@ -25,11 +24,9 @@
             data: {
                     screenParam: _this.screenParam,
                     searchParam: _this.searchParam,
-                    windowParam: _this.windowParam,
                     panelName: 'condition',
                     disabled: _this.enabled(true),
                     
-                    //鉴于功能已经开始做了,故而将table的数据绑定的对象重新命名一个对象，进而刷新使用
                     screenParamData: {
                         dataDef: []
                     }
@@ -38,16 +35,13 @@
             mounted: function () {
             },
             methods: {
-                //查询OK
                 seach: function (event) {
                     event.stopPropagation();
                     var mess = this;
 
-                    if (!_this.IsValidSrch(mess))
+                    if (!_this.IsValidSrch())
                         return;
-                    //先清空结果
                     Vue.set(ve.screenParamData, "dataDef", []);
-                    //查询
                     showList(function (data) {
                         if (_this.screenParam.dataDef.length > 0) {
                             ve.panelName = 'result';
@@ -58,7 +52,7 @@
                         }
                     });
                 },
-                //清空OK
+
                 clear: function (event) {
                     event.stopPropagation();
                     _this.searchParam = {};
@@ -87,7 +81,7 @@
                     }
                     //继续
                 },
-                //新增
+
                 add: function (event) {
                     event.stopPropagation();
                     _this.addHref();
@@ -95,7 +89,7 @@
                 browse: function (row, index) {
                     _this.browseHref(row, index);
                 },
-                //删除
+
                 del: function (event) {
                     event.stopPropagation();
                     var _self = this;
@@ -113,7 +107,6 @@
                                     DeleteData: selectton
                                 }, function (data){ 
                                     showList(function (data){ 
-                                        // ve.$set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
                                         Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
                                         _self.$Message.info("删除成功");
                                     });
@@ -153,7 +146,6 @@
     }
     //查看链接的地址
     this.browseHref = function (row, index) {
-
     }
 
 
@@ -192,7 +184,6 @@
     this.vueInit = function () {
         _this.searchParam = {};
         _this.screenParam = {};
-        _this.windowParam = {};
         _this.service = "";
         _this.method = "";
     };

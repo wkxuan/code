@@ -10,19 +10,18 @@
   <script src="~/Areas/Pop/PopContract/PopMerchant.js"></script>
   <script src="~/Areas/Pop/PopContract/PopBrand.js"></script>
 }
-
 @section baseParam{
     <row>
         <i-col>
             @{
                 RenderControl(new PopRender()
                 {
-                    vModel = "screenParam.PopMerchant", //当前页面随便写
-                    Caption = "商户查询",   //随便写切实实际情况
-                    Width = "760",          //随便写切实实际情况
-                    PopLx = "Merchant",     //需要调用的弹窗
-                    CallBack = "MerchantBack", //返回后方法
-                    ParentObj= "screenParam.ParentMerchant" //传入参数随便写在按钮点击的时候给其值
+                    vModel = "screenParam.PopMerchant", 
+                    Caption = "商户查询", 
+                    Width = "760",         
+                    PopLx = "Merchant",     
+                    CallBack = "MerchantBack", 
+                    ParentObj= "screenParam.ParentMerchant" 
                 });
             }
         </i-col>

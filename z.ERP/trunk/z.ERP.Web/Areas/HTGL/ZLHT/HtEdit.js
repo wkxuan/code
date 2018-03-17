@@ -1,17 +1,17 @@
 ﻿editDetail.beforeVue = function () {
-
-    editDetail.others = true;
     editDetail.branchid = true;
     editDetail.service = "HtglService";
     editDetail.method = "GetContract";
-    editDetail.Key = 'CONTRACTID';
     editDetail.dataParam.STATUS = 1;
     editDetail.dataParam.STYLE = 2;
     editDetail.dataParam.JXSL = 0.17;
     editDetail.dataParam.XXSL = 0.17;
     editDetail.dataParam.STANDARD = 1;
     editDetail.dataParam.CONT_START = formatDate(new Date());
-    editDetail.dataParam.othersName = "品牌商铺信息";
+
+    //初始化弹窗所要传递参数
+    editDetail.screenParam.ParentMerchant = {};
+    editDetail.screenParam.ParentBrand = {};
 
     //品牌表格
     editDetail.screenParam.colDefPP = [
@@ -481,7 +481,29 @@
 }
 
 editDetail.otherMethods = {
-
+    //点击商户弹窗
+    Merchant: function () {
+        Vue.set(editDetail.screenParam, "PopMerchant", true);
+        editDetail.screenParam.ParentMerchant = { A: '1', B: '2' };
+    },
+    //商户弹窗返回
+    MerchantBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopMerchant", false);
+        editDetail.dataParam.MERCHANTID = val.sj[0].MERCHANTID;
+        editDetail.dataParam.MERNAME = val.sj[0].NAME;
+        console.log(val);
+    },
+    //点击品牌弹窗
+    srchColPP: function () {
+        Vue.set(editDetail.screenParam, "PopBrand", true);
+    },
+    //返回品牌弹窗
+    BrandBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopBrand", false);
+        for (var i = 0; i < val.sj.length; i++) {
+            editDetail.dataParam.CONTRACT_BRAND.push(val.sj[i]);
+        }
+    },
     //添加品牌
     addColPP: function () {
         var temp = editDetail.dataParam.CONTRACT_BRAND || [];
@@ -838,15 +860,20 @@ editDetail.otherMethods = {
 
 
 editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.CONTRACTID = null;
+    editDetail.dataParam.CONTRACT_BRAND = [];
+    editDetail.dataParam.CONTRACT_SHOP = [];
+    editDetail.dataParam.CONTRACT_RENT = [];
+    editDetail.dataParam.CONTRACT_GROUP = [];
+    editDetail.dataParam.CONTJSKL = [];
+    Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", []);
+    editDetail.dataParam.CONTRACT_COST = [];
+    editDetail.dataParam.CONTRACT_PAY = [];
 
 }
 
 editDetail.IsValidSave = function () {
-    var d = new Date(editDetail.dataParam.CONT_START);
-    editDetail.dataParam.CONT_START = formatDate(editDetail.dataParam.CONT_START);
-
-    var d = new Date(editDetail.dataParam.CONT_END);
-    editDetail.dataParam.CONT_END = formatDate(editDetail.dataParam.CONT_END);
     return true;
 }
 
