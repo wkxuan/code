@@ -11,7 +11,6 @@ namespace z.ERP.WebService.Wcf
     [ServiceContract]
     public interface IService
     {
-        [OperationContract]
         ResponseDTO Do(RequestDTO dto);
     }
 }

@@ -14,5 +14,10 @@ namespace z.ERP.WebService.Controllers
             List<Type> mrs = new List<Type>();
             ioc = new SimpleIOC(mrs);
         }
+
+        public object Create(Type t)
+        {
+            return ioc.Create(t);
+        }
     }
 }

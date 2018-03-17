@@ -13,8 +13,13 @@ namespace z.ERP.WebService.Wcf
     {
         public ResponseDTO Do(RequestDTO dto)
         {
+            dto = new RequestDTO() {
+                ServiceName = "PosSale",
+                Context = "{a:'1',b:'2'}"
+            };
             ServiceTransfer st = new ServiceTransfer();
             return st.Do(dto);
         }
+        
     }
 }

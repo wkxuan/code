@@ -10,7 +10,7 @@
         { title: '分店名称', key: 'NAME', width: 100 },
         { title: '描述', key: 'DESCRIPTION', width: 200 },
 
-        
+
     ];
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "HtglService";

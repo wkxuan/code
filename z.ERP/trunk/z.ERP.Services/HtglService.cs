@@ -11,14 +11,14 @@ using z.Extensiont;
 
 namespace z.ERP.Services
 {
-    public class HtglService: ServiceBase
+    public class HtglService : ServiceBase
     {
         internal HtglService()
         {
         }
         public DataGridResult GetContract(SearchItem item)
         {
-            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME FROM CONTRACT A,BRANCH B,MERCHANT C "+
+            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME FROM CONTRACT A,BRANCH B,MERCHANT C " +
                          " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID ";
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
             item.HasArrayKey("STYLE", a => sql += $" and A.STYLE in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
@@ -44,7 +44,7 @@ namespace z.ERP.Services
                 CONTRACTEntity con = DbHelper.Select(SaveData);
                 if (con.STATUS == ((int)合同状态.审核).ToString())
                 {
-                    throw new LogicException("租约(" + SaveData.CONTRACTID + ")已经审核!");
+                    throw new LogicException($"租约({SaveData.CONTRACTID})已经审核!");
                 }
                 SaveData.VERIFY = con.VERIFY;
                 SaveData.VERIFY_NAME = con.VERIFY_NAME;
@@ -54,7 +54,8 @@ namespace z.ERP.Services
             {
                 SaveData.HTLX = ((int)合同类型.原始合同).ToString();
             }
-            else {
+            else
+            {
                 SaveData.HTLX = ((int)合同类型.变更合同).ToString();
             }
 
@@ -74,7 +75,7 @@ namespace z.ERP.Services
         }
 
 
-        public Tuple<dynamic, DataTable,DataTable,  CONTRACTEntity, CONTRACT_RENTEntity, DataTable, DataTable > GetContractElement(CONTRACTEntity Data)
+        public Tuple<dynamic, DataTable, DataTable, CONTRACTEntity, CONTRACT_RENTEntity, DataTable, DataTable> GetContractElement(CONTRACTEntity Data)
         {
             //只显示本表数据的用module
             //要显示本表之外的数据用DataTable
@@ -85,6 +86,10 @@ namespace z.ERP.Services
             string sql = $@"SELECT A.*,B.NAME MERNAME FROM CONTRACT A,MERCHANT B WHERE A.MERCHANTID=B.MERCHANTID ";
             sql += (" AND CONTRACTID= " + Data.CONTRACTID);
             DataTable contract = DbHelper.ExecuteTable(sql);
+            if (!contract.IsNotNull())
+            {
+                throw new LogicException("找不到租约!");
+            }
 
             contract.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
@@ -109,7 +114,7 @@ namespace z.ERP.Services
             //ContractParm.CONTRACT_GROUP = DbHelper.SelectList(new CONTRACT_GROUPEntity()).Where(a => a.CONTRACTID==Data.CONTRACTID).ToList();
 
             //查询数据库的时候已经参数过滤
-            ContractParm.CONTRACT_GROUP = DbHelper.SelectList(new CONTRACT_GROUPEntity() { CONTRACTID=Data.CONTRACTID }).ToList();
+            ContractParm.CONTRACT_GROUP = DbHelper.SelectList(new CONTRACT_GROUPEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
 
             ContractParm.CONTRACT_RENT = DbHelper.SelectList(new CONTRACT_RENTEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
 
@@ -117,7 +122,7 @@ namespace z.ERP.Services
 
 
             CONTRACT_RENTEntity ContractRentParm = new CONTRACT_RENTEntity();
-            ContractRentParm.CONTRACT_RENTITEM= DbHelper.SelectList(new CONTRACT_RENTITEMEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
+            ContractRentParm.CONTRACT_RENTITEM = DbHelper.SelectList(new CONTRACT_RENTITEMEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
 
 
             string sqlPay = $@"SELECT * FROM CONTRACT_PAY WHERE 1=1 ";
@@ -132,9 +137,9 @@ namespace z.ERP.Services
             DataTable contract_cost = DbHelper.ExecuteTable(sqlCost);
 
 
-            return new Tuple<dynamic,DataTable, DataTable, CONTRACTEntity, CONTRACT_RENTEntity,DataTable, DataTable>(
+            return new Tuple<dynamic, DataTable, DataTable, CONTRACTEntity, CONTRACT_RENTEntity, DataTable, DataTable>(
                 contract.ToOneLine(),
-                contract_brand, 
+                contract_brand,
                 contract_shop,
                 ContractParm,
                 ContractRentParm,
@@ -143,7 +148,8 @@ namespace z.ERP.Services
                 );
         }
 
-        public List<CONTRACT_RENTITEMEntity> LyYdfj(List<CONTRACT_RENTEntity> Data,CONTRACTEntity ContractData) {
+        public List<CONTRACT_RENTITEMEntity> LyYdfj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
+        {
 
             //当月度分解没定义的时候抛出异常提示待完善
             List<CONTRACT_RENTITEMEntity> zjfjList = new List<CONTRACT_RENTITEMEntity>();
@@ -153,7 +159,7 @@ namespace z.ERP.Services
                 List<PERIODEntity> Period = new List<PERIODEntity>();
                 Period = DbHelper.SelectList(new PERIODEntity()).
                     Where(a => (a.DATE_START.ToDateTime() <= ydfj.ENDDATE.ToDateTime())
-                  && (a.DATE_END.ToDateTime() >= ydfj.STARTDATE.ToDateTime())).OrderBy(b=>b.YEARMONTH).ToList();
+                  && (a.DATE_END.ToDateTime() >= ydfj.STARTDATE.ToDateTime())).OrderBy(b => b.YEARMONTH).ToList();
 
                 foreach (var per in Period)
                 {
@@ -163,7 +169,7 @@ namespace z.ERP.Services
 
 
                     if ((per.DATE_START.ToDateTime() < ContractData.CONT_START.ToDateTime())
-                        ||(per.DATE_START.ToDateTime()<ydfj.STARTDATE.ToDateTime()))
+                        || (per.DATE_START.ToDateTime() < ydfj.STARTDATE.ToDateTime()))
                     {
                         per.DATE_START = ydfj.STARTDATE;
                     };
@@ -205,7 +211,8 @@ namespace z.ERP.Services
 
             //先计算出来每个年月对应的生成日期
             DateTime dt = ContractData.CONT_START.ToDateTime();
-            var ym = Convert.ToInt32(dt.Year.ToString()) * 100 + Convert.ToInt32(dt.Month.ToString());
+            //var ym = Convert.ToInt32(dt.Year.ToString()) * 100 + Convert.ToInt32(dt.Month.ToString());
+            var ym = dt.Year * 100 + dt.Month;
 
             List<PERIODEntity> Perio = new List<PERIODEntity>();
             Perio = DbHelper.SelectList(new PERIODEntity()).
@@ -219,11 +226,13 @@ namespace z.ERP.Services
 
                 var scny = 0;
                 //可以通过日期上加月份处理
-                if ((ym.ToString().Substring(4, 2).ToInt() - feeRule.ADVANCE_CYCLE.ToInt()) <= 0){
-                    scny = (ym.ToString().Substring(0, 4).ToInt() - 1) * 100+
+                if ((ym.ToString().Substring(4, 2).ToInt() - feeRule.ADVANCE_CYCLE.ToInt()) <= 0)
+                {
+                    scny = (ym.ToString().Substring(0, 4).ToInt() - 1) * 100 +
                         ((ym.ToString().Substring(4, 2).ToInt() + 12 - feeRule.ADVANCE_CYCLE.ToInt()));
                 }
-                else {
+                else
+                {
                     scny = ym - feeRule.ADVANCE_CYCLE.ToInt();
                 }
 
@@ -320,6 +329,6 @@ namespace z.ERP.Services
 
             }
             return zjfjList;
-        }        
+        }
     }
 }

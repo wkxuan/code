@@ -10,9 +10,12 @@ namespace z.ERP.WebService.Controllers
     public class PosController : ControllerBase
     {
         [ServiceAble("PosSale")]
-        public void Sale(PosSaleModel Model)
+        public PosSaleModel Sale(PosSaleModel Model)
         {
-
+            return new Controllers.Model.PosSaleModel()
+            {
+                a = "1111111111111111111111111"
+            };
         }
     }
 }

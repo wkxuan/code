@@ -7,5 +7,15 @@ namespace z.ERP.WebService.Controllers.Model
 {
     public class PosSaleModel
     {
+        public string a
+        {
+            get;
+            set;
+        }
+        public string b
+        {
+            get;
+            set;
+        }
     }
 }
