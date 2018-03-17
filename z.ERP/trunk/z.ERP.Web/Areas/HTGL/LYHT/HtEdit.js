@@ -12,6 +12,7 @@
     editDetail.dataParam.CONT_START=formatDate(new Date());
     editDetail.dataParam.othersName = "品牌商铺信息";
     editDetail.screenParam.ParentMerchant = {};
+    editDetail.screenParam.ParentBrand = {};
 
     editDetail.screenParam.PopMerchant = false;
 
@@ -481,16 +482,32 @@
 
 editDetail.otherMethods = {
 
-    MerchantBack : function (val) {
-        Vue.set(editDetail.screenParam, "PopMerchant", false);
-        console.log(val);
-    },
 
 //点击打开弹窗
     Merchant : function () {
        Vue.set(editDetail.screenParam, "PopMerchant", true);
        editDetail.screenParam.ParentMerchant = { A: '1', B: '2' };
     },
+
+    MerchantBack : function (val) {
+        Vue.set(editDetail.screenParam, "PopMerchant", false);
+        editDetail.dataParam.MERCHANTID = val.sj[0].MERCHANTID;
+        editDetail.dataParam.MERNAME = val.sj[0].NAME;
+        console.log(val);
+    },
+
+    srchColPP: function () {
+        Vue.set(editDetail.screenParam, "PopBrand", true);
+    },
+
+    BrandBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopBrand", false);
+        for (var i = 0; i < val.sj.length; i++) {
+            editDetail.dataParam.CONTRACT_BRAND.push(val.sj[i]);
+        }
+    },
+
+
     //添加品牌
     addColPP: function () {
         var temp = editDetail.dataParam.CONTRACT_BRAND || [];

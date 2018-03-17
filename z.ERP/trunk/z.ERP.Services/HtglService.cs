@@ -82,7 +82,7 @@ namespace z.ERP.Services
             {
                 throw new LogicException("请确认租约编号!");
             }
-            string sql = $@"SELECT * FROM CONTRACT WHERE 1=1 ";
+            string sql = $@"SELECT A.*,B.NAME MERNAME FROM CONTRACT A,MERCHANT B WHERE A.MERCHANTID=B.MERCHANTID ";
             sql += (" AND CONTRACTID= " + Data.CONTRACTID);
             DataTable contract = DbHelper.ExecuteTable(sql);
 

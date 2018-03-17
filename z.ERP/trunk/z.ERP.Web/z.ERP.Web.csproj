@@ -158,6 +158,7 @@
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\Detail\DetailViewBase.cs" />
     <Compile Include="Areas\Layout\EditDetail\EditDetailViewBase.cs" />
+    <Compile Include="Areas\Layout\Edit\EditViewBase.cs" />
     <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
@@ -220,8 +221,11 @@
     <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillList.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
+    <Content Include="Areas\Layout\Edit\_Edit.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
+    <Content Include="Areas\Pop\PopContract\PopBrand.js" />
+    <Content Include="Areas\Pop\PopContract\PopMerchant.js" />
     <Content Include="Areas\Pop\PopContract\PopContract.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
@@ -374,6 +378,7 @@
     <Content Include="Areas\XTGL\ROLE\RoleList.cshtml" />
     <Content Include="Areas\XTGL\GOODS_KIND\Goods_Kind.cshtml" />
     <Content Include="Areas\Share\Pop.cshtml" />
+    <Content Include="Areas\Layout\Edit\_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

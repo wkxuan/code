@@ -1,4 +1,4 @@
-﻿Vue.component('Contract', {
+﻿Vue.component('Merchant', {
     template: '<div>' +
                     '<i-input v-model="hehe1" style="width: 150px"></i-input>' +
                     '<i-input v-model="hehe2" style="width: 150px"></i-input>' +
@@ -19,22 +19,17 @@
               },
 
         {
-            title: '租约号',
-            key: 'CONTRACTID',
+            title: '商户代码',
+            key: 'MERCHANTID',
             width: 150,
         },
         {
-            title: '分店名称',
+            title: '商户名称',
             key: 'NAME',
             width: 150,
 
         },
-        {
-            title: '商户名称',
-            key: 'MERNAME',
-            width: 150,
-        }
-            ],
+        ],
             perData: [
 
             ],
@@ -47,8 +42,6 @@
     methods: {
         qr: function () {
             var data = {};
-            data.hehe1 = this.hehe1;
-            data.PopMerchant = false;
             data.sj = this.$refs.currentRowTable.getSelection();
             this.perData = [];
             this.$refs.currentRowTable.makeObjData();
@@ -58,8 +51,8 @@
             _self = this;
             this.perData = [];
             _.Search({
-                Service: "HtglService",
-                Method: "GetContract",
+                Service: "ShglService",
+                Method: "GetMerchant",
                 Data: {  },
                 Success: function (data) {
                     Vue.set(_self, "perData", data.rows);   

@@ -1,0 +1,90 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@using z.Extensions;
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+                    "Areas/Layout/Edit/_Edit.js"
+                };
+}
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+
+<div id="EditDetail">
+    <row class="topbutton">
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "add",
+                Text = "新增",
+                Enable = true,
+                Type = "primary"
+            });
+        }
+
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "save",
+                Text = "存档",
+                Enable = true,
+                Type = "primary"
+            });
+        }
+        @RenderSection("Btn", false)
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            编号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.BILLID",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <span v-if="branchid">
+            <i-col span="2" class="RowTitle">
+                分店卖场
+            </i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new ServiceDropDownListRender()
+                    {
+                        vModel = "dataParam.BRANCHID",
+                        ServiceMothod = m => m.branch(),
+                    });
+                }
+            </i-col>
+        </span>
+    </row>
+    @RenderSection("baseParam", false)
+    @RenderSection("detailParam", false)
+
+    <div class="hide">
+        @RenderSection("hide", false)
+    </div>
+</div>
+
+@section foot{
+    @RenderSection("foot", false)
+}
+@{
+    if (Model != null && !string.IsNullOrEmpty(Model))
+    {
+        <script type="text/javascript">
+            $(function() {
+                editDetail.Id = @Model;
+            });
+        </script>
+    }
+}

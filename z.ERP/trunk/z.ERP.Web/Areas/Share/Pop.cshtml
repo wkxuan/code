@@ -7,14 +7,20 @@
         case "Contract":
             <Contract v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></Contract>
             break;
+        case "Merchant":
+            <Merchant v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></Merchant>
+            break;
+        case "Brand":
+            <Brand v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></Brand>
+            break;
     }
     
-    <p slot="header" style="color:#f60;text-align:center">
+    <p slot="header" style="color:#f60;text-align:center" name="header">
         <Icon type="information-circled"></Icon>
         <span>@Model.Caption</span>
     </p>
     <div style="text-align:center">
     </div>
-    <div slot="footer">
+    <div slot="footer" name="header">
     </div>
 </Modal>

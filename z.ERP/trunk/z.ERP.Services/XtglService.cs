@@ -30,7 +30,7 @@ namespace z.ERP.Services
 
         public DataGridResult GetBrandData(SearchItem item)
         {
-            string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
+            string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME,B.ID BRANDID FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
             item.HasKey("ID", a => sql += $" and B.ID = '{a}'");
             item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '%{a}%'");
