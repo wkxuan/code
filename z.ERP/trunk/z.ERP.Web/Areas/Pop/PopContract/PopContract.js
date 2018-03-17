@@ -1,74 +1,107 @@
 ﻿Vue.component('Contract', {
     template: '<div>' +
-                    '<i-input v-model="hehe1" style="width: 150px"></i-input>' +
-                    '<i-input v-model="hehe2" style="width: 150px"></i-input>' +
-                    '<i-table border highlight-row  ref="currentRowTable" :columns="perColumn" :data="perData" ></i-table>' +
-                    '<i-button v-on:click="cx">查询</i-button>' +
-                    '<i-button v-on:click="qk">清空</i-button>' +
-                    '<i-button v-on:click="qr">确认</i-button>' +
+                    '<row>' +
+                        '<i-col span="2" class="RowTitle">' +
+                           '租约号' +
+                        '</i-col>' +
+                        '<i-col span="4">' +
+                           '<i-input v-model="CONTRACTID"></i-input>' +
+                        '</i-col>' +
+                        '<i-col span="2" class="RowTitle">' +
+                           '商户编号' +
+                        '</i-col>' +
+                        '<i-col span="4">' +
+                           '<i-input v-model="MERCHANTID"></i-input>' +
+                        '</i-col>' +
+                        '<i-col span="2" class="RowTitle">' +
+                           '商户名称' +
+                        '</i-col>' +
+                        '<i-col span="4">' +
+                           '<i-input v-model="NAME"></i-input>' +
+                        '</i-col>' +
+                    '</row>' +
+                    '<row>' +
+                        '<i-table border highlight-row  ref="currentRowTable" :columns="Column" :data="Data" height=300></i-table>' +
+                    '</row>' +
+                    '<row>' +
+                        '<i-col span="9">' +
+                            '      ' +
+                        '</i-col>' +
+                        '<i-col span="2">' +
+                            '<i-button v-on:click="cx">查询</i-button>' +
+                        '</i-col>' +
+                        '<i-col span="2">' +
+                            '<i-button v-on:click="qk">清空</i-button>' +
+                        '</i-col>' +
+                        '<i-col span="2">' +
+                            '<i-button v-on:click="qr">确认</i-button>' +
+                        '</i-col>' +
+                    '</row>' +
 	           '</div>',
     data: function () {
         return {
-            hehe1: '',
-            hehe2: '',
-            perColumn: [
-              {
+            CONTRACTID: '',
+            MERCHANTID: '',
+            NAME:'',
+            Column: [
+                {
                   type: 'selection',
                   width: 60,
                   align: 'center'
-              },
-
-        {
-            title: '租约号',
-            key: 'CONTRACTID',
-            width: 150,
-        },
-        {
-            title: '分店名称',
-            key: 'NAME',
-            width: 150,
-
-        },
-        {
-            title: '商户名称',
-            key: 'MERNAME',
-            width: 150,
-        }
+                },
+               {
+                  title: '租约号',
+                  key: 'CONTRACTID',
+                  width: 150,
+                },
+                {
+                    title: '分店名称',
+                    key: 'NAME',
+                    width: 150,
+                },
+                {
+                    title: '商户名称',
+                    key: 'MERNAME',
+                    width: 150,
+                }
             ],
-            perData: [
+            Data: [
 
             ],
         }
     },
 
     created: function () {
-        this.perData = [];
+        this.Data = [];
     },
     methods: {
         qr: function () {
             var data = {};
-            data.hehe1 = this.hehe1;
-            data.PopMerchant = false;
             data.sj = this.$refs.currentRowTable.getSelection();
-            this.perData = [];
+            this.Data = [];
             this.$refs.currentRowTable.makeObjData();
             this.$emit('setdialog', data)
         },
         cx: function () {
+            console.log(this.parenttochild);
+            //在查询之前用这里传递的参数
             _self = this;
-            this.perData = [];
+            this.Data = [];
             _.Search({
                 Service: "HtglService",
                 Method: "GetContract",
-                Data: {  },
+                Data: {
+                    CONTRACTID: _self.CONTRACTID,
+                    MERCHANTID: _self.MERCHANTID,
+                    NAME: _self.NAME,
+                },
                 Success: function (data) {
-                    Vue.set(_self, "perData", data.rows);   
+                    Vue.set(_self, "Data", data.rows);
                 }
             })
-            console.log(this.parenttochild);
         },
         qk: function () {
-            this.perData = [];
+            this.Data = [];
         },
     },
     props: {
