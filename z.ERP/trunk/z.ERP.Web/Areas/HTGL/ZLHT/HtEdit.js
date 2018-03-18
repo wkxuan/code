@@ -3,9 +3,9 @@
     editDetail.service = "HtglService";
     editDetail.method = "GetContract";
     editDetail.dataParam.STATUS = 1;
-    editDetail.dataParam.STYLE = 2;
-    editDetail.dataParam.JXSL = 0.17;
-    editDetail.dataParam.XXSL = 0.17;
+    editDetail.dataParam.STYLE = 1;
+    editDetail.dataParam.JXSL = 0;
+    editDetail.dataParam.XXSL = 0;
     editDetail.dataParam.STANDARD = 1;
     editDetail.dataParam.CONT_START = formatDate(new Date());
 
@@ -243,7 +243,7 @@
     //收费项目
     editDetail.screenParam.colDefCOST = [
         { type: 'selection', width: 60, align: 'center', },
-        { title: '序号', key: 'INDEX', width: 100 },
+        { title: '序号', key: 'INX', width: 100 },
         {
             title: "费用项目", key: 'TERMID', width: 120,
             render: function (h, params) {
@@ -889,10 +889,9 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.CONTRACT_RENT = data.ContractParm.CONTRACT_RENT;
         editDetail.dataParam.CONTRACT_GROUP = data.ContractParm.CONTRACT_GROUP;
         editDetail.dataParam.CONTJSKL = data.ContractParm.CONTJSKL;
-        // editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM = data.ContractRentParm.CONTRACT_RENTITEM;
         Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data.ContractRentParm.CONTRACT_RENTITEM);
-        editDetail.dataParam.CONTRACT_COST = data.contract_cost;
-        editDetail.dataParam.CONTRACT_PAY = data.contract_pay;
+        editDetail.dataParam.CONTRACT_COST = data.contractCost;
+        editDetail.dataParam.CONTRACT_PAY = data.contractPay;
         callback && callback(data);
     });
 }

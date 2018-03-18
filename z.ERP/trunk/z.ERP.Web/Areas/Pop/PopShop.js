@@ -1,17 +1,11 @@
-﻿Vue.component('Brand', {
+﻿Vue.component('Shop', {
     template: '<div>' +
                     '<row>' +
                         '<i-col span="2" class="RowTitle">' +
-                           '品牌编码'+
+                           '商铺编码'+
                         '</i-col>' +
                         '<i-col span="4">' +
-                           '<i-input v-model="ID"></i-input>' +
-                        '</i-col>' +
-                        '<i-col span="2" class="RowTitle">' +
-                           '品牌名称' +
-                        '</i-col>' +
-                        '<i-col span="4">' +
-                           '<i-input v-model="NAME"></i-input>' +
+                           '<i-input v-model="CODE"></i-input>' +
                         '</i-col>' +
                     '</row>'+
                     '<row>' +
@@ -34,12 +28,10 @@
 	           '</div>',
     data: function () {
         return {
-            ID: '',
-            NAME: '',
+            CODE: '',
             Column: [
                 { type: 'selection', width: 60, align: 'center' },
-                { title: '品牌代码', key: 'ID', width: 150, },
-                { title: '品牌名称', key: 'NAME', width: 150, },
+                { title: '商铺代码', key: 'CODE', width: 150, }
             ],
             Data: [],
         }
@@ -60,12 +52,19 @@
             this.Data = [];
             _.Search({
                 Service: "XtglService",
-                Method: "GetBrandData",
-                Data: {ID:_self.ID,NAME:_self.NAME  },
+                Method: "GetShop",
+                Data: {
+                    CODE: _self.CODE,
+                    BRANCHID: _self.parenttochild.BRANCHID
+                },
                 Success: function (data) {
-                    Vue.set(_self, "Data", data.rows);   
+                    if (data.rows.length != 0) {
+                        Vue.set(_self, "Data", data.rows);
+                    } else {
+                        iview.Message.info("没有满足条件的记录");
+                    };
                 }
-            })
+            });
         },
         qk: function () {
             this.Data = [];
