@@ -15,7 +15,7 @@
     ];
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "DpglService";
-    search.method = "GetAssetChange";
+    search.method = "GetAssetChangeList";
 }
 //search.searchParam.TYPE = false;
 //searchParam.CHANGE_TYPE = ViewBag.Type;

@@ -27,7 +27,7 @@ namespace z.ERP.Services
                 dt = dt.ToOneLine()
             };
         }
-        public DataGridResult GetAssetChange(SearchItem item)
+        public DataGridResult GetAssetChangeList(SearchItem item)
         {
             string sql = $@"SELECT * FROM ASSETCHANGE WHERE 1=1 ";
             item.HasKey("CHANGE_TYPE", a => sql += $" and CHANGE_TYPE = '{a}'");

@@ -2,7 +2,6 @@
     editDetail.branchid = false;
     editDetail.service = "UserService";
     editDetail.method = "GetRoleElement";
-    editDetail.methodList = "GetRole";
     editDetail.Key = "ROLEID";
     editDetail.screenParam.ROLE_MENU = [];
     if (!editDetail.screenParam.ROLE_FEE) {

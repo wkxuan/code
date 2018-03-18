@@ -86,18 +86,6 @@ namespace z.ERP.Services
             v.Verify();
             using (var Tran = DbHelper.BeginTransaction())
             {
-                //int i = 0;
-                //string code = "";
-                //SaveData.ROLE_MENU?.ForEach(rolemenu =>
-                //{
-                //    GetVerify(rolemenu).Require(a => a.ROLEID);
-                //    //code=TreeModel.GetNewKey(rolemenu, a => a.MODULECODE, Key, Key);
-                //    SaveData.ROLE_MENU[i].MODULECODE = code;
-                //});
-                //SaveData.ROLE_FEE?.ForEach(rolefee =>
-                //{
-                //    GetVerify(rolefee).Require(a => a.ROLEID);
-                //});
                 DbHelper.Save(SaveData);
 
                 Tran.Commit();

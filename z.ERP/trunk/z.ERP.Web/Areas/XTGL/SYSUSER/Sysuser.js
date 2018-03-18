@@ -9,8 +9,21 @@
             title: '名称',
             key: 'USERNAME', width: 250
         }];
-
+    define.dataParam.colDef = [
+        {
+            title: "角色代码",
+            key: 'ROLECODE', width: 150
+        },
+        {
+            title: '角色名称',
+            key: 'ROLENAME', width: 250
+        },
+        {
+            title: '所属机构',
+            key: 'ORGNAME', width: 250
+        }];
     define.screenParam.dataDef = [];
+    define.dataParam.USER_ROLE = [];
     define.service = "XtglService";
     define.method = "GetUserElement";
     define.methodList = "GetUser";
