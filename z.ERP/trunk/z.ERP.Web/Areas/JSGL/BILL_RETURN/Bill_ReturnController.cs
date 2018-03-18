@@ -21,7 +21,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_RETURN
         public ActionResult Bill_ReturnEdit(string Id)
         {
             ViewBag.Title = "保证金返还单";
-            return View(model: Id);
+            return View(model: Id); 
         }
         public ActionResult Bill_ReturnDetail(string Id)
         {
