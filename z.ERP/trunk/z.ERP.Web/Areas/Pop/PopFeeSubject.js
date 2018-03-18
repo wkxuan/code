@@ -1,20 +1,14 @@
-﻿Vue.component('Contract', {
+﻿Vue.component('Feesubject', {
     template: '<div>' +
                     '<row>' +
                         '<i-col span="2" class="RowTitle">' +
-                           '租约号' +
+                           '费用编码' +
                         '</i-col>' +
                         '<i-col span="4">' +
-                           '<i-input v-model="CONTRACTID"></i-input>' +
+                           '<i-input v-model="TRIMID"></i-input>' +
                         '</i-col>' +
                         '<i-col span="2" class="RowTitle">' +
-                           '商户编号' +
-                        '</i-col>' +
-                        '<i-col span="4">' +
-                           '<i-input v-model="MERCHANTID"></i-input>' +
-                        '</i-col>' +
-                        '<i-col span="2" class="RowTitle">' +
-                           '商户名称' +
+                           '费用名称' +
                         '</i-col>' +
                         '<i-col span="4">' +
                            '<i-input v-model="NAME"></i-input>' +
@@ -40,37 +34,16 @@
 	           '</div>',
     data: function () {
         return {
-            CONTRACTID: '',
-            MERCHANTID: '',
-            NAME:'',
+            TRIMID: '',
+            NAME: '',
             Column: [
-                {
-                  type: 'selection',
-                  width: 60,
-                  align: 'center'
-                },
-               {
-                  title: '租约号',
-                  key: 'CONTRACTID',
-                  width: 150,
-                },
-                {
-                    title: '分店名称',
-                    key: 'NAME',
-                    width: 150,
-                },
-                {
-                    title: '商户名称',
-                    key: 'MERNAME',
-                    width: 150,
-                }
+                { type: 'selection', width: 60, align: 'center' },
+                { title: '费用代码', key: 'TRIMID', width: 150, },
+                { title: '费用名称', key: 'NAME', width: 150, },
             ],
-            Data: [
-
-            ],
+            Data: [],
         }
     },
-
     created: function () {
         this.Data = [];
     },
@@ -83,20 +56,18 @@
             this.$emit('setdialog', data)
         },
         cx: function () {
-            console.log(this.parenttochild);
-            //在查询之前用这里传递的参数
             _self = this;
             this.Data = [];
             _.Search({
-                Service: "HtglService",
-                Method: "GetContract",
-                Data: {
-                    CONTRACTID: _self.CONTRACTID,
-                    MERCHANTID: _self.MERCHANTID,
-                    NAME: _self.NAME,
-                },
+                Service: "XtglService",
+                Method: "GetFeeSubject",
+                Data: { TRIMID: _self.TRIMID, NAME: _self.NAME },
                 Success: function (data) {
-                    Vue.set(_self, "Data", data.rows);
+                    if (data.rows.length != 0) {
+                        Vue.set(_self, "Data", data.rows);
+                    } else {
+                        iview.Message.info("没有满足条件的记录");
+                    };
                 }
             })
         },

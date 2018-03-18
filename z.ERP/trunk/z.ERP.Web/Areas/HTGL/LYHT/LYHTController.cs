@@ -41,8 +41,8 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
                     contractShop=res.Item3,
                     ContractParm = res.Item4,
                     ContractRentParm=res.Item5,
-                    contract_pay = res.Item6,
-                    contract_cost = res.Item7
+                    contractPay = res.Item6,
+                    contractCost = res.Item7
                 }
             );
         }

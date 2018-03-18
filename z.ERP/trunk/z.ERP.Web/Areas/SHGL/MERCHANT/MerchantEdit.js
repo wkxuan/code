@@ -25,7 +25,6 @@
                         _.Ajax('GetBrand', {
                             Data: { ID: event.target.value }
                         }, function (data) {
-                            //$.extend(editDetail.dataParam.MERCHANT_BRAND[params.index], data.dt[0]);
                             Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'NAME', data.dt.NAME);
                             Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYCODE', data.dt.CATEGORYCODE);
                             Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYNAME', data.dt.CATEGORYNAME);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using z.Extensiont;
 
 namespace z.SSO.Model
 {
@@ -17,5 +18,20 @@ namespace z.SSO.Model
             get;
             set;
         }
+
+        /// <summary>
+        /// 可用权限列表
+        /// </summary>
+        public string[] Permissions
+        {
+            get;
+            set;
+        }
+
+        public bool HasPermission(string key)
+        {
+            return !Permissions.IsEmpty() && Permissions.Contains(key);
+        }
+
     }
 }

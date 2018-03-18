@@ -3,15 +3,17 @@
     editDetail.service = "HtglService";
     editDetail.method = "GetContract";
     editDetail.dataParam.STATUS = 1;
-    editDetail.dataParam.STYLE = 2;
-    editDetail.dataParam.JXSL = 0.17;
-    editDetail.dataParam.XXSL = 0.17;
+    editDetail.dataParam.STYLE = 1;
+    editDetail.dataParam.JXSL = 0;
+    editDetail.dataParam.XXSL = 0;
     editDetail.dataParam.STANDARD = 1;
     editDetail.dataParam.CONT_START = formatDate(new Date());
 
     //初始化弹窗所要传递参数
     editDetail.screenParam.ParentMerchant = {};
     editDetail.screenParam.ParentBrand = {};
+    editDetail.screenParam.ParentShop = {};
+    editDetail.screenParam.ParentFeeSubject = {};
 
     //品牌表格
     editDetail.screenParam.colDefPP = [
@@ -243,7 +245,7 @@
     //收费项目
     editDetail.screenParam.colDefCOST = [
         { type: 'selection', width: 60, align: 'center', },
-        { title: '序号', key: 'INDEX', width: 100 },
+        { title: '序号', key: 'INX', width: 100 },
         {
             title: "费用项目", key: 'TERMID', width: 120,
             render: function (h, params) {
@@ -259,7 +261,7 @@
                 })
             },
         },
-        { title: "费用项目名称", key: 'TERMNAME', width: 120 },
+        { title: "费用项目名称", key: 'NAME', width: 120 },
         {
             title: '开始日期',
             key: 'STARTDATE',
@@ -503,6 +505,49 @@ editDetail.otherMethods = {
         for (var i = 0; i < val.sj.length; i++) {
             editDetail.dataParam.CONTRACT_BRAND.push(val.sj[i]);
         }
+    },
+    //选择商铺弹窗
+    srchColSHOP: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info("请确认分店卖场!");
+            return false;
+        } else {
+            Vue.set(editDetail.screenParam, "PopShop", true);
+            editDetail.screenParam.ParentShop = { BRANCHID: editDetail.dataParam.BRANCHID };
+        }
+    },
+    //商铺返回弹窗
+    ShopBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopShop", false);
+        for (var i = 0; i < val.sj.length; i++) {
+            editDetail.dataParam.CONTRACT_SHOP.push(val.sj[i]);
+        };
+        calculateArea();
+    },
+
+    FeeSubjectBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopFeeSubject", false);
+        var maxIndex = 1;
+        for (var i = 0; i < val.sj.length; i++) {
+            if (editDetail.dataParam.CONTRACT_COST) {
+                for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
+                    maxIndex = editDetail.dataParam.CONTRACT_COST[0].INX;
+                    if (editDetail.dataParam.CONTRACT_COST[j].INX > maxIndex) {
+                        maxIndex = editDetail.dataParam.CONTRACT_COST[j].INX
+                    };
+                    maxIndex++;
+                };
+            };
+            editDetail.dataParam.CONTRACT_COST.push({
+                INX: maxIndex,
+                TERMID: val.sj[i].TERMID,
+                NAME: val.sj[i].NAME
+            });
+        };
+    },
+
+    srchCost: function () {
+        Vue.set(editDetail.screenParam, "PopFeeSubject", true);
     },
     //添加品牌
     addColPP: function () {
@@ -808,14 +853,14 @@ editDetail.otherMethods = {
         var maxIndex = 1;
         if (editDetail.dataParam.CONTRACT_COST) {
             for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
-                maxIndex = editDetail.dataParam.CONTRACT_COST[0].INDEX;
-                if (editDetail.dataParam.CONTRACT_COST[j].INDEX > maxIndex) {
+                maxIndex = editDetail.dataParam.CONTRACT_COST[0].INX;
+                if (editDetail.dataParam.CONTRACT_COST[j].INX > maxIndex) {
                     maxIndex = editDetail.dataParam.CONTRACT_COST[j].INDEX
                 }
                 maxIndex++;
             }
         }
-        temp.push({ INDEX: maxIndex });
+        temp.push({ INX: maxIndex });
         editDetail.dataParam.CONTRACT_COST = temp;
     },
     //删除租约收费项目信息
@@ -874,8 +919,90 @@ editDetail.clearKey = function () {
 }
 
 editDetail.IsValidSave = function () {
+
+
+    if (!editDetail.dataParam.BRANCHID) {
+        iview.Message.info("请确认分店卖场!");
+        return false;
+    };
+    if (!editDetail.dataParam.MERCHANTID) {
+        iview.Message.info("请选择商户!");
+        return false;
+    };
+    if (!editDetail.dataParam.CONT_START) {
+        iview.Message.info("请维护开始日期!");
+        return false;
+    } else {
+        editDetail.dataParam.CONT_START = formatDate(editDetail.dataParam.CONT_START);
+    };
+
+    if (!editDetail.dataParam.CONT_END) {
+        iview.Message.info("请维护结束日期!");
+        return false;
+    } else {
+        editDetail.dataParam.CONT_END = formatDate(editDetail.dataParam.CONT_END);
+    };
+    if (!editDetail.dataParam.ORGID) {
+        iview.Message.info("请确定招商部门!");
+        return false;
+    };
+    if (!editDetail.dataParam.OPERATERULE) {
+        iview.Message.info("请确定合作方式!");
+        return false;
+    };
+
+    if (editDetail.dataParam.CONTRACT_BRAND.length == 0) {
+        iview.Message.info("请确定品牌!");
+        return false;
+    } else {
+        for (var i = 0; i < editDetail.dataParam.CONTRACT_BRAND.length; i++) {
+            if (!editDetail.dataParam.CONTRACT_BRAND[i].BRANDID) {
+                iview.Message.info("请确定品牌!");
+                return false;
+            };
+        };
+    };
+    if (editDetail.dataParam.CONTRACT_SHOP.length == 0) {
+        iview.Message.info("请确定商铺!");
+        return false;
+    } else {
+        for (var i = 0; i < editDetail.dataParam.CONTRACT_SHOP.length; i++) {
+            if (!editDetail.dataParam.CONTRACT_SHOP[i].SHOPID) {
+                iview.Message.info("请确定商铺!");
+                return false;
+            };
+        };
+    };
+    if (editDetail.dataParam.CONTRACT_RENT.length == 0) {
+        iview.Message.info("请确定时间段结算信息!");
+        return false;
+    } else {
+        for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length ; i++) {
+            if (formatDate(editDetail.dataParam.CONTRACT_RENT[i].STARTDATE)
+                < formatDate(editDetail.dataParam.CONT_START)) {
+                iview.Message.info("时间段结算信息开始日期不能小于租约开始日期!");
+                return false;
+            };
+            if (formatDate(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE)
+                > formatDate(editDetail.dataParam.CONT_END)) {
+                iview.Message.info("时间段结算信息结束日期不能大于租约结束日期!");
+                return false;
+            };
+            if (!editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM) {
+                iview.Message.info("请生成月度分解信息!");
+                return false;
+            };
+        };
+    };
+
+    if (editDetail.dataParam.CONTRACT_GROUP.length == 0) {
+        iview.Message.info("请确定扣率组信息!");
+        return false;
+    };
+
     return true;
 }
+
 
 
 editDetail.showOne = function (data, callback) {
@@ -889,10 +1016,9 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.CONTRACT_RENT = data.ContractParm.CONTRACT_RENT;
         editDetail.dataParam.CONTRACT_GROUP = data.ContractParm.CONTRACT_GROUP;
         editDetail.dataParam.CONTJSKL = data.ContractParm.CONTJSKL;
-        // editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM = data.ContractRentParm.CONTRACT_RENTITEM;
         Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data.ContractRentParm.CONTRACT_RENTITEM);
-        editDetail.dataParam.CONTRACT_COST = data.contract_cost;
-        editDetail.dataParam.CONTRACT_PAY = data.contract_pay;
+        editDetail.dataParam.CONTRACT_COST = data.contractCost;
+        editDetail.dataParam.CONTRACT_PAY = data.contractPay;
         callback && callback(data);
     });
 }

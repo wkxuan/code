@@ -227,9 +227,11 @@
     <Content Include="Areas\Layout\Edit\_Edit.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
-    <Content Include="Areas\Pop\PopContract\PopBrand.js" />
-    <Content Include="Areas\Pop\PopContract\PopMerchant.js" />
-    <Content Include="Areas\Pop\PopContract\PopContract.js" />
+    <Content Include="Areas\Pop\PopFeeSubject.js" />
+    <Content Include="Areas\Pop\PopShop.js" />
+    <Content Include="Areas\Pop\PopBrand.js" />
+    <Content Include="Areas\Pop\PopMerchant.js" />
+    <Content Include="Areas\Pop\PopContract.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />

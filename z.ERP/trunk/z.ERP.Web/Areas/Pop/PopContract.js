@@ -1,6 +1,12 @@
-﻿Vue.component('Merchant', {
+﻿Vue.component('Contract', {
     template: '<div>' +
                     '<row>' +
+                        '<i-col span="2" class="RowTitle">' +
+                           '租约号' +
+                        '</i-col>' +
+                        '<i-col span="4">' +
+                           '<i-input v-model="CONTRACTID"></i-input>' +
+                        '</i-col>' +
                         '<i-col span="2" class="RowTitle">' +
                            '商户编号' +
                         '</i-col>' +
@@ -34,16 +40,37 @@
 	           '</div>',
     data: function () {
         return {
+            CONTRACTID: '',
             MERCHANTID: '',
-            NAME: '',
+            NAME:'',
             Column: [
-                { type: 'selection', width: 60, align: 'center' },
-                { title: '商户代码', key: 'MERCHANTID', width: 150 },
-                { title: '商户名称', key: 'NAME', width: 150 },
+                {
+                  type: 'selection',
+                  width: 60,
+                  align: 'center'
+                },
+               {
+                  title: '租约号',
+                  key: 'CONTRACTID',
+                  width: 150,
+                },
+                {
+                    title: '分店名称',
+                    key: 'NAME',
+                    width: 150,
+                },
+                {
+                    title: '商户名称',
+                    key: 'MERNAME',
+                    width: 150,
+                }
             ],
-            Data: [],
+            Data: [
+
+            ],
         }
     },
+
     created: function () {
         this.Data = [];
     },
@@ -56,20 +83,26 @@
             this.$emit('setdialog', data)
         },
         cx: function () {
+            console.log(this.parenttochild);
+            //在查询之前用这里传递的参数
             _self = this;
             this.Data = [];
             _.Search({
-                Service: "ShglService",
-                Method: "GetMerchant",
+                Service: "HtglService",
+                Method: "GetContract",
                 Data: {
+                    CONTRACTID: _self.CONTRACTID,
                     MERCHANTID: _self.MERCHANTID,
-                    NAME: _self.NAME
+                    NAME: _self.NAME,
                 },
                 Success: function (data) {
-                    Vue.set(_self, "Data", data.rows);
+                    if (data.rows.length != 0) {
+                        Vue.set(_self, "Data", data.rows);
+                    } else {
+                        iview.Message.info("没有满足条件的记录");
+                    };
                 }
             })
-            console.log(this.parenttochild);
         },
         qk: function () {
             this.Data = [];
