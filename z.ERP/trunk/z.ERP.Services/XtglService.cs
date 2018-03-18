@@ -45,6 +45,8 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
+ 
+
         public DataGridResult GetPay(SearchItem item)
         {
             string sql = $@"SELECT PAYID,NAME FROM PAY WHERE 1=1 ";
@@ -184,9 +186,11 @@ namespace z.ERP.Services
         }
         public DataGridResult GetShop(SearchItem item)
         {
-            string sql = $@"select A.SHOPID,A.CODE,A.NAME FROM SHOP A WHERE 1=1";
-            item.HasKey("CODE,", a => sql += $" and A.CODE like '%{a}%'");
+            string sql = $@"SELECT  A.SHOPID,A.CODE,B.CATEGORYID,B.CATEGORYCODE,B.CATEGORYNAME,"+
+                   " A.AREA_BUILD,A.AREA_RENTABLE FROM SHOP A,CATEGORY B WHERE  A.CATEGORYID = B.CATEGORYID";
+            item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             sql += " ORDER BY  A.CODE";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

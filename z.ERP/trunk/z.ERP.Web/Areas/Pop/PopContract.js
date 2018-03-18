@@ -96,7 +96,11 @@
                     NAME: _self.NAME,
                 },
                 Success: function (data) {
-                    Vue.set(_self, "Data", data.rows);
+                    if (data.rows.length != 0) {
+                        Vue.set(_self, "Data", data.rows);
+                    } else {
+                        iview.Message.info("没有满足条件的记录");
+                    };
                 }
             })
         },

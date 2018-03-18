@@ -7,8 +7,10 @@
 @inherits EditViewBase<string>
 
 @section head{
-  <script src="~/Areas/Pop/PopContract/PopMerchant.js"></script>
-  <script src="~/Areas/Pop/PopContract/PopBrand.js"></script>
+  <script src="~/Areas/Pop/PopMerchant.js"></script>
+  <script src="~/Areas/Pop/PopBrand.js"></script>
+  <script src="~/Areas/Pop/PopShop.js"></script>
+  <script src="~/Areas/Pop/PopFeeSubject.js"></script>
 }
 @section baseParam{
     <row>
@@ -37,6 +39,35 @@
                     PopLx = "Brand",
                     CallBack = "BrandBack",
                     ParentObj = "screenParam.ParentBrand"
+                });
+            }
+        </i-col>
+
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopShop",
+                    Caption = "商铺查询",
+                    Width = "760",
+                    PopLx = "Shop",
+                    CallBack = "ShopBack",
+                    ParentObj = "screenParam.ParentShop"
+                });
+            }
+        </i-col>
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopFeeSubject",
+                    Caption = "商铺查询",
+                    Width = "760",
+                    PopLx = "FeeSubject",
+                    CallBack = "FeeSubjectBack",
+                    ParentObj = "screenParam.ParentFeeSubject"
                 });
             }
         </i-col>
@@ -240,7 +271,7 @@
 }
 
 @section detailParam{
-    <row>
+<row>
         <i-col span="10">
 
             @{
@@ -278,6 +309,19 @@
                 :columns="screenParam.colDefPP" :data="dataParam.CONTRACT_BRAND" ref="selectBrand"></i-table>
         </i-col>
         <i-col span="14">
+
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchColSHOP",
+                    Text = "选择商铺",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+
             @{
                 RenderControl(new ButtonRender()
                 {
@@ -400,6 +444,17 @@
 </row>
 <row>
     <i-col>
+
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "srchCost",
+                Text = "选择费用项目",
+                Enable = true,
+                Type = "primary",
+                Icon = "plus-circled"
+            });
+        }
         @{
             RenderControl(new ButtonRender()
             {

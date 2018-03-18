@@ -1,14 +1,14 @@
-﻿Vue.component('Merchant', {
+﻿Vue.component('FeeSubject', {
     template: '<div>' +
                     '<row>' +
                         '<i-col span="2" class="RowTitle">' +
-                           '商户编号' +
+                           '费用编码' +
                         '</i-col>' +
                         '<i-col span="4">' +
-                           '<i-input v-model="MERCHANTID"></i-input>' +
+                           '<i-input v-model="TRIMID"></i-input>' +
                         '</i-col>' +
                         '<i-col span="2" class="RowTitle">' +
-                           '商户名称' +
+                           '费用名称' +
                         '</i-col>' +
                         '<i-col span="4">' +
                            '<i-input v-model="NAME"></i-input>' +
@@ -34,12 +34,12 @@
 	           '</div>',
     data: function () {
         return {
-            MERCHANTID: '',
+            ID: '',
             NAME: '',
             Column: [
                 { type: 'selection', width: 60, align: 'center' },
-                { title: '商户代码', key: 'MERCHANTID', width: 150 },
-                { title: '商户名称', key: 'NAME', width: 150 },
+                { title: '费用代码', key: 'TRIMID', width: 150, },
+                { title: '费用名称', key: 'NAME', width: 150, },
             ],
             Data: [],
         }
@@ -59,17 +59,17 @@
             _self = this;
             this.Data = [];
             _.Search({
-                Service: "ShglService",
-                Method: "GetMerchant",
-                Data: {
-                    MERCHANTID: _self.MERCHANTID,
-                    NAME: _self.NAME
-                },
+                Service: "XtglService",
+                Method: "GetFeeSubject",
+                Data: { TRIMID: _self.TRIMID, NAME: _self.NAME },
                 Success: function (data) {
-                    Vue.set(_self, "Data", data.rows);
+                    if (data.rows.length != 0) {
+                        Vue.set(_self, "Data", data.rows);
+                    } else {
+                        iview.Message.info("没有满足条件的记录");
+                    };
                 }
             })
-            console.log(this.parenttochild);
         },
         qk: function () {
             this.Data = [];

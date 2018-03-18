@@ -13,6 +13,13 @@
         case "Brand":
             <Brand v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></Brand>
             break;
+        case "Shop":
+            <Shop v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></Shop>
+            break;
+        case "FeeSubject":
+            <FeeSubject v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></FeeSubject>
+            break;
+            
     }
     
     <p slot="header" style="text-align:center" name="header">

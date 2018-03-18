@@ -18,10 +18,10 @@ namespace z.ERP.Entities
         {
         }
 
-        public CONTRACT_COSTEntity(string contractid, string index, string termid, string startdate)
+        public CONTRACT_COSTEntity(string contractid, string inx, string termid, string startdate)
         {
             CONTRACTID = contractid;
-            INDEX = index;
+            INX = inx;
             TERMID = termid;
             STARTDATE = startdate;
         }
@@ -40,7 +40,7 @@ namespace z.ERP.Entities
         /// <summary>
         [PrimaryKey]
         [Field("序号")]
-        public string INDEX
+        public string INX
         {
             get; set;
         }
