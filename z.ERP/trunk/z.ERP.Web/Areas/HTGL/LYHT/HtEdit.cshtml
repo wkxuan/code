@@ -7,10 +7,13 @@
 @inherits EditViewBase<string>
 
 @section head{
-  <script src="~/Areas/Pop/PopMerchant.js"></script>
-  <script src="~/Areas/Pop/PopBrand.js"></script>
-  <script src="~/Areas/Pop/PopShop.js"></script>
-  <script src="~/Areas/Pop/PopFeeSubject.js"></script>
+
+@InitFiles(new string[] {
+    "/Areas/Pop/PopMerchant.js",
+    "/Areas/Pop/PopBrand.js",
+    "/Areas/Pop/PopShop.js",
+    "/Areas/Pop/PopFeeSubject.js",
+});
 }
 @section baseParam{
     <row>
@@ -63,7 +66,7 @@
                 RenderControl(new PopRender()
                 {
                     vModel = "screenParam.PopFeeSubject",
-                    Caption = "商铺查询",
+                    Caption = "费用项目查询",
                     Width = "760",
                     PopLx = "FeeSubject",
                     CallBack = "FeeSubjectBack",

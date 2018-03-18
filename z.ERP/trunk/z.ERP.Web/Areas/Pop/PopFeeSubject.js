@@ -1,4 +1,4 @@
-﻿Vue.component('FeeSubject', {
+﻿Vue.component('Feesubject', {
     template: '<div>' +
                     '<row>' +
                         '<i-col span="2" class="RowTitle">' +
@@ -34,7 +34,7 @@
 	           '</div>',
     data: function () {
         return {
-            ID: '',
+            TRIMID: '',
             NAME: '',
             Column: [
                 { type: 'selection', width: 60, align: 'center' },

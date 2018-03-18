@@ -6,8 +6,12 @@
 @using z.Extensions;
 @inherits EditViewBase<string>
 @section head{
-    <script src="~/Areas/Pop/PopMerchant.js"></script>
-    <script src="~/Areas/Pop/PopBrand.js"></script>
+@InitFiles(new string[] {
+    "/Areas/Pop/PopMerchant.js",
+    "/Areas/Pop/PopBrand.js",
+    "/Areas/Pop/PopShop.js",
+    "/Areas/Pop/PopFeeSubject.js",
+});
 }
 
 @section baseParam{
@@ -16,12 +20,12 @@
             @{
                 RenderControl(new PopRender()
                 {
-                    vModel = "screenParam.PopMerchant", 
-                    Caption = "商户查询", 
-                    Width = "760",         
-                    PopLx = "Merchant",     
-                    CallBack = "MerchantBack", 
-                    ParentObj= "screenParam.ParentMerchant" 
+                    vModel = "screenParam.PopMerchant",
+                    Caption = "商户查询",
+                    Width = "760",
+                    PopLx = "Merchant",
+                    CallBack = "MerchantBack",
+                    ParentObj = "screenParam.ParentMerchant"
                 });
             }
         </i-col>
@@ -37,6 +41,35 @@
                     PopLx = "Brand",
                     CallBack = "BrandBack",
                     ParentObj = "screenParam.ParentBrand"
+                });
+            }
+        </i-col>
+
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopShop",
+                    Caption = "商铺查询",
+                    Width = "760",
+                    PopLx = "Shop",
+                    CallBack = "ShopBack",
+                    ParentObj = "screenParam.ParentShop"
+                });
+            }
+        </i-col>
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopFeeSubject",
+                    Caption = "费用项目查询",
+                    Width = "760",
+                    PopLx = "FeeSubject",
+                    CallBack = "FeeSubjectBack",
+                    ParentObj = "screenParam.ParentFeeSubject"
                 });
             }
         </i-col>
@@ -308,6 +341,16 @@
             @{
                 RenderControl(new ButtonRender()
                 {
+                    Click = "srchColSHOP",
+                    Text = "选择商铺",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
                     Click = "addColSHOP",
                     Text = "添加一行商铺",
                     Enable = true,
@@ -427,6 +470,17 @@
     </row>
     <row>
         <i-col>
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchCost",
+                    Text = "选择费用项目",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
             @{
                 RenderControl(new ButtonRender()
                 {

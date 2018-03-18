@@ -70,7 +70,7 @@ namespace z.ERP.Services
 
         public DataGridResult GetFeeSubject(SearchItem item)
         {
-            string sql = $@"SELECT TRIMID,NAME FROM FEESUBJECT  WHERE 1=1";
+            string sql = $@"SELECT TRIMID,NAME,TRIMID TERMID FROM FEESUBJECT  WHERE 1=1";
             item.HasKey("TRIMID", a => sql += $" and TRIMID = '{a}'");
             item.HasKey("NAME", a => sql += $" and NAME = '{a}'");
             sql += " ORDER BY  TRIMID";
@@ -186,8 +186,8 @@ namespace z.ERP.Services
         }
         public DataGridResult GetShop(SearchItem item)
         {
-            string sql = $@"SELECT  A.SHOPID,A.CODE,B.CATEGORYID,B.CATEGORYCODE,B.CATEGORYNAME,"+
-                   " A.AREA_BUILD,A.AREA_RENTABLE FROM SHOP A,CATEGORY B WHERE  A.CATEGORYID = B.CATEGORYID";
+            string sql = $@"SELECT  A.*,B.CATEGORYCODE,B.CATEGORYNAME,A.AREA_BUILD AREA " +
+                   "  FROM SHOP A,CATEGORY B WHERE  A.CATEGORYID = B.CATEGORYID";
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");

@@ -259,7 +259,7 @@
                })
            },
         },
-        { title: "费用项目名称", key: 'TERMNAME', width: 120 },
+        { title: "费用项目名称", key: 'NAME', width: 120 },
         {
             title: '开始日期',
             key: 'STARTDATE',
@@ -521,14 +521,29 @@ editDetail.otherMethods = {
         Vue.set(editDetail.screenParam, "PopShop", false);
         for (var i = 0; i < val.sj.length; i++) {
             editDetail.dataParam.CONTRACT_SHOP.push(val.sj[i]);
-        }
+        };
+        calculateArea();
     },
 
     FeeSubjectBack: function (val) {
         Vue.set(editDetail.screenParam, "PopFeeSubject", false);
+        var maxIndex = 1;
         for (var i = 0; i < val.sj.length; i++) {
-            editDetail.dataParam.CONTRACT_COST.push(val.sj[i]);
-        }
+            if (editDetail.dataParam.CONTRACT_COST) {
+                for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
+                    maxIndex = editDetail.dataParam.CONTRACT_COST[0].INX;
+                    if (editDetail.dataParam.CONTRACT_COST[j].INX > maxIndex) {
+                        maxIndex = editDetail.dataParam.CONTRACT_COST[j].INX
+                    };
+                    maxIndex++;
+                };
+            };
+            editDetail.dataParam.CONTRACT_COST.push({
+                INX: maxIndex,
+                TERMID: val.sj[i].TERMID,
+                NAME:val.sj[i].NAME
+            });
+        };
     },
 
     srchCost: function () {
@@ -824,14 +839,14 @@ editDetail.otherMethods = {
         var maxIndex = 1;
         if (editDetail.dataParam.CONTRACT_COST) {
             for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
-                maxIndex = editDetail.dataParam.CONTRACT_COST[0].INDEX;
-                if (editDetail.dataParam.CONTRACT_COST[j].INDEX > maxIndex) {
-                    maxIndex = editDetail.dataParam.CONTRACT_COST[j].INDEX
+                maxIndex = editDetail.dataParam.CONTRACT_COST[0].INX;
+                if (editDetail.dataParam.CONTRACT_COST[j].INX > maxIndex) {
+                    maxIndex = editDetail.dataParam.CONTRACT_COST[j].INX
                 }
                 maxIndex++;
             }
         }
-        temp.push({ INDEX: maxIndex });
+        temp.push({ INX: maxIndex });
         editDetail.dataParam.CONTRACT_COST = temp;
     },
     //删除租约收费项目信息
