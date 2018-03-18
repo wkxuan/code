@@ -7,8 +7,10 @@
 @inherits EditViewBase<string>
 
 @section head{
-  <script src="~/Areas/Pop/PopContract/PopMerchant.js"></script>
-  <script src="~/Areas/Pop/PopContract/PopBrand.js"></script>
+@InitFiles(new string[] {
+    "/Areas/Pop/PopContract/PopMerchant.js",
+    "/Areas/Pop/PopContract/PopBrand.js"
+});
 }
 @section baseParam{
     <row>
