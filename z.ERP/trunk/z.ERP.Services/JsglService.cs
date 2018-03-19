@@ -123,7 +123,7 @@ namespace z.ERP.Services
             billReturn.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
             string sqlitem = $@"SELECT M.* " +
-                " FROM RILL_RETURN_ITEM M " +
+                " FROM BILL_RETURN_ITEM M " +
                 " where 1=1 ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
