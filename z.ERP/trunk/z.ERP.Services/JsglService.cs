@@ -43,7 +43,7 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT L.*,B.NAME BRANCHNAME,D.NAME MERCHANTNAME " +
                 " FROM BILL_RETURN L,BRANCH B ,CONTRACT C,MERCHANT D " +
-                "  WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID and C.MERCHANTID = D.MERCHANTID ";
+                "  WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID = D.MERCHANTID(+) ";
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
