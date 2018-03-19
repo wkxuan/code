@@ -113,5 +113,23 @@ namespace z.ERP.Services
                 dt = dt.ToOneLine()
             };
         }
+
+        public object GetBill(BILLEntity Data)
+        {
+            string sql = " SELECT  A.BILLID,A.BRANCHID,A.MERCHANTID,A.CONTRACTID,A.TERMID,A.NIANYUE,A.YEARMONTH,A.MUST_MONEY "
+                +" ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION "
+                       +" FROM BILL A " +
+                "  WHERE  1=1 ";
+            if (!Data.BILLID.IsEmpty())
+                sql += " AND A.BILLID='" + Data.BILLID + "'";
+            if (!Data.BRANCHID.IsEmpty())
+                sql += " AND A.BRANCHID=" + Data.BRANCHID + "";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
+        }
     }
 }
