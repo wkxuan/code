@@ -39,7 +39,7 @@ namespace z.ERP.Services
         public Tuple<dynamic, dynamic, DataTable> GetRoleElement(ROLEEntity Data)
         {
             //此处校验一次只能查询一个单号,校验单号必须存在
-            string sql = $@"SELECT A.*  FROM ROLE A  WHERE 1=1 ";
+            string sql = $@"SELECT A.*,B.ORGNAME  FROM ROLE A,ORG B  WHERE A.ORGID=B.ORGID ";
             if (!Data.ROLEID.IsEmpty())
                 sql += (" AND ROLEID= " + Data.ROLEID);
             DataTable role = DbHelper.ExecuteTable(sql);

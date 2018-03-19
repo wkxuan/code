@@ -378,7 +378,7 @@
     <Content Include="Areas\JSGL\JOINBILL\JoinBillDetail.cshtml" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.cshtml" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillList.cshtml" />
-    <Content Include="Areas\XTGL\ROLE\Detail.cshtml" />
+    <Content Include="Areas\XTGL\ROLE\RoleDetail.cshtml" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.cshtml" />
     <Content Include="Areas\XTGL\ROLE\RoleList.cshtml" />
     <Content Include="Areas\XTGL\GOODS_KIND\Goods_Kind.cshtml" />

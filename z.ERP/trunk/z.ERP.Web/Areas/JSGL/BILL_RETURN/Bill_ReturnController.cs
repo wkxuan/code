@@ -58,5 +58,10 @@ namespace z.ERP.Web.Areas.JSGL.BILL_RETURN
         {
             service.JsglService.ExecBillReturn(Data);
         }
+
+        public UIResult GetBill(BILLEntity Data)
+        {
+            return new UIResult(service.DataService.GetBill(Data));
+        }
     }
 }

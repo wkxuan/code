@@ -25,7 +25,7 @@
                         _self = this;
                         editDetail.dataParam.BILL_RETURN_ITEM[params.index].FINAL_BILLID = event.target.value;
                         _.Ajax('GetBill', {
-                            Data: { SHOPID: event.target.value }
+                            Data: { FINAL_BILLID: event.target.value }
                         }, function (data) {
                             Vue.set(editDetail.dataParam.BILL_RETURN_ITEM[params.index], 'MUST_MONEY', data.dt.MUST_MONEY),
                             Vue.set(editDetail.dataParam.BILL_RETURN_ITEM[params.index], 'RECEIVE_MONEY', data.dt.RECEIVE_MONEY)
