@@ -257,6 +257,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="初始化\菜单表.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

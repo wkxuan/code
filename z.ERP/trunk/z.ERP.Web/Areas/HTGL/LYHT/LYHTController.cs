@@ -25,6 +25,20 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
             return View("HtEdit",model: Id);
         }
 
+        public ActionResult HtDetail(string Id)
+        {
+            ViewBag.Title = "联营租约浏览";
+            var entity = service.HtglService.GetContractElement(new CONTRACTEntity(Id));
+            ViewBag.contract = entity.Item1;
+            ViewBag.contractBrand = entity.Item2;
+            ViewBag.contractShop = entity.Item3;
+            ViewBag.ContractParm = entity.Item4;
+            ViewBag.ContractRentParm = entity.Item5;
+            ViewBag.contractPay = entity.Item6;
+            ViewBag.contractCost = entity.Item7;
+            return View();
+        }
+
         public string Save(CONTRACTEntity SaveData)
         {
             return service.HtglService.SaveContract(SaveData);
