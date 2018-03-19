@@ -33,5 +33,14 @@ namespace z.SSO
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public abstract T GetUser<T>() where T : User;
+
+        /// <summary>
+        /// 是否已经登陆
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool HasLogin
+        {
+            get;
+        }
     }
 }

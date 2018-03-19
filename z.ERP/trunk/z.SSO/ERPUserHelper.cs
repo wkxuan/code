@@ -19,21 +19,25 @@ namespace z.SSO
     public class ERPUserHelper : UserHelper
     {
         static readonly DbHelperBase _db = new OracleDbHelper(ConfigExtension.GetConfig("connection"));
+
+        public override bool HasLogin
+        {
+            get
+            {
+                return ApplicationContextBase.GetContext()?.principal?.Identity?.Name.IsNotEmpty() ?? false;
+            }
+        }
+
         public override T GetUser<T>()
         {
             string key = ApplicationContextBase.GetContext()?.principal?.Identity.Name;
             T e = ApplicationContextBase.GetContext().GetData<T>(LoginKey + key);
             if (!key.IsEmpty() && e == null && ApplicationContextBase.GetContext().principal != null)
             {
-                USEREntity user = _db.Select(new USEREntity(key));
+                SYSUSEREntity user = _db.Select(new SYSUSEREntity(key));
                 if (user == null)
                     throw new NoLoginException();
-                return new Employee()
-                {
-                    Id = user.USERID.ToString(),
-                    Name = user.USERNAME,
-                    PlatformId = -1
-                } as T;
+                return GetUser(user.USERID) as T;
             }
             if (e == null)
             {
@@ -52,9 +56,25 @@ namespace z.SSO
             return e;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Employee GetUser(string Id)
+        {
+            SYSUSEREntity user = _db.Select(new SYSUSEREntity(Id));
+            return new Employee()
+            {
+                Id = user.USERID,
+                Name = user.USERNAME,
+                PlatformId = -1
+            };
+        }
+
         public override void Login(string username, string password)
         {
-            List<USEREntity> users = _db.SelectList(new USEREntity()
+            List<SYSUSEREntity> users = _db.SelectList(new SYSUSEREntity()
             {
                 USERCODE = username
             });
@@ -68,15 +88,10 @@ namespace z.SSO
             }
             else
             {
-                USEREntity user = users.First();
+                SYSUSEREntity user = users.First();
                 if (Verify(user, password))
                 {
-                    Employee e = new Employee()
-                    {
-                        Id = user.USERID,
-                        Name = user.USERNAME,
-                        PlatformId = -1
-                    };
+                    Employee e = GetUser(user.USERID);
                     ApplicationContextBase.GetContext().SetData(LoginKey + e.Id, users);
                     ApplicationContextBase.GetContext().principal = new GenericPrincipal(new GenericIdentity(e.Id), null);
                     FormsAuthentication.SetAuthCookie(e.Id, true);
@@ -88,9 +103,9 @@ namespace z.SSO
             }
         }
 
-        bool Verify(USEREntity user, string password)
+        bool Verify(SYSUSEREntity user, string password)
         {
-            Func<USEREntity, string, string> salt = (u, p) =>
+            Func<SYSUSEREntity, string, string> salt = (u, p) =>
               {
                   return (u.USERID + LoginSalt + p).ToMD5();
               };
@@ -99,6 +114,7 @@ namespace z.SSO
 
         public override void LogOut()
         {
+            if (HasLogin)
             {
                 ApplicationContextBase.GetContext().RemoveData(LoginKey + GetUser<User>().Id);
                 FormsAuthentication.SignOut();
