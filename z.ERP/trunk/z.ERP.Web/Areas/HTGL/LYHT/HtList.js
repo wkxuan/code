@@ -18,7 +18,10 @@
 }
 //浏览双击跳转页面
 search.browseHref = function (row, index) {
-    _.OpenPage("HTGL/LYHT/HtDetail/" + row.CONTRACTID, function (data) {
+    _.OpenPage({
+        id: 1,
+        title: '合同详情',
+        url: "HTGL/LYHT/HtDetail/" + row.CONTRACTID
     });
 }
 //添加跳转页面
