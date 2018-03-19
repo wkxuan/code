@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\SYSUSEREntity.cs" />
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="ROLEEntity.cs" />
     <Compile Include="Auto\ASSETCHANGEEntity.cs" />
@@ -105,7 +106,6 @@
     <Compile Include="Auto\SHOP_STATUSEntity.cs" />
     <Compile Include="Auto\STATIONEntity.cs" />
     <Compile Include="Auto\STATION_PAYEntity.cs" />
-    <Compile Include="Auto\USEREntity.cs" />
     <Compile Include="Auto\USERMODULEEntity.cs" />
     <Compile Include="Auto\USER_ROLEEntity.cs" />
     <Compile Include="Auto\WORKITEMEntity.cs" />
