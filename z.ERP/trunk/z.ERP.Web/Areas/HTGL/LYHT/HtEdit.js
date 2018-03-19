@@ -135,7 +135,13 @@
     editDetail.screenParam.colDefJskl=[
         { title: '扣点序号', key: 'GROUPNO', width: 100 },
         { title: '时间段', key: 'INX', width: 80 },
-        { title: '开始日期', key: 'STARTDATE',width: 150},
+        {
+            title: '开始日期', key: 'STARTDATE', width: 150,
+            render: function (h, params) {  
+                return h('div',   
+                  new Date(params.row.STARTDATE).Format('yyyy-MM-dd'));
+            },
+        },
         { title: '结束日期', key: 'ENDDATE', width: 150},
         {
             title: "扣点", key: 'JSKL', width: 120,
@@ -483,6 +489,10 @@
 }
 
 editDetail.otherMethods = {
+
+    SrchCONT_START: function (starTime) {
+        console.log(starTime)
+    },
     //点击商户弹窗
     Merchant : function () {
        Vue.set(editDetail.screenParam, "PopMerchant", true);
@@ -996,7 +1006,9 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILLID = data.contract.CONTRACTID;
         editDetail.dataParam.CONTRACT_BRAND = data.contractBrand;
         editDetail.dataParam.CONTRACT_SHOP = data.contractShop;
+        console.log(data.ContractParm.CONTRACT_RENT);
         editDetail.dataParam.CONTRACT_RENT = data.ContractParm.CONTRACT_RENT;
+        console.log(editDetail.dataParam.CONTRACT_RENT);
         editDetail.dataParam.CONTRACT_GROUP = data.ContractParm.CONTRACT_GROUP;
         editDetail.dataParam.CONTJSKL = data.ContractParm.CONTJSKL;
         Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data.ContractRentParm.CONTRACT_RENTITEM);

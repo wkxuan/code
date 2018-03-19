@@ -15,5 +15,15 @@ namespace z.ERP.Web.Areas.Share.Render
                 return "DateBox";
             }
         }
+        public string Change
+        {
+            get;
+            set;
+        }
+        public string Type
+        {
+            get;
+            set;
+        }
     }
 }
