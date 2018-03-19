@@ -14,7 +14,7 @@ namespace z.ERP.Web.Areas.XTGL.SYSUSER
             return View();
         }
 
-        public string Save(USEREntity DefineSave)
+        public string Save(SYSUSEREntity DefineSave)
         {
             var v = GetVerify(DefineSave);
             if (DefineSave.USERID.IsEmpty())
@@ -30,7 +30,7 @@ namespace z.ERP.Web.Areas.XTGL.SYSUSER
             return CommonSave(DefineSave);
         }
 
-        public void Delete(USEREntity DefineDelete)
+        public void Delete(SYSUSEREntity DefineDelete)
         {
             var v = GetVerify(DefineDelete);
             CommenDelete(DefineDelete);
