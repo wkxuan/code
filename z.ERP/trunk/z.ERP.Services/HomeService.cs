@@ -46,5 +46,13 @@ namespace z.ERP.Services
             sql += " order by aa.id  ";
             return new DataGridResult(DbHelper.ExecuteTable(sql), 0);
         }
+
+        public void ChangePs(SYSUSEREntity data) {
+
+            SYSUSEREntity sysuser = DbHelper.Select(new SYSUSEREntity(){ USERID = employee.Id }); 
+            ERPUserHelper userHelper = new ERPUserHelper();
+            sysuser.PASSWORD = userHelper.salt(sysuser, data.PASSWORD);
+            DbHelper.Save(sysuser);
+        }
     }
 }

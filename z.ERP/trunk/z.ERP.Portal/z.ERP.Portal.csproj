@@ -142,6 +142,7 @@
     <Compile Include="App_Start\DebugSettings.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\Base\CommonController.cs" />
+    <Compile Include="Areas\Home\ChangePassword\ChangePassword.cs" />
     <Compile Include="Areas\Home\Index\IndexController.cs" />
     <Compile Include="Areas\Home\Login\LoginController.cs" />
     <Compile Include="Global.asax.cs">
@@ -150,6 +151,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Home\ChangePassword\ChangePassword.js" />
     <Content Include="Areas\Home\Index\dwz.frag.xml" />
     <Content Include="Areas\Home\Index\Index.js" />
     <Content Include="Areas\Home\Login\Login.js" />
@@ -282,6 +284,7 @@
     <Content Include="Content\VUE\styles\fonts\ionicons.woff" />
     <Content Include="Areas\Home\Login\Login.cshtml" />
     <Content Include="packages.config" />
+    <Content Include="Areas\Home\ChangePassword\ChangePassword.cshtml" />
     <None Include="Properties\PublishProfiles\zgy.pubxml" />
   </ItemGroup>
   <ItemGroup>
@@ -348,7 +351,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59000</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
