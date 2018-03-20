@@ -20,6 +20,24 @@ namespace z.Context
         public abstract T GetData<T>(string name) where T : class;
 
         /// <summary>
+        /// 获取数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <param name="Data">如果没有数据,则设置数据</param>
+        /// <returns></returns>
+        public virtual T GetData<T>(string name, Func<T> Data) where T : class
+        {
+            var t = GetData<T>(name);
+            if (t == null)
+            {
+                t = Data();
+                SetData(name, t);
+            }
+            return t;
+        }
+
+        /// <summary>
         /// 放置数据
         /// </summary>
         /// <param name="name"></param>
