@@ -154,5 +154,31 @@ namespace z.ERP.Services
             }
             return billReturn.BILLID;
         }
+
+        public object GetJoinBillElement(JOIN_BILLEntity Data)
+        {
+            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,T.NAME MERCHANTNAME " +
+            " FROM JOIN_BILL L,BRANCH B ,MERCHANT T " +
+            "  WHERE L.BRANCHID = B.ID AND L.MERCHANTID = T.MERCHANTID";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and L.BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            //string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
+            //    "  FROM GOODS_SHOP G,SHOP S,CATEGORY Y  " +
+            //    "  WHERE G.SHOPID=S.SHOPID AND G.CATEGORYID= Y.CATEGORYID";
+            //if (!Data.GOODSID.IsEmpty())
+            //    sqlshop += (" and G.GOODSID= " + Data.GOODSID);
+            //DataTable dtshop = DbHelper.ExecuteTable(sqlshop);
+
+            var result = new
+            {
+                joinbill = dt,
+                //goods_shop = new dynamic[] {
+                //   dtshop
+                //}
+            };
+            return result;
+        }        
     }
 }

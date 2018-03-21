@@ -8,13 +8,13 @@
         <i-col span="2" class="RowTitle">
             代码
         </i-col>
-        <i-col span="6">
+        <i-col span="6">            
             @{ 
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.ID",
                     Id = "tb_id",
-                    Enable = true
+                    Readonly = "true"
                 });
             }
         </i-col>
