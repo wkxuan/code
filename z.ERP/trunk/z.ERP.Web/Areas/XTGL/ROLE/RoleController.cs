@@ -21,13 +21,13 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
             ViewBag.Title = "用户信息";
             return View();
         }
-        public ActionResult Detail(string Id)
+        public ActionResult RoleDetail(string Id)
         {
-            ViewBag.Title = "店铺拆分浏览";
-            var entity = service.DpglService.GetAssetChangeElement(new ASSETCHANGEEntity(Id));
-            ViewBag.assetchange = entity.Item1;
-            ViewBag.assetchangeitem = entity.Item2;
-            ViewBag.assetchangeitem2 = entity.Item3;
+            ViewBag.Title = "角色定义";
+            var entity = service.UserService.GetRoleElement(new ROLEEntity(Id));
+            ViewBag.role = entity.Item1;
+            ViewBag.menu = entity.Item2;
+            ViewBag.fee = entity.Item3;
             return View(entity);
         }
         public ActionResult RoleEdit(string Id)

@@ -18,7 +18,7 @@
 //searchParam.CHANGE_TYPE = ViewBag.Type;
 //浏览双击跳转页面
 search.browseHref = function (row, index) {
-    _.OpenPage("XTGL/ROLE/Detail/" + row.ROLEID, function (data) {
+    _.OpenPage("XTGL/ROLE/RoleDetail/" + row.ROLEID, function (data) {
     });
 }
 //添加跳转页面

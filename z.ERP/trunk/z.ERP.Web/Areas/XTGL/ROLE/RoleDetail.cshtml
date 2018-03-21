@@ -1,0 +1,28 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Detail;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits DetailLayout<dynamic>
+
+@section Title{
+    @Html.Raw("详情");
+}
+
+@{
+    var role = ViewBag.role;
+}
+
+@section content{
+    <row>
+        <i-col span="2" class="RowTitle">角色代码</i-col>
+        <i-col span="4" class="RowText"> @role.ROLECODE </i-col>
+        <i-col span="2" class="RowTitle">角色名称</i-col>
+        <i-col span="4" class="RowText"> @role.ROLENAME </i-col>
+        <i-col span="2" class="RowTitle">所属结构</i-col>
+        <i-col span="4" class="RowText"> @role.ORGNAME</i-col>
+    </row>
+}
+

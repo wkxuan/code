@@ -21,7 +21,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
     <title>admin</title>
     <script type="text/javascript">
         __ControllerUrl = '@ViewBag.ControllerUrl';
@@ -44,7 +43,8 @@
                 </ul>
             </div>
 
-            <div id="navMenu">
+            <div id="navMenu" style="display:none">
+                <!--暂时禁用顶部条-->
                 <ul id="menu_top">
                     <li><a><span>加载中...</span></a></li>
                 </ul>
@@ -81,15 +81,19 @@
                 </div>
                 <ul class="tabsMoreList"></ul>
                 <div class="navTab-panel tabsPageContent layoutBox">
+
                 </div>
             </div>
         </div>
     </div>
-
+    <div id="footer">Copyright © 2018</div>
     <style type="text/css">
-        #header { height: 85px; }
+        /*暂时禁用顶部条*/ /*#header { height: 85px; }
 
-        #leftside, #container, #splitBar, #splitBarProxy { top: 90px; }
+        #leftside, #container, #splitBar, #splitBarProxy { top: 90px; }*/
+        #header { height: 45px; }
+
+        #leftside, #container, #splitBar, #splitBarProxy { top: 50px; }
     </style>
 </body>
 

@@ -7,7 +7,7 @@ function init() {
         DWZ.init(__BaseUrl + "/Areas/Home/Index/dwz.frag.xml");
     });
     inittime();
-    //$("#btn_ChangePassword").attr("href", _.buildUrl("/Pages/Home/ChangePassword/ChangePassword.aspx"));
+    $("#btn_ChangePassword").attr("href",__BaseUrl + "/HOME/ChangePassword/ChangePassword");
 }
 
 //初始化菜单

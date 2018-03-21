@@ -105,11 +105,12 @@ namespace z.SSO
 
         bool Verify(SYSUSEREntity user, string password)
         {
-            Func<SYSUSEREntity, string, string> salt = (u, p) =>
-              {
-                  return (u.USERID + LoginSalt + p).ToMD5();
-              };
             return user.PASSWORD == salt(user, password);
+        }
+
+        public string salt(SYSUSEREntity user, string psw)
+        {
+            return (user.USERID + LoginSalt + psw).ToMD5();
         }
 
         public override void LogOut()
@@ -120,6 +121,8 @@ namespace z.SSO
                 FormsAuthentication.SignOut();
             }
         }
+
+
     }
 }
 

@@ -44,11 +44,21 @@
 </row>
 
 <row>
-
+    <i-col span="2" class="RowTitle">
+        年月
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.NIANYUE"
+            });
+        }
+    </i-col>
     <i-col span="2" class="RowTitle">
         备注
     </i-col>
-    <i-col span="22">
+    <i-col span="14">
         @{
             RenderControl(new TextBoxRender()
             {
@@ -68,19 +78,12 @@
                 Enable = true,
                 Type = "primary"
             });
-            //RenderControl(new ButtonRender()
-            //{
-            //    Click = "screenParam.addCol2",
-            //    Text = "再加一行",
-            //    Enable = true,
-            //    Type = "primary"
-            //});
         }
     </row>
     <row>
         <i-col span="24">
             <i-table size="small" border="true"
-                     :columns="screenParam.colDef" :data="dataParam.BILL_RETURN_ITRM"></i-table>
+                     :columns="screenParam.colDef" :data="dataParam.BILL_RETURN_ITEM"></i-table>
         </i-col>
     </row>
 }

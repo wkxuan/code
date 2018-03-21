@@ -1,23 +1,19 @@
 ﻿editDetail.beforeVue = function () {
-    editDetail.stepsCurrent = 0;
-    editDetail.others = false;
+    editDetail.others = true;
     editDetail.branchid = true;
     editDetail.service = "JsglService";
     editDetail.method = "GetBillReturn";
     editDetail.Key = 'BILLID';
-    editDetail.windowParam = {
-        testwin1: false
-    }
 
     editDetail.screenParam.colDef = [
     {
-        title: "账单编号", key: 'FINAL_BILLID', width: 160,
+        title: "账单号", key: 'FINAL_BILLID', width: 160,
         render: function (h, params) {
             return h('div',
                 [
             h('Input', {
                 props: {
-                    value: params.row.ASSETID
+                    value: params.row.FINAL_BILLID
                 },
                 style: { marginRight: '5px', width: '80px' },
                 on: {
@@ -25,7 +21,7 @@
                         _self = this;
                         editDetail.dataParam.BILL_RETURN_ITEM[params.index].FINAL_BILLID = event.target.value;
                         _.Ajax('GetBill', {
-                            Data: { SHOPID: event.target.value }
+                            Data: { FINAL_BILLID: event.target.value }
                         }, function (data) {
                             Vue.set(editDetail.dataParam.BILL_RETURN_ITEM[params.index], 'MUST_MONEY', data.dt.MUST_MONEY),
                             Vue.set(editDetail.dataParam.BILL_RETURN_ITEM[params.index], 'RECEIVE_MONEY', data.dt.RECEIVE_MONEY)
@@ -75,7 +71,7 @@
                       style: { marginRight: '50px' },
                       on: {
                           click: function (event) {
-                              editDetail.dataParam.ASSETCHANGEITEM.splice(params.index, 1);
+                              editDetail.dataParam.BILL_RETURN_ITEM.splice(params.index, 1);
                           }
                       },
                   }, '删除')
@@ -87,6 +83,8 @@
         editDetail.dataParam.BILL_RETURN_ITEM = [{
             FINAL_BILLID: "",
             RETURN_MONEY: "",
+            RECEIVE_MONEY: "",
+            MUST_MONEY: "",
         }]
     }
     editDetail.screenParam.addCol = function () {

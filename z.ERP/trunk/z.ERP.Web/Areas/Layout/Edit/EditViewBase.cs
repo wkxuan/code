@@ -1,5 +1,5 @@
 ﻿using z.MVC5.Views;
-namespace z.ERP.Web.Areas.Layout.EditDetail
+namespace z.ERP.Web.Areas.Layout.Edit
 {
     public class EditViewBase<T> : ViewBase<dynamic>
     {

@@ -15,6 +15,8 @@ zQuery.extend({
             }
         }
         var options_default = {
+            id: '',
+            title: '',
             url: "",
             callback: null
         }
@@ -23,7 +25,12 @@ zQuery.extend({
         window["WindowClose"] = function (data) {
             options.callback && options.callback(data);
         }
-        window.open(url);
+        if (window.parent.navTab) {
+            window.parent.navTab.openTab(options.id, url, { title: options.title, flesh: true, data: {}, external: true })
+        }
+        else {
+            window.open(url);
+        }
     },
     Close: function (data) {
         if (window.opener && window.opener.WindowClose) {

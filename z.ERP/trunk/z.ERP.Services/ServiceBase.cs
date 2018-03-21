@@ -33,7 +33,10 @@ namespace z.ERP.Services
         {
             get
             {
-                return new OracleDbHelper(ConfigExtension.GetConfig("connection"));
+                return ApplicationContextBase.GetContext().GetData<DbHelperBase>("db", () =>
+                {
+                    return new OracleDbHelper(ConfigExtension.GetConfig("connection"));
+                });
             }
         }
 
