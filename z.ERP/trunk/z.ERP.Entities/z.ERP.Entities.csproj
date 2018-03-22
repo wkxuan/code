@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Auto\SYSUSEREntity.cs" />
     <Compile Include="BILL_RETURNEntity.cs" />
+    <Compile Include="Procedures\ProTest.cs" />
     <Compile Include="ROLEEntity.cs" />
     <Compile Include="Auto\ASSETCHANGEEntity.cs" />
     <Compile Include="Auto\ASSETCHANGEITEM2Entity.cs" />
@@ -126,6 +127,7 @@
       <Name>z.DbHelper</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

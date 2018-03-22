@@ -97,8 +97,7 @@ namespace z.Extensions
         {
             return obj.ToJson().ToObj(obj.GetType());
         }
-
-
+        
         /// <summary>
         /// 获取实体类的str形式
         /// </summary>

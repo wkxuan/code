@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2018/3/11 22:18:58
+ * 生成时间：2018/3/22 0:39:10
  * 生成人：书房
- * 代码生成器版本号：1.2.6562.36915
+ * 代码生成器版本号：1.2.6655.1027
  *
  */ 
 
@@ -12,7 +12,7 @@ using z.DbHelper.DbDomain;
 namespace z.ERP.Entities
 {
     [DbTable("CONTRACT_SHOP", "合同商铺")]
-    public partial class CONTRACT_SHOPEntity : EntityBase
+    public partial class CONTRACT_SHOPEntity : TableEntityBase
     {
         public CONTRACT_SHOPEntity()
         {

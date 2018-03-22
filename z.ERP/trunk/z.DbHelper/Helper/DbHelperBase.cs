@@ -107,6 +107,13 @@ namespace z.DBHelper.Helper
         protected abstract IDbDataParameter GetDbDataParameter(PropertyInfo p, EntityBase info);
 
         /// <summary>
+        /// 获取一个参数的值
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        protected abstract object GetParameterValue(IDbDataParameter p, PropertyInfo pinfo);
+
+        /// <summary>
         /// 获取select中字段的名称
         /// </summary>
         /// <param name="FieldName"></param>
@@ -339,7 +346,7 @@ namespace z.DBHelper.Helper
         }
         #endregion
         #region 对象增删改查
-        public int Save(EntityBase info)
+        public int Save(TableEntityBase info)
         {
             if (_dbCommand.Connection.State != ConnectionState.Open)
                 Open();
@@ -377,7 +384,7 @@ namespace z.DBHelper.Helper
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        public int Insert(EntityBase info)
+        public int Insert(TableEntityBase info)
         {
             int res;
             if (_dbCommand.Connection.State != ConnectionState.Open)
@@ -415,7 +422,7 @@ namespace z.DBHelper.Helper
         /// 主键不是全部都有值
         /// <param name="info"></param>
         /// <returns></returns>
-        public int Update(EntityBase info)
+        public int Update(TableEntityBase info)
         {
             int res;
             if (_dbCommand.Connection.State != ConnectionState.Open)
@@ -466,7 +473,7 @@ namespace z.DBHelper.Helper
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        public int Delete(EntityBase info)
+        public int Delete(TableEntityBase info)
         {
             int res;
             _DeleteChildren(info);
@@ -509,7 +516,7 @@ namespace z.DBHelper.Helper
         /// 没有删除条件
         /// <param name="info"></param>
         /// <returns></returns>
-        public int DeleteList(EntityBase info)
+        public int DeleteList(TableEntityBase info)
         {
             PropertyInfo[] Allprop = info.GetAllField().Where(a =>
             {
@@ -545,7 +552,7 @@ namespace z.DBHelper.Helper
         /// <typeparam name="T"></typeparam>
         /// <param name="info"></param>
         /// <returns></returns>
-        public T Select<T>(T info) where T : EntityBase
+        public T Select<T>(T info) where T : TableEntityBase
         {
             T res;
             if (_dbCommand.Connection.State != ConnectionState.Open)
@@ -591,7 +598,7 @@ namespace z.DBHelper.Helper
         /// <typeparam name="T"></typeparam>
         /// <param name="info"></param>
         /// <returns></returns>
-        public List<T> SelectList<T>(T info) where T : EntityBase, new()
+        public List<T> SelectList<T>(T info) where T : TableEntityBase, new()
         {
             List<T> res;
             if (_dbCommand.Connection.State != ConnectionState.Open)
@@ -622,6 +629,37 @@ namespace z.DBHelper.Helper
             }
             res.ForEach(a => a = _SelectChildren(a));
             return res;
+        }
+        #endregion
+        #region 存储过程
+        public T ExecuteProcedure<T>(T info) where T : ProcedureEntityBase
+        {
+            if (_dbCommand.Connection.State != ConnectionState.Open)
+                Open();
+            _dbCommand.CommandType = CommandType.StoredProcedure;
+            IDbDataParameter[] dbprams = info.GetAllProcedureField().Select(a =>
+            {
+                ProcedureFieldAttribute attr = a.GetAttribute<ProcedureFieldAttribute>();
+                IDbDataParameter p = GetDbDataParameter(a, info);
+                object value = a.GetValue(info, null);
+                p.Value = (value == null || string.IsNullOrEmpty(value.ToString()) ? DBNull.Value : value);
+                p.Direction = attr.Direction;
+                p.ParameterName = attr.Fieldname;
+                p.Size = attr.Size;
+                return p;
+            }).ToArray();
+            _dbCommand.Parameters.Clear();
+            _dbCommand.Parameters.AddRange(dbprams);
+            _dbCommand.CommandText = info.GetProcedureName();
+            try
+            {
+                _dbCommand.ExecuteNonQuery();
+                return ReadDataParameter(dbprams, info);
+            }
+            catch (Exception ex)
+            {
+                throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
+            }
         }
         #endregion
         #endregion
@@ -747,13 +785,13 @@ namespace z.DBHelper.Helper
         /// <param name="reader"></param>
         /// <returns></returns>
         /// 
-        private List<EntityBase> ReaderToEntity(Type t, IDataReader reader)
+        private List<TableEntityBase> ReaderToEntity(Type t, IDataReader reader)
         {
-            List<EntityBase> res = new List<EntityBase>();
+            List<TableEntityBase> res = new List<TableEntityBase>();
             int fieldCount = reader.FieldCount;
             while (reader.Read())
             {
-                EntityBase entity = (EntityBase)Activator.CreateInstance(
+                TableEntityBase entity = (TableEntityBase)Activator.CreateInstance(
                                           t,
                                           BindingFlags.Instance | BindingFlags.Public,
                                           null,
@@ -769,22 +807,45 @@ namespace z.DBHelper.Helper
             return res;
         }
 
+        /// <summary>
+        /// 读取存储过程的内容
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dbprams"></param>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        private T ReadDataParameter<T>(IDbDataParameter[] dbprams, T t) where T : ProcedureEntityBase
+        {
+            dbprams.ForEach(p =>
+            {
+                var field = t.GetProcedureField(p.ParameterName);
+                if (field == null)
+                    return;
+                var attr = field.GetAttribute<ProcedureFieldAttribute>();
+                if (attr.Direction != ParameterDirection.Input)
+                {
+                    field.SetValue(t, GetParameterValue(p, field), null);
+                }
+            });
+            return t;
+        }
+
         public override string ToString()
         {
             return _dbConnectionInfoStr.ToString();
         }
 
-        void _DeleteChildren(EntityBase info)
+        void _DeleteChildren(TableEntityBase info)
         {
             PropertyInfo[] ForeignKeys = info.GetForeignKey();
             if (!ForeignKeys.IsEmpty()) //有子表,处理子表
             {
                 ForeignKeys.ForEach(key =>  //主表里记录子表的列表
                 {
-                    if (key.IsArray() && key.GetChildren().BaseOn<EntityBase>())
+                    if (key.IsArray() && key.GetChildren().BaseOn<TableEntityBase>())
                     {
                         List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
-                        EntityBase edel = Activator.CreateInstance(key.GetChildren()) as EntityBase;
+                        TableEntityBase edel = Activator.CreateInstance(key.GetChildren()) as TableEntityBase;
                         attrs.ForEach(attr =>
                         {
                             edel.GetType().GetProperty(attr.ChildrenKey).SetValue(edel, info.GetPropertyValue(attr.ParentKey), null);
@@ -800,16 +861,16 @@ namespace z.DBHelper.Helper
             }
         }
 
-        void _InsertChildren(EntityBase info)
+        void _InsertChildren(TableEntityBase info)
         {
             PropertyInfo[] ForeignKeys = info.GetForeignKey();
             if (!ForeignKeys.IsEmpty()) //有子表,处理子表
             {
                 ForeignKeys.ForEach(key =>  //主表里记录子表的列表
                 {
-                    if (key.IsArray() && key.GetChildren().BaseOn<EntityBase>())
+                    if (key.IsArray() && key.GetChildren().BaseOn<TableEntityBase>())
                     {
-                        key.ForEach(info, (EntityBase item) =>
+                        key.ForEach(info, (TableEntityBase item) =>
                         {
                             List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
                             attrs.ForEach(a =>
@@ -827,7 +888,7 @@ namespace z.DBHelper.Helper
             }
         }
 
-        T _SelectChildren<T>(T info) where T : EntityBase
+        T _SelectChildren<T>(T info) where T : TableEntityBase
         {
             if (info == null)
                 return info;
@@ -836,10 +897,10 @@ namespace z.DBHelper.Helper
             {
                 ForeignKeys.ForEach(key =>  //主表里记录子表的列表
                 {
-                    if (key.IsArray() && key.GetChildren().BaseOn<EntityBase>())
+                    if (key.IsArray() && key.GetChildren().BaseOn<TableEntityBase>())
                     {
                         Type t = key.GetChildren();
-                        var item = (EntityBase)Activator.CreateInstance(
+                        var item = (TableEntityBase)Activator.CreateInstance(
                                           t,
                                           BindingFlags.Instance | BindingFlags.Public,
                                           null,
@@ -850,7 +911,7 @@ namespace z.DBHelper.Helper
                             {
                                 item.SetPropertyValue(a.ChildrenKey, info.GetPropertyValue(a.ParentKey));
                             });
-                        List<EntityBase> res = SelectList(item);
+                        List<TableEntityBase> res = SelectList(item);
                         key.SetArrValue(info, res);
                     }
                     else

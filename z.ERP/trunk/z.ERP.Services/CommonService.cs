@@ -27,7 +27,7 @@ namespace z.ERP.Services
         /// 通用的单表存储方式
         /// </summary>
         /// <param name="infos"></param>
-        public IEnumerable<string> CommonSave(IEnumerable<EntityBase> infos)
+        public IEnumerable<string> CommonSave(IEnumerable<TableEntityBase> infos)
         {
             List<string> res = new List<string>();
             using (var tran = DbHelper.BeginTransaction())
@@ -42,7 +42,7 @@ namespace z.ERP.Services
         /// 通用的单表存储方式
         /// </summary>
         /// <param name="info"></param>
-        public string CommonSave(EntityBase info)
+        public string CommonSave(TableEntityBase info)
         {
             string key = "";
             PropertyInfo[] pis = info.GetPrimaryKey();
@@ -65,7 +65,7 @@ namespace z.ERP.Services
         /// 通用的单表存储方式
         /// </summary>
         /// <param name="infos"></param>
-        public void CommenDelete(IEnumerable<EntityBase> infos)
+        public void CommenDelete(IEnumerable<TableEntityBase> infos)
         {
             using (var tran = DbHelper.BeginTransaction())
             {
@@ -78,7 +78,7 @@ namespace z.ERP.Services
         /// 通用单表删除方法
         /// </summary>
         /// <param name="info"></param>
-        public void CommenDelete(EntityBase info)
+        public void CommenDelete(TableEntityBase info)
         {
             PropertyInfo[] pis = info.GetPrimaryKey();
             if (pis == null || pis.Length != 1)
@@ -94,12 +94,12 @@ namespace z.ERP.Services
             DbHelper.Delete(info);
         }
 
-        public T Select<T>(T t) where T : EntityBase
+        public T Select<T>(T t) where T : TableEntityBase
         {
             return DbHelper.Select(t);
         }
 
-        public List<T> SelectList<T>(T t) where T : EntityBase, new()
+        public List<T> SelectList<T>(T t) where T : TableEntityBase, new()
         {
             return DbHelper.SelectList(t);
         }

@@ -1,10 +1,8 @@
 ﻿passWord = new Vue({
     el: "#passWord",
-    data () {
-        return {
-            psw1: "",
-            psw2:""
-        }
+    data: {
+        psw1: "",
+        psw2: ""
     },
     methods: {
         sure: function () {

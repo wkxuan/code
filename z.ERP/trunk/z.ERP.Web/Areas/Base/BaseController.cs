@@ -30,7 +30,7 @@ namespace z.ERP.Web.Areas.Base
         /// 快速保存
         /// </summary>
         /// <param name="infos"></param>
-        public IEnumerable<string> CommonSave(IEnumerable<EntityBase> infos)
+        public IEnumerable<string> CommonSave(IEnumerable<TableEntityBase> infos)
         {
             return service.CommonService.CommonSave(infos);
         }
@@ -39,7 +39,7 @@ namespace z.ERP.Web.Areas.Base
         /// 快速保存
         /// </summary>
         /// <param name="info"></param>
-        public string CommonSave(EntityBase info)
+        public string CommonSave(TableEntityBase info)
         {
             return service.CommonService.CommonSave(info);
         }
@@ -48,7 +48,7 @@ namespace z.ERP.Web.Areas.Base
         /// 快速删除
         /// </summary>
         /// <param name="infos"></param>
-        public void CommenDelete(IEnumerable<EntityBase> infos)
+        public void CommenDelete(IEnumerable<TableEntityBase> infos)
         {
             service.CommonService.CommenDelete(infos);
         }
@@ -57,18 +57,18 @@ namespace z.ERP.Web.Areas.Base
         /// 快速删除
         /// </summary>
         /// <param name="info"></param>
-        public void CommenDelete(EntityBase info)
+        public void CommenDelete(TableEntityBase info)
         {
             service.CommonService.CommenDelete(info);
         }
 
-        public T Select<T>(T t) where T : EntityBase
+        public T Select<T>(T t) where T : TableEntityBase
         {
             return service.CommonService.Select(t);
         }
 
 
-        public List<T> SelectList<T>(T t) where T : EntityBase, new()
+        public List<T> SelectList<T>(T t) where T : TableEntityBase, new()
         {
             return service.CommonService.SelectList(t);
         }
@@ -79,7 +79,7 @@ namespace z.ERP.Web.Areas.Base
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public EntityVerify<TEntity> GetVerify<TEntity>(TEntity entity) where TEntity : EntityBase
+        public EntityVerify<TEntity> GetVerify<TEntity>(TEntity entity) where TEntity : TableEntityBase
         {
             return service.GetVerify(entity);
         }

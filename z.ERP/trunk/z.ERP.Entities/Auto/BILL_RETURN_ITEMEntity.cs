@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2018/3/11 22:18:57
+ * 生成时间：2018/3/22 0:39:06
  * 生成人：书房
- * 代码生成器版本号：1.2.6562.36915
+ * 代码生成器版本号：1.2.6655.1027
  *
  */ 
 
@@ -12,7 +12,7 @@ using z.DbHelper.DbDomain;
 namespace z.ERP.Entities
 {
     [DbTable("BILL_RETURN_ITEM", "保证金返还单子表")]
-    public partial class BILL_RETURN_ITEMEntity : EntityBase
+    public partial class BILL_RETURN_ITEMEntity : TableEntityBase
     {
         public BILL_RETURN_ITEMEntity()
         {

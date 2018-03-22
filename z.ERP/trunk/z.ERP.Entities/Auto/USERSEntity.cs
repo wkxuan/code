@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2018/3/22 0:39:16
+ * 生成时间：2018/3/11 22:19:02
  * 生成人：书房
- * 代码生成器版本号：1.2.6655.1027
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,73 +11,66 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("NOTES", "")]
-    public partial class NOTESEntity : TableEntityBase
+    [DbTable("USERS", "")]
+    public partial class USERSEntity : EntityBase
     {
-        public NOTESEntity()
+        public USERSEntity()
         {
         }
 
-        public NOTESEntity(string id)
-        {
-            ID = id;
-        }
-
         /// <summary>
         /// 
         /// <summary>
-        [PrimaryKey]
-        public string ID
+        public string USERID
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string TKEY
+        public string USERCODE
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string TVALUE
+        public string USERNAME
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string TITLE
+        public string USER_TYPE
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string NOTES
+        public string ORGID
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string CREATER
+        public string USER_FLAG
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        [DbType(DbType.DateTime)]
-        public string CREATED
+        public string VOID_FLAG
         {
             get; set;
         }
         /// <summary>
         /// 
         /// <summary>
-        public string CREATENAME
+        public string PASSWORD
         {
             get; set;
         }

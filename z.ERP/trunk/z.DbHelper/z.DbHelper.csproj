@@ -7,8 +7,8 @@
     <ProjectGuid>{DA64E4E3-1857-4B57-A6D9-ABBDB092E7E4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>zDBHelper</RootNamespace>
-    <AssemblyName>zDBHelper</AssemblyName>
+    <RootNamespace>z.DBHelper</RootNamespace>
+    <AssemblyName>z.DBHelper</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -25,7 +25,7 @@
     <DefineConstants>TRACE;DEBUG;ORACLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\zDBHelper.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\z.DBHelper.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,9 +57,13 @@
     <Compile Include="Connection\MysqlConnection.cs" />
     <Compile Include="Connection\SybaseConnection.cs" />
     <Compile Include="Connection\SqliteConnection.cs" />
+    <Compile Include="DbDomain\DbProcedureAttribute.cs" />
     <Compile Include="DbDomain\DbTableAttribute.cs" />
     <Compile Include="DbDomain\DbTypeAttribute.cs" />
     <Compile Include="DbDomain\EntityBase.cs" />
+    <Compile Include="DbDomain\ProcedureEntityBase.cs" />
+    <Compile Include="DbDomain\TableEntityBase.cs" />
+    <Compile Include="DbDomain\ProcedureFieldAttribute.cs" />
     <Compile Include="DbDomain\FieldAttribute.cs" />
     <Compile Include="DbDomain\PageInfo.cs" />
     <Compile Include="DbDomain\ForeignKeyAttribute.cs" />

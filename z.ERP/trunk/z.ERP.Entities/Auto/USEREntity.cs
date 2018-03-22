@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2018/3/22 0:39:12
+ * 生成时间：2018/3/11 22:19:02
  * 生成人：书房
- * 代码生成器版本号：1.2.6655.1027
+ * 代码生成器版本号：1.2.6562.36915
  *
  */ 
 
@@ -11,64 +11,64 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("FEERULE", "收费规则")]
-    public partial class FEERULEEntity : TableEntityBase
+    [DbTable("USER", "用户")]
+    public partial class USEREntity : EntityBase
     {
-        public FEERULEEntity()
+        public USEREntity()
         {
         }
 
-        public FEERULEEntity(string id)
+        public USEREntity(string userid)
         {
-            ID = id;
+            USERID = userid;
         }
 
         /// <summary>
-        /// 收费规则编号
+        /// 用户编码
         /// <summary>
         [PrimaryKey]
-        [Field("收费规则编号")]
-        public string ID
+        [Field("用户编码")]
+        public string USERID
         {
             get; set;
         }
         /// <summary>
-        /// 收费规则名称
+        /// 用户代码
         /// <summary>
-        [Field("收费规则名称")]
-        public string NAME
+        [Field("用户代码")]
+        public string USERCODE
         {
             get; set;
         }
         /// <summary>
-        /// 缴费截至日
+        /// 用户名称
         /// <summary>
-        [Field("缴费截至日")]
-        public string UP_DATE
+        [Field("用户名称")]
+        public string USERNAME
         {
             get; set;
         }
         /// <summary>
-        /// 缴费周期
+        /// 用户类型
         /// <summary>
-        [Field("缴费周期")]
-        public string PAY_CYCLE
+        [Field("用户类型")]
+        public string USER_TYPE
         {
             get; set;
         }
         /// <summary>
-        /// 缴费截至周期
+        /// 用户机构
         /// <summary>
-        [Field("缴费截至周期")]
-        public string PAY_UP_CYCLE
+        [Field("用户机构")]
+        public string ORGID
         {
             get; set;
         }
         /// <summary>
-        /// 提前周期
+        /// 用户标记
         /// <summary>
-        [Field("提前周期")]
-        public string ADVANCE_CYCLE
+        [Field("用户标记")]
+        public string USER_FLAG
         {
             get; set;
         }
@@ -81,9 +81,10 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
-        /// 
+        /// 登录密码
         /// <summary>
-        public string FEE_DAY
+        [Field("登录密码")]
+        public string PASSWORD
         {
             get; set;
         }

@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2018/3/11 22:19:00
+ * 生成时间：2018/3/22 0:39:14
  * 生成人：书房
- * 代码生成器版本号：1.2.6562.36915
+ * 代码生成器版本号：1.2.6655.1027
  *
  */ 
 
@@ -12,7 +12,7 @@ using z.DbHelper.DbDomain;
 namespace z.ERP.Entities
 {
     [DbTable("JOIN_BILL_GOODS", "联营结算单商品")]
-    public partial class JOIN_BILL_GOODSEntity : EntityBase
+    public partial class JOIN_BILL_GOODSEntity : TableEntityBase
     {
         public JOIN_BILL_GOODSEntity()
         {

@@ -8,17 +8,19 @@ using z.MVC5.Results;
 using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
+using z.MVC5.Attributes;
 
 namespace z.ERP.Web.Areas.HTGL.ZLHT
 {
     public class ZLHTController: BaseController
     {
+        [Permission("2")]
         public ActionResult HtList()
         {
             ViewBag.Title = "租约列表信息";
             return View();
         }
-
+        
         public ActionResult HtEdit(string Id)
         {
             ViewBag.Title = "租赁租约信息编辑";
@@ -31,6 +33,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             return service.HtglService.SaveContract(SaveData);
         }
 
+        [Permission("1")]
         public UIResult SearchContract(CONTRACTEntity Data)
         {
             var res = service.HtglService.GetContractElement(Data);

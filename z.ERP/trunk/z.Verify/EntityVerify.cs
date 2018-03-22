@@ -13,7 +13,7 @@ using z.SuperLambda;
 
 namespace z.Verify
 {
-    public class EntityVerify<TEntity> : VerifyBase where TEntity : EntityBase
+    public class EntityVerify<TEntity> : VerifyBase where TEntity : TableEntityBase
     {
         DbHelperBase _dbHelper;
         TEntity _entity;
@@ -110,7 +110,7 @@ namespace z.Verify
         /// <param name="p">本表字段</param>
         /// <param name="t">目标表字段</param>
         /// <param name="ErrorModel">错误信息</param>
-        public void IsForeignKey<TTarget>(Expression<Func<TEntity, string>> p, Expression<Func<TTarget, string>> t, string ErrorModel = "[{0}]表中字段[{1}]的值[{2}]在[{3}]表中的字段[{4}]已存在") where TTarget : EntityBase, new()
+        public void IsForeignKey<TTarget>(Expression<Func<TEntity, string>> p, Expression<Func<TTarget, string>> t, string ErrorModel = "[{0}]表中字段[{1}]的值[{2}]在[{3}]表中的字段[{4}]已存在") where TTarget : TableEntityBase, new()
         {
             if (p.Body is MemberExpression && t.Body is MemberExpression)
             {

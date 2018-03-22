@@ -8,6 +8,8 @@ using z.Extensions;
 using z.MVC5.Attributes;
 using z.MVC5.Models;
 using z.MVC5.Results;
+using z.SSO;
+using z.SSO.Model;
 
 namespace z.MVC5.Controllers
 {
@@ -22,8 +24,11 @@ namespace z.MVC5.Controllers
                 {
                     filterContext.Result = new UIResult()
                     {
-                        Flag = 104,
-                        Msg = $"没有权限:{attr.Key}"
+                        Data = new
+                        {
+                            Flag = 104,
+                            Msg = $"没有权限:{attr.Key}"
+                        }
                     };
                 }
                 else
@@ -46,7 +51,9 @@ namespace z.MVC5.Controllers
                 return true;
             }
             else
-                return false;
+            {
+                return UserApplication.GetUser<Employee>().HasPermission(attr.Key);
+            }
         }
 
     }

@@ -62,7 +62,7 @@ namespace z.ERP.Model.Vue
         /// <param name="code">code字段</param>
         /// <param name="func">转换方法</param>
         /// <returns></returns>
-        public static IEnumerable<TreeModel> Create<TEntity>(List<TEntity> infos, Expression<Func<TEntity, string>> code, Func<TEntity, TreeModel> func) where TEntity : EntityBase
+        public static IEnumerable<TreeModel> Create<TEntity>(List<TEntity> infos, Expression<Func<TEntity, string>> code, Func<TEntity, TreeModel> func) where TEntity : TableEntityBase
         {
             TEntity ft = infos.FirstOrDefault(info => code.Compile()(info).Length < 2);
             if (ft != null)
@@ -77,7 +77,7 @@ namespace z.ERP.Model.Vue
             }
         }
 
-        static TreeModel[] _Create<TEntity>(List<TEntity> infos, Expression<Func<TEntity, string>> code, Func<TEntity, TreeModel> func, string pcode = null) where TEntity : EntityBase
+        static TreeModel[] _Create<TEntity>(List<TEntity> infos, Expression<Func<TEntity, string>> code, Func<TEntity, TreeModel> func, string pcode = null) where TEntity : TableEntityBase
         {
             if (infos.IsEmpty())
                 return null;
@@ -89,7 +89,7 @@ namespace z.ERP.Model.Vue
             }).ToArray();
         }
 
-        public static string GetNewKey<TEntity>(List<TEntity> infos, Expression<Func<TEntity, string>> code, string key, string Tar) where TEntity : EntityBase
+        public static string GetNewKey<TEntity>(List<TEntity> infos, Expression<Func<TEntity, string>> code, string key, string Tar) where TEntity : TableEntityBase
         {
             if (Tar == null)
             {

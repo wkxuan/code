@@ -14,12 +14,12 @@ namespace z.MVC5.Attributes
         /// 权限码
         /// </summary>
         /// <param name="_key"></param>
-        public PermissionAttribute(int _key)
+        public PermissionAttribute(string _key)
         {
             Key = _key;
         }
 
-        public int Key
+        public string Key
         {
             get;
             set;

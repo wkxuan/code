@@ -8,6 +8,7 @@ using z.ERP.Entities.Enum;
 using z.Exceptions;
 using System.Linq;
 using z.Extensiont;
+using z.ERP.Entities.Procedures;
 
 namespace z.ERP.Services
 {
@@ -18,6 +19,11 @@ namespace z.ERP.Services
         }
         public DataGridResult GetContract(SearchItem item)
         {
+            ProTest info = new ProTest()
+            {
+                Id = 1
+            };
+            var ii = DbHelper.ExecuteProcedure(info);
             string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME FROM CONTRACT A,BRANCH B,MERCHANT C " +
                          " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID ";
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");

@@ -1,8 +1,8 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2018/3/11 22:19:02
+ * 生成时间：2018/3/22 0:39:18
  * 生成人：书房
- * 代码生成器版本号：1.2.6562.36915
+ * 代码生成器版本号：1.2.6655.1027
  *
  */ 
 
@@ -12,7 +12,7 @@ using z.DbHelper.DbDomain;
 namespace z.ERP.Entities
 {
     [DbTable("ROLE_MENU", "角色_菜单")]
-    public partial class ROLE_MENUEntity : EntityBase
+    public partial class ROLE_MENUEntity : TableEntityBase
     {
         public ROLE_MENUEntity()
         {
@@ -38,7 +38,7 @@ namespace z.ERP.Entities
         /// 位置代码
         /// <summary>
         [PrimaryKey]
-        [Field("位置编号")]
+        [Field("位置代码")]
         public string MODULECODE
         {
             get; set;

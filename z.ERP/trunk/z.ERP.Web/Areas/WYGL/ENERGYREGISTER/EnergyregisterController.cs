@@ -39,7 +39,7 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
             return service.WyglService.SaveEnergyreGister(SaveData);
         }
 
-        [Permission(1)]
+        [Permission("1")]
         public UIResult SearchElement(ENERGY_REGISTEREntity Data)
         {
             return new UIResult(service.WyglService.GetEnergyreGisterElement(Data));

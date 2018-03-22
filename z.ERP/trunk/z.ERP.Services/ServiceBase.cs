@@ -154,7 +154,7 @@ namespace z.ERP.Services
         /// 获取新的记录编号
         /// </summary>
         /// <returns></returns>
-        public string NewINC(EntityBase info)
+        public string NewINC(TableEntityBase info)
         {
             return NewINC(info.GetTableName());
         }
@@ -182,7 +182,7 @@ namespace z.ERP.Services
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public EntityVerify<TEntity> GetVerify<TEntity>(TEntity entity) where TEntity : EntityBase
+        public EntityVerify<TEntity> GetVerify<TEntity>(TEntity entity) where TEntity : TableEntityBase
         {
             EntityVerify<TEntity> v = new EntityVerify<TEntity>(entity);
             v.SetDb(DbHelper);

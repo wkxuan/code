@@ -149,6 +149,7 @@ namespace z.DBHelper.Helper
             {
                 switch (dba.DbType)
                 {
+                    case DbType.Time:
                     case DbType.DateTime:
                     case DbType.Date:
                     case DbType.DateTime2:
@@ -166,6 +167,25 @@ namespace z.DBHelper.Helper
                             }
                             break;
                         }
+                    case DbType.Int16:
+                    case DbType.Int32:
+                    case DbType.Int64:
+                    case DbType.UInt16:
+                    case DbType.UInt32:
+                    case DbType.UInt64:
+                    case DbType.Byte:
+                        {
+                            resp = new OracleParameter(p.Name, OracleDbType.Int64);
+                            resp.Value = p.GetValue(info, null);
+                            break;
+                        }
+                    case DbType.Decimal:
+                    case DbType.Double:
+                        {
+                            resp = new OracleParameter(p.Name, OracleDbType.Double);
+                            resp.Value = p.GetValue(info, null);
+                            break;
+                        }
                     default:
                         {
                             throw new DataBaseException("字段类型" + dba.DbType + "还没有对应处理程序");
@@ -173,6 +193,45 @@ namespace z.DBHelper.Helper
                 }
             }
             return resp;
+        }
+
+        protected override object GetParameterValue(IDbDataParameter p, PropertyInfo pinfo)
+        {
+            DbTypeAttribute dba = pinfo.GetAttribute<DbTypeAttribute>();
+            if (dba == null)
+            {
+                return p.Value.ToString();
+            }
+            switch (dba.DbType)
+            {
+                case DbType.Time:
+                case DbType.DateTime:
+                case DbType.Date:
+                case DbType.DateTime2:
+                case DbType.DateTimeOffset:
+                    {
+                        return p.Value.ToString().ToDateTime();
+                    }
+                case DbType.Int16:
+                case DbType.Int32:
+                case DbType.Int64:
+                case DbType.UInt16:
+                case DbType.UInt32:
+                case DbType.UInt64:
+                case DbType.Byte:
+                    {
+                        return p.Value.ToString().ToInt();
+                    }
+                case DbType.Decimal:
+                case DbType.Double:
+                    {
+                        return p.Value.ToString().ToDouble();
+                    }
+                default:
+                    {
+                        throw new DataBaseException("字段类型" + dba.DbType + "还没有对应处理程序");
+                    }
+            }
         }
 
         /// <summary>
@@ -235,6 +294,7 @@ namespace z.DBHelper.Helper
             com.Connection = dbconnection;
             return com;
         }
+
         #endregion
 
     }
