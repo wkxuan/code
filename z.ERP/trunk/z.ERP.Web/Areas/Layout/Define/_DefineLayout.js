@@ -58,7 +58,7 @@
                 },
                 save: function (event) {
                     var _self = this;
-                    if (!_this.IsValidSave(_self))
+                    if (!_this.IsValidSave())
                         return;
                     save(function (data) {
                         showlist(function () {

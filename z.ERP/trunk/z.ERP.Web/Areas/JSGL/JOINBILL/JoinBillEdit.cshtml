@@ -3,8 +3,57 @@
 @using z.ERP.Entities.Enum
 @inherits EditDetailViewBase<string>
 
-@section baseParam{
-    
+@section baseParam{    
+    <row>
+        <i-col span="2" class="RowTitle">
+            合同号
+        </i-col>
+        <i-col span="2" class="RowText">
+            @{
+                RenderControl(new TextBoxRender
+                {
+                    vModel = "dataParam.CONTRACTID",
+                    Id = "tb_cont",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            商户
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender
+                {
+                    vModel = "dataParam.MERCHANTID",
+                    Id = "tb_merch",
+                });
+            }
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender
+                {
+                    vModel = "dataParam.MERCHANTNAME",
+                    Id = "tb_merch",
+                });
+            }
+        </i-col>
+
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            年月
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender
+                {
+                    vModel = "dataParam.NIANYUE",
+                    Id = "tb_ny",
+                });
+            }
+        </i-col>
+    </row>
 
 }
 
