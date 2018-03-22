@@ -13,6 +13,6 @@ namespace z.SuperLambda
         /// 初始化新建一个 <see cref="ParserSyntaxErrorException"/> 类的实例对象.
         /// </summary>
         public ParserSyntaxErrorException()
-            : base("syntax error!") { }
+            : base("语法错误!") { }
     }
 }

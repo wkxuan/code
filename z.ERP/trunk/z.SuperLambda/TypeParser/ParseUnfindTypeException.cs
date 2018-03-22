@@ -16,7 +16,7 @@ namespace z.SuperLambda
         /// <param name="typeName">Name of the type.</param>
         /// <param name="errorIndex">Index of the error.</param>
         public ParseUnfindTypeException(string typeName, int errorIndex)
-            : base(string.Format("{0} in the vicinity of the type \"{1}\" not found", errorIndex, typeName))
+            : base($"在{errorIndex}附近没有找到类型{typeName}")
         {
         }
     }

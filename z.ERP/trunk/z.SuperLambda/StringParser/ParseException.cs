@@ -38,7 +38,7 @@ namespace z.SuperLambda
         /// </returns>
         public override string ToString()
         {
-            return string.Format("{0} (at index {1})", Message, position);
+            return $"{Message} (在{position})";
         }
     }
 }
