@@ -7,9 +7,11 @@
     editDetail.Key = 'MERCHANTID';
     editDetail.dataParam.STATUS = "1";
 
+    editDetail.screenParam.ParentBrand = {};
 
     editDetail.screenParam.colDef = [
     {
+        type: 'selection', width: 60, align: 'center',
         title: "品牌代码", key: 'BRANDID', width: 100,
         render: function (h, params) {
             return h('Input', {
@@ -17,7 +19,6 @@
                     value: params.row.BRANDID
                 },
                 on: {
-                    // 'on-blur': 焦点离开 'on-enter' 回车事件
                     'on-enter': function (event) {
                         _self = this;
                         editDetail.dataParam.MERCHANT_BRAND[params.index].BRANDID = event.target.value;
@@ -61,23 +62,45 @@
     }
     ];
 
-    //相当于初始化
     if (!editDetail.dataParam.MERCHANT_BRAND) {
         editDetail.dataParam.MERCHANT_BRAND = [{
-            BRANDID: "",
-            NAME: "",
-            CATEGORYID: "",
-            CATEGORYNAME: ""
+            NAME: ""
         }]
-    }
+    };
+};
 
-    //新增加一行
-    editDetail.screenParam.addCol = function () {
+editDetail.otherMethods = {
+    addColPP: function () {
         var temp = editDetail.dataParam.MERCHANT_BRAND || [];
         temp.push({});
         editDetail.dataParam.MERCHANT_BRAND = temp;
-    }
-}
+    },
+    delColPP: function () {
+        var selectton = this.$refs.selectBrand.getSelection();
+        if (selectton.length == 0) {
+            iview.Message.info("请选中要删除的品牌!");
+        } else {
+            for (var i = 0; i < selectton.length; i++) {
+                for (var j = 0; j < editDetail.dataParam.MERCHANT_BRAND.length; j++) {
+                    if (editDetail.dataParam.MERCHANT_BRAND[j].BRANDID == selectton[i].BRANDID) {
+                        editDetail.dataParam.MERCHANT_BRAND.splice(j, 1);
+                    }
+                }
+            }
+        }
+    },
+    srchColPP: function () {
+        Vue.set(editDetail.screenParam, "PopBrand", true);
+    },
+
+
+    BrandBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopBrand", false);
+        for (var i = 0; i < val.sj.length; i++) {
+            editDetail.dataParam.MERCHANT_BRAND.push(val.sj[i]);
+        }
+    },
+};
 
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchMerchant', {

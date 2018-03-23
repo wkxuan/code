@@ -23,7 +23,8 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.NAME",
-                    Enable = false
+                    Enable = false,
+                    Change = "NameChange"
                 });
             }
         </i-col>
@@ -49,21 +50,6 @@
                 });
             }
         </i-col>
-
-
-        @*<i-col span="2" class="RowTitle">
-            测试收款方式数据库查询获取
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.b",
-                    ServiceMothod = m => m.pay(),
-                    Enable = false,
-                });
-            }
-        </i-col>*@
     </row>
     <row>
         <i-col span="2" class="RowTitle">成本费用</i-col>

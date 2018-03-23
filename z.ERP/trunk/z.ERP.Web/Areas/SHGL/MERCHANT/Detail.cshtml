@@ -10,12 +10,19 @@
 @section Title{
     @Html.Raw("详情");
 }
-
 @{
     var merchant = ViewBag.merchant;
     var merchantBrand = ViewBag.merchantBrand as DataTable;
-}
+    DataTable dt = new DataTable();
+    dt = merchantBrand;
+    var uu = dt.Rows;
+    List<DataRow> brandList = new List<DataRow>();
+    foreach (DataRow brand in merchantBrand.Rows)
+    {
+        brandList.Add(brand);
+    }
 
+}
 @section btn{
     @{
         if (@merchant.STATUS == "1")
@@ -31,30 +38,60 @@
 
 @section content{
     <row>
-        <i-col span="2" class="RowTitle">商户代码</i-col>
-        <i-col span="4" class="RowText"> @merchant.MERCHANTID </i-col>
+        <i-col span="2" class="RowText">商户代码</i-col>
+        <i-col span="4">
+            <i-input v-model="MERCHANTID" :readonly="true"></i-input>
+        </i-col>
         <i-col span="2" class="RowTitle">商户名称</i-col>
-        <i-col span="4" class="RowText"> @merchant.NAME </i-col>
-        <i-col span="2" class="RowTitle">手机</i-col>
-        <i-col span="4" class="RowText"> @merchant.PHONE </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">银行名称</i-col>
-        <i-col span="4" class="RowText"> @merchant.BANK_NAME   </i-col>
-        <i-col span="2" class="RowTitle">地址</i-col>
-        <i-col span="4" class="RowText"> @merchant.ADRESS   </i-col>
+        <i-col span="4">
+            <i-input v-model="NAME" :readonly="true"></i-input>
+        </i-col>
         <i-col span="2" class="RowTitle">状态</i-col>
-        <i-col span="4" class="RowText"> @merchant.STATUSMC </i-col>
+        <i-col span="4">
+            <i-input v-model="STATUSMC" :readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowText">税号</i-col>
+        <i-col span="4">
+            <i-input v-model="SH" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">银行名称</i-col>
+        <i-col span="4">
+            <i-input v-model="BANK_NAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">账号</i-col>
+        <i-col span="4">
+            <i-input v-model="BANK" :readonly="true"></i-input>
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowText">地址</i-col>
+        <i-col span="4">
+            <i-input v-model="ADRESS" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">联系人</i-col>
+        <i-col span="4">
+            <i-input v-model="CONTACTPERSON" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">电话</i-col>
+        <i-col span="4">
+            <i-input v-model="PHONE" :readonly="true"></i-input>
+        </i-col>
     </row>
 
 
     <row>
-        @{
+        <i-table size="small" :border="true"
+                 :columns="colDef" :data="BrandData"></i-table>
+
+        @*@{
             foreach (DataRow brand in merchantBrand.Rows)
             {
-                <i-col span="4" class="rowtitle">品牌名称(@brand["NAME"].ToString())</i-col>
+                <i-col span="4" class="RowTitle">品牌名称(@brand["NAME"].ToString())</i-col>
             }
-        }
+        }*@
     </row>
 }
 
@@ -64,7 +101,27 @@
             el: '#detail_Main',
             data: {
                 Mainpanel: 'condition',
-                disabled:true
+                disabled:true,
+                MERCHANTID:"@merchant.MERCHANTID",
+                NAME:"@merchant.NAME",
+                STATUSMC:"@merchant.STATUSMC",
+
+                SH:"@merchant.SH",
+                BANK_NAME:"@merchant.BANK_NAME",
+                BANK:"@merchant.BANK",
+
+                ADRESS:"@merchant.ADRESS",
+                CONTACTPERSON:"@merchant.CONTACTPERSON",
+                PHONE:"@merchant.PHONE",
+                colDef : [
+                    { title: '品牌名称', key: 'NAME', width: 200 },
+                    { title: '业态代码', key: 'CATEGORYCODE', width: 200 },
+                    { title: '业态名称', key: 'CATEGORYNAME', width: 200 },
+                ], 
+                BrandData:[]
+            },
+            mounted:function(){
+                BrandData:@brandList;
             },
             methods: {
                 exec: function (event) {

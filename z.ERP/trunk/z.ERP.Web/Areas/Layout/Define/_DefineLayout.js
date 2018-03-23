@@ -75,7 +75,8 @@
                             title: '提示',
                             content: '是否取消',
                             onOk: function () {
-                                _this.showone(ve._key);
+                                _this.dataParam = {};
+                                ve.dataParam = _this.dataParam;
                                 ve.disabled = _this.enabled(true);
                             },
                             onCancel: function () {
@@ -115,8 +116,9 @@
                 showlist: function (currentRow, oldCurrentRow) {
                     $.extend(_this.dataParam , currentRow);
                     ve._key = define.dataParam[_this.Key];
-                    _this.showone(ve._key);
-                    ve.dataParam = _this.dataParam;
+                    _this.showone(ve._key, function () {
+                        ve.dataParam = _this.dataParam;
+                    });
                 },
                 seachList: function (event) {
                     showlist();

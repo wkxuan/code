@@ -45,25 +45,11 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
                 //}
             };
             list.Allocation(settings);
+
             ViewBag.Title = "商户列表信息";
             return View();
         }
 
-        //[权限吗(111222)]
-        public ActionResult 属性变更()
-        {
-            ViewBag.Title = "属性变更";
-            ViewBag.type = 2;
-            return View("MerchantList");
-        }
-
-        //[权限吗(111222)]
-        public ActionResult 面积变更()
-        {
-            ViewBag.Title = "面积变更";
-            ViewBag.type = 1;
-            return View("MerchantList");
-        }
 
         public ActionResult Detail(string Id)
         {
@@ -81,7 +67,6 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             return View(model: Id);
         }
 
-        //[权限吗(111222)]
         public void Delete(List<MERCHANTEntity> DeleteData)
         {
             service.ShglService.DeleteMerchant(DeleteData);

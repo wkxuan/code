@@ -1,5 +1,7 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<TextBoxRender>
 
-<i-input id="@Model.Id" v-model="@Model.vModel" placeholder="@Model.Placeholder" :readonly="@Model.Readonly" :disabled="@(Model.Enable?"!disabled":"disabled")">
+<i-input id="@Model.Id" v-model="@Model.vModel" 
+         placeholder="@Model.Placeholder" :readonly="@Model.Readonly" v-on:on-change="@Model.Change"
+         :disabled="@(Model.Enable?"!disabled":"disabled")">
 </i-input>

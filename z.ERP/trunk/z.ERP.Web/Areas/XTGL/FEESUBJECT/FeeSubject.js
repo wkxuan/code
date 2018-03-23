@@ -15,10 +15,17 @@
     define.service = "XtglService";
     define.method = "GetFeeSubjectElement";
     define.methodList = "GetFeeSubject";
-    define.getKey = 'TRIMID';
-}
+    define.Key = 'TRIMID';
+};
+
+define.otherMethods = {
+    NameChange: function(){ 
+        define.dataParam.PYM=define.dataParam.NAME.toPYM();
+        //Vue.set(define.dataParam, "PYM", define.dataParam.NAME.toPYM());
+    },
+};
 
 
 define.newRecord = function () {
     define.dataParam.VOID_FLAG = "1";
-}
+};

@@ -20,38 +20,29 @@
     search.service = "ShglService";
     search.method = "GetMerchant";
 }
-//浏览双击跳转页面
+
 search.browseHref = function (row, index) {
-    _.OpenPage("SHGL/MERCHANT/Detail/" + row.MERCHANTID, function (data) {
+    _.OpenPage({
+        id: 1,
+        title: '商户信息浏览',
+        url: "SHGL/MERCHANT/Detail/" + row.MERCHANTID
     });
-}
-//添加跳转页面
+};
 search.addHref = function (row) {
-    _.OpenPage("SHGL/MERCHANT/MerchantEdit/", function (data) {
+
+    _.OpenPage({
+        id: 1,
+        title: '商户编辑',
+        url: "SHGL/MERCHANT/MerchantEdit/"
     });
-}
-//修改跳转页面,并且要根据单号查出来相关的数据信息
+};
 search.modHref = function (row, index) {
-
-    //1最好是先控制按钮状态,后面想办法模板处理
-    //2这块是不是需要发请求去判断处理(根据需要,商户是审核之后也可以修改在保存,所以如何不用发请求)
-
-    //_.Search({
-    //    Service: search.service,
-    //    Method: search.method,
-    //    Data: { MERCHANTID: row.MERCHANTID},
-    //    Success: function (data) {
-    //        if (data.rows[0].STATUS == 1) {
-    //            _.OpenPage("SHGL/MERCHANT/MerchantEdit/" + row.MERCHANTID, function (data) {
-    //            });
-    //        } else {
-    //            iview.Message.info('当前商户信息不是未审核状态,不能编辑!');
-    //        }
-    //    }
-    //})
-    _.OpenPage("SHGL/MERCHANT/MerchantEdit/" + row.MERCHANTID, function (data) {
+    _.OpenPage({
+        id: 1,
+        title: '商户编辑',
+        url: "SHGL/MERCHANT/MerchantEdit/" + row.MERCHANTID
     });
-}
+};
 
 
 

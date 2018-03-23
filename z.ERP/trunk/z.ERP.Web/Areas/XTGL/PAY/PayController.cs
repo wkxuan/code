@@ -39,8 +39,7 @@ namespace z.ERP.Web.Areas.XTGL.PAY
         public void Delete(PAYEntity DefineDelete)
         {
             var v = GetVerify(DefineDelete);
-            //外键验证应该是在删除的时候使用
-            //v.IsForeignKey<P1Entity>(a => a.NAME, b => b.F1);
+            v.IsForeignKey<STATION_PAYEntity>(a => a.PAYID, b => b.PAYID);
             CommenDelete(DefineDelete);
         }
     }

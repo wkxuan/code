@@ -1,13 +1,35 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
 @using z.ERP.Model;
 @using z.Extensions;
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
+@section head{
 
+    @InitFiles(new string[] {
+    "/Areas/Pop/PopBrand.js"
+});
+}
 
 @section baseParam{
+
+<row>
+    <i-col>
+        @{
+            RenderControl(new PopRender()
+            {
+                vModel = "screenParam.PopBrand",
+                Caption = "品牌查询",
+                Width = "760",
+                PopLx = "Brand",
+                CallBack = "BrandBack",
+                ParentObj = "screenParam.ParentBrand"
+            });
+        }
+    </i-col>
+</row>
+  
 <row>
     <i-col span="2" class="RowTitle">
         名称
@@ -48,17 +70,6 @@
         }
     </i-col>
     <i-col span="2" class="RowTitle">
-        银行账号
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.BANK"
-            });
-        }
-    </i-col>
-    <i-col span="2" class="RowTitle">
         银行名称
     </i-col>
     <i-col span="6">
@@ -66,6 +77,17 @@
             RenderControl(new TextBoxRender()
             {
                 vModel = "dataParam.BANK_NAME"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        银行账号
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.BANK"
             });
         }
     </i-col>
@@ -147,15 +169,37 @@
     @{
         RenderControl(new ButtonRender()
         {
-            Click = "screenParam.addCol",
-            Text = "添加一行",
+            Click = "srchColPP",
+            Text = "选择品牌",
             Enable = true,
-            Type = "primary"
+            Type = "primary",
+            Icon = "plus-circled"
+        });
+    }
+
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "addColPP",
+            Text = "添加一行品牌",
+            Enable = true,
+            Type = "primary",
+            Icon = "plus-circled"
+        });
+    }
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "delColPP",
+            Text = "删除品牌",
+            Enable = true,
+            Type = "error",
+            Icon = "minus-circled"
         });
     }
 </row>
 <row>
     <i-table  size="small" :border="true" 
-             :columns="screenParam.colDef" :data="dataParam.MERCHANT_BRAND"></i-table>
+             :columns="screenParam.colDef" :data="dataParam.MERCHANT_BRAND" ref="selectBrand"></i-table>
 </row>
 }

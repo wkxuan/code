@@ -496,7 +496,6 @@ editDetail.otherMethods = {
     //点击商户弹窗
     Merchant : function () {
        Vue.set(editDetail.screenParam, "PopMerchant", true);
-       editDetail.screenParam.ParentMerchant = { A: '1', B: '2' };
     },
     //商户弹窗返回
     MerchantBack : function (val) {

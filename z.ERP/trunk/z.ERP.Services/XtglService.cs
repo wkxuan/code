@@ -81,7 +81,7 @@ namespace z.ERP.Services
 
         public DataGridResult GetFeeSubjectElement(SearchItem item)
         {
-            string sql = $@"SELECT TRIMID,NAME FROM FEESUBJECT WHERE 1=1 ";
+            string sql = $@"SELECT * FROM FEESUBJECT WHERE 1=1 ";
             item.HasKey("TRIMID", a => sql += $" and TRIMID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

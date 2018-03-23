@@ -65,11 +65,6 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string SaveMerchant(MERCHANTEntity SaveData)
         {
-            //因为商户可以审核之后还可以修改所以这里要分开处理通常如何判断处理应该便可
-            //MERCHANTEntity mer = DbHelper.Select(SaveData);
-            //if (mer.STATUS == ((int)普通单据状态.审核).ToString()) {
-            //    throw new LogicException("商户(" + SaveData.NAME + ")已经审核!");
-            //}
             var v = GetVerify(SaveData);
             if (SaveData.MERCHANTID.IsEmpty())
             {
@@ -78,7 +73,6 @@ namespace z.ERP.Services
             }
             else
             {
-                //这里这样写是不是麻烦了?(界面上显示审核人信息)
                 MERCHANTEntity mer = DbHelper.Select(SaveData);
                 SaveData.VERIFY = mer.VERIFY;
                 SaveData.VERIFY_NAME = mer.VERIFY_NAME;
@@ -106,7 +100,6 @@ namespace z.ERP.Services
         }
         /// <summary>
         /// 从列表页编辑跳转到编辑页数据的展示查询
-        /// 这里需要和详情页数据展示保持一直如何处理????(已经OK)
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
