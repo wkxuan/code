@@ -12,15 +12,13 @@
 }
 @{
     var merchant = ViewBag.merchant;
-    var merchantBrand = ViewBag.merchantBrand as DataTable;
-    DataTable dt = new DataTable();
-    dt = merchantBrand;
-    var uu = dt.Rows;
-    List<DataRow> brandList = new List<DataRow>();
-    foreach (DataRow brand in merchantBrand.Rows)
-    {
-        brandList.Add(brand);
-    }
+    //var merchantBrand = ViewBag.merchantBrand as DataTable;
+
+    //foreach (DataRow brand in merchantBrand.Rows)
+    //{
+    //    brand["NAME"].ToString();
+    //};
+
 
 }
 @section btn{
@@ -85,13 +83,6 @@
     <row>
         <i-table size="small" :border="true"
                  :columns="colDef" :data="BrandData"></i-table>
-
-        @*@{
-            foreach (DataRow brand in merchantBrand.Rows)
-            {
-                <i-col span="4" class="RowTitle">品牌名称(@brand["NAME"].ToString())</i-col>
-            }
-        }*@
     </row>
 }
 
@@ -117,11 +108,16 @@
                     { title: '品牌名称', key: 'NAME', width: 200 },
                     { title: '业态代码', key: 'CATEGORYCODE', width: 200 },
                     { title: '业态名称', key: 'CATEGORYNAME', width: 200 },
-                ], 
+                ],
                 BrandData:[]
             },
             mounted:function(){
-                BrandData:@brandList;
+                var _self = this;
+                _.Ajax('SearchMerchant', {
+                    Data: { MERCHANTID: @merchant.MERCHANTID }
+                }, function (data) {
+                    _self.BrandData = data.merchantBrand;
+                });
             },
             methods: {
                 exec: function (event) {

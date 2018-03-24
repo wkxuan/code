@@ -57,6 +57,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             var entity = service.ShglService.GetMerchantElement(new MERCHANTEntity(Id));
             ViewBag.merchant = entity.Item1;
             ViewBag.merchantBrand = entity.Item2;
+            // ViewBag.MERCHANTID = Id;
             return View();
         }
 
