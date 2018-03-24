@@ -55,14 +55,9 @@ function _Define() {
                 //dataParam 数据库交互需要传输的内容
                 //screenParam屏幕显示的内容
                 dataParam: _this.dataParam,
-                windowParam: _this.windowParam,
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 disabled: _this.enabled(true),
-                PopMerchant: false,
-                PopMerchant2:false,
-                ParentMerchant: {},
-                ParentMerchant2:{},
                 _key: undefined
             },
             mounted: function(){
@@ -175,28 +170,7 @@ function _Define() {
                 },
                 seachList: function (event) {
                     showlist();
-                },
-                Merchant: function () {
-                    this.ParentMerchant = { A: '第一次传参数参数1', B: '2' }
-                    this.PopMerchant = true;
-                },
-                MerchantBack: function (val) {
-                    this.PopMerchant = val.modal;
-
-                    console.log(val);
-                    alert(val.sj);
-                },
-
-                Merchant2: function () {
-                    this.ParentMerchant2 = { A1111: '第一次传参数参数2', B2222: '2' }
-                    this.PopMerchant2 = true;
-                },
-                MerchantBack2: function (val) {
-                    this.PopMerchant2 = val.modal;
-                    console.log(val);
-                    alert(val.sj);
-                },
-
+                }
             }
         });
 
@@ -257,7 +231,6 @@ function _Define() {
     //初始化vue绑定的对象
     this.vueInit = function () {
         _this.dataParam = {};
-        _this.windowParam = {};
         _this.searchParam = {};
         _this.screenParam = {};
         _this.service = "";
@@ -270,6 +243,6 @@ function _Define() {
         _this.vueInit();
         _this.beforeVue();
         _this.vue();
-    }, 200);
+    }, 100);
 }
 var define = new _Define();

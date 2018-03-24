@@ -186,6 +186,6 @@
         _this.vueInit();
         _this.beforeVue();
         _this.vue();
-    }, 200);
+    }, 100);
 }
 var define = new _Define();

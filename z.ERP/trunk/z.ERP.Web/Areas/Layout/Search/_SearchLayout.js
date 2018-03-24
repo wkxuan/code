@@ -69,7 +69,7 @@
                     } else {
                         this.$Message.error("尚未提供导出方法!");
                     }
-                    //继续
+                
                 },
                 //打印待完善
                 print: function (event) {
@@ -79,7 +79,7 @@
                     } else {
                         this.$Message.error("尚未提供打印方法!");
                     }
-                    //继续
+              
                 },
 
                 add: function (event) {
@@ -138,13 +138,13 @@
             return (!ve.screenParamData.dataDef) || (ve.screenParamData.dataDef.length == 0)
         }
     }
-    //新增链接的地址
+
     this.addHref = function () {
     }
-    //修改链接的地址
+
     this.modHref = function (row, index) {
     }
-    //查看链接的地址
+
     this.browseHref = function (row, index) {
     }
 

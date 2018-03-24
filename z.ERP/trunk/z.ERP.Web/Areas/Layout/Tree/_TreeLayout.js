@@ -1,34 +1,30 @@
 ﻿function _Define() {
     var _this = this;
 
-    //vue之前的操作(主要是实现v-model绑定数据的声明)
     this.beforeVue = function () { }
 
-    //控件是否可用，扩展函数,待完善
+
     this.enabled = function (val) { return val; }
 
-    //校验保存前数据是否合法,前端验证，非空的可以加上
+
     this.IsValidSave = function (_self) {
         return true;
     }
 
-    //添加的标记
+
     this.AddTar;
 
     this.Key;
 
-    //添加后初始化数据信息
+
     this.newRecord = function () { }
 
-    //vue操作
+
     this.vue = function VueOperate() {
         var options = {
             el: '#def_Main',
             data: {
-                //dataParam 数据库交互需要传输的内容
-                //screenParam屏幕显示的内容
                 dataParam: _this.dataParam,
-                windowParam: _this.windowParam,
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 disabled: _this.enabled(true),
@@ -36,7 +32,7 @@
             },
             mounted: showlist,
             methods: {
-                //添加
+                
                 addtj: function (event) {
                     _this.dataParam = {};
                     _this.newRecord();
@@ -51,7 +47,7 @@
                     ve.dataParam = _this.dataParam;
                     ve.disabled = _this.enabled(false);
                 },
-                //修改
+                
                 mod: function (event) {
                     if (!ve._key) {
                         this.$Message.error("请选择数据");
@@ -60,7 +56,7 @@
                     ve._key = define.dataParam[_this.Key];
                     ve.disabled = _this.enabled(false);
                 },
-                //保存
+                
                 save: function (event) {
                     var _self = this;
                     save(function (data) {
@@ -72,7 +68,7 @@
                         });
                     })
                 },
-                //取消
+                
                 quit: function (event) {
                     if (ve._key) {
                         this.$Modal.confirm({
@@ -93,7 +89,7 @@
                     }
 
                 },
-                //删除
+                
                 del: function (event) {
                     var _self = this;
                     if (!ve._key) {
@@ -106,7 +102,7 @@
                         onOk: function () {
                             deleteone(ve.dataParam, function () {
                                 showlist();
-                                //删除完,界面清空
+                       
                                 _this.dataParam = {};
                                 ve.dataParam = _this.dataParam;
                                 _self.$Message.info("删除成功");
@@ -118,14 +114,10 @@
                     });
                     ve.disabled = _this.enabled(true);
                 },
-                //列表选中
-                //参数:currentRow当前数据
-                //oldCurrentRow上一次选中的数据
+      
                 showlist: function (currentRow, oldCurrentRow) {
                     var p = currentRow && currentRow[0] && currentRow[0];
-                    //this.Key = p.code;
                     ve._key = p.code;
-                    //if (p.children.length == 0)
                     showone(p.code);
                 },
                 seachList: function (event) {
@@ -183,10 +175,9 @@
         }
     }
 
-    //初始化vue绑定的对象
+
     this.vueInit = function () {
         _this.dataParam = {};
-        _this.windowParam = {};
         _this.searchParam = {};
         _this.screenParam = {};
         _this.service = "";
@@ -194,11 +185,10 @@
         _this.methodList = "";
     }
 
-    //延时
     setTimeout(function () {
         _this.vueInit();
         _this.beforeVue();
         _this.vue();
-    }, 200);
+    }, 100);
 }
 var define = new _Define();
