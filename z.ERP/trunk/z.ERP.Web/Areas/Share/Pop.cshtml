@@ -19,6 +19,9 @@
         case "FeeSubject":
             <Feesubject v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></Feesubject>
             break;
+        case "Pay":
+            <Pay v-on:setdialog="@Model.CallBack" v-bind:parenttochild="@Model.ParentObj"></Pay>
+            break;
 
     }
     

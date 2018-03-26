@@ -13,6 +13,7 @@
     "/Areas/Pop/PopBrand.js",
     "/Areas/Pop/PopShop.js",
     "/Areas/Pop/PopFeeSubject.js",
+    "/Areas/Pop/PopPay.js",
 });
 }
 @section baseParam{
@@ -71,6 +72,33 @@
                     PopLx = "FeeSubject",
                     CallBack = "FeeSubjectBack",
                     ParentObj = "screenParam.ParentFeeSubject"
+                });
+            }
+        </i-col>
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopPayFeeSubject",
+                    Caption = "费用项目查询",
+                    Width = "760",
+                    PopLx = "FeeSubject",
+                    CallBack = "PayFeeSubjectBack",
+                    ParentObj = "screenParam.ParentFeeSubject"
+                });
+            }
+        </i-col>
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopPay",
+                    Caption = "收款方式查询",
+                    Width = "760",
+                    PopLx = "Pay",
+                    CallBack = "PayBack",
+                    ParentObj = "screenParam.ParentPay"
                 });
             }
         </i-col>
@@ -393,6 +421,8 @@
                 Icon = "plus-circled"
             });
         }
+
+
         <i-table height="200" size="small" :border="true"
                  :columns="screenParam.colDefRENT" :data="dataParam.CONTRACT_RENT" ref="selectRent"></i-table>
     </i-col>
@@ -486,6 +516,28 @@
 </row>
 <row>
     <i-col>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "srchPay",
+                Text = "选择收款方式",
+                Enable = true,
+                Type = "primary",
+                Icon = "plus-circled"
+            });
+        }
+
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "srchPayCost",
+                Text = "选择费用项目",
+                Enable = true,
+                Type = "primary",
+                Icon = "plus-circled"
+            });
+        }
+
         @{
             RenderControl(new ButtonRender()
             {

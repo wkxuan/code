@@ -113,6 +113,19 @@ namespace z.ERP.Services
                 dt = dt.ToOneLine()
             };
         }
+        public object GetFeeSubject(FEESUBJECTEntity Data)
+        {
+            string sql = " SELECT  * FROM " +
+                "  FEESUBJECT A" +
+                "  WHERE  1 = 1 ";
+            if (!Data.TRIMID.IsEmpty())
+                sql += " AND A.TRIMID='" + Data.TRIMID + "'";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
+        }
 
         public object GetBill(BILLEntity Data)
         {

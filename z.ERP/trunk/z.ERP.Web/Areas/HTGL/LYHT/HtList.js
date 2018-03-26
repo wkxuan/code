@@ -16,22 +16,23 @@
     search.service = "HtglService";
     search.method = "GetContract";
 }
-//浏览双击跳转页面
+
 search.browseHref = function (row, index) {
     _.OpenPage({
-        id: 1,
-        title: '合同详情',
+        id: 10600101,
+        title: '联营租约详情',
         url: "HTGL/LYHT/HtDetail/" + row.CONTRACTID
     });
 }
-//添加跳转页面
+
 search.addHref = function (row) {
-    //联营
-    _.OpenPage("HTGL/LYHT/HtEdit/", function (data) {
+    _.OpenPage({
+        id: 10600102,
+        title: '新增联营租约',
+        url: "HTGL/LYHT/HtEdit/"
     });
 }
 
-//修改跳转页面,并且要根据单号查出来相关的数据信息
 search.modHref = function (row, index) {
     _.Search({
         Service: search.service,
@@ -40,15 +41,21 @@ search.modHref = function (row, index) {
         Success: function (data) {
             if (data.rows[0].STATUS == 1) {
                 if (data.rows[0].STYLE == 2) {
-                    _.OpenPage("HTGL/LYHT/HtEdit/" + row.CONTRACTID, function (data) {
+                    _.OpenPage({
+                        id: 10600103,
+                        title: '修改联营租约',
+                        url: "HTGL/LYHT/HtEdit/" + row.CONTRACTID
                     });
                 };
                 if (data.rows[0].STYLE == 1) {
-                    _.OpenPage("HTGL/ZLHT/HtEdit/" + row.CONTRACTID, function (data) {
+                    _.OpenPage({
+                        id: 10600203,
+                        title: '修改租赁租约',
+                        url: "HTGL/ZLHT/HtEdit/" + row.CONTRACTID
                     });
                 }
             } else {
-                iview.Message.info('当前商户信息不是未审核状态,不能编辑!');
+                iview.Message.info('当前租约信息不是未审核状态,不能编辑!');
                 return;
             }
         }

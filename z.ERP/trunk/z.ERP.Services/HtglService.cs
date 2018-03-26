@@ -19,16 +19,17 @@ namespace z.ERP.Services
         }
         public DataGridResult GetContract(SearchItem item)
         {
-            ProTest info = new ProTest()
-            {
-                Id = 1
-            };
-            var ii = DbHelper.ExecuteProcedure(info);
+            //ProTest info = new ProTest()
+            //{
+            //    Id = 1
+            //};
+            //var ii = DbHelper.ExecuteProcedure(info);
+
             string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME FROM CONTRACT A,BRANCH B,MERCHANT C " +
                          " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID ";
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
             item.HasArrayKey("STYLE", a => sql += $" and A.STYLE in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
-            sql += " ORDER BY   A.CONTRACTID DESC";
+            sql += " ORDER BY  A.CONTRACTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
@@ -89,7 +90,9 @@ namespace z.ERP.Services
             {
                 throw new LogicException("请确认租约编号!");
             }
-            string sql = $@"SELECT A.*,B.NAME MERNAME FROM CONTRACT A,MERCHANT B WHERE A.MERCHANTID=B.MERCHANTID ";
+            string sql = $@"SELECT A.*,B.NAME MERNAME,C.NAME FDNAME,D.ORGNAME  FROM CONTRACT A,MERCHANT B,";
+            sql += "   BRANCH C, ORG D WHERE A.MERCHANTID=B.MERCHANTID ";
+            sql += " AND A.BRANCHID=C.ID AND A.ORGID=D.ORGID ";
             sql += (" AND CONTRACTID= " + Data.CONTRACTID);
             DataTable contract = DbHelper.ExecuteTable(sql);
             if (!contract.IsNotNull())
@@ -98,6 +101,8 @@ namespace z.ERP.Services
             }
 
             contract.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            contract.NewEnumColumns<联营合同合作方式>("OPERATERULE", "OPERATERULEMC");
+            
 
 
             string sqlitem = $@"SELECT B.BRANDID,C.NAME " +
@@ -131,13 +136,13 @@ namespace z.ERP.Services
             ContractRentParm.CONTRACT_RENTITEM = DbHelper.SelectList(new CONTRACT_RENTITEMEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
 
 
-            string sqlPay = $@"SELECT * FROM CONTRACT_PAY WHERE 1=1 ";
-            sqlPay += (" AND CONTRACTID= " + Data.CONTRACTID);
-            sqlPay += " ORDER BY PAYID,STARTDATE";
+            string sqlPay = $@"SELECT A.*,B.NAME,C.NAME TERMNAME FROM CONTRACT_PAY A,PAY B,FEESUBJECT C WHERE A.PAYID=B.PAYID AND A.TERMID=C.TRIMID ";
+            sqlPay += (" AND A.CONTRACTID= " + Data.CONTRACTID);
+            sqlPay += " ORDER BY A.PAYID,A.STARTDATE";
             DataTable contract_pay = DbHelper.ExecuteTable(sqlPay);
 
 
-            string sqlCost = $@"SELECT * FROM CONTRACT_COST WHERE 1=1 ";
+            string sqlCost = $@"SELECT A.*,B.NAME FROM CONTRACT_COST A,FEESUBJECT B WHERE A.TERMID=B.TRIMID ";
             sqlCost += (" AND CONTRACTID= " + Data.CONTRACTID);
             sqlCost += " ORDER BY TERMID,STARTDATE";
             DataTable contract_cost = DbHelper.ExecuteTable(sqlCost);

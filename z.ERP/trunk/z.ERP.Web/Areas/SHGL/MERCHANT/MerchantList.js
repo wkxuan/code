@@ -10,7 +10,7 @@
         { title: '地址', key: 'ADRESS', width: 200 },
         { title: '联系人', key: 'CONTACTPERSON', width: 80 },
         { title: '联系人电话', key: 'PHONE', width: 100 },
-        { title: '状态', key: 'STATUS', width: 80 },
+       // { title: '状态', key: 'STATUS', width: 80 },
         { title: '编辑人', key: 'REPORTER_NAME', width: 80 },
         { title: '编辑时间', key: 'REPORTER_TIME', width: 150 },
         { title: '审核人', key: 'VERIFY_NAME', width: 80 },
@@ -23,7 +23,7 @@
 
 search.browseHref = function (row, index) {
     _.OpenPage({
-        id: 1,
+        id: 1020011,
         title: '商户信息浏览',
         url: "SHGL/MERCHANT/Detail/" + row.MERCHANTID
     });
@@ -31,15 +31,15 @@ search.browseHref = function (row, index) {
 search.addHref = function (row) {
 
     _.OpenPage({
-        id: 1,
-        title: '商户编辑',
+        id: 1020012,
+        title: '新增商户',
         url: "SHGL/MERCHANT/MerchantEdit/"
     });
 };
 search.modHref = function (row, index) {
     _.OpenPage({
-        id: 1,
-        title: '商户编辑',
+        id: 1020012,
+        title: '修改商户',
         url: "SHGL/MERCHANT/MerchantEdit/" + row.MERCHANTID
     });
 };

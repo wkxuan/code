@@ -227,6 +227,7 @@
     <Content Include="Areas\Layout\Edit\_Edit.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
+    <Content Include="Areas\Pop\PopPay.js" />
     <Content Include="Areas\Pop\PopFeeSubject.js" />
     <Content Include="Areas\Pop\PopShop.js" />
     <Content Include="Areas\Pop\PopBrand.js" />

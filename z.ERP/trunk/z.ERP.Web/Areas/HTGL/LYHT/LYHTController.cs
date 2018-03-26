@@ -71,6 +71,12 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         }
 
 
+        public UIResult GetFeeSubject(FEESUBJECTEntity Data)
+        {
+            return new UIResult(service.DataService.GetFeeSubject(Data));
+        }
+
+
         public UIResult lyYdFj(List<CONTRACT_RENTEntity> Data,CONTRACTEntity ContractData)
         {
             return new UIResult(service.HtglService.LyYdfj(Data, ContractData));

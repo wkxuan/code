@@ -17,6 +17,7 @@
     editDetail.screenParam.ParentBrand = {};
     editDetail.screenParam.ParentShop = {};
     editDetail.screenParam.ParentFeeSubject = {};
+    editDetail.screenParam.ParentPay = {};
 
 
     //品牌表格
@@ -41,7 +42,6 @@
                                 Vue.set(editDetail.dataParam.CONTRACT_BRAND[params.index], 'NAME', data.dt.NAME);
                             }else{
                                 iview.Message.info('当前品牌不存在!');
-                                Vue.set(editDetail.dataParam.CONTRACT_BRAND[params.index], 'BRANDID', "");
                             }
                         });
                     }
@@ -80,8 +80,6 @@
                             }
                             else{
                                 iview.Message.info('当前单元代码不存在或者不属于当前分店卖场!');
-                                Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'CODE', "");
-                                Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'SHOPID', "");
                             }
                         });
                     }
@@ -139,7 +137,7 @@
             title: '开始日期', key: 'STARTDATE', width: 150,
             render: function (h, params) {  
                 return h('div',   
-                  new Date(params.row.STARTDATE).Format('yyyy-MM-dd'));
+                 formatDate(new Date(params.row.STARTDATE)))
             },
         },
         { title: '结束日期', key: 'ENDDATE', width: 150},
@@ -169,7 +167,7 @@
             key: 'STARTDATE',
             width: 150,
         },
-        {
+       {
            title: '结束日期',
            key: 'ENDDATE',
            width: 150,
@@ -186,7 +184,7 @@
                })
            },
         },
-        {
+       {
             title: "保底(毛利or销售)", key: 'RENTS', width: 150,
             render: function (h, params) {
                 return h('Input', {
@@ -201,7 +199,7 @@
                 })
             },           
         },
-        {
+       {
             title: "保底扣点", key: 'RENTS_JSKL', width: 120,
             render: function (h, params) {
                 return h('Input', {
@@ -216,7 +214,7 @@
                 })
             },           
         },
-        { title: "总保底(毛利or销售)", key: 'SUMRENTS', width: 150},
+       { title: "总保底(毛利or销售)", key: 'SUMRENTS', width: 150},
     ];
 
     //月度分解表格
@@ -226,7 +224,6 @@
         { title: '结束日期', key: 'ENDDATE', width: 150},
         { title: '年月', key: 'YEARMONTH', width: 100},
         { title: '保底销售or毛利', key: 'RENTS', width: 200},
-        //{ title: '生成日期', key: 'CREATEDATE',width: 170},
         {  title: '清算标记', key: 'QSBJ',width: 150,
             render: function(h, params){
                 return h('Select', {
@@ -235,12 +232,23 @@
                     },
                     on: {
                         'on-change': function (event) {
-                            Vue.set(editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM[params.index], 'QSBJ', event);
+                            var len = 0;
+                            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                                var lenold = len;
+                                len += editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM.length;
+                                var colIndex = params.index + 1;
+
+                                if ((colIndex > lenold) && (colIndex <= len))
+                                {
+                                    editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[params.index - lenold].QSBJ = event;
+                                    break;
+                                }
+                            };
                         }
                     }
                 },
-                [ h('Option', {props: {value: '1'} }, '√'),
-                  h('Option', {props: {value: '2'} }, '')
+                [ h('Option', {props: {value: "1"} }, '清算'),
+                  h('Option', {props: {value: "2"} }, '不清算')
                 ])
             }
         },
@@ -258,8 +266,19 @@
                        value: params.row.TERMID
                    },
                    on: {
-                       'on-blur': function (event) {
+                       'on-enter': function (event) {
+                           _self = this;
                            editDetail.dataParam.CONTRACT_COST[params.index].TERMID = event.target.value;
+
+                           _.Ajax('GetFeeSubject', {
+                               Data: { TRIMID: event.target.value }
+                           }, function (data) {
+                               if (data.dt) {
+                                   Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'NAME', data.dt.NAME);
+                               } else {
+                                   iview.Message.info('当前费用项目不存在!');
+                               }
+                           });
                        }
                    },
                })
@@ -309,12 +328,12 @@
                     },
                     on: {
                         'on-change': function (event) {
-                            Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'SFFS', event);
+                           Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'SFFS', event);
                         }
                     }
                 },
-                [ h('Option', { props: { value: '1' } }, '按日计算固定金额'),
-                  h('Option', { props: { value: '2' } }, '月固定金额')
+                [ h('Option', { props: { value: 1 } }, '按日计算固定金额'),
+                  h('Option', { props: { value: 2 } }, '月固定金额')
                 ])
             }
         },
@@ -338,21 +357,7 @@
     //收款方式手续费
     editDetail.screenParam.colDefPAY = [
         { type: 'selection', width: 60, align: 'center', },
-        {
-            title: "收款方式", key: 'PAYID', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.PAYID
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            editDetail.dataParam.CONTRACT_PAY[params.index].PAYID = event.target.value;
-                        }
-                    },
-                })
-            },
-        },
+        { title: "收款方式", key: 'PAYID', width: 120,},
         { title: "收款方式名称", key: 'NAME', width: 120 },
         {
             title: "费用项目", key: 'TERMID', width: 120,
@@ -362,8 +367,19 @@
                         value: params.row.TERMID
                     },
                     on: {
-                        'on-blur': function (event) {
+                        'on-enter': function (event) {
+                            _self = this;
                             editDetail.dataParam.CONTRACT_PAY[params.index].TERMID = event.target.value;
+
+                            _.Ajax('GetFeeSubject', {
+                                Data: { TRIMID: event.target.value }
+                            }, function (data) {
+                                if (data.dt) {
+                                    Vue.set(editDetail.dataParam.CONTRACT_PAY[params.index], 'TERMNAME', data.dt.NAME);
+                                } else {
+                                    iview.Message.info('当前费用项目不存在!');
+                                }
+                            });
                         }
                     },
                 })
@@ -424,56 +440,14 @@
 
 
     //表格数据初始化
-    if (!editDetail.dataParam.CONTRACT_BRAND) {
-        editDetail.dataParam.CONTRACT_BRAND = [{
-            BRANDID: ""
-        }]
-    };
-
-    if (!editDetail.dataParam.CONTRACT_SHOP) {
-        editDetail.dataParam.CONTRACT_SHOP = [{
-            CODE: ""
-        }]
-    };
-
-    if (!editDetail.dataParam.CONTRACT_RENT) {
-        editDetail.dataParam.CONTRACT_RENT = [{
-            INX: 1,
-            STARTDATE:editDetail.dataParam.CONT_START
-        }]
-    };
-
-    if (!editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM) {
-        editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM = [{
-            INX: 1,
-            RENTS:0
-        }]
-    }; 
-
-    if (!editDetail.dataParam.CONTRACT_GROUP) {
-        editDetail.dataParam.CONTRACT_GROUP = [{
-            GROUPNO:1
-        }]
-    };
-
-    if (!editDetail.dataParam.CONTJSKL) {
-        editDetail.dataParam.CONTJSKL = [{
-            GROUPNO: 1,
-            INX:1
-        }]
-    };
-    if (!editDetail.dataParam.CONTRACT_COST) {
-        editDetail.dataParam.CONTRACT_COST = [{
-            COST: 0
-        }]
-    };
-
-    if (!editDetail.dataParam.CONTRACT_PAY) {
-        editDetail.dataParam.CONTRACT_PAY = [{
-            KL: 0
-        }]
-    };
-    
+    editDetail.dataParam.CONTRACT_BRAND = editDetail.dataParam.CONTRACT_BRAND || [];
+    editDetail.dataParam.CONTRACT_SHOP = editDetail.dataParam.CONTRACT_SHOP || [];
+    editDetail.dataParam.CONTRACT_RENT = editDetail.dataParam.CONTRACT_RENT || [];
+    editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM = editDetail.dataParam.CONTRACT_RENT.CONTRACT_RENTITEM || [];
+    editDetail.dataParam.CONTRACT_GROUP = editDetail.dataParam.CONTRACT_GROUP || [];
+    editDetail.dataParam.CONTJSKL = editDetail.dataParam.CONTJSKL || [];
+    editDetail.dataParam.CONTRACT_COST = editDetail.dataParam.CONTRACT_COST || [];
+    editDetail.dataParam.CONTRACT_PAY = editDetail.dataParam.CONTRACT_PAY || [];    
     //这里待考虑
     calculateArea = function () {
         editDetail.dataParam.AREA_BUILD = 0;
@@ -489,10 +463,6 @@
 }
 
 editDetail.otherMethods = {
-
-    SrchCONT_START: function (starTime) {
-        console.log(starTime)
-    },
     //点击商户弹窗
     Merchant : function () {
        Vue.set(editDetail.screenParam, "PopMerchant", true);
@@ -502,7 +472,14 @@ editDetail.otherMethods = {
         Vue.set(editDetail.screenParam, "PopMerchant", false);
         editDetail.dataParam.MERCHANTID = val.sj[0].MERCHANTID;
         editDetail.dataParam.MERNAME = val.sj[0].NAME;
-        console.log(val);
+
+
+        _.Ajax('SearchMerchantBrand', {
+            Data: { MERCHANTID: editDetail.dataParam.MERCHANTID }
+        }, function (data) {
+            
+        });
+        
     },
     //点击品牌弹窗
     srchColPP: function () {
@@ -534,6 +511,10 @@ editDetail.otherMethods = {
         calculateArea();
     },
 
+    srchCost: function () {
+        Vue.set(editDetail.screenParam, "PopFeeSubject", true);
+    },
+
     FeeSubjectBack: function (val) {
         Vue.set(editDetail.screenParam, "PopFeeSubject", false);
         var maxIndex = 1;
@@ -555,9 +536,41 @@ editDetail.otherMethods = {
         };
     },
 
-    srchCost: function () {
-        Vue.set(editDetail.screenParam, "PopFeeSubject", true);
+
+
+    srchPay: function () {
+        Vue.set(editDetail.screenParam, "PopPay", true);
     },
+    PayBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopPay", false);
+        for (var i = 0; i < val.sj.length; i++) {
+            editDetail.dataParam.CONTRACT_PAY.push(val.sj[i]);
+        }
+    },
+
+    srchPayCost: function () {
+        var selectton = this.$refs.selectPay.getSelection();
+        if (selectton.length == 0) {
+            iview.Message.info("请先添加收款方式并且选中收款方式!");
+            return;
+        };
+        Vue.set(editDetail.screenParam, "PopPayFeeSubject", true);
+    },
+
+    PayFeeSubjectBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopPayFeeSubject", false);
+
+        var selectton = this.$refs.selectPay.getSelection().length;
+
+        var numbers = [selectton, val.sj.length];
+        var minInNumbers = Math.min.apply(Math, numbers);
+
+        for (var i = 0; i < minInNumbers; i++) {
+            Vue.set(editDetail.dataParam.CONTRACT_PAY[i], 'TERMID', val.sj[i].TRIMID);
+            Vue.set(editDetail.dataParam.CONTRACT_PAY[i], 'TERMNAME', val.sj[i].NAME);
+        }
+    },
+
     //添加品牌
     addColPP: function () {
         var temp = editDetail.dataParam.CONTRACT_BRAND || [];
@@ -1005,9 +1018,7 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILLID = data.contract.CONTRACTID;
         editDetail.dataParam.CONTRACT_BRAND = data.contractBrand;
         editDetail.dataParam.CONTRACT_SHOP = data.contractShop;
-        console.log(data.ContractParm.CONTRACT_RENT);
-        editDetail.dataParam.CONTRACT_RENT = data.ContractParm.CONTRACT_RENT;
-        console.log(editDetail.dataParam.CONTRACT_RENT);
+        editDetail.dataParam.CONTRACT_RENT = data.ContractParm.CONTRACT_RENT;;
         editDetail.dataParam.CONTRACT_GROUP = data.ContractParm.CONTRACT_GROUP;
         editDetail.dataParam.CONTJSKL = data.ContractParm.CONTJSKL;
         Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data.ContractRentParm.CONTRACT_RENTITEM);

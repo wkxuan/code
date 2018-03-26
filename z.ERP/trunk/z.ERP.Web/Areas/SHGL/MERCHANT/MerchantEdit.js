@@ -10,8 +10,8 @@
     editDetail.screenParam.ParentBrand = {};
 
     editDetail.screenParam.colDef = [
+    { type: 'selection', width: 60, align: 'center'},
     {
-        type: 'selection', width: 60, align: 'center',
         title: "品牌代码", key: 'BRANDID', width: 100,
         render: function (h, params) {
             return h('Input', {
@@ -26,9 +26,14 @@
                         _.Ajax('GetBrand', {
                             Data: { ID: event.target.value }
                         }, function (data) {
-                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'NAME', data.dt.NAME);
-                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYCODE', data.dt.CATEGORYCODE);
-                            Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYNAME', data.dt.CATEGORYNAME);
+                            if (data.dt) {
+                                Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'NAME', data.dt.NAME);
+                                Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYCODE', data.dt.CATEGORYCODE);
+                                Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYNAME', data.dt.CATEGORYNAME);
+                            }
+                            else {
+                                iview.Message.info('当前品牌不存在!');
+                            }
                         });
                     }
                 },
@@ -62,11 +67,7 @@
     }
     ];
 
-    if (!editDetail.dataParam.MERCHANT_BRAND) {
-        editDetail.dataParam.MERCHANT_BRAND = [{
-            NAME: ""
-        }]
-    };
+    editDetail.dataParam.MERCHANT_BRAND = editDetail.dataParam.MERCHANT_BRAND || [];
 };
 
 editDetail.otherMethods = {
@@ -116,4 +117,37 @@ editDetail.showOne = function (data, callback) {
 editDetail.clearKey = function () {
     editDetail.dataParam.MERCHANTID = null;
     editDetail.dataParam.NAME = null;
+    editDetail.dataParam.SH = null;
+    editDetail.dataParam.BANK_NAME = null;
+    editDetail.dataParam.BANK = null;
+    editDetail.dataParam.ADRESS = null;
+    editDetail.dataParam.CONTACTPERSON = null;
+    editDetail.dataParam.PHONE = null;
+    editDetail.dataParam.PIZ = null;
+    editDetail.dataParam.WEIXIN = null;
+    editDetail.dataParam.QQ = null;
+    editDetail.dataParam.MERCHANT_BRAND = [];
+}
+
+
+editDetail.IsValidSave = function () {
+
+
+    if (!editDetail.dataParam.NAME) {
+        iview.Message.info("请商户名称!");
+        return false;
+    };
+    
+    if (editDetail.dataParam.MERCHANT_BRAND.length == 0) {
+        iview.Message.info("请确定品牌!");
+        return false;
+    } else {
+        for (var i = 0; i < editDetail.dataParam.MERCHANT_BRAND.length; i++) {
+            if (!editDetail.dataParam.MERCHANT_BRAND[i].BRANDID) {
+                iview.Message.info("请确定品牌!");
+                return false;
+            };
+        };
+    };
+    return true;
 }

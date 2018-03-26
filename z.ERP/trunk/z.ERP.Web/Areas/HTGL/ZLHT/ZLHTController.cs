@@ -14,7 +14,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
 {
     public class ZLHTController: BaseController
     {
-        [Permission("2")]
+       // [Permission("2")]
         public ActionResult HtList()
         {
             ViewBag.Title = "租约列表信息";
@@ -33,7 +33,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             return service.HtglService.SaveContract(SaveData);
         }
 
-        [Permission("1")]
+        //[Permission("1")]
         public UIResult SearchContract(CONTRACTEntity Data)
         {
             var res = service.HtglService.GetContractElement(Data);
@@ -59,8 +59,10 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         {
             return new UIResult(service.DataService.GetShop(Data));
         }
-
-
+        public UIResult GetFeeSubject(FEESUBJECTEntity Data)
+        {
+            return new UIResult(service.DataService.GetFeeSubject(Data));
+        }
         public UIResult zlYdFj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
         {
             return new UIResult(service.HtglService.zlYdFj(Data, ContractData));
