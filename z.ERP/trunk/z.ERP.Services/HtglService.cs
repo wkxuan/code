@@ -102,7 +102,10 @@ namespace z.ERP.Services
 
             contract.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             contract.NewEnumColumns<联营合同合作方式>("OPERATERULE", "OPERATERULEMC");
+            contract.NewEnumColumns<合作方式>("OPERATERULE", "OPERATERULENAME");
             
+
+
 
 
             string sqlitem = $@"SELECT B.BRANDID,C.NAME " +
@@ -146,6 +149,8 @@ namespace z.ERP.Services
             sqlCost += (" AND CONTRACTID= " + Data.CONTRACTID);
             sqlCost += " ORDER BY TERMID,STARTDATE";
             DataTable contract_cost = DbHelper.ExecuteTable(sqlCost);
+
+            contract_cost.NewEnumColumns<月费用收费方式>("SFFS", "SFFSMC");
 
 
             return new Tuple<dynamic, DataTable, DataTable, CONTRACTEntity, CONTRACT_RENTEntity, DataTable, DataTable>(
@@ -340,6 +345,46 @@ namespace z.ERP.Services
 
             }
             return zjfjList;
+        }
+
+
+        public void DeleteContract(List<CONTRACTEntity> DeleteData)
+        {
+            foreach (var con in DeleteData)
+            {
+                CONTRACTEntity Data = DbHelper.Select(con);
+                if (Data.STATUS != ((int)普通单据状态.未审核).ToString())
+                {
+                    throw new LogicException($"租约({Data.CONTRACTID})已经不是未审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var con in DeleteData)
+                {
+                    DbHelper.Delete(con);
+                }
+                Tran.Commit();
+            }
+        }
+
+        public string ExecData(CONTRACTEntity Data)
+        {
+            CONTRACTEntity con = DbHelper.Select(Data);
+            if (con.STATUS != ((int)普通单据状态.未审核).ToString())
+            {
+                throw new LogicException($"租约({Data.CONTRACTID})已经不是未审核不能继续审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                con.VERIFY = employee.Id;
+                con.VERIFY_NAME = employee.Name;
+                con.VERIFY_TIME = DateTime.Now.ToString();
+                con.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(con);
+                Tran.Commit();
+            }
+            return con.CONTRACTID;
         }
     }
 }

@@ -80,5 +80,15 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             return new UIResult(service.HtglService.zlYdFj(Data, ContractData));
         }
 
+        public void Delete(List<CONTRACTEntity> DeleteData)
+        {
+            service.HtglService.DeleteContract(DeleteData);
+        }
+
+        public void ExecData(CONTRACTEntity Data)
+        {
+            service.HtglService.ExecData(Data);
+        }
+
     }
 }

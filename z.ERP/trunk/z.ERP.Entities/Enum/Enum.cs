@@ -15,10 +15,19 @@ namespace z.ERP.Entities.Enum
     public enum 合作方式
     {
         纯扣 = 1,
-        纯保底 = 2,
+        纯租 = 2,
         保底与流水取高 = 3,
         保底与流水取和 = 4,
     }
+
+    public enum 月费用收费方式
+    {
+        按日计算固定金额=1,
+        月固定金额=2
+
+    }
+
+
     public enum 阶梯式标记
     {
         阶梯式 = 1,
