@@ -1,9 +1,35 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Web.Areas.Layout.EditDetail
+@using z.ERP.Web.Areas.Layout.Edit
 @using z.ERP.Entities.Enum
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
+
+@section head{
+
+    @InitFiles(new string[] {
+    "/Areas/Pop/PopMerchant.js",
+    "/Areas/Pop/PopContract.js",
+    "/Areas/Pop/PopBrand.js",
+    "/Areas/Pop/PopShop.js",
+    "/Areas/Pop/PopFeeSubject.js",
+});
+}
 
 @section baseParam{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopContract",
+                    Caption = "合同查询",
+                    Width = "760",
+                    PopLx = "Contract",
+                    CallBack = "ContractBack",
+                    ParentObj = "screenParam.ParentContract"
+                });
+            }
+        </i-col>
+    </row>
     <row>
         @*<i-col span="2" class="RowTitle">
             商品代码
@@ -77,17 +103,20 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            租约号
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "Contract",
+                    Text = "租约",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
         </i-col>
         <i-col span="6">
             <i-input v-model="dataParam.CONTRACTID"  v-on:on-enter="changge">
             </i-input>
-            @*@{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CONTRACTID",
-                });
-            }*@
+
         </i-col>
 
         <i-col span="2" class="RowTitle">

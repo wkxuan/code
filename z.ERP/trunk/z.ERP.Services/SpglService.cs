@@ -33,7 +33,7 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
-        public Tuple<dynamic> GetGoodsDetail(GOODSEntity Data)
+        public Tuple<dynamic, DataTable> GetGoodsDetail(GOODSEntity Data)
         {
             string sql = $@"select * from GOODS where 1=1 ";
             if (!Data.GOODSDM.IsEmpty())
@@ -42,7 +42,14 @@ namespace z.ERP.Services
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             dt.NewEnumColumns<商品类型>("TYPE", "TYPEMC");
             dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
-            return new Tuple<dynamic>(dt.ToOneLine());
+            string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
+                "  FROM GOODS_SHOP G,SHOP S,CATEGORY Y  " +
+                "  WHERE G.SHOPID=S.SHOPID AND G.CATEGORYID= Y.CATEGORYID";
+            if (!Data.GOODSID.IsEmpty())
+                sqlshop += (" and G.GOODSID= " + Data.GOODSID);
+            DataTable dtshop = DbHelper.ExecuteTable(sqlshop);
+
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtshop);
         }
 
         public string SaveGoods (GOODSEntity SaveData)

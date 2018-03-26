@@ -16,6 +16,8 @@
             GOODSID: ""
         }]
     };
+
+    editDetail.screenParam.ParentContract = {};
 }
 
 editDetail.showOne = function (data, callback) {
@@ -52,5 +54,31 @@ editDetail.otherMethods = {
 
         })
 
-    }
+    },
+
+    //点击合同弹窗
+    Contract: function () {
+        Vue.set(editDetail.screenParam, "PopContract", true);
+    },
+    //合同弹窗返回
+    ContractBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopContract", false);
+        editDetail.dataParam.CONTRACTID = val.sj[0].CONTRACTID;
+        _.Ajax('GetContract', {
+            Data: { CONTRACTID: editDetail.dataParam.CONTRACTID }
+        }, function (data) {
+            if (data.contract.length > 0) {
+                editDetail.dataParam.MERCHANTID = data.contract[0].MERCHANTID;
+                editDetail.dataParam.STYLE = data.contract[0].STYLE;
+                editDetail.dataParam.STYLEMC = data.contract[0].STYLEMC;
+                editDetail.dataParam.SHMC = data.contract[0].SHMC;
+                editDetail.dataParam.GOODS_SHOP = data.shop;
+            }
+            else {
+                editDetail.dataParam.MERCHANTID = null;
+                editDetail.dataParam.SHMC = null;
+            }
+
+        })
+    },
 }

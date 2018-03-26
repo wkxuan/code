@@ -27,6 +27,7 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
             ViewBag.Title = "浏览商品信息";
             var entity = service.SpglService.GetGoodsDetail(new GOODSEntity(Id));
             ViewBag.goods = entity.Item1;
+            ViewBag.goodsshop = entity.Item2;
             return View(entity);
         }
 
