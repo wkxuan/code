@@ -32,7 +32,19 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         {
             return service.HtglService.SaveContract(SaveData);
         }
-
+        public ActionResult HtDetail(string Id)
+        {
+            ViewBag.Title = "租赁租约浏览";
+            var entity = service.HtglService.GetContractElement(new CONTRACTEntity(Id));
+            ViewBag.contract = entity.Item1;
+            ViewBag.contractBrand = entity.Item2;
+            ViewBag.contractShop = entity.Item3;
+            ViewBag.ContractParm = entity.Item4;
+            ViewBag.ContractRentParm = entity.Item5;
+            ViewBag.contractPay = entity.Item6;
+            ViewBag.contractCost = entity.Item7;
+            return View();
+        }
         //[Permission("1")]
         public UIResult SearchContract(CONTRACTEntity Data)
         {

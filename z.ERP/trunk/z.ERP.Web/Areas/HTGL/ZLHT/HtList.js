@@ -18,11 +18,21 @@
 }
 
 search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 10600201,
-        title: '租赁租约详情',
-        url: "HTGL/ZLHT/HtDetail/" + row.CONTRACTID
-    });
+
+    if (row.STYLE == 2) {
+        _.OpenPage({
+            id: 10600101,
+            title: '联营租约详情',
+            url: "HTGL/LYHT/HtDetail/" + row.CONTRACTID
+        });
+    };
+    if (row.STYLE == 1) {
+        _.OpenPage({
+            id: 10600201,
+            title: '租赁租约详情',
+            url: "HTGL/ZLHT/HtDetail/" + row.CONTRACTID
+        })
+    };
 }
 
 search.addHref = function (row) {
