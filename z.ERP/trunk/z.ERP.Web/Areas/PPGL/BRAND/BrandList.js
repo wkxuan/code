@@ -22,15 +22,24 @@
 }
 
 search.browseHref = function (row, index) {
-    _.OpenPage("PPGL/BRAND/BrandDetail/" + row.ID, function (data) {
+    _.OpenPage({
+        id: 1020021,
+        title: '品牌信息浏览',
+        url: "PPGL/BRAND/BrandDetail/" + row.ID
     });
 }
 
 search.addHref = function (row) {
-    _.OpenPage("PPGL/BRAND/BrandEdit/", function (data) {
+    _.OpenPage({
+        id: 1020022,
+        title: '品牌信息添加',
+        url: "PPGL/BRAND/BrandEdit/"
     });
 }
 search.modHref = function (row, index) {
-    _.OpenPage("PPGL/BRAND/BrandEdit/" + row.ID, function (data) {
+    _.OpenPage({
+        id: 1020022,
+        title: '品牌信息修改',
+        url: "PPGL/BRAND/BrandEdit/" + row.ID
     });
 }

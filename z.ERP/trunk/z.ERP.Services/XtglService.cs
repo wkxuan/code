@@ -39,7 +39,8 @@ namespace z.ERP.Services
             item.HasKey("PHONENUM", a => sql += $" and B.PHONENUM = '{a}'");
             item.HasKey("PIZ", a => sql += $" and B.PIZ = '{a}'");
             item.HasKey("QQ", a => sql += $" and B.QQ = '{a}'");
-            
+            item.HasKey("WEIXIN", a => sql += $" and B.WEIXIN = '{a}'");
+
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
