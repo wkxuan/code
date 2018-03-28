@@ -4,6 +4,8 @@
     editDetail.Key = 'GOODID';
     editDetail.branchid = false;
 
+    editDetail.dataParam.TYPE = 1;
+    
     editDetail.screenParam.colDef = [
         { title: "商铺代码", key: "CODE", width: 100,       },
         { title: '业态代码', key: 'CATEGORYCODE', width: 100 },
@@ -33,7 +35,7 @@ editDetail.showOne = function (data, callback) {
 
 
 editDetail.otherMethods = {
-    changge: function () {
+    htChange: function () {
         _.Ajax('GetContract', {
             Data: { CONTRACTID: editDetail.dataParam.CONTRACTID }
         }, function (data) {
@@ -43,6 +45,8 @@ editDetail.otherMethods = {
                 editDetail.dataParam.STYLE = data.contract[0].STYLE;
                 editDetail.dataParam.STYLEMC = data.contract[0].STYLEMC;
                 editDetail.dataParam.SHMC = data.contract[0].SHMC;
+                editDetail.dataParam.JXSL = data.contract[0].JXSL;
+                editDetail.dataParam.XXSL = data.contract[0].XXSL;
                 editDetail.dataParam.GOODS_SHOP = data.shop;
             }
             else
@@ -81,4 +85,67 @@ editDetail.otherMethods = {
 
         })
     },
+    //点击品牌
+    Brand: function () {
+        Vue.set(editDetail.screenParam, "PopBrand", true);
+    },
+    //品牌弹窗返回
+    BrandBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopBrand", false);
+        editDetail.dataParam.BRANDID = val.sj[0].BRANDID;
+        editDetail.dataParam.BRANDMC = val.sj[0].NAME;
+    },
+    Getpym: function () {
+        editDetail.dataParam.PYM = editDetail.dataParam.NAME.toPYM();
+    }
+}
+
+
+
+editDetail.IsValidSave = function () {
+
+
+    if (!editDetail.dataParam.TYPE) {
+        iview.Message.info("请确认类型!");
+        return false;
+    };
+    if (!editDetail.dataParam.NAME) {
+        iview.Message.info("请确认商品名称!");
+        return false;
+    };
+    
+    if (!editDetail.dataParam.PYM) {
+        iview.Message.info("请确认商品拼音码!");
+        return false;
+    };
+
+    if (!editDetail.dataParam.CONTRACTID) {
+        iview.Message.info("请确认租约!");
+        return false;
+    };
+    if (!editDetail.dataParam.MERCHANTID) {
+        iview.Message.info("请确认商户!");
+        return false;
+    };
+    if (!editDetail.dataParam.JXSL) {
+        iview.Message.info("请确认进项税率!");
+        return false;
+    };
+    if (!editDetail.dataParam.XXSL) {
+        iview.Message.info("请确认销项税率!");
+        return false;
+    };
+    if (!editDetail.dataParam.BRANDID) {
+        iview.Message.info("请确认品牌!");
+        return false;
+    };
+    if (!editDetail.dataParam.KINDID) {
+        iview.Message.info("请确认商品分类!");
+        return false;
+    };
+    if (editDetail.dataParam.GOODS_SHOP.length == 0) {
+        iview.Message.info("请确定商铺!");
+        return false;
+    }
+    return true;
 }

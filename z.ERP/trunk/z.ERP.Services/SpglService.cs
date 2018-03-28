@@ -36,12 +36,14 @@ namespace z.ERP.Services
         public Tuple<dynamic, DataTable> GetGoodsDetail(GOODSEntity Data)
         {
             string sql = $@"select * from GOODS where 1=1 ";
-            if (!Data.GOODSDM.IsEmpty())
-                sql += (" and GOODSDM= " + Data.GOODSDM);
+            if (!Data.GOODSID.IsEmpty())
+                sql += (" and GOODSID= " + Data.GOODSID);
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             dt.NewEnumColumns<商品类型>("TYPE", "TYPEMC");
             dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
+            dt.Rows[0]["JXSL"] = dt.Rows[0]["JXSL"].ToString().ToDouble() * 100;
+            dt.Rows[0]["XXSL"] = dt.Rows[0]["XXSL"].ToString().ToDouble() * 100;
             string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
                 "  FROM GOODS_SHOP G,SHOP S,CATEGORY Y  " +
                 "  WHERE G.SHOPID=S.SHOPID AND G.CATEGORYID= Y.CATEGORYID";
@@ -143,7 +145,7 @@ namespace z.ERP.Services
 
         public object GetContract(CONTRACTEntity Data)
         {
-            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
+            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.JXSL*100 JXSL,T.XXSL*100 XXSL from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
             if (!Data.CONTRACTID.IsEmpty())
                 sql += (" and T.CONTRACTID= " + Data.CONTRACTID);
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -153,8 +155,8 @@ namespace z.ERP.Services
                 + " FROM CONTRACT_SHOP P,SHOP S,CATEGORY Y,CONTRACT T " 
                 + " WHERE  P.SHOPID=S.SHOPID and P.CATEGORYID=Y.CATEGORYID and P.CONTRACTID = T.CONTRACTID";
             if (!Data.CONTRACTID.IsEmpty())
-                sql += (" and P.CONTRACTID= " + Data.CONTRACTID);
-            sql += " order by S.CODE";
+                sql_shop += (" and P.CONTRACTID= " + Data.CONTRACTID);
+            sql_shop += " order by S.CODE";
             DataTable shop = DbHelper.ExecuteTable(sql_shop);
 
             var result = new

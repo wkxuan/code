@@ -33,5 +33,10 @@ namespace z.ERP.Web.Areas.Share.Render
             get;
             set;
         }
+        public string Enter
+        {
+            get;
+            set;
+        }
     }
 }

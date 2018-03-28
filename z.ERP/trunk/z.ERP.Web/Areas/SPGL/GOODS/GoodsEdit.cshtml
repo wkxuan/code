@@ -29,6 +29,19 @@
                 });
             }
         </i-col>
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopBrand",
+                    Caption = "品牌查询",
+                    Width = "760",
+                    PopLx = "Brand",
+                    CallBack = "BrandBack",
+                    ParentObj = "screenParam.ParentBrand"
+                });
+            }
+        </i-col>
     </row>
     <row>
         @*<i-col span="2" class="RowTitle">
@@ -74,6 +87,7 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.NAME",
+                    Change = "Getpym"
                 });
             }
         </i-col>
@@ -114,8 +128,15 @@
             }
         </i-col>
         <i-col span="6">
-            <i-input v-model="dataParam.CONTRACTID"  v-on:on-enter="changge">
-            </i-input>
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACTID",
+                    Enter = "htChange"
+                });
+            }
+            @*<i-input v-model="dataParam.CONTRACTID"  v-on:on-enter="htChange">
+            </i-input>*@
 
         </i-col>
 
@@ -148,19 +169,37 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.JXSL",
+                    Readonly = "true"
                 });
             }
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            品牌
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "Brand",
+                    Text = "品牌",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
         </i-col>
-        <i-col span="6">
+
+        <i-col span="2">
             @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.BRANDID",
+                });
+            }
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.BRANDMC",
                 });
             }
         </i-col>
@@ -183,6 +222,7 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.XXSL",
+                    Readonly = "true"
                 });
             }
         </i-col>
