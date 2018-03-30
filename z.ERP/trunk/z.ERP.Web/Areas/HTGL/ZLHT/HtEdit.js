@@ -473,11 +473,11 @@ editDetail.otherMethods = {
         editDetail.dataParam.MERNAME = val.sj[0].NAME;
 
 
-        _.Ajax('SearchMerchantBrand', {
-            Data: { MERCHANTID: editDetail.dataParam.MERCHANTID }
-        }, function (data) {
+        //_.Ajax('SearchMerchantBrand', {
+        //    Data: { MERCHANTID: editDetail.dataParam.MERCHANTID }
+        //}, function (data) {
 
-        });
+        //});
 
     },
     //点击品牌弹窗

@@ -371,19 +371,22 @@ namespace z.ERP.Services
         public string ExecData(CONTRACTEntity Data)
         {
             CONTRACTEntity con = DbHelper.Select(Data);
+
             if (con.STATUS != ((int)普通单据状态.未审核).ToString())
             {
                 throw new LogicException($"租约({Data.CONTRACTID})已经不是未审核不能继续审核!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-                con.VERIFY = employee.Id;
-                con.VERIFY_NAME = employee.Name;
-                con.VERIFY_TIME = DateTime.Now.ToString();
-                con.STATUS = ((int)普通单据状态.审核).ToString();
-                DbHelper.Save(con);
+                EXEC_CONTRACT exec_contract = new EXEC_CONTRACT()
+                {
+                    V_CONTRACTID = Data.CONTRACTID,
+                    V_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_contract);
                 Tran.Commit();
             }
+          
             return con.CONTRACTID;
         }
     }
