@@ -94,7 +94,7 @@
     }
 }
 editDetail.showOne = function (data, callback) {
-    _.Ajax('SearchbillReturn', {
+    _.Ajax('SearchBill_Return', {
         Data: { BILLID: data }
     }, function (data) {
         $.extend(editDetail.dataParam, data.billReturn);

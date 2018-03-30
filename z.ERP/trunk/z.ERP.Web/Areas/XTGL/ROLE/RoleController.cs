@@ -33,7 +33,7 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
         public ActionResult RoleEdit(string Id)
         {
             ViewBag.Title = "角色定义";
-            return View(model: Id);
+            return View("RoleEdit",model: Id);
         }
         public string Save(ROLEEntity SaveData)
         {

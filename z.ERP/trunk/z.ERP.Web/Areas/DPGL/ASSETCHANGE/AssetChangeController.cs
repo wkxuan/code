@@ -41,7 +41,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
         public ActionResult AssetChangeEdit(string Id)
         {
             ViewBag.Title = "编辑资产调整单";
-            return View(model:Id);
+            return View("AssetChangeEdit",model:Id);
         }
 
         public void Delete(List<ASSETCHANGEEntity> DeleteData)

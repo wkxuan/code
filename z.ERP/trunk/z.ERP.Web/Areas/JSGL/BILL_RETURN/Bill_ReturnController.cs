@@ -21,7 +21,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_RETURN
         public ActionResult Bill_ReturnEdit(string Id)
         {
             ViewBag.Title = "保证金返还单";
-            return View(model: Id); 
+            return View("Bill_ReturnEdit",model: Id); 
         }
         public ActionResult Bill_ReturnDetail(string Id)
         {
@@ -43,7 +43,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_RETURN
             return service.JsglService.SaveBillReturn(SaveData);
         }
 
-        public UIResult SearchBillReturn(BILL_RETURNEntity Data)
+        public UIResult SearchBill_Return(BILL_RETURNEntity Data)
         {
             var res = service.JsglService.GetBillReturnElement(Data);
             return new UIResult(

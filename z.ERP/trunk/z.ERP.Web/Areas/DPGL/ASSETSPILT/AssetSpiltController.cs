@@ -32,7 +32,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
         public ActionResult AssetSpiltEdit(string Id)
         {
             ViewBag.Title = "编辑店铺拆分单";
-            return View(model:Id);
+            return View("AssetSpiltEdit",model:Id);
         }
 
         public void Delete(List<ASSETCHANGEEntity> DeleteData)
