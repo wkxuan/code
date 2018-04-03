@@ -7,7 +7,6 @@
     editDetail.dataParam.JXSL = 0;
     editDetail.dataParam.XXSL = 0;
     editDetail.dataParam.STANDARD = 1;
-    editDetail.dataParam.CONT_START = formatDate(new Date());
 
     //初始化弹窗所要传递参数
 
@@ -134,8 +133,20 @@
     editDetail.screenParam.colDefJskl = [
         { title: '扣点序号', key: 'GROUPNO', width: 100 },
         { title: '时间段', key: 'INX', width: 80 },
-        { title: '开始日期', key: 'STARTDATE', width: 150 },
-        { title: '结束日期', key: 'ENDDATE', width: 150 },
+        {
+            title: '开始日期', key: 'STARTDATE', width: 150,
+            render: function (h, params) {
+                return h('div',
+                  new Date(this.row.STARTDATE).Format('yyyy-MM-dd'));
+            }
+        },
+        {
+            title: '结束日期', key: 'ENDDATE', width: 150,
+            render: function (h, params) {
+                return h('div',
+                  new Date(this.row.ENDDATE).Format('yyyy-MM-dd'));
+            }
+        },
         {
             title: "扣点", key: 'JSKL', width: 120,
             render: function (h, params) {
@@ -161,6 +172,11 @@
             title: '开始日期',
             key: 'STARTDATE',
             width: 150,
+            render: function (h, params) {
+                return h('div',
+                  new Date(this.row.STARTDATE).Format('yyyy-MM-dd'));
+            }
+
         },
         {
             title: '结束日期',
@@ -219,11 +235,29 @@
     //月度分解表格
     editDetail.screenParam.colDefRENTITEM = [
         { title: '时间段', key: 'INX', width: 80 },
-        { title: '开始日期', key: 'STARTDATE', width: 150 },
-        { title: '结束日期', key: 'ENDDATE', width: 150 },
+        {
+            title: '开始日期', key: 'STARTDATE', width: 150,
+            render: function (h, params) {
+                return h('div',
+                  new Date(this.row.STARTDATE).Format('yyyy-MM-dd'));
+            }
+        },
+        {
+            title: '结束日期', key: 'ENDDATE', width: 150,
+            render: function (h, params) {
+                return h('div',
+                  new Date(this.row.ENDDATE).Format('yyyy-MM-dd'));
+            }
+        },
         { title: '年月', key: 'YEARMONTH', width: 100 },
         { title: '租金', key: 'RENTS', width: 200 },
-        { title: '生成日期', key: 'CREATEDATE', width: 170 },
+        {
+            title: '生成日期', key: 'CREATEDATE', width: 170,
+            render: function (h, params) {
+                return h('div',
+                  new Date(this.row.CREATEDATE).Format('yyyy-MM-dd'));
+            }
+        },
         {
             title: '清算标记', key: 'QSBJ', width: 150,
             render: function (h, params) {
@@ -648,10 +682,10 @@ editDetail.otherMethods = {
             }
         }
         if (editDetail.dataParam.CONTRACT_RENT.length == 0) {
-            temp.push({ INX: maxINX, STARTDATE: formatDate(editDetail.dataParam.CONT_START) });
+            temp.push({ INX: maxINX, STARTDATE: (editDetail.dataParam.CONT_START) });
         }
         else {
-            temp.push({ INX: maxINX, STARTDATE: formatDate(addDate(maxSTARTDATE)) });
+            temp.push({ INX: maxINX, STARTDATE: (addDate(maxSTARTDATE)) });
         }
 
         editDetail.dataParam.CONTRACT_RENT = temp;
@@ -678,7 +712,7 @@ editDetail.otherMethods = {
             }
 
             for (var i = 0; i < selectton.length; i++) {
-                if (selectton[i].STARTDATE == formatDate(editDetail.dataParam.CONT_START)) {
+                if (selectton[i].STARTDATE == (editDetail.dataParam.CONT_START)) {
                     iview.Message.info("开始日期和租约开始日期相同不能删除!");
                     return;
                 }
@@ -710,9 +744,9 @@ editDetail.otherMethods = {
 
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
-            var copyHtQsr = formatDate(beginHtq);
+            var copyHtQsr = (beginHtq);
             nestYear = getNextYears(beginHtq);
-            if (nestYear < formatDate(editDetail.dataParam.CONT_END)) {
+            if (nestYear < (editDetail.dataParam.CONT_END)) {
                 rentData = {
                     INX: i + 1,
                     STARTDATE: copyHtQsr,
@@ -727,7 +761,7 @@ editDetail.otherMethods = {
                 rentData = {
                     INX: i + 1,
                     STARTDATE: copyHtQsr,
-                    ENDDATE: formatDate(editDetail.dataParam.CONT_END),
+                    ENDDATE: (editDetail.dataParam.CONT_END),
                     RENTS: 0,
                     RENTS_JSKL: 0,
                     SUMRENTS: 0
@@ -768,8 +802,8 @@ editDetail.otherMethods = {
         _.Ajax('zlYdFj', {
             Data: editDetail.dataParam.CONTRACT_RENT,
             ContractData: {
-                CONT_START: formatDate(editDetail.dataParam.CONT_START),
-                CONT_END: formatDate(editDetail.dataParam.CONT_END),
+                CONT_START: (editDetail.dataParam.CONT_START),
+                CONT_END: (editDetail.dataParam.CONT_END),
                 FEERULE_RENT: editDetail.dataParam.FEERULE_RENT,
                 STANDARD: editDetail.dataParam.STANDARD
             }
@@ -857,17 +891,21 @@ editDetail.otherMethods = {
             }
         }
         //先循环时间段信息,再循环扣点组信息
+        var localData = [];
         for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
             for (j = 0; j < editDetail.dataParam.CONTRACT_GROUP.length; j++) {
-                editDetail.dataParam.CONTJSKL.push({
+                
+               
+                localData.push({
                     GROUPNO: editDetail.dataParam.CONTRACT_GROUP[j].GROUPNO,
                     INX: editDetail.dataParam.CONTRACT_RENT[i].INX,
-                    STARTDATE: formatDate(editDetail.dataParam.CONTRACT_RENT[i].STARTDATE),
-                    ENDDATE: formatDate(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE),
+                    STARTDATE: (editDetail.dataParam.CONTRACT_RENT[i].STARTDATE),
+                    ENDDATE: (editDetail.dataParam.CONTRACT_RENT[i].ENDDATE),
                     JSKL: editDetail.dataParam.CONTRACT_GROUP[j].JSKL
                 });
             }
         }
+        editDetail.dataParam.CONTJSKL = localData;
     },
 
     //添加租约收费项目信息
@@ -924,7 +962,6 @@ editDetail.otherMethods = {
             }
         }
     },
-
 }
 
 
@@ -956,15 +993,11 @@ editDetail.IsValidSave = function () {
     if (!editDetail.dataParam.CONT_START) {
         iview.Message.info("请维护开始日期!");
         return false;
-    } else {
-        editDetail.dataParam.CONT_START = formatDate(editDetail.dataParam.CONT_START);
     };
 
     if (!editDetail.dataParam.CONT_END) {
         iview.Message.info("请维护结束日期!");
         return false;
-    } else {
-        editDetail.dataParam.CONT_END = formatDate(editDetail.dataParam.CONT_END);
     };
     if (!editDetail.dataParam.ORGID) {
         iview.Message.info("请确定招商部门!");
@@ -1002,13 +1035,15 @@ editDetail.IsValidSave = function () {
         return false;
     } else {
         for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length ; i++) {
-            if (formatDate(editDetail.dataParam.CONTRACT_RENT[i].STARTDATE)
-                < formatDate(editDetail.dataParam.CONT_START)) {
+
+            if (new Date(editDetail.dataParam.CONTRACT_RENT[i].STARTDATE).Format('yyyy-MM-dd')
+
+                < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd')) {
                 iview.Message.info("时间段结算信息开始日期不能小于租约开始日期!");
                 return false;
             };
-            if (formatDate(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE)
-                > formatDate(editDetail.dataParam.CONT_END)) {
+            if (new Date(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE).Format('yyyy-MM-dd')
+                > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')) {
                 iview.Message.info("时间段结算信息结束日期不能大于租约结束日期!");
                 return false;
             };
@@ -1047,15 +1082,6 @@ editDetail.showOne = function (data, callback) {
     });
 }
 
-function formatDate(date, isfull) {
-    if (!date)
-        return '';
-    var d = new Date(date);
-    if (!isfull) {
-        return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-    }
-}
-
 
 function getYears(date1, date2) { //获取两个年份之差
     var years = date2.getFullYear() - date1.getFullYear();
@@ -1066,7 +1092,7 @@ function getNextYears(date) { //获取当前日前的下一年上一天
     var tomYear = new Date(date);
     tomYear.setFullYear(tomYear.getFullYear() + 1); //下一年的今天
     tomYear.setDate(tomYear.getDate() - 1); //下一年的昨天
-    return formatDate(tomYear);
+    return (tomYear);
 };
 
 function addDate(date, days) {
