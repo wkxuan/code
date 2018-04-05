@@ -154,6 +154,7 @@
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
     <Compile Include="Areas\HTGL\LYHT\LYHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
+    <Compile Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustController.cs" />
     <Compile Include="Areas\JSGL\BILL_RETURN\Bill_ReturnController.cs" />
     <Compile Include="Areas\JSGL\JOINBILL\JoinBillController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
@@ -219,6 +220,8 @@
     <Content Include="Areas\HTGL\LYHT\HtList.js" />
     <Content Include="Areas\HTGL\ZLHT\HtEdit.js" />
     <Content Include="Areas\HTGL\ZLHT\HtList.js" />
+    <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustEdit.js" />
+    <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustList.js" />
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnEdit.js" />
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnList.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.js" />
@@ -388,6 +391,9 @@
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnList.cshtml" />
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnDetail.cshtml" />
+    <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustDetail.cshtml" />
+    <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustEdit.cshtml" />
+    <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

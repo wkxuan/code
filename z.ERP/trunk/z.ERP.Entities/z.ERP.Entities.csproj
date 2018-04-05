@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto\SYSUSEREntity.cs" />
+    <Compile Include="BILL_ADJUSTEntity .cs" />
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="Procedures\EXEC_CONTRACT.cs" />
     <Compile Include="Procedures\ProTest.cs" />

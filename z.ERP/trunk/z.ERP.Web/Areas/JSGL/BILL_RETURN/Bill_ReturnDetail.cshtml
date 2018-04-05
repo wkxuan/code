@@ -12,12 +12,11 @@
 }
 
 @{
-    var assetchange = ViewBag.assetchange;
-    var assetchangeitem = ViewBag.assetchangeitem as DataTable;
+    var billReturn = ViewBag.billReturn;
 }
 @section btn{
     @{
-        if (@assetchange.STATUS == "1")
+        if (@billReturn.STATUS == "1")
         {
             RenderControl(new ButtonRender()
             {
@@ -29,33 +28,46 @@
 }
 
 @section content{
-    <row>
-        <i-col span="2" class="RowTitle">单据编号</i-col>
-        <i-col span="4" class="RowText"> @assetchange.BILLID </i-col>
-        <i-col span="2" class="RowTitle">门店</i-col>
-        <i-col span="4" class="RowText"> @assetchange.BRANCHNAME </i-col>
-        <i-col span="2" class="RowTitle">状态</i-col>
-        <i-col span="4" class="RowText"> @assetchange.STATUSMC</i-col>
-    </row>
-    <row>
-        @*<i-col span="2" class="RowTitle">变更类型</i-col>
-            <i-col span="4" class="RowText"> @assetchange.CHANGE_TYPE   </i-col>*@
-        <i-col span="2" class="RowTitle">备注</i-col>
-        <i-col span="16" class="RowText"> @assetchange.DISCRIPTION   </i-col>
-    </row>
-    <row>
-        @{
-            foreach (DataRow shop in assetchangeitem.Rows)
-            {
-                <row>
-                    <i-col span="4" class="rowtitle">店铺代码(@shop["CODE"].ToString())</i-col>
-                    <i-col span="4" class="rowtitle">原建筑面积(@shop["AREA_BUILD_OLD"].ToString())</i-col>
-                    <i-col span="4" class="rowtitle">原使用面积(@shop["AREA_USABLE_OLD"].ToString())</i-col>
-                    <i-col span="4" class="rowtitle">原租赁面积(@shop["AREA_RENTABLE_OLD"].ToString())</i-col>
-                </row>
-            }
-        }
-    </row>
+<row>
+    <i-col span="2" class="RowTitle">单据号</i-col>
+    <i-col span="4">
+        <i-input v-model="BILLID" readonly="true"></i-input>
+    </i-col>
+    <i-col span="2" class="RowTitle">门店名称</i-col>
+    <i-col span="4">
+        <i-input v-model="BRANCHNAME" readonly="true"></i-input>
+    </i-col>
+    <i-col span="2" class="RowTitle">状态</i-col>
+    <i-col span="4">
+        <i-input v-model="STATUSMC" readonly="true"></i-input>
+    </i-col>
+</row>
+<row>
+    <i-col span="2" class="RowTitle">租约号</i-col>
+    <i-col span="4">
+        <i-input v-model="CONTRACTID" readonly="true"></i-input>
+    </i-col>
+    <i-col span="2" class="RowTitle">商户名称</i-col>
+    <i-col span="4">
+        <i-input v-model="MERCHANTNAME" readonly="true"></i-input>
+    </i-col>
+    <i-col span="2" class="RowTitle">权债发生月</i-col>
+    <i-col span="4">
+        <i-input v-model="NIANYUE" readonly="true"></i-input>
+    </i-col>
+</row>
+<row>
+    <i-col span="2" class="RowTitle">备注</i-col>
+    <i-col span="16">
+        <i-input v-model="DESCRIPTION" readonly="true"></i-input>
+    </i-col>
+</row>
+<row>
+    <i-col span="18">
+        <i-table size="small" border="true"
+                 :columns="colDef" :data="RETURN_ITEM" height="200"></i-table>
+    </i-col>
+</row>
 }
 @section foot{
     <script type="text/javascript">
@@ -63,14 +75,38 @@
             el: '#detail_Main',
             data: {
                 Mainpanel: 'condition',
-                disabled:true
+                disabled:true,
+                Mainpanel: 'condition',
+                disabled:true,
+                BILLID:"@billReturn.BILLID",
+                BRANCHNAME:"@billReturn.BRANCHNAME",
+                STATUSMC:"@billReturn.STATUSMC",
+                NIANYUE:"@billReturn.NIANYUE",
+                CONTRACTID:"@billReturn.CONTRACTID",
+                MERCHANTNAME:"@billReturn.MERCHANTNAME",
+                DESCRIPTION:"@billReturn.DESCRIPTION",
+                colDef : [
+                {title: "账单号", key: 'FINAL_BILLID', width: 100},
+                { title: '应收金额', key: 'MUST_MONEY', width: 100 },
+                { title: '已收金额', key: 'RECEIVE_MONEY', width: 100 },
+                { title: '调整金额', key: 'RETURN_MONEY', width: 100 }
+                ],
+                RETURN_ITEM:[]
+            },
+            mounted:function(){
+                var _self = this;
+                _.Ajax('SearchBill_Return', {
+                    Data: { BILLID: @billReturn.BILLID }
+                }, function (data) {
+                    _self.RETURN_ITEM = data.billReturnItem;
+                });
             },
             methods: {
                 exec: function (event) {
                     event.stopPropagation();
                     var _self = this;
                     _.Ajax('ExecData', {
-                        Data: {BILLID: @assetchange.BILLID},
+                        Data: {BILLID: @billReturn.BILLID},
                     }, function (data) {
                         _self.$Message.info("审核成功");
                         setTimeout(function () {
