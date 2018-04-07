@@ -22,8 +22,8 @@ namespace z.ERP.Entities.Enum
 
     public enum 月费用收费方式
     {
-        按日计算固定金额=1,
-        月固定金额=2
+        按日计算固定金额 = 1,
+        月固定金额 = 2
 
     }
 
@@ -191,5 +191,11 @@ namespace z.ERP.Entities.Enum
     {
         合同起始日期 = 1,
         自然周期 = 2
+    }
+
+    public enum 收款类型
+    {
+        预收款 = 1,
+        账单收款 = 2
     }
 }

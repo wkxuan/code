@@ -155,6 +155,8 @@
     <Compile Include="Areas\HTGL\LYHT\LYHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustController.cs" />
+    <Compile Include="Areas\JSGL\BILL_OBTAIN_YSK\Bill_Obtain_YskController.cs" />
+    <Compile Include="Areas\JSGL\BILL_OBTAIN\Bill_ObtainController.cs" />
     <Compile Include="Areas\JSGL\BILL_RETURN\Bill_ReturnController.cs" />
     <Compile Include="Areas\JSGL\JOINBILL\JoinBillController.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
@@ -222,6 +224,10 @@
     <Content Include="Areas\HTGL\ZLHT\HtList.js" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustEdit.js" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustList.js" />
+    <Content Include="Areas\JSGL\BILL_OBTAIN_YSK\Bill_Obtain_YskEdit.js" />
+    <Content Include="Areas\JSGL\BILL_OBTAIN_YSK\Bill_Obtain_YskList.js" />
+    <Content Include="Areas\JSGL\BILL_OBTAIN\Bill_ObtainEdit.js" />
+    <Content Include="Areas\JSGL\BILL_OBTAIN\Bill_ObtainList.js" />
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnEdit.js" />
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnList.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.js" />
@@ -394,6 +400,12 @@
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustDetail.cshtml" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustList.cshtml" />
+    <Content Include="Areas\JSGL\BILL_OBTAIN\Bill_ObtainDetail.cshtml" />
+    <Content Include="Areas\JSGL\BILL_OBTAIN\Bill_ObtainEdit.cshtml" />
+    <Content Include="Areas\JSGL\BILL_OBTAIN\Bill_ObtainList.cshtml" />
+    <Content Include="Areas\JSGL\BILL_OBTAIN_YSK\Bill_Obtain_YskDetail.cshtml" />
+    <Content Include="Areas\JSGL\BILL_OBTAIN_YSK\Bill_Obtain_YskEdit.cshtml" />
+    <Content Include="Areas\JSGL\BILL_OBTAIN_YSK\Bill_Obtain_YskList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
