@@ -337,7 +337,7 @@ namespace z.ERP.Services
         {
             var v = GetVerify(SaveData);
             if (SaveData.BILLID.IsEmpty())
-                SaveData.BILLID = NewINC("BILL_ADJUST");
+                SaveData.BILLID = NewINC("BILL_OBTAIN");
             SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
@@ -371,9 +371,9 @@ namespace z.ERP.Services
             DataTable billObtain = DbHelper.ExecuteTable(sql);
             billObtain.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT M.*,B.CONTRACTID " +
-                " FROM BILL_OBTAIN_ITEM M ,BILL B,CONTRACT C " +
-                " where M.FINAL_BILLID=B.BILLID(+) and B.CONTRACTID=C.CONTRACTID(+) ";
+            string sqlitem = $@"SELECT M.*,B.CONTRACTID,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY ,D.NAME TERMMC " +
+                " FROM BILL_OBTAIN_ITEM M ,BILL B,CONTRACT C,FEESUBJECT D " +
+                " where M.FINAL_BILLID=B.BILLID(+) and B.CONTRACTID=C.CONTRACTID(+) and B.TERMID=D.TRIMID(+)";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
@@ -389,6 +389,119 @@ namespace z.ERP.Services
         public string ExecBillObtain(BILL_OBTAINEntity Data)
         {
             BILL_OBTAINEntity billObtain = DbHelper.Select(Data);
+            if (billObtain.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                billObtain.VERIFY = employee.Id;
+                billObtain.VERIFY_NAME = employee.Name;
+                billObtain.VERIFY_TIME = DateTime.Now.ToString();
+                billObtain.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(billObtain);
+                Tran.Commit();
+            }
+            return billObtain.BILLID;
+        }
+
+        public DataGridResult GetBillNoticeList(SearchItem item)
+        {
+            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,C.MERCHANTID,D.NAME MERCHANTNAME " +
+                " FROM BILL_NOTICE L,BRANCH B,CONTRACT C,MERCHANT D " +
+                "  WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)  ";
+            item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID = {a}");
+            item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
+            item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
+            item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
+            item.HasKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
+            item.HasKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
+            item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
+            item.HasKey("VERIFY_TIME_START", a => sql += $" and L.VERIFY_TIME>={a}");
+            item.HasKey("VERIFY_TIME_END", a => sql += $" and L.VERIFY_TIME<={a}");
+            sql += " ORDER BY  L.BILLID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+        public void DeleteBillNotice(List<BILL_NOTICEEntity> DeleteData)
+        {
+            foreach (var item in DeleteData)
+            {
+                BILL_NOTICEEntity Data = DbHelper.Select(item);
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString())
+                {
+                    throw new LogicException("已经审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    DbHelper.Delete(item);
+                }
+                Tran.Commit();
+            }
+        }
+
+        public string SaveBillNotice(BILL_NOTICEEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.BILLID.IsEmpty())
+                SaveData.BILLID = NewINC("BILL_NOTICE");
+            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            SaveData.VERIFY = employee.Id;
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.CONTRACTID);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                SaveData.BILL_NOTICE_ITEM?.ForEach(item =>
+                {
+                    GetVerify(item).Require(a => a.FINAL_BILLID);
+                });
+                DbHelper.Save(SaveData);
+
+                Tran.Commit();
+            }
+            return SaveData.BILLID;
+        }
+
+        public Tuple<dynamic, DataTable> GetBillNoticeElement(BILL_NOTICEEntity Data)
+        {
+            string sql = $@"SELECT A.*,B.NAME BRANCHNAME,D.NAME MERCHANTNAME "
+                        + "FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D "
+                        + "WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" AND A.BILLID= " + Data.BILLID);
+            DataTable billObtain = DbHelper.ExecuteTable(sql);
+            billObtain.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT M.*,B.MUST_MONEY,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,C.NAME TERMMC " +
+                " FROM BILL_NOTICE_ITEM M ,BILL B,FEESUBJECT C " +
+                " where M.FINAL_BILLID=B.BILLID(+) and B.TERMID=C.TRIMID(+) ";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and M.BILLID= " + Data.BILLID);
+            DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
+
+            return new Tuple<dynamic, DataTable>(billObtain.ToOneLine(), billObtainItem);
+        }
+
+        /// <summary>
+        /// 保证金收取审核
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public string ExecBillNotice(BILL_NOTICEEntity Data)
+        {
+            BILL_NOTICEEntity billObtain = DbHelper.Select(Data);
             if (billObtain.STATUS == ((int)普通单据状态.审核).ToString())
             {
                 throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");

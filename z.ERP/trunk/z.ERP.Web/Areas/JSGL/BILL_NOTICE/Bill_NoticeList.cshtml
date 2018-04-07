@@ -37,6 +37,17 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            租约号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.CONTRACTID"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
             商户
         </i-col>
         <i-col span="6">
@@ -56,15 +67,6 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "searchParam.NIANYEU"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">备注</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.DESCRIPTION"
                 });
             }
         </i-col>

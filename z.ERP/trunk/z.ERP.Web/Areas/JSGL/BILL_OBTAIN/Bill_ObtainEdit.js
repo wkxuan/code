@@ -18,12 +18,6 @@
                 on: {
                     'on-blur': function (event) {
                         editDetail.dataParam.BILL_OBTAIN_ITEM[params.index].FINAL_BILLID = event.target.value;
-                        //_.Ajax('GetBill', {
-                        //    Data: { FINAL_BILLID: event.target.value }
-                        //}, function (data) {
-                        //    Vue.set(editDetail.dataParam.BILL_OBTAIN_ITEM[params.index], 'MUST_MONEY', data.dt.MUST_MONEY),
-                        //    Vue.set(editDetail.dataParam.BILL_OBTAIN_ITEM[params.index], 'RECEIVE_MONEY', data.dt.RECEIVE_MONEY)
-                        //});
                     }
                 },
             }),
@@ -46,6 +40,7 @@
             })
         },
     },
+   { title: '收费项目', key: 'TERMMC', width: 100 },
     {
         title: "应收金额", key: 'MUST_MONEY', width: 100,
         render: function (h, params) {
@@ -61,6 +56,7 @@
             })
         },
     },
+   { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
     {
         title: "付款金额", key: 'RECEIVE_MONEY', width: 100,
         render: function (h, params) {

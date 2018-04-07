@@ -12,11 +12,11 @@
 }
 
 @{
-    var billObtain = ViewBag.billObtain;
+    var billNotice = ViewBag.billNotice;
 }
 @section btn{
     @{
-        if (@billObtain.STATUS == "1")
+        if (@billNotice.STATUS == "1")
         {
             RenderControl(new ButtonRender()
             {
@@ -43,6 +43,10 @@
     </i-col>
 </row>
 <row>
+    <i-col span="2" class="RowTitle">租约号</i-col>
+    <i-col span="4">
+        <i-input v-model="CONTRACTID" readonly="true"></i-input>
+    </i-col>
     <i-col span="2" class="RowTitle">商户名称</i-col>
     <i-col span="4">
         <i-input v-model="MERCHANTNAME" readonly="true"></i-input>
@@ -51,14 +55,10 @@
     <i-col span="4">
         <i-input v-model="NIANYUE" readonly="true"></i-input>
     </i-col>
-    <i-col span="2" class="RowTitle">收款金额</i-col>
-    <i-col span="4">
-        <i-input v-model="ALL_MONEY" readonly="true"></i-input>
-    </i-col>
 </row>
 <row>
     <i-col span="2" class="RowTitle">备注</i-col>
-    <i-col span="18">
+    <i-col span="16">
         <i-input v-model="DESCRIPTION" readonly="true"></i-input>
     </i-col>
 
@@ -66,7 +66,7 @@
 <row>
     <i-col span="18">
         <i-table size="small" border="true"
-                 :columns="colDef" :data="OBTAIN_ITEM" height="200"></i-table>
+                 :columns="colDef" :data="NOTICE_ITEM" height="200"></i-table>
     </i-col>
 </row>
 }
@@ -79,30 +79,28 @@
                 disabled:true,
                 Mainpanel: 'condition',
                 disabled:true,
-                BILLID:"@billObtain.BILLID",
-                BRANCHNAME:"@billObtain.BRANCHNAME",
-                STATUSMC:"@billObtain.STATUSMC",
-                NIANYUE:"@billObtain.NIANYUE",
-                TYPE:"@billObtain.TYPE",
-                MERCHANTNAME:"@billObtain.MERCHANTNAME",
-                DESCRIPTION:"@billObtain.DESCRIPTION",
+                BILLID:"@billNotice.BILLID",
+                BRANCHNAME:"@billNotice.BRANCHNAME",
+                STATUSMC:"@billNotice.STATUSMC",
+                NIANYUE:"@billNotice.NIANYUE",
+                CONTRACTID:"@billNotice.CONTRACTID",
+                MERCHANTNAME:"@billNotice.MERCHANTNAME",
+                DESCRIPTION:"@billNotice.DESCRIPTION",
                 colDef : [
                 {title: "账单号", key: 'FINAL_BILLID', width: 100},
-                { title: '租约号', key: 'CONTRACTID', width: 100 },
-                { title: '类型', key: 'TYPE', width: 100 },
                 { title: '收费项目', key: 'TERMMC', width: 100 },
                 { title: '应收金额', key: 'MUST_MONEY', width: 100 },
                 { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
-                { title: '付款金额', key: 'RECEIVE_MONEY', width: 100 },
+                { title: '通知金额', key: 'NOTICE_MONEY', width: 100 }
                 ],
-                OBTAIN_ITEM:[]
+                NOTICE_ITEM:[]
             },
             mounted:function(){
                 var _self = this;
-                _.Ajax('SearchBill_Obtain', {
-                    Data: { BILLID: @billObtain.BILLID }
+                _.Ajax('SearchBill_Notice', {
+                    Data: { BILLID: @billNotice.BILLID }
                 }, function (data) {
-                    _self.OBTAIN_ITEM = data.billObtainItem;
+                    _self.NOTICE_ITEM = data.billNoticeItem;
                 });
             },
             methods: {
@@ -110,7 +108,7 @@
                     event.stopPropagation();
                     var _self = this;
                     _.Ajax('ExecData', {
-                        Data: {BILLID: @billObtain.BILLID},
+                        Data: {BILLID: @billNotice.BILLID},
                     }, function (data) {
                         _self.$Message.info("审核成功");
                         setTimeout(function () {
