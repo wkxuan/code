@@ -198,6 +198,20 @@
         });
     }
 </row>
+    @*v-model="valueCas" v-on:on-change="changeCas"*@
+<row>
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "CasFZ",
+            Text = "赋值",
+            Enable = true,
+            Type = "error",
+            Icon = "minus-circled"
+        });
+    }
+    <Cascader :data="screenParam.dataCas" v-on:on-change="changeOrg" v-model="screenParam.Orgid"></Cascader>
+</row>
 <row>
     <i-table  size="small" :border="true" 
              :columns="screenParam.colDef" :data="dataParam.MERCHANT_BRAND" ref="selectBrand"></i-table>

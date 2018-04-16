@@ -26,6 +26,20 @@ namespace z.ERP.Model.Vue
             get; set;
         }
 
+
+        public string value
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string label
+        {
+            get; set;
+        }
+
         public bool expand
         {
             get; set;

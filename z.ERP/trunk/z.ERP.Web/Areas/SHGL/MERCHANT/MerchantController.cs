@@ -84,7 +84,8 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
                 new
                 {
                     merchant = res.Item1,
-                    merchantBrand = res.Item2
+                    merchantBrand = res.Item2,
+                    treeorg=res.Item3
                 }
             );
         }
