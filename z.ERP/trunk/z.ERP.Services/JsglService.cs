@@ -156,26 +156,37 @@ namespace z.ERP.Services
 
         public object GetJoinBillElement(JOIN_BILLEntity Data)
         {
-            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,T.NAME MERCHANTNAME " +
-            " FROM JOIN_BILL L,BRANCH B ,MERCHANT T " +
-            "  WHERE L.BRANCHID = B.ID AND L.MERCHANTID = T.MERCHANTID";
+            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,T.NAME MERCHANTNAME, " +
+              " nvl(L.JE_16,0) +nvl(L.ZZSJE_16,0) JSHJ_16,nvl(L.JE_10,0) +nvl(L.ZZSJE_10,0) JSHJ_10,nvl(L.JE_QT,0) +nvl(L.ZZSJE_QT,0) JSHJ_QT," +
+              " nvl(L.JE_16,0)+nvl(L.JE_10,0)+nvl(L.JE_QT,0) JKHJ,nvl(L.ZZSJE_16,0)+nvl(L.ZZSJE_10,0)+nvl(L.ZZSJE_QT,0) ZZSJEHJ," +
+              " nvl(L.JE_16,0)+nvl(L.JE_10,0)+nvl(L.JE_QT,0) + nvl(L.ZZSJE_16,0)+nvl(L.ZZSJE_10,0)+nvl(L.ZZSJE_QT,0) JSHJ, " +
+              " nvl(L.JE_16,0)+nvl(L.JE_10,0)+nvl(L.JE_QT,0) + nvl(L.ZZSJE_16,0)+nvl(L.ZZSJE_10,0)+nvl(L.ZZSJE_QT,0)-nvl(L.KKJE,0) SJFKJE" +
+              " FROM JOIN_BILL L,BRANCH B ,MERCHANT T " +
+              "  WHERE L.BRANCHID = B.ID AND L.MERCHANTID = T.MERCHANTID";
             if (!Data.BILLID.IsEmpty())
                 sql += (" and L.BILLID= " + Data.BILLID);
             DataTable dt = DbHelper.ExecuteTable(sql);
 
-            //string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
-            //    "  FROM GOODS_SHOP G,SHOP S,CATEGORY Y  " +
-            //    "  WHERE G.SHOPID=S.SHOPID AND G.CATEGORYID= Y.CATEGORYID";
-            //if (!Data.GOODSID.IsEmpty())
-            //    sqlshop += (" and G.GOODSID= " + Data.GOODSID);
-            //DataTable dtshop = DbHelper.ExecuteTable(sqlshop);
+            string goodssql = "select S.*,G.GOODSDM,G.NAME from JOIN_BILL_GOODS S,GOODS G where S.GOODSID=G.GOODSID ";
+            if (!Data.BILLID.IsEmpty())
+                goodssql += (" and S.BILLID= " + Data.BILLID);
+            DataTable dtgoods = DbHelper.ExecuteTable(goodssql);
+
+            string trimsql = " select S.*,F.NAME,F.TYPE from JOIN_BILL_TRINM S,FEESUBJECT F where S.TRIMID=F.TRIMID ";
+            if (!Data.BILLID.IsEmpty())
+                goodssql += (" and S.BILLID= " + Data.BILLID);
+            DataTable dttrim = DbHelper.ExecuteTable(trimsql);
 
             var result = new
             {
                 joinbill = dt,
-                //goods_shop = new dynamic[] {
-                //   dtshop
-                //}
+                bill_goods = new dynamic[] {
+                   dtgoods
+                },
+                bill_trim = new dynamic[] {
+                   dttrim
+                },
+
             };
             return result;
         }
@@ -516,6 +527,51 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
             return billObtain.BILLID;
+        }
+
+        public Tuple<dynamic > GetJoinBillDetail(JOIN_BILLEntity Data)
+        {
+            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,T.NAME MERCHANTNAME, " +
+                          " nvl(L.JE_16,0) +nvl(L.ZZSJE_16,0) JSHJ_16,nvl(L.JE_10,0) +nvl(L.ZZSJE_10,0) JSHJ_10,nvl(L.JE_QT,0) +nvl(L.ZZSJE_QT,0) JSHJ_QT," +
+                          " nvl(L.JE_16,0)+nvl(L.JE_10,0)+nvl(L.JE_QT,0) JKHJ,nvl(L.ZZSJE_16,0)+nvl(L.ZZSJE_10,0)+nvl(L.ZZSJE_QT,0) ZZSJEHJ," +
+                          " nvl(L.JE_16,0)+nvl(L.JE_10,0)+nvl(L.JE_QT,0) + nvl(L.ZZSJE_16,0)+nvl(L.ZZSJE_10,0)+nvl(L.ZZSJE_QT,0) JSHJ, " +
+                          " nvl(L.JE_16,0)+nvl(L.JE_10,0)+nvl(L.JE_QT,0) + nvl(L.ZZSJE_16,0)+nvl(L.ZZSJE_10,0)+nvl(L.ZZSJE_QT,0)-nvl(L.KKJE,0) SJFKJE" +
+                          " FROM JOIN_BILL L,BRANCH B ,MERCHANT T " +
+                          "  WHERE L.BRANCHID = B.ID AND L.MERCHANTID = T.MERCHANTID";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and L.BILLID= " + Data.BILLID);
+
+            DataTable joinbill = DbHelper.ExecuteTable(sql);
+            joinbill.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+
+
+
+            return new Tuple<dynamic>(joinbill.ToOneLine());
+        }
+        
+        public object ShowOneJoinDetail(JOIN_BILLEntity Data)
+        {
+            string goodssql = "select S.*,G.GOODSDM,G.NAME from JOIN_BILL_GOODS S,GOODS G where S.GOODSID=G.GOODSID ";
+            if (!Data.BILLID.IsEmpty())
+                goodssql += (" and S.BILLID= " + Data.BILLID);
+            DataTable dtgoods = DbHelper.ExecuteTable(goodssql);
+
+            string trimsql = " select S.*,F.NAME,F.TYPE from JOIN_BILL_TRINM S,FEESUBJECT F where S.TRIMID=F.TRIMID ";
+            if (!Data.BILLID.IsEmpty())
+                goodssql += (" and S.BILLID= " + Data.BILLID);
+            DataTable dttrim = DbHelper.ExecuteTable(trimsql);
+
+            var result = new
+            {                
+                bill_goods = new dynamic[] {
+                   dtgoods
+                },
+                bill_trim = new dynamic[] {
+                   dttrim
+                }
+            };
+            return result;
         }
 
     }

@@ -19,10 +19,21 @@ namespace z.ERP.Web.Areas.JSGL.JOINBILL
             ViewBag.Title = "编辑联营结算单";
             return View(model: Id);
         }
+        public ActionResult JoinBillDetail(string Id)
+        {
+            ViewBag.Title = "浏览联营结算单";
+            var entity = service.JsglService.GetJoinBillDetail(new JOIN_BILLEntity(Id));
+            ViewBag.bill = entity.Item1;
+            return View(entity);
+        }
 
         public UIResult GetJoinBillElement(JOIN_BILLEntity Data)
         {
             return new UIResult(service.JsglService.GetJoinBillElement(Data));
+        }
+        public UIResult ShowOneJoinDetail(JOIN_BILLEntity Data)
+        {
+            return new UIResult(service.JsglService.ShowOneJoinDetail(Data));
         }
     }
 }

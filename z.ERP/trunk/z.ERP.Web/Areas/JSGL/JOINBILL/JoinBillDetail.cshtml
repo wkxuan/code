@@ -12,12 +12,12 @@
 }
 
 @{
-    var goods = ViewBag.goods;
+    var joinbill = ViewBag.bill;
 }
 
 @section btn{
     @{
-        if (@goods.STATUS == "1")
+        if (@joinbill.STATUS == "1")
         {
             RenderControl(new ButtonRender()
             {
@@ -29,7 +29,180 @@
 }
 
 @section content{
-    
+    <row>
+        <i-col span="2" class="RowTitle">
+            合同号
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="CONTRACTID" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            商户
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="MERCHANTID" :readonly="true"></i-input>            
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            类型
+        </i-col>
+        <i-col span="2" class="RowText">
+            <i-input v-model="TYPE" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="2" class="RowText">
+            <i-input v-model="STATUSMC" :readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            年月
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="NIANYUE" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            开始日期
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="START_DATE" :readonly="true"/>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            结束日期
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="END_DATE" :readonly="true"/>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            价款
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            税金
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            价税合计
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            16%税率:
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{JE_16}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{ZZSJE_16}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{JSHJ_16}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            价款：
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{JKHJ}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            税金：
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{ZZSJEHJ}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            价税合计：
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{JSHJ}}
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            10%税率:
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{JE_10}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{ZZSJE_10}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{JSHJ_10}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            销售金额：
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{SELL_JE}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            销售成本：
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{SELL_COST}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            扣款金额：
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{KKJE}}
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            其他税率:
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{JE_QT}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{ZZSJE_QT}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{JSHJ_QT}}
+        </i-col>
+        <i-col span="2" class="RowTitle">
+
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            实际付款金额：
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            {{SJFKJE}}
+        </i-col>
+    </row>    
+    <row>
+        <i-col span="2" class="RowTitle">
+            结算单商品明细
+        </i-col>
+        <i-col span="14" class="RowTitle">
+            
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            结算单扣款明细
+        </i-col>
+    </row>
+    <row>
+        <i-col span="16" class="RowTitle">
+            <i-table size="small" :border="true"
+             :columns="goodscolDef" :data="BILL_GOODS"></i-table>
+        </i-col>
+        <i-col span="8" class="RowTitle">
+            <i-table size="small" :border="true"
+             :columns="trimcolDef" :data="BILL_TRIM"></i-table>
+         </i-col>
+    </row>
 }
 
 @section foot{
@@ -38,14 +211,68 @@
             el: '#detail_Main',
             data: {
                 Mainpanel: 'condition',
-                disabled:true
+                CONTRACTID:"@joinbill.CONTRACTID",
+                MERCHANTID:"("+"@joinbill.MERCHANTID"+")"+"@joinbill.MERCHANTNAME",
+                NIANYUE:"@joinbill.NIANYUE",
+                STATUSMC:"@joinbill.STATUSMC",
+                TYPE:"@joinbill.TYPE",
+                START_DATE:"@joinbill.START_DATE",
+                END_DATE:"@joinbill.END_DATE",
+
+                JE_16:"@joinbill.JE_16",
+                ZZSJE_16:"@joinbill.ZZSJE_16",
+                JSHJ_16:"@joinbill.JSHJ_16",
+                JE_10:"@joinbill.JE_10",
+                ZZSJE_10:"@joinbill.ZZSJE_10",
+                JSHJ_10:"@joinbill.JSHJ_10",
+                JE_QT:"@joinbill.JE_QT",
+                ZZSJE_QT:"@joinbill.ZZSJE_QT",
+                JSHJ_QT:"@joinbill.JSHJ_QT",
+                JKHJ:"@joinbill.JKHJ",
+                ZZSJEHJ:"@joinbill.ZZSJEHJ",
+                JSHJ:"@joinbill.JSHJ",
+                SELL_JE:"@joinbill.SELL_JE",
+                SELL_COST:"@joinbill.SELL_COST",
+                KKJE:"@joinbill.KKJE",
+                SJFKJE:"@joinbill.SJFKJE",
+                DESCRIPTION:"@joinbill.DESCRIPTION",
+                disabled:true,
+                goodscolDef : [
+                { title: "商品代码", key: "GOODSDM", width: 100, },
+                { title: "商品名称", key: "NAME", width: 100, },
+                { title: "扣率", key: "DRATE", width: 80, },
+                { title: "税率", key: "JXSL", width: 80, },
+                { title: "销售数量", key: "SELL_SL", width: 90, },
+                { title: "销售金额", key: "SELL_JE", width: 100, },
+                { title: "优惠金额", key: "YHJE", width: 90, },
+                { title: "结算金额价款", key: "SELL_COST", width: 100, },
+                { title: "税金", key: "ZZSJE", width: 100, },
+                ],
+                trimcolDef:[
+                { title: "扣款项目ID", key: "TRIMID", width: 100, },
+                { title: "扣款项目名称", key: "NAME", width: 100, },
+                { title: "序号", key: "INX", width: 70, },
+                { title: "类型", key: "TYPE", width: 70, },
+                { title: "金额", key: "JE", width: 100, },
+                ],
+                BILL_GOODS:[],
+                BILL_TRIM:[]
+            },
+            mounted:function(){
+                var _self = this;
+                _.Ajax('ShowOneJoinDetail', {
+                    Data: { BILLID: @joinbill.BILLID }
+                }, function (data) {
+                    _self.BILL_GOODS = data.bill_goods[0];
+                    _self.BILL_TRIM = data.bill_trim[0];
+                });
             },
             methods: {
                 exec: function (event) {
                     event.stopPropagation();
                     var _self = this;
                     _.Ajax('ExecData', {
-                        Data: {GOODID: @goods.GOODSID},
+                        Data: {BILLID: @joinbill.BILLID},
                     }, function (data) {
                         _self.$Message.info("审核成功");
                         setTimeout(function () {
