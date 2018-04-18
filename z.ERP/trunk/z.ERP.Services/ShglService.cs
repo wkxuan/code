@@ -7,6 +7,7 @@ using System;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
 using System.Linq;
+using z.ERP.Model.Vue;
 
 namespace z.ERP.Services
 {
@@ -103,7 +104,7 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
-        public Tuple<dynamic, DataTable> GetMerchantElement(MERCHANTEntity Data)
+        public Tuple<dynamic, DataTable, dynamic> GetMerchantElement(MERCHANTEntity Data)
         {
             if (Data.MERCHANTID.IsEmpty())
             {
@@ -123,7 +124,20 @@ namespace z.ERP.Services
                 sqlitem += (" and E.MERCHANTID= " + Data.MERCHANTID);
             DataTable merchantBrand = DbHelper.ExecuteTable(sqlitem);
 
-            return new Tuple<dynamic, DataTable>(merchant.ToOneLine(), merchantBrand);
+
+            List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
+            var treeOrg = new UIResult(TreeModel.Create(p,
+                a => a.ORGCODE,
+                a => new TreeModel()
+                {
+                    code = a.ORGCODE,
+                    title = a.ORGNAME,
+                    value=a.ORGID,
+                    label=a.ORGNAME,
+                    expand = true
+                })?.ToArray());
+
+            return new Tuple<dynamic, DataTable, dynamic>(merchant.ToOneLine(), merchantBrand, treeOrg);
         }
 
     

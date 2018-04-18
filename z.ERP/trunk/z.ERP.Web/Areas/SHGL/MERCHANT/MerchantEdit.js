@@ -8,6 +8,9 @@
     editDetail.dataParam.STATUS = "1";
 
     editDetail.screenParam.ParentBrand = {};
+    editDetail.screenParam.dataCas = [];
+
+    editDetail.screenParam.Orgid = [];
 
     editDetail.screenParam.colDef = [
     { type: 'selection', width: 60, align: 'center'},
@@ -101,6 +104,23 @@ editDetail.otherMethods = {
             editDetail.dataParam.MERCHANT_BRAND.push(val.sj[i]);
         }
     },
+
+    changeOrg: function (value, selectedData) {
+        console.log(value[value.length - 1]);
+        editDetail.dataParam.ORGID = value[value.length - 1];
+        console.log(editDetail.dataParam.ORGID);
+    },
+    CasFZ: function () {
+        var obj = findItemById("15", editDetail.screenParam.dataCas);
+        console.log(obj);
+        console.log(obj.code);
+        console.log(obj.__value);
+        var str=obj.__value;
+
+        var arr = str.split(",") || [];
+
+        editDetail.screenParam.Orgid = arr;
+    }
 };
 
 editDetail.showOne = function (data, callback) {
@@ -110,9 +130,33 @@ editDetail.showOne = function (data, callback) {
         $.extend(editDetail.dataParam, data.merchant);
         editDetail.dataParam.BILLID = data.merchant.MERCHANTID;
         editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand;
+        editDetail.dataParam.ORGID = "15";
+        editDetail.screenParam.dataCas = data.treeorg.Obj;
+        editDetail.otherMethods.CasFZ();
+   
         callback && callback(data);
     });
 }
+
+
+
+function findItemById(id, treeNode) {
+    if (!id && id !== 0)
+        return;
+    var rootNode = treeNode;
+
+    for (var inx = 0; inx < rootNode.length; inx++) {
+        var subNode = rootNode[inx];
+        if (subNode.value === id) {
+            return subNode;
+        } else {
+            var findNode = findItemById(id, rootNode[inx].children);
+            if (findNode)
+                return findNode;
+        }
+    }
+}
+
 
 editDetail.clearKey = function () {
     editDetail.dataParam.MERCHANTID = null;
