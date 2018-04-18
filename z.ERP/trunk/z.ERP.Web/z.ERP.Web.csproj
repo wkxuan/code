@@ -169,6 +169,7 @@
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
+    <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
     <Compile Include="Areas\Share\Render\PopRender.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
@@ -418,6 +419,7 @@
     <Content Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkList.cshtml" />
     <Content Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkDetail.cshtml" />
+    <Content Include="Areas\Share\Cascader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

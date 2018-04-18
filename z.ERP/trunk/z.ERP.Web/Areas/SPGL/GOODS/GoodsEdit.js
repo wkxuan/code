@@ -19,7 +19,12 @@
         }]
     };
 
+    //KINDID
+    editDetail.screenParam.Kind = [];
+
     editDetail.screenParam.ParentContract = {};
+    editDetail.screenParam.ParentBrand = {};
+    
 }
 
 editDetail.showOne = function (data, callback) {
@@ -28,8 +33,24 @@ editDetail.showOne = function (data, callback) {
     }, function (data) {
         $.extend(editDetail.dataParam, data.goods[0]);
         editDetail.dataParam.BILLID = data.goods[0].GOODSDM;
+        editDetail.dataParam.KINDID = data.goods[0].KINDID;
         editDetail.dataParam.GOODS_SHOP = data.goods_shop[0];
+
+        var arr = data.goods[0].ALLID.split(",") || [];
+        console.log(arr);
+        //editDetail.screenParam.Kind = arr;
+        Vue.set(editDetail.screenParam, "Kind", arr);
+        console.log(editDetail.screenParam.Kind);
+
         callback && callback(data);
+    });
+};
+
+editDetail.mountedInit = function () {
+    _.Ajax('SearchInit', {
+        Data: {}
+    }, function (data) {
+        Vue.set(editDetail.screenParam, "dataKind", data.treeorg.Obj);
     });
 }
 
@@ -97,7 +118,10 @@ editDetail.otherMethods = {
     },
     Getpym: function () {
         editDetail.dataParam.PYM = editDetail.dataParam.NAME.toPYM();
-    }
+    },
+    changeKind: function (value, selectedData) {
+        editDetail.dataParam.KINDID = value[value.length - 1];
+    },
 }
 
 

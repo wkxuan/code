@@ -50,5 +50,16 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
         {
             return new UIResult(service.SpglService.GetContract(Data));
         }
+
+        public UIResult SearchInit()
+        {
+            var res = service.SpglService.GetKindInit();
+            return new UIResult(
+                new
+                {
+                    treeorg = res.Item1
+                }
+            );
+        }
     }
 }

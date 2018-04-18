@@ -135,9 +135,6 @@
                     Enter = "htChange"
                 });
             }
-            @*<i-input v-model="dataParam.CONTRACTID"  v-on:on-enter="htChange">
-            </i-input>*@
-
         </i-col>
 
         <i-col span="2" class="RowTitle">
@@ -208,9 +205,11 @@
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new CascaderRender()
                 {
-                    vModel = "dataParam.KINDID",
+                    vModel = "screenParam.Kind",
+                    Data= "screenParam.dataKind",
+                    Change= "changeKind"
                 });
             }
         </i-col>
