@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
+using z.ERP.Model.Vue;
 using z.Extensions;
 using z.MVC5.Results;
 
@@ -118,7 +120,8 @@ namespace z.ERP.Services
         }
         public object ShowOneEdit(GOODSEntity Data)
         {
-            string sql = $@"select G.*,M.NAME SHMC from GOODS G,MERCHANT M where G.MERCHANTID=M.MERCHANTID ";
+            string sql = $@"select G.*,M.NAME SHMC,C.ALLID from GOODS G,MERCHANT M,GOODS_KINDPID C where G.MERCHANTID=M.MERCHANTID ";
+            sql += " AND G.KINDID=C.ID";
             if (!Data.GOODSID.IsEmpty())
                 sql += (" and G.GOODSID= " + Data.GOODSID);
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -168,7 +171,20 @@ namespace z.ERP.Services
             return result;
         }
 
-
-
+        public Tuple<dynamic> GetKindInit()
+        {
+            List<GOODS_KINDEntity> p = DbHelper.SelectList(new GOODS_KINDEntity()).OrderBy(a => a.CODE).ToList();
+            var treeOrg = new UIResult(TreeModel.Create(p,
+                a => a.CODE,
+                a => new TreeModel()
+                {
+                    code = a.CODE,
+                    title = a.NAME,
+                    value = a.ID,
+                    label = a.NAME,
+                    expand = true
+                })?.ToArray());
+            return new Tuple<dynamic>(treeOrg);
+        }
     }
 }

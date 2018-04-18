@@ -168,6 +168,7 @@
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
+    <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
     <Compile Include="Areas\Share\Render\PopRender.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
@@ -412,6 +413,7 @@
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeDetail.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeList.cshtml" />
+    <Content Include="Areas\Share\Cascader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

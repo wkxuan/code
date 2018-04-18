@@ -118,8 +118,14 @@ editDetail.otherMethods = {
         var str=obj.__value;
 
         var arr = str.split(",") || [];
+        console.log(arr);
+        //var str1 = "1";
+        //str1 = str1 + ",";
+        //var arr1 = str1.split(",") || [];
+        //console.log(arr1);
 
         editDetail.screenParam.Orgid = arr;
+        console.log(editDetail.screenParam.Orgid);
     }
 };
 
@@ -131,7 +137,7 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILLID = data.merchant.MERCHANTID;
         editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand;
         editDetail.dataParam.ORGID = "15";
-        editDetail.screenParam.dataCas = data.treeorg.Obj;
+        editDetail.screenParam.dataCas = data.treeorg.Obj;//这块放在页面初始化得到
         editDetail.otherMethods.CasFZ();
    
         callback && callback(data);

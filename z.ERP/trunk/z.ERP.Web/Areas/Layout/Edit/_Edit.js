@@ -21,6 +21,9 @@
                 branchid: _this.branchid,
                 disabled: _this.enabled(true),
             },
+            mounted: function () {
+                _this.mountedInit();
+            },
             methods: {
                 add: function (event) {
                     _this.dataParam.BILLID = null;
@@ -52,7 +55,9 @@
             });
         }
     }
-    this.showOne = function (data, callback) {}
+    this.showOne = function (data, callback) { }
+
+    this.mountedInit = function () { }
 
     this.vueInit = function () {
         _this.dataParam = {};
