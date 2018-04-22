@@ -20,19 +20,26 @@ namespace z.SSO.Model
             set;
         }
 
-        /// <summary>
-        /// 可用权限列表
-        /// </summary>
-        public string[] Permissions
+        internal Func<string, string, PermissionType, bool> PermissionHandle
         {
             get;
             set;
         }
 
-        public bool HasPermission(string key)
+        public bool HasPermission(string key, PermissionType type = PermissionType.Menu)
         {
-            return key.ToInt() % 2 == 0;
-            return !Permissions.IsEmpty() && Permissions.Contains(key);
+            return PermissionHandle == null ? false : PermissionHandle(Id, key, type);
+        }
+
+        public string GetPermissionSql(PermissionType type)
+        {
+            switch (type)
+            {
+                case PermissionType.Department:
+                    return " select ORGID id from ORG ";
+                default:
+                    throw new Exception("无效的权限类型");
+            }
         }
 
     }

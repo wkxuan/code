@@ -99,7 +99,7 @@ function LoadMenu2(menus, pid) {
         $.each(menu, function (inx, obj) {
             if (obj.URL)//有路径
             {
-                html += '<li><a href="' + obj.URL + '" target="navTab" rel="' + obj.ID + '"  external="true"  fresh="false">' + obj.NAME + '</a></li>';
+                html += '<li><a href="' + obj.URL + '" target="navTab" rel="' + obj.ID + '"  external="true"  fresh="true">' + obj.NAME + '</a></li>';
             }
             else {  //没路径
                 html += '<li><a>' + obj.NAME + '</a>\

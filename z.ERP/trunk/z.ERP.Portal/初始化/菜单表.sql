@@ -1,5 +1,9 @@
-﻿insert into menutree
-select rownum,substr(id,3,1),id,name from MENU  
+﻿--这句可以反复执行,自动插入合适的菜单
+insert into menutree
+  select rownum, substr(id, 3, 1), id, name
+    from MENU a
+   where not exists (select 1 from menutree b where b.menuid = a.id)
+
 
 
 
@@ -36,3 +40,7 @@ insert into MENU(ID, NAME, URL, STATUS, TYPE) values(106001, '联营合同维护
 insert into MENU(ID, NAME, URL, STATUS, TYPE) values(106002, '租赁合同维护', 'HTGL/ZLHT/HtList', 1, 1);
     --结算管理
 insert into MENU(ID, NAME, URL, STATUS, TYPE) values(107001, '保证金返还', 'JSGL/BILL_RETURN/Bill_ReturnList', 1, 1);
+insert into MENU(ID, NAME, URL, STATUS, TYPE) values(107002, '费用调整', 'JSGL/BILL_ADJUST/Bill_AdjustList', 1, 1);
+insert into MENU(ID, NAME, URL, STATUS, TYPE) values(107003, '费用核销', 'JSGL/"BILL_OBTAIN"/"Bill_ObtainList"', 1, 1);
+insert into MENU(ID, NAME, URL, STATUS, TYPE) values(107004, '预收款收取', 'JSGL/"BILL_OBTAIN_YSK"/"Bill_Obtain_YskList"', 1, 1);
+insert into MENU(ID, NAME, URL, STATUS, TYPE) values(107005, '商户缴费通知单', 'JSGL/"BILL_NOTICE"/"Bill_NoticeList"', 1, 1);

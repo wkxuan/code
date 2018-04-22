@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ERPUserHelper.cs" />
+    <Compile Include="Model\PermissionType.cs" />
     <Compile Include="UserApplication.cs" />
     <Compile Include="Model\Employee.cs" />
     <Compile Include="Model\User.cs" />

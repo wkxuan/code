@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Security;
+using z.CacheBox;
 using z.Context;
 using z.DBHelper.Helper;
 using z.ERP.Entities;
@@ -64,12 +65,14 @@ namespace z.SSO
         public Employee GetUser(string Id)
         {
             SYSUSEREntity user = _db.Select(new SYSUSEREntity(Id));
-            return new Employee()
+            Employee e = new Employee()
             {
                 Id = user.USERID,
                 Name = user.USERNAME,
                 PlatformId = -1
             };
+            e.PermissionHandle = HasPermission;
+            return e;
         }
 
         public override void Login(string username, string password)
@@ -122,7 +125,36 @@ namespace z.SSO
             }
         }
 
-
+        bool HasPermission(string UserId, string Key, PermissionType Type = PermissionType.Menu)
+        {
+            if (UserId.IsEmpty())
+                return false;
+            if (Key.IsEmpty())
+                return true;
+            if (ConfigExtension.TestModel)
+                return true;
+            if (UserId.ToInt() < 0)
+                return true;
+            switch (Type)
+            {
+                case PermissionType.Menu:
+                    {
+                        ICache wc = new WebCache();
+                        return wc.Simple($"Permission_{Type.ToString()}_{UserId}",
+                                () => _db.ExecuteTable($@"select b.menuid
+                                                          from USER_ROLE a
+                                                          join menuqx b
+                                                            on a.roleid = b.roleid
+                                                         where a.userid = '{UserId}'")
+                                .ToList<string>().ToArray())
+                            .Contains(Type.ToString() + Key);
+                    }
+                default:
+                    {
+                        throw new Exception("未知的权限类型");
+                    }
+            }
+        }
     }
 }
 

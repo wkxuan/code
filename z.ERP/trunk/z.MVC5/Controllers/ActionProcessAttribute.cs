@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using z.Exceptions;
 using z.Extensions;
@@ -79,6 +80,7 @@ namespace z.MVC5.Controllers
                     "Base",
                     "Common") + "/";
                 filterContext.Controller.ViewBag.BaseUrl = HttpExtension.GetWebBasePath();
+                filterContext.Controller.ViewBag.Domain = HttpContext.Current.Request.Url.Host;
             }
             base.OnActionExecuted(filterContext);
         }

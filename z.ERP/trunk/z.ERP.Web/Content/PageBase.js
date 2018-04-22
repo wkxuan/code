@@ -26,7 +26,7 @@ zQuery.extend({
             options.callback && options.callback(data);
         }
         if (window.parent.navTab) {
-            window.parent.navTab.openTab(options.id, url, { title: options.title, flesh: true, data: {}, external: true })
+            window.parent.navTab.openTab('' + options.id, url, { title: options.title, fresh: true, data: {}, external: true })
         }
         else {
             window.open(url);
