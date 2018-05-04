@@ -392,7 +392,7 @@ namespace z.ERP.Services
                 a => new TreeModel()
                 {
                     code = a.ORGCODE,
-                    title = a.ORGNAME,
+                    title = a.ORGCODE + " " +a.ORGNAME,
                     expand = true
                 })?.ToArray());
         }
@@ -414,7 +414,7 @@ namespace z.ERP.Services
                 a => new TreeModel()
                 {
                     code = a.CODE,
-                    title = a.NAME,
+                    title = a.CODE + " " + a.NAME,
                     expand = true
                 })?.ToArray());
         }
