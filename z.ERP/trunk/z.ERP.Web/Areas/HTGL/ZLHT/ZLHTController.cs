@@ -14,7 +14,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
 {
     public class ZLHTController: BaseController
     {
-       // [Permission("2")]
+        [Permission("2")]
         public ActionResult HtList()
         {
             ViewBag.Title = "租约列表信息";
