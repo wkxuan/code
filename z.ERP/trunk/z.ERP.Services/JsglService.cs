@@ -6,6 +6,7 @@ using z.Extensions;
 using System;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {

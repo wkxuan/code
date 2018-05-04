@@ -6,7 +6,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using z.LogFactory.utils;
-using Newtonsoft.Json;
+using NewtonsoftCode.Json;
 
 namespace z.LogFactory
 {

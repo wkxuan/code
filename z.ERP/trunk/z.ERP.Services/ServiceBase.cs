@@ -216,6 +216,16 @@ namespace z.ERP.Services
 
         #region 权限
 
+        public string GetPermissionSql(PermissionType type)
+        {
+            switch (type)
+            {
+                case PermissionType.Department:
+                    return " select ORGID id from ORG ";
+                default:
+                    throw new Exception("无效的权限类型");
+            }
+        }
         #endregion
 
         #region 属性

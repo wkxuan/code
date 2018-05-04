@@ -31,6 +31,17 @@ namespace z.Extensions
                 return a;
         }
 
+        /// <summary>
+        /// 获取一个配置节点
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static T GetSection<T>(string name) where T : ConfigurationSection
+        {
+            return ConfigurationManager.GetSection(name) as T;
+        }
+
         ///// <summary>
         ///// 读取自定义配置文件
         ///// </summary>

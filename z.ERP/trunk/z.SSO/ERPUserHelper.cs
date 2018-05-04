@@ -4,22 +4,23 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 using System.Web.Security;
 using z.CacheBox;
 using z.Context;
-using z.DBHelper.Helper;
-using z.ERP.Entities;
-using z.ERP.Entities.Enum;
 using z.Exceptions;
 using z.Extensions;
 using z.Extensiont;
+using z.Service;
 using z.SSO.Model;
 
 namespace z.SSO
 {
     public class ERPUserHelper : UserHelper
     {
-        static readonly DbHelperBase _db = new OracleDbHelper(ConfigExtension.GetConfig("connection"));
+        public ERPUserHelper(SSOSettings _settings) : base(_settings)
+        {
+        }
 
         public override bool HasLogin
         {
@@ -29,16 +30,34 @@ namespace z.SSO
             }
         }
 
+        public UserService.ISSOService service
+        {
+            get
+            {
+                return ApplicationContextBase.GetContext().GetData("SSOServiceUrl", () =>
+                {
+                    return WCF.CreateWCFServiceByURL<UserService.ISSOService>(settings.WcfUrl);
+                });
+            }
+        }
+
         public override T GetUser<T>()
         {
             string key = ApplicationContextBase.GetContext()?.principal?.Identity.Name;
             T e = ApplicationContextBase.GetContext().GetData<T>(LoginKey + key);
             if (!key.IsEmpty() && e == null && ApplicationContextBase.GetContext().principal != null)
             {
-                SYSUSEREntity user = _db.Select(new SYSUSEREntity(key));
+                Model.User user = service.GetUserById(key).ToObj(a => new User() { Id = a.Id, Name = a.Name });
                 if (user == null)
                     throw new NoLoginException();
-                return GetUser(user.USERID) as T;
+                Employee emp = new Employee()
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    PlatformId = -1
+                };
+                emp.PermissionHandle = HasPermission;
+                return emp as T;
             }
             if (e == null)
             {
@@ -57,64 +76,15 @@ namespace z.SSO
             return e;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public Employee GetUser(string Id)
-        {
-            SYSUSEREntity user = _db.Select(new SYSUSEREntity(Id));
-            Employee e = new Employee()
-            {
-                Id = user.USERID,
-                Name = user.USERNAME,
-                PlatformId = -1
-            };
-            e.PermissionHandle = HasPermission;
-            return e;
-        }
 
         public override void Login(string username, string password)
         {
-            List<SYSUSEREntity> users = _db.SelectList(new SYSUSEREntity()
-            {
-                USERCODE = username
-            });
-            if (users.IsEmpty())
-            {
-                throw new Exception("找不到用户");
-            }
-            else if (users.Where(a => a.USER_FLAG.ToInt() == (int)用户标记.正常).IsEmpty())
-            {
-                throw new Exception($"用户已{users.First().USER_FLAG.ToEnum<用户标记>() }");
-            }
-            else
-            {
-                SYSUSEREntity user = users.First();
-                if (Verify(user, password))
-                {
-                    Employee e = GetUser(user.USERID);
-                    ApplicationContextBase.GetContext().SetData(LoginKey + e.Id, users);
-                    ApplicationContextBase.GetContext().principal = new GenericPrincipal(new GenericIdentity(e.Id), null);
-                    FormsAuthentication.SetAuthCookie(e.Id, true);
-                }
-                else
-                {
-                    throw new Exception("密码错误");
-                }
-            }
+            Model.User user = service.GetUserByCode(username, password).ToObj(a => new User() { Id = a.Id, Name = a.Name });
+            ApplicationContextBase.GetContext().SetData(LoginKey + user.Id, user);
+            ApplicationContextBase.GetContext().principal = new GenericPrincipal(new GenericIdentity(user.Id), null);
+            FormsAuthentication.SetAuthCookie(user.Id, true);
         }
 
-        bool Verify(SYSUSEREntity user, string password)
-        {
-            return user.PASSWORD == salt(user, password);
-        }
-
-        public string salt(SYSUSEREntity user, string psw)
-        {
-            return (user.USERID + LoginSalt + psw).ToMD5();
-        }
 
         public override void LogOut()
         {
@@ -141,12 +111,7 @@ namespace z.SSO
                     {
                         ICache wc = new WebCache();
                         return wc.Simple($"Permission_{Type.ToString()}_{UserId}",
-                                () => _db.ExecuteTable($@"select b.menuid
-                                                          from USER_ROLE a
-                                                          join menuqx b
-                                                            on a.roleid = b.roleid
-                                                         where a.userid = '{UserId}'")
-                                .ToList<string>().ToArray())
+                            () => service.GetPermissionByUserId(UserId))
                             .Contains(Type.ToString() + Key);
                     }
                 default:

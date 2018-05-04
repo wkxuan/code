@@ -8,11 +8,13 @@ using z.ERP.Entities.Enum;
 using z.Context;
 using z.SSO;
 using z.SSO.Model;
+using System.Linq;
 
 namespace z.ERP.Services
 {
     public class HomeService : ServiceBase
     {
+        protected const string LoginSalt = "z.SSO.LoginSalt.1";
         internal HomeService()
         {
         }
@@ -47,12 +49,52 @@ namespace z.ERP.Services
             return new DataGridResult(DbHelper.ExecuteTable(sql), 0);
         }
 
-        public void ChangePs(SYSUSEREntity data) {
+        public User GetUserById(string id)
+        {
+            return DbHelper.Select(new SYSUSEREntity(id))?.ToObj(a => new User() { Id = a.USERID, Name = a.USERNAME });
+        }
 
-            SYSUSEREntity sysuser = DbHelper.Select(new SYSUSEREntity(){ USERID = employee.Id }); 
-            ERPUserHelper userHelper = new ERPUserHelper();
-            sysuser.PASSWORD = userHelper.salt(sysuser, data.PASSWORD);
+
+        public User GetUserByCode(string code, string password)
+        {
+            var e = DbHelper.SelectList(new SYSUSEREntity() { USERCODE = code })?
+                        .Where(a => a.USER_FLAG.ToInt() == (int)用户标记.正常)
+                        .FirstOrDefault();
+            if (e == null)
+                throw new Exception("用户不存在或已停用");
+            if (salt(e.USERID, password) == e.PASSWORD)
+            {
+                return e.ToObj(a => new User() { Id = e.USERID, Name = e.USERNAME });
+            }
+            else
+            {
+                throw new Exception("密码错误");
+            }
+        }
+
+        string salt(string userid, string pass)
+        {
+            return (userid + LoginSalt + pass).ToMD5();
+        }
+
+        public string[] GetPermissionByUserId(string userid)
+        {
+            return DbHelper.ExecuteTable($@"select b.menuid
+                                                          from USER_ROLE a
+                                                          join menuqx b
+                                                            on a.roleid = b.roleid
+                                                         where a.userid = '{userid}'")
+                                                         .ToList<string>().ToArray();
+        }
+
+        public void ChangePs(SYSUSEREntity data)
+        {
+
+            SYSUSEREntity sysuser = DbHelper.Select(new SYSUSEREntity() { USERID = employee.Id });
+            sysuser.PASSWORD = salt(sysuser.USERID, data.PASSWORD);
             DbHelper.Save(sysuser);
         }
+
+
     }
 }
