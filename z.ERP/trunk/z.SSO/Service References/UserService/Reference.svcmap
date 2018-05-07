@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="1cf3d51c-2e67-4043-8ab0-f50c8b86f0f2" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:59000/svc/SSOService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SSOService3.xsd" MetadataType="Schema" ID="aa4998b0-0e0c-45ea-84f7-a18ce85ae8e2" SourceId="1" SourceUrl="http://localhost:59000/svc/SSOService.svc?xsd=xsd3" />
+    <MetadataFile FileName="SSOService1.xsd" MetadataType="Schema" ID="765169db-9bc6-4331-bf86-a6e9674faac1" SourceId="1" SourceUrl="http://localhost:59000/svc/SSOService.svc?xsd=xsd2" />
+    <MetadataFile FileName="SSOService.wsdl" MetadataType="Wsdl" ID="5e57ff2d-78a8-4244-ad28-de32673c58d2" SourceId="1" SourceUrl="http://localhost:59000/svc/SSOService.svc?wsdl" />
+    <MetadataFile FileName="SSOService.disco" MetadataType="Disco" ID="12fe3fa4-2a39-4e3b-be27-3f70e8e1f3b1" SourceId="1" SourceUrl="http://localhost:59000/svc/SSOService.svc?disco" />
+    <MetadataFile FileName="SSOService.xsd" MetadataType="Schema" ID="0b3fc3a0-4c18-4d44-ba90-ee1218102178" SourceId="1" SourceUrl="http://localhost:59000/svc/SSOService.svc?xsd=xsd1" />
+    <MetadataFile FileName="SSOService2.xsd" MetadataType="Schema" ID="a2bcdad6-082f-4375-9bfb-8d54714eb1c2" SourceId="1" SourceUrl="http://localhost:59000/svc/SSOService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

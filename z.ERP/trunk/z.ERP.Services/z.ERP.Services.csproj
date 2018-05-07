@@ -85,7 +85,7 @@
       <Name>z.MVC5</Name>
     </ProjectReference>
     <ProjectReference Include="..\z.SSO\z.SSO.csproj">
-      <Project>{DF833680-D044-4C57-96F9-217A1812C0B3}</Project>
+      <Project>{df833680-d044-4c57-96f9-217a1812c0b3}</Project>
       <Name>z.SSO</Name>
     </ProjectReference>
     <ProjectReference Include="..\z.Verify\z.Verify.csproj">

@@ -7,6 +7,7 @@ ajax相关的内容
 zQuery.extend({
     AjaxUrl: __ControllerUrl,
     CommonAjaxUrl: __CommonControllerUrl,
+    ShareAjaxUrl: __BaseUrl + 'Areas.Share/',
     doResult: function (retdata, success, error) {
         if (retdata && retdata.Flag != undefined) {
             if (retdata.Flag >= 0) {

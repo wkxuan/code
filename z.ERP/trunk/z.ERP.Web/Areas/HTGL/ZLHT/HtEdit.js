@@ -41,6 +41,8 @@
                                 Vue.set(editDetail.dataParam.CONTRACT_BRAND[params.index], 'BRANDID', "");
                             }
                         });
+
+
                     }
                 },
             })

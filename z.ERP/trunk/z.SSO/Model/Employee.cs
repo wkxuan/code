@@ -28,19 +28,12 @@ namespace z.SSO.Model
 
         public bool HasPermission(string key, PermissionType type = PermissionType.Menu)
         {
+            if (ConfigExtension.TestModel)
+                return true;
             return PermissionHandle == null ? false : PermissionHandle(Id, key, type);
         }
 
-        public string GetPermissionSql(PermissionType type)
-        {
-            switch (type)
-            {
-                case PermissionType.Department:
-                    return " select ORGID id from ORG ";
-                default:
-                    throw new Exception("无效的权限类型");
-            }
-        }
+
 
     }
 }

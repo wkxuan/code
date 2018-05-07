@@ -38,11 +38,27 @@ namespace z.SSO
             return _userHelper.GetUser<T>();
         }
 
+        public static SSOSettings settings
+        {
+            get
+            {
+                return ConfigExtension.GetSection<SSOSettings>(SSOSettings.Name);
+            }
+        }
+
         static UserHelper _userHelper
         {
             get
             {
-                return new ERPUserHelper();
+                switch (settings.Type)
+                {
+                    case "ERP":
+                        return new ERPUserHelper(settings);
+                    case "PORTAL":
+                        return new PortalUserHelper(settings);
+                    default:
+                        throw new Exception($"配置节点{SSOSettings.Name}的类型{settings.Type}未知");
+                }
             }
         }
     }

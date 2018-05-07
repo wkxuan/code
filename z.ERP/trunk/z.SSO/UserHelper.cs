@@ -13,6 +13,11 @@ namespace z.SSO
 {
     public abstract class UserHelper
     {
+        public UserHelper(SSOSettings _settings)
+        {
+            settings = _settings;
+        }
+        protected SSOSettings settings;
         protected const string LoginKey = "z.SSO.loginKey.1";
         protected const string LoginSalt = "z.SSO.LoginSalt.1";
         /// <summary>
@@ -42,6 +47,6 @@ namespace z.SSO
         {
             get;
         }
-        
+
     }
 }

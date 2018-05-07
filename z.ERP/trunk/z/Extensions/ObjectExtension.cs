@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using NewtonsoftCode.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -77,6 +77,21 @@ namespace z.Extensions
         }
 
         /// <summary>
+        /// 按原类型,转换为新类型
+        /// </summary>
+        /// <typeparam name="Ts">原类型</typeparam>
+        /// <typeparam name="Tt">新类型</typeparam>
+        /// <param name="t"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static Tt ToObj<Ts, Tt>(this Ts t, Func<Ts, Tt> func) where Ts : class where Tt : class
+        {
+            if (t == null)
+                return null;
+            return func?.Invoke(t);
+        }
+
+        /// <summary>
         /// 深度拷贝
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -97,7 +112,7 @@ namespace z.Extensions
         {
             return obj.ToJson().ToObj(obj.GetType());
         }
-        
+
         /// <summary>
         /// 获取实体类的str形式
         /// </summary>
