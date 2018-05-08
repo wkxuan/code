@@ -26,7 +26,7 @@ namespace z.ERP.Web.Areas.XTGL.CATEGORY
                 DefineSave.CATEGORYID = service.CommonService.NewINC("CATEGORY");
             }
             DefineSave.CATEGORYCODE = newkey;
-            DefineSave.LEVEL_LAST = "1";
+           // DefineSave.LEVEL_LAST = "1";
             CommonSave(DefineSave);
             return newkey;
         }
