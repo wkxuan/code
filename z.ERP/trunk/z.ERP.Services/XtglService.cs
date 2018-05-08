@@ -369,7 +369,7 @@ namespace z.ERP.Services
                 a => new TreeModel()
                 {
                     code = a.CATEGORYCODE,
-                    title = a.CATEGORYNAME,                    
+                    title = a.CATEGORYCODE + " " + a.CATEGORYNAME,                    
                     expand = true
                 })?.ToArray());
         }
