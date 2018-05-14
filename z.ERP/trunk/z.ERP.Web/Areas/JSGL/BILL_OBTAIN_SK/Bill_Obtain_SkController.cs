@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
 {
@@ -39,6 +40,17 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
         public void ExecData(BILL_OBTAINEntity Data)
         {
             service.JsglService.ExecBillObtain(Data);
+        }
+        public UIResult SearchBill_Obtain(BILL_OBTAINEntity Data)
+        {
+            var res = service.JsglService.GetBillObtainElement(Data);
+            return new UIResult(
+                new
+                {
+                    billObtain = res.Item1,
+                    billObtainItem = res.Item2
+                }
+                );
         }
     }
 }
