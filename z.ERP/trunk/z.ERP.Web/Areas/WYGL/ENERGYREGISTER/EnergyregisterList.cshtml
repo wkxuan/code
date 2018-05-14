@@ -145,38 +145,7 @@
             }
         </i-col>
     </row>   
-    <row>
-        <i-col span="2" class="RowTitle">
-            弹窗
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new WindowButtonRender()
-                {
-                    WindowModel = "windowParam.terst",
-                    Text = "代码"
-                });
-            }
-        </i-col>
-    </row>
 }
 
 
 
-@section hide{
-    @{
-        RenderControl(new MerchantWindowRender()
-        {
-            Title = "商户查询",
-            vModel = "windowParam.terst",
-            ResVModel1 = "searchParam.BILLID",
-            ResVModel2 = "searchParam.YEARMONTH_START",
-            ResVModel3 = "searchParam.YEARMONTH_END",
-            VueDom = "search"
-        });
-    }
-}
-
-@section foot{
-<script src="~/Areas/Share/MerchantWindow.js"></script>
-}
