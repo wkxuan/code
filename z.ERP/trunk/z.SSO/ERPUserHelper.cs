@@ -11,7 +11,7 @@ using z.Context;
 using z.Exceptions;
 using z.Extensions;
 using z.Extensiont;
-using z.Service;
+using z.ServiceHelper;
 using z.SSO.Model;
 
 namespace z.SSO
@@ -47,7 +47,7 @@ namespace z.SSO
             T e = ApplicationContextBase.GetContext().GetData<T>(LoginKey + key);
             if (!key.IsEmpty() && e == null && ApplicationContextBase.GetContext().principal != null)
             {
-                Model.User user = service.GetUserById(key).ToObj(a => new User() { Id = a.Id, Name = a.Name });
+                Model.User user = service.GetUserById(key)?.ToObj(a => new User() { Id = a.Id, Name = a.Name });
                 if (user == null)
                     throw new NoLoginException();
                 Employee emp = new Employee()

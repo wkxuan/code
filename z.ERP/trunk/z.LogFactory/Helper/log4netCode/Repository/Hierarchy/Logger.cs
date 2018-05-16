@@ -432,12 +432,12 @@ namespace zlog4net.Repository.Hierarchy
 			{
 				zlog4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
 			}
-#if !NET_2_0 && !MONO_2_0
-			catch
-			{
-				log4net.Util.LogLog.Error(declaringType, "Exception while logging");
-			}
-#endif
+//#if !NET_2_0 && !MONO_2_0
+//			catch
+//			{
+//				log4net.Util.LogLog.Error(declaringType, "Exception while logging");
+//			}
+//#endif
 		}
 
 		/// <summary>
@@ -469,12 +469,12 @@ namespace zlog4net.Repository.Hierarchy
 			{
 				zlog4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
 			}
-#if !NET_2_0 && !MONO_2_0
-			catch
-			{
-				log4net.Util.LogLog.Error(declaringType, "Exception while logging");
-			}
-#endif
+//#if !NET_2_0 && !MONO_2_0
+//			catch
+//			{
+//				log4net.Util.LogLog.Error(declaringType, "Exception while logging");
+//			}
+//#endif
 		}
 
 		/// <summary>
@@ -509,12 +509,12 @@ namespace zlog4net.Repository.Hierarchy
 			{
 				zlog4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
 			}
-#if !NET_2_0 && !MONO_2_0
-			catch
-			{
-				log4net.Util.LogLog.Error(declaringType, "Exception while logging");
-			}
-#endif
+//#if !NET_2_0 && !MONO_2_0
+//			catch
+//			{
+//				log4net.Util.LogLog.Error(declaringType, "Exception while logging");
+//			}
+//#endif
 			return false;
 		}
 

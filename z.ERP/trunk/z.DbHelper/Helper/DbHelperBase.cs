@@ -37,7 +37,7 @@ namespace z.DBHelper.Helper
         /// 数据库命令对象
         /// </summary>
         protected DbCommand _dbCommand;
-        /// <summary>
+
         [ThreadStatic]
         static bool isFirstTransaction = false;
         /// <summary>
@@ -91,12 +91,12 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         protected abstract DbConnection GetDbConnection(string _dbConnectionInfoStr);
 
-        /// <summary>
-        /// 取数据库操作对象
-        /// </summary>
-        /// <param name="dbconnection"></param>
-        /// <returns></returns>
-        protected abstract DbCommand GetDbCommand(DbConnection dbconnection);
+        ///// <summary>
+        ///// 取数据库操作对象
+        ///// </summary>
+        ///// <param name="dbconnection"></param>
+        ///// <returns></returns>
+        //protected abstract DbCommand GetDbCommand(DbConnection dbconnection);
 
         /// <summary>
         /// 获取参数列表
@@ -122,6 +122,11 @@ namespace z.DBHelper.Helper
         {
             return FieldName;
         }
+
+        /// <summary>
+        /// 初始化操作
+        /// </summary>
+        protected abstract void Init();
         #endregion
         #region 构造
 
@@ -165,8 +170,7 @@ namespace z.DBHelper.Helper
             DataTable dt = new DataTable();
             try
             {
-                if (_dbCommand.Connection.State != ConnectionState.Open)
-                    Open();
+                Init();
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
                 lock (ObjectExtension.Locker)
                 {
@@ -188,8 +192,7 @@ namespace z.DBHelper.Helper
             DataTable dt = ExecuteTable(sql, pageSize, pageIndex);
             try
             {
-                if (_dbCommand.Connection.State != ConnectionState.Open)
-                    Open();
+                Init();
                 _dbCommand.CommandText = GetCountSql(sql);
                 lock (ObjectExtension.Locker)
                 {
@@ -240,8 +243,7 @@ namespace z.DBHelper.Helper
             List<T> list = new List<T>();
             try
             {
-                if (_dbCommand.Connection.State != ConnectionState.Open)
-                    Open();
+                Init();
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
                 lock (ObjectExtension.Locker)
                 {
@@ -263,8 +265,7 @@ namespace z.DBHelper.Helper
             List<T> list = ExecuteObject<T>(sql, pageSize, pageIndex);
             try
             {
-                if (_dbCommand.Connection.State != ConnectionState.Open)
-                    Open();
+                Init();
                 _dbCommand.CommandText = GetCountSql(sql);
                 lock (ObjectExtension.Locker)
                 {
@@ -304,8 +305,7 @@ namespace z.DBHelper.Helper
             int influenceRowCount = 0;
             try
             {
-                if (_dbCommand.Connection.State != ConnectionState.Open)
-                    Open();
+                Init();
                 for (int i = 0; i < sql.Count; i++)
                 {
                     tmpStr = sql[i];
@@ -348,8 +348,7 @@ namespace z.DBHelper.Helper
         #region 对象增删改查
         public int Save(TableEntityBase info)
         {
-            if (_dbCommand.Connection.State != ConnectionState.Open)
-                Open();
+            Init();
             IDbDataParameter[] dbprams = info.GetPrimaryKey().Select(a =>
            {
                if (a.GetAttribute<PrimaryKeyAttribute>() != null)
@@ -387,8 +386,7 @@ namespace z.DBHelper.Helper
         public int Insert(TableEntityBase info)
         {
             int res;
-            if (_dbCommand.Connection.State != ConnectionState.Open)
-                Open();
+            Init();
             IDbDataParameter[] dbprams = info.GetAllField().Select(a =>
             {
                 IDbDataParameter p = GetDbDataParameter(a, info);
@@ -425,8 +423,7 @@ namespace z.DBHelper.Helper
         public int Update(TableEntityBase info)
         {
             int res;
-            if (_dbCommand.Connection.State != ConnectionState.Open)
-                Open();
+            Init();
             IDbDataParameter[] dbprams = info.GetFieldWithoutPrimaryKey().Select(a =>
            {
                if (a.GetAttribute<PrimaryKeyAttribute>() != null)
@@ -555,8 +552,7 @@ namespace z.DBHelper.Helper
         public T Select<T>(T info) where T : TableEntityBase
         {
             T res;
-            if (_dbCommand.Connection.State != ConnectionState.Open)
-                Open();
+            Init();
             IDbDataParameter[] dbprams = info.GetPrimaryKey().Select(a =>
             {
                 if (a.GetAttribute<PrimaryKeyAttribute>() != null)
@@ -601,8 +597,7 @@ namespace z.DBHelper.Helper
         public List<T> SelectList<T>(T info) where T : TableEntityBase, new()
         {
             List<T> res;
-            if (_dbCommand.Connection.State != ConnectionState.Open)
-                Open();
+            Init();
             PropertyInfo[] Allprop = info.GetAllField().Where(a =>
             {
                 return a.GetValue(info, null) != null;
@@ -634,8 +629,7 @@ namespace z.DBHelper.Helper
         #region 存储过程
         public T ExecuteProcedure<T>(T info) where T : ProcedureEntityBase
         {
-            if (_dbCommand.Connection.State != ConnectionState.Open)
-                Open();
+            Init();
             _dbCommand.CommandType = CommandType.StoredProcedure;
             IDbDataParameter[] dbprams = info.GetAllProcedureField().Select(a =>
             {
@@ -714,7 +708,6 @@ namespace z.DBHelper.Helper
                 _dbConnection.Close();
                 _dbConnection.Open();
             }
-            _dbCommand = GetDbCommand(_dbConnection);
         }
 
         public virtual void Close()
@@ -726,6 +719,8 @@ namespace z.DBHelper.Helper
                     if (_dbConnection.State != ConnectionState.Closed)
                     {
                         _dbConnection.Close();
+                        _dbConnection.Dispose();
+                        _dbConnection = null;
                         _dbCommand.Dispose();
                     }
                 }
@@ -735,6 +730,7 @@ namespace z.DBHelper.Helper
 
             }
         }
+
         #endregion
         #region 辅助方法
         private List<T> ReaderToObject<T>(IDataReader reader) where T : new()

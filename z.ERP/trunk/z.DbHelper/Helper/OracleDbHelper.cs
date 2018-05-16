@@ -288,11 +288,18 @@ namespace z.DBHelper.Helper
             return new OracleConnection(_dbConnectionInfoStr);
         }
 
-        protected override DbCommand GetDbCommand(DbConnection dbconnection)
+        //protected override DbCommand GetDbCommand(DbConnection dbconnection)
+        //{
+        //    DbCommand com = new OracleCommand();
+        //    com.Connection = dbconnection;
+        //    return com;
+        //}
+
+        protected override void Init()
         {
-            DbCommand com = new OracleCommand();
-            com.Connection = dbconnection;
-            return com;
+            Open();
+            _dbCommand = new OracleCommand();
+            _dbCommand.Connection = _dbConnection;
         }
 
         #endregion

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using z.CacheBox;
 using z.SSO.Model;
 
 namespace z.ERP.Portal.svc
@@ -14,17 +15,35 @@ namespace z.ERP.Portal.svc
     {
         public User GetUserById(string id)
         {
-            return service.HomeService.GetUserById(id);
+            return LogRun(() =>
+            {
+                return service.HomeService.GetUserById(id);
+                ICache wc = new WebCache();
+                return wc.Simple($"GetUserById{id}", () => service.HomeService.GetUserById(id));
+            }, id);
+
+            //return service.HomeService.GetUserById(id);    });
+
         }
 
-        public User GetUserByCode(string code,string password)
+        public User GetUserByCode(string code, string password)
         {
-            return service.HomeService.GetUserByCode(code, password);
+            return LogRun(() =>
+            {
+                return service.HomeService.GetUserByCode(code, password);
+            });
+
         }
 
         public string[] GetPermissionByUserId(string userid)
         {
-            return service.HomeService.GetPermissionByUserId(userid);
+            return LogRun(() =>
+            {
+                ICache wc = new WebCache();
+                return wc.Simple($"GetPermissionByUserId{userid}", () => service.HomeService.GetPermissionByUserId(userid));
+            });
+
+            //return  service.HomeService.GetPermissionByUserId(userid);
         }
     }
 }
