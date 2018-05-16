@@ -574,6 +574,27 @@ namespace z.ERP.Services
             };
             return result;
         }
-
+        //public DataGridResult GetBillObtainList(SearchItem item)
+        //{
+        //    string sql = $@"SELECT L.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME " +
+        //        " FROM BILL_OBTAIN L,BRANCH B,MERCHANT C " +
+        //        "  WHERE L.BRANCHID = B.ID and L.MERCHANTID=C.MERCHANTID(+)  " +
+        //        " and L.TYPE= " + ((int)收款类型.账单收款).ToString();
+        //    item.HasKey("TYPE", a => sql += $" and L.TYPE = {a}");
+        //    item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
+        //    item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
+        //    item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
+        //    item.HasKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
+        //    item.HasKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
+        //    item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
+        //    item.HasKey("VERIFY_TIME_START", a => sql += $" and L.VERIFY_TIME>={a}");
+        //    item.HasKey("VERIFY_TIME_END", a => sql += $" and L.VERIFY_TIME<={a}");
+        //    sql += " ORDER BY  L.BILLID DESC";
+        //    int count;
+        //    DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+        //    dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+        //    return new DataGridResult(dt, count);
+        //}
+        
     }
 }

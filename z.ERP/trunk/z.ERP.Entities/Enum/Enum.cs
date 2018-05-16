@@ -196,6 +196,8 @@ namespace z.ERP.Entities.Enum
     public enum 收款类型
     {
         预收款 = 1,
-        账单收款 = 2
+        保证金收款 = 2,
+        账单收款 = 3,
+        
     }
 }
