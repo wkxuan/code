@@ -127,6 +127,11 @@ namespace z.DBHelper.Helper
         /// 初始化操作
         /// </summary>
         protected abstract void Init();
+
+        /// <summary>
+        /// 完成操作
+        /// </summary>
+        protected abstract void Done();
         #endregion
         #region 构造
 
@@ -174,11 +179,12 @@ namespace z.DBHelper.Helper
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
                 lock (ObjectExtension.Locker)
                 {
-                    using (IDataReader reader = _dbCommand.ExecuteReader())
+                    using (IDataReader reader = _dbCommand.ExecuteReader(CommandBehavior.Default))
                     {
                         dt = this.ReaderToTable(reader);
                     }
                 }
+                Done();
             }
             catch (Exception ex)
             {
@@ -209,6 +215,7 @@ namespace z.DBHelper.Helper
                         }
                     }
                 }
+                Done();
             }
             catch (Exception ex)
             {
@@ -252,6 +259,7 @@ namespace z.DBHelper.Helper
                         list = this.ReaderToObject<T>(reader);
                     }
                 }
+                Done();
             }
             catch (Exception ex)
             {
@@ -282,6 +290,7 @@ namespace z.DBHelper.Helper
                         }
                     }
                 }
+                Done();
             }
             catch (Exception ex)
             {
@@ -317,6 +326,7 @@ namespace z.DBHelper.Helper
                         fun(i, cntnow, influenceRowCount);
                     }
                 }
+                Done();
                 return influenceRowCount;
             }
             catch (Exception ex)
@@ -372,6 +382,7 @@ namespace z.DBHelper.Helper
             int i = 0;
             if (reader.Read())
                 i = reader.GetValue(0).ToString().ToInt();
+            Done();
             if (i == 0)
                 return Insert(info);
             else
@@ -409,6 +420,7 @@ namespace z.DBHelper.Helper
             #region 处理子表
             _InsertChildren(info);
             #endregion
+            Done();
             return res;
         }
 
@@ -463,6 +475,7 @@ namespace z.DBHelper.Helper
             _InsertChildren(info);
             return res;
             #endregion
+            Done();
         }
 
         /// <summary>
@@ -585,6 +598,7 @@ namespace z.DBHelper.Helper
                 throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
             }
             res = _SelectChildren(res);
+            Done();
             return res;
         }
 
@@ -623,6 +637,7 @@ namespace z.DBHelper.Helper
                 throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
             }
             res.ForEach(a => a = _SelectChildren(a));
+            Done();
             return res;
         }
         #endregion
@@ -654,7 +669,12 @@ namespace z.DBHelper.Helper
             {
                 throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
             }
+            finally
+            {
+                Done();
+            }
         }
+
         #endregion
         #endregion
         #region 事务操作
@@ -918,6 +938,7 @@ namespace z.DBHelper.Helper
             }
             return info;
         }
+
         #endregion
     }
 }

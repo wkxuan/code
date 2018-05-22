@@ -302,6 +302,19 @@ namespace z.DBHelper.Helper
             _dbCommand.Connection = _dbConnection;
         }
 
+        protected override void Done()
+        {
+            if (_dbConnection != null && !HasTransaction())
+            {
+                if (this._dbConnection.State != ConnectionState.Closed)
+                {
+                    this._dbConnection.Close();
+                }
+                this._dbConnection.Dispose();
+                this._dbConnection = null;
+            }
+        }
+
         #endregion
 
     }
