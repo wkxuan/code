@@ -20,10 +20,17 @@ zQuery.extend({
         }
         options = $.extend(options_default, options);//处理参数
         var url = __BaseUrl + "/" + options.url;
-        window["WindowClose"] = function (data) {
-            options.callback && options.callback(data);
-        }
-        window.open(url);
+
+        parent.layui.element.tabAdd('yxadmin', {
+            id: options.id,
+            title: options.title,
+            content: '<iframe data-frameid="' + options.id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:99%;"></iframe>',
+        });
+        parent.layui.element.tabChange('yxadmin', options.id);
+        //window["WindowClose"] = function (data) {
+        //    options.callback && options.callback(data);
+        //}
+        //window.open(url);
     },
     Close: function (data) {
         if (window.opener && window.opener.WindowClose) {

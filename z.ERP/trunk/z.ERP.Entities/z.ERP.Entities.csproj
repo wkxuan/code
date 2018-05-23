@@ -40,11 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\MENUTREEEntity.cs" />
     <Compile Include="Auto\SYSUSEREntity.cs" />
     <Compile Include="BILL_NOTICEEntity.cs" />
     <Compile Include="BILL_OBTAINEntity.cs" />
     <Compile Include="BILL_ADJUSTEntity .cs" />
     <Compile Include="BILL_RETURNEntity.cs" />
+    <Compile Include="MENUTREEModule.cs" />
     <Compile Include="Procedures\EXEC_CONTRACT.cs" />
     <Compile Include="Procedures\ProTest.cs" />
     <Compile Include="ROLEEntity.cs" />

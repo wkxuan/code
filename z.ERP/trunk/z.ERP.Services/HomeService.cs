@@ -49,6 +49,69 @@ namespace z.ERP.Services
             return new DataGridResult(DbHelper.ExecuteTable(sql), 0);
         }
 
+
+        public UIResult GetMenuNew(MENUTREEEntity data)
+        {
+            List<MENUTREEModule> MENU_GROUPList = new List<MENUTREEModule>();
+            string sqlgroup = @" select distinct  aa.id,
+                                    aa.pid,
+                                    aa.name
+                               from menutree aa, menu ab,platform pf
+                              where  aa.menuid = ab.id(+)  and ab.platformid=pf.id(+) and aa.pid=-1";
+            if (int.Parse(employee.Id) > 0)
+            {
+                sqlgroup += @" and (aa.menuid in (
+                                                   select a.id
+                                                     from menu a,
+                                                           menuqx        b,
+                                                           USER_ROLE c
+                                                    where a.id = b.menuid
+                                                      and b.roleid = c.roleid
+                                                      and c.userid = " + employee.Id + @") or
+                                    aa.menuid is null)";
+            }
+
+            sqlgroup += " order by aa.id  ";
+
+            DataTable menuGroup = DbHelper.ExecuteTable(sqlgroup);
+
+
+            if (menuGroup.IsNotNull())
+            {
+                MENU_GROUPList = menuGroup.ToList<MENUTREEModule>();
+
+                foreach (var menuGr in MENU_GROUPList)
+                {
+
+                    string sql = @" select aa.id,
+                                    aa.pid,
+                                    ab.id menuid,
+                                    aa.name,
+                                  pf.domain||  ab.url url
+                               from menutree aa, menu ab,platform pf
+                              where  aa.menuid = ab.id(+)  and ab.platformid=pf.id(+) and aa.pid=" + menuGr.ID;
+                    if (int.Parse(employee.Id) > 0)
+                    {
+                        sql += @" and (aa.menuid in (
+                                                   select a.id
+                                                     from menu a,
+                                                           menuqx        b,
+                                                           USER_ROLE c
+                                                    where a.id = b.menuid
+                                                      and b.roleid = c.roleid
+                                                      and c.userid = " + employee.Id + @") or
+                                    aa.menuid is null)";
+                    }
+
+                    sql += " order by aa.id  ";
+                    DataTable menu = DbHelper.ExecuteTable(sql);
+                    menuGr.MENUList = menu.ToList<MENUEntity>();
+
+                };
+            };
+            return new UIResult(new { MENU = MENU_GROUPList });
+        }
+
         public User GetUserById(string id)
         {
             return DbHelper.Select(new SYSUSEREntity(id))?.ToObj(a => new User() { Id = a.USERID, Name = a.USERNAME });
