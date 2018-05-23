@@ -24,10 +24,12 @@ zQuery.extend({
  
         var url = __BaseUrl + "/" + options.url;
 
+        var iframeStr = '<iframe data-frameid="' + options.id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:700px;"></iframe>';
+
         parent.layui.element.tabAdd('yxadmin', {
             id: options.id,
             title: options.title,
-            content: '<iframe data-frameid="' + options.id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:99%;"></iframe>',
+            content: iframeStr,
         });
         parent.layui.element.tabChange('yxadmin', options.id);
 
