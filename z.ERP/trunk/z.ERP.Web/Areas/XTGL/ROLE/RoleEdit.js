@@ -14,15 +14,25 @@
 }
 
 editDetail.newRecord = function () {
-    editDetail.dataParam.VOID_FLAG = "2";
+    editDetail.dataParam.VOID_FLAG = "1";
 }
 
+editDetail.clearKey = function () {
+    editDetail.dataParam.ROLECODE = null;
+    editDetail.dataParam.ROLENAME = null;
+    editDetail.dataParam.ORGIDCASCADER = null;
+    editDetail.dataParam.VOID_FLAG = "1";
+    editDetail.showOne(-1);
+}
 editDetail.showOne = function (data, callback) {
         _.Ajax('SearchRole', {
             Data: {ROLEID:data}
         }, function (data) {
-            $.extend(editDetail.dataParam, data.role);
-            editDetail.dataParam.BILLID = data.role.ROLEID;
+            //添加的时候不赋值
+            if (data.role!=null) {
+                $.extend(editDetail.dataParam, data.role);
+                editDetail.dataParam.BILLID = data.role.ROLEID;
+            }
             //菜单
             editDetail.screenParam.ROLE_MENU = data.menu.Obj;
             //收费项目距
@@ -73,6 +83,22 @@ editDetail.IsValidSave = function () {
     }
     return true;
 }
+
+editDetail.otherMethods = {
+    orgChange: function (value, selectedData) {
+        editDetail.dataParam.ORGID = value[value.length - 1];
+    }
+}
+
+editDetail.mountedInit = function () {
+    _.Ajax('SearchInit', {
+        Data: {}
+    }, function (data) {
+        Vue.set(editDetail.screenParam, "ORGData", data.treeOrg.Obj);
+    });
+}
+
+
 
 
 

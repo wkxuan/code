@@ -15,6 +15,22 @@ namespace z.SSO.Model
         /// <summary>
         /// 部门
         /// </summary>
-        Department=1
+        Org=1,
+        /// <summary>
+        /// 门店
+        /// </summary>
+        Branch = 2,
+        /// <summary>
+        /// 楼层
+        /// </summary>
+        Floor = 3,
+        /// <summary>
+        /// 店铺
+        /// </summary>
+        Shop = 4,
+        /// <summary>
+        /// 收费项目
+        /// </summary>
+        Feesubject = 5
     }
 }

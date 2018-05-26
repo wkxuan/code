@@ -220,8 +220,67 @@ namespace z.ERP.Services
         {
             switch (type)
             {
-                case PermissionType.Department:
-                    return " select ORGID id from ORG ";
+                case PermissionType.Menu:
+                    String SqlMenu = "";
+                    SqlMenu = " SELECT MENUID FROM USERMODULE A,MENU B where A.MODULEID = B.ID";
+                    if (!employee.Id.IsEmpty() && employee.Id != "-1")
+                    {
+                        SqlMenu += " and exists(select 1 from USER_ROLE A1, ROLE_MENU B1,USERMODULE C1 where A1.USERID=" + employee.Id;
+                        SqlMenu += " and A1.ROLEID = B1.ROLEID and C1.MODULECODE like B1.MODULECODE||'%' and C1.MENUID = A.MENUID "; 
+                    }
+                    //可增加系统参数菜单权限控制是否要关联位置
+                    if(1==1)
+                    {
+                        SqlMenu += " and C1.MODULECODE = A.MODULECODE ";
+                    }
+                    SqlMenu += " ) ";
+                    return SqlMenu;
+                case PermissionType.Org:
+                    String SqlDepartment = "";
+                    SqlDepartment=" select ORGID id from ORG A";
+                    if (!employee.Id.IsEmpty() && employee.Id != "-1")
+                    {
+                        SqlDepartment += " and exists(select 1 from USER_ROLE A1,ROLE B1,ORG C1 where A1.USERID=" + employee.Id;
+                        SqlDepartment += " and A1.ROLEID = B1.ROLEID and B1.ORGID = C1.ORGID and (C1.ORGCODE like A.ORGCODE || '%' or A.ORGCODE like C1.ORGCODE || '%'))";
+                    }
+                    return SqlDepartment;
+                case PermissionType.Branch:
+                    String SqlBranch = "";
+                    SqlBranch = "SELECT A.ID FROM BRANCH A,ORG Bwhere A.ORGID = B.ORGID";
+                    if (!employee.Id.IsEmpty() && employee.Id != "-1")
+                    {
+                        SqlBranch += " and exists(select 1 from USER_ROLE A1, ROLE B1, ORG C1 where A1.USERID = " + employee.Id;
+                        SqlBranch += " and A1.ROLEID = B1.ROLEID and B1.ORGID = C1.ORGID and B.ORGCODE like C1.ORGCODE || '%' )";
+                    }
+                    return SqlBranch;
+                case PermissionType.Floor:
+                    String SqlFloor = "";
+                    SqlFloor = "SELECT A.ID FROM FLOOR A,ORG Bwhere A.ORGID = B.ORGID";
+                    if (!employee.Id.IsEmpty() && employee.Id != "-1")
+                    {
+                        SqlFloor += " and exists(select 1 from USER_ROLE A1, ROLE B1, ORG C1 where A1.USERID = " + employee.Id;
+                        SqlFloor += " and A1.ROLEID = B1.ROLEID and B1.ORGID = C1.ORGID and B.ORGCODE like C1.ORGCODE || '%' )";
+                    }
+                    return SqlFloor;
+                case PermissionType.Shop:
+                    String SqlShop = "";
+                    SqlShop = "SELECT A.SHOPID FROM SHOP A,ORG Bwhere A.ORGID = B.ORGID";
+                    if (!employee.Id.IsEmpty() && employee.Id != "-1")
+                    {
+                        SqlShop += " and exists(select 1 from USER_ROLE A1, ROLE B1, ORG C1 where A1.USERID = " + employee.Id;
+                        SqlShop += " and A1.ROLEID = B1.ROLEID and B1.ORGID = C1.ORGID and B.ORGCODE like C1.ORGCODE || '%' )";
+                    }
+                    return SqlShop;
+                case PermissionType.Feesubject:
+                    String SqlFeesubject = "";
+                    SqlFeesubject = "SELECT A.TRIMID FROM FEESUBJECT A where 1 = 1 ";
+                    if (!employee.Id.IsEmpty() && employee.Id != "-1")
+                    {
+                        SqlFeesubject += " and exists(select 1 from USER_ROLE A1, ROLE_FEE B1, ORG C1 where A1.USERID = " + employee.Id;
+                        SqlFeesubject += "and A1.ROLEID = B1.ROLEID and B1.TRIMID = A.TRIMID )";
+                    }
+                    return SqlFeesubject;
+
                 default:
                     throw new Exception("无效的权限类型");
             }

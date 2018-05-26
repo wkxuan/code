@@ -19,6 +19,7 @@ using z.Extensions;
 using z.Extensiont;
 using z.MVC5.Results;
 using z.WebPage;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -201,24 +202,6 @@ namespace z.ERP.Services
         {
             string sql = $@"select A.* from SHOP A where 1=1 ";
             item.HasKey("SHOPID", a => sql += $" and A.SHOPID = '{a}'");
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-        public DataGridResult GetUser(SearchItem item)
-        {
-            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME FROM SYSUSER A WHERE 1=1";
-            item.HasKey("USERCODE,", a => sql += $" and A.USERCODE = '{a}'");
-            item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");
-            sql += " ORDER BY  A.USERCODE";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-        public DataGridResult GetUserElement(SearchItem item)
-        {
-            string sql = $@"select A.* from SYSUSER A where 1=1 ";
-            item.HasKey("USERID", a => sql += $" and A.USERID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

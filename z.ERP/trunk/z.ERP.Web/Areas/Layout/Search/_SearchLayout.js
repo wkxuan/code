@@ -17,7 +17,7 @@
     this.canEdit = function (mess) {
         return true;
     }
-
+    this.mountedInit = function () { }
     this.vue = function VueOperate() {
         var options = {
             el: '#search',
@@ -33,6 +33,7 @@
             },
 
             mounted: function () {
+                _this.mountedInit();
             },
             methods: {
                 seach: function (event) {

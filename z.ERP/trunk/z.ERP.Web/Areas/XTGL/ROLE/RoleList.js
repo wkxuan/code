@@ -14,16 +14,26 @@
     search.service = "UserService";
     search.method = "GetRole";
 }
-//search.searchParam.TYPE = false;
-//searchParam.CHANGE_TYPE = ViewBag.Type;
+search.mountedInit = function () {
+    _.Ajax('SearchInit', {
+        Data: {}
+    }, function (data) {
+        Vue.set(search.searchParam, "ORGData", data.treeOrg.Obj);
+    });
+}
+search.otherMethods = {
+    orgChange: function (value, selectedData) {
+    Vue.set(search.searchParam, "ORGCODE", selectedData[selectedData.length - 1].code);
+    }
+}
 //浏览双击跳转页面
 search.browseHref = function (row, index) {
-    _.OpenPage("XTGL/ROLE/RoleDetail/" + row.ROLEID, function (data) {
-    });
+    //_.OpenPage("XTGL/ROLE/RoleDetail/" + row.ROLEID, function (data) {
+    //});
 }
 //添加跳转页面
 search.addHref = function (row) {
-    _.OpenPage("XTGL/ROLE/RoleEdit/", function (data) {
+    _.OpenPage("XTGL/ROLE/RoleEdit/-1", function (data) {
     });
 }
 

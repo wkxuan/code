@@ -67,7 +67,7 @@ namespace z.Extensions
         {
             get
             {
-                return GetConfig("TestModel") == "true";
+                return GetConfig("TestModel") == "false";
             }
         }
     }

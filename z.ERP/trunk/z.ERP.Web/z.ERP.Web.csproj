@@ -200,7 +200,6 @@
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cs" />
     <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
-    <Compile Include="Areas\XTGL\SYSUSER\Sysuser.cs" />
     <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
     <Compile Include="Areas\XTGL\SHOP\Shop.cs" />
     <Compile Include="Areas\XTGL\FLOOR\Floor.cs" />
@@ -209,6 +208,7 @@
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
     <Compile Include="Areas\XTGL\PERIOD\PeriodController.cs" />
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
+    <Compile Include="Areas\XTGL\SYSUSER\SysuserController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Areas\XTGL\TreeTest\TreeController.cs" />
     <Compile Include="Global.asax.cs">
