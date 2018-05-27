@@ -295,7 +295,7 @@ namespace z.ERP.Services
             v.Require(a => a.IP);
             v.IsUnique(a => a.IP);
 
-            DefineSave.STATION_PAY.ForEach(sdb =>
+            DefineSave.STATION_PAY?.ForEach(sdb =>
             {
                 GetVerify(sdb).Require(a => a.PAYID);                
             });

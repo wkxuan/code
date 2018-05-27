@@ -473,9 +473,9 @@ namespace z.DBHelper.Helper
             #region 处理子表
             _DeleteChildren(info);
             _InsertChildren(info);
+            Done();
             return res;
             #endregion
-            Done();
         }
 
         /// <summary>
@@ -694,6 +694,7 @@ namespace z.DBHelper.Helper
         /// </summary>
         public virtual DbTransaction BeginTransaction(IsolationLevel? iso = null)
         {
+            Init();
             //if (!isFirstTransaction)
             {
                 if (_dbCommand == null || _dbCommand.Transaction == null)

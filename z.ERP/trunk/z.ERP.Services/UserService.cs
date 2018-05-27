@@ -141,7 +141,6 @@ namespace z.ERP.Services
             using (var Tran = DbHelper.BeginTransaction())
             {
                 DbHelper.Save(SaveData);
-
                 Tran.Commit();
             }
             return SaveData.ROLEID;
