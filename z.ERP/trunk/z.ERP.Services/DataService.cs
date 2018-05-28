@@ -18,6 +18,7 @@ using z.MVC5.Results;
 using z.Results;
 using z.WebPage;
 using z.ERP.Entities.Enum;
+using z.ERP.Model.Vue;
 
 namespace z.ERP.Services
 {
@@ -142,6 +143,76 @@ namespace z.ERP.Services
             return new
             {
                 dt = dt.ToOneLine()
+            };
+        }
+        /// <summary>
+        /// 弹窗选择账单
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult GetBill(SearchItem item)
+        {
+            string sql = " SELECT  A.BILLID,A.BRANCHID,A.MERCHANTID,A.CONTRACTID,A.TERMID,A.NIANYUE,A.YEARMONTH,A.MUST_MONEY "
+                + " ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION "
+                       + " FROM BILL A " +
+                "  WHERE  1=1 ";
+            item.HasKey("BILLID", a => sql += $" and A.BILLID like '%{a}%'");
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID like '%{a}%'");
+            item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
+            item.HasKey("TYPE", a => sql += $" and A.TYPE = '{a}'");
+            item.HasKey("NIANYUE", a => sql += $" and A.NIANYUE = '{a}'");
+            item.HasKey("YEARMONTH", a => sql += $" and A.YEARMONTH = '{a}'");
+            item.HasKey("REPORTER", a => sql += $" and A.REPORTER = '{a}'");
+            item.HasKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
+            item.HasKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        /// <summary>
+        /// 树形部门
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public Tuple<dynamic> GetTreeOrg()
+        {
+            List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
+            var treeOrg = new UIResult(TreeModel.Create(p,
+                a => a.ORGCODE,
+                a => new TreeModel()
+                {
+                    code = a.ORGCODE,
+                    title = a.ORGNAME,
+                    value = a.ORGID,
+                    label = a.ORGNAME,
+                    expand = true
+                })?.ToArray());
+
+            return new Tuple<dynamic>(treeOrg);
+        }
+
+        public object GetBranch(BRANCHEntity Data)
+        {
+            string sql = $@"SELECT A.ID,A.NAME FROM BRANCH A WHERE 1=1";
+            if (!Data.ID.IsEmpty())
+                sql += (" and A.ID= " + Data.ID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt
+            };
+        }
+        public object GetFloor(FLOOREntity Data)
+        {
+            string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
+            if (!Data.BRANCHID.IsEmpty())
+                sql += (" and A.BRANCHID= " + Data.BRANCHID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt
             };
         }
     }

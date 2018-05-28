@@ -14,7 +14,7 @@
 
     //得到主键
     this.Key = undefined;
-
+    this.mountedInit = function () { };
 
     this.vue = function VueOperate() {
         var options = {
@@ -39,6 +39,7 @@
                         define.screenParam.dataDef = data.rows;
                     }
                 })
+                _this.mountedInit();
             },
             methods: {
                 add: function (event) {

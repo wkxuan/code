@@ -9,7 +9,7 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
     {
         public ActionResult RoleList()
         {
-            ViewBag.Title = "用户信息";
+            ViewBag.Title = "角色信息";
             return View();
         }
         public ActionResult RoleDetail(string Id)
@@ -48,6 +48,16 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                     fee = res.Item3
                 }
                 );
+        }
+        public UIResult SearchInit()
+        {
+            var res = service.DataService.GetTreeOrg();
+            return new UIResult(
+                new
+                {
+                    treeOrg = res.Item1
+                }
+            );
         }
     }
 }
