@@ -94,6 +94,17 @@ function initmenu(callback) {
 
                     $('.rightmenu').hide(); 
                 })
+
+                $(".layui-nav-item").click(function () {
+                    $(".layui-nav-item").removeClass("layui-nav-itemed");
+                    $(".layui-nav-item").removeClass("layui-this");
+                    if ($(this).has('dl').length) {
+                        $(this).addClass("layui-nav-itemed");
+                    } else {
+                        $(this).addClass("layui-this");
+                    }
+                });
+
                 function FrameWH() {
                     var h = $(window).height() - 41 - 10 - 60 - 10 - 44 - 10;
                     $("iframe").css("height", h + "px");
