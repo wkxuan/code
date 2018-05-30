@@ -31,21 +31,46 @@
     @InitFiles(WebFiles)
     @InitThisJs()
 </head>
-<body class="layui-layout-body">
-
-    <div class="layui-tab layui-tab-card site-demo-button" style="position: relative;">
-        <ul class="layui-nav layui-nav-tree layui-nav-side" id="taburl"></ul>
-
-        <div class="layui-tab" lay-filter="yxadmin" lay-allowclose="true" style="margin-left: 200px;">
-            <ul class="layui-tab-title"></ul>
-            <ul class="rightmenu" style="display: none;position: absolute;">
-                <li data-type="closethis">关闭当前</li>
-                <li data-type="closeall">关闭所有</li>
+<body>
+    <div class="layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">logo</div>
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href="javascript:void(0)">购物中心</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">会员系统</a></li>
             </ul>
-            <div class="layui-tab-content">
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href=""><img src="" class="layui-nav-img">个人信息</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">重置密码</a></dd>
+                        <dd><a href="">重新登陆</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree" id="taburl" lay-filter="hbkNavbar"></ul>
             </div>
         </div>
 
+
+        <div class="layui-body" id="container">
+            <div class="layui-tab" lay-filter="yxadmin" lay-allowClose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">首页</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">驾驶舱信息待处理</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-footer">
+            <center>版权&copy;Tel:110</center>
+        </div>
     </div>
 </body>
 

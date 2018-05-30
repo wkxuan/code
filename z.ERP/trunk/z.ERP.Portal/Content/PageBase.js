@@ -15,25 +15,32 @@ zQuery.extend({
             }
         }
         var options_default = {
+            id: '',
+            title: '',
             url: "",
             callback: null
         }
         options = $.extend(options_default, options);//处理参数
+
         var url = __BaseUrl + "/" + options.url;
 
+        parent.layui.element.tabAdd('yxadmin', {
+            id: options.id,
+            title: options.title,
+            content: '<iframe data-frameid="' + options.id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:900px;"></iframe>',
+        });
+        parent.layui.element.tabChange('yxadmin', options.id);
 
-        var iframeStr = '<iframe data-frameid="' + options.id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:700px;"></iframe>';
 
-        //parent.layui.element.tabAdd('yxadmin', {
-        //    id: options.id,
-        //    title: options.title,
-        //    content: iframeStr,
-        //});
-        //parent.layui.element.tabChange('yxadmin', options.id);
-        window["WindowClose"] = function (data) {
-            options.callback && options.callback(data);
-        }
-        window.open(url);
+        //window["WindowClose"] = function (data) {
+        //    options.callback && options.callback(data);
+        //}
+        //if (window.parent.navTab) {
+        //    window.parent.navTab.openTab('' + options.id, url, { title: options.title, fresh: true, data: {}, external: true })
+        //}
+        //else {
+        //    window.open(url);
+        //}
     },
     Close: function (data) {
         if (window.opener && window.opener.WindowClose) {
