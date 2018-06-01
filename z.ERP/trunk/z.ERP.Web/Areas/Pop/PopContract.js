@@ -1,19 +1,19 @@
 ﻿Vue.component('Contract', {
     template: '<div>' +
                     '<row>' +
-                        '<i-col span="2" class="RowTitle">' +
+                        '<i-col span="3" class="RowTitle">' +
                            '租约号' +
                         '</i-col>' +
                         '<i-col span="4">' +
                            '<i-input v-model="CONTRACTID"></i-input>' +
                         '</i-col>' +
-                        '<i-col span="2" class="RowTitle">' +
+                        '<i-col span="3" class="RowTitle">' +
                            '商户编号' +
                         '</i-col>' +
                         '<i-col span="4">' +
                            '<i-input v-model="MERCHANTID"></i-input>' +
                         '</i-col>' +
-                        '<i-col span="2" class="RowTitle">' +
+                        '<i-col span="3" class="RowTitle">' +
                            '商户名称' +
                         '</i-col>' +
                         '<i-col span="4">' +

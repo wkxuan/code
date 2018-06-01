@@ -1,13 +1,13 @@
 ﻿Vue.component('Feesubject', {
     template: '<div>' +
                     '<row>' +
-                        '<i-col span="2" class="RowTitle">' +
+                        '<i-col span="3" class="RowTitle">' +
                            '费用编码' +
                         '</i-col>' +
                         '<i-col span="4">' +
                            '<i-input v-model="TRIMID"></i-input>' +
                         '</i-col>' +
-                        '<i-col span="2" class="RowTitle">' +
+                        '<i-col span="3" class="RowTitle">' +
                            '费用名称' +
                         '</i-col>' +
                         '<i-col span="4">' +

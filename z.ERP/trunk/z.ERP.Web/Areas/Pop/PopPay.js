@@ -1,13 +1,13 @@
 ﻿Vue.component('Pay', {
     template: '<div>' +
                     '<row>' +
-                        '<i-col span="2" class="RowTitle">' +
+                        '<i-col span="3" class="RowTitle">' +
                            '收款编码' +
                         '</i-col>' +
                         '<i-col span="4">' +
                            '<i-input v-model="PAYID"></i-input>' +
                         '</i-col>' +
-                        '<i-col span="2" class="RowTitle">' +
+                        '<i-col span="3" class="RowTitle">' +
                            '收款名称' +
                         '</i-col>' +
                         '<i-col span="4">' +

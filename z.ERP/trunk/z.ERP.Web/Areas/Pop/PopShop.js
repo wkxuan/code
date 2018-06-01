@@ -1,7 +1,7 @@
 ﻿Vue.component('Shop', {
     template: '<div>' +
                     '<row>' +
-                        '<i-col span="2" class="RowTitle">' +
+                        '<i-col span="3" class="RowTitle">' +
                            '商铺编码'+
                         '</i-col>' +
                         '<i-col span="4">' +

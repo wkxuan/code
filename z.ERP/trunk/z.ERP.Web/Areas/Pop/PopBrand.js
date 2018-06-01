@@ -1,13 +1,13 @@
 ﻿Vue.component('Brand', {
     template: '<div>' +
                     '<row>' +
-                        '<i-col span="2" class="RowTitle">' +
+                        '<i-col span="3" class="RowTitle">' +
                            '品牌编码'+
                         '</i-col>' +
                         '<i-col span="4">' +
                            '<i-input v-model="ID"></i-input>' +
                         '</i-col>' +
-                        '<i-col span="2" class="RowTitle">' +
+                        '<i-col span="3" class="RowTitle">' +
                            '品牌名称' +
                         '</i-col>' +
                         '<i-col span="4">' +
