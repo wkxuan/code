@@ -31,6 +31,7 @@ namespace z.CacheBox
 
         public T Simple<T>(string key, Func<T> IsNull)
         {
+            return IsNull();  //----------------先弃用缓存
             T t = Get<T>(key);
             if (t == null)
             {
