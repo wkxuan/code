@@ -24,12 +24,17 @@ zQuery.extend({
 
         var url = __BaseUrl + "/" + options.url;
 
-        parent.layui.element.tabAdd('yxadmin', {
-            id: options.id,
-            title: options.title,
-            content: '<iframe data-frameid="' + options.id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:900px;"></iframe>',
-        });
-        parent.layui.element.tabChange('yxadmin', options.id);
+        if (parent.layui.element) {
+            parent.layui.element.tabAdd('yxadmin', {
+                id: options.id,
+                title: options.title,
+                content: '<iframe data-frameid="' + options.id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:900px;"></iframe>',
+            });
+            parent.layui.element.tabChange('yxadmin', options.id);
+        }
+        else {
+            window.open(url);
+        }
 
 
         //window["WindowClose"] = function (data) {

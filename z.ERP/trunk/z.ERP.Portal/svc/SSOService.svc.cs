@@ -18,8 +18,8 @@ namespace z.ERP.Portal.svc
             return LogRun(() =>
             {
                 return service.HomeService.GetUserById(id);
-                ICache wc = new WebCache();
-                return wc.Simple($"GetUserById{id}", () => service.HomeService.GetUserById(id));
+                //ICache wc = new WebCache();
+                //return wc.Simple($"GetUserById{id}", () => service.HomeService.GetUserById(id));
             }, id);
 
             //return service.HomeService.GetUserById(id);    });

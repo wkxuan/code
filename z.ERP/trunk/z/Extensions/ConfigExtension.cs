@@ -67,7 +67,7 @@ namespace z.Extensions
         {
             get
             {
-                return GetConfig("TestModel") == "false";
+                return GetConfig("TestModel").ToLower() == "true";
             }
         }
     }

@@ -161,12 +161,15 @@
     <Compile Include="Areas\JSGL\BILL_OBTAIN\Bill_ObtainController.cs" />
     <Compile Include="Areas\JSGL\BILL_RETURN\Bill_ReturnController.cs" />
     <Compile Include="Areas\JSGL\JOINBILL\JoinBillController.cs" />
+    <Compile Include="Areas\Layout\Define\DefineRender.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\Detail\DetailViewBase.cs" />
     <Compile Include="Areas\Layout\EditDetail\EditDetailViewBase.cs" />
+    <Compile Include="Areas\Layout\EditDetail\EditRender.cs" />
     <Compile Include="Areas\Layout\Edit\EditViewBase.cs" />
     <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
+    <Compile Include="Areas\Layout\Search\SearchRender.cs" />
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />

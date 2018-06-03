@@ -1,7 +1,13 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<ButtonRender>
 
-<i-button id="@Model.Id" 
-          icon="@Model.Icon" v-on:click="@Model.Click"
-          :disabled="@(Model.Enable?"!disabled":"disabled")">@Model.Text</i-button>
+@{
+    if (Model.HasPermission)
+    {
+        <i-button id="@Model.Id"
+                  icon="@Model.Icon" v-on:click="@Model.Click"
+                  :disabled="@(Model.Enable?"!disabled":"disabled")">@Model.Text</i-button>
+    }
+}
+
 @*type="@Model.Type"*@ 

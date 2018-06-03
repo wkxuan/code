@@ -109,7 +109,10 @@ namespace z.ERP.Services
 
                 };
             };
-            return new UIResult(new { MENU = MENU_GROUPList });
+            return new UIResult(new
+            {
+                MENU = MENU_GROUPList
+            });
         }
 
         public User GetUserById(string id)
@@ -142,12 +145,17 @@ namespace z.ERP.Services
 
         public string[] GetPermissionByUserId(string userid)
         {
-            return DbHelper.ExecuteTable($@"select b.menuid
-                                                          from USER_ROLE a
-                                                          join menuqx b
-                                                            on a.roleid = b.roleid
-                                                         where a.userid = '{userid}'")
-                                                         .ToList<string>().ToArray();
+
+            return DbHelper.ExecuteTable($@"SELECT A.MENUID FROM USERMODULE A, MENU B where A.MENUID = B.ID
+ and exists(select 1 from USER_ROLE A1, ROLE_MENU B1, USERMODULE C1 where A1.USERID = '{userid}'
+and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
+                                                  .ToList<string>().ToArray();
+            //return DbHelper.ExecuteTable($@"select b.menuid
+            //                                              from USER_ROLE a
+            //                                              join menuqx b
+            //                                                on a.roleid = b.roleid
+            //                                             where a.userid = '{userid}'")
+            //                                             .ToList<string>().ToArray();
         }
 
         public void ChangePs(SYSUSEREntity data)

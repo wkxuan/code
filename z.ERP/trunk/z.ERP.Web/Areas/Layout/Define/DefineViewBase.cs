@@ -2,7 +2,7 @@
 
 namespace z.ERP.Web.Areas.Layout.Define
 {
-    public class DefineViewBase : ViewBase<dynamic>
+    public class DefineViewBase : ViewBase<DefineRender>
     {
         public DefineViewBase()
         {
