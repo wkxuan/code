@@ -59,9 +59,9 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
             service.JsglService.ExecBillAdjust(Data);
         }
 
-        public UIResult GetBill(BILLEntity Data)
-        {
-            return new UIResult(service.DataService.GetBill(Data));
-        }
+        //public UIResult GetBill(BILLEntity Data)
+        //{
+        //    return new UIResult(service.DataService.GetBill(Data));
+        //}
     }
 }

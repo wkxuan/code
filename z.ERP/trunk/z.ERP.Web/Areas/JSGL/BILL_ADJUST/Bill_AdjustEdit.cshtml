@@ -4,85 +4,95 @@
 @using z.ERP.Entities;
 @inherits EditDetailViewBase<string>
 @section baseParam{
-<row>
+    <row>
 
-    <i-col span="2" class="RowTitle">
-        权债发生月
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.NIANYUE"
-            });
-        }
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        收付实现月
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.YEARMONTH"
-            });
-        }
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        状态
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new EnumDropDownListRender<普通单据状态>()
-            {
-                vModel = "dataParam.STATUS",
-                Enable = false
-            });
-        }
-    </i-col>
+        <i-col span="2" class="RowTitle">
+            权债发生月
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.NIANYUE"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            收付实现月
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.YEARMONTH"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
 
-</row>
-
-<row>
-    <i-col span="2" class="RowTitle">
-        开始日期
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new DateBoxRender()
-            {
-                vModel = "dataParam.START_DATE"
-            });
-        }
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        结束日期
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new DateBoxRender()
-            {
-                vModel = "dataParam.END_DATE"
-            });
-        }
-    </i-col>
     </row>
-<row>
-    <i-col span="2" class="RowTitle">
-        备注
-    </i-col>
-    <i-col span="14">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.DESCRIPTION"
-            });
-        }
-    </i-col>
-</row>
-    }
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            开始日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.START_DATE"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            结束日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.END_DATE"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            备注
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION"
+                });
+            }
+        </i-col>
+    </row>
+}
 @section detailParam{
     <row>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "SelBill",
+                Text = "选择账单",
+                Enable = true,
+                Type = "primary",
+                Icon = "plus-circled"
+            });
+        }
         @{
             RenderControl(new ButtonRender()
             {
@@ -92,6 +102,16 @@
                 Type = "primary"
             });
         }
+        @*@{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delColCost",
+                    Text = "删除",
+                    Enable = true,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }*@
     </row>
     <row>
         <i-col span="24">
@@ -100,6 +120,23 @@
         </i-col>
     </row>
 }
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopBill",
+                    Caption = "选择账单",
+                    Width = "800",
+                    Src = "screenParam.srcPopBill"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+
 
 
 

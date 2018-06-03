@@ -171,7 +171,9 @@
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
+    <Compile Include="Areas\Share\Render\DropDownListsRender.cs" />
     <Compile Include="Areas\Share\Render\PopRender.cs" />
+    <Compile Include="Areas\Share\Render\PopsRender.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
@@ -201,12 +203,12 @@
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cs" />
     <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
     <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
-    <Compile Include="Areas\XTGL\SHOP\Shop.cs" />
     <Compile Include="Areas\XTGL\FLOOR\Floor.cs" />
     <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
     <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
     <Compile Include="Areas\XTGL\PERIOD\PeriodController.cs" />
+    <Compile Include="Areas\XTGL\SHOP\ShopController.cs" />
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\SYSUSER\SysuserController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
@@ -527,6 +529,8 @@
     <Content Include="Content\layui\font\iconfont.eot" />
     <Content Include="Content\layui\font\iconfont.ttf" />
     <Content Include="Content\layui\font\iconfont.woff" />
+    <Content Include="Areas\Share\BaseDropDownLists.cshtml" />
+    <Content Include="Areas\Share\Pops.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -61,7 +61,8 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
 
         public UIResult GetBill(BILLEntity Data)
         {
-            return new UIResult(service.DataService.GetBill(Data));
+            //return new UIResult(service.DataService.GetBill(Data));
+            return new UIResult();
         }
     }
 }

@@ -5,6 +5,13 @@
     editDetail.method = "GetBillAdjust";
     editDetail.Key = 'BILLID';
 
+    //初始化弹窗所要传递参数
+    editDetail.screenParam.ParentFeeSubject = {};
+    editDetail.screenParam.showPopBill = false;
+    editDetail.screenParam.srcPopBill = __BaseUrl + "/" + "Pop/Pop/PopBillList/";
+    editDetail.screenParam.popParam = { };
+
+
     editDetail.screenParam.colDef = [
                 {
                     title: "租约号", key: 'CONTRACTID', width: 100,
@@ -76,7 +83,7 @@
     if (!editDetail.dataParam.BILL_ADJUST_ITEM) {
         editDetail.dataParam.BILL_ADJUST_ITEM = [{
             CONTRACTID: "",
-            TERIMID: "",
+            TERMID: "",
             MUST_MONEY: "",
         }]
     }
@@ -84,6 +91,38 @@
         var temp = editDetail.dataParam.BILL_ADJUST_ITEM || [];
         temp.push({});
         editDetail.dataParam.BILL_ADJUST_ITEM = temp;
+    }
+}
+editDetail.otherMethods = {
+
+    SelBill: function () {
+        editDetail.screenParam.showPopBill = true;
+        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
+        //var site = localStorage.getItem("relt");
+    },
+    srchCost: function () {
+        Vue.set(editDetail.screenParam, "PopFeeSubject", true);
+    },
+
+    FeeSubjectBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopFeeSubject", false);
+        var maxIndex = 1;
+        for (var i = 0; i < val.sj.length; i++) {
+            if (editDetail.dataParam.CONTRACT_COST) {
+                for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
+                    maxIndex = editDetail.dataParam.CONTRACT_COST[0].INX;
+                    if (editDetail.dataParam.CONTRACT_COST[j].INX > maxIndex) {
+                        maxIndex = editDetail.dataParam.CONTRACT_COST[j].INX
+                    };
+                    maxIndex++;
+                };
+            };
+            editDetail.dataParam.CONTRACT_COST.push({
+                INX: maxIndex,
+                TERMID: val.sj[i].TERMID,
+                NAME: val.sj[i].NAME
+            });
+        };
     }
 }
 editDetail.showOne = function (data, callback) {
@@ -95,3 +134,11 @@ editDetail.showOne = function (data, callback) {
         callback && callback(data);
     });
 }
+
+editDetail.popCallBack = function (data) {
+    editDetail.screenParam.showPopBill = false;
+    for (var i = 0; i < data.sj.length; i++) {
+        editDetail.dataParam.BILL_ADJUST_ITEM.push(data.sj[i]);
+    };
+    //alert('Clicked ok');
+};
