@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Share.Render;
+using z.Extensions;
 using z.MVC5.Models;
 using z.Results;
 
@@ -23,6 +24,10 @@ namespace z.ERP.Web.Areas.Share
         }
         public ActionResult Button(ButtonRender render)
         {
+            if (!render.PermissionKey.IsEmpty())
+                render.HasPermission = employee.HasPermission(render.PermissionKey);
+            else
+                render.HasPermission = true;
             return View(render);
         }
         public ActionResult UndefineWindow(UndefineWindowRender render)

@@ -97,14 +97,15 @@ namespace z.SSO
 
         bool HasPermission(string UserId, string Key, PermissionType Type = PermissionType.Menu)
         {
+            log.Info("ERPHasPermission", UserId, Key, Type);
             if (UserId.IsEmpty())
                 return false;
             if (Key.IsEmpty())
                 return true;
             if (ConfigExtension.TestModel)
                 return true;
-            if (UserId.ToInt() < 0)
-                return true;
+            //if (UserId.ToInt() < 0)
+            //    return true;
             switch (Type)
             {
                 case PermissionType.Menu:

@@ -36,9 +36,11 @@ namespace z.ERP.Portal.svc
                 return default(T);
             try
             {
-                if (infos.IsEmpty())
+                if (!infos.IsEmpty())
                     Log.Info("Service", infos);
-                return func.Invoke();
+                T t = func.Invoke();
+                Log.Info("Service", t);
+                return t;
             }
             catch (Exception ex)
             {
