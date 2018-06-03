@@ -10,6 +10,7 @@ using z.ERP.Entities.Enum;
 using System.Data;
 using z.MVC5.Attributes;
 using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.HTGL.ZLHT
 {
@@ -30,7 +31,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         {
             ViewBag.Title = "租赁租约信息编辑";
             ViewBag.STYLE = 2;
-            return View("HtEdit", model: Id);
+            return View("HtEdit", model: (EditRender)Id);
         }
 
         public string Save(CONTRACTEntity SaveData)

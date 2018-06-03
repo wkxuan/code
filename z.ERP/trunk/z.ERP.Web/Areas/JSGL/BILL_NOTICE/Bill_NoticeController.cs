@@ -8,6 +8,7 @@ using z.MVC5.Results;
 using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
+using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
 {
@@ -21,7 +22,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
         public ActionResult Bill_NoticeEdit(string Id)
         {
             ViewBag.Title = "租赁结算单";
-            return View("Bill_NoticeEdit", model: Id); 
+            return View("Bill_NoticeEdit", model: (EditRender)Id); 
         }
         public ActionResult Bill_NoticeDetail(string Id)
         {
