@@ -105,6 +105,10 @@
       <Project>{da64e4e3-1857-4b57-a6d9-abbdb092e7e4}</Project>
       <Name>z.DbHelper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.LogFactory\z.LogFactory.csproj">
+      <Project>{31E4C7DC-E998-4068-AEC8-0AFAC6BBE68D}</Project>
+      <Name>z.LogFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.SSO\z.SSO.csproj">
       <Project>{DF833680-D044-4C57-96F9-217A1812C0B3}</Project>
       <Name>z.SSO</Name>

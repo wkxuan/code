@@ -39,9 +39,12 @@
         <i-col span="2" class="RowTitle">所属机构</i-col>
         <i-col span="6">
             @{
-                RenderControl(new UndefineRender()
+                RenderControl(new CascaderRender()
                 {
-                    vModel = "dataParam.ORGID"
+                    vModel = "dataParam.ORGIDCASCADER",
+                    Data = "screenParam.ORGData",
+                    Change = "orgChange",
+                    Enable = true
                 });
             }
         </i-col>

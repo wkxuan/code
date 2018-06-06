@@ -5,18 +5,18 @@
 
 @section element{
     <row>
-        <i-col span="2" class="RowTitle">用户编码</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.USERID"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">用户代码</i-col>
+        <span v-if="screenParam.componentVisible">
+            <i-col span="3" class="RowTitle">用户编码</i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new TextBoxRender()
+                    {
+                        vModel = "dataParam.USERID"
+                    });
+                }
+            </i-col>
+        </span>
+        <i-col span="3" class="RowTitle">用户代码</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -26,7 +26,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">用户名称</i-col>
+        <i-col span="3" class="RowTitle">用户名称</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -41,7 +41,7 @@
 
 
     <row>
-        <i-col span="2" class="RowTitle">用户类型</i-col>
+        <i-col span="3" class="RowTitle">用户类型</i-col>
         <i-col span="6">
             @{
                 RenderControl(new EnumDropDownListRender<用户类型>()
@@ -51,12 +51,14 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">所属机构</i-col>
+        <i-col span="3" class="RowTitle">所属机构</i-col>
         <i-col span="6">
             @{
-                RenderControl(new UndefineRender()
+                RenderControl(new CascaderRender()
                 {
-                    vModel = "dataParam.ORGID",
+                    vModel = "dataParam.ORGIDCASCADER",
+                    Data = "screenParam.ORGData",
+                    Change = "orgChange",
                     Enable = false
                 });
             }
@@ -64,7 +66,7 @@
     </row>
 
     <row>
-        <i-col span="2" class="RowTitle">用户标记</i-col>
+        <i-col span="3" class="RowTitle">用户标记</i-col>
         <i-col span="6">
             @{
                 RenderControl(new EnumCheckBoxListRender<标记>()
@@ -75,7 +77,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">用户密码</i-col>
+        <i-col span="3" class="RowTitle">用户密码</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -87,25 +89,38 @@
             }
         </i-col>
     </row>
-<row>
-    <i-col span="2" class="RowTitle">作废标记</i-col>
-    <i-col span="6">
+    <row>
+        <i-col span="3" class="RowTitle">作废标记</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumCheckBoxListRender<标记>()
+                {
+                    vModel = "dataParam.VOID_FLAG",
+                    MultiSelect = false,
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
         @{
-            RenderControl(new EnumCheckBoxListRender<标记>()
+            RenderControl(new ButtonRender()
             {
-                vModel = "dataParam.VOID_FLAG",
-                MultiSelect = false,
-                Enable = false
+                //Click = "SelRole",
+                Text = "添加角色",
+                Enable = true,
+                Type = "primary",
+                Icon = "plus-circled"
             });
         }
-    </i-col>
-</row>
-<row>
-    <i-col span="24">
-        <i-table size="small" border="true"
-                 :columns="dataParam.colDef" :data="dataParam.USER_ROLE"></i-table>
-    </i-col>
-</row>
+
+    </row>
+    <row>
+        <i-col span="24">
+            <i-table size="small" border="true"
+                     :columns="screenParam.colUserRoleDef" :data="dataParam.USER_ROLE"></i-table>
+        </i-col>
+    </row>
 
 
 

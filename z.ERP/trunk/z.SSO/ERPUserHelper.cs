@@ -11,7 +11,7 @@ using z.Context;
 using z.Exceptions;
 using z.Extensions;
 using z.Extensiont;
-using z.Service;
+using z.ServiceHelper;
 using z.SSO.Model;
 
 namespace z.SSO
@@ -43,11 +43,21 @@ namespace z.SSO
 
         public override T GetUser<T>()
         {
+            if (ConfigExtension.TestModel)//测试模式
+            {
+                var teste = new Employee()
+                {
+                    Id = "-1",
+                    Name = "测试",
+                    PlatformId = -1
+                } as T;
+                return teste;
+            }
             string key = ApplicationContextBase.GetContext()?.principal?.Identity.Name;
             T e = ApplicationContextBase.GetContext().GetData<T>(LoginKey + key);
             if (!key.IsEmpty() && e == null && ApplicationContextBase.GetContext().principal != null)
             {
-                Model.User user = service.GetUserById(key).ToObj(a => new User() { Id = a.Id, Name = a.Name });
+                Model.User user = service.GetUserById(key)?.ToObj(a => new User() { Id = a.Id, Name = a.Name });
                 if (user == null)
                     throw new NoLoginException();
                 Employee emp = new Employee()
@@ -61,16 +71,6 @@ namespace z.SSO
             }
             if (e == null)
             {
-                if (ConfigExtension.TestModel)//测试模式
-                {
-                    var teste = new Employee()
-                    {
-                        Id = "-1",
-                        Name = "测试",
-                        PlatformId = -1
-                    } as T;
-                    return teste;
-                }
                 throw new NoLoginException();
             }
             return e;
@@ -97,14 +97,15 @@ namespace z.SSO
 
         bool HasPermission(string UserId, string Key, PermissionType Type = PermissionType.Menu)
         {
+            log.Info("ERPHasPermission", UserId, Key, Type);
             if (UserId.IsEmpty())
                 return false;
             if (Key.IsEmpty())
                 return true;
             if (ConfigExtension.TestModel)
                 return true;
-            if (UserId.ToInt() < 0)
-                return true;
+            //if (UserId.ToInt() < 0)
+            //    return true;
             switch (Type)
             {
                 case PermissionType.Menu:

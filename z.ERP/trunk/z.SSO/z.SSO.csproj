@@ -71,6 +71,10 @@
       <Project>{4115FE85-9E35-45E1-BFE9-C19F62BAB612}</Project>
       <Name>z.ERP.Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.LogFactory\z.LogFactory.csproj">
+      <Project>{31E4C7DC-E998-4068-AEC8-0AFAC6BBE68D}</Project>
+      <Name>z.LogFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z\z.csproj">
       <Project>{68597FEB-8FF8-486E-B603-CE7E8DE57F5B}</Project>
       <Name>z</Name>

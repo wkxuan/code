@@ -1,5 +1,6 @@
-﻿@inherits ViewBase<dynamic>
+﻿@inherits ViewBase<EditRender>
 @using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.EditDetail
 @using z.MVC5.Views
 @using z.Extensions;
 @{
@@ -23,7 +24,8 @@
                 Click = "add",
                 Text = "新增",
                 Enable = true,
-                Type = "primary"
+                Type = "primary",
+                 PermissionKey =Model.Permission_Add
             });
         }
 
@@ -33,7 +35,8 @@
                 Click = "save",
                 Text = "存档",
                 Enable = true,
-                Type = "primary"
+                Type = "primary",
+                PermissionKey = Model.Permission_Save
             });
         }
         @RenderSection("Btn", false)
@@ -99,11 +102,11 @@
     @RenderSection("foot", false)
 }
 @{
-    if (Model != null && !string.IsNullOrEmpty(Model))
+    if (Model != null && !string.IsNullOrEmpty(Model?.Id))
     {
         <script type="text/javascript">
             $(function() {
-                editDetail.Id = @Model;
+                editDetail.Id = @Model.Id;
             });
         </script>
     }

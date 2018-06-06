@@ -26,7 +26,6 @@ namespace z.ERP.Web.Areas.XTGL.GOODS_KIND
                 DefineSave.ID = service.CommonService.NewINC("GOODS_KIND");
             }
             DefineSave.CODE = newkey;
-            DefineSave.LAST_BJ = "1";
             CommonSave(DefineSave);
             return newkey;
         }

@@ -6,7 +6,7 @@ using System.ServiceModel.Channels;
 using System.Text;
 using z.Extensions;
 
-namespace z.Service
+namespace z.ServiceHelper
 {
     public class WCF
     {

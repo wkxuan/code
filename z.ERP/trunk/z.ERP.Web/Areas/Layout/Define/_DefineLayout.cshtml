@@ -1,5 +1,6 @@
-﻿@inherits ViewBase<dynamic>
+﻿@inherits ViewBase<DefineRender>
 @using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Define
 @using z.MVC5.Views
 @{
     Layout = ThisLayout;
@@ -32,7 +33,8 @@
                 Click = "add",
                 Text = "新增",
                 Enable = true,
-                Type = "primary"
+                Type = "primary",
+                PermissionKey = Model?.Permission_Add
             });
         }
         @{
@@ -41,7 +43,8 @@
                 Click = "mod",
                 Text = "修改",
                 Enable = true,
-                Type = "primary"
+                Type = "primary",
+                PermissionKey = Model?.Permission_Mod
             });
         }
         @{
@@ -50,7 +53,8 @@
                 Click = "save",
                 Text = "存档",
                 Enable = false,
-                Type = "primary"
+                Type = "primary",
+                 PermissionKey =Model?.Permission_Save
             });
         }
         @{

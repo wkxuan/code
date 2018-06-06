@@ -12,6 +12,8 @@
     this.enabled = function (val) { return val; }
 
     this.clearKey = function () { }
+    //添加后初始化数据信息
+    this.newRecord = function () { }
 
     this.vue = function VueOperate() {
         var options = {
@@ -24,10 +26,14 @@
                 others: _this.others,
                 disabled: _this.enabled(true),
             },
+            mounted: function () {
+                _this.mountedInit();
+            },
             methods: {
                 add: function (event) {
                     _this.dataParam.BILLID = null;
                     _this.clearKey();
+                    _this.newRecord();
                     ve.dataParam = _this.dataParam;
                     this.$set(ve.dataParam, _this.dataParam);
 
@@ -75,6 +81,6 @@
         if (editDetail.Id) {
             editDetail.showOne(editDetail.Id);
         }
-    }, 100);
+    }, 500);
 }
 var editDetail = new _EditDetail();

@@ -10,7 +10,7 @@ namespace z.ERP.Web.Areas.XTGL.SYSUSER
     {
         public ActionResult Sysuser()
         {
-            ViewBag.Title = "用户信息";
+            ViewBag.Title = "用户信息"; 
             return View();
         }
 

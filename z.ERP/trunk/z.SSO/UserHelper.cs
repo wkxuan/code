@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Security;
 using z.Context;
 using z.Exceptions;
+using z.LogFactory;
 using z.SSO.Model;
 
 namespace z.SSO
@@ -48,5 +49,12 @@ namespace z.SSO
             get;
         }
 
+        protected LogWriter log
+        {
+            get
+            {
+                return new LogWriter("Login");
+            }
+        }
     }
 }

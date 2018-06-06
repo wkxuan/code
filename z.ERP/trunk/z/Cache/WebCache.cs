@@ -25,11 +25,13 @@ namespace z.CacheBox
         public void Set<T>(string key, T data)
         {
             Cache c = new Cache();
-            c.Insert(key, data);
+            if (data != null)
+                c.Insert(key, data);
         }
 
         public T Simple<T>(string key, Func<T> IsNull)
         {
+            return IsNull();  //----------------先弃用缓存
             T t = Get<T>(key);
             if (t == null)
             {

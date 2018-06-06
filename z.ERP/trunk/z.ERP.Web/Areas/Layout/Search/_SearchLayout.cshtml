@@ -1,5 +1,6 @@
-﻿@inherits ViewBase<dynamic>
+﻿@inherits ViewBase<SearchRender>
 @using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Search
 @using z.MVC5.Views
 @{
     Layout = ThisLayout;
@@ -44,7 +45,8 @@
                         Click = "add",
                         Text = "新增",
                         Enable = true,
-                        Type = "primary"
+                        Type = "primary",
+                        PermissionKey = Model?.Permission_Add
                     });
                 }
 
@@ -54,7 +56,8 @@
                         Click = "del",
                         Text = "删除",
                         Enable = true,
-                        Type = "error"
+                        Type = "error",
+                        PermissionKey = Model?.Permission_Del
                     });
                 }
 

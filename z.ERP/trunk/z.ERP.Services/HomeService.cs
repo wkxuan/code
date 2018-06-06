@@ -49,6 +49,62 @@ namespace z.ERP.Services
             return new DataGridResult(DbHelper.ExecuteTable(sql), 0);
         }
 
+
+        public UIResult GetMenuNew(MENUTREEEntity data)
+        {
+            List<MENUTREEModule> MENU_GROUPList = new List<MENUTREEModule>();
+
+            //子系统要多传递参数回来
+            string sqlgroup = @" SELECT MODULECODE ID,MODULENAME NAME FROM USERMODULE WHERE LENGTH(MODULECODE)=4 ";
+            if (int.Parse(employee.Id) > 0)
+            {
+                sqlgroup += @" and (MODULECODE in (
+                                        SELECT DISTINCT SUBSTR(MODULECODE,1,4) FROM USERMODULE A,ROLE_MENU B,USER_ROLE C
+                                        WHERE A.MENUID=B.MENUID AND B.ROLEID=C.ROLEID
+                                        AND C.USERID=" + employee.Id;
+            }
+
+            sqlgroup += @" ORDER BY MODULECODE";
+            DataTable menuGroup = DbHelper.ExecuteTable(sqlgroup);
+
+
+            if (menuGroup.IsNotNull())
+            {
+                MENU_GROUPList = menuGroup.ToList<MENUTREEModule>();
+
+                foreach (var menuGr in MENU_GROUPList)
+                {
+                    string sql = @" select aa.moduleid id,
+                                    ab.id menuid,
+                                    aa.modulename name,
+                                  pf.domain||  ab.url url
+                               from usermodule aa, menu ab,platform pf
+                              where  aa.menuid = ab.id and LENGTH(aa.MODULECODE)=6 and ab.platformid=pf.id(+) and aa.modulecode like  '" + menuGr.ID+"%'";
+                    if (int.Parse(employee.Id) > 0)
+                    {
+                        sql += @" and (aa.menuid in (
+                                                   select a.id
+                                                     from menu a,
+                                                           ROLE_MENU     b,
+                                                           USER_ROLE c
+                                                    where a.id = b.menuid
+                                                      and b.roleid = c.roleid
+                                                      and c.userid = " + employee.Id + @") or
+                                    aa.menuid is null)";
+                    }
+
+                    sql += " order by aa.modulecode  ";
+                    DataTable menu = DbHelper.ExecuteTable(sql);
+                    menuGr.MENUList = menu.ToList<MENUEntity>();
+
+                };
+            };
+            return new UIResult(new
+            {
+                MENU = MENU_GROUPList
+            });
+        }
+
         public User GetUserById(string id)
         {
             return DbHelper.Select(new SYSUSEREntity(id))?.ToObj(a => new User() { Id = a.USERID, Name = a.USERNAME });
@@ -79,12 +135,17 @@ namespace z.ERP.Services
 
         public string[] GetPermissionByUserId(string userid)
         {
-            return DbHelper.ExecuteTable($@"select b.menuid
-                                                          from USER_ROLE a
-                                                          join menuqx b
-                                                            on a.roleid = b.roleid
-                                                         where a.userid = '{userid}'")
-                                                         .ToList<string>().ToArray();
+
+            return DbHelper.ExecuteTable($@"SELECT A.MENUID FROM USERMODULE A, MENU B where A.MENUID = B.ID
+ and exists(select 1 from USER_ROLE A1, ROLE_MENU B1, USERMODULE C1 where A1.USERID = '{userid}'
+and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
+                                                  .ToList<string>().ToArray();
+            //return DbHelper.ExecuteTable($@"select b.menuid
+            //                                              from USER_ROLE a
+            //                                              join menuqx b
+            //                                                on a.roleid = b.roleid
+            //                                             where a.userid = '{userid}'")
+            //                                             .ToList<string>().ToArray();
         }
 
         public void ChangePs(SYSUSEREntity data)

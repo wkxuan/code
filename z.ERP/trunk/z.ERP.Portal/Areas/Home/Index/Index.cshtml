@@ -5,17 +5,17 @@
 }
 @{
     WebFiles = new string[] {
-                    "Content/Base.css",
-                     "Content/jquery.min.js",
+                    "Content/Index/layui/css/layui.css",
+                    "Content/jquery.min.js",
+                    "Content/Index/layui/layui.js",
+                    "Content/Index/layui/layer.js",
                     "Content/zBase.js",
                     "Content/AjaxHelper.js",
                     "Content/JsHelper.js",
                     "Content/PageBase.js",
-                    "Content/DWZ/dwz.js",
-                    "Content/DWZ/default/style.css",
-                    "Content/DWZ/css/core.css"
                 };
 }
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -31,71 +31,47 @@
     @InitFiles(WebFiles)
     @InitThisJs()
 </head>
-<body scroll="no">
-    <div id="layout">
-        <div id="header">
-            <div class="headerNav">
-                <a class="logo">标志</a>
-                <ul class="nav">
-                    <li><a id="a_timenow" href="javascript:"></a></li>
-                    <li class="line"><a href="javascript:employee()">欢迎:@employee.Name</a></li>
-                    <li class="line"><a id="btn_ChangePassword" target="navTab" external="true" fresh="false">修改密码</a></li>
-                    <li class="line"><a href="javascript:loginout()">退出</a></li>
-                </ul>
-            </div>
+<body>
+    <div class="layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">logo</div>
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href="javascript:void(0)">购物中心</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">会员系统</a></li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href=""><img src="" class="layui-nav-img">个人信息</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">重置密码</a></dd>
+                        <dd><a href="">重新登陆</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
 
-            <div id="navMenu" style="display:none">
-                <!--暂时禁用顶部条-->
-                <ul id="menu_top">
-                    <li><a><span>加载中...</span></a></li>
-                </ul>
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree" id="taburl" lay-filter="hbkNavbar"></ul>
             </div>
         </div>
-        <div id="leftside">
-            <div id="sidebar_s">
-                <div class="collapse">
-                    <div class="toggleCollapse">
-                        <div></div>
-                    </div>
-                </div>
-            </div>
-            <div id="sidebar">
-                <div class="accordion" fillspace="sidebar" id="menu_2">
-                    <div class="accordionHeader">
-                        <h2><span>Folder</span>加载中...</h2>
-                    </div>
+
+
+        <div class="layui-body" id="container">
+            <div class="layui-tab" lay-filter="yxadmin" lay-allowClose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">首页</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">驾驶舱信息待处理</div>
                 </div>
             </div>
         </div>
-        <div id="container">
-            <div id="navTab" class="tabsPage">
-                <div class="tabsPageHeader">
-                    <div class="tabsPageHeaderContent">
-                        <!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
-                        <ul class="navTab-tab"></ul>
-                    </div>
-                    <div class="tabsLeft">left</div>
-                    <!-- 禁用只需要添加一个样式 class="tabsLeft tabsLeftDisabled" -->
-                    <div class="tabsRight">right</div>
-                    <!-- 禁用只需要添加一个样式 class="tabsRight tabsRightDisabled" -->
-                    <div class="tabsMore">more</div>
-                </div>
-                <ul class="tabsMoreList"></ul>
-                <div class="navTab-panel tabsPageContent layoutBox">
 
-                </div>
-            </div>
+        <div class="layui-footer">
+            <center>版权&copy;Tel:110</center>
         </div>
     </div>
-    <div id="footer">Copyright © 2018</div>
-    <style type="text/css">
-        /*暂时禁用顶部条*/ /*#header { height: 85px; }
-
-        #leftside, #container, #splitBar, #splitBarProxy { top: 90px; }*/
-        #header { height: 45px; }
-
-        #leftside, #container, #splitBar, #splitBarProxy { top: 50px; }
-    </style>
 </body>
 
 </html>

@@ -109,13 +109,13 @@ namespace zlog4net.Util
 				zlog4net.Util.LogLog.Warn(declaringType, "Exception while rendering format ["+format+"]", ex);
 				return StringFormatError(ex, format, args);
 			}
-#if !NET_2_0 && !MONO_2_0
-			catch
-			{
-				log4net.Util.LogLog.Warn(declaringType, "Exception while rendering format ["+format+"]");
-				return StringFormatError(null, format, args);
-			}
-#endif
+//#if !NET_2_0 && !MONO_2_0
+//			catch
+//			{
+//				log4net.Util.LogLog.Warn(declaringType, "Exception while rendering format ["+format+"]");
+//				return StringFormatError(null, format, args);
+//			}
+//#endif
 		}
 
 		/// <summary>
@@ -148,13 +148,13 @@ namespace zlog4net.Util
 				zlog4net.Util.LogLog.Error(declaringType, "INTERNAL ERROR during StringFormat error handling", ex);
 				return "<log4net.Error>Exception during StringFormat. See Internal Log.</log4net.Error>";
 			}
-#if !NET_2_0 && !MONO_2_0
-			catch
-			{
-				log4net.Util.LogLog.Error(declaringType, "INTERNAL ERROR during StringFormat error handling");
-				return "<log4net.Error>Exception during StringFormat. See Internal Log.</log4net.Error>";
-			}
-#endif
+//#if !NET_2_0 && !MONO_2_0
+//			catch
+//			{
+//				log4net.Util.LogLog.Error(declaringType, "INTERNAL ERROR during StringFormat error handling");
+//				return "<log4net.Error>Exception during StringFormat. See Internal Log.</log4net.Error>";
+//			}
+//#endif
 		}
 
 		/// <summary>

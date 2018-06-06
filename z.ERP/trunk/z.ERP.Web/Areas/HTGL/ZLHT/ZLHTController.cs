@@ -9,23 +9,29 @@ using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
 using z.MVC5.Attributes;
+using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.HTGL.ZLHT
 {
-    public class ZLHTController: BaseController
+    public class ZLHTController : BaseController
     {
-        [Permission("2")]
+        //[Permission("2")]
         public ActionResult HtList()
         {
             ViewBag.Title = "租约列表信息";
-            return View();
+            return View(new SearchRender()
+            {
+                Permission_Add = "111",
+                Permission_Del = "222"
+            });
         }
-        
+
         public ActionResult HtEdit(string Id)
         {
             ViewBag.Title = "租赁租约信息编辑";
             ViewBag.STYLE = 2;
-            return View("HtEdit",model: Id);
+            return View("HtEdit", model: (EditRender)Id);
         }
 
         public string Save(CONTRACTEntity SaveData)
@@ -53,10 +59,10 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                 new
                 {
                     contract = res.Item1,
-                    contractBrand =res.Item2,
-                    contractShop=res.Item3,
+                    contractBrand = res.Item2,
+                    contractShop = res.Item3,
                     ContractParm = res.Item4,
-                    ContractRentParm=res.Item5,
+                    ContractRentParm = res.Item5,
                     contractPay = res.Item6,
                     contractCost = res.Item7
                 }

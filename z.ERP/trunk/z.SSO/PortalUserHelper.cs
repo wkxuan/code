@@ -14,7 +14,6 @@ using z.ERP.Entities.Enum;
 using z.Exceptions;
 using z.Extensions;
 using z.Extensiont;
-using z.Service;
 using z.SSO.Model;
 
 namespace z.SSO
@@ -133,6 +132,7 @@ namespace z.SSO
 
         bool HasPermission(string UserId, string Key, PermissionType Type = PermissionType.Menu)
         {
+            log.Info("ProtalHasPermission", UserId, Key, Type);
             if (UserId.IsEmpty())
                 return false;
             if (Key.IsEmpty())
@@ -147,13 +147,11 @@ namespace z.SSO
                     {
                         ICache wc = new WebCache();
                         return wc.Simple($"Permission_{Type.ToString()}_{UserId}",
-                                () => _db.ExecuteTable($@"select b.menuid
-                                                          from USER_ROLE a
-                                                          join menuqx b
-                                                            on a.roleid = b.roleid
-                                                         where a.userid = '{UserId}'")
+                      () => _db.ExecuteTable($@"SELECT A.MENUID FROM USERMODULE A,MENU B where A.MENUID = B.ID
+                                                and exists(select 1 from USER_ROLE A1, ROLE_MENU B1,USERMODULE C1 where A1.USERID= '{UserId}'
+                                                and A1.ROLEID = B1.ROLEID and B1.MENUID=C1.MENUID and C1.MENUID = A.MENUID )")
                                 .ToList<string>().ToArray())
-                            .Contains(Type.ToString() + Key);
+                                .Contains(Type.ToString() + Key);
                     }
                 default:
                     {
