@@ -144,5 +144,11 @@ namespace z.ERP.Services
                 dt = dt.ToOneLine()
             };
         }
+        public List<SelectItem> fkfs()
+        {
+            string sql = $@"SELECT * FROM FKFS  ORDER BY  ID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ID", "NAME");
+        }
     }
 }
