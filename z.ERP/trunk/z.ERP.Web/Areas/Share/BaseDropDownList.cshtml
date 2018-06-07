@@ -3,10 +3,6 @@
 
 <i-select v-model="@Model.vModel" :disabled="@(Model.Enable?"!disabled":"disabled")">
     @{
-        if (!Model.EmptyText.IsEmpty())
-        {
-            <i-option :value="0">@Model.EmptyText</i-option>
-        }
         foreach (var item in Model.Data)
         {
             if (item.IsSelected || item.Key == Model.Value)
