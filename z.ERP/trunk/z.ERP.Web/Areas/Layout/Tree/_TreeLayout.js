@@ -11,6 +11,9 @@
         return true;
     }
 
+    this.IsValidXj = function () {
+        return true;
+    }
 
     this.AddTar;
 
@@ -41,6 +44,8 @@
                     ve.disabled = _this.enabled(false);
                 },
                 addxj: function (event) {
+                    if (!_this.IsValidXj())
+                        return;
                     _this.dataParam = {};
                     _this.newRecord();
                     this.AddTar = 'xj';
@@ -52,7 +57,7 @@
                     if (!ve._key) {
                         this.$Message.error("请选择数据");
                         return;
-                    }
+                    };
                     ve._key = define.dataParam[_this.Key];
                     ve.disabled = _this.enabled(false);
                 },
