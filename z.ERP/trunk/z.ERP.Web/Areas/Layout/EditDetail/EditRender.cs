@@ -7,6 +7,12 @@ namespace z.ERP.Web.Areas.Layout.EditDetail
 {
     public class EditRender
     {
+        public string Id
+        {
+            get;
+            set;
+        }
+
         public string Permission_Add
         {
             get;
@@ -16,6 +22,14 @@ namespace z.ERP.Web.Areas.Layout.EditDetail
         {
             get;
             set;
+        }
+
+        public static implicit operator EditRender(string id)
+        {
+            return new EditRender()
+            {
+                Id = id
+            };
         }
     }
 }

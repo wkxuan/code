@@ -400,6 +400,8 @@
     <Content Include="Content\Index\layui\font\iconfont.eot" />
     <Content Include="Content\Index\layui\font\iconfont.ttf" />
     <Content Include="Content\Index\layui\font\iconfont.woff" />
+    <None Include="Properties\PublishProfiles\laj.pubxml" />
+    <None Include="Properties\PublishProfiles\wkx.pubxml" />
     <None Include="Properties\PublishProfiles\zgy.pubxml" />
   </ItemGroup>
   <ItemGroup>

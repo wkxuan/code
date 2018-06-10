@@ -53,26 +53,18 @@ namespace z.ERP.Services
         public UIResult GetMenuNew(MENUTREEEntity data)
         {
             List<MENUTREEModule> MENU_GROUPList = new List<MENUTREEModule>();
-            string sqlgroup = @" select distinct  aa.id,
-                                    aa.pid,
-                                    aa.name
-                               from menutree aa, menu ab,platform pf
-                              where  aa.menuid = ab.id(+)  and ab.platformid=pf.id(+) and aa.pid=-1";
+
+            //子系统要多传递参数回来
+            string sqlgroup = @" SELECT MODULECODE ID,MODULENAME NAME FROM USERMODULE WHERE LENGTH(MODULECODE)=4 ";
             if (int.Parse(employee.Id) > 0)
             {
-                sqlgroup += @" and (aa.menuid in (
-                                                   select a.id
-                                                     from menu a,
-                                                           menuqx        b,
-                                                           USER_ROLE c
-                                                    where a.id = b.menuid
-                                                      and b.roleid = c.roleid
-                                                      and c.userid = " + employee.Id + @") or
-                                    aa.menuid is null)";
+                sqlgroup += @" and (MODULECODE in (
+                                        SELECT DISTINCT SUBSTR(MODULECODE,1,4) FROM USERMODULE A,ROLE_MENU B,USER_ROLE C
+                                        WHERE A.MENUID=B.MENUID AND B.ROLEID=C.ROLEID
+                                        AND C.USERID=" + employee.Id;
             }
 
-            sqlgroup += " order by aa.id  ";
-
+            sqlgroup += @" ORDER BY MODULECODE";
             DataTable menuGroup = DbHelper.ExecuteTable(sqlgroup);
 
 
@@ -82,20 +74,18 @@ namespace z.ERP.Services
 
                 foreach (var menuGr in MENU_GROUPList)
                 {
-
-                    string sql = @" select aa.id,
-                                    aa.pid,
+                    string sql = @" select aa.moduleid id,
                                     ab.id menuid,
-                                    aa.name,
+                                    aa.modulename name,
                                   pf.domain||  ab.url url
-                               from menutree aa, menu ab,platform pf
-                              where  aa.menuid = ab.id(+)  and ab.platformid=pf.id(+) and aa.pid=" + menuGr.ID;
+                               from usermodule aa, menu ab,platform pf
+                              where  aa.menuid = ab.id and LENGTH(aa.MODULECODE)=6 and ab.platformid=pf.id(+) and aa.modulecode like  '" + menuGr.ID+"%'";
                     if (int.Parse(employee.Id) > 0)
                     {
                         sql += @" and (aa.menuid in (
                                                    select a.id
                                                      from menu a,
-                                                           menuqx        b,
+                                                           ROLE_MENU     b,
                                                            USER_ROLE c
                                                     where a.id = b.menuid
                                                       and b.roleid = c.roleid
@@ -103,7 +93,7 @@ namespace z.ERP.Services
                                     aa.menuid is null)";
                     }
 
-                    sql += " order by aa.id  ";
+                    sql += " order by aa.modulecode  ";
                     DataTable menu = DbHelper.ExecuteTable(sql);
                     menuGr.MENUList = menu.ToList<MENUEntity>();
 

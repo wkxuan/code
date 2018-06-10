@@ -5,8 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
 using z.ERP.Entities;
+using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
 using z.ERP.Web.Areas.Base;
+using z.Exceptions;
 
 namespace z.ERP.Web.Areas.XTGL.ORG
 {
@@ -20,8 +22,22 @@ namespace z.ERP.Web.Areas.XTGL.ORG
 
         public string Save(string Tar, string Key, ORGEntity DefineSave)
         {
+ 
             var allenum = SelectList(new ORGEntity());
             string newkey = TreeModel.GetNewKey(allenum, a => a.ORGCODE, Key, Tar);
+
+            //当前数据有下级,并且当前数据要修改为末级,那么提示不让修改保存成功
+            if ((Tar == null)&&(DefineSave.LEVEL_LAST == ((int)末级标记.末级).ToString()))
+            {
+                foreach (var data in allenum) {
+
+                    var dataOrgcode = data.ORGCODE.Substring(0, DefineSave.ORGCODE.Length);
+                    if ((data.ORGCODE != DefineSave.ORGCODE) 
+                        && (dataOrgcode == DefineSave.ORGCODE)) {
+                        throw new LogicException("当前部门已经有下级数据不能修改为末级!");
+                    }
+                }
+            }
 
             if (DefineSave.ORGID.IsEmpty())
             {

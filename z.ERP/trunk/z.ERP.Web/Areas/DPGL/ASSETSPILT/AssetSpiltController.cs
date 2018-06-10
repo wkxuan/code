@@ -8,6 +8,7 @@ using z.MVC5.Results;
 using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
+using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
 {
@@ -32,7 +33,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
         public ActionResult AssetSpiltEdit(string Id)
         {
             ViewBag.Title = "编辑店铺拆分单";
-            return View("AssetSpiltEdit",model:Id);
+            return View("AssetSpiltEdit",model: (EditRender)Id);
         }
 
         public void Delete(List<ASSETCHANGEEntity> DeleteData)

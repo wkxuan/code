@@ -2,6 +2,8 @@
     editDetail.others = true;
     editDetail.branchid = true;
     editDetail.Key = 'BILLID';
+    //初始化弹窗所要传递参数
+    editDetail.screenParam.ParentMerchant = {};
     //账单收款
     editDetail.dataParam.TYPE = 3;
     editDetail.screenParam.colDef = [
@@ -115,4 +117,16 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILL_OBTAIN_ITEM = data.billObtainItem;
         callback && callback(data);
     });
+}
+editDetail.otherMethods = {
+    //点击商户弹窗
+    Merchant: function () {
+        Vue.set(editDetail.screenParam, "PopMerchant", true);
+    },
+    //商户弹窗返回
+    MerchantBack: function (val) {
+        Vue.set(editDetail.screenParam, "PopMerchant", false);
+        editDetail.dataParam.MERCHANTID = val.sj[0].MERCHANTID;
+        editDetail.dataParam.MERNAME = val.sj[0].NAME;
+    },
 }

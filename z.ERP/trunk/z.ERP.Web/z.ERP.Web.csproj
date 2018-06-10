@@ -537,11 +537,15 @@
     <Content Include="Content\layui\font\iconfont.eot" />
     <Content Include="Content\layui\font\iconfont.ttf" />
     <Content Include="Content\layui\font\iconfont.woff" />
+<<<<<<< HEAD
     <Content Include="Areas\Share\BaseDropDownLists.cshtml" />
     <Content Include="Areas\Share\Pops.cshtml" />
     <Content Include="Areas\Layout\PopSearch\_PopSearchLayout.cshtml" />
     <Content Include="Areas\Pop\Pop\PopBillList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopFeeSubjectList.cshtml" />
+=======
+    <None Include="Properties\PublishProfiles\wkx.pubxml" />
+>>>>>>> ec5cb1055ba9ba605152e55b93e9898d691f2420
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

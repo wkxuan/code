@@ -8,6 +8,7 @@ using z.MVC5.Results;
 using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
+using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_YSH
 {
@@ -21,7 +22,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_YSH
         public ActionResult Bill_Obtain_YskEdit(string Id)
         {
             ViewBag.Title = "预收款收取";
-            return View("Bill_Obtain_YskEdit", model: Id); 
+            return View("Bill_Obtain_YskEdit", model: (EditRender)Id); 
         }
         public ActionResult Bill_Obtain_YskDetail(string Id)
         {

@@ -8,6 +8,7 @@ using z.MVC5.Results;
 using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
+using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
 {
@@ -41,7 +42,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
         public ActionResult AssetChangeEdit(string Id)
         {
             ViewBag.Title = "编辑资产调整单";
-            return View("AssetChangeEdit",model:Id);
+            return View("AssetChangeEdit",model: (EditRender)Id);
         }
 
         public void Delete(List<ASSETCHANGEEntity> DeleteData)

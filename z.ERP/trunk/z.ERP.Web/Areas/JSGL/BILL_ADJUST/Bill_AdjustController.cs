@@ -8,6 +8,7 @@ using z.MVC5.Results;
 using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
+using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
 {
@@ -21,7 +22,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
         public ActionResult Bill_AdjustEdit(string Id)
         {
             ViewBag.Title = "费用调整单";
-            return View("Bill_AdjustEdit",model: Id); 
+            return View("Bill_AdjustEdit",model: (EditRender)Id); 
         }
         public ActionResult Bill_AdjustDetail(string Id)
         {

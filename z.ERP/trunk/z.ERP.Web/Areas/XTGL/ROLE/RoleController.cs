@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.MVC5.Results;
+using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.XTGL.ROLE
 {
@@ -24,7 +25,7 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
         public ActionResult RoleEdit(string Id)
         {
             ViewBag.Title = "角色定义";
-            return View("RoleEdit",model: Id);
+            return View("RoleEdit",model: (EditRender)Id);
         }
         public string Save(ROLEEntity SaveData)
         {

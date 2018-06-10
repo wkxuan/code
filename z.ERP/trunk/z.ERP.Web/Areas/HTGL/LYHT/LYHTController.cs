@@ -8,10 +8,11 @@ using z.MVC5.Results;
 using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
+using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.HTGL.LYHT
 {
-    public class LYHTController: BaseController
+    public class LYHTController : BaseController
     {
         public ActionResult HtList()
         {
@@ -22,7 +23,7 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         public ActionResult HtEdit(string Id)
         {
             ViewBag.Title = "联营租约信息编辑";
-            return View("HtEdit",model: Id);
+            return View("HtEdit", (EditRender)Id);
         }
 
         public ActionResult HtDetail(string Id)
@@ -51,10 +52,10 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
                 new
                 {
                     contract = res.Item1,
-                    contractBrand =res.Item2,
-                    contractShop=res.Item3,
+                    contractBrand = res.Item2,
+                    contractShop = res.Item3,
                     ContractParm = res.Item4,
-                    ContractRentParm=res.Item5,
+                    ContractRentParm = res.Item5,
                     contractPay = res.Item6,
                     contractCost = res.Item7
                 }
@@ -77,7 +78,7 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         }
 
 
-        public UIResult lyYdFj(List<CONTRACT_RENTEntity> Data,CONTRACTEntity ContractData)
+        public UIResult lyYdFj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
         {
             return new UIResult(service.HtglService.LyYdfj(Data, ContractData));
         }
