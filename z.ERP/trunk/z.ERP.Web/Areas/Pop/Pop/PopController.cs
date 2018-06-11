@@ -23,6 +23,11 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "收费项目";
             return View();
         }
+        public ActionResult PopRoleList()
+        {
+            ViewBag.Title = "角色";
+            return View();
+        }
     }
 
 }

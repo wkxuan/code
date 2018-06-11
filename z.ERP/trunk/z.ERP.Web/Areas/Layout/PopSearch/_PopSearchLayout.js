@@ -45,8 +45,11 @@
                     if (window.parent.editDetail!=undefined)
                         _this.popInitParam(window.parent.editDetail.screenParam.popParam);
                     //父页面是查询
-                    else if (window.parent.search.screenParam.popParam != undefined)
+                    else if (window.parent.search != undefined)
                         _this.popInitParam(window.parent.search.screenParam.popParam);
+                    //父页面是简单定义
+                    else if (window.parent.define != undefined)
+                        _this.popInitParam(window.parent.define.screenParam.popParam);
                     showList(function (data) {
                         if (_this.screenParam.dataDef.length > 0) {
                             ve.panelName = 'result';
