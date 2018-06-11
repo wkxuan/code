@@ -22,14 +22,14 @@
         var options = {
             el: '#search',
             data: {
-                    screenParam: _this.screenParam,
-                    searchParam: _this.searchParam,
-                    panelName: 'condition',
-                    disabled: _this.enabled(true),
-                    
-                    screenParamData: {
-                        dataDef: []
-                    }
+                screenParam: _this.screenParam,
+                searchParam: _this.searchParam,
+                panelName: 'condition',
+                disabled: _this.enabled(true),
+
+                screenParamData: {
+                    dataDef: []
+                }
             },
 
             mounted: function () {
@@ -70,7 +70,7 @@
                     } else {
                         this.$Message.error("尚未提供导出方法!");
                     }
-                
+
                 },
                 //打印待完善
                 print: function (event) {
@@ -80,7 +80,7 @@
                     } else {
                         this.$Message.error("尚未提供打印方法!");
                     }
-              
+
                 },
 
                 add: function (event) {
@@ -88,7 +88,8 @@
                     _this.addHref();
                 },
                 browse: function (row, index) {
-                    _this.browseHref(row, index);
+                    if (CanEdit)
+                        _this.browseHref(row, index);
                 },
 
                 del: function (event) {
@@ -106,8 +107,8 @@
                             onOk: function () {
                                 _.Ajax('Delete', {
                                     DeleteData: selectton
-                                }, function (data){ 
-                                    showList(function (data){ 
+                                }, function (data) {
+                                    showList(function (data) {
                                         Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
                                         _self.$Message.info("删除成功");
                                     });
@@ -165,19 +166,23 @@
             align: 'center',
             fixed: 'right',
             render: function (h, params) {
-                return h('div',
-                    [
-                    h('Button', {
-                        props: { type: 'primary', size: 'small', disabled: false },
+                if (!CanEdit)
+                    return '';
+                else {
+                    return h('div',
+                        [
+                        h('Button', {
+                            props: { type: 'primary', size: 'small', disabled: false },
 
-                        style: { marginRight: '5px' },
-                        on: {
-                            click: function (event) {
-                                _this.modHref(params.row, params.index);
-                            }
-                        },
-                    }, '修改'),
-                    ]);
+                            style: { marginRight: '5px' },
+                            on: {
+                                click: function (event) {
+                                    _this.modHref(params.row, params.index);
+                                }
+                            },
+                        }, '修改'),
+                        ]);
+                }
             }
         }]
     }

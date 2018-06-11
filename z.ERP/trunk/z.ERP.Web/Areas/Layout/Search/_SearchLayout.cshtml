@@ -15,6 +15,21 @@
     @RenderSection("head", false)
 }
 
+@{
+    if (!Model.Permission_Edit.IsEmpty() && employee.HasPermission(Model.Permission_Edit))
+    {
+        <script type="text/javascript">
+            var CanEdit = false;
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            var CanEdit = true;
+        </script>
+    }
+}
+
 <div id="search">
     <collapse v-model="panelName">
         <panel name="condition">
