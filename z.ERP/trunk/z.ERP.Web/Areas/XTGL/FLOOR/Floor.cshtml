@@ -41,7 +41,10 @@
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">楼层名称</i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            楼层名称
+            </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()

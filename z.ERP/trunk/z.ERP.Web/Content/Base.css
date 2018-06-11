@@ -6,3 +6,4 @@
 .ivu-collapse-content{overflow:unset !important;color:#495060;padding:0 16px;background-color:#fff}
 .ivu-date-picker {display: inline-block;line-height: normal;width: 100%;}
 .Rowline { text-align: left; font-size: small; height: 40px;line-height:30px }
+.mustElement {color: red; height: 40px;position: relative;}

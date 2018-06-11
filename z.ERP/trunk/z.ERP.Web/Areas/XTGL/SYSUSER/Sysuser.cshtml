@@ -26,7 +26,10 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">用户名称</i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            用户名称
+        </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -41,7 +44,10 @@
 
 
     <row>
-        <i-col span="3" class="RowTitle">用户类型</i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            用户类型
+        </i-col>
         <i-col span="6">
             @{
                 RenderControl(new EnumDropDownListRender<用户类型>()
@@ -51,7 +57,10 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">所属机构</i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            所属机构
+        </i-col>
         <i-col span="6">
             @{
                 RenderControl(new CascaderRender()

@@ -24,10 +24,10 @@ namespace z.ERP.Services
         public DataGridResult GetMerchant(SearchItem item)
         {
             string sql = $@"SELECT * FROM MERCHANT WHERE 1=1 ";
-            item.HasKey("MERCHANTID", a => sql += $" and MERCHANTID = '{a}'");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANTID LIKE '%{a}%'");
             item.HasKey("NAME", a => sql += $" and NAME  LIKE '%{a}%'");
-            item.HasKey("SH", a => sql += $" and SH={a}");
-            item.HasKey("BANK", a => sql += $" and BANK={a}");
+            item.HasKey("SH", a => sql += $" and SH LIKE '%{a}%'");
+            item.HasKey("BANK", a => sql += $" and BANK LIKE '%{a}%'");
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
