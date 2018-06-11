@@ -109,8 +109,8 @@ namespace z.ERP.Services
                     code = a.MODULECODE,
                     title = a.MODULENAME,
                     expand = true,
-                    @checked = (selectRoleMenu.Select(" MODULECODE='" + a.MODULECODE + "' and MENUID=" + a.MENUID).Length > 0),
-                    disableCheckbox = (loginRoleMenu.Select(" MODULECODE='" + a.MODULECODE + "' and MENUID=" + a.MENUID).Length == 0)
+                    @checked = (selectRoleMenu.Select(" MODULECODE='" + a.MODULECODE + "' and MENUID='" + a.MENUID+"'").Length > 0),
+                    disableCheckbox = (loginRoleMenu.Select(" MODULECODE='" + a.MODULECODE + "' and MENUID='" + a.MENUID+"'").Length == 0)
                 })?.ToArray());
 
             string sqlitem2 = $@"select A.TRIMID,A.NAME,";
