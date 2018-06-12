@@ -6,6 +6,14 @@ function init() {
     });
 }
 
+function ChangePassword() {
+    _.OpenPage({
+        id: 1,
+        title: '重置密码',
+        url: "HOME/ChangePassword/ChangePassword/"
+    });
+}
+
 function initmenu(callback) {
     _.Ajax('GetMenu', {
         Data: {}
