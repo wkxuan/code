@@ -9,6 +9,7 @@ using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
 using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Web.Areas.Layout.Search;
 
 namespace z.ERP.Web.Areas.HTGL.LYHT
 {
@@ -17,7 +18,12 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         public ActionResult HtList()
         {
             ViewBag.Title = "租约列表信息";
-            return View();
+            return View(new SearchRender()
+            {
+                Permission_Add = "10600101",
+                Permission_Del = "10600101",
+                Permission_Edit = "10600101",
+            });
         }
 
         public ActionResult HtEdit(string Id)

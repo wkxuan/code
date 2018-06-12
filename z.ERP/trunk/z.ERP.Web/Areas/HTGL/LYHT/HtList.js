@@ -20,14 +20,14 @@
 search.browseHref = function (row, index) {
     if (row.STYLE == 2) {
         _.OpenPage({
-            id: 10600101,
+            id: 10600102,
             title: '联营租约详情',
             url: "HTGL/LYHT/HtDetail/" + row.CONTRACTID
         });
     };
     if (row.STYLE == 1) {
         _.OpenPage({
-            id: 10600201,
+            id: 10600202,
             title: '租赁租约详情',
             url: "HTGL/ZLHT/HtDetail/" + row.CONTRACTID
         })
@@ -36,7 +36,7 @@ search.browseHref = function (row, index) {
 
 search.addHref = function (row) {
     _.OpenPage({
-        id: 10600102,
+        id: 10600101,
         title: '新增联营租约',
         url: "HTGL/LYHT/HtEdit/"
     });

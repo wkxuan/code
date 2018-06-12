@@ -19,16 +19,15 @@ namespace z.ERP.Services
         }
         public DataGridResult GetContract(SearchItem item)
         {
-            //ProTest info = new ProTest()
-            //{
-            //    Id = 1
-            //};
-            //var ii = DbHelper.ExecuteProcedure(info);
-
             string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME FROM CONTRACT A,BRANCH B,MERCHANT C " +
                          " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID ";
+
+            item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
+            item.HasKey("NAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
             item.HasArrayKey("STYLE", a => sql += $" and A.STYLE in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasArrayKey("HTLX", a => sql += $" and A.HTLX in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             sql += " ORDER BY  A.CONTRACTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
