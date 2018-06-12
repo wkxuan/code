@@ -71,5 +71,24 @@ namespace z.ERP.Web.Areas.Share
             render.Data = fun(service.DataService);
             return View("BaseDropDownList", render);
         }
+        /// <summary>
+        /// 加载html页面弹窗控件
+        /// </summary>
+        /// <param name="render"></param>
+        /// <returns></returns>
+        public ActionResult Pops(PopsRender render)
+        {
+            return View(render);
+        }
+
+        /// <summary>
+        /// JS初始化下拉控件
+        /// </summary>
+        /// <param name="render"></param>
+        /// <returns></returns>
+        public ActionResult BaseDropDownLists(DropDownListsRender render)
+        {
+            return View(render);
+        }
     }
 }

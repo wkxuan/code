@@ -3,46 +3,50 @@
 @using z.ERP.Web.Areas.Layout.Define
 @inherits DefineViewBase
 
-@section element{
+@section search{
     <row>
-        <i-col span="3" class="RowTitle">分店</i-col>
-        <i-col span="6">
+        <i-col span="2" class="RowTitle">分店</i-col>
+        <i-col span="10">
             @{
-                RenderControl(new ServiceDropDownListRender()
+                RenderControl(new DropDownListsRender()
                 {
-                    vModel = "dataParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                    Enable = false
+                    vModel = "searchParam.BRANCHID",
+                    Data= "screenParam.branchData",
+                    Change= "branchChange",
+                    Enable = true
                 });
             }
         </i-col>
-
-        <i-col span="3" class="RowTitle">楼层</i-col>
-        <i-col span="6">
+        <i-col span="2" class="RowTitle">楼层</i-col>
+        <i-col span="10">
             @{
-                RenderControl(new ServiceDropDownListRender()
+                RenderControl(new DropDownListsRender()
                 {
-                    vModel = "dataParam.FLOORID",
-                    ServiceMothod = m => m.floor(),
-                    Enable = false
+                    vModel = "searchParam.FLOORID",
+                    Data = "screenParam.floorData",
+                    Change = "floorChange",
+                    Enable = true
                 });
             }
         </i-col>
     </row>
-
+}
+}
+@section element{
     <row>
-        <i-col span="3" class="RowTitle">单元编号</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.SHOPID",
-                    Enable = false
-                });
-            }
-        </i-col>
-
-        <i-col span="3" class="RowTitle">单元代码</i-col>
+        <span v-if="screenParam.componentVisible">
+            <i-col span="2" class="RowTitle">单元编号</i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new TextBoxRender()
+                    {
+                        vModel = "dataParam.SHOPID",
+                        Enable = false
+                    });
+                }
+            </i-col>
+        </span>
+        <i-col span="2" class="RowTitle">单元代码</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -52,10 +56,7 @@
                 });
             }
         </i-col>
-    </row>
-
-    <row>
-        <i-col span="3" class="RowTitle">单元名称</i-col>
+        <i-col span="2" class="RowTitle">单元名称</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -65,8 +66,10 @@
                 });
             }
         </i-col>
+    </row>
 
-        <i-col span="3" class="RowTitle">单元类型</i-col>
+    <row>
+        <i-col span="2" class="RowTitle">单元类型</i-col>
         <i-col span="6">
             @{
                 RenderControl(new EnumDropDownListRender<单元类型>()
@@ -76,10 +79,7 @@
                 });
             }
         </i-col>
-    </row>
-
-    <row>
-        <i-col span="3" class="RowTitle">管理部门</i-col>
+        <i-col span="2" class="RowTitle">管理部门</i-col>
         <i-col span="6">
             @{
                 RenderControl(new UndefineRender()
@@ -89,8 +89,10 @@
                 });
             }
         </i-col>
+    </row>
 
-        <i-col span="3" class="RowTitle">业态</i-col>
+    <row>
+        <i-col span="2" class="RowTitle">业态</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -100,10 +102,7 @@
                 });
             }
         </i-col>
-    </row>
-
-    <row>
-        <i-col span="3" class="RowTitle">建筑面积</i-col>
+        <i-col span="2" class="RowTitle">建筑面积</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -114,7 +113,9 @@
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">使用面积</i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">使用面积</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -124,10 +125,7 @@
                 });
             }
         </i-col>
-    </row>
-
-    <row>
-        <i-col span="3" class="RowTitle">租赁面积</i-col>
+        <i-col span="2" class="RowTitle">租赁面积</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -139,31 +137,31 @@
         </i-col>
     </row>
 
-<row>
-    <i-col span="3" class="RowTitle">单元状态</i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new EnumCheckBoxListRender<单元状态>()
-            {
-                vModel = "dataParam.STATUS",
-                MultiSelect = false,
-                Enable = false
-            });
-        }
-    </i-col>
+    <row>
+        <i-col span="2" class="RowTitle">单元状态</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumCheckBoxListRender<单元状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    MultiSelect = false,
+                    Enable = false
+                });
+            }
+        </i-col>
 
-    <i-col span="3" class="RowTitle">租用状态</i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new EnumCheckBoxListRender<租用状态>()
-            {
-                vModel = "dataParam.RENT_STATUS",
-                MultiSelect = false,
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
+        <i-col span="2" class="RowTitle">租用状态</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumCheckBoxListRender<租用状态>()
+                {
+                    vModel = "dataParam.RENT_STATUS",
+                    MultiSelect = false,
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
 
 
 

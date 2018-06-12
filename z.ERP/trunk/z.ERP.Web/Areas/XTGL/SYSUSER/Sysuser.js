@@ -29,7 +29,9 @@
     define.method = "GetUserElement";
     define.methodList = "GetUser";
     define.Key = "USERID";
-
+    define.screenParam.showPopRole = false;
+    define.screenParam.srcPopRole = __BaseUrl + "/" + "Pop/Pop/PopRoleList/";
+    define.screenParam.popParam = {};
 }
 
 define.newRecord = function () {
@@ -49,7 +51,10 @@ define.showone = function (data, callback) {
 define.otherMethods = {
     orgChange: function (value, selectedData) {
         define.dataParam.ORGID = value[value.length - 1];
-    }
+    },
+    SelRole: function () {
+        define.screenParam.showPopRole = true;
+}
 }
 
 define.mountedInit = function () {
@@ -59,3 +64,11 @@ define.mountedInit = function () {
         Vue.set(define.screenParam, "ORGData", data.treeOrg.Obj);
     });
 }
+
+//接收子页面返回值
+define.popCallBack = function (data) {
+    define.screenParam.showPopRole = false;
+    for (var i = 0; i < data.sj.length; i++) {
+        define.dataParam.USER_ROLE.push(data.sj[i]);
+    };
+};

@@ -1,0 +1,117 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+            "Areas/Layout/PopSearch/_PopSearchLayout.js"
+        };
+}
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+
+<div id="search">
+    <collapse v-model="panelName">
+        <panel name="condition">
+            查询条件
+            <div style="float: right; width: 400px ;text-align: right;z-index:99">
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "seach",
+                        Text = "查询",
+                        Enable = true,
+                        Type = "primary"
+                    });
+                }
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "qr",
+                        Text = "确认",
+                        Enable = true,
+                        Type = "primary"
+                    });
+                }
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "clear",
+                        Text = "清空",
+                        Enable = true,
+                        Type = "primary"
+                    });
+                }
+
+                @*@{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "add",
+                        Text = "新增",
+                        Enable = true,
+                        Type = "primary"
+                    });
+                }
+
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "del",
+                        Text = "删除",
+                        Enable = true,
+                        Type = "error"
+                    });
+                }*@
+
+                @RenderSection("conditionBtn", false)
+            </div>
+            <p slot="content" class="element">
+                @*查询条件*@
+                @RenderSection("conditionParam", true)
+            </p>
+        </panel>
+        <panel name="result">
+            查询结果
+            <div style="float: right; width: 400px ;text-align: right;z-index:99">
+                 @*@{
+                    RenderControl(new ButtonRender()
+                   {
+                        Click = "exp",
+                        Text = "导出",
+                        Enable = true,
+                        Type = "primary"
+                    });
+                }
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "print",
+                        Text = "打印",
+                        Enable = true,
+                        Type = "primary"
+                    });
+                }*@
+                @*增加结果按钮*@
+                @RenderSection("resultBtn", false)
+            </div>
+            <p slot="content">
+                 @*结果显示*@
+                    <i-table :highlight-row="true" size="small" :border="true" height="240"
+                             :columns="screenParam.colDef" :data="screenParamData.dataDef"
+                             ref="selectData"></i-table>
+
+                @RenderSection("resultOthers", false)
+            </p>
+        </panel>
+    </collapse>
+    @RenderSection("hide", false)
+    @RenderSection("pops", false) 
+</div>
+
+@section foot{
+    @RenderSection("foot", false)     
+}
