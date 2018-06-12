@@ -8,6 +8,8 @@ using z.MVC5.Results;
 using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
+using z.ERP.Web.Areas.Layout.Search;
+using z.MVC5.Attributes;
 using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
@@ -17,7 +19,11 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
         public ActionResult Bill_AdjustList()
         {
             ViewBag.Title = "费用调整单";
-            return View();
+            return View(new SearchRender()
+            {
+                Permission_Add = "107002",
+                Permission_Del = "107002"
+            });
         }
         public ActionResult Bill_AdjustEdit(string Id)
         {
@@ -38,7 +44,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
             service.JsglService.DeleteBillAdjust(DeleteData);
         }
 
-
+        [Permission("107002")]
         public string Save(BILL_ADJUSTEntity SaveData)
         {
             return service.JsglService.SaveBillAdjust(SaveData);

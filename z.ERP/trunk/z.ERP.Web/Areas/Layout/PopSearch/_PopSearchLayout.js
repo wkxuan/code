@@ -22,14 +22,14 @@
         var options = {
             el: '#search',
             data: {
-                    screenParam: _this.screenParam,
-                    searchParam: _this.searchParam,
-                    panelName: 'condition',
-                    disabled: _this.enabled(true),
-                    
-                    screenParamData: {
-                        dataDef: []
-                    }
+                screenParam: _this.screenParam,
+                searchParam: _this.searchParam,
+                panelName: 'condition',
+                disabled: _this.enabled(true),
+
+                screenParamData: {
+                    dataDef: []
+                }
             },
             mounted: function () {
             },
@@ -42,12 +42,12 @@
                         return;
                     Vue.set(ve.screenParamData, "dataDef", []);
                     //父页面是单据
-                    if (window.parent.editDetail!=undefined)
+                    if (window.parent.editDetail != undefined)
                         _this.popInitParam(window.parent.editDetail.screenParam.popParam);
-                    //父页面是查询
+                        //父页面是查询
                     else if (window.parent.search != undefined)
                         _this.popInitParam(window.parent.search.screenParam.popParam);
-                    //父页面是简单定义
+                        //父页面是简单定义
                     else if (window.parent.define != undefined)
                         _this.popInitParam(window.parent.define.screenParam.popParam);
                     showList(function (data) {
@@ -69,8 +69,10 @@
                     //this.$emit('setdialog', data)
                     if (window.parent.editDetail != undefined)
                         window.parent.editDetail.popCallBack(data)
-                    else if (window.parent.search != undefined);
-                    window.parent.search.popCallBack(data)
+                    else if (window.parent.search != undefined)
+                        window.parent.search.popCallBack(data)
+                    else if (window.parent.define != undefined)
+                        window.parent.define.popCallBack(data);
                     //localStorage.setItem("relt", data);
                     //var site = localStorage.getItem("relt");
                 },
@@ -103,11 +105,11 @@
         }
     }
 
-    this.addHref = function () {   }
+    this.addHref = function () { }
 
-    this.modHref = function (row, index) {   }
+    this.modHref = function (row, index) { }
 
-    this.browseHref = function (row, index) {   }
+    this.browseHref = function (row, index) { }
 
     this.colDefInit = function () {
         _this.colMul = [{

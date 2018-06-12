@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.MVC5.Results;
+using z.MVC5.Attributes;
+using z.ERP.Web.Areas.Layout.Search;
 using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.XTGL.ROLE
@@ -11,7 +13,11 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
         public ActionResult RoleList()
         {
             ViewBag.Title = "角色信息";
-            return View();
+            return View(new SearchRender()
+            {
+                Permission_Add = "102007",
+                Permission_Del = "102007"
+            });
         }
         public ActionResult RoleDetail(string Id)
         {
@@ -27,6 +33,7 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
             ViewBag.Title = "角色定义";
             return View("RoleEdit",model: (EditRender)Id);
         }
+        [Permission("102007")]
         public string Save(ROLEEntity SaveData)
         {
             return service.UserService.SaveRole(SaveData,"MODULECODE");

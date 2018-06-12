@@ -5,7 +5,7 @@
         { title: '角色名称', key: 'ROLENAME', width: 200 },
         { title: '所属机构', key: 'ORGNAME', width: 200 }
     ];
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
+    search.screenParam.colDef = col.concat(search.colMul);
     search.service = "UserService";
     search.method = "GetRole";
 }
