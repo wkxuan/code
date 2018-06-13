@@ -21,7 +21,8 @@ namespace z.ERP.Services
         }
         public DataGridResult GetUser(SearchItem item)
         {
-            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME FROM SYSUSER A WHERE  A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";
+            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME FROM SYSUSER A WHERE  1=1";
+            //A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")
             item.HasKey("USERCODE,", a => sql += $" and A.USERCODE = '{a}'");
             item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");
             sql += " ORDER BY  A.USERCODE";
@@ -39,7 +40,8 @@ namespace z.ERP.Services
         }
         public Tuple<dynamic, DataTable> GetUserElement(SYSUSEREntity Data)
         {
-            string sql = $@"select A.*,B.ORGIDCASCADER from SYSUSER A,ORG B where A.ORGID=B.ORGID(+)  ";
+            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME,A.USER_TYPE,A.ORGID,A.USER_FLAG,A.VOID_FLAG,";
+             sql += " B.ORGIDCASCADER from SYSUSER A,ORG B where A.ORGID=B.ORGID(+)  ";
             if (!Data.USERID.IsEmpty())
             {
                 sql += " and A.USERID = " + Data.USERID;
