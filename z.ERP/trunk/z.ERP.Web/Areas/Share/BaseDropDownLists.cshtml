@@ -1,0 +1,17 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<DropDownListsRender>
+
+<i-select v-model="@Model.vModel" :disabled="@(Model.Enable?"!disabled":"disabled")" v-on:on-change="@Model.Change">
+    @{
+        if (!Model.EmptyText.IsEmpty())
+        {
+            <i-option  :value="0">@Model.EmptyText</i-option>
+        }
+        //foreach (var item in Model.Data)
+        {
+            {
+                <i-option  v-for="item in @Model.Data" :value="item.value" >{{item.label}}</i-option>
+            }
+        }
+    }
+</i-select>

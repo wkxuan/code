@@ -222,14 +222,14 @@ namespace z.ERP.Services
             {
                 case PermissionType.Menu:
                     String SqlMenu = "";
-                    SqlMenu = " SELECT MENUID FROM USERMODULE A,MENU B where A.MODULEID = B.ID";
+                    SqlMenu = " SELECT A.MENUID FROM USERMODULE A,MENU B where A.MENUID = B.ID";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
                         SqlMenu += " and exists(select 1 from USER_ROLE A1, ROLE_MENU B1,USERMODULE C1 where A1.USERID=" + employee.Id;
                         SqlMenu += " and A1.ROLEID = B1.ROLEID and C1.MODULECODE like B1.MODULECODE||'%' and C1.MENUID = A.MENUID "; 
                     }
                     //可增加系统参数菜单权限控制是否要关联位置
-                    if(1==1)
+                    if(1!=1)
                     {
                         SqlMenu += " and C1.MODULECODE = A.MODULECODE ";
                     }

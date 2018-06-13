@@ -60,9 +60,9 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_YSH
             service.JsglService.ExecBillObtain(Data);
         }
 
-        public UIResult GetBill(BILLEntity Data)
-        {
-            return new UIResult(service.DataService.GetBill(Data));
-        }
+        //public UIResult GetBill(BILLEntity Data)
+        //{
+        //    return new UIResult(service.DataService.GetBill(Data));
+        //}
     }
 }

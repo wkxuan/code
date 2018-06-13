@@ -17,19 +17,10 @@ namespace z.ERP.Web.Areas.XTGL.SYSUSER
 
         public string Save(SYSUSEREntity DefineSave)
         {
-            var v = GetVerify(DefineSave);
-            if (DefineSave.USERID.IsEmpty())
-            {
-                DefineSave.USERID = service.CommonService.NewINC("SYSUSER");
-            }
-            v.IsUnique(a => a.USERID);
-            v.IsUnique(a => a.USERCODE);
-            v.Require(a => a.USERNAME);
-            v.Require(a => a.USER_TYPE);
-            v.Require(a => a.ORGID);
-            v.Verify();
-            return CommonSave(DefineSave);
+            return service.HomeService.SaveSysUser(DefineSave);
         }
+
+
 
         public void Delete(SYSUSEREntity DefineDelete)
         {

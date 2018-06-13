@@ -58,10 +58,10 @@ namespace z.ERP.Services
             string sqlgroup = @" SELECT MODULECODE ID,MODULENAME NAME FROM USERMODULE WHERE LENGTH(MODULECODE)=4 ";
             if (int.Parse(employee.Id) > 0)
             {
-                sqlgroup += @" and (MODULECODE in (
-                                        SELECT DISTINCT SUBSTR(MODULECODE,1,4) FROM USERMODULE A,ROLE_MENU B,USER_ROLE C
+                sqlgroup += @" and MODULECODE in (
+                                        SELECT DISTINCT SUBSTR(A.MODULECODE,1,4) FROM USERMODULE A,ROLE_MENU B,USER_ROLE C
                                         WHERE A.MENUID=B.MENUID AND B.ROLEID=C.ROLEID
-                                        AND C.USERID=" + employee.Id;
+                                        AND C.USERID=" + employee.Id + ")";
             }
 
             sqlgroup += @" ORDER BY MODULECODE";
@@ -82,14 +82,14 @@ namespace z.ERP.Services
                               where  aa.menuid = ab.id and LENGTH(aa.MODULECODE)=6 and ab.platformid=pf.id(+) and aa.modulecode like  '" + menuGr.ID+"%'";
                     if (int.Parse(employee.Id) > 0)
                     {
-                        sql += @" and (aa.menuid in (
+                        sql += @" and aa.menuid in (
                                                    select a.id
                                                      from menu a,
                                                            ROLE_MENU     b,
                                                            USER_ROLE c
                                                     where a.id = b.menuid
                                                       and b.roleid = c.roleid
-                                                      and c.userid = " + employee.Id + @") or
+                                                      and c.userid = " + employee.Id + @" or
                                     aa.menuid is null)";
                     }
 
@@ -157,5 +157,44 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
         }
 
 
+        public string SaveSysUser(SYSUSEREntity data)
+        {
+            var v = GetVerify(data);
+            if (data.USERID.IsEmpty())
+            {
+                data.USERID = NewINC("SYSUSER");
+                data.PASSWORD = salt(data.USERID, data.PASSWORD);
+            }
+            else
+            {
+                if (data.PASSWORD.IsEmpty())
+                {
+                    SYSUSEREntity sysuser = DbHelper.Select(new SYSUSEREntity() { USERID = data.USERID });
+                    data.PASSWORD = sysuser.PASSWORD;
+                }
+                else
+                    data.PASSWORD = salt(data.USERID, data.PASSWORD);
+            }
+            v.Require(a => a.USERID);
+            v.IsUnique(a => a.USERID);
+            v.Require(a => a.USERCODE);
+            v.IsUnique(a => a.USERCODE);
+            v.Require(a => a.USERNAME);
+            v.IsUnique(a => a.USERNAME);
+            v.Require(a => a.VOID_FLAG);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                data.USER_ROLE?.ForEach(menu =>
+                {
+                    GetVerify(menu).Require(a => a.ROLEID);
+                });
+
+                DbHelper.Save(data);
+                Tran.Commit();
+            }
+            return data.USERID;
+        }
     }
 }

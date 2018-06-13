@@ -1,0 +1,68 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.PopSearch;
+@inherits PopSearchViewBase
+@section conditionParam{
+<row>
+    <i-col span="2" class="RowTitle">
+        代码
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "screenParam.TRIMID"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">名称</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "screenParam.NAME"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">拼音码</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "screenParam.PYM"
+            });
+        }
+    </i-col>
+</row>
+<row>
+    <i-col span="2" class="RowTitle">项目类型</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new EnumDropDownListRender<收费项目类型>()
+            {
+                vModel = "screenParam.TYPE"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">成本费用</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new EnumDropDownListRender<收费项目成本费用>()
+            {
+                vModel = "screenParam.ACCOUNT"
+            });
+        }
+    </i-col>
+
+    <i-col span="2" class="RowTitle">现金货扣</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new EnumDropDownListRender<收费项目现金货扣>()
+            {
+                vModel = "screenParam.DEDUCTION"
+            });
+        }
+    </i-col>
+</row>
+}
+

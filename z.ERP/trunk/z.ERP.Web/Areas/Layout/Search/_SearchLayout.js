@@ -88,8 +88,8 @@
                     _this.addHref();
                 },
                 browse: function (row, index) {
-                    if (CanEdit)
-                        _this.browseHref(row, index);
+                    //if (CanEdit)
+                    _this.browseHref(row, index);
                 },
 
                 del: function (event) {

@@ -115,9 +115,9 @@
         @{
             RenderControl(new ButtonRender()
             {
-                //Click = "SelRole",
+                Click = "SelRole",
                 Text = "添加角色",
-                Enable = true,
+                Enable = false,
                 Type = "primary",
                 Icon = "plus-circled"
             });
@@ -130,7 +130,20 @@
                      :columns="screenParam.colUserRoleDef" :data="dataParam.USER_ROLE"></i-table>
         </i-col>
     </row>
+}
 
-
-
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopRole",
+                    Src = "screenParam.srcPopRole",
+                    Caption = "选择角色",
+                    Width = "800"
+                });
+            }
+        </i-col>
+    </row>
 }

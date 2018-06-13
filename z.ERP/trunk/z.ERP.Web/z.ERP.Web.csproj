@@ -169,12 +169,16 @@
     <Compile Include="Areas\Layout\Edit\EditViewBase.cs" />
     <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
+    <Compile Include="Areas\Layout\PopSearch\PopSearchViewBase.cs" />
     <Compile Include="Areas\Layout\Search\SearchRender.cs" />
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
+    <Compile Include="Areas\Pop\Pop\PopController.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
+    <Compile Include="Areas\Share\Render\DropDownListsRender.cs" />
     <Compile Include="Areas\Share\Render\PopRender.cs" />
+    <Compile Include="Areas\Share\Render\PopsRender.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
@@ -204,12 +208,12 @@
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cs" />
     <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
     <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
-    <Compile Include="Areas\XTGL\SHOP\Shop.cs" />
     <Compile Include="Areas\XTGL\FLOOR\Floor.cs" />
     <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
     <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
     <Compile Include="Areas\XTGL\PERIOD\PeriodController.cs" />
+    <Compile Include="Areas\XTGL\SHOP\ShopController.cs" />
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\SYSUSER\SysuserController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
@@ -244,6 +248,7 @@
     <Content Include="Areas\JSGL\JOINBILL\JoinBillList.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Edit\_Edit.js" />
+    <Content Include="Areas\Layout\PopSearch\_PopSearchLayout.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
     <Content Include="Areas\Pop\PopPay.js" />
@@ -252,6 +257,9 @@
     <Content Include="Areas\Pop\PopBrand.js" />
     <Content Include="Areas\Pop\PopMerchant.js" />
     <Content Include="Areas\Pop\PopContract.js" />
+    <Content Include="Areas\Pop\Pop\PopBillList.js" />
+    <Content Include="Areas\Pop\Pop\PopRoleList.js" />
+    <Content Include="Areas\Pop\Pop\PopFeeSubjectList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
@@ -530,6 +538,12 @@
     <Content Include="Content\layui\font\iconfont.eot" />
     <Content Include="Content\layui\font\iconfont.ttf" />
     <Content Include="Content\layui\font\iconfont.woff" />
+    <Content Include="Areas\Share\BaseDropDownLists.cshtml" />
+    <Content Include="Areas\Share\Pops.cshtml" />
+    <Content Include="Areas\Layout\PopSearch\_PopSearchLayout.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopBillList.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopFeeSubjectList.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopRoleList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

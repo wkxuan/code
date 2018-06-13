@@ -1,0 +1,11 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<PopsRender>
+
+<Modal v-model="@Model.vModel"  :width="@Model.Width" >
+    <p slot="header" style="text-align:center" name="header">
+        <span>@Model.Caption</span>
+    </p>
+    <iframe :src="@Model.Src" frameborder="false"  scrolling="no" style="border:none;" width="100%" height="350px"></iframe>    
+    <div slot="footer" >
+    </div>
+</Modal>
