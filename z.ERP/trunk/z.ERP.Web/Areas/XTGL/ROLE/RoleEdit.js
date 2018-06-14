@@ -3,14 +3,129 @@
     editDetail.service = "UserService";
     editDetail.method = "GetRoleElement";
     editDetail.Key = "ROLEID";
-    editDetail.screenParam.ROLE_MENU = [];
-    if (!editDetail.screenParam.ROLE_FEE) {
-        editDetail.screenParam.ROLE_FEE = [{
-            CHECKED: "false",
-            TRIMID: "",
-            NAME: "",
-        }]
+    editDetail.dataParam.USERMODULEBUTTON = [];
+    editDetail.isChange = false;
+
+    editDetail.screenParam.colDef_Menu = [
+        { type: 'selection', width: 60, align: 'center' },
+        { title: '菜单名称', key: 'MODULENAME', width: 350 }
+    ];
+    editDetail.screenParam.colDef_Menubutton = [
+        { type: 'selection', width: 60, align: 'center' },
+        { title: '按钮名称', key: 'MODULENAME', width: 350 }
+    ];
+    editDetail.screenParam.colDef_Menufee = [
+        { type: 'selection', width: 60, align: 'center' },
+        { title: '费用项目名称', key: 'NAME', width: 350 }
+    ];
+
+    editDetail.screenParam.selectData = function (selection, row) {
+        editDetail.checkSysUserGroupMenu(selection);
+    };
+
+    editDetail.screenParam.selectDataAll = function (selection) {
+        editDetail.checkSysUserGroupMenu(selection);
+    };
+    editDetail.screenParam.selectCancel = function (selection) {
+        editDetail.checkSysUserGroupMenu(selection)
+    };
+
+
+    editDetail.screenParam.selectDatabutton = function (selection, row) {
+        editDetail.checkSysUserGroupMenuButton(selection)
+    };
+
+    editDetail.screenParam.selectDataAllbutton = function (selection) {
+        editDetail.checkSysUserGroupMenuButton(selection)
+    };
+    editDetail.screenParam.selectCancelbutton = function (selection) {
+        editDetail.checkSysUserGroupMenuButton(selection)
+    };
+
+
+    editDetail.screenParam.selectDatafee=function (selection, row) {
+        editDetail.checkfee(selection);
+    };
+
+    editDetail.screenParam.selectDataAllfee= function (selection) {
+        editDetail.checkfee(selection);
+    };
+    editDetail.screenParam.selectCancelfee = function (selection) {
+        editDetail.checkfee(selection);
+    };
+
+
+    editDetail.screenParam.usermoduleclick = function (selection) {
+        editDetail.isChange = true;
+        _.Search({
+            Service: "UserService",
+            Method: "Get_UserModule_Button",
+            Data: { MODULECODE: selection.MODULECODE },
+            Success: function (data) {
+                Vue.set(editDetail.screenParam, 'BUTTON', data.rows);
+            }
+        })
     }
+}
+
+
+editDetail.checkSysUserGroupMenu = function (selection) {
+    editDetail.dataParam.USERMODULE = [];
+    var localData = [];
+    for (var i = 0; i < selection.length; i++) {
+        localData.push({ MENUID: selection[i].MENUID });
+    };
+    Vue.set(editDetail.dataParam, 'USERMODULE', localData);
+}
+
+editDetail.checkSysUserGroupMenuButton = function (selection) {
+
+    editDetail.screenParam.USERMODULEBUTTON = [];
+    var localData = [];
+    for (var i = 0; i < selection.length; i++) {
+        localData.push({ MENUID: selection[i].MENUID });
+    };
+    Vue.set(editDetail.screenParam, 'USERMODULEBUTTON', localData);
+
+    //每次找出当前选中与当前未选中的
+    //未选中的重最终的数据中移除
+    //选中的若没有就插入
+
+    var all = editDetail.screenParam.BUTTON.concat(editDetail.screenParam.USERMODULEBUTTON);
+
+    var noCheckData = [];
+    for (i = 0; i < editDetail.screenParam.BUTTON.length; i++) {  //总数据
+        if //(
+            (editDetail.screenParam.USERMODULEBUTTON[i].length == 0){
+            //||
+            //(editDetail.screenParam.USERMODULEBUTTON[i].MENUID != editDetail.screenParam.BUTTON[i].MENUID)) { //选中的数据!=总数据里面的数据
+            noCheckData.push(editDetail.screenParam.BUTTON[i].MENUID);
+        }
+    };
+
+    if (editDetail.dataParam.USERMODULEBUTTON.length == 0) {
+        editDetail.dataParam.USERMODULEBUTTON.push(editDetail.screenParam.USERMODULEBUTTON);
+    }
+    else {
+        for (i = 0; i < noCheckData.length; i++) {
+            for (j = 0; j < editDetail.dataParam.USERMODULEBUTTON.length; j++) {
+                if (editDetail.dataParam.USERMODULEBUTTON[j].MENUID == noCheckData[i].MENUID) {
+                    editDetail.dataParam.USERMODULEBUTTON.remove(noCheckData[i].MENUID);
+                }
+            }
+        };
+
+        for (i = 0; i < editDetail.screenParam.USERMODULEBUTTON.length; i++) {
+            for (j = 0; j < editDetail.dataParam.USERMODULEBUTTON.length; j++) {
+                if (editDetail.dataParam.USERMODULEBUTTON[j].MENUID != editDetail.screenParam.USERMODULEBUTTON[i].MENUID) {
+                    editDetail.dataParam.USERMODULEBUTTON.push(editDetail.screenParam.USERMODULEBUTTON[i].MENUID);
+                }
+            }
+        };
+    }
+
+    console.log(editDetail.screenParam.USERMODULEBUTTON);
+    console.log(editDetail.dataParam.USERMODULEBUTTON);
 }
 
 editDetail.newRecord = function () {
@@ -28,66 +143,37 @@ editDetail.showOne = function (data, callback) {
         _.Ajax('SearchRole', {
             Data: {ROLEID:data}
         }, function (data) {
-            //添加的时候不赋值
-            if (data.role!=null) {
+            if (data.role != null) {
                 $.extend(editDetail.dataParam, data.role);
                 editDetail.dataParam.BILLID = data.role.ROLEID;
-            }
-            //菜单
-            editDetail.screenParam.ROLE_MENU = data.menu.Obj;
-            //收费项目距
-            editDetail.screenParam.ROLE_FEE = data.fee;
-            for (var i = 0; i < editDetail.screenParam.ROLE_FEE.length; i++) {
-                if (editDetail.screenParam.ROLE_FEE[i].DISABLED == 0) {
-                    editDetail.screenParam.ROLE_FEE[i].DISABLED = true;
-                }
-                else {
-                    editDetail.screenParam.ROLE_FEE[i].DISABLED = false;
-                }
-                if (editDetail.screenParam.ROLE_FEE[i].CHECKED == 0) {
-                    editDetail.screenParam.ROLE_FEE[i].CHECKED = false;
-                }
-                else {
-                    editDetail.screenParam.ROLE_FEE[i].CHECKED = true;
-                }
-            }
+            };
+            Vue.set(editDetail.screenParam, "USERMODULE", data.module);
+            Vue.set(editDetail.screenParam, "fee", data.fee);
             callback && callback();
         });    
 }
 
-editDetail.IsValidSave = function () {
-    editDetail.dataParam.ROLE_MENU = [];
-    editDetail.dataParam.ROLE_FEE = [];
-    function GetTreeMenuSelectedData(node) {
-        if (node.length > 0)
-        {
-            for (var i = 0; i < node.length; i++)
-            {
-                if(node[i].checked)
-                editDetail.dataParam.ROLE_MENU.push({ "MODULECODE": node[i].code,"MENUID":1 });
-                if (node[i].children.length > 0 && node[i].checked)
-                {
-                    GetTreeMenuSelectedData(node[i].children)
-                }
-            }
-        }
-    }
 
-    GetTreeMenuSelectedData(editDetail.screenParam.ROLE_MENU);    
-    for (var i = 0; i < editDetail.screenParam.ROLE_FEE.length; i++)
-    {
-        if (editDetail.screenParam.ROLE_FEE[i].CHECKED)
-        {
-            editDetail.dataParam.ROLE_FEE.push({ "TRIMID": editDetail.screenParam.ROLE_FEE[i].TRIMID });
-        }
-    }
+editDetail.IsValidSave = function () {
+
     return true;
 }
 
 editDetail.otherMethods = {
     orgChange: function (value, selectedData) {
-        editDetail.dataParam.ORGID = value[value.length - 1];
+         editDetail.dataParam.ORGID = value[value.length - 1];
     }
+}
+
+
+
+editDetail.checkfee = function (selection) {
+    editDetail.dataParam.fee = [];
+    var localData = [];
+    for (var i = 0; i < selection.length; i++) {
+        localData.push({ TRIMID: selection[i].TRIMID });
+    };
+    Vue.set(editDetail.dataParam, 'FEE', localData);
 }
 
 editDetail.mountedInit = function () {

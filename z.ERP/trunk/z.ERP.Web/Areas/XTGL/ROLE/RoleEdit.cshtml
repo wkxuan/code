@@ -1,20 +1,9 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
 @section baseParam{
-    @*<row>
-        <i-col span="2" class="RowTitle">角色编码</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ROLEID"
-                });
-            }
-        </i-col>
-    </row>*@
     <row>
         <i-col span="2" class="RowTitle">角色代码</i-col>
         <i-col span="6">
@@ -61,21 +50,30 @@
     </row>
 }
 @section detailParam{
-    @*<row>
-        <i-col span="2" class="RowTitle">功能菜单</i-col>
-        <i-col span="6"></i-col>
-        <i-col span="2" class="RowTitle">收费项目</i-col>
-        <i-col span="6"></i-col>
-    </row>*@
     <row>
-        <i-col span="8">
-            <Tree :data="screenParam.ROLE_MENU" show-checkbox multiple></Tree>
+        <i-col span="5">菜单权限
+            <i-table size="small" :border="true" height="370"
+                     :columns="screenParam.colDef_Menu" :data="screenParam.USERMODULE"
+                     v-on:on-select="screenParam.selectData"
+                     v-on:on-select-all="screenParam.selectDataAll"
+                     v-on:on-select-cancel="screenParam.selectCancel"
+                     v-on:on-row-click="screenParam.usermoduleclick"></i-table>
         </i-col>
-        <i-col span="8">
-            <CheckboxGroup v-for="item in screenParam.ROLE_FEE">
-                <Checkbox label="item.NAME" :disabled="item.DISABLED" v-model="item.CHECKED">{{item.NAME}}</Checkbox>
-                <br />
-            </CheckboxGroup>
+
+        <i-col span="5">按钮权限
+            <i-table size="small" :border="true" height="370"
+                     :columns="screenParam.colDef_Menubutton" :data="screenParam.BUTTON"
+                     v-on:on-select="screenParam.selectDatabutton"
+                     v-on:on-select-all="screenParam.selectDataAllbutton"
+                     v-on:on-select-cancel="screenParam.selectCancelbutton"></i-table>
+        </i-col>
+
+        <i-col span="5">费用项目
+            <i-table size="small" :border="true" height="370"
+                     :columns="screenParam.colDef_Menufee" :data="screenParam.fee"
+                     v-on:on-select="screenParam.selectDatafee"
+                     v-on:on-select-all="screenParam.selectDataAllfee"
+                     v-on:on-select-cancel="screenParam.selectCancelfee"></i-table>
         </i-col>
     </row>
 }
