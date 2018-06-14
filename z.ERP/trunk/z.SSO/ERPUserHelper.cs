@@ -104,8 +104,8 @@ namespace z.SSO
                 return true;
             if (ConfigExtension.TestModel)
                 return true;
-            //if (UserId.ToInt() < 0)
-            //    return true;
+            if (UserId.ToInt() < 0)
+                return true;
             switch (Type)
             {
                 case PermissionType.Menu:
