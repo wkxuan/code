@@ -237,7 +237,7 @@ namespace z.ERP.Services
                     return SqlMenu;
                 case PermissionType.Org:
                     String SqlDepartment = "";
-                    SqlDepartment=" select ORGID id from ORG A";
+                    SqlDepartment=" select ORGID id from ORG A where 1=1";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
                         SqlDepartment += " and exists(select 1 from USER_ROLE A1,ROLE B1,ORG C1 where A1.USERID=" + employee.Id;
@@ -255,7 +255,7 @@ namespace z.ERP.Services
                     return SqlBranch;
                 case PermissionType.Floor:
                     String SqlFloor = "";
-                    SqlFloor = "SELECT A.ID FROM FLOOR A,ORG Bwhere A.ORGID = B.ORGID";
+                    SqlFloor = "SELECT A.ID FROM FLOOR A,ORG B where A.ORGID = B.ORGID";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
                         SqlFloor += " and exists(select 1 from USER_ROLE A1, ROLE B1, ORG C1 where A1.USERID = " + employee.Id;
@@ -264,7 +264,7 @@ namespace z.ERP.Services
                     return SqlFloor;
                 case PermissionType.Shop:
                     String SqlShop = "";
-                    SqlShop = "SELECT A.SHOPID FROM SHOP A,ORG Bwhere A.ORGID = B.ORGID";
+                    SqlShop = "SELECT A.SHOPID FROM SHOP A,ORG B where A.ORGID = B.ORGID";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
                         SqlShop += " and exists(select 1 from USER_ROLE A1, ROLE B1, ORG C1 where A1.USERID = " + employee.Id;
