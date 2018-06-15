@@ -38,6 +38,7 @@
     editDetail.screenParam.selectCancelfee = function (selection) {
         editDetail.checkfee(selection);
     };
+
 };
 editDetail.checkSysUserGroupMenu = function (selection) {
     editDetail.dataParam.ROLE_MENU = [];
@@ -63,13 +64,22 @@ editDetail.clearKey = function () {
 };
 
 editDetail.showOne = function (data, callback) {
+
+
+    _.Ajax('SearchInit', {
+        Data: {}
+    }, function (datainit) {
+        Vue.set(editDetail.screenParam, "ORGData", datainit.treeOrg.Obj);
+        Vue.set(editDetail.screenParam, "USERMODULE", datainit.module);
+        Vue.set(editDetail.screenParam, "fee", datainit.fee);
+
+
         _.Ajax('SearchRole', {
-            Data: { ROLEID: data}
+            Data: { ROLEID: data }
         }, function (data) {
             if (data.role != null) {
                 $.extend(editDetail.dataParam, data.role);
                 editDetail.dataParam.BILLID = data.role.ROLEID;
-
 
                 var localMenu = [];
                 for (var j = 0; j < editDetail.screenParam.USERMODULE.length; j++) {
@@ -104,8 +114,9 @@ editDetail.showOne = function (data, callback) {
                     Vue.set(editDetail.dataParam, 'ROLE_FEE', localFee);
                 };
             };
-            callback && callback();
-        });    
+        });
+    });
+    callback && callback();
 }
 
 editDetail.IsValidSave = function () {
@@ -128,14 +139,15 @@ editDetail.checkfee = function (selection) {
 }
 
 editDetail.mountedInit = function () {
+
     _.Ajax('SearchInit', {
         Data: {}
     }, function (data) {
         Vue.set(editDetail.screenParam, "ORGData", data.treeOrg.Obj);
-        Vue.set(editDetail.screenParam, "USERMODULE", data.module);
-        Vue.set(editDetail.screenParam, "fee", data.fee);
-
     });
+}
+
+editDetail.billchange = function () {
 }
 
 
