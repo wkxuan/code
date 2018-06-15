@@ -28,8 +28,6 @@ namespace z.SSO.Model
 
         public bool HasPermission(string key, PermissionType type = PermissionType.Menu)
         {
-            if (ConfigExtension.TestModel)
-                return true;
             return PermissionHandle == null ? false : PermissionHandle(Id, key, type);
         }
 

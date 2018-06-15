@@ -51,8 +51,8 @@ namespace z.SSO
                 {
                     var teste = new Employee()
                     {
-                        Id = "-1",
-                        Name = "测试",
+                        Id = ConfigExtension.TestModel_User,
+                        Name = $"测试模式:{ConfigExtension.TestModel_User}",
                         PlatformId = -1
                     } as T;
                     return teste;
@@ -136,8 +136,6 @@ namespace z.SSO
             if (UserId.IsEmpty())
                 return false;
             if (Key.IsEmpty())
-                return true;
-            if (ConfigExtension.TestModel)
                 return true;
             if (UserId.ToInt() < 0)
                 return true;

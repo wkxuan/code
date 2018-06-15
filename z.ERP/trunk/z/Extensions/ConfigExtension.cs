@@ -67,7 +67,26 @@ namespace z.Extensions
         {
             get
             {
-                return GetConfig("TestModel").ToLower() == "true";
+                return GetConfig("TestModel").ToLower().StartsWith("true");
+            }
+        }
+        /// <summary>
+        /// 测试模式
+        /// </summary>
+        public static string TestModel_User
+        {
+            get
+            {
+                if (TestModel)
+                {
+                    string[] arr = GetConfig("TestModel").Split(':');
+                    if (arr.Length == 2)
+                        return arr[1];
+                    else
+                        return "-1";
+                }
+                else
+                    return "-1";
             }
         }
     }

@@ -45,13 +45,14 @@ namespace z.SSO
         {
             if (ConfigExtension.TestModel)//测试模式
             {
-                var teste = new Employee()
+                Employee teste = new Employee()
                 {
-                    Id = "-1",
-                    Name = "测试",
+                    Id = ConfigExtension.TestModel_User,
+                    Name = $"测试模式:{ConfigExtension.TestModel_User}",
                     PlatformId = -1
-                } as T;
-                return teste;
+                };
+                teste.PermissionHandle = HasPermission;
+                return teste as T;
             }
             string key = ApplicationContextBase.GetContext()?.principal?.Identity.Name;
             T e = ApplicationContextBase.GetContext().GetData<T>(LoginKey + key);
@@ -102,8 +103,6 @@ namespace z.SSO
                 return false;
             if (Key.IsEmpty())
                 return true;
-            if (ConfigExtension.TestModel)
-                return true;
             if (UserId.ToInt() < 0)
                 return true;
             switch (Type)
@@ -113,7 +112,7 @@ namespace z.SSO
                         ICache wc = new WebCache();
                         return wc.Simple($"Permission_{Type.ToString()}_{UserId}",
                             () => service.GetPermissionByUserId(UserId))
-                            .Contains(Type.ToString() + Key);
+                            .Contains(Key);
                     }
                 default:
                     {
