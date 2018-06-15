@@ -69,7 +69,7 @@
     </row>*@
     <row>
         <i-col span="8">
-            <Tree :data="screenParam.ROLE_MENU" show-checkbox multiple></Tree>
+            <Tree  ref="tree" :data="screenParam.ROLE_MENU" show-checkbox multiple></Tree>
         </i-col>
         <i-col span="8">
             <CheckboxGroup v-for="item in screenParam.ROLE_FEE">

@@ -40,7 +40,7 @@
                 },
                 save: function (event) {
                     var _self = this;
-                    if (!_this.IsValidSave())
+                    if (!_this.IsValidSave(_self))
                         return;
                     save(function (data) {
                         _this.showOne(data, function () {
