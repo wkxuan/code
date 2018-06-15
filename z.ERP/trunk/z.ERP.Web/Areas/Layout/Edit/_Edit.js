@@ -74,6 +74,6 @@
         if (editDetail.Id) {
             editDetail.showOne(editDetail.Id);
         }
-    }, 100);
+    }, 200);
 }
 var editDetail = new _EditDetail();

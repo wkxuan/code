@@ -19,31 +19,12 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                 Permission_Del = "102007"
             });
         }
-        public ActionResult RoleDetail(string Id)
-        {
-            ViewBag.Title = "角色定义";
-            var entity = service.UserService.GetRoleElement(new ROLEEntity(Id));
-            ViewBag.role = entity.Item1;
-            ViewBag.menu = entity.Item2;
-            ViewBag.fee = entity.Item3;
-            return View(entity);
-        }
         public ActionResult RoleEdit(string Id)
         {
             ViewBag.Title = "角色定义";
             return View("RoleEdit",model: (EditRender)Id);
         }
-        [Permission("102007")]
-        public string Save(ROLEEntity SaveData)
-        {
-            return service.UserService.SaveRole(SaveData,"MODULECODE");
-        }
 
-        public void Delete(ROLEEntity DefineDelete)
-        {
-            var v = GetVerify(DefineDelete);
-            CommenDelete(DefineDelete);
-        }
 
         public UIResult SearchRole(ROLEEntity Data)
         {
@@ -52,18 +33,34 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                 new
                 {
                     role = res.Item1,
-                    menu = res.Item2,
-                    fee = res.Item3
+                    fee = res.Item2,
+                    module = res.Item3
                 }
-                );
+            );
         }
+
+
+        [Permission("102007")]
+        public string Save(ROLEEntity SaveData)
+        {
+            return service.UserService.SaveRole(SaveData);
+        }
+
+        public void Delete(ROLEEntity DefineDelete)
+        {
+            var v = GetVerify(DefineDelete);
+            CommenDelete(DefineDelete);
+        }
+
         public UIResult SearchInit()
         {
-            var res = service.DataService.GetTreeOrg();
+            var res = service.UserService.GetRoleInit();
             return new UIResult(
                 new
                 {
-                    treeOrg = res.Item1
+                    treeOrg = res.Item1,
+                    fee = res.Item2,
+                    module = res.Item3
                 }
             );
         }
