@@ -51,21 +51,12 @@
 }
 @section detailParam{
     <row>
-        <i-col span="5">菜单权限
+        <i-col span="10">菜单权限
             <i-table size="small" :border="true" height="370"
                      :columns="screenParam.colDef_Menu" :data="screenParam.USERMODULE"
                      v-on:on-select="screenParam.selectData"
                      v-on:on-select-all="screenParam.selectDataAll"
-                     v-on:on-select-cancel="screenParam.selectCancel"
-                     v-on:on-row-click="screenParam.usermoduleclick"></i-table>
-        </i-col>
-
-        <i-col span="5">按钮权限
-            <i-table size="small" :border="true" height="370"
-                     :columns="screenParam.colDef_Menubutton" :data="screenParam.BUTTON"
-                     v-on:on-select="screenParam.selectDatabutton"
-                     v-on:on-select-all="screenParam.selectDataAllbutton"
-                     v-on:on-select-cancel="screenParam.selectCancelbutton"></i-table>
+                     v-on:on-select-cancel="screenParam.selectCancel"></i-table>
         </i-col>
 
         <i-col span="5">费用项目
