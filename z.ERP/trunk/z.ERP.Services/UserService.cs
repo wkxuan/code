@@ -83,16 +83,45 @@ namespace z.ERP.Services
             DataTable role = DbHelper.ExecuteTable(sql);
 
 
-            string sql1 = $@"SELECT MENUID,MODULENAME,MODULECODE  FROM USERMODULE WHERE NOT MENUID IS NULL AND LENGTH(MODULECODE)=6 ";
+            string sqlMenu = $@" SELECT MODULECODE,MENUID FROM ROLE_MENU WHERE 1=1";
+            if (!Data.ROLEID.IsEmpty())
+                sqlMenu += (" AND ROLEID= " + Data.ROLEID);
+            DataTable module = DbHelper.ExecuteTable(sqlMenu);
+
+
+            string sqlFee = $@" SELECT TRIMID FROM  ROLE_FEE WHERE 1=1";
+            if (!Data.ROLEID.IsEmpty())
+                sqlFee += (" AND ROLEID= " + Data.ROLEID);
+            DataTable fee = DbHelper.ExecuteTable(sqlFee);
+
+            return new Tuple<dynamic, DataTable, DataTable>(role.ToOneLine(), fee, module);
+        }
+
+
+        public Tuple<dynamic, DataTable, DataTable> GetRoleInit()
+        {
+
+            var org = DataService.GetTreeOrg();
+
+            string sql1 = $@"SELECT * FROM ( ";
+            sql1 += " SELECT MENUID,MODULECODE,MODULENAME MENUNAME,'' AS BUTONNAME";
+            sql1 += " FROM USERMODULE WHERE NOT MENUID IS NULL AND LENGTH(MODULECODE)=6 ";
+            sql1 += " UNION";
+            sql1 += " SELECT MENUID,MODULECODE,'' AS MENUNAME,MODULENAME AS BUTONNAME";
+            sql1 += " FROM USERMODULE WHERE NOT MENUID IS NULL AND LENGTH(MODULECODE) = 8 ";
+            sql1 += " ) ORDER BY MODULECODE ";
             DataTable module = DbHelper.ExecuteTable(sql1);
 
 
             string sqlitem2 = $@"select A.TRIMID,A.NAME from FEESUBJECT A  order by A.TRIMID";
             DataTable fee = DbHelper.ExecuteTable(sqlitem2);
 
-            return new Tuple<dynamic, DataTable, DataTable>(role.ToOneLine(), fee, module);
+            return new Tuple<dynamic, DataTable, DataTable>(org.Item1, fee, module);
         }
-        public string SaveRole(ROLEEntity SaveData, string Key)
+
+
+        
+        public string SaveRole(ROLEEntity SaveData)
         {
             var v = GetVerify(SaveData);
             if (SaveData.ROLEID.IsEmpty())
@@ -108,17 +137,6 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
             return SaveData.ROLEID;
-        }
-
-
-        public DataGridResult Get_UserModule_Button(SearchItem item)
-        {
-            string sql = $@" SELECT MENUID,MODULENAME,MODULECODE  FROM USERMODULE WHERE NOT MENUID IS NULL";
-            item.HasKey("MODULECODE", a => sql += $" and MODULECODE like '%{a}%' AND MODULECODE<>{a}");
-            sql += " ORDER BY  MODULECODE";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
         }
 
     }

@@ -43,7 +43,7 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
         [Permission("102007")]
         public string Save(ROLEEntity SaveData)
         {
-            return service.UserService.SaveRole(SaveData,"MODULECODE");
+            return service.UserService.SaveRole(SaveData);
         }
 
         public void Delete(ROLEEntity DefineDelete)
@@ -54,11 +54,13 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
 
         public UIResult SearchInit()
         {
-            var res = service.DataService.GetTreeOrg();
+            var res = service.UserService.GetRoleInit();
             return new UIResult(
                 new
                 {
-                    treeOrg = res.Item1
+                    treeOrg = res.Item1,
+                    fee = res.Item2,
+                    module = res.Item3
                 }
             );
         }
