@@ -16,7 +16,7 @@
 }
 
 @{
-    if (!Model.Permission_Edit.IsEmpty() && employee.HasPermission(Model.Permission_Edit))
+    if (!Model.Permission_Edit.IsEmpty() && !employee.HasPermission(Model.Permission_Edit))
     {
         <script type="text/javascript">
             var CanEdit = false;
