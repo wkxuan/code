@@ -12,6 +12,7 @@ using z.DBHelper.Info;
 using z.DbHelper.DbDomain;
 using z.Extensions;
 using z.Extensiont;
+using z.DBHelper.DbDomain;
 
 namespace z.DBHelper.Helper
 {
@@ -692,21 +693,14 @@ namespace z.DBHelper.Helper
         /// <summary>
         /// 开启事务
         /// </summary>
-        public virtual DbTransaction BeginTransaction(IsolationLevel? iso = null)
+        public virtual zDbTransaction BeginTransaction(IsolationLevel? iso = null)
         {
             Init();
-            //if (!isFirstTransaction)
-            {
-                if (_dbCommand == null || _dbCommand.Transaction == null)
-                {
-                    if (_dbConnection == null || _dbConnection.State != ConnectionState.Open)
-                        Open();
-                    _dbCommand.Transaction = iso.HasValue ? _dbConnection.BeginTransaction(iso.Value) : _dbConnection.BeginTransaction();
-                    isFirstTransaction = true;
-                }
-            }
-            _Transaction = _dbCommand.Transaction;
-            return _Transaction;
+            zDbTransaction t = new zDbTransaction(iso.HasValue ? _dbConnection.BeginTransaction(iso.Value) : _dbConnection.BeginTransaction());
+            t.AfterCommit = Done;
+            t.AfterRollback = Done;
+            _dbCommand.Transaction = t.Transaction;
+            return t;
         }
 
 

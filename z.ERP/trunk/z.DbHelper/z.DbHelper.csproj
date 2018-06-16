@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\Lib\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
@@ -68,6 +69,7 @@
     <Compile Include="DbDomain\PageInfo.cs" />
     <Compile Include="DbDomain\ForeignKeyAttribute.cs" />
     <Compile Include="DbDomain\PrimaryKeyAttribute.cs" />
+    <Compile Include="DbDomain\zDbTransaction.cs" />
     <Compile Include="Helper\DbHelperBase.cs" />
     <Compile Include="Helper\OracleDbHelper.cs" />
     <Compile Include="Helper\MysqlDbHelper.cs" />

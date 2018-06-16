@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.EditDetail;
 using z.MVC5.Attributes;
 using z.MVC5.Results;
 
@@ -22,7 +23,7 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
         public ActionResult EnergyreGisterEdit(string Id)
         {
             ViewBag.Title = "编辑能源设备登记(抄表)";
-            return View(model: Id);
+            return View(model: (EditRender)Id);
         }
 
         public ActionResult EnergyreGisterDetail(string Id)
