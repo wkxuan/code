@@ -169,10 +169,12 @@ namespace z.ERP.Services
         }
         public DataGridResult GetFloor(SearchItem item)
         {
-            string sql = $@"SELECT A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
-            item.HasKey("ID,", a => sql += $" and A.CODE = '{a}'");
+            string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
+            item.HasKey("ID,", a => sql += $" and A.ID = {a}");
+            item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
             item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
-            sql += " ORDER BY  A.CODE";
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
+            sql += " ORDER BY  A.ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -180,8 +182,10 @@ namespace z.ERP.Services
 
         public DataGridResult GetFloorElement(SearchItem item)
         {
-            string sql = $@"select A.* from FLOOR A where 1=1 ";
-            item.HasKey("ID", a => sql += $" and A.CODE = '{a}'");
+            string sql = $@"select A.*,B.ORGIDCASCADER from FLOOR A,ORG B where A.ORGID=B.ORGID(+) ";
+            item.HasKey("ID", a => sql += $" and A.ID = {a}");
+            item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
+            item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -189,10 +193,11 @@ namespace z.ERP.Services
         public DataGridResult GetShop(SearchItem item)
         {
             string sql = $@"SELECT  A.*,B.CATEGORYCODE,B.CATEGORYNAME,A.AREA_BUILD AREA " +
-                   "  FROM SHOP A,CATEGORY B WHERE  A.CATEGORYID = B.CATEGORYID";
+                   "  FROM SHOP A,CATEGORY B WHERE  A.CATEGORYID = B.CATEGORYID(+) ";
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
+            item.HasKey("FLOORID", a => sql += $" and A.FLOORID = '{a}'");
             sql += " ORDER BY  A.CODE";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

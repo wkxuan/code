@@ -208,7 +208,7 @@
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cs" />
     <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
     <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
-    <Compile Include="Areas\XTGL\FLOOR\Floor.cs" />
+    <Compile Include="Areas\XTGL\FLOOR\FloorController.cs" />
     <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
     <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />

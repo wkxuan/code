@@ -16,6 +16,7 @@
     this.Key = undefined;
     this.mountedInit = function () { };
 
+
     this.vue = function VueOperate() {
         var options = {
             el: '#def_Main',
@@ -34,7 +35,7 @@
                 _.Search({
                     Service: _this.service,
                     Method: _this.methodList,
-                    Data: {},
+                    Data: _this.searchParam,//增加查询条件
                     Success: function (data) {
                         define.screenParam.dataDef = data.rows;
                     }
@@ -158,6 +159,17 @@
         }
     }
 
+    this.showlist = function (callback) {
+        _.Search({
+            Service: _this.service,
+            Method: _this.methodList,
+            Data: _this.searchParam,
+            Success: function (data) {
+                define.screenParam.dataDef = data.rows;
+                callback && callback();
+            }
+        })
+    }
     this.showone=function (key, callback) {
         if (key) {
             var v = {};
