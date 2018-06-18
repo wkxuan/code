@@ -5,7 +5,10 @@
 @inherits EditViewBase<string>
 @section baseParam{
     <row>
-        <i-col span="2" class="RowTitle">角色代码</i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+        角色代码
+        </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -14,7 +17,10 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">角色名称</i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+        角色名称
+        </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -25,7 +31,10 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle">所属机构</i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+        所属机构
+        </i-col>
         <i-col span="6">
             @{
                 RenderControl(new CascaderRender()
