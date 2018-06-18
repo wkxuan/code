@@ -8,6 +8,8 @@ using z.MVC5.Results;
 using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
+using z.ERP.Web.Areas.Layout.Search;
+using z.MVC5.Attributes;
 using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
@@ -22,17 +24,20 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
         //public ActionResult AssetAreaChangeList()
         //{
         //    ViewBag.Title = "资产面积变更单";
-        //    return View();
+        //    return View();10400101
         //}
         public ActionResult AssetChangeList(string type)
         {
-            ViewBag.Title = "资产变更单";
-            ViewBag.Type = "1";
-            return View();
+            ViewBag.Title = "资产面积变更";
+            return View(new SearchRender()
+            {
+                Permission_Add = "10400101",
+                Permission_Del = "10400101"
+            });
         }
         public ActionResult Detail(string Id)
         {
-            ViewBag.Title = "资产变更单浏览";
+            ViewBag.Title = "资产面积变更";
             var entity = service.DpglService.GetAssetChangeElement(new ASSETCHANGEEntity(Id));
             ViewBag.assetchange = entity.Item1;
             ViewBag.assetchangeitem = entity.Item2;
@@ -41,7 +46,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
 
         public ActionResult AssetChangeEdit(string Id)
         {
-            ViewBag.Title = "编辑资产调整单";
+            ViewBag.Title = "资产面积变更";
             return View("AssetChangeEdit",model: (EditRender)Id);
         }
 
@@ -50,7 +55,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
             service.DpglService.DeleteAssetChange(DeleteData);
         }
 
-
+        [Permission("10400101")]
         public string Save(ASSETCHANGEEntity SaveData)
         {
             return service.DpglService.SaveAssetChange(SaveData);
@@ -71,7 +76,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
         {
             return new UIResult(service.DpglService.GetShop(Data));
         }
-
+        [Permission("10400102")]
         public void ExecData(ASSETCHANGEEntity Data)
         {
             service.DpglService.ExecData(Data);
