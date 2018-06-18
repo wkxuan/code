@@ -21,8 +21,8 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
             ViewBag.Title = "费用调整单";
             return View(new SearchRender()
             {
-                Permission_Add = "107002",
-                Permission_Del = "107002"
+                Permission_Add = "10700201",
+                Permission_Del = "10700201"
             });
         }
         public ActionResult Bill_AdjustEdit(string Id)
@@ -44,7 +44,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
             service.JsglService.DeleteBillAdjust(DeleteData);
         }
 
-        [Permission("107002")]
+        [Permission("10700201")]
         public string Save(BILL_ADJUSTEntity SaveData)
         {
             return service.JsglService.SaveBillAdjust(SaveData);
@@ -61,6 +61,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
                 }
                 );
         }
+        [Permission("10700202")]
         public void ExecData(BILL_ADJUSTEntity Data)
         {
             service.JsglService.ExecBillAdjust(Data);
