@@ -192,8 +192,10 @@ namespace z.ERP.Services
         }
         public DataGridResult GetShop(SearchItem item)
         {
-            string sql = $@"SELECT  A.*,B.CATEGORYCODE,B.CATEGORYNAME,A.AREA_BUILD AREA " +
-                   "  FROM SHOP A,CATEGORY B WHERE  A.CATEGORYID = B.CATEGORYID(+) ";
+            string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME " +
+                   "  FROM SHOP A,CATEGORY B,ORG C,BRANCH D,FLOOR F "
+                   +" WHERE  A.CATEGORYID = B.CATEGORYID(+) and A.ORGID=C.ORGID(+)"
+                   + " and  A.BRANCHID = D.ID and A.FLOORID=F.ID";
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
@@ -215,10 +217,10 @@ namespace z.ERP.Services
         }
         public DataGridResult GetEnergyFiles(SearchItem item)
         {
-            string sql = $@"SELECT A.FILECODE,A.FILENAME FROM ENERGY_FILES A WHERE 1=1";
+            string sql = $@"SELECT A.*,B.CODE SHOPCODE FROM ENERGY_FILES A,SHOP B WHERE A.SHOPID=B.SHOPID(+)";
             item.HasKey("FILECODE,", a => sql += $" and A.FILECODE = '{a}'");
             item.HasKey("FILENAME", a => sql += $" and A.FILENAME = '{a}'");
-            sql += " ORDER BY  A.FILECODE";
+            sql += " ORDER BY  A.FILEID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -226,7 +228,7 @@ namespace z.ERP.Services
 
         public DataGridResult GetEnergyFilesElement(SearchItem item)
         {
-            string sql = $@"select A.* from ENERGY_FILES A where 1=1 ";
+            string sql = $@"SELECT A.*,B.CODE SHOPCODE FROM ENERGY_FILES A,SHOP B WHERE A.SHOPID=B.SHOPID(+)";
             item.HasKey("FILEID", a => sql += $" and A.FILEID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
