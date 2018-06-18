@@ -95,9 +95,11 @@
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new UndefineRender()
+                RenderControl(new CascaderRender()
                 {
-                    vModel = "dataParam.ORGID",
+                    vModel = "dataParam.ORGIDCASCADER",
+                    Data = "screenParam.ORGData",
+                    Change = "orgChange",
                     Enable = false
                 });
             }
@@ -111,9 +113,11 @@
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new CascaderRender()
                 {
-                    vModel = "dataParam.CATEGORYID",
+                    vModel = "dataParam.CATEGORYIDCASCADER",
+                    Data = "screenParam.CATEGORYData",
+                    Change = "categoryChange",
                     Enable = false
                 });
             }

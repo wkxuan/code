@@ -56,5 +56,13 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        /// <summary>
+        /// 父级
+        /// <summary>
+        [Field("父级节点")]
+        public string CATEGORYIDCASCADER
+        {
+            get; set;
+        }
     }
 }

@@ -205,7 +205,9 @@ namespace z.ERP.Services
         }
         public DataGridResult GetShopElement(SearchItem item)
         {
-            string sql = $@"select A.* from SHOP A where 1=1 ";
+            string sql = $@"SELECT  A.*,B.CATEGORYCODE,B.CATEGORYNAME,B.CATEGORYIDCASCADER,A.AREA_BUILD AREA,C.ORGIDCASCADER " +
+                   "  FROM SHOP A,CATEGORY B,ORG C WHERE  A.CATEGORYID = B.CATEGORYID(+) "
+                   +" and A.ORGID=C.ORGID(+)";
             item.HasKey("SHOPID", a => sql += $" and A.SHOPID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

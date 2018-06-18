@@ -36,7 +36,7 @@
     });
 }
 define.newRecord = function () {
-    if (define.searchParam.BRANCHID==0) {
+    if (define.searchParam.BRANCHID == 0) {
         iview.Message.info("请请选择门店!");
         return;
     };
@@ -59,8 +59,8 @@ define.otherMethods = {
         }, function (data) {
             if (data.dt) {
                 define.screenParam.floorData = [];
-                for (var i = 0; i < data.dt.length;i++){
-                    define.screenParam.floorData.push({value:data.dt[i].ID,label:data.dt[i].NAME})
+                for (var i = 0; i < data.dt.length; i++) {
+                    define.screenParam.floorData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
                 }
                 define.searchParam.FLOORID = data.dt[0].ID;
             }
@@ -71,5 +71,19 @@ define.otherMethods = {
     },
     floorChange: function (value) {
         define.showlist();
-    }
+    },
+    orgChange: function (value, selectedData) {
+        define.dataParam.ORGID = value[value.length - 1];
+    },
+    categoryChange: function (value, selectedData) {
+        define.dataParam.CATEGORYID = value[value.length - 1];
+    },
+}
+define.mountedInit = function () {
+    _.Ajax('SearchInit', {
+        Data: {}
+    }, function (data) {
+        Vue.set(define.screenParam, "ORGData", data.treeOrg.Obj);
+        Vue.set(define.screenParam, "CATEGORYData", data.treeCategory.Obj);
+    });
 }

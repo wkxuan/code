@@ -50,5 +50,17 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
         {
             return new UIResult(service.DataService.GetFloor(Data));
         }
+        public UIResult SearchInit()
+        {
+            var resOrg = service.DataService.GetTreeOrg();
+            var resCategory = service.DataService.GetTreeCategory();
+            return new UIResult(
+                new
+                {
+                    treeOrg = resOrg.Item1,
+                    treeCategory = resCategory.Item1
+                }
+            );
+        }
     }
 }

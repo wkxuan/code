@@ -215,5 +215,26 @@ namespace z.ERP.Services
                 dt = dt
             };
         }
+        /// <summary>
+        /// 树形业态
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public Tuple<dynamic> GetTreeCategory()
+        {
+            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
+            var treeOrg = new UIResult(TreeModel.Create(p,
+                a => a.CATEGORYCODE,
+                a => new TreeModel()
+                {
+                    code = a.CATEGORYCODE,
+                    title = a.CATEGORYNAME,
+                    value = a.CATEGORYID,
+                    label = a.CATEGORYNAME,
+                    expand = true
+                })?.ToArray());
+
+            return new Tuple<dynamic>(treeOrg);
+        }
     }
 }
