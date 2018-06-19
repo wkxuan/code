@@ -14,6 +14,7 @@
     this.clearKey = function () { }
     //添加后初始化数据信息
     this.newRecord = function () { }
+    this.mountedInit = function () { };
 
     this.vue = function VueOperate() {
         var options = {

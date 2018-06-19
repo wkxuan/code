@@ -22,7 +22,7 @@
 
 
 }
-//获取父页面参数
+////获取父页面参数
 search.popInitParam = function (data) {
     search.searchParam.BRANCHID = data.BRANCHID;
 }

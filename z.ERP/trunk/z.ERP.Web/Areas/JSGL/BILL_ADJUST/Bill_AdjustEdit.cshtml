@@ -134,6 +134,33 @@
             }
         </i-col>
     </row>
+<row>
+    <i-col>
+        @{
+            RenderControl(new PopsRender()
+            {
+                vModel = "screenParam.showPopFeeSubject",
+                Caption = "选择收费项目",
+                Width = "800",
+                Src = "screenParam.srcPopFeeSubject"
+            });
+        }
+    </i-col>
+</row>
+<row>
+    <i-col>
+        @{
+            RenderControl(new PopsRender()
+            {
+                vModel = "screenParam.showPopContract",
+                Caption = "选择租约",
+                Width = "800",
+                Src = "screenParam.srcPopContract"
+            });
+        }
+    </i-col>
+</row>
+
 }
 
 

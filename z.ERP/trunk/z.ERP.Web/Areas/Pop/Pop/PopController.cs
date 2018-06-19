@@ -33,6 +33,11 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "单元";
             return View();
         }
+        public ActionResult PopContractList()
+        {
+            ViewBag.Title = "租约";
+            return View();
+        }
     }
 
 }

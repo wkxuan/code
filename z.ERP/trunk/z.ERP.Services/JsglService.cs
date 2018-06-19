@@ -270,9 +270,9 @@ namespace z.ERP.Services
             DataTable billAdjust = DbHelper.ExecuteTable(sql);
             billAdjust.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT M.*,D.NAME MERCHANTNAME " +
-                " FROM BILL_ADJUST_ITEM M ,CONTRACT C,MERCHANT D" +
-                " where 1=1 and M.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID = D.MERCHANTID(+)";
+            string sqlitem = $@"SELECT M.*,D.NAME MERCHANTNAME,F.NAME TERMNAME " +
+                " FROM BILL_ADJUST_ITEM M ,CONTRACT C,MERCHANT D,FEESUBJECT F" +
+                " where  M.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID = D.MERCHANTID(+) and M.TERMID=F.TRIMID(+)";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             DataTable billAdjustitem = DbHelper.ExecuteTable(sqlitem);

@@ -236,5 +236,27 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic>(treeOrg);
         }
+        /// <summary>
+        /// 弹窗选择账单
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult GetContract(SearchItem item)
+        {
+            string sql = " SELECT  A.CONTRACTID,A.BRANCHID,A.MERCHANTID,A.CONT_START,A.CONT_END "
+                + " ,B.NAME MERCHANTNAME,C.NAME BRANCHNAME "
+                       + " FROM CONTRACT A,MERCHANT B,BRANCH C " +
+                "  WHERE  A.MERCHANTID=B.MERCHANTID AND A.BRANCHID=C.ID";
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID like '%{a}%'");
+            item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
+            item.HasKey("REPORTER", a => sql += $" and A.REPORTER = '{a}'");
+            item.HasKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
+            item.HasKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 }
