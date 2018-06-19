@@ -199,16 +199,16 @@
     <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
+    <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFilesController.cs" />
+    <Compile Include="Areas\XTGL\FLOOR\FloorController.cs" />
     <Compile Include="Areas\XTGL\GOODS_KIND\Goods_KindController.cs" />
     <Compile Include="Areas\XTGL\CATEGORY\CategoryController.cs" />
     <Compile Include="Areas\XTGL\CONFIG\Config.cs" />
     <Compile Include="Areas\XTGL\FEERULE\FeeRuleController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
-    <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFilesController.cs" />
     <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
     <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
-    <Compile Include="Areas\XTGL\FLOOR\FloorController.cs" />
     <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
     <Compile Include="Areas\XTGL\OPERATIONRULE\OperationruleController.cs" />
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
@@ -258,9 +258,10 @@
     <Content Include="Areas\Pop\PopMerchant.js" />
     <Content Include="Areas\Pop\PopContract.js" />
     <Content Include="Areas\Pop\Pop\PopBillList.js" />
-    <Content Include="Areas\Pop\Pop\PopShopList.js" />
     <Content Include="Areas\Pop\Pop\PopRoleList.js" />
     <Content Include="Areas\Pop\Pop\PopFeeSubjectList.js" />
+    <Content Include="Areas\Pop\Pop\PopShopList.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopShopList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
@@ -544,7 +545,6 @@
     <Content Include="Areas\Pop\Pop\PopBillList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopFeeSubjectList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopRoleList.cshtml" />
-    <Content Include="Areas\Pop\Pop\PopShopList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
