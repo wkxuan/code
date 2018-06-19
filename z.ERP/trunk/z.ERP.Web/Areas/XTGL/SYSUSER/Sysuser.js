@@ -21,7 +21,28 @@
         {
             title: '所属机构',
             key: 'ORGNAME', width: 250
-        }];
+        },
+      {
+          title: '操作',
+          key: 'action',
+          width: 80,
+          align: 'center',
+          render: function (h, params) {
+              return h('div',
+                  [
+                  h('Button', {
+                      props: { type: 'primary', size: 'small', disabled: false },
+
+                      style: { marginRight: '50px' },
+                      on: {
+                          click: function (event) {
+                              define.dataParam.USER_ROLE.splice(params.index, 1);
+                          }
+                      },
+                  }, '删除')
+                  ]);
+          }
+      }];
     define.screenParam.dataDef = [];
     define.screenParam.componentVisible = false;
     define.dataParam.USER_ROLE = [];
