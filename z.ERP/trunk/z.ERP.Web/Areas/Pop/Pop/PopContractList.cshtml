@@ -1,0 +1,74 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.PopSearch;
+@inherits PopSearchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            租约号
+        </i-col>
+        <i-col span="6">
+
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.CONTRACTID"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<合同状态>()
+                {
+                    vModel = "searchParam.STATUS",
+                });
+            }
+        </i-col>
+        </row>
+        <row>
+            <i-col span="2" class="RowTitle">
+                登记人
+            </i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new TextBoxRender()
+                    {
+                        vModel = "searchParam.REPORTER"
+                    });
+                }
+            </i-col>
+            <i-col span="2" class="RowTitle">
+                登记时间_起
+            </i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new DateBoxRender()
+                    {
+                        vModel = "searchParam.REPORTER_TIME_START"
+                    });
+                }
+            </i-col>
+            <i-col span="2" class="RowTitle">
+                登记时间_止
+            </i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new DateBoxRender()
+                    {
+                        vModel = "searchParam.REPORTER_TIME_END"
+                    });
+                }
+            </i-col>
+        </row>
+}
