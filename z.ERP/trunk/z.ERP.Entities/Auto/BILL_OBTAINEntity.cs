@@ -65,6 +65,14 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
+        /// 付款方式
+        /// <summary>
+        [Field("付款方式")]
+        public string PAYID
+        {
+            get; set;
+        }
+        /// <summary>
         /// 整单金额
         /// <summary>
         [Field("整单金额")]

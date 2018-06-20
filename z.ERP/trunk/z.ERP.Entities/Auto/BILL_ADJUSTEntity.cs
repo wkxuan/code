@@ -75,6 +75,14 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
+        /// 账单类型
+        /// <summary>
+        [Field("账单类型")]
+        public string TYPE
+        {
+            get; set;
+        }
+        /// <summary>
         /// 状态
         /// <summary>
         [Field("状态")]

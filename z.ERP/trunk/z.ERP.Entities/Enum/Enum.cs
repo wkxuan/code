@@ -200,4 +200,10 @@ namespace z.ERP.Entities.Enum
         账单收款 = 3,
         
     }
+    public enum 账单类型
+    {
+        账单 = 1,
+        调整单 = 2,
+        减免单 = 3
+    }
 }
