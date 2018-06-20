@@ -27,14 +27,16 @@ namespace z.ERP.Web.Areas.XTGL.ORG
             string newkey = TreeModel.GetNewKey(allenum, a => a.ORGCODE, Key, Tar);
 
             //当前数据有下级,并且当前数据要修改为末级,那么提示不让修改保存成功
-            if ((Tar == null)&&(DefineSave.LEVEL_LAST == ((int)末级标记.末级).ToString()))
+            if (((Tar == null)||(Tar==" "))&&(DefineSave.LEVEL_LAST == ((int)末级标记.末级).ToString()))
             {
                 foreach (var data in allenum) {
-
-                    var dataOrgcode = data.ORGCODE.Substring(0, DefineSave.ORGCODE.Length);
-                    if ((data.ORGCODE != DefineSave.ORGCODE) 
-                        && (dataOrgcode == DefineSave.ORGCODE)) {
-                        throw new LogicException("当前部门已经有下级数据不能修改为末级!");
+                    if (data.ORGCODE.Length > DefineSave.ORGCODE.Length) {
+                        var dataOrgcode = data.ORGCODE.Substring(0, DefineSave.ORGCODE.Length);
+                        if ((data.ORGCODE != DefineSave.ORGCODE)
+                            && (dataOrgcode == DefineSave.ORGCODE))
+                        {
+                            throw new LogicException("当前部门已经有下级数据不能修改为末级!");
+                        }
                     }
                 }
             }
