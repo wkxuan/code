@@ -58,6 +58,8 @@
                         this.$Message.error("请选择数据");
                         return;
                     };
+                    //修改的时候值传' ',否则全局变量值上次按钮的值
+                    this.AddTar = ' ';
                     ve._key = define.dataParam[_this.Key];
                     ve.disabled = _this.enabled(false);
                 },

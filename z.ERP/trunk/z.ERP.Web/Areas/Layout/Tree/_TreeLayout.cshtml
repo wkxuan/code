@@ -64,13 +64,13 @@
     <row>
         <i-col span="8">
             <card>
-                <p slot="title">树信息</p>
-                <Tree :data="screenParam.dataDef" v-on:on-check-change="showlist"></Tree>
+                @*<p slot="title">树信息</p>*@
+                <Tree :data="screenParam.dataDef" v-on:on-select-change="showlist"></Tree>
             </card>
         </i-col>
         <i-col span="16">
             <card class="elementcard">
-                <p slot="title">包含元素</p>
+                @*<p slot="title">包含元素</p>*@
                 @RenderSection("element", true)
             </card>
         </i-col>
