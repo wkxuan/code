@@ -12,7 +12,7 @@ namespace z.ERP.Portal.Areas.Home.Login
         // GET: Home/Login
         public ActionResult Login()
         {
-            UserApplication.LogOut();
+            //UserApplication.LogOut();
             return View();
         }
 
