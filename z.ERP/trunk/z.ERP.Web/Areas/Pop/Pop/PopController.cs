@@ -38,6 +38,11 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "租约";
             return View();
         }
+        public ActionResult PopMerchantList()
+        {
+            ViewBag.Title = "商户";
+            return View();
+        }
     }
 
 }

@@ -16,8 +16,8 @@ editDetail.beforeVue = function () {
     editDetail.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
     editDetail.screenParam.popParam = {};
 
-
-
+    ///账单类型初始化默认给1
+    editDetail.dataParam.TYPE = 1;
     editDetail.screenParam.colDef = [
                 {
                     title: '选择',

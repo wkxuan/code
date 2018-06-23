@@ -66,6 +66,18 @@
                 });
             }
         </i-col>
+        <i-col span="2" class="RowTitle">
+            账单类型
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<账单类型>()
+                {
+                    vModel = "dataParam.TYPE",
+                    Enable = true
+                });
+            }
+        </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
@@ -141,7 +153,7 @@
             {
                 vModel = "screenParam.showPopFeeSubject",
                 Caption = "选择收费项目",
-                Width = "800",
+                Width = "900",
                 Src = "screenParam.srcPopFeeSubject"
             });
         }
@@ -154,7 +166,7 @@
             {
                 vModel = "screenParam.showPopContract",
                 Caption = "选择租约",
-                Width = "800",
+                Width = "900",
                 Src = "screenParam.srcPopContract"
             });
         }
