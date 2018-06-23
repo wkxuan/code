@@ -20,6 +20,8 @@ namespace z.ERP.Web.Areas.XTGL.CONFIG
         public string Save(CONFIGEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
+            if (DefineSave.ID.IsEmpty())
+                DefineSave.ID = service.CommonService.NewINC("CONFIG");
             v.IsUnique(a => a.ID);
             v.Require(a => a.ID);
             v.Require(a => a.DEF_VAL);

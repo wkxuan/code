@@ -53,7 +53,7 @@ namespace z.ERP.Web.Areas.XTGL.ORG
             v.Require(a => a.LEVEL_LAST);
             v.Require(a => a.VOID_FLAG);
             v.Verify();
-            if (!((Key.Length == 2) && (Tar == "tj")))  {
+            if (( Tar == "xj") &&(Key!=null))  {
                 DefineSave.BRANCHID = service.XtglService.Org_BRANCHID(Key);
             }
             DefineSave.ORGCODE = newkey;
