@@ -1,7 +1,7 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<CascaderRender>
 
-<Cascader id="@Model.Id"  v-model="@Model.vModel"
+<Cascader id="@Model.Id"  v-model="@Model.vModel" change-on-select="@Model.Not_level_last"
            v-on:on-change="@Model.Change"
           :data="@Model.Data"
           :disabled="@(Model.Enable?"!disabled":"disabled")"></Cascader>

@@ -6,18 +6,27 @@
 @section baseParam{
     <row>
         <i-col span="2" class="RowTitle">
-            商户名称
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelMerchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.MERCHANTID"
+                    vModel = "dataParam.MERCHANTNAME",
+                    Readonly = "true"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            权债发生月
+            收款年月
         </i-col>
         <i-col span="6">
             @{
@@ -46,12 +55,14 @@
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new ServiceDropDownListRender()
                 {
-                    vModel = "dataParam.TYPE"
+                    vModel = "dataParam.PAYID",
+                    ServiceMothod = m => m.pay(),
                 });
             }
         </i-col>
+
         <i-col span="2" class="RowTitle">
             收款金额
         </i-col>
@@ -83,14 +94,13 @@
         @{
             RenderControl(new ButtonRender()
             {
-                Click = "screenParam.addCol",
-                Text = "添加一行",
+                Click = "SelBill",
+                Text = "选择账单",
                 Enable = true,
-                Type = "primary"
+                Type = "primary",
+                Icon = "plus-circled"
             });
         }
-    </row>
-    <row>
         <i-col span="24">
             <i-table size="small" border="true"
                      :columns="screenParam.colDef" :data="dataParam.BILL_OBTAIN_ITEM"></i-table>
@@ -98,5 +108,32 @@
     </row>
 }
 
-
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopBill",
+                    Caption = "选择账单",
+                    Width = "900",
+                    Src = "screenParam.srcPopBill"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopMerchant",
+                    Caption = "选择商户",
+                    Width = "900",
+                    Src = "screenParam.srcPopMerchant"
+                });
+            }
+        </i-col>
+    </row>
+}
 

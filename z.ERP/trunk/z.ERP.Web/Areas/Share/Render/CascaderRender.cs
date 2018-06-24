@@ -25,5 +25,10 @@ namespace z.ERP.Web.Areas.Share.Render
             get;
             set;
         }
+        public Boolean Not_level_last
+        {
+            get;
+            set;
+        }
     }
 }
