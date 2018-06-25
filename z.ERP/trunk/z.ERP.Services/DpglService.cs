@@ -29,11 +29,11 @@ namespace z.ERP.Services
         }
         public DataGridResult GetAssetChangeList(SearchItem item)
         {
-            string sql = $@"SELECT * FROM ASSETCHANGE WHERE 1=1 ";
+            string sql = $@"SELECT A.*,B.NAME BRANCHNAME FROM ASSETCHANGE A,BRANCH B WHERE A.BRANCHID=B.ID ";
             item.HasKey("CHANGE_TYPE", a => sql += $" and CHANGE_TYPE = '{a}'");
-            item.HasKey("STATUS", a => sql += $" and STATUS = '{a}'");
-            item.HasKey("BRANCHID", a => sql += $" and BRANCHID  = '{a}'");
-            item.HasKey("DISCRIPTION", a => sql += $" and DISCRIPTION  LIKE '%{a}%'");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID  = '{a}'");
+            item.HasKey("DISCRIPTION", a => sql += $" and A.DISCRIPTION  LIKE '%{a}%'");
             sql += " ORDER BY  BILLID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

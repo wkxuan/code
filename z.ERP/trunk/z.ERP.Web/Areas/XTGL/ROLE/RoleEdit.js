@@ -52,14 +52,14 @@ editDetail.checkSysUserGroupMenu = function (selection) {
     Vue.set(editDetail.dataParam, 'ROLE_MENU', localData);
 }
 editDetail.newRecord = function () {
-    editDetail.dataParam.VOID_FLAG = "1";
+    editDetail.dataParam.VOID_FLAG = "2";
 };
 
 editDetail.clearKey = function () {
     editDetail.dataParam.ROLECODE = null;
     editDetail.dataParam.ROLENAME = null;
     editDetail.dataParam.ORGIDCASCADER = null;
-    editDetail.dataParam.VOID_FLAG = "1";
+    editDetail.dataParam.VOID_FLAG = "2";
     editDetail.showOne(-1);
 };
 

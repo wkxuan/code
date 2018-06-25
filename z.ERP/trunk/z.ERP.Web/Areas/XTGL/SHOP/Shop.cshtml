@@ -91,7 +91,7 @@
         </i-col>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
-            管理部门
+            管理机构
         </i-col>
         <i-col span="6">
             @{
@@ -100,6 +100,7 @@
                     vModel = "dataParam.ORGIDCASCADER",
                     Data = "screenParam.ORGData",
                     Change = "orgChange",
+                    Not_level_last = true
                     Enable = false
                 });
             }

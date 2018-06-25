@@ -22,7 +22,7 @@ namespace z.ERP.Services
         public DataGridResult GetUser(SearchItem item)
         {
             string sql = $@"select A.USERID,A.USERCODE,A.USERNAME FROM SYSUSER A WHERE  1=1";
-            item.HasKey("USERCODE,", a => sql += $" and A.USERCODE = '{a}'");
+            item.HasKey("USERCODE", a => sql += $" and A.USERCODE like '%{a}%'");
             item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");
             sql += " ORDER BY  A.USERCODE";
             int count;

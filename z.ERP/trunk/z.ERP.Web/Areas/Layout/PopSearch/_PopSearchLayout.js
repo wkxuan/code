@@ -73,6 +73,8 @@
                         window.parent.search.popCallBack(data)
                     else if (window.parent.define != undefined)
                         window.parent.define.popCallBack(data);
+                    //清空查询结果
+                    Vue.set(ve.screenParamData, "dataDef",[]);
                     //localStorage.setItem("relt", data);
                     //var site = localStorage.getItem("relt");
                 },

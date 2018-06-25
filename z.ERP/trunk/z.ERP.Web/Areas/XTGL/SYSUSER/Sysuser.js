@@ -3,24 +3,24 @@
     define.screenParam.colDef = [
         {
             title: "代码",
-            key: 'USERCODE', width: 150
+            key: 'USERCODE', width: 100
         },
         {
             title: '名称',
-            key: 'USERNAME', width: 250
+            key: 'USERNAME', width: 200
         }];
     define.screenParam.colUserRoleDef = [
         {
             title: "角色代码",
-            key: 'ROLECODE', width: 150
+            key: 'ROLECODE', width: 100
         },
         {
             title: '角色名称',
-            key: 'ROLENAME', width: 250
+            key: 'ROLENAME', width: 200
         },
         {
             title: '所属机构',
-            key: 'ORGNAME', width: 250
+            key: 'ORGNAME', width: 200
         },
       {
           title: '操作',
