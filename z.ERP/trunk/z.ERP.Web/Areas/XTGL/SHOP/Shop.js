@@ -52,8 +52,20 @@ define.newRecord = function () {
 }
 define.otherMethods = {
     branchChange: function (value) {
+        //define.clear();
         define.screenParam.floorData = [];
         define.screenParam.FLOORID = 0;
+        define.dataParam.SHOPID = "";
+        define.dataParam.CODE = "";
+        define.dataParam.NAME = "";
+        define.dataParam.ORGIDCASCADER = "";
+        define.dataParam.CATEGORYIDCASCADER = "";
+        define.dataParam.TYPE = "";
+        define.dataParam.AREA_BUILD = "";
+        define.dataParam.AREA_USABLE = "";
+        define.dataParam.AREA_RENTABLE = "";
+        define.dataParam.AREA_STATUS = "";
+        define.dataParam.RENT_STATUS = "";
         _.Ajax('GetFloor', {
             Data: { BRANCHID: value }
         }, function (data) {
@@ -70,6 +82,17 @@ define.otherMethods = {
         });
     },
     floorChange: function (value) {
+        define.dataParam.SHOPID = "";
+        define.dataParam.CODE = "";
+        define.dataParam.NAME = "";
+        define.dataParam.ORGIDCASCADER = "";
+        define.dataParam.CATEGORYIDCASCADER = "";
+        define.dataParam.TYPE = "";
+        define.dataParam.AREA_BUILD = "";
+        define.dataParam.AREA_USABLE = "";
+        define.dataParam.AREA_RENTABLE = "";
+        define.dataParam.AREA_STATUS = "";
+        define.dataParam.RENT_STATUS = "";
         define.showlist();
     },
     orgChange: function (value, selectedData) {
@@ -78,6 +101,9 @@ define.otherMethods = {
     categoryChange: function (value, selectedData) {
         define.dataParam.CATEGORYID = value[value.length - 1];
     },
+    clear: function () {
+
+    }
 }
 define.mountedInit = function () {
     _.Ajax('SearchInit', {
