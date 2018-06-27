@@ -23,7 +23,6 @@ zQuery.extend({
         options = $.extend(options_default, options);//处理参数
 
         var url = __BaseUrl + "/" + options.url;
-        
         $.nfinetab.addTabM(options.title, url);
     },
     Close: function (data) {
