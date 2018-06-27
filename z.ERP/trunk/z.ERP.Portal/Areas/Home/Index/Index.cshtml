@@ -5,10 +5,15 @@
 }
 @{
     WebFiles = new string[] {
-                    "Content/Index/layui/css/layui.css",
+                    "Content/ui/css/framework-font.css",
                     "Content/jquery.min.js",
-                    "Content/Index/layui/layui.js",
-                    "Content/Index/layui/layer.js",
+                    "Content/ui/js/bootstrap/bootstrap.js",
+                    "Content/ui/js/bootstrap/bootstrap.min.css",
+                    "Content/ui/js/dialog/dialog.js",
+                    "Content/ui/css/framework-theme.css",
+                    "Content/ui/js/framework-ui.js",
+                    "Content/ui/js/indextab.js",
+                    "Content/ui/js/loading/pace.min.js",
                     "Content/zBase.js",
                     "Content/AjaxHelper.js",
                     "Content/JsHelper.js",
@@ -16,12 +21,13 @@
                 };
 }
 
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>admin</title>
+    <title>YiXuMall</title>
     <script type="text/javascript">
         document.domain = '@ViewBag.Domain';
         __ControllerUrl = '@ViewBag.ControllerUrl';
@@ -31,46 +37,95 @@
     @InitFiles(WebFiles)
     @InitThisJs()
 </head>
-<body>
-    <div class="layui-layout-admin">
-        <div class="layui-header">
-            <div class="layui-logo">logo</div>
-            <ul class="layui-nav layui-layout-left">
-                <li class="layui-nav-item"><a href="javascript:void(0)">购物中心</a></li>
-                <li class="layui-nav-item"><a href="javascript:;">会员系统</a></li>
-            </ul>
-            <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item">
-                    <a href=""><img src="" class="layui-nav-img">个人信息</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:void(0);"  onclick="ChangePassword()">重置密码</a></dd>
-                        <dd><a href="javascript:void(0);"  onclick="window.location.href = __BaseUrl + '/HOME/Login/Login'">重新登陆</a></dd>
-                    </dl>
-                </li>
-            </ul>
-        </div>
+<body style="overflow: hidden;" data-root="">
+    <div id="ajax-loader" style="cursor: progress; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #fff; z-index: 10000; overflow: hidden;">
+        <img src="~/Content/ui/img/ajax-loader.gif" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" />
+    </div>
+    <div id="theme-wrapper">
+        <header class="navbar" id="header-navbar">
+            <div class="container" style="padding-right: 0px;">
+                <a href="#" id="logo" class="navbar-brand">MALL平台</a>
+                <div class="clearfix">
+                    <div class="nav-no-collapse navbar-left pull-left hidden-sm hidden-xs">
+                        <ul class="nav navbar-nav pull-left">
+                            <li>
+                                <a class="btn" id="make-small-nav"><i class="fa fa-bars"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="nav-no-collapse pull-right" id="header-nav">
+                        <ul class="nav navbar-nav pull-right">
+                            <li style="padding-top:7px;padding-right:5px;display:none" id="liSelShop">
+                                <select id="selShop" class="form-control" style="width:300px"></select>
+                            </li>
+                            <li class="dropdown profile-dropdown">
+                                <a href="#" class="dropdown" data-toggle="dropdown">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                    <span class="hidden-xs">欢迎登录!</span>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a class="menuItem" href="@ViewBag.BaseUrl/HOME/ChangePassword/ChangePassword"><i class="fa fa-cog"></i>修改密码</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="~/HOME/Login/Login"><i class="ace-icon fa fa-power-off"></i>安全退出</a></li>
 
-        <div class="layui-side layui-bg-black">
-            <div class="layui-side-scroll">
-                <ul class="layui-nav layui-nav-tree" id="taburl" lay-filter="hbkNavbar"></ul>
+                          
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-
-
-        <div class="layui-body" id="container">
-            <div class="layui-tab" lay-filter="yxadmin" lay-allowClose="true">
-                <ul class="layui-tab-title">
-                    <li class="layui-this">首页</li>
-                </ul>
-                <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show">驾驶舱信息待处理</div>
+        </header>
+        <div id="page-wrapper" class="container">
+            <div class="row">
+                <div id="nav-col">
+                    <section id="col-left" class="col-left-nano">
+                        <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li class="nav-header hidden-sm hidden-xs">
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+                <div id="content-wrapper">
+                    <div class="content-tabs">
+                        <button class="roll-nav roll-left tabLeft">
+                            <i class="fa fa-backward"></i>
+                        </button>
+                        <nav class="page-tabs menuTabs">
+                            <div class="page-tabs-content" style="margin-left: 0px;">
+                                <a href="javascript:;" class="menuTab active" data-id="@ViewBag.BaseUrl/HOME/Default/Default">欢迎首页</a>
+                            </div>
+                        </nav>
+                        <button class="roll-nav roll-right tabRight">
+                            <i class="fa fa-forward" style="margin-left: 3px;"></i>
+                        </button>
+                        <div class="btn-group roll-nav roll-right">
+                            <button class="dropdown tabClose" data-toggle="dropdown">
+                                页签操作<i class="fa fa-caret-down" style="padding-left: 3px;"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a class="tabReload" href="javascript:void(0);">刷新当前</a></li>
+                                <li><a class="tabCloseCurrent" href="javascript:void(0);">关闭当前</a></li>
+                                <li><a class="tabCloseAll" href="javascript:void(0);">全部关闭</a></li>
+                                <li><a class="tabCloseOther" href="javascript:void(0);">除此之外全部关闭</a></li>
+                            </ul>
+                        </div>
+                        <button class="roll-nav roll-right fullscreen"><i class="fa fa-arrows-alt"></i></button>
+                    </div>
+                    <div class="content-iframe" style="background-color: #f9f9f9; overflow: hidden;">
+                        <div class="mainContent" id="content-main" style="margin: 10px; margin-bottom: 0px; padding: 0;">
+                            <iframe class="NFine_iframe" width="100%" height="100%" src="@ViewBag.BaseUrl/HOME/Default/Default" frameborder="0" data-id="@ViewBag.BaseUrl/HOME/Default/Default"></iframe>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="layui-footer">
-            <center>版权&copy;</center>
-        </div>
+    </div>
+    <div id="loadingPage" style="display: none;">
+        <div class="loading-shade"></div>
+        <div class="loading-content" onclick="$.loading(false)">数据加载中，请稍后…</div>
     </div>
 </body>
 

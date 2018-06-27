@@ -1,0 +1,83 @@
+﻿@inherits ViewBase<dynamic>
+    @using z.MVC5.Views
+    @{
+    Layout = null;
+    }
+    @{
+    WebFiles = new string[] {
+    @"Content/Login/reset.css",
+    @"Content/Login/style.css",
+    @"Content/Login/supersized.css",
+    "Content/jquery.min.js",
+    "Content/zBase.js",
+    "Content/AjaxHelper.js",
+    "Content/JsHelper.js",
+    "Content/PageBase.js",
+    @"Content/Login/supersized.3.2.7.min.js",
+    };
+    }
+
+    <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>登录</title>
+        <script type="text/javascript">
+        __ControllerUrl = '@ViewBag.ControllerUrl';
+        __CommonControllerUrl = '@ViewBag.CommonControllerUrl';
+        __BaseUrl = '@ViewBag.BaseUrl';
+        </script>
+        @InitFiles(WebFiles)
+        @InitThisJs()
+    </head>
+    <body>
+
+        <div class="container-fluid">
+            <div class="row" style="box-sizing: border-box">
+                <div class="col-md-4" style="padding:2px">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="fa fa-pie-chart" aria-hidden="true" style="padding-right:5px"></i>昨日商品销售数量 Top 10</div>
+                        <div class="panel-body">
+                            <div id="yestodaysalanumberreport" style="width:100%;height:260px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" style="padding:2px">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="fa fa-pie-chart" aria-hidden="true" style="padding-right:5px"></i>昨日商品销售金额 Top 10</div>
+                        <div class="panel-body">
+                            <div id="yestodaysalamoneyreport" style="width:100%;height:260px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" style="padding:2px">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="fa fa-thumbs-o-up fa-lg" style="padding-right: 5px;"></i>最新公告</div>
+                        <div class="panel-body">
+                            <ul class="list-unstyled" id="annUl">
+                                <li>
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                </li>
+                            </ul>
+                            <div id="annMore" class="text-right" style="display:none">
+                                <a href="javascript:void(0)" id="btnAnnMore">更多>>></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="box-sizing: border-box">
+                <div class="col-md-12" style="padding:2px">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class="fa fa-line-chart" style="padding-right: 5px;"></i>近30天总销售额走势</div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div id="salatotalmoney" style="width:100%;height:260px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
