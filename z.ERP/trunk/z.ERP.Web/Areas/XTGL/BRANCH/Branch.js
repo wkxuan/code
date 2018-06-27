@@ -2,11 +2,11 @@
     define.screenParam.colDef = [
         {
             title: '分店代码',
-            key: 'ID', width: 150,
+            key: 'ID', width: 100,
         },
         {
             title: '分店名称',
-            key: 'NAME', width: 250,
+            key: 'NAME', width: 280,
         }];
 
     define.screenParam.dataDef = [];
@@ -25,4 +25,3 @@
 define.newRecord = function () {
     define.dataParam.STATUS = "1";
 }
-
