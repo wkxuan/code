@@ -24,10 +24,15 @@ namespace z.ERP.Web.Areas.Share
         }
         public ActionResult Button(ButtonRender render)
         {
-            if (!render.PermissionKey.IsEmpty())
-                render.HasPermission = employee.HasPermission(render.PermissionKey);
+            if (render.Invisible)    //不可见
+                render.HasPermission = false;
             else
-                render.HasPermission = true;
+            { 
+                if (!render.PermissionKey.IsEmpty())
+                    render.HasPermission = employee.HasPermission(render.PermissionKey);
+                else
+                    render.HasPermission = true;
+            }
             return View(render);
         }
         public ActionResult UndefineWindow(UndefineWindowRender render)

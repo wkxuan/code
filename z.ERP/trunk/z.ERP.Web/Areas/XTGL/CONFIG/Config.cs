@@ -6,6 +6,7 @@ using  z.ERP.Web.Areas.Base;
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.Extensions;
+using z.ERP.Web.Areas.Layout.Define;
 
 namespace z.ERP.Web.Areas.XTGL.CONFIG
 {
@@ -14,7 +15,11 @@ namespace z.ERP.Web.Areas.XTGL.CONFIG
         public ActionResult Config()
         {
             ViewBag.Title = "系统参数";
-            return View();
+            return View(new DefineRender()
+            {
+              Permission_Mod = "10100102",
+              Invisible_Add = true
+            });
         }
 
         public string Save(CONFIGEntity DefineSave)

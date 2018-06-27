@@ -12,12 +12,26 @@ namespace z.ERP.Web.Areas.Layout.Define
             get;
             set;
         }
-        public string Permission_Save
+
+    /*    public string Permission_Save
+        {
+            get;
+            set;
+        } */
+
+        public string Permission_Mod
         {
             get;
             set;
         }
-        public string Permission_Mod
+
+        public bool Invisible_Srch          //查询按扭是否不可见
+        {
+            get;
+            set;
+        }
+
+        public bool Invisible_Add         //新增按扭是否不可见
         {
             get;
             set;

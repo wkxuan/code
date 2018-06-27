@@ -26,12 +26,13 @@
                 searchParam: _this.searchParam,
                 disabled: _this.enabled(true),
                 _key: undefined,
+                tableH: 500
             },
             mounted: function () {
                 let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
                 this.$refs.cardHeigth.style.height = (h - 40) + 'px';
                 this.$refs.tableHeight.style.height = (h - 40) + 'px';
-
+                
                 _.Search({
                     Service: _this.service,
                     Method: _this.methodList,

@@ -115,7 +115,8 @@ namespace z.ERP.Services
         public DataGridResult GetConfig(SearchItem item)
         {
             string sql = $@"select * from CONFIG where 1=1 ";
-            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            item.HasKey("ID", a => sql += $" and ID like '%{a}%'");
+            item.HasKey("DESCRIPTION", a => sql += $" and DESCRIPTION like '%{a}%'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

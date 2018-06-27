@@ -3,6 +3,29 @@
 @using z.ERP.Entities.Enum
 @inherits DefineViewBase
 
+@section search{
+    <row>
+        <i-col span="3" class="RowTitle">描述</i-col>
+        <i-col span="11">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.DESCRIPTION"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">代码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.ID"
+                });
+            }
+        </i-col>
+    </row>
+}
+
 @section element{
     <row>
         <i-col span="2" class="RowTitle">
