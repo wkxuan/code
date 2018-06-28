@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.WebPages;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Define;
 
 namespace z.ERP.Web.Areas.XTGL.LATEFEERULE
 {
@@ -14,7 +15,10 @@ namespace z.ERP.Web.Areas.XTGL.LATEFEERULE
         public ActionResult LateFeeRule()
         {
             ViewBag.Title = "滞纳规则信息";
-            return View();
+            return View(new DefineRender()
+            {
+                Invisible_Srch = true
+            });
         }
         public string Save(LATEFEERULEEntity DefineSave)
         {
