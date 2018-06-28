@@ -26,7 +26,11 @@ zQuery.extend({
         }
         options = $.extend(options_default, options);//处理参数
 
-        var url = __BaseUrl + "/" + options.url;
+        var isAbUrl = function (str) {
+            return str.match(/http:\/\/.+/) != null;
+        }
+
+        var url = isAbUrl(options.url) ? options.url : (__BaseUrl + "/" + options.url);
         options.url = url;
 
         if (!options.self && parent && parent._ && parent._.OpenPage) {
@@ -34,7 +38,7 @@ zQuery.extend({
             parent._.OpenPage(options);
         }
         else {
-            window.open(url);
+            window.open(options.url);
         }
     },
     Close: function (data) {
