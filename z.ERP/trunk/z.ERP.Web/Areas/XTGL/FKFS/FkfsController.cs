@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Define;
 using z.Extensions;
 
 namespace z.ERP.Web.Areas.XTGL.FKFS
@@ -10,7 +11,10 @@ namespace z.ERP.Web.Areas.XTGL.FKFS
         public ActionResult Fkfs() {
 
             ViewBag.Title = "付款方式信息";
-            return View();
+            return View(new DefineRender()
+            {
+                Invisible_Srch = true
+            });
         }
 
         public string Save(FKFSEntity DefineSave)

@@ -2,6 +2,7 @@
 using System.Web.WebPages;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Define;
 
 namespace z.ERP.Web.Areas.XTGL.OPERATIONRULE
 {
@@ -10,7 +11,10 @@ namespace z.ERP.Web.Areas.XTGL.OPERATIONRULE
         public ActionResult Operationrule()
         {
             ViewBag.Title = "租赁收费规则信息";
-            return View();
+            return View(new DefineRender()
+            {
+                Invisible_Srch = true
+             });
         }
         public string Save(OPERATIONRULEEntity DefineSave)
         {
