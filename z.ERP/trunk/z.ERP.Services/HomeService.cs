@@ -55,7 +55,7 @@ namespace z.ERP.Services
             List<MENUTREEModule> MENU_GROUPList = new List<MENUTREEModule>();
 
             //子系统要多传递参数回来
-            string sqlgroup = @" SELECT MODULECODE ID,MODULENAME NAME FROM USERMODULE WHERE LENGTH(MODULECODE)=4 ";
+            string sqlgroup = @" SELECT MODULECODE ID,MODULENAME NAME,ICON FROM USERMODULE WHERE LENGTH(MODULECODE)=4 ";
             if (int.Parse(employee.Id) > 0)
             {
                 sqlgroup += @" and MODULECODE in (

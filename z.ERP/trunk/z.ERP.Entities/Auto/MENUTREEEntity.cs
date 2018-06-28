@@ -46,5 +46,10 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        public string ICON
+        {
+            get;
+            set;
+        }
     }
 }
