@@ -25,7 +25,7 @@ namespace z.ERP.Web.Areas.XTGL.ORG
  
             var allenum = SelectList(new ORGEntity());
             string newkey = TreeModel.GetNewKey(allenum, a => a.ORGCODE, Key, Tar);
-
+            DefineSave.ORGCODE = newkey;
             //当前数据有下级,并且当前数据要修改为末级,那么提示不让修改保存成功
             if (((Tar == null)||(Tar==" "))&&(DefineSave.LEVEL_LAST == ((int)末级标记.末级).ToString()))
             {
@@ -35,10 +35,45 @@ namespace z.ERP.Web.Areas.XTGL.ORG
                         if ((data.ORGCODE != DefineSave.ORGCODE)
                             && (dataOrgcode == DefineSave.ORGCODE))
                         {
-                            throw new LogicException("当前部门已经有下级数据不能修改为末级!");
+                            throw new LogicException("当前组织已经有下级数据不能修改为末级!");
                         }
                     }
                 }
+            };
+            //同一级次已经有核算部门不能在设置为核算部门
+            foreach (var data in allenum)
+            {
+                if ((data.ORGCODE.Length < DefineSave.ORGCODE.Length) 
+                    &&
+                    (data.ORG_TYPE== ((int)部门类型.核算部门).ToString())) 
+                    //代码长度小于当前长度并且其是核算部门
+                {
+                    var dataOrgcode = DefineSave.ORGCODE.Substring(0, data.ORGCODE.Length);
+
+                    if ((data.ORGCODE != DefineSave.ORGCODE)   
+                        && (dataOrgcode == data.ORGCODE) 
+                        && (DefineSave.ORG_TYPE == ((int)部门类型.核算部门).ToString())
+                        )
+                    {
+                        throw new LogicException($"当前级次组织上({data.ORGCODE})已经拥有了核算类型的组织!");
+                    }
+                };
+
+                if ((data.ORGCODE.Length > DefineSave.ORGCODE.Length)
+                    &&
+                    (data.ORG_TYPE == ((int)部门类型.核算部门).ToString()))
+                //代码长度大于当前长度并且其是核算部门
+                {
+                    var dataOrgcode = data.ORGCODE.Substring(0, DefineSave.ORGCODE.Length);
+
+                    if ((data.ORGCODE != DefineSave.ORGCODE)
+                        && (dataOrgcode == DefineSave.ORGCODE)
+                        && (DefineSave.ORG_TYPE == ((int)部门类型.核算部门).ToString())
+                        )
+                    {
+                        throw new LogicException($"当前级次组织上({data.ORGCODE})已经拥有了核算类型的组织!");
+                    }
+                };
             }
 
             if (DefineSave.ORGID.IsEmpty())
@@ -56,7 +91,7 @@ namespace z.ERP.Web.Areas.XTGL.ORG
             if (( Tar == "xj") &&(Key!=null))  {
                 DefineSave.BRANCHID = service.XtglService.Org_BRANCHID(Key);
             }
-            DefineSave.ORGCODE = newkey;
+      
             CommonSave(DefineSave);
             return newkey;
         }
