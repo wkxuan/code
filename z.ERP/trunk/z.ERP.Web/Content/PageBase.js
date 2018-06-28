@@ -21,14 +21,21 @@ zQuery.extend({
             id: '',
             title: '',
             url: "",
+            self: false,
             callback: null
         }
         options = $.extend(options_default, options);//处理参数
 
         var url = __BaseUrl + "/" + options.url;
+        options.url = url;
 
-        $.nfinetab.addTabM(options.title, url);
-
+        if (!options.self && parent && parent._ && parent._.OpenPage) {
+            options.self = true;
+            parent._.OpenPage(options);
+        }
+        else {
+            window.open(url);
+        }
     },
     Close: function (data) {
         if (window.opener && window.opener.WindowClose) {
