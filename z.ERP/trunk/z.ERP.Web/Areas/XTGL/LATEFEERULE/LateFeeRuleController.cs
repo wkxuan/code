@@ -17,6 +17,8 @@ namespace z.ERP.Web.Areas.XTGL.LATEFEERULE
             ViewBag.Title = "滞纳规则信息";
             return View(new DefineRender()
             {
+                Permission_Add = "10100801",
+                Permission_Mod = "10100802",
                 Invisible_Srch = true
             });
         }

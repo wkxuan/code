@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using z.ERP.Model.Vue;
 using System.Linq;
+using z.ERP.Web.Areas.Layout.Define;
 
 namespace z.ERP.Web.Areas.XTGL.PAY
 {
@@ -14,7 +15,11 @@ namespace z.ERP.Web.Areas.XTGL.PAY
         public ActionResult Pay()
         {
             ViewBag.Title = "支付方式信息";
-            return View();
+            return View(new DefineRender()
+            {
+                Permission_Add = "10100201",
+                Permission_Mod = "10100202"
+            });
         }
 
         public string Save(PAYEntity DefineSave)

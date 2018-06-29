@@ -13,6 +13,8 @@ namespace z.ERP.Web.Areas.XTGL.OPERATIONRULE
             ViewBag.Title = "租赁收费规则信息";
             return View(new DefineRender()
             {
+                Permission_Add = "10101101",
+                Permission_Mod = "10101102",
                 Invisible_Srch = true
              });
         }

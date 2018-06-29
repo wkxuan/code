@@ -13,6 +13,8 @@ namespace z.ERP.Web.Areas.XTGL.FKFS
             ViewBag.Title = "付款方式信息";
             return View(new DefineRender()
             {
+                Permission_Add = "10101201",
+                Permission_Mod = "10101202",
                 Invisible_Srch = true
             });
         }

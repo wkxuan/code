@@ -17,6 +17,8 @@ namespace z.ERP.Web.Areas.XTGL.FEERULE
             ViewBag.Title = "收费规则信息";
             return View(new DefineRender()
             {
+                Permission_Add = "10100901",
+                Permission_Mod = "10100902",
                 Invisible_Srch = true
             });
         }
