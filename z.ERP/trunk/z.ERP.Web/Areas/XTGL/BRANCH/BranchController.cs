@@ -14,8 +14,8 @@ namespace z.ERP.Web.Areas.XTGL.BRANCH
             ViewBag.Title = "分店信息";
             return View(new DefineRender()
             {
-                Permission_Add = "10100601",
-                Permission_Mod = "10100602",
+                Permission_Add = "10100401",
+                Permission_Mod = "10100402",
                 Invisible_Srch = true   //设置查询按扭不可见
             });
         }
