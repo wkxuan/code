@@ -17,7 +17,7 @@ namespace z.ERP.Web.Areas.XTGL.CONFIG
             ViewBag.Title = "系统参数";
             return View(new DefineRender()
             {
-              Permission_Mod = "10100102",
+              Permission_Mod = "10100101",
               Invisible_Add = true
             });
         }
