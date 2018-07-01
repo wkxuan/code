@@ -28,6 +28,20 @@
             var CanEdit = true;
         </script>
     }
+
+
+    if (Model != null && !Model.Permission_Exec.IsEmpty() && !employee.HasPermission(Model.Permission_Exec))
+    {
+        <script type="text/javascript">
+            var CanExec = false;
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            var CanExec = true;
+        </script>
+    }
 }
 
 <div id="search">

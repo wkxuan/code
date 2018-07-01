@@ -142,16 +142,20 @@ editDetail.IsValidSave = function () {
         return false;
     };
     
-    if (editDetail.dataParam.MERCHANT_BRAND.length == 0) {
-        iview.Message.info("请确定品牌!");
-        return false;
-    } else {
-        for (var i = 0; i < editDetail.dataParam.MERCHANT_BRAND.length; i++) {
-            if (!editDetail.dataParam.MERCHANT_BRAND[i].BRANDID) {
-                iview.Message.info("请确定品牌!");
-                return false;
-            };
+
+     for (var i = 0; i < editDetail.dataParam.MERCHANT_BRAND.length; i++) {
+        if (!editDetail.dataParam.MERCHANT_BRAND[i].BRANDID) {
+            iview.Message.info("请确定品牌!");
+            return false;
         };
+
+        for (var j = i + 1; j < editDetail.dataParam.MERCHANT_BRAND.length; j++) {
+            if (editDetail.dataParam.MERCHANT_BRAND[i].BRANDID == editDetail.dataParam.MERCHANT_BRAND[j].BRANDID) {
+                iview.Message.info("品牌" + editDetail.dataParam.MERCHANT_BRAND[i].NAME + "重复!");
+                return;
+            }
+        }
     };
+
     return true;
 }

@@ -49,6 +49,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
                 Permission_Add = "10200101",
                 Permission_Del = "10200101",
                 Permission_Edit= "10200101",
+                Permission_Exec= "10200102"
             });
         }
 

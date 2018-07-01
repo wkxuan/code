@@ -19,11 +19,13 @@
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "XtglService";
     search.method = "GetBrandData";
+
+    search.searchParam.CATEGORYCODE = [];
 }
 
 search.browseHref = function (row, index) {
     _.OpenPage({
-        id: 1020021,
+        id: 102002,
         title: '品牌信息浏览',
         url: "PPGL/BRAND/BrandDetail/" + row.ID
     });
@@ -31,15 +33,30 @@ search.browseHref = function (row, index) {
 
 search.addHref = function (row) {
     _.OpenPage({
-        id: 1020022,
+        id: 102002,
         title: '品牌信息添加',
         url: "PPGL/BRAND/BrandEdit/"
     });
 }
 search.modHref = function (row, index) {
     _.OpenPage({
-        id: 1020022,
+        id: 102002,
         title: '品牌信息修改',
         url: "PPGL/BRAND/BrandEdit/" + row.ID
     });
+}
+
+search.mountedInit = function () {
+    _.Ajax('SearchInit', {
+        Data: {}
+    }, function (data) {
+        Vue.set(search.searchParam, "CATEData", data.treeOrg.Obj);
+    });
+}
+
+
+search.otherMethods = {
+    orgChange: function (value, selectedData) {
+        search.searchParam.CATEGORYCODE = selectedData[selectedData.length-1].code;
+    },
 }
