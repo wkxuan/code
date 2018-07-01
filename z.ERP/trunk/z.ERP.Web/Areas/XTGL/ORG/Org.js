@@ -17,4 +17,5 @@ define.IsValidXj = function () {
         return false;
     };
     return true;
-}
+};
+

@@ -101,3 +101,32 @@
     </row>
 }
 
+
+
+@section search{
+    <row>
+        <i-col span="3" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.TRIMID",
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.NAME"
+                });
+            }
+        </i-col>
+    </row>
+}
+

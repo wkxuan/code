@@ -4,6 +4,7 @@ using z.ERP.Entities;
 using z.Extensions;
 using System;
 using z.ERP.Web.Areas.Layout.Define;
+using z.Exceptions;
 
 namespace z.ERP.Web.Areas.XTGL.FEESUBJECT
 {
@@ -39,6 +40,9 @@ namespace z.ERP.Web.Areas.XTGL.FEESUBJECT
 
         public void Delete(FEESUBJECTEntity DefineDelete)
         {
+            if (DefineDelete.TRIMID.ToInt() >= 2000) {
+                throw new LogicException($"预定义的收费项目不能删除!");
+            }
             var v = GetVerify(DefineDelete);
             CommenDelete(DefineDelete);
         }

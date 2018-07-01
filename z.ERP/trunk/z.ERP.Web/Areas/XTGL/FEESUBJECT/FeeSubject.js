@@ -21,7 +21,6 @@
 define.otherMethods = {
     NameChange: function(){ 
         define.dataParam.PYM=define.dataParam.NAME.toPYM();
-        //Vue.set(define.dataParam, "PYM", define.dataParam.NAME.toPYM());
     },
 };
 
@@ -29,3 +28,14 @@ define.otherMethods = {
 define.newRecord = function () {
     define.dataParam.VOID_FLAG = "1";
 };
+
+
+
+define.beforeDel = function () {
+    if (!define.dataParam.TRIMID>=2000) {
+        iview.Message.info("预定义的收费项目不能删除!");
+        return false;
+    }
+    return true;
+}
+

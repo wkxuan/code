@@ -11,6 +11,9 @@
 
     //添加后初始化数据信息
     this.newRecord = function () { }
+    this.beforeDel = function () {
+        return true;
+    }
 
     //得到主键
     this.Key = undefined;
@@ -28,11 +31,7 @@
                 _key: undefined,
                 tableH: 500
             },
-            mounted: function () {
-                let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-                this.$refs.cardHeigth.style.height = (h - 40) + 'px';
-                this.$refs.tableHeight.style.height = (h - 40) + 'px';
-                
+            mounted: function () {                
                 _.Search({
                     Service: _this.service,
                     Method: _this.methodList,
@@ -67,6 +66,7 @@
                         showlist(function () {
                             _this.showone(data, function () {
                                 ve.disabled = _this.enabled(true);
+                                ve.dataParam = _this.dataParam;
                                 _self.$Message.info("保存成功");
                             });
                         });
@@ -80,6 +80,9 @@
                             onOk: function () {
                                 _this.dataParam = {};
                                 ve.dataParam = _this.dataParam;
+                                _this.showone(ve._key, function () {
+                                    ve.dataParam = _this.dataParam;
+                                });
                                 ve.disabled = _this.enabled(true);
                             },
                             onCancel: function () {
@@ -98,7 +101,11 @@
                     if (!ve._key) {
                         _self.$Message.error("请选择数据");
                         return;
-                    }
+                    };
+
+                    if (!_this.beforeDel())
+                        return;
+
                     this.$Modal.confirm({
                         title: '提示',
                         content: '是否删除',

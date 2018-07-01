@@ -11,6 +11,10 @@
         return true;
     }
 
+    this.IsValidDel = function (_self) {
+        return true;
+    }
+
     this.IsValidXj = function () {
         return true;
     }
@@ -102,7 +106,11 @@
                     if (!ve._key) {
                         _self.$Message.error("请选择数据");
                         return;
-                    }
+                    };
+
+                    if (!_this.IsValidDel())
+                        return;
+
                     this.$Modal.confirm({
                         title: '提示',
                         content: '是否删除',

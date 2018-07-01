@@ -97,6 +97,23 @@ namespace z.ERP.Web.Areas.XTGL.ORG
         }
         public void Delete(ORGEntity DefineDelete)
         {
+            var allenum = SelectList(new ORGEntity());
+            //已经有下级的部门不能删除
+            foreach (var data in allenum)
+            {
+                if (data.ORGCODE.Length > DefineDelete.ORGCODE.Length)
+                {
+                    var dataOrgcode = data.ORGCODE.Substring(0, DefineDelete.ORGCODE.Length);
+
+                    if ((data.ORGCODE != DefineDelete.ORGCODE) && (dataOrgcode == DefineDelete.ORGCODE))
+                    {
+                        throw new LogicException($"当前部门级次已经有下级不能删除!");
+                    }
+                };
+            };
+            //已经使用的部门通过外键控制
+            
+
             var v = GetVerify(DefineDelete);
             v.Require(a => a.ORGID);
             v.Verify();
