@@ -89,7 +89,7 @@
                 },
                 browse: function (row, index) {
                     //if (CanEdit)
-                    _this.browseHref(row, index);
+                   // _this.browseHref(row, index); //放按钮出来
                 },
 
                 del: function (event) {
@@ -147,6 +147,8 @@
     this.modHref = function (row, index) {
     }
 
+
+
     this.browseHref = function (row, index) {
     }
 
@@ -184,8 +186,37 @@
                         ]);
                 }
             }
-        }]
-    }
+        }];
+
+        _this.colOperate = [{
+            title: '操作',
+            key: 'action',
+            width: 80,
+            align: 'center',
+            fixed: 'right',
+            render: function (h, params) {
+                if (!CanExec)
+                    return '';
+                else {
+                    return h('div',
+                        [
+                        h('Button', {
+                            props: { type: 'primary', size: 'small', disabled: false },
+
+                            style: { marginRight: '5px' },
+                            on: {
+                                click: function (event) {
+                                    _this.browseHref(params.row, params.index);
+                                }
+                            },
+                        }, '审核'),
+                        ]);
+                }
+            }
+        }];
+    };
+
+
 
     this.vueInit = function () {
         _this.searchParam = {};

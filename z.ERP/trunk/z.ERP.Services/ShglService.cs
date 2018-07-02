@@ -8,6 +8,7 @@ using z.ERP.Entities.Enum;
 using z.Exceptions;
 using System.Linq;
 using z.ERP.Model.Vue;
+using z.Extensiont;
 
 namespace z.ERP.Services
 {
@@ -28,6 +29,7 @@ namespace z.ERP.Services
             item.HasKey("NAME", a => sql += $" and NAME  LIKE '%{a}%'");
             item.HasKey("SH", a => sql += $" and SH LIKE '%{a}%'");
             item.HasKey("BANK", a => sql += $" and BANK LIKE '%{a}%'");
+            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

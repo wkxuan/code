@@ -32,9 +32,12 @@
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new CascaderRender()
                 {
-                    vModel = "searchParam.CATEGORYCODE",
+                    vModel = "searchParam.CATEGORY",
+                    Data = "searchParam.CATEData",
+                    Change = "orgChange",
+                    Not_level_last = true
                 });
             }
         </i-col>

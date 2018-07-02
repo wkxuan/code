@@ -15,6 +15,7 @@
         { title: '审核人', key: 'VERIFY_NAME', width: 80 },
         { title: '审核时间', key: 'VERIFY_TIME', width: 150 },
     ];
+    
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "ShglService";
     search.method = "GetMerchant";
