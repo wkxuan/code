@@ -92,6 +92,10 @@
       <Project>{354df4c7-5d94-4100-86d1-589f5cd5df20}</Project>
       <Name>z.Verify</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.WSTools\z.WSTools.csproj">
+      <Project>{185A3072-C6C7-4F58-9EC3-E261E5C734C6}</Project>
+      <Name>z.WSTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z\z.csproj">
       <Project>{68597feb-8ff8-486e-b603-ce7e8de57f5b}</Project>
       <Name>z</Name>

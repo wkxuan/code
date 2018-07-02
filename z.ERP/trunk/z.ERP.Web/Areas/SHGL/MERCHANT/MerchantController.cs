@@ -35,7 +35,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             //    {
             //        WeightingValue = aa => aa.BANK.ToInt()  //加权分配取到权重
             //    },
-         
+
             //    Tail = new MaxTailMatch<MERCHANTEntity>() //尾差计算方式,这个是把尾差放在最大的上
             //    {
             //        Min = true  //设置这个值,说明把尾差放在最小的上
@@ -48,7 +48,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             {
                 Permission_Add = "10200101",
                 Permission_Del = "10200101",
-                Permission_Edit= "10200101",
+                Permission_Edit = "10200101",
             });
         }
 
@@ -66,9 +66,9 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         public ActionResult MerchantEdit(string Id)
         {
             ViewBag.Title = "商户信息编辑";
-           
+
             return View("MerchantEdit", model: (EditRender)Id);
-  
+
         }
 
         public void Delete(List<MERCHANTEntity> DeleteData)
@@ -89,7 +89,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
                 {
                     merchant = res.Item1,
                     merchantBrand = res.Item2,
-                    treeorg=res.Item3
+                    treeorg = res.Item3
                 }
             );
         }
@@ -101,6 +101,11 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         public void ExecData(MERCHANTEntity Data)
         {
             service.ShglService.ExecData(Data);
+        }
+
+        public string Output(string Id)
+        {
+            return service.ShglService.Output(Id);
         }
     }
 }

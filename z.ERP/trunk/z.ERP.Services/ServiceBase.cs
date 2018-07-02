@@ -15,6 +15,7 @@ using z.LogFactory;
 using z.SSO;
 using z.SSO.Model;
 using z.Verify;
+using z.WSTools.Excel;
 
 namespace z.ERP.Services
 {
@@ -212,6 +213,23 @@ namespace z.ERP.Services
             DbHelper.Insert(note);
         }
 
+        public string GetExport(string filename, Action<ExcelWriter> ew, string Menuid)
+        {
+            if (!Menuid.IsEmpty())
+            {
+                if (employee.HasPermission(Menuid))
+                {
+                    throw new Exception($"没有导出权限{Menuid}");
+                }
+            }
+            string newname = $@"{filename}_{DateTime.Now.ToString("yyyy年MM月dd日HH时mm分ss秒")}.xlsx";
+            string outpath = $@"{IOExtension.GetBaesDir()}\File\Output\{newname}";
+            string tmppath = $@"{IOExtension.GetBaesDir()}\File\Template\{filename}.xlsx";
+            ExcelWriter e = new ExcelWriter(tmppath, outpath);
+            ew?.Invoke(e);
+            e.Process();
+            return "/File/Output/" + newname;
+        }
         #endregion
 
         #region 权限
@@ -226,10 +244,10 @@ namespace z.ERP.Services
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
                         SqlMenu += " and exists(select 1 from USER_ROLE A1, ROLE_MENU B1,USERMODULE C1 where A1.USERID=" + employee.Id;
-                        SqlMenu += " and A1.ROLEID = B1.ROLEID and C1.MODULECODE like B1.MODULECODE||'%' and C1.MENUID = A.MENUID "; 
+                        SqlMenu += " and A1.ROLEID = B1.ROLEID and C1.MODULECODE like B1.MODULECODE||'%' and C1.MENUID = A.MENUID ";
                     }
                     //可增加系统参数菜单权限控制是否要关联位置
-                    if(1!=1)
+                    if (1 != 1)
                     {
                         SqlMenu += " and C1.MODULECODE = A.MODULECODE ";
                     }
@@ -237,7 +255,7 @@ namespace z.ERP.Services
                     return SqlMenu;
                 case PermissionType.Org:
                     String SqlDepartment = "";
-                    SqlDepartment=" select ORGID id from ORG A where 1=1";
+                    SqlDepartment = " select ORGID id from ORG A where 1=1";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
                         SqlDepartment += " and exists(select 1 from USER_ROLE A1,ROLE B1,ORG C1 where A1.USERID=" + employee.Id;

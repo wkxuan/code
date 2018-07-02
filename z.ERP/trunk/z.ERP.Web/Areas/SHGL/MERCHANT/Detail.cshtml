@@ -23,6 +23,11 @@
                 Click = "exec",
             });
         }
+        RenderControl(new ButtonRender()
+        {
+            Text = "导出",
+            Click = "Output",
+        });
     }
 }
 
@@ -122,6 +127,15 @@
                         setTimeout(function () {
                             window.location.reload();
                         }, 100);
+                    });
+                },
+                Output :function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('Output', {
+                        Id: @merchant.MERCHANTID,
+                    }, function (data) {
+                        window.open(__BaseUrl+data);
                     });
                 }
             }

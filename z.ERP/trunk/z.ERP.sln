@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.ERP.WebService", "z.ERP.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTest", "WebTest\WebTest.csproj", "{6B0DE957-6BC8-4344-9A1D-4FC23D55C894}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.WSTools", "z.WSTools\z.WSTools.csproj", "{185A3072-C6C7-4F58-9EC3-E261E5C734C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,10 @@ Global
 		{6B0DE957-6BC8-4344-9A1D-4FC23D55C894}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B0DE957-6BC8-4344-9A1D-4FC23D55C894}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B0DE957-6BC8-4344-9A1D-4FC23D55C894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{185A3072-C6C7-4F58-9EC3-E261E5C734C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{185A3072-C6C7-4F58-9EC3-E261E5C734C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{185A3072-C6C7-4F58-9EC3-E261E5C734C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{185A3072-C6C7-4F58-9EC3-E261E5C734C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

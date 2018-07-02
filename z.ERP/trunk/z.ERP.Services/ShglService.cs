@@ -99,6 +99,17 @@ namespace z.ERP.Services
             }
             return SaveData.MERCHANTID;
         }
+
+        /// <summary>
+        /// 导出
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string Output(string id)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 从列表页编辑跳转到编辑页数据的展示查询
         /// </summary>
