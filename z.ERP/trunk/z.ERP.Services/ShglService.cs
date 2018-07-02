@@ -109,7 +109,30 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string Output(string id)
         {
-            throw new NotImplementedException();
+            if (id.IsEmpty())
+            {
+                throw new LogicException("请确认商户编号!");
+            }
+            string sql = $@"SELECT * FROM MERCHANT WHERE 1=1  AND MERCHANTID= {id}";
+            DataTable merchant = DbHelper.ExecuteTable(sql);
+            merchant.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            string sqlitem = $@"SELECT M.BRANDID,C.NAME,D.CATEGORYCODE,D.CATEGORYNAME " +
+            " FROM MERCHANT_BRAND M,MERCHANT E,BRAND C,CATEGORY D " +
+            $" where M.MERCHANTID = E.MERCHANTID AND M.BRANDID=C.ID AND  C.CATEGORYID = D.CATEGORYID  and E.MERCHANTID= {id}";
+            DataTable merchantBrand = DbHelper.ExecuteTable(sqlitem);
+            merchantBrand.TableName = "merchantBrand";
+            return GetExport("商户导出", a =>
+            {
+                a.SetString("MERCHANTID", merchant.Rows[0]["MERCHANTID"].ToString());
+                a.SetString("NAME", merchant.Rows[0]["NAME"].ToString());
+                a.SetString("SH", merchant.Rows[0]["SH"].ToString());
+                a.SetString("BANK", merchant.Rows[0]["BANK"].ToString());
+                a.SetString("BANK_NAME", merchant.Rows[0]["BANK_NAME"].ToString());
+                a.SetString("STATUSMC", merchant.Rows[0]["STATUSMC"].ToString());
+                a.SetTable(merchantBrand);
+            });
+
+
         }
 
         /// <summary>
@@ -128,7 +151,7 @@ namespace z.ERP.Services
                 sql += (" AND MERCHANTID= " + Data.MERCHANTID);
             DataTable merchant = DbHelper.ExecuteTable(sql);
 
-             merchant.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            merchant.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
             string sqlitem = $@"SELECT M.BRANDID,C.NAME,D.CATEGORYCODE,D.CATEGORYNAME " +
                 " FROM MERCHANT_BRAND M,MERCHANT E,BRAND C,CATEGORY D " +
@@ -145,15 +168,15 @@ namespace z.ERP.Services
                 {
                     code = a.ORGCODE,
                     title = a.ORGNAME,
-                    value=a.ORGID,
-                    label=a.ORGNAME,
+                    value = a.ORGID,
+                    label = a.ORGNAME,
                     expand = true
                 })?.ToArray());
 
             return new Tuple<dynamic, DataTable, dynamic>(merchant.ToOneLine(), merchantBrand, treeOrg);
         }
 
-    
+
 
         /// <summary>
         /// 详情页的审核

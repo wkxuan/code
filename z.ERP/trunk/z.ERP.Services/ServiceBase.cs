@@ -213,15 +213,8 @@ namespace z.ERP.Services
             DbHelper.Insert(note);
         }
 
-        public string GetExport(string filename, Action<ExcelWriter> ew, string Menuid)
+        public string GetExport(string filename, Action<ExcelWriter> ew)
         {
-            if (!Menuid.IsEmpty())
-            {
-                if (employee.HasPermission(Menuid))
-                {
-                    throw new Exception($"没有导出权限{Menuid}");
-                }
-            }
             string newname = $@"{filename}_{DateTime.Now.ToString("yyyy年MM月dd日HH时mm分ss秒")}.xlsx";
             string outpath = $@"{IOExtension.GetBaesDir()}\File\Output\{newname}";
             string tmppath = $@"{IOExtension.GetBaesDir()}\File\Template\{filename}.xlsx";
