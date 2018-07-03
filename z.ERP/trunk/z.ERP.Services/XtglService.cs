@@ -432,7 +432,7 @@ namespace z.ERP.Services
 
         public object GetBrandElement(BRANDEntity Data)
         {
-            string sql = $@"select * from BRAND where 1=1 ";
+            string sql = $@"select A.*,B.CATEGORYIDCASCADER from BRAND A,CATEGORY B where A.CATEGORYID=B.CATEGORYID ";
             if (!Data.ID.IsEmpty())
                 sql += (" and ID= " + Data.ID);
             DataTable dt = DbHelper.ExecuteTable(sql);

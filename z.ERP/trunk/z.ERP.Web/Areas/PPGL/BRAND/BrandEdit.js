@@ -4,6 +4,8 @@
     editDetail.branchid = false;
 
     editDetail.Key = "ID";
+
+    editDetail.screenParam.CATEGORYIDCASCADER = [];
 }
 
 
@@ -13,11 +15,17 @@ editDetail.showOne = function (data, callback) {
     }, function (data) {
         $.extend(editDetail.dataParam, data.main[0]);
         editDetail.dataParam.BILLID = data.main[0].ID;
-        editDetail.clearKey();
+
+        editDetail.dataParam.CATEGORYID = data.main[0].CATEGORYID;
+        var arr = data.main[0].CATEGORYIDCASCADER.split(",") || [];
+        Vue.set(editDetail.screenParam, "CATEGORYIDCASCADER", arr);
+
         callback && callback(data);
-        
+
     });
-}
+};
+
+
 
 editDetail.mountedInit = function () {
     _.Ajax('SearchInit', {
@@ -30,6 +38,6 @@ editDetail.mountedInit = function () {
 
 editDetail.otherMethods = {
     orgChange: function (value, selectedData) {
-        editDetail.dataParam.CATEGORYID = value[value.length - 1];  //有问题，不管选哪个节点，结果都是第一个节点的值3
+        editDetail.dataParam.CATEGORYID = value[value.length - 1]; 
     },
 }
