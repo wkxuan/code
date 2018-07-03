@@ -19,12 +19,16 @@
             业态
         </i-col>
         <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CATEGORYID",
-                });
-            }
+        @{ 
+            RenderControl(new CascaderRender()
+            {
+            vModel = "dataParam.CATEGORYID",
+            Data = "screenParam.CATEData",
+            Change = "orgChange",
+            Not_level_last = false
+            });
+            
+           }
         </i-col>
         <i-col span="2" class="RowTitle">
             地址
