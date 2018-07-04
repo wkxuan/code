@@ -1061,6 +1061,27 @@ editDetail.IsValidSave = function () {
         return false;
     };
 
+    if (editDetail.dataParam.CONTRACT_PAY.length != 0) {
+        for (var i = 0; i < editDetail.dataParam.CONTRACT_PAY.length; i++) {
+            if (!editDetail.dataParam.CONTRACT_PAY[i].TERMID) {
+                iview.Message.info("请确定手续费对应的费用项目!");
+                return false;
+            };
+            if (!editDetail.dataParam.CONTRACT_PAY[i].PAYID) {
+                iview.Message.info("请确定手续费对应的收款方式!");
+                return false;
+            };
+            if (!editDetail.dataParam.CONTRACT_PAY[i].STARTDATE) {
+                iview.Message.info("请确定手续费对应的收款方式的起始日期!");
+                return false;
+            };
+            if (!editDetail.dataParam.CONTRACT_PAY[i].ENDDATE) {
+                iview.Message.info("请确定手续费对应的收款方式的结束日期!");
+                return false;
+            };
+        };
+    };
+
     return true;
 }
 

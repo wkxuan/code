@@ -432,10 +432,11 @@ namespace z.ERP.Services
 
         public object GetBrandElement(BRANDEntity Data)
         {
-            string sql = $@"select A.*,B.CATEGORYIDCASCADER from BRAND A,CATEGORY B where A.CATEGORYID=B.CATEGORYID ";
+            string sql = $@"select A.*,B.CATEGORYIDCASCADER,B.CATEGORYNAME from BRAND A,CATEGORY B where A.CATEGORYID=B.CATEGORYID ";
             if (!Data.ID.IsEmpty())
                 sql += (" and ID= " + Data.ID);
             DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
             var result = new
             {

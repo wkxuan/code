@@ -227,9 +227,10 @@
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new EnumDropDownListRender<合作方式>()
+                RenderControl(new ServiceDropDownListRender()
                 {
-                    vModel = "dataParam.OPERATERULE"
+                    vModel = "dataParam.OPERATERULE",
+                    ServiceMothod = m => m.operrule()
                 });
             }
         </i-col>

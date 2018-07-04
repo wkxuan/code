@@ -38,6 +38,24 @@ editDetail.mountedInit = function () {
 
 editDetail.otherMethods = {
     orgChange: function (value, selectedData) {
-        editDetail.dataParam.CATEGORYID = value[value.length - 1]; 
+        editDetail.dataParam.CATEGORYID = value[value.length - 1];
     },
+};
+
+
+editDetail.IsValidSave = function () {
+
+
+    if (!editDetail.dataParam.NAME) {
+        iview.Message.info("请确认品牌名称!");
+        return false;
+    };
+
+
+    if (!editDetail.dataParam.CATEGORYID) {
+        iview.Message.info("请确认品牌业态!");
+        return false;
+    };
+
+    return true;
 }

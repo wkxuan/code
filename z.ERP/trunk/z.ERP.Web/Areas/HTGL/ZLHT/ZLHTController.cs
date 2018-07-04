@@ -16,7 +16,6 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
 {
     public class ZLHTController : BaseController
     {
-        //[Permission("2")]
         public ActionResult HtList()
         {
             ViewBag.Title = "租约列表信息";
@@ -24,17 +23,17 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             {
                 Permission_Add = "10600201",
                 Permission_Edit = "10600201",
-                Permission_Del = "10600201"
+                Permission_Del = "10600201",
+                Permission_Exec = "10600202"
             });
         }
 
         public ActionResult HtEdit(string Id)
         {
             ViewBag.Title = "租赁租约信息编辑";
-            ViewBag.STYLE = 2;
             return View("HtEdit", model: (EditRender)Id);
         }
-
+        [Permission("10600201")]
         public string Save(CONTRACTEntity SaveData)
         {
             return service.HtglService.SaveContract(SaveData);
@@ -52,7 +51,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             ViewBag.contractCost = entity.Item7;
             return View();
         }
-        //[Permission("1")]
+
         public UIResult SearchContract(CONTRACTEntity Data)
         {
             var res = service.HtglService.GetContractElement(Data);
@@ -91,7 +90,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         {
             service.HtglService.DeleteContract(DeleteData);
         }
-
+        [Permission("10600202")]
         public void ExecData(CONTRACTEntity Data)
         {
             service.HtglService.ExecData(Data);

@@ -76,6 +76,14 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
+
+        
+        public List<SelectItem> operrule()
+        {
+            string sql = $@"SELECT A.ID,A.NAME FROM OPERATIONRULE A WHERE 1=1   ORDER BY  A.ID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ID", "NAME");
+        }
         public List<SelectItem> feeRule()
         {
             string sql = $@"SELECT ID,NAME FROM FEERULE   ORDER BY  ID ";

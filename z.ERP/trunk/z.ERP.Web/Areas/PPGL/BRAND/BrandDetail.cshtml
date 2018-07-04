@@ -10,7 +10,6 @@
 @section Title{
     @Html.Raw("详情");
 }
-
 @{
     var brand = ViewBag.brand;
 }
@@ -30,54 +29,63 @@
 
 @section content{
     <row>
-        <i-col span="2" class="RowTitle">品牌代码</i-col>
-        <i-col span="4" class="RowText"> @brand.ID </i-col>
+        <i-col span="2" class="RowText">品牌代码</i-col>
+        <i-col span="4">
+            <i-input v-model="ID" :readonly="true"></i-input>
+        </i-col>
         <i-col span="2" class="RowTitle">品牌名称</i-col>
-        <i-col span="4" class="RowText"> @brand.NAME </i-col>
-        <i-col span="2" class="RowTitle">业态</i-col>
-        <i-col span="4" class="RowText"> @brand.CATEGORYID </i-col>
+        <i-col span="4">
+            <i-input v-model="NAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="4">
+            <i-input v-model="STATUSMC" :readonly="true"></i-input>
+        </i-col>
     </row>
     <row>
+        <i-col span="2" class="RowText">业态</i-col>
+        <i-col span="4">
+            <i-input v-model="CATEGORYNAME" :readonly="true"></i-input>
+        </i-col>
         <i-col span="2" class="RowTitle">描述</i-col>
-        <i-col span="4" class="RowText"> @brand.CONTACTPERSON   </i-col>
+        <i-col span="4">
+            <i-input v-model="CONTACTPERSON" :readonly="true"></i-input>
+        </i-col>
         <i-col span="2" class="RowTitle">地址</i-col>
-        <i-col span="4" class="RowText"> @brand.ADRESS   </i-col>
-        <i-col span="2" class="RowTitle">电话</i-col>
-        <i-col span="4" class="RowText"> @brand.PHONENUM </i-col>
+        <i-col span="4">
+            <i-input v-model="ADRESS" :readonly="true"></i-input>
+        </i-col>
     </row>
-    <row>
-        <i-col span="2" class="RowTitle">微信</i-col>
-        <i-col span="4" class="RowText"> @brand.WEIXIN   </i-col>
-        <i-col span="2" class="RowTitle">邮编</i-col>
-        <i-col span="4" class="RowText"> @brand.PIZ   </i-col>
-        <i-col span="2" class="RowTitle">QQ</i-col>
-        <i-col span="4" class="RowText"> @brand.QQ </i-col>
-    </row>
-
 }
 
 @section foot{
-    <script type="text/javascript">
-        var ve = new Vue({
-            el: '#detail_Main',
-            data: {
-                Mainpanel: 'condition',
-                disabled:true
-            },
-            methods: {
-                exec: function (event) {
-                    event.stopPropagation();
-                    var _self = this;
-                    _.Ajax('ExecData', {
-                        Data: {ID: @brand.ID},
-                    }, function (data) {
-                        _self.$Message.info("审核成功");
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 100);
-                    });
+        <script type="text/javascript">
+            var ve = new Vue({
+                el: '#detail_Main',
+                data: {
+                    Mainpanel: 'condition',
+                    disabled:true,
+                    ID:"@brand.ID",
+                    NAME:"@brand.NAME",
+                    STATUSMC:"@brand.STATUSMC",
+                    CATEGORYNAME:"@brand.CATEGORYNAME",
+                    CONTACTPERSON:"@brand.CONTACTPERSON",
+                    ADRESS:"@brand.ADRESS"
+                },
+                methods: {
+                    exec: function (event) {
+                        event.stopPropagation();
+                        var _self = this;
+                        _.Ajax('ExecData', {
+                            Data: {ID: @brand.ID},
+                        }, function (data) {
+                            _self.$Message.info("审核成功");
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 100);
+                        });
+                    }
                 }
-            }
-        });
+            });
     </script>
 }
