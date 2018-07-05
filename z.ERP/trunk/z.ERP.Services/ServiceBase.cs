@@ -216,8 +216,10 @@ namespace z.ERP.Services
         public string GetExport(string filename, Action<ExcelWriter> ew)
         {
             string newname = $@"{filename}_{DateTime.Now.ToString("yyyy年MM月dd日HH时mm分ss秒")}.xlsx";
+            IOExtension.MakeDir(true, $@"{IOExtension.GetBaesDir()}\File\Output\");
             string outpath = $@"{IOExtension.GetBaesDir()}\File\Output\{newname}";
             string tmppath = $@"{IOExtension.GetBaesDir()}\File\Template\{filename}.xlsx";
+
             ExcelWriter e = new ExcelWriter(tmppath, outpath);
             ew?.Invoke(e);
             e.Process();

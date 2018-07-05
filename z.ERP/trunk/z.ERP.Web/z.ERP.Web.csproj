@@ -170,6 +170,7 @@
     <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\PopSearch\PopSearchViewBase.cs" />
+    <Compile Include="Areas\Layout\Print\PrintViewBase.cs" />
     <Compile Include="Areas\Layout\Search\SearchRender.cs" />
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
@@ -442,6 +443,11 @@
     <Content Include="Areas\Pop\Pop\PopRoleList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopContractList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopMerchantList.cshtml" />
+    <Content Include="File\Template\商户导出.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Layout\Print\_PrintLayout.cshtml" />
+    <Content Include="Areas\SHGL\MERCHANT\Print.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

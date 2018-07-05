@@ -63,6 +63,13 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             return View();
         }
 
+        public ActionResult Print(string Id)
+        {
+            var entity = service.ShglService.GetMerchantElement(new MERCHANTEntity(Id));
+            ViewBag.merchant = entity.Item1;
+            ViewBag.merchantBrand = entity.Item2;
+            return View();
+        }
 
         public ActionResult MerchantEdit(string Id)
         {

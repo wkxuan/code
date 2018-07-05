@@ -28,6 +28,11 @@
             Text = "导出",
             Click = "Output",
         });
+        RenderControl(new ButtonRender()
+        {
+            Text = "打印",
+            Click = "Print",
+        });
     }
 }
 
@@ -136,6 +141,14 @@
                         Id: @merchant.MERCHANTID,
                     }, function (data) {
                         window.open(__BaseUrl+data);
+                    });
+                },
+                Print :function (event) {
+                    event.stopPropagation();
+                    _.OpenPage({
+                        id: 10200101,
+                        title: '打印',
+                        url: "SHGL/MERCHANT/Print/" + @merchant.MERCHANTID
                     });
                 }
             }
