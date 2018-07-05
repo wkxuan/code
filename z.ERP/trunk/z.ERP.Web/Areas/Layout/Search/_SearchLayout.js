@@ -164,56 +164,71 @@
         _this.colOperate = [{
             title: '操作',
             key: 'action',
-            width: 80,
+            width: 130,
             align: 'center',
             fixed: 'right',
             render: function (h, params) {
-                if (!CanEdit)
-                    return '';
-                else {
+                if ((!CanEdit) && (!CanExec)) {
                     return h('div',
-                        [
-                        h('Button', {
-                            props: { type: 'primary', size: 'small', disabled: false },
+                        []
+                    );
+                }
+                else {
+                    if ((CanEdit) && (!CanExec)) {
+                        return h('div',
+                            [
+                                h('Button',
+                                {
 
-                            style: { marginRight: '5px' },
-                            on: {
-                                click: function (event) {
-                                    _this.modHref(params.row, params.index);
-                                }
-                            },
-                        }, '修改'),
-                        ]);
+                                    props: { type: 'primary', size: 'small', disabled: false },
+                                    style: { marginRight: '5px' },
+
+                                    on: { click: function (event) { _this.modHref(params.row, params.index) } },
+
+                                }, '修改')
+                            ]
+                        );
+                    };
+                    if ((!CanEdit) && (CanExec)) {
+                        return h('div',
+                            [
+                                 h('Button',
+                                 {
+                                     props: { type: 'error', size: 'small', disabled: false },
+                                     style: { marginRight: '5px' },
+                                     on: { click: function (event) { _this.browseHref(params.row, params.index) } },
+                                 }, '浏览')
+
+                            ]
+                        );
+                    };
+                    if ((CanEdit) && (CanExec)) {
+                        return h('div',
+                            [
+                                h('Button',
+                                {
+
+                                    props: { type: 'primary', size: 'small', disabled: false },
+                                    style: { marginRight: '5px' },
+
+                                    on: { click: function (event) { _this.modHref(params.row, params.index) } },
+
+                                }, '修改'),
+
+
+                                 h('Button',
+                                 {
+                                     props: { type: 'error', size: 'small', disabled: false },
+                                     style: { marginRight: '5px' },
+                                     on: { click: function (event) { _this.browseHref(params.row, params.index) } },
+                                 }, '浏览')
+
+                            ]
+                        );
+                    }
                 }
             }
-        }];
-
-        _this.colOperate = [{
-            title: '操作',
-            key: 'action',
-            width: 80,
-            align: 'center',
-            fixed: 'right',
-            render: function (h, params) {
-                if (!CanExec)
-                    return '';
-                else {
-                    return h('div',
-                        [
-                        h('Button', {
-                            props: { type: 'primary', size: 'small', disabled: false },
-
-                            style: { marginRight: '5px' },
-                            on: {
-                                click: function (event) {
-                                    _this.browseHref(params.row, params.index);
-                                }
-                            },
-                        }, '审核'),
-                        ]);
-                }
-            }
-        }];
+        }]
     };
 
 

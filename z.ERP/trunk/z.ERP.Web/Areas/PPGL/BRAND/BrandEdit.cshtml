@@ -5,6 +5,7 @@
 @section baseParam{
     <row>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             名称
         </i-col>
         <i-col span="6">
@@ -16,15 +17,21 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             业态
         </i-col>
         <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CATEGORYID",
-                });
-            }
+        @{ 
+            RenderControl(new CascaderRender()
+            {
+                vModel = "screenParam.CATEGORYIDCASCADER",
+                Data = "screenParam.CATEData",
+                Change = "orgChange",
+                Not_level_last = false
+
+            });
+
+           }
         </i-col>
         <i-col span="2" class="RowTitle">
             地址

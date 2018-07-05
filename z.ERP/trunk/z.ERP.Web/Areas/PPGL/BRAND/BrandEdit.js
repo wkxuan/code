@@ -4,6 +4,8 @@
     editDetail.branchid = false;
 
     editDetail.Key = "ID";
+
+    editDetail.screenParam.CATEGORYIDCASCADER = [];
 }
 
 
@@ -13,8 +15,47 @@ editDetail.showOne = function (data, callback) {
     }, function (data) {
         $.extend(editDetail.dataParam, data.main[0]);
         editDetail.dataParam.BILLID = data.main[0].ID;
-        editDetail.clearKey();
+
+        editDetail.dataParam.CATEGORYID = data.main[0].CATEGORYID;
+        var arr = data.main[0].CATEGORYIDCASCADER.split(",") || [];
+        Vue.set(editDetail.screenParam, "CATEGORYIDCASCADER", arr);
+
         callback && callback(data);
-        
+
     });
+};
+
+
+
+editDetail.mountedInit = function () {
+    _.Ajax('SearchInit', {
+        Data: {}
+    }, function (data) {
+        Vue.set(editDetail.screenParam, "CATEData", data.treeOrg.Obj);
+    });
+}
+
+
+editDetail.otherMethods = {
+    orgChange: function (value, selectedData) {
+        editDetail.dataParam.CATEGORYID = value[value.length - 1];
+    },
+};
+
+
+editDetail.IsValidSave = function () {
+
+
+    if (!editDetail.dataParam.NAME) {
+        iview.Message.info("请确认品牌名称!");
+        return false;
+    };
+
+
+    if (!editDetail.dataParam.CATEGORYID) {
+        iview.Message.info("请确认品牌业态!");
+        return false;
+    };
+
+    return true;
 }

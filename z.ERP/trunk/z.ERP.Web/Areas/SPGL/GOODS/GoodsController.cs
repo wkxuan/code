@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.EditDetail;
 using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.SPGL.GOODS
@@ -19,7 +20,7 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
         public ActionResult GoodsEdit(string Id)
         {
             ViewBag.Title = "编辑商品信息";
-            return View(model: Id);
+            return View("GoodsEdit", model: (EditRender)Id);
         }
 
         public ActionResult GoodsDetail(string Id)

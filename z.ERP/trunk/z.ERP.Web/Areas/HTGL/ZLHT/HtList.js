@@ -12,6 +12,7 @@
 
 
     ];
+    search.searchParam.STYLE = "1";
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "HtglService";
     search.method = "GetContract";
@@ -19,25 +20,16 @@
 
 search.browseHref = function (row, index) {
 
-    if (row.STYLE == 2) {
-        _.OpenPage({
-            id: 10600101,
-            title: '联营租约详情',
-            url: "HTGL/LYHT/HtDetail/" + row.CONTRACTID
-        });
-    };
-    if (row.STYLE == 1) {
-        _.OpenPage({
-            id: 10600201,
-            title: '租赁租约详情',
-            url: "HTGL/ZLHT/HtDetail/" + row.CONTRACTID
-        })
-    };
+    _.OpenPage({
+        id: 10600202,
+        title: '租赁租约详情',
+        url: "HTGL/ZLHT/HtDetail/" + row.CONTRACTID
+    })
 }
 
 search.addHref = function (row) {
     _.OpenPage({
-        id: 10600202,
+        id: 10600201,
         title: '添加租赁租约',
         url: "HTGL/ZLHT/HtEdit/"
     });
@@ -51,20 +43,11 @@ search.modHref = function (row, index) {
         Data: { CONTRACTID: row.CONTRACTID },
         Success: function (data) {
             if (data.rows[0].STATUS == 1) {
-                if (data.rows[0].STYLE == 2) {
-                    _.OpenPage({
-                        id: 10600103,
-                        title: '修改联营租约',
-                        url: "HTGL/LYHT/HtEdit/" + row.CONTRACTID
-                    });
-                };
-                if (data.rows[0].STYLE == 1) {
-                    _.OpenPage({
-                        id: 10600203,
-                        title: '修改租赁租约',
-                        url: "HTGL/ZLHT/HtEdit/" + row.CONTRACTID
-                    });
-                }
+                _.OpenPage({
+                    id: 10600201,
+                    title: '添加租赁租约',
+                    url: "HTGL/LYHT/HtEdit/" + row.CONTRACTID
+                });
             } else {
                 iview.Message.info('当前租约信息不是未审核状态,不能编辑!');
                 return;

@@ -34,7 +34,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME,B.ID BRANDID FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
             item.HasKey("ID", a => sql += $" and B.ID = '{a}'");
             item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-           // item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("ADRESS", a => sql += $" and B.ADRESS LIKE '%{a}%'");
             item.HasKey("CONTACTPERSON", a => sql += $" and B.CONTACTPERSON = '{a}'");
             item.HasKey("PHONENUM", a => sql += $" and B.PHONENUM = '{a}'");
@@ -432,10 +432,11 @@ namespace z.ERP.Services
 
         public object GetBrandElement(BRANDEntity Data)
         {
-            string sql = $@"select * from BRAND where 1=1 ";
+            string sql = $@"select A.*,B.CATEGORYIDCASCADER,B.CATEGORYNAME from BRAND A,CATEGORY B where A.CATEGORYID=B.CATEGORYID ";
             if (!Data.ID.IsEmpty())
                 sql += (" and ID= " + Data.ID);
             DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
             var result = new
             {

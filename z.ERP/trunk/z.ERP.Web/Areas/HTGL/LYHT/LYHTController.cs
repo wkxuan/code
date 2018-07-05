@@ -10,6 +10,7 @@ using z.ERP.Entities.Enum;
 using System.Data;
 using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
+using z.MVC5.Attributes;
 
 namespace z.ERP.Web.Areas.HTGL.LYHT
 {
@@ -23,6 +24,7 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
                 Permission_Add = "10600101",
                 Permission_Del = "10600101",
                 Permission_Edit = "10600101",
+                Permission_Exec = "10600102"
             });
         }
 
@@ -45,7 +47,7 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
             ViewBag.contractCost = entity.Item7;
             return View();
         }
-
+        [Permission("10600101")]
         public string Save(CONTRACTEntity SaveData)
         {
             return service.HtglService.SaveContract(SaveData);
@@ -94,7 +96,7 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         {
             service.HtglService.DeleteContract(DeleteData);
         }
-
+        [Permission("10600102")]
         public void ExecData(CONTRACTEntity Data)
         {
             service.HtglService.ExecData(Data);

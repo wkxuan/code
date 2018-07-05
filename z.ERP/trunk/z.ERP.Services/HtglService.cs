@@ -25,7 +25,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
             item.HasKey("NAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
-            item.HasArrayKey("STYLE", a => sql += $" and A.STYLE in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("STYLE", a => sql += $" and A.STYLE = '{a}'");
             item.HasArrayKey("HTLX", a => sql += $" and A.HTLX in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             sql += " ORDER BY  A.CONTRACTID DESC";
@@ -39,6 +39,23 @@ namespace z.ERP.Services
         public string SaveContract(CONTRACTEntity SaveData)
         {
             var v = GetVerify(SaveData);
+            ORGEntity org = DbHelper.Select(new ORGEntity() { ORGID = SaveData.ORGID });
+            if (org.BRANCHID != SaveData.BRANCHID) {
+                throw new LogicException($"请核对招商部门与分店之间的关系!");
+            };
+            //选择是扣点的时候,不应该有保底数据
+            if (SaveData.OPERATERULE.ToInt() == (int)联营合同合作方式.扣点) {
+                foreach (var rent in SaveData.CONTRACT_RENT) {
+                    if (rent.RENTS.ToDecimal() != 0) {
+                        throw new LogicException($"扣点形成的合同不应该有保底值!");
+                    }
+                    if (rent.RENTS_JSKL.ToDecimal() != 0)
+                    {
+                        throw new LogicException($"扣点形成的合同不应该有保底扣率!");
+                    }
+                }
+            }
+
             if (SaveData.CONTRACTID.IsEmpty())
             {
                 SaveData.CONTRACTID = NewINC("CONTRACT");

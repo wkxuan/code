@@ -20,7 +20,8 @@
     search.service = "XtglService";
     search.method = "GetBrandData";
 
-    search.searchParam.CATEGORYCODE = [];
+    search.searchParam.CATEGORYCODE = "";
+    search.screenParam.CATEGORY = [];
 }
 
 search.browseHref = function (row, index) {
@@ -50,7 +51,7 @@ search.mountedInit = function () {
     _.Ajax('SearchInit', {
         Data: {}
     }, function (data) {
-        Vue.set(search.searchParam, "CATEData", data.treeOrg.Obj);
+        Vue.set(search.screenParam, "CATEData", data.treeOrg.Obj);
     });
 }
 
