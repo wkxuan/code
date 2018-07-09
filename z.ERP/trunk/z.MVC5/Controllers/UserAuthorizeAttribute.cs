@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Attributes;
 using z.MVC5.Models;
@@ -17,6 +18,24 @@ namespace z.MVC5.Controllers
     {
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
+            var NoLoginAttr = filterContext.ActionDescriptor.GetCustomAttributes(false).FirstOrDefault(a => a is IgnoreLoginAttribute) as IgnoreLoginAttribute;
+            if (NoLoginAttr != null)
+            {
+                return;
+            }
+            var e = UserApplication.GetUser<Employee>();
+            if (e == null)
+            {
+                filterContext.Result = new UIResult()
+                {
+                    Data = new
+                    {
+                        Flag = 103,
+                        Msg = $"没有登录"
+                    }
+                };
+                return;
+            }
             PermissionAttribute attr;
             if (!HasPermission(filterContext, out attr))
             {

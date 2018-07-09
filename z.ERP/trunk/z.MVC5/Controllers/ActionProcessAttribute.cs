@@ -46,25 +46,26 @@ namespace z.MVC5.Controllers
                     }
                     filterContext.Result = res;
                 }
-
-
-                if (filterContext.Result is EmptyResult)
+                else
                 {
-                    filterContext.Result = new UIResult();
-                }
-                if (filterContext.Result is UIResult)
-                {
-                    filterContext.Result = new UIResult()
+                    if (filterContext.Result is EmptyResult)
                     {
-                        Data = (filterContext.Result as UIResult).GetData()
-                    };
-                }
-                else if (filterContext.Result is ContentResult)
-                {
-                    filterContext.Result = new UIResult()
+                        filterContext.Result = new UIResult();
+                    }
+                    if (filterContext.Result is UIResult)
                     {
-                        Data = (filterContext.Result as ContentResult).Content
-                    };
+                        filterContext.Result = new UIResult()
+                        {
+                            Data = (filterContext.Result as UIResult).GetData()
+                        };
+                    }
+                    else if (filterContext.Result is ContentResult)
+                    {
+                        filterContext.Result = new UIResult()
+                        {
+                            Data = (filterContext.Result as ContentResult).Content
+                        };
+                    }
                 }
             }
             else

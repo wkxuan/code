@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\NoLoginAttribute.cs" />
     <Compile Include="Attributes\PermissionAttribute.cs" />
     <Compile Include="Controllers\BaseRazorViewEngine.cs" />
     <Compile Include="Controllers\ActionProcessAttribute.cs" />
