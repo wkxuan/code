@@ -52,8 +52,8 @@ namespace z.ERP.Services
         public DataGridResult GetPay(SearchItem item)
         {
             string sql = $@"SELECT PAYID,NAME FROM PAY WHERE 1=1 ";
-            item.HasKey("PAYID", a => sql += $" and PAYID = '{a}'");
-            item.HasKey("NAME", a => sql += $" and NAME = '{a}'");
+            item.HasKey("PAYID", a => sql += $" and PAYID LIKE '%{a}%'");
+            item.HasKey("NAME", a => sql += $" and NAME LIKE '%{a}%'");
             sql += " ORDER BY  PAYID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -220,8 +220,8 @@ namespace z.ERP.Services
         public DataGridResult GetEnergyFiles(SearchItem item)
         {
             string sql = $@"SELECT A.*,B.CODE SHOPCODE FROM ENERGY_FILES A,SHOP B WHERE A.SHOPID=B.SHOPID(+)";
-            item.HasKey("FILECODE,", a => sql += $" and A.FILECODE = '{a}'");
-            item.HasKey("FILENAME", a => sql += $" and A.FILENAME = '{a}'");
+            item.HasKey("FILECODE", a => sql += $" and A.FILECODE LIKE '%{a}%'");
+            item.HasKey("FILENAME", a => sql += $" and A.FILENAME LIKE '%{a}%'");
             sql += " ORDER BY  A.FILEID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
