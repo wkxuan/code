@@ -7,8 +7,14 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    public partial class CONTRACTEntity
-    {
+    public partial class CONTRACTEntity { 
+        [ForeignKey(nameof(CONTRACTID), nameof(CONTRACT_UPDATEEntity.CONTRACTID))]
+        public List<CONTRACT_UPDATEEntity> CONTRACT_UPDATE
+        {
+            get;
+            set;
+        }
+
         [ForeignKey(nameof(CONTRACTID), nameof(CONTRACT_BRANDEntity.CONTRACTID))]
         public List<CONTRACT_BRANDEntity> CONTRACT_BRAND
         {

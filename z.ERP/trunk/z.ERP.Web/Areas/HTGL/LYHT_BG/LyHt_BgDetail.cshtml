@@ -1,0 +1,226 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Detail;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits DetailLayout<dynamic>
+
+@section Title{
+    @Html.Raw("详情");
+}
+
+@{
+    var contract = ViewBag.contract;
+    //var contractBrand = ViewBag.contractBrand as DataTable;
+    //var contractShop = ViewBag.contractShop as DataTable;
+    //var ContractParm = ViewBag.ContractParm;
+    //var ContractRentParm = ViewBag.ContractRentParm;
+    //var contractPay = ViewBag.contractPay as DataTable;
+    //var contractCost = ViewBag.contractCost as DataTable;
+}
+
+@section btn{
+    @{
+        if (@contract.STATUS == "1")
+        {
+            RenderControl(new ButtonRender()
+            {
+                Text = "审核",
+                Click = "exec",
+            });
+        }
+    }
+}
+
+@section content{
+    
+    <row>
+        <i-col span="2" class="RowText">租约号</i-col>
+        <i-col span="4">
+            <i-input v-model="CONTRACTID" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">分店名称</i-col>
+        <i-col span="4">
+            <i-input v-model="FDNAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="4">
+            <i-input v-model="STATUSMC" :readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowText">商户代码</i-col>
+        <i-col span="4">
+            <i-input v-model="MERCHANTID" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">商户名称</i-col>
+        <i-col span="4">
+            <i-input v-model="MERNAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">招商部门</i-col>
+        <i-col span="4">
+            <i-input v-model="ORGNAME" :readonly="true"></i-input>
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowText">开始日期</i-col>
+        <i-col span="4">
+            <i-input v-model="CONT_START" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">结束日期</i-col>
+        <i-col span="4">
+            <i-input v-model="CONT_END" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">合作方式</i-col>
+        <i-col span="4">
+            <i-input v-model="OPERATERULEMC" :readonly="true"></i-input>
+        </i-col>
+    </row>
+   <row>
+       <i-col span="12">
+           <i-table size="small" :border="true"
+                    :columns="colDefPP" :data="CONTRACT_BRAND" height="200"></i-table>
+       </i-col>
+       <i-col span="12">
+           <i-table size="small" :border="true"
+                    :columns="colDefSHOP" :data="CONTRACT_SHOP" height="200"></i-table>
+       </i-col>
+    </row>
+    <row>
+       <i-col span="24">
+           <i-table height="200" size="small" :border="true"
+                    :columns="colDefRENT" :data="CONTRACT_RENT"></i-table>
+       </i-col>
+    </row>
+    <row>
+       <i-col span="10">
+           <i-table height="200" size="small" :border="true"
+                    :columns="colGroup" :data="CONTRACT_GROUP"></i-table>
+       </i-col>
+        <i-col span="14">
+            <i-table height="200" size="small" :border="true"
+                     :columns="colDefJskl" :data="CONTJSKL"></i-table>
+        </i-col>
+    </row>
+      <row>
+       <i-col span="24">
+           <i-table height="200" size="small" :border="true"
+                    :columns="colDefCOST" :data="CONTRACT_COST"></i-table>
+       </i-col>
+    </row>
+     <row>
+       <i-col span="24">
+           <i-table height="200" size="small" :border="true"
+                    :columns="colDefPAY" :data="CONTRACT_PAY"></i-table>
+       </i-col>
+    </row>
+
+}
+
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true,
+                CONTRACTID:"@contract.CONTRACTID",
+                FDNAME:"@contract.FDNAME",
+                STATUSMC:"@contract.STATUSMC",
+                MERCHANTID:"@contract.MERCHANTID",
+                MERNAME:"@contract.MERNAME",
+                ORGNAME:"@contract.ORGNAME",
+                CONT_START:"@contract.CONT_START",
+                CONT_END:"@contract.CONT_END",
+                OPERATERULEMC:"@contract.OPERATERULEMC",
+
+                colDefPP : [
+                    {title: "品牌代码", key: 'BRANDID', width: 100},
+                    { title: '品牌名称', key: 'NAME', width: 200 },
+                ],
+                CONTRACT_BRAND:[],
+                colDefSHOP : [
+                   {title: "商铺代码", key: 'CODE', width: 100},
+                   { title: '业态代码', key: 'CATEGORYCODE', width: 100 },
+                   { title: '业态名称', key: 'CATEGORYNAME', width: 100 },
+                   { title: '建筑面积', key: 'AREA', width: 100 },
+                   { title: '租用面积', key: 'AREA_RENTABLE', width: 100 }
+                ],
+                CONTRACT_SHOP:[],
+                colDefRENT:[
+                   { title: '时间段', key: 'INX', width: 80 },
+                   {title: '开始日期',key: 'STARTDATE',width: 150},
+                   {title: '结束日期',key: 'ENDDATE', width: 150},
+                   {title: "保底(毛利or销售)", key: 'RENTS', width: 150 },
+                   {title: "保底扣点", key: 'RENTS_JSKL', width: 120},
+                   { title: "总保底(毛利or销售)", key: 'SUMRENTS', width: 150},
+                ],
+                CONTRACT_RENT:[],
+                colGroup:[
+                    { title: '扣点序号', key: 'GROUPNO', width: 100 },
+                    {title: "基础扣点", key: 'JSKL', width: 120},
+                    { title: "描述", key: 'DESCRIPTION', width: 120},
+                ],
+                CONTRACT_GROUP:[],
+                colDefJskl:[
+                   { title: '扣点序号', key: 'GROUPNO', width: 100 },
+                   { title: '时间段', key: 'INX', width: 80 },
+                   { title: '开始日期', key: 'STARTDATE', width: 150 },
+                   { title: '结束日期', key: 'ENDDATE', width: 150},
+                   { title: "扣点", key: 'JSKL', width: 120 },
+                ],
+                CONTJSKL:[],
+                colDefCOST:[
+                  { title: '序号', key: 'INX', width: 100 },
+                  { title: "费用项目名称", key: 'NAME', width: 120 },
+                  { title: '开始日期', key: 'STARTDATE',width: 150 },
+                  {title: '结束日期',key: 'ENDDATE',width: 150 },
+                  {title: '收费方式', key: 'SFFSMC', width: 150 },
+                  {title: "金额", key: 'COST', width: 120 },
+                ],
+                CONTRACT_COST:[],
+                colDefPAY:[
+                    { title: "收款方式名称", key: 'NAME', width: 120 },
+                    { title: "费用项目名称", key: 'TERMNAME', width: 120 },
+                    {title: '开始日期',key: 'STARTDATE',width: 150},
+                    { title: '结束日期', key: 'ENDDATE',width: 150,},
+                    {title: "比例", key: 'KL', width: 120},
+                ],
+                CONTRACT_PAY:[]
+
+            },
+            mounted:function(){
+                var _self = this;
+                _.Ajax('SearchContract', {
+                    Data: { CONTRACTID: @contract.CONTRACTID }
+                }, function (data) {
+                    _self.CONTRACT_BRAND = data.contractBrand;
+                    _self.CONTRACT_SHOP = data.contractShop;
+
+                    _self.CONTRACT_RENT = data.ContractParm.CONTRACT_RENT;;
+                    _self.CONTRACT_GROUP = data.ContractParm.CONTRACT_GROUP;
+                    _self.CONTJSKL = data.ContractParm.CONTJSKL;
+                    _self.CONTRACT_COST = data.contractCost;
+                    _self.CONTRACT_PAY = data.contractPay;
+                });
+            },
+            methods: {
+                exec: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: {CONTRACTID: @contract.CONTRACTID},
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                }
+            }
+        });
+    </script>
+}

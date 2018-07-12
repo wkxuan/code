@@ -42,6 +42,20 @@
             var CanExec = true;
         </script>
     }
+
+
+    if (Model != null && !Model.Permission_Bg.IsEmpty() && !employee.HasPermission(Model.Permission_Bg))
+    {
+        <script type="text/javascript">
+            var CanBg = false;
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            var CanBg = true;
+        </script>
+    }
 }
 
 <div id="search">
