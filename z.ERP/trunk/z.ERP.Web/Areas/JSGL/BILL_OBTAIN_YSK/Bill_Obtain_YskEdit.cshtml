@@ -1,7 +1,8 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
-@inherits EditDetailViewBase<string>
+@using z.ERP.Web.Areas.Layout.Edit;
+@inherits EditViewBase<string>
+@*@inherits EditDetailViewBase<string> *@
 
 @section head{
 
@@ -14,18 +15,50 @@
 
 <row>
     <i-col>
-      @{
+        @{
             RenderControl(new PopRender()
             {
-                vModel = "dataParam.MERCHANTID",
+                vModel = "screenParam.MERCHANTID",
                 Caption = "商户查询",
                 Width = "760",
                 PopLx = "Merchant",
                 CallBack = "MerchantBack",
-                ParentObj = "screenParam.ParentMerchant"  
+                ParentObj = "screenParam.ParentMerchant"
+            });
+        } 
+    </i-col>
+</row>
+
+<row>
+    <i-col span="2" class="RowTitle">
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "Merchant",
+                Text = "商户",
+                Enable = true,
+                Type = "primary"
             });
         }
     </i-col>
+    <i-col span="2">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.MERCHANTID"
+            });
+        }
+    </i-col>
+    <i-col span="4">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.MERNAME",
+                Readonly = "true"
+            });
+        }
+    </i-col>
+    
     <i-col span="2" class="RowTitle">
         权债发生月
     </i-col>
@@ -51,48 +84,44 @@
     </i-col>
 </row>
 
-<row>
-    <i-col span="2" class="RowTitle">
-        收款方式
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new ServiceDropDownListRender()
-            {
-                vModel = "dataParam.TYPE",
-                ServiceMothod = m => m.pay(),
-            });
-        }
-       @* @{
-        RenderControl(new TextBoxRender()
-        {
-            vModel = "dataParam.TYPE"
-        });
-    }*@
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        收款金额
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.ALL_MONEY"
-            });
-        }
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        账户余额
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.ALL_MONEY",
-                Enable = false
-            });
-        }
-    </i-col>
+
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            收款方式
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.TYPE",
+                    ServiceMothod = m => m.pay(),
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            收款金额
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ALL_MONEY"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            账户余额
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ALL_MONEY",
+                    Enable = false
+                });
+            }
+        </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
@@ -107,7 +136,7 @@
             }
         </i-col>
     </row>
-    }
+}
 
 
 
