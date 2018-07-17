@@ -43,6 +43,11 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "商户";
             return View();
         }
+        public ActionResult PopSysuserList()
+        {
+            ViewBag.Title = "用户";
+            return View();
+        }
     }
 
 }

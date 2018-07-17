@@ -21,7 +21,9 @@ namespace z.ERP.Services
         }
         public DataGridResult GetUser(SearchItem item)
         {
-            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME FROM SYSUSER A WHERE  1=1";
+            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME,B.ORGID,B.ORGCODE,B.ORGNAME 
+             from SYSUSER A,ORG B 
+             where  A.ORGID=B.ORGID and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";
             item.HasKey("USERCODE", a => sql += $" and A.USERCODE like '%{a}%'");
             item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");
             sql += " ORDER BY  A.USERCODE";
@@ -33,6 +35,8 @@ namespace z.ERP.Services
         {
             string sql = $@"select A.*,B.ORGIDCASCADER from SYSUSER A,ORG B where A.ORGID=B.ORGID(+)  ";
             item.HasKey("USERID", a => sql += $" and A.USERID = '{a}'");
+            item.HasKey("USERCODE", a => sql += $" and A.USERCODE like '%{a}%'");
+            item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
