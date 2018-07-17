@@ -167,7 +167,8 @@ namespace z.ERP.Entities.Enum
         物价员 = 5,
         财务人员 = 6,
         合同员 = 7,
-        核算员 = 8
+        核算员 = 8,
+        其它 = -1
     }
     public enum 标记
     {
