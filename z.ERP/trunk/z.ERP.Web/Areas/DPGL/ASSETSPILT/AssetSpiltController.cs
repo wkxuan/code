@@ -61,7 +61,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
         }
         public UIResult GetShop(SHOPEntity Data)
         {
-            return new UIResult(service.DpglService.GetShop(Data));
+            return new UIResult(service.DpglService.GetOneShop(Data));
         }
 
         public void ExecData(ASSETCHANGEEntity Data)

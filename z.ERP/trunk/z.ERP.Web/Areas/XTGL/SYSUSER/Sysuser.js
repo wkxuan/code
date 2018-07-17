@@ -45,6 +45,7 @@
       }];
     define.screenParam.dataDef = [];
     define.screenParam.componentVisible = false;
+    define.dataParam.ORGIDCASCADER = [];
     define.dataParam.USER_ROLE = [];
     define.service = "UserService";
     define.method = "GetUserElement";
@@ -59,6 +60,7 @@ define.newRecord = function () {
     define.dataParam.USER_FLAG = "1";
     define.dataParam.VOID_FLAG = "2";
     define.dataParam.USER_ROLE = [];
+    define.dataParam.ORGIDCASCADER = [];
 }
 
 define.showone = function (data, callback) {
@@ -66,6 +68,7 @@ define.showone = function (data, callback) {
         Data: { USERID: data }
     }, function (data) {
         $.extend(define.dataParam, data.user);
+        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.split(",");
         define.dataParam.USER_ROLE = data.userrole;
         callback && callback();
     });

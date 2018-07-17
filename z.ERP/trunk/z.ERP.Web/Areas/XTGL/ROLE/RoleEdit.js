@@ -80,7 +80,7 @@ editDetail.showOne = function (data, callback) {
             if (data.role != null) {
                 $.extend(editDetail.dataParam, data.role);
                 editDetail.dataParam.BILLID = data.role.ROLEID;
-
+                editDetail.dataParam.ORGIDCASCADER = editDetail.dataParam.ORGIDCASCADER.split(",");
                 var localMenu = [];
                 for (var j = 0; j < editDetail.screenParam.USERMODULE.length; j++) {
                     Vue.set(editDetail.screenParam.USERMODULE[j], '_checked', false);
