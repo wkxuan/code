@@ -263,6 +263,7 @@
     <Content Include="Areas\Pop\Pop\PopMerchantList.js" />
     <Content Include="Areas\Pop\Pop\PopContractList.js" />
     <Content Include="Areas\Pop\Pop\PopBillList.js" />
+    <Content Include="Areas\Pop\Pop\PopSysuserList.js" />
     <Content Include="Areas\Pop\Pop\PopRoleList.js" />
     <Content Include="Areas\Pop\Pop\PopFeeSubjectList.js" />
     <Content Include="Areas\Pop\Pop\PopShopList.cshtml" />
@@ -452,6 +453,7 @@
     <Content Include="Areas\SHGL\MERCHANT\Print.cshtml" />
     <Content Include="Areas\HTGL\LYHT_BG\LyHt_BgDetail.cshtml" />
     <Content Include="Areas\HTGL\LYHT_BG\LyHt_BgEdit.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopSysuser.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
