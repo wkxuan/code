@@ -7,7 +7,7 @@
         <i-col span="2" class="RowTitle">
             单据号
         </i-col>
-        <i-col span="6">
+        <i-col span="4">
             
             @{ 
                 RenderControl(new TextBoxRender()
@@ -19,7 +19,7 @@
         <i-col span="2" class="RowTitle">
             抄表日期起
         </i-col>
-        <i-col span="6">
+        <i-col span="4">
             @*<Date-Picker type="datetimerange" format="yyyy-MM-dd" v-model="searchParam.CHECK_DATE_START"></Date-Picker>*@
             @{
                 RenderControl(new DateBoxRender()
@@ -31,7 +31,7 @@
         <i-col span="2" class="RowTitle">
             抄表日期止
         </i-col>
-        <i-col span="6">
+        <i-col span="4">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -44,7 +44,7 @@
         <i-col span="2" class="RowTitle">
             开始年月
         </i-col>
-        <i-col span="6">
+        <i-col span="4">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -55,7 +55,7 @@
         <i-col span="2" class="RowTitle">
             结束年月
         </i-col>
-        <i-col span="6">
+        <i-col span="4">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -66,7 +66,7 @@
         <i-col span="2" class="RowTitle">
             状态
         </i-col>
-        <i-col span="6">
+        <i-col span="4">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -77,55 +77,98 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            登记人
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelSysuser",
+                    Text = "登记人",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
         </i-col>
-        <i-col span="6">
+        <i-col span="4">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.REPORTER"
+                    vModel = "searchParam.REPORTERNAME",
+                    Enable = false
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            登记时间_起
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.REPORTER_TIME_START"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            登记时间_止
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.REPORTER_TIME_END"
-                });
-            }
-        </i-col>
-    </row>
+
+            @* <i-col span="2" class="RowTitle">
+                登记人
+            </i-col>
+            <i-col span="4">
+                @{
+                    RenderControl(new TextBoxRender()
+                    {
+                        vModel = "searchParam.REPORTER"
+                    });
+                }
+            </i-col> *@
+            <i-col span="2" class="RowTitle">
+                登记时间_起
+            </i-col>
+            <i-col span="4">
+                @{
+                    RenderControl(new DateBoxRender()
+                    {
+                        vModel = "searchParam.REPORTER_TIME_START"
+                    });
+                }
+            </i-col>
+            <i-col span="2" class="RowTitle">
+                登记时间_止
+            </i-col>
+            <i-col span="4">
+                @{
+                    RenderControl(new DateBoxRender()
+                    {
+                        vModel = "searchParam.REPORTER_TIME_END"
+                    });
+                }
+            </i-col>
+</row>
     <row>
-        <i-col span="2" class="RowTitle">
+      @*  <i-col span="2" class="RowTitle">
             审核人
         </i-col>
-        <i-col span="6">
+        <i-col span="4">
             @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "searchParam.VERIFY"
                 });
             }
+        </i-col>  *@
+
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelSysuser",
+                    Text = "审核人",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
         </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.VERIFYNAME",
+                    Enable = false
+                });
+            }
+        </i-col>
+
         <i-col span="2" class="RowTitle">
             审核时间_起
         </i-col>
-        <i-col span="6">
+        <i-col span="4">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -136,7 +179,7 @@
         <i-col span="2" class="RowTitle">
             审核时间_止
         </i-col>
-        <i-col span="6">
+        <i-col span="4">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -148,4 +191,19 @@
 }
 
 
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopSysuser",
+                    Src = "screenParam.srcPopSysuser",
+                    Caption = "选择人员",
+                    Width = "800"
+                });
+            }
+        </i-col>
+    </row>
+}
 

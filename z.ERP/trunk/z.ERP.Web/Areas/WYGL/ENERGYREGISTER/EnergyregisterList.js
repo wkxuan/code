@@ -17,6 +17,12 @@
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "WyglService";
     search.method = "GetEnergyreGister";
+
+
+    search.screenParam.showPopSysuser = false;
+    search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
+    search.screenParam.popParam = {};
+    search.screenParam.USERNAME = "";
 }
 
 search.browseHref = function (row, index) {
@@ -32,3 +38,18 @@ search.modHref = function (row, index) {
     _.OpenPage("WYGL/ENERGYREGISTER/EnergyreGisterEdit/" + row.BILLID, function (data) {
     });
 }
+
+search.otherMethods = {
+    SelSysuser: function () {
+        search.screenParam.showPopSysuser = true;
+    }
+}
+
+//接收子页面返回值
+search.popCallBack = function (data) {
+    search.screenParam.showPopSysuser = false;
+    for (var i = 0; i < data.sj.length; i++) {
+        search.searchParam.REPORTER = data.sj[i].USERID;
+        search.searchParam.REPORTERNAME = data.sj[i].USERNAME;
+    };
+};
