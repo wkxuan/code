@@ -12,32 +12,19 @@ using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Attributes;
 
-namespace z.ERP.Web.Areas.HTGL.LYHT
+namespace z.ERP.Web.Areas.LYHT_BG.LyHt_Bg
 {
-    public class LYHTController : BaseController
+    public class LyHt_BgController : BaseController
     {
-        public ActionResult HtList()
+        public ActionResult LyHt_BgEdit(string Id)
         {
-            ViewBag.Title = "租约列表信息";
-            return View(new SearchRender()
-            {
-                Permission_Add = "10600101",
-                Permission_Del = "10600101",
-                Permission_Edit = "10600101",
-                Permission_Exec = "10600102",
-                Permission_Bg  = "10600103"
-            });
+            ViewBag.Title = "联营租约信息变更";
+            return View("LyHt_BgEdit", (EditRender)Id);
         }
 
-        public ActionResult HtEdit(string Id)
+        public ActionResult LyHt_BgDetail(string Id)
         {
-            ViewBag.Title = "联营租约信息编辑";
-            return View("HtEdit", (EditRender)Id);
-        }
-
-        public ActionResult HtDetail(string Id)
-        {
-            ViewBag.Title = "联营租约浏览";
+            ViewBag.Title = "联营租约变更浏览";
             var entity = service.HtglService.GetContractElement(new CONTRACTEntity(Id));
             ViewBag.contract = entity.Item1;
             ViewBag.contractBrand = entity.Item2;

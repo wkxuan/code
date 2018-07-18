@@ -10,14 +10,15 @@
             key: 'NAME', width: 200
         }];
     define.screenParam.dataDef = [];
-    define.service = "XtglService";
-    define.method = "GetFloorElement";
-    define.methodList = "GetFloor";
+    define.service = "DpglService";
+    define.method = "SearchFloor";
+    define.methodList = "SearchFloor";
     define.Key = 'ID';
 
     define.screenParam.componentVisible = false;
     define.screenParam.branchData = [];
     define.searchParam.BRANCHID = 0;
+    define.dataParam.ORGIDCASCADER = [];
     _.Ajax('GetBranch', {
         Data: { ID: "" }
     }, function (data) {
@@ -41,6 +42,7 @@ define.newRecord = function () {
         return;
     };
     define.dataParam.STATUS = 1;
+    define.dataParam.ORGIDCASCADER = [];
     define.dataParam.BRANCHID = define.searchParam.BRANCHID;
 }
 
@@ -64,3 +66,12 @@ define.mountedInit = function () {
     });
 }
 
+define.showone = function (data, callback) {
+    _.Ajax('GetFloor', {
+        Data: { ID: data }
+    }, function (data) {
+        $.extend(define.dataParam, data.floorelement);
+        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.split(",");
+        callback && callback();
+    });
+}

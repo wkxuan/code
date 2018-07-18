@@ -27,7 +27,7 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             设备名称
         </i-col>
@@ -55,7 +55,7 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="4" class="RowTitle">
             描述
         </i-col>
         <i-col span="6">
@@ -84,7 +84,7 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             倍率
         </i-col>
@@ -114,7 +114,7 @@
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">
+        <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             最后度数日期
         </i-col>
@@ -144,7 +144,7 @@
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">
+        <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             @{
                 RenderControl(new ButtonRender()
@@ -184,21 +184,31 @@
     </row>
 }
 
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@section search{
+    <row>
+        <i-col span="3" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.FILECODE",
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.FILENAME"
+                });
+            }
+        </i-col>
+    </row>
 }

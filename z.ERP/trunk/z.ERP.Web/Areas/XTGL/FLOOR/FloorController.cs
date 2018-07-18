@@ -52,5 +52,15 @@ namespace z.ERP.Web.Areas.XTGL.FLOOR
         {
             return new UIResult(service.DataService.GetBranch(Data));
         }
+        public UIResult GetFloor(FLOOREntity Data)
+        {
+            var res = service.DpglService.GetFloor(Data);
+            return new UIResult(
+                new
+                {
+                    floorelement = res.Item1
+                }
+                );
+        }
     }
 }

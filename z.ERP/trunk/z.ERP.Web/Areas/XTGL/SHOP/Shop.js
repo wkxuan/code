@@ -10,9 +10,9 @@
             key: 'NAME', width: 200
         }];
     define.screenParam.dataDef = [];
-    define.service = "XtglService";
-    define.method = "GetShopElement";
-    define.methodList = "GetShop";
+    define.service = "DpglService";
+    define.method = "SearchShop";
+    define.methodList = "SearchShop";
     define.Key = 'SHOPID';
     define.Data = [];
     define.screenParam.componentVisible = false;
@@ -20,6 +20,7 @@
     define.searchParam.BRANCHID = 0;
     define.screenParam.floorData = [];
     define.searchParam.FLOORID = 0;
+    define.dataParam.ORGIDCASCADER = [];
     _.Ajax('GetBranch', {
         Data: { ID: "" }
     }, function (data) {
@@ -47,6 +48,7 @@ define.newRecord = function () {
     define.dataParam.TYPE = 1;
     define.dataParam.STATUS = 2;
     define.dataParam.RENT_STATUS = 1;
+    define.dataParam.ORGIDCASCADER = [];
     define.dataParam.BRANCHID = define.searchParam.BRANCHID;
     define.dataParam.FLOORID = define.searchParam.FLOORID;
 }
@@ -58,8 +60,8 @@ define.otherMethods = {
         define.dataParam.SHOPID = "";
         define.dataParam.CODE = "";
         define.dataParam.NAME = "";
-        define.dataParam.ORGIDCASCADER = "";
-        define.dataParam.CATEGORYIDCASCADER = "";
+        define.dataParam.ORGIDCASCADER = [];
+        define.dataParam.CATEGORYIDCASCADER = [];
         define.dataParam.TYPE = "";
         define.dataParam.AREA_BUILD = "";
         define.dataParam.AREA_USABLE = "";
@@ -85,8 +87,8 @@ define.otherMethods = {
         define.dataParam.SHOPID = "";
         define.dataParam.CODE = "";
         define.dataParam.NAME = "";
-        define.dataParam.ORGIDCASCADER = "";
-        define.dataParam.CATEGORYIDCASCADER = "";
+        define.dataParam.ORGIDCASCADER = [];
+        define.dataParam.CATEGORYIDCASCADER = [];
         define.dataParam.TYPE = "";
         define.dataParam.AREA_BUILD = "";
         define.dataParam.AREA_USABLE = "";
@@ -111,5 +113,14 @@ define.mountedInit = function () {
     }, function (data) {
         Vue.set(define.screenParam, "ORGData", data.treeOrg.Obj);
         Vue.set(define.screenParam, "CATEGORYData", data.treeCategory.Obj);
+    });
+}
+define.showone = function (data, callback) {
+    _.Ajax('GetShop', {
+        Data: { SHOPID: data }
+    }, function (data) {
+        $.extend(define.dataParam, data.shopelement);
+        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.split(",");
+        callback && callback();
     });
 }

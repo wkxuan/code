@@ -2,6 +2,7 @@
 @using z.ERP.Entities.Enum
 @using z.ERP.Web.Areas.Layout.Search;
 @inherits SearchViewBase
+
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">商户代码</i-col>
@@ -35,17 +36,6 @@
         </i-col>
     </row>
     <row>
-        @*<i-col span="2" class="RowTitle">核算方式</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumCheckBoxListRender<核算方式>()
-                {
-                    vModel = "searchParam.STYLE",
-                    MultiSelect = true
-                });
-            }
-        </i-col>*@
-
         <i-col span="2" class="RowTitle">合同类型</i-col>
         <i-col span="6">
             @{

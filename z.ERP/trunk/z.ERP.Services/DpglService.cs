@@ -14,8 +14,70 @@ namespace z.ERP.Services
         internal DpglService()
         {
         }
-
-        public object GetShop(SHOPEntity Data)
+        public DataGridResult SearchFloor(SearchItem item)
+        {
+            string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
+            item.HasKey("ID,", a => sql += $" and A.ID = {a}");
+            item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
+            item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
+            sql += " ORDER BY  A.ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        /// <summary>
+        /// 可返回一行楼层记录或符合条件的所有记录
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public Tuple<dynamic,DataTable> GetFloor(FLOOREntity Data)
+        {
+            string sql = $@"select A.*,B.ORGIDCASCADER from FLOOR A,ORG B where A.ORGID=B.ORGID(+) ";
+            if (!Data.ID.IsEmpty())
+                sql += (" AND A.ID= " + Data.ID);
+            if (!Data.CODE.IsEmpty())
+                sql += (" AND A.CODE= " + Data.CODE);
+            if (!Data.NAME.IsEmpty())
+                sql += (" AND A.NAME like %" + Data.NAME+"%");
+            DataTable floor = DbHelper.ExecuteTable(sql);
+            return new Tuple<dynamic,DataTable>(floor.ToOneLine(),floor);
+        }
+        public DataGridResult SearchShop(SearchItem item)
+        {
+            string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME " +
+                   "  FROM SHOP A,CATEGORY B,ORG C,BRANCH D,FLOOR F "
+                   + " WHERE  A.CATEGORYID = B.CATEGORYID(+) and A.ORGID=C.ORGID(+)"
+                   + " and  A.BRANCHID = D.ID and A.FLOORID=F.ID";
+            item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
+            item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
+            item.HasKey("FLOORID", a => sql += $" and A.FLOORID = '{a}'");
+            sql += " ORDER BY  A.CODE";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        /// <summary>
+        /// 可返回一行店铺记录或符合条件的所有记录
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public Tuple<dynamic, DataTable> GetShop(SHOPEntity Data)
+        {
+            string sql = $@"SELECT  A.*,B.CATEGORYCODE,B.CATEGORYNAME,B.CATEGORYIDCASCADER,A.AREA_BUILD AREA,C.ORGIDCASCADER " +
+                   "  FROM SHOP A,CATEGORY B,ORG C WHERE  A.CATEGORYID = B.CATEGORYID(+) "
+                   + " and A.ORGID=C.ORGID(+)";
+            if (!Data.SHOPID.IsEmpty())
+                sql += (" AND A.SHOPID= " + Data.SHOPID);
+            if (!Data.CODE.IsEmpty())
+                sql += (" AND A.CODE= " + Data.CODE);
+            if (!Data.NAME.IsEmpty())
+                sql += (" AND A.NAME like %" + Data.NAME + "%");
+            DataTable shop = DbHelper.ExecuteTable(sql);
+            return new Tuple<dynamic, DataTable>(shop.ToOneLine(), shop);
+        }
+        public object GetOneShop(SHOPEntity Data)
         {
             string sql = " SELECT  A.* FROM SHOP A " +
                 "  WHERE  1=1 ";
@@ -138,6 +200,7 @@ namespace z.ERP.Services
             }
             return assetchange.BILLID;
         }
+
 
     }
 }

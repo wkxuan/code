@@ -47,11 +47,11 @@ namespace z.ERP.Services
             if (SaveData.OPERATERULE.ToInt() == (int)联营合同合作方式.扣点) {
                 foreach (var rent in SaveData.CONTRACT_RENT) {
                     if (rent.RENTS.ToDecimal() != 0) {
-                        throw new LogicException($"扣点形成的合同不应该有保底值!");
+                        throw new LogicException($"扣点形式的合同不应该有保底值!");
                     }
                     if (rent.RENTS_JSKL.ToDecimal() != 0)
                     {
-                        throw new LogicException($"扣点形成的合同不应该有保底扣率!");
+                        throw new LogicException($"扣点形式的合同不应该有保底扣率!");
                     }
                 }
             }
@@ -106,10 +106,10 @@ namespace z.ERP.Services
             {
                 throw new LogicException("请确认租约编号!");
             }
-            string sql = $@"SELECT A.*,B.NAME MERNAME,C.NAME FDNAME,D.ORGNAME  FROM CONTRACT A,MERCHANT B,";
-            sql += "   BRANCH C, ORG D WHERE A.MERCHANTID=B.MERCHANTID ";
+            string sql = $@"SELECT A.*,B.NAME MERNAME,C.NAME FDNAME,D.ORGNAME,E.CONTRACTID_OLD,E.JHRQ  FROM CONTRACT A,MERCHANT B,";
+            sql += "   BRANCH C, ORG D,CONTRACT_UPDATE E WHERE A.MERCHANTID=B.MERCHANTID AND A.CONTRACTID=E.CONTRACTID(+) ";
             sql += " AND A.BRANCHID=C.ID AND A.ORGID=D.ORGID ";
-            sql += (" AND CONTRACTID= " + Data.CONTRACTID);
+            sql += (" AND A.CONTRACTID= " + Data.CONTRACTID);
             DataTable contract = DbHelper.ExecuteTable(sql);
             if (!contract.IsNotNull())
             {

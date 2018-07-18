@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
 using z.Extensions;
+using z.Extensiont;
 using z.MVC5.Results;
 
 namespace z.ERP.Services
@@ -22,6 +20,9 @@ namespace z.ERP.Services
         {
             string sql = $@"select * from ENERGY_REGISTER where 1=1 ";
             item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
+            item.HasKey("REPORTER", a => sql += $" and REPORTER = '{a}'");
+            item.HasKey("VERIFY", a => sql += $" and VERIFY = '{a}'");
+            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
             item.HasKey("CHECK_DATE_START", a => sql += $" and CHECK_DATE>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             item.HasKey("CHECK_DATE_END", a => sql += $" and CHECK_DATE<= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             sql += " order by BILLID desc";

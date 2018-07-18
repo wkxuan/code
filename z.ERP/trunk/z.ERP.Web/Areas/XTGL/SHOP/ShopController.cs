@@ -62,5 +62,15 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
                 }
             );
         }
+        public UIResult GetShop(SHOPEntity Data)
+        {
+            var res = service.DpglService.GetShop(Data);
+            return new UIResult(
+                new
+                {
+                    shopelement = res.Item1
+                }
+                );
+        }
     }
 }

@@ -67,5 +67,15 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        /// <summary>
+        /// 计划变更时间
+        /// <summary>
+        [Field("计划变更时间")]
+        [DbType(DbType.DateTime)]
+        public string JHRQ
+        {
+            get; set;
+        }
     }
 }

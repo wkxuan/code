@@ -74,7 +74,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
         }
         public UIResult GetShop(SHOPEntity Data)
         {
-            return new UIResult(service.DpglService.GetShop(Data));
+            return new UIResult(service.DpglService.GetOneShop(Data));
         }
         [Permission("10400102")]
         public void ExecData(ASSETCHANGEEntity Data)
