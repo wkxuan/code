@@ -22,7 +22,10 @@
     search.screenParam.showPopSysuser = false;
     search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
     search.screenParam.popParam = {};
-    search.screenParam.USERNAME = "";
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTERNAME = "";
+    search.searchParam.VERIFY = "";
+    search.searchParam.VERIFYNAME = "";
 }
 
 search.browseHref = function (row, index) {
@@ -42,14 +45,26 @@ search.modHref = function (row, index) {
 search.otherMethods = {
     SelSysuser: function () {
         search.screenParam.showPopSysuser = true;
-    }
+        btnFlag = "REPORTER";
+    },
+    SelSysuser_sh: function () {
+        search.screenParam.showPopSysuser = true;
+        btnFlag = "VERIFY";
+}
 }
 
 //接收子页面返回值
 search.popCallBack = function (data) {
     search.screenParam.showPopSysuser = false;
     for (var i = 0; i < data.sj.length; i++) {
-        search.searchParam.REPORTER = data.sj[i].USERID;
-        search.searchParam.REPORTERNAME = data.sj[i].USERNAME;
+        if (btnFlag == "REPORTER") {
+            search.searchParam.REPORTER = data.sj[i].USERID;
+            search.searchParam.REPORTERNAME = data.sj[i].USERNAME;
+        }
+        else if (btnFlag == "VERIFY") {
+            search.searchParam.VERIFY = data.sj[i].USERID;
+            search.searchParam.VERIFYNAME = data.sj[i].USERNAME;
+    }
+
     };
 };

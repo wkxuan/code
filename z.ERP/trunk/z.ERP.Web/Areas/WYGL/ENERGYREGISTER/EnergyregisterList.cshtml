@@ -1,5 +1,6 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Web.Areas.Layout.Search
+@using z.ERP.Entities.Enum
 
 @inherits SearchViewBase
 @section conditionParam{
@@ -68,12 +69,24 @@
         </i-col>
         <i-col span="4">
             @{
+                RenderControl(new EnumCheckBoxListRender<普通单据状态>()
+                {
+                    vModel = "searchParam.STATUS",
+                    MultiSelect = true
+                });
+            }
+        </i-col>
+        @*<i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="4">
+            @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "searchParam.STATUS"
                 });
             }
-        </i-col>
+        </i-col>*@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
@@ -148,7 +161,7 @@
             @{
                 RenderControl(new ButtonRender()
                 {
-                    Click = "SelSysuser",
+                    Click = "SelSysuser_sh",
                     Text = "审核人",
                     Enable = true,
                     Type = "primary"
