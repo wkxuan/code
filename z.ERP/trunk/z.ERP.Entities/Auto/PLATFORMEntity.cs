@@ -1,6 +1,6 @@
 ﻿/*
  * 这是自动生成的代码文件，请勿做任何修改。
- * 生成时间：2018/3/22 0:39:17
+ * 生成时间：2018/7/17 23:59:28
  * 生成人：书房
  * 代码生成器版本号：1.2.6655.1027
  *
@@ -18,9 +18,10 @@ namespace z.ERP.Entities
         {
         }
 
-        public PLATFORMEntity(string id)
+        public PLATFORMEntity(string id, string match)
         {
             ID = id;
+            MATCH = match;
         }
 
         /// <summary>
@@ -35,6 +36,14 @@ namespace z.ERP.Entities
         /// 
         /// <summary>
         public string DOMAIN
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 
+        /// <summary>
+        [PrimaryKey]
+        public string MATCH
         {
             get; set;
         }

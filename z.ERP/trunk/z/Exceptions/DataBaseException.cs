@@ -14,12 +14,14 @@ namespace z.Exceptions
 
         }
 
-        public DataBaseException(string msg, string sql) : base(msg + "\r\n相关语句为：\r\n" + sql)
+        public DataBaseException(string msg, string sql) 
+            : base(msg + (ConfigExtension.TestModel ? ("\r\n相关语句为：\r\n" + sql) : ""))
         {
 
         }
 
-        public DataBaseException(string msg, string sql, object prams) : base(msg + "\r\n相关语句为：\r\n" + sql + "\r\n相关参数为：\r\n" + prams.ToJson())
+        public DataBaseException(string msg, string sql, object prams) 
+            : base(msg + (ConfigExtension.TestModel ? ("\r\n相关语句为：\r\n" + sql + "\r\n相关参数为：\r\n" + prams.ToJson()) : ""))
         {
 
         }

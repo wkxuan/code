@@ -29,9 +29,10 @@ namespace z.ERP.Services
                                     aa.pid,
                                     ab.id menuid,
                                     aa.name,
-                                  pf.domain||  ab.url url
-                               from menutree aa, menu ab,platform pf
-                              where  aa.menuid = ab.id(+)  and ab.platformid=pf.id(+)";
+                                    ab.url url,
+                                    ab.platformid
+                               from menutree aa, menu ab
+                              where  aa.menuid = ab.id(+)  ";
             if (int.Parse(employee.Id) > 0)
             {
                 sql += @" and (aa.menuid in (
@@ -46,13 +47,39 @@ namespace z.ERP.Services
             }
 
             sql += " order by aa.id  ";
-            return new DataGridResult(DbHelper.ExecuteTable(sql), 0);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            List<PLATFORMEntity> PlatFormList = DbHelper.SelectList(new PLATFORMEntity());
+            foreach (DataRow dr in dt.Rows)
+            {
+                string url = dr["URL"].ToString();
+                dr["PLATFORMID"].ToString().TryToInt(PlatFormId =>
+              {
+                  var pt = PlatFormList.Where(a => a.ID == PlatFormId.ToString()).FirstOrDefault(a => url.IsRegexMatch(a.MATCH));
+                  if (pt != null)
+                      dr["URL"] = pt.DOMAIN + url;
+              });
+            }
+            return new DataGridResult(dt, 0);
         }
 
 
-        public UIResult GetMenuNew(MENUTREEEntity data)
+        public UIResult GetMenuNew(MENUTREEEntity data, string host)
         {
             List<MENUTREEModule> MENU_GROUPList = new List<MENUTREEModule>();
+            List<PLATFORMEntity> PlatFormList = DbHelper
+                .SelectList(new PLATFORMEntity())
+                .GroupBy(a => a.ID)
+                .Select(a =>
+                {
+                    var pt = a.FirstOrDefault(b => host.IsRegexMatch(b.MATCH));
+                    if (pt == null)
+                        pt = a.First();
+                    return new PLATFORMEntity()
+                    {
+                        ID = a.Key,
+                        DOMAIN = pt.DOMAIN
+                    };
+                }).ToList();
 
             //子系统要多传递参数回来
             string sqlgroup = @" SELECT MODULECODE ID,MODULENAME NAME,ICON FROM USERMODULE WHERE LENGTH(MODULECODE)=4 ";
@@ -77,9 +104,10 @@ namespace z.ERP.Services
                     string sql = @" select aa.moduleid id,
                                     ab.id menuid,
                                     aa.modulename name,
-                                  pf.domain||  ab.url url
-                               from usermodule aa, menu ab,platform pf
-                              where  aa.menuid = ab.id and LENGTH(aa.MODULECODE)=6 and ab.platformid=pf.id(+) and aa.modulecode like  '" + menuGr.ID+"%'";
+                                    ab.url url,
+                                    ab.platformid
+                               from usermodule aa, menu ab
+                              where  aa.menuid = ab.id and LENGTH(aa.MODULECODE)=6 and aa.modulecode like  '" + menuGr.ID + "%'";
                     if (int.Parse(employee.Id) > 0)
                     {
                         sql += @" and aa.menuid in (
@@ -95,6 +123,16 @@ namespace z.ERP.Services
 
                     sql += " order by aa.modulecode  ";
                     DataTable menu = DbHelper.ExecuteTable(sql);
+                    foreach (DataRow dr in menu.Rows)
+                    {
+                        string url = dr["URL"].ToString();
+                        dr["PLATFORMID"].ToString().TryToInt(PlatFormId =>
+                        {
+                            var pt = PlatFormList.FirstOrDefault(a => a.ID == PlatFormId.ToString());
+                            if (pt != null)
+                                dr["URL"] = pt.DOMAIN + url;
+                        });
+                    }
                     menuGr.MENUList = menu.ToList<MENUEntity>();
 
                 };

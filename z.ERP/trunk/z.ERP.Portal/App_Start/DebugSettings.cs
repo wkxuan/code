@@ -16,8 +16,8 @@ namespace z.ERP.Web
         /// 只有调试时生效
         /// </summary>
         public static LoaclePage DefaultPage = new LoaclePage
-        ("HOME", "Login", "Login");
-     //  ("HOME", "Index", "Index");
-         //  ("HOME", "ChangePassword", "ChangePassword");
+        //("HOME", "Login", "Login");
+       ("HOME", "Index", "Index");
+        //  ("HOME", "ChangePassword", "ChangePassword");
     }
 }

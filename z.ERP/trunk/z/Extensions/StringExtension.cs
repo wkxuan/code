@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using z.Extensiont;
 
 namespace z.Extensions
 {
@@ -102,6 +103,37 @@ namespace z.Extensions
             int d;
             return str.IsInt(out d) ? d : defaultValue;
         }
+
+        /// <summary>
+        /// 字符串是否匹配当前表达式
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="reg"></param>
+        /// <returns></returns>
+        public static bool IsRegexMatch(this string text, string reg)
+        {
+            if (text.IsEmpty())
+                return false;
+            return Regex.IsMatch(text, reg);
+        }
+
+        /// <summary>
+        /// 匹配第一个符合的表达式
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="reg"></param>
+        /// <returns></returns>
+        public static string IsRegexMatch(this IEnumerable<string> text, string reg)
+        {
+            if (text.IsEmpty())
+                return null;
+            foreach (string str in text)
+            {
+                if (str.IsRegexMatch(reg))
+                    return str;
+            }
+            return null;
+        }
         #endregion
         #region 转换方法
 
@@ -114,6 +146,22 @@ namespace z.Extensions
         {
             int i = 0;
             int.TryParse(str, out i);
+            return i;
+        }
+
+        /// <summary>
+        /// 试图转换为数字
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="act">转换成功执行</param>
+        /// <returns></returns>
+        public static int TryToInt(this string str, Action<int> act)
+        {
+            int i = 0;
+            if (int.TryParse(str, out i))
+            {
+                act?.Invoke(i);
+            }
             return i;
         }
 
@@ -151,7 +199,7 @@ namespace z.Extensions
             Enum.TryParse(str, out res);
             return res;
         }
-        
+
         /// <summary>
         /// 转化为日期
         /// </summary>

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto\MENUTREEEntity.cs" />
+    <Compile Include="Auto\PLATFORMEntity.cs" />
     <Compile Include="Auto\SYSUSEREntity.cs" />
     <Compile Include="BILL_NOTICEEntity.cs" />
     <Compile Include="BILL_OBTAINEntity.cs" />

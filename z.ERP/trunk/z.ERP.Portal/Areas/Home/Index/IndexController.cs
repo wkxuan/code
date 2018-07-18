@@ -20,7 +20,8 @@ namespace z.ERP.Web.Areas.Home.Index
 
         public UIResult GetMenu(MENUTREEEntity data)
         {
-            return service.HomeService.GetMenuNew(data);
+            string host = Request.Url.Host;
+            return service.HomeService.GetMenuNew(data, host);
         }
     }
 }

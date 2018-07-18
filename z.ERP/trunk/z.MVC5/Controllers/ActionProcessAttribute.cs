@@ -32,16 +32,22 @@ namespace z.MVC5.Controllers
                         zExceptionBase ex = filterContext.Exception.GetInnerException() as zExceptionBase;
                         res = new UIResult()
                         {
-                            Flag = ex.Flag,
-                            Msg = ex.Message
+                            Data = new
+                            {
+                                Flag = ex.Flag,
+                                Msg = ex.Message
+                            }
                         };
                     }
                     else
                     {
                         res = new UIResult()
                         {
-                            Flag = -1,
-                            Msg = filterContext.Exception.InnerMessage()
+                            Data = new
+                            {
+                                Flag = -1,
+                                Msg = filterContext.Exception.InnerMessage()
+                            }
                         };
                     }
                     filterContext.Result = res;
