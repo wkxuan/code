@@ -63,11 +63,11 @@ namespace z.ERP.Services
         }
 
 
-        public UIResult GetMenuNew(MENUTREEEntity data, string host)
+        public UIResult GetMenuNew(MENUEntity data, string host)
         {
             List<MENUTREEModule> MENU_GROUPList = new List<MENUTREEModule>();
             List<PLATFORMEntity> PlatFormList = DbHelper
-                .SelectList(new PLATFORMEntity())
+                .SelectList(new PLATFORMEntity() { ID = data.PLATFORMID })
                 .GroupBy(a => a.ID)
                 .Select(a =>
                 {
@@ -90,7 +90,10 @@ namespace z.ERP.Services
                                         WHERE A.MENUID=B.MENUID AND B.ROLEID=C.ROLEID
                                         AND C.USERID=" + employee.Id + ")";
             }
-
+            if (int.Parse(data.PLATFORMID)==1)
+                sqlgroup += @" and MODULECODE like '02%'";
+            if (int.Parse(data.PLATFORMID) == 2)
+                sqlgroup += @" and MODULECODE like '05%'";
             sqlgroup += @" ORDER BY MODULECODE";
             DataTable menuGroup = DbHelper.ExecuteTable(sqlgroup);
 
