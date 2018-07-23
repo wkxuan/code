@@ -82,7 +82,7 @@ namespace z.ERP.Services
                 }).ToList();
 
             //子系统要多传递参数回来
-            string sqlgroup = @" SELECT MODULECODE ID,MODULENAME NAME,ICON FROM USERMODULE WHERE LENGTH(MODULECODE)=4 ";
+            string sqlgroup = @" SELECT MODULECODE ID,MODULENAME NAME,ICON FROM USERMODULE WHERE LENGTH(MODULECODE)=4  and ENABLE_FLAG=1";
             if (int.Parse(employee.Id) > 0)
             {
                 sqlgroup += @" and MODULECODE in (
@@ -110,7 +110,8 @@ namespace z.ERP.Services
                                     ab.url url,
                                     ab.platformid
                                from usermodule aa, menu ab
-                              where  aa.menuid = ab.id and LENGTH(aa.MODULECODE)=6 and aa.modulecode like  '" + menuGr.ID + "%'";
+                              where  aa.menuid = ab.id and LENGTH(aa.MODULECODE)=6 and aa.ENABLE_FLAG=1
+                                and aa.modulecode like  '" + menuGr.ID + "%'";
                     if (int.Parse(employee.Id) > 0)
                     {
                         sql += @" and aa.menuid in (
