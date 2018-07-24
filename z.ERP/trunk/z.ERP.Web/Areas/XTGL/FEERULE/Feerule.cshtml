@@ -37,7 +37,8 @@
     </row>
     <row>
         <i-col span="4" class="RowTitle">
-            缴费周期
+            <span class="mustElement">*</span>
+            缴费周期(月)
         </i-col>
         <i-col span="6">
             @{
@@ -52,22 +53,34 @@
     </row>
     <row>
         <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
             出单日期
         </i-col>
-        <i-col span="6">
+        <i-col span="3">
             @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.FEE_DAY",
-                    Id = "tb_advancecycle",
+                    Id = "tb_feeday",
                     Enable = false
                 });
             }
         </i-col>
+        <i-col span="1" class="RowTitle">或</i-col>
+        <i-col span="2">
+            @{ 
+                RenderControl(new EnumCheckBoxListRender<月末标记>()
+                {
+                    vModel = "dataParam.FEE_DAY",
+                    Enable = false, 
+                  });
+             }
+        </i-col>
     </row>
     <row>
         <i-col span="4" class="RowTitle">
-            提前周期
+            <span class="mustElement">*</span>
+            提前周期(月)
         </i-col>
         <i-col span="6">
             @{
@@ -82,9 +95,10 @@
     </row>
     <row>
         <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
             缴费截至日
         </i-col>
-        <i-col span="6">
+        <i-col span="3">
             @{ 
                 RenderControl(new TextBoxRender() {
                     vModel = "dataParam.UP_DATE",
@@ -93,11 +107,23 @@
                 });
             }
         </i-col>
+        <i-col span="1" class="RowTitle">或</i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new EnumCheckBoxListRender<月末标记>()
+                {
+                    vModel = "dataParam.UP_DATE",
+                    Enable = false,
+                });
+            }
+        </i-col>
+
     </row>
 
     <row>
         <i-col span="4" class="RowTitle">
-            缴费截至周期
+            <span class="mustElement">*</span>
+            缴费截至周期(月)
         </i-col>
         <i-col span="6">
             @{ 

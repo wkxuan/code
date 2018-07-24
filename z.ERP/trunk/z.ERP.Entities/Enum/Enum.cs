@@ -207,4 +207,9 @@ namespace z.ERP.Entities.Enum
         调整单 = 2,
         减免单 = 3
     }
+
+    public enum 月末标记
+    {
+        月末 = -1
+    }
 }

@@ -47,7 +47,11 @@ define.IsValidSave = function () {
     }
 
     if (!define.dataParam.FLAG) {
-        iview.Message.info("显示顺序不能为空!");
+        iview.Message.info("显示序号不能为空!");
+        return false;
+    }
+    if (isNaN(define.dataParam.FLAG)) {
+        iview.Message.info("显示序号必须为数字!");
         return false;
     }
     return true;

@@ -63,11 +63,11 @@ namespace z.ERP.Services
         }
 
 
-        public UIResult GetMenuNew(MENUTREEEntity data, string host)
+        public UIResult GetMenuNew(MENUEntity data, string host)
         {
             List<MENUTREEModule> MENU_GROUPList = new List<MENUTREEModule>();
             List<PLATFORMEntity> PlatFormList = DbHelper
-                .SelectList(new PLATFORMEntity())
+                .SelectList(new PLATFORMEntity() { ID = data.PLATFORMID })
                 .GroupBy(a => a.ID)
                 .Select(a =>
                 {
@@ -82,7 +82,7 @@ namespace z.ERP.Services
                 }).ToList();
 
             //子系统要多传递参数回来
-            string sqlgroup = @" SELECT MODULECODE ID,MODULENAME NAME,ICON FROM USERMODULE WHERE LENGTH(MODULECODE)=4 ";
+            string sqlgroup = @" SELECT MODULECODE ID,MODULENAME NAME,ICON FROM USERMODULE WHERE LENGTH(MODULECODE)=4  and ENABLE_FLAG=1";
             if (int.Parse(employee.Id) > 0)
             {
                 sqlgroup += @" and MODULECODE in (
@@ -90,7 +90,10 @@ namespace z.ERP.Services
                                         WHERE A.MENUID=B.MENUID AND B.ROLEID=C.ROLEID
                                         AND C.USERID=" + employee.Id + ")";
             }
-
+            if (int.Parse(data.PLATFORMID)==1)
+                sqlgroup += @" and MODULECODE like '02%'";
+            if (int.Parse(data.PLATFORMID) == 2)
+                sqlgroup += @" and MODULECODE like '05%'";
             sqlgroup += @" ORDER BY MODULECODE";
             DataTable menuGroup = DbHelper.ExecuteTable(sqlgroup);
 
@@ -107,7 +110,8 @@ namespace z.ERP.Services
                                     ab.url url,
                                     ab.platformid
                                from usermodule aa, menu ab
-                              where  aa.menuid = ab.id and LENGTH(aa.MODULECODE)=6 and aa.modulecode like  '" + menuGr.ID + "%'";
+                              where  aa.menuid = ab.id and LENGTH(aa.MODULECODE)=6 and aa.ENABLE_FLAG=1
+                                and aa.modulecode like  '" + menuGr.ID + "%'";
                     if (int.Parse(employee.Id) > 0)
                     {
                         sql += @" and aa.menuid in (

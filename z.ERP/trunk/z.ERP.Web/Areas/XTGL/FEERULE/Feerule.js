@@ -1,7 +1,7 @@
 ﻿define.beforeVue = function()
 {
     define.screenParam.colDef = [
-        { title: "代码", key: "ID", width: 200 },
+        { title: "代码", key: "ID", width: 100 },
         { title: "名称", key: "NAME", width: 220 },
     ];
     define.screenParam.dataDef = [];

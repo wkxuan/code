@@ -18,7 +18,7 @@ namespace z.ERP.Web.Areas.Home.Index
             return View();
         }
 
-        public UIResult GetMenu(MENUTREEEntity data)
+        public UIResult GetMenu(MENUEntity data)
         {
             string host = Request.Url.Host;
             return service.HomeService.GetMenuNew(data, host);

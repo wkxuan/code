@@ -26,7 +26,7 @@
             $item.children('.submenu').slideUp('fast');
         }
     });
-    GetLoadNav();
+    GetLoadNav(1);
     $('body').on('mouseenter', '#page-wrapper.nav-small #sidebar-nav .dropdown-toggle', function (e) {
         if ($(document).width() >= 992) {
             var $item = $(this).parent();
@@ -94,10 +94,12 @@
         }, 300);
     });
 });
-function GetLoadNav() {
+function GetLoadNav(systemid) {
 
     _.Ajax('GetMenu', {
-        Data: {}
+        Data: {
+            PLATFORMID: systemid
+        }
     }, function (data) {
         if (data) {
             var menus = data;
