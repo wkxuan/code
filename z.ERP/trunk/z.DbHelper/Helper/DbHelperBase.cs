@@ -486,6 +486,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int Delete(TableEntityBase info)
         {
+            Init();
             int res;
             _DeleteChildren(info);
             IDbDataParameter[] dbprams = info.GetPrimaryKey().Select(a =>
@@ -517,6 +518,7 @@ namespace z.DBHelper.Helper
             {
                 throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
             }
+            Done();
             return res;
         }
 
@@ -529,6 +531,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int DeleteList(TableEntityBase info)
         {
+            int res;
             PropertyInfo[] Allprop = info.GetAllField().Where(a =>
             {
                 return a.GetValue(info, null) != null;
@@ -549,12 +552,13 @@ namespace z.DBHelper.Helper
             _dbCommand.CommandText = string.Format(_delete, tablename, where);
             try
             {
-                return _dbCommand.ExecuteNonQuery();
+                res = _dbCommand.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
                 throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
             }
+            return res;
         }
 
         /// <summary>
