@@ -298,6 +298,9 @@
                         'on-enter': function (event) {
                             editDetail.dataParam.CONTRACT_RENT[params.index].PRICE = event.target.value;
                             Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'RENTS', (event.target.value * editDetail.dataParam.AREAR).toFixed(2));
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'CONTRACT_RENTITEM', []);
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'SUMRENTS', 0);
+                            
                         }
                     },
                 })
@@ -314,6 +317,8 @@
                         'on-enter': function (event) {
                             editDetail.dataParam.CONTRACT_RENT[params.index].RENTS = event.target.value;
                             Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'PRICE', (event.target.value / editDetail.dataParam.AREAR).toFixed(2));
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'CONTRACT_RENTITEM', []);
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'SUMRENTS', 0);
                         }
                     },
                 })
@@ -1171,7 +1176,7 @@ editDetail.IsValidSave = function () {
                 iview.Message.info("时间段结算信息结束日期不能大于租约结束日期!");
                 return false;
             };
-            if (!editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM) {
+            if ((!editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM) || (editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM.length == 0)) {
                 iview.Message.info("请生成月度分解信息!");
                 return false;
             };

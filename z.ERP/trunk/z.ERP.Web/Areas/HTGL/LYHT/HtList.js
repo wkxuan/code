@@ -105,11 +105,17 @@ search.bgHref = function (row, index) {
         return;
     }
     else {
-        _.OpenPage({
-            id: 10600103,
-            title: '变更联营租约',
-            url: "HTGL/LYHT_BG/LyHt_BgEdit/" + row.CONTRACTID
-        });
+        if (row.STATUS == 1) {
+            iview.Message.info('当前租约尚未审核，要修改请直接编辑!');
+            return;
+        }
+        else {
+            _.OpenPage({
+                id: 10600103,
+                title: '变更联营租约',
+                url: "HTGL/LYHT_BG/LyHt_BgEdit/" + row.CONTRACTID
+            });
+        }
     }
 }
 

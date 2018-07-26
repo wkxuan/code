@@ -1,0 +1,623 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Edit;
+@using z.ERP.Entities;
+@using z.ERP.Model;
+@using z.Extensions;
+@inherits EditViewBase<string>
+@section head{
+@InitFiles(new string[] {
+    "/Areas/Pop/PopMerchant.js",
+    "/Areas/Pop/PopBrand.js",
+    "/Areas/Pop/PopShop.js",
+    "/Areas/Pop/PopFeeSubject.js",
+    "/Areas/Pop/PopPay.js",
+});
+}
+
+@section baseParam{
+   <row>
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopMerchant", 
+                    Caption = "商户查询", 
+                    Width = "760",         
+                    PopLx = "Merchant",     
+                    CallBack = "MerchantBack", 
+                    ParentObj= "screenParam.ParentMerchant" 
+                });
+            }
+        </i-col>
+
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopBrand",
+                    Caption = "品牌查询",
+                    Width = "760",
+                    PopLx = "Brand",
+                    CallBack = "BrandBack",
+                    ParentObj = "screenParam.ParentBrand"
+                });
+            }
+        </i-col>
+
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopShop",
+                    Caption = "商铺查询",
+                    Width = "760",
+                    PopLx = "Shop",
+                    CallBack = "ShopBack",
+                    ParentObj = "screenParam.ParentShop"
+                });
+            }
+        </i-col>
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopFeeSubject",
+                    Caption = "费用项目查询",
+                    Width = "760",
+                    PopLx = "FeeSubject",
+                    CallBack = "FeeSubjectBack",
+                    ParentObj = "screenParam.ParentFeeSubject"
+                });
+            }
+        </i-col>
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopPayFeeSubject",
+                    Caption = "费用项目查询",
+                    Width = "760",
+                    PopLx = "FeeSubject",
+                    CallBack = "PayFeeSubjectBack",
+                    ParentObj = "screenParam.ParentFeeSubject"
+                });
+            }
+        </i-col>
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopPay",
+                    Caption = "收款方式查询",
+                    Width = "760",
+                    PopLx = "Pay",
+                    CallBack = "PayBack",
+                    ParentObj = "screenParam.ParentPay"
+                });
+            }
+        </i-col>
+    </row>  
+
+
+     <row>
+
+        <i-col span="2" class="RowTitle">
+            原合同号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACT_OLD",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+
+
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            变更日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.JHRQ",
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "Merchant",
+                    Text = "商户",
+                    Enable = false,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERCHANTID",
+                    Enable=false
+                });
+            }
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERNAME",
+                    Readonly="true"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            纸质编号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACTID_PAPER"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new EnumDropDownListRender<合同状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+
+        <i-col span="2" class="RowTitle">
+            核算方式
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new EnumDropDownListRender<核算方式>()
+                {
+                    vModel = "dataParam.STYLE",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            开始日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.CONT_START",
+                    Enable=false
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            结束日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.CONT_END",
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            招商部门
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.ORGID",
+                    ServiceMothod = m => m.org_zs(),
+                    Enable=false
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            合作方式
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.OPERATERULE",
+                    ServiceMothod = m => m.operrule()
+                });
+            }
+        </i-col>
+
+
+
+        <i-col span="2" class="RowTitle">
+            建筑面积
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.AREA_BUILD",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            租用面积
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.AREAR",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            租金收费规则
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.FEERULE_RENT",
+                    ServiceMothod = m => m.feeRule()
+                });
+            }
+        </i-col>
+
+
+        <i-col span="2" class="RowTitle">
+            周期方式
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<周期方式>()
+                {
+                    vModel = "dataParam.STANDARD"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            进项税率
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.JXSL",
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            销项税率
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.XXSL",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            其他条款
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION"
+                });
+            }
+        </i-col>
+    </row>
+}
+@section detailParam{
+    <row>
+        <i-col span="10">
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchColPP",
+                    Text = "选择品牌",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addColPP",
+                    Text = "添加一行品牌",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delColPP",
+                    Text = "删除品牌",
+                    Enable = true,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }
+            <i-table height="200" size="small" :border="true"
+                     :columns="screenParam.colDefPP" :data="dataParam.CONTRACT_BRAND" ref="selectBrand"></i-table>
+        </i-col>
+        <i-col span="14">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchColSHOP",
+                    Text = "选择商铺",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addColSHOP",
+                    Text = "添加一行商铺",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delColSHOP",
+                    Text = "删除商铺",
+                    Enable = true,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }
+            <i-table height="200" size="small" :border="true"
+                     :columns="screenParam.colDefSHOP" :data="dataParam.CONTRACT_SHOP" ref="selectShop"></i-table>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="24">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addColDefRENT",
+                    Text = "添加一行",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delColDefRENT",
+                    Text = "删除一行",
+                    Enable = true,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "operPeriod",
+                    Text = "按年度分解",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "decompose",
+                    Text = "分解月度数据",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            <i-table height="200" size="small" :border="true"
+                     :columns="screenParam.colDefRENT" :data="dataParam.CONTRACT_RENT" ref="selectRent"></i-table>
+        </i-col>
+    </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addColGroup",
+                    Text = "添加一行扣点组",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delColGroup",
+                    Text = "删除",
+                    Enable = true,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "autoMakeGroup",
+                    Text = "自动生成扣点信息",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addCONTJSKL",
+                    Text = "添加一行扣率信息",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+        </i-col>
+        <i-col span="8">
+            <i-table height="200" size="small" :border="true"
+                     :columns="screenParam.colGroup" :data="dataParam.CONTRACT_GROUP" ref="selectGroup"></i-table>
+        </i-col>
+        <i-col span="16">
+            <i-table height="200" size="small" :border="true"
+                     :columns="screenParam.colDefJskl" :data="dataParam.CONTJSKL"></i-table>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="24">
+            <i-table height="300" size="small" :border="true"
+                     :columns="screenParam.colDefRENTITEM" :data="dataParam.CONTRACT_RENT.CONTRACT_RENTITEM"></i-table>
+        </i-col>
+    </row>
+    <row>
+        <i-col>
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchCost",
+                    Text = "选择费用项目",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addColCost",
+                    Text = "添加一行",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delColCost",
+                    Text = "删除",
+                    Enable = true,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }
+        </i-col>
+        <i-col span="24">
+            <i-table height="300" size="small" :border="true"
+                     :columns="screenParam.colDefCOST" :data="dataParam.CONTRACT_COST" ref="selectCost"></i-table>
+        </i-col>
+    </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchPay",
+                    Text = "选择收款方式",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchPayCost",
+                    Text = "选择费用项目",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addColPay",
+                    Text = "添加一行",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delColPay",
+                    Text = "删除",
+                    Enable = true,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }
+
+        </i-col>
+        <i-col span="24">
+            <i-table height="300" size="small" :border="true"
+                     :columns="screenParam.colDefPAY" :data="dataParam.CONTRACT_PAY" ref="selectPay"></i-table>
+        </i-col>
+    </row>
+}

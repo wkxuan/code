@@ -7,8 +7,8 @@
     //添加时的初始化数据
     editDetail.dataParam.STATUS = 1;
     editDetail.dataParam.STYLE = 2;
-    editDetail.dataParam.JXSL = 0.17;
-    editDetail.dataParam.XXSL = 0.17;
+    editDetail.dataParam.JXSL = 0.16;
+    editDetail.dataParam.XXSL = 0.16;
 
 
     //初始化弹窗所要传递参数
