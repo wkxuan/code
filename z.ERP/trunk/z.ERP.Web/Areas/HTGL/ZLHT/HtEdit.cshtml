@@ -481,12 +481,23 @@
                     Icon = "plus-circled"
                 });
             }
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addCONTJSKL",
+                    Text = "添加一行扣率信息",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
         </i-col>
-        <i-col span="10">
+        <i-col span="8">
             <i-table height="200" size="small" :border="true"
                      :columns="screenParam.colGroup" :data="dataParam.CONTRACT_GROUP" ref="selectGroup"></i-table>
         </i-col>
-        <i-col span="14">
+        <i-col span="16">
             <i-table height="200" size="small" :border="true"
                      :columns="screenParam.colDefJskl" :data="dataParam.CONTJSKL"></i-table>
         </i-col>

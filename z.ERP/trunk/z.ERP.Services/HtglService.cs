@@ -315,6 +315,7 @@ namespace z.ERP.Services
 
                 foreach (var per in Period)
                 {
+                    double zts= Math.Abs((per.DATE_END.ToDateTime() - per.DATE_START.ToDateTime()).Days) + 1;
 
                     CONTRACT_RENTITEMEntity zjfj = new CONTRACT_RENTITEMEntity();
                     if ((per.DATE_START.ToDateTime() < ContractData.CONT_START.ToDateTime())
@@ -342,7 +343,15 @@ namespace z.ERP.Services
                             zjfj.RENTS = Math.Round(je * zjfjTs, 2, MidpointRounding.AwayFromZero).ToString();
                             break;
                         case 2://月租金
-                            zjfj.RENTS = je.ToString();
+                            if (zjfjTs != zts)
+                            {
+                                //30后期增加系统参数去处理
+                                zjfj.RENTS = (Math.Round(je / 30 * zjfjTs, 0, MidpointRounding.AwayFromZero)).ToString();
+                            }
+                            else {
+                                zjfj.RENTS = je.ToString();
+                            }
+                           
                             break;
                     };
                     foreach (var scrq in zjfjListGd)
