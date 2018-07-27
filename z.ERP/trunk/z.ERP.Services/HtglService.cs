@@ -44,7 +44,8 @@ namespace z.ERP.Services
                 throw new LogicException($"请核对招商部门与分店之间的关系!");
             };
             //选择是扣点的时候,不应该有保底数据
-            if (SaveData.OPERATERULE.ToInt() == (int)联营合同合作方式.扣点) {
+            if ((SaveData.OPERATERULE.ToInt() == (int)联营合同合作方式.扣点)
+                && (SaveData.STYLE.ToInt()==(int)核算方式.联营合同)) {
                 foreach (var rent in SaveData.CONTRACT_RENT) {
                     if (rent.RENTS.ToDecimal() != 0) {
                         throw new LogicException($"扣点形式的合同不应该有保底值!");
