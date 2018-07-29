@@ -84,6 +84,7 @@ namespace z.ERP.Services
             v.Require(a => a.STYLE);
             v.Require(a => a.JXSL);
             v.Require(a => a.XXSL);
+            v.Require(a => a.JSKL_GROUP);
 
             SaveData.JXSL = (SaveData.JXSL.ToDouble() / 100).ToString();
             SaveData.XXSL = (SaveData.XXSL.ToDouble() / 100).ToString();
@@ -120,8 +121,8 @@ namespace z.ERP.Services
         }
         public object ShowOneEdit(GOODSEntity Data)
         {
-            string sql = $@"select G.*,M.NAME SHMC,C.ALLID from GOODS G,MERCHANT M,GOODS_KINDPID C where G.MERCHANTID=M.MERCHANTID ";
-            sql += " AND G.KINDID=C.ID";
+            string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D";
+            sql += "  where G.MERCHANTID=M.MERCHANTID  AND G.KINDID=C.ID and G.BRANDID =D.ID ";
             if (!Data.GOODSID.IsEmpty())
                 sql += (" and G.GOODSID= " + Data.GOODSID);
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -136,11 +137,22 @@ namespace z.ERP.Services
                 sqlshop += (" and G.GOODSID= " + Data.GOODSID);
             DataTable dtshop = DbHelper.ExecuteTable(sqlshop);
 
+            string sql_jsklGroup = $@"SELECT * FROM CONTJSKL WHERE 1=1";
+            if (!dt.Rows[0]["CONTRACTID"].ToString().IsEmpty())
+                sql_jsklGroup += (" and CONTRACTID= " + dt.Rows[0]["CONTRACTID"].ToString());
+            if (!dt.Rows[0]["JSKL_GROUP"].ToString().IsEmpty())
+                sql_jsklGroup += (" and GROUPNO= " + dt.Rows[0]["JSKL_GROUP"].ToString());
+            sql_jsklGroup += "  order by GROUPNO";
+            DataTable jsklGroup = DbHelper.ExecuteTable(sql_jsklGroup);
+
             var result = new
             {
                 goods = dt,
                 goods_shop = new dynamic[] {
                    dtshop
+                },
+                goods_group = new dynamic[] {
+                   jsklGroup
                 }
             };
             return result;
@@ -162,10 +174,25 @@ namespace z.ERP.Services
             sql_shop += " order by S.CODE";
             DataTable shop = DbHelper.ExecuteTable(sql_shop);
 
+            string sql_jsklGroup = $@"SELECT GROUPNO value,JSKL label FROM CONTRACT_GROUP WHERE 1=1";
+            if (!Data.CONTRACTID.IsEmpty())
+                sql_jsklGroup += (" and CONTRACTID= " + Data.CONTRACTID);
+            sql_jsklGroup += "  order by GROUPNO";
+            DataTable jsklGroup = DbHelper.ExecuteTable(sql_jsklGroup);
+            DataTable jskl = null;
+            if (jsklGroup.Rows.Count == 1)
+            {
+                string sql_jskl = $@"SELECT * FROM CONTJSKL WHERE 1=1";
+                if (!Data.CONTRACTID.IsEmpty())
+                    sql_jskl += (" and CONTRACTID= " + Data.CONTRACTID);
+                sql_jskl += "  order by INX";
+                jskl = DbHelper.ExecuteTable(sql_jskl);
+            }
             var result = new
             {
                 contract = dt,
-                shop = shop
+                shop = shop,
+                jsklGroup = jskl
             };
 
             return result;

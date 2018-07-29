@@ -90,8 +90,19 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
+        public DataGridResult GetJsklGroup(SearchItem item)
+        {
+            string sql = $@"select * from CONTRACT_GROUP A where 1=1";
+            item.HasKey("GROUPNO", a => sql += $" and A.GROUPNO = '{a}'");
+            item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
+            item.HasKey("DESCRIPTION", a => sql += $" and A.DESCRIPTION like '%{a}%'");
+            sql += " ORDER BY  A.GROUPNO";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
 
-        
+
 
         public object GetBrand(BRANDEntity Data)
         {

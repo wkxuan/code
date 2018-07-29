@@ -1,22 +1,21 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Web.Areas.Layout.Edit
+@using z.ERP.Web.Areas.Layout.EditDetail;
 @using z.ERP.Entities.Enum
-@inherits EditViewBase<string>
+@inherits EditDetailViewBase<string>
 
 @section head{
 
     @InitFiles(new string[] {
     "/Areas/Pop/PopMerchant.js",
-    "/Areas/Pop/PopContract.js",
-    "/Areas/Pop/PopBrand.js",
-    "/Areas/Pop/PopShop.js",
-    "/Areas/Pop/PopFeeSubject.js",
+    //"/Areas/Pop/PopContract.js",
+    //"/Areas/Pop/PopBrand.js",
+    //"/Areas/Pop/PopJsklGroup.js",
 });
 }
 
 @section baseParam{
     <row>
-        <i-col>
+        @*<i-col>
             @{
                 RenderControl(new PopRender()
                 {
@@ -28,8 +27,8 @@
                     ParentObj = "screenParam.ParentContract"
                 });
             }
-        </i-col>
-        <i-col>
+        </i-col>*@
+        @*<i-col>
             @{
                 RenderControl(new PopRender()
                 {
@@ -41,7 +40,20 @@
                     ParentObj = "screenParam.ParentBrand"
                 });
             }
-        </i-col>
+        </i-col>*@
+        @*<i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopJsklGroup",
+                    Caption = "结算扣率组查询",
+                    Width = "760",
+                    PopLx = "JsklGroup",
+                    CallBack = "JsklGroupBack",
+                    ParentObj = "screenParam.ParentJsklGroup"
+                });
+            }
+        </i-col>*@
     </row>
     <row>
         @*<i-col span="2" class="RowTitle">
@@ -120,7 +132,7 @@
             @{
                 RenderControl(new ButtonRender()
                 {
-                    Click = "Contract",
+                    Click = "SelContract",
                     Text = "租约",
                     Enable = true,
                     Type = "primary"
@@ -176,7 +188,7 @@
             @{
                 RenderControl(new ButtonRender()
                 {
-                    Click = "Brand",
+                    Click = "SelBrand",
                     Text = "品牌",
                     Enable = true,
                     Type = "primary"
@@ -229,13 +241,22 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            地区
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelJsklGroup",
+                    Text = "结算扣率",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.REGION",
+                    vModel = "dataParam.JSKL_GROUP",
+                    Readonly = "true"
                 });
             }
         </i-col>
@@ -275,14 +296,77 @@
                     vModel = "dataParam.DESCRIPTION",
                 });
             }
-        </i-col>       
+        </i-col>   
+        <i-col span="2" class="RowTitle">
+            地区
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.REGION",
+                });
+            }
+        </i-col>            
     </row>
-
+    <row>
+        <i-col span="12">商铺</i-col>
+        <i-col span="12">扣率组</i-col>
+    </row>
+    <row>        
+        <i-col span="12">
+            <i-table size="small" :border="true"
+                 :columns="screenParam.colDef" :data="dataParam.GOODS_SHOP"></i-table>
+        </i-col>
+        <i-col span="12">
+             <i-table size="small" :border="true"
+                 :columns="screenParam.colDefGroup" :data="dataParam.GOODS_GROUP"></i-table>
+        </i-col>
+    </row>
 }
 
 @section detailParam{
+
+}
+
+@section pops{
     <row>
-        <i-table size="small" :border="true"
-                 :columns="screenParam.colDef" :data="dataParam.GOODS_SHOP"></i-table>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopJsklGroup",
+                    Caption = "选择扣率组",
+                    Width = "900",
+                    Src = "screenParam.srcPopJsklGroup"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopContract",
+                    Caption = "选择租约",
+                    Width = "900",
+                    Src = "screenParam.srcPopContract"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopBrand",
+                    Caption = "选择品牌",
+                    Width = "900",
+                    Src = "screenParam.srcPopBrand"
+                });
+            }
+        </i-col>
     </row>
 }

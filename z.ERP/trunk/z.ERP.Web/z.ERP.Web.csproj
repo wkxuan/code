@@ -262,6 +262,8 @@
     <Content Include="Areas\Pop\PopBrand.js" />
     <Content Include="Areas\Pop\PopMerchant.js" />
     <Content Include="Areas\Pop\PopContract.js" />
+    <Content Include="Areas\Pop\Pop\PopBrandList.js" />
+    <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
     <Content Include="Areas\Pop\Pop\PopMerchantList.js" />
     <Content Include="Areas\Pop\Pop\PopContractList.js" />
     <Content Include="Areas\Pop\Pop\PopBillList.js" />
@@ -458,6 +460,8 @@
     <Content Include="Areas\Pop\Pop\PopSysuserList.cshtml" />
     <Content Include="Areas\HTGL\ZLHT_BG\ZlHt_BgDetail.cshtml" />
     <Content Include="Areas\HTGL\ZLHT_BG\ZlHt_BgEdit.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopJsklGroupList.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopBrandList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
