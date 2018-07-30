@@ -56,10 +56,10 @@
     <i-col span="5">
         <div ref="tableHeight">
             <card  style="height:100%">
-                <p slot="title">列表信息</p>            
+              @*  <p slot="title">列表信息</p>  *@          
                 <i-table :highlight-row="true" size="small" :border="true"
                          :columns="screenParam.colDef" :data="screenParam.dataDef"
-                         v-on:on-current-change="showlist" :disabled="disabled" height="440"></i-table>
+                         v-on:on-current-change="showlist" :disabled="disabled" height="500"></i-table>
             </card>
         </div>
     </i-col>
@@ -67,7 +67,7 @@
     <i-col span="16">
         <div ref="cardHeigth">
             <card class="elementcard"  style="height:100%">
-                <p slot="title">包含元素</p>
+            @*    <p slot="title">包含元素</p>   *@
                 <row>
                     <i-col span="3" class="RowTitle">
                         POS终端号
@@ -119,7 +119,7 @@
                     </i-col>
                     <i-col span="10"> 
                         <i-table ref="selection" size="small" border
-                                  :columns="screenParam.payColDef" :data="screenParam.payDataDef" height="300"></i-table>
+                                  :columns="screenParam.payColDef" :data="screenParam.payDataDef" height="350"></i-table>
                     </i-col>
                 </row>
             </card>
