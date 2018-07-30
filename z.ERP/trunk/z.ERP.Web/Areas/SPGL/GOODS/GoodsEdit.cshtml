@@ -7,54 +7,10 @@
 
     @InitFiles(new string[] {
     "/Areas/Pop/PopMerchant.js",
-    //"/Areas/Pop/PopContract.js",
-    //"/Areas/Pop/PopBrand.js",
-    //"/Areas/Pop/PopJsklGroup.js",
-});
+    });
 }
 
 @section baseParam{
-    <row>
-        @*<i-col>
-            @{
-                RenderControl(new PopRender()
-                {
-                    vModel = "screenParam.PopContract",
-                    Caption = "合同查询",
-                    Width = "760",
-                    PopLx = "Contract",
-                    CallBack = "ContractBack",
-                    ParentObj = "screenParam.ParentContract"
-                });
-            }
-        </i-col>*@
-        @*<i-col>
-            @{
-                RenderControl(new PopRender()
-                {
-                    vModel = "screenParam.PopBrand",
-                    Caption = "品牌查询",
-                    Width = "760",
-                    PopLx = "Brand",
-                    CallBack = "BrandBack",
-                    ParentObj = "screenParam.ParentBrand"
-                });
-            }
-        </i-col>*@
-        @*<i-col>
-            @{
-                RenderControl(new PopRender()
-                {
-                    vModel = "screenParam.PopJsklGroup",
-                    Caption = "结算扣率组查询",
-                    Width = "760",
-                    PopLx = "JsklGroup",
-                    CallBack = "JsklGroupBack",
-                    ParentObj = "screenParam.ParentJsklGroup"
-                });
-            }
-        </i-col>*@
-    </row>
     <row>
         @*<i-col span="2" class="RowTitle">
             商品代码
@@ -78,7 +34,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
             类型
         </i-col>
         <i-col span="6">
@@ -91,7 +47,7 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle">
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
             名称
         </i-col>
         <i-col span="6">
@@ -114,7 +70,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
             经营方式
         </i-col>
         <i-col span="6">
@@ -128,7 +84,7 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle">
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
             @{
                 RenderControl(new ButtonRender()
                 {
@@ -184,7 +140,7 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle">
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
             @{
                 RenderControl(new ButtonRender()
                 {
@@ -201,6 +157,7 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.BRANDID",
+                    Readonly = "true"
                 });
             }
         </i-col>
@@ -209,10 +166,11 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.BRANDMC",
+                    Readonly = "true"
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
             商品分类
         </i-col>
         <i-col span="6">
@@ -240,12 +198,12 @@
 
     </row>
     <row>
-        <i-col span="2" class="RowTitle">
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
             @{
                 RenderControl(new ButtonRender()
                 {
                     Click = "SelJsklGroup",
-                    Text = "结算扣率",
+                    Text = "结算扣率组",
                     Enable = true,
                     Type = "primary"
                 });

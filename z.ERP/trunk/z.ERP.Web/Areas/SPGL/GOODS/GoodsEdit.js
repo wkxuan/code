@@ -120,7 +120,7 @@ editDetail.otherMethods = {
         editDetail.screenParam.showPopBrand = true;
     },
     Getpym: function () {
-        editDetail.dataParam.PYM = editDetail.dataParam.NAME.toPYM();
+        editDetail.dataParam.PYM = editDetail.dataParam.NAME.toPYM().substr(0,6);
     },
     changeKind: function (value, selectedData) {
         editDetail.dataParam.KINDID = value[value.length - 1];
@@ -195,14 +195,14 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请确认商户!");
         return false;
     };
-    if (!editDetail.dataParam.JXSL) {
-        iview.Message.info("请确认进项税率!");
-        return false;
-    };
-    if (!editDetail.dataParam.XXSL) {
-        iview.Message.info("请确认销项税率!");
-        return false;
-    };
+    //if (!editDetail.dataParam.JXSL) {
+    //    iview.Message.info("请确认进项税率!");
+    //    return false;
+    //};
+    //if (!editDetail.dataParam.XXSL) {
+    //    iview.Message.info("请确认销项税率!");
+    //    return false;
+    //};
     if (!editDetail.dataParam.BRANDID) {
         iview.Message.info("请确认品牌!");
         return false;
@@ -213,6 +213,10 @@ editDetail.IsValidSave = function () {
     };
     if (editDetail.dataParam.GOODS_SHOP.length == 0) {
         iview.Message.info("请确定商铺!");
+        return false;
+    }
+    if (!editDetail.dataParam.JSKL_GROUP) {
+        iview.Message.info("请确定扣率组!");
         return false;
     }
     return true;

@@ -158,6 +158,12 @@ namespace z.ERP.Entities.Enum
         品种 = 1,
         大类 = 2
     }
+    public enum 商品状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        淘汰 = 3,
+    }
     public enum 用户类型
     {
         收款员 = 1,

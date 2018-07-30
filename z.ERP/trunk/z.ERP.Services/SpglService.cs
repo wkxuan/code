@@ -5,6 +5,7 @@ using System.Linq;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
+using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
 
@@ -82,8 +83,8 @@ namespace z.ERP.Services
             v.Require(a => a.CONTRACTID);
             v.Require(a => a.MERCHANTID);
             v.Require(a => a.STYLE);
-            v.Require(a => a.JXSL);
-            v.Require(a => a.XXSL);
+            v.Require(a => a.BRANDID);
+            //v.Require(a => a.XXSL);
             v.Require(a => a.JSKL_GROUP);
 
             SaveData.JXSL = (SaveData.JXSL.ToDouble() / 100).ToString();
@@ -137,7 +138,8 @@ namespace z.ERP.Services
                 sqlshop += (" and G.GOODSID= " + Data.GOODSID);
             DataTable dtshop = DbHelper.ExecuteTable(sqlshop);
 
-            string sql_jsklGroup = $@"SELECT * FROM CONTJSKL WHERE 1=1";
+            string sql_jsklGroup = $@"SELECT L.CONTRACTID,L.GROUPNO,L.INX,to_char(L.STARTDATE,'YYYY.MM.DD') STARTDATE, " +
+                " to_char(L.ENDDATE,'YYYY.MM.DD') ENDDATE,L.SALES_START,L.SALES_END,L.JSKL   FROM CONTJSKL L WHERE 1=1 ";
             if (!dt.Rows[0]["CONTRACTID"].ToString().IsEmpty())
                 sql_jsklGroup += (" and CONTRACTID= " + dt.Rows[0]["CONTRACTID"].ToString());
             if (!dt.Rows[0]["JSKL_GROUP"].ToString().IsEmpty())
@@ -182,7 +184,8 @@ namespace z.ERP.Services
             DataTable jskl = null;
             if (jsklGroup.Rows.Count == 1)
             {
-                string sql_jskl = $@"SELECT * FROM CONTJSKL WHERE 1=1";
+                string sql_jskl = $@"SELECT L.CONTRACTID,L.GROUPNO,L.INX,to_char(L.STARTDATE,'YYYY.MM.DD') STARTDATE, " +
+                " to_char(L.ENDDATE,'YYYY.MM.DD') ENDDATE,L.SALES_START,L.SALES_END,L.JSKL   FROM CONTJSKL L WHERE 1=1 ";
                 if (!Data.CONTRACTID.IsEmpty())
                     sql_jskl += (" and CONTRACTID= " + Data.CONTRACTID);
                 sql_jskl += "  order by INX";
@@ -212,6 +215,25 @@ namespace z.ERP.Services
                     expand = true
                 })?.ToArray());
             return new Tuple<dynamic>(treeOrg);
+        }
+
+        public string ExecData(GOODSEntity Data)
+        {
+            GOODSEntity mer = DbHelper.Select(Data);
+            if (mer.STATUS == ((int)商品状态.审核).ToString())
+            {
+                throw new LogicException("商品(" + Data.GOODSDM+ ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                mer.VERIFY = employee.Id;
+                mer.VERIFY_NAME = employee.Name;
+                mer.VERIFY_TIME = DateTime.Now.ToString();
+                mer.STATUS = ((int)商品状态.审核).ToString();
+                DbHelper.Save(mer);
+                Tran.Commit();
+            }
+            return mer.GOODSDM;
         }
     }
 }
