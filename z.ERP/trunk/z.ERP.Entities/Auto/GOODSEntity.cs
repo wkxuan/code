@@ -210,5 +210,21 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        /// <summary>
+        /// 扣率组
+        /// <summary>
+        [Field("扣率组")]
+        public string JSKL_GROUP
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 品牌
+        /// <summary>
+        [Field("品牌")]
+        public string BRANDID
+        {
+            get; set;
+        }
     }
 }

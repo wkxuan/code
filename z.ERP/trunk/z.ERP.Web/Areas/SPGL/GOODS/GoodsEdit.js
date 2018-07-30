@@ -12,18 +12,38 @@
         { title: '业态名称', key: 'CATEGORYNAME', width: 100 },        
 
     ]
+    editDetail.screenParam.colDefGroup = [
+        { title: "时间段", key: "INX", width: 90, },
+        { title: '开始日期', key: 'STARTDATE', width: 100 },
+        { title: '结束日期', key: 'ENDDATE', width: 100 },
+        { title: '销售金额起', key: 'SALES_START', width: 100 },
+        { title: '销售金额止', key: 'SALES_END', width: 100 },
+        { title: '结算扣率', key: 'JSKL', width: 100 },
+
+    ]
 
     if (!editDetail.dataParam.GOODS_SHOP) {
         editDetail.dataParam.GOODS_SHOP = [{
             GOODSID: ""
         }]
     };
-
+    if (!editDetail.dataParam.GOODS_GROUP) {
+        editDetail.dataParam.GOODS_GROUP = [{
+            GOODSID: ""
+        }]
+    };
     //KINDID
     editDetail.screenParam.Kind = [];
-
-    editDetail.screenParam.ParentContract = {};
-    editDetail.screenParam.ParentBrand = {};
+    editDetail.screenParam.showPopJsklGroup = false;
+    editDetail.screenParam.srcPopJsklGroup = __BaseUrl + "/" + "Pop/Pop/PopJsklGroupList/";
+    editDetail.screenParam.showPopContract = false;
+    editDetail.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
+    editDetail.screenParam.showPopBrand = false;
+    editDetail.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
+    
+    //editDetail.screenParam.ParentContract = {};
+    //editDetail.screenParam.ParentBrand = {};
+    //editDetail.screenParam.ParentJsklGroup = {};
     
 }
 
@@ -35,8 +55,9 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILLID = data.goods[0].GOODSDM;
         editDetail.dataParam.KINDID = data.goods[0].KINDID;
         editDetail.dataParam.GOODS_SHOP = data.goods_shop[0];
+        editDetail.dataParam.GOODS_GROUP = data.goods_group[0];
 
-        var arr = data.goods[0].ALLID.split(",") || [];
+        var arr = data.goods[0].CODE.split(",") || [];
         console.log(arr);
         //editDetail.screenParam.Kind = arr;
         Vue.set(editDetail.screenParam, "Kind", arr);
@@ -69,6 +90,10 @@ editDetail.otherMethods = {
                 editDetail.dataParam.JXSL = data.contract[0].JXSL;
                 editDetail.dataParam.XXSL = data.contract[0].XXSL;
                 editDetail.dataParam.GOODS_SHOP = data.shop;
+                if (data.jsklGroup) {
+                    editDetail.dataParam.JSKL_GROUP = data.jsklGroup[0].GROUPNO;
+                    editDetail.dataParam.GOODS_GROUP = data.jsklGroup;
+                }
             }
             else
             {
@@ -79,42 +104,20 @@ editDetail.otherMethods = {
 
         })
 
+    },    
+    SelJsklGroup: function () {
+        if (!editDetail.dataParam.CONTRACTID) {
+            iview.Message.info("请选择租约!");
+            return;
+        };
+        editDetail.screenParam.showPopJsklGroup = true;
+        editDetail.screenParam.popParam = { CONTRACTID: editDetail.dataParam.CONTRACTID };
     },
-
-    //点击合同弹窗
-    Contract: function () {
-        Vue.set(editDetail.screenParam, "PopContract", true);
+    SelContract: function () {
+        editDetail.screenParam.showPopContract = true;
     },
-    //合同弹窗返回
-    ContractBack: function (val) {
-        Vue.set(editDetail.screenParam, "PopContract", false);
-        editDetail.dataParam.CONTRACTID = val.sj[0].CONTRACTID;
-        _.Ajax('GetContract', {
-            Data: { CONTRACTID: editDetail.dataParam.CONTRACTID }
-        }, function (data) {
-            if (data.contract.length > 0) {
-                editDetail.dataParam.MERCHANTID = data.contract[0].MERCHANTID;
-                editDetail.dataParam.STYLE = data.contract[0].STYLE;
-                editDetail.dataParam.STYLEMC = data.contract[0].STYLEMC;
-                editDetail.dataParam.SHMC = data.contract[0].SHMC;
-                editDetail.dataParam.GOODS_SHOP = data.shop;
-            }
-            else {
-                editDetail.dataParam.MERCHANTID = null;
-                editDetail.dataParam.SHMC = null;
-            }
-
-        })
-    },
-    //点击品牌
-    Brand: function () {
-        Vue.set(editDetail.screenParam, "PopBrand", true);
-    },
-    //品牌弹窗返回
-    BrandBack: function (val) {
-        Vue.set(editDetail.screenParam, "PopBrand", false);
-        editDetail.dataParam.BRANDID = val.sj[0].BRANDID;
-        editDetail.dataParam.BRANDMC = val.sj[0].NAME;
+    SelBrand: function () {
+        editDetail.screenParam.showPopBrand = true;
     },
     Getpym: function () {
         editDetail.dataParam.PYM = editDetail.dataParam.NAME.toPYM();
@@ -124,6 +127,47 @@ editDetail.otherMethods = {
     },
 }
 
+///接收弹窗返回参数
+editDetail.popCallBack = function (data) {
+    if (editDetail.screenParam.showPopJsklGroup) {
+        editDetail.screenParam.showPopJsklGroup = false;
+        editDetail.dataParam.JSKL_GROUP = data.sj[0].GROUPNO;
+    }
+    else if (editDetail.screenParam.showPopContract)
+    {
+        editDetail.dataParam.CONTRACTID = data.sj[0].CONTRACTID;
+        editDetail.screenParam.showPopContract = false;
+        _.Ajax('GetContract', {
+            Data: { CONTRACTID: editDetail.dataParam.CONTRACTID }
+        }, function (data) {
+            if (data.contract.length > 0) {
+                editDetail.dataParam.MERCHANTID = data.contract[0].MERCHANTID;
+                editDetail.dataParam.STYLE = data.contract[0].STYLE;
+                editDetail.dataParam.STYLEMC = data.contract[0].STYLEMC;
+                editDetail.dataParam.SHMC = data.contract[0].SHMC;
+                editDetail.dataParam.JXSL = data.contract[0].JXSL;
+                editDetail.dataParam.XXSL = data.contract[0].XXSL;
+                editDetail.dataParam.GOODS_SHOP = data.shop;
+                if (data.jsklGroup)
+                {
+                    editDetail.dataParam.JSKL_GROUP = data.jsklGroup[0].GROUPNO;
+                    editDetail.dataParam.GOODS_GROUP = data.jsklGroup;
+                }
+                
+            }
+            else {
+                editDetail.dataParam.MERCHANTID = null;
+                editDetail.dataParam.SHMC = null;
+            }
+        })
+    }
+    else if (editDetail.screenParam.showPopBrand)
+    {
+        editDetail.screenParam.showPopBrand = false;
+        editDetail.dataParam.BRANDID = data.sj[0].BRANDID;
+        editDetail.dataParam.BRANDMC = data.sj[0].NAME;
+    }
+}
 
 
 editDetail.IsValidSave = function () {
