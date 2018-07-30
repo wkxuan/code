@@ -136,6 +136,7 @@ editDetail.popCallBack = function (data) {
     else if (editDetail.screenParam.showPopContract)
     {
         editDetail.dataParam.CONTRACTID = data.sj[0].CONTRACTID;
+        editDetail.screenParam.showPopContract = false;
         _.Ajax('GetContract', {
             Data: { CONTRACTID: editDetail.dataParam.CONTRACTID }
         }, function (data) {
