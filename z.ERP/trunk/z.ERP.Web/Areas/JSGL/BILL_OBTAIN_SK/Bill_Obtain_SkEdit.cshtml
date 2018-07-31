@@ -1,63 +1,32 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Edit;
+@using z.ERP.Web.Areas.Layout.EditDetail;
 @using z.ERP.Entities;
-@inherits EditViewBase<string>
-@section head{
-
-    @InitFiles(new string[] {
-    "/Areas/Pop/PopMerchant.js",
-});
-}
+@inherits EditDetailViewBase<string>
 @section baseParam{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopRender()
-                {
-                    vModel = "screenParam.PopMerchant",
-                    Caption = "商户查询",
-                    Width = "760",
-                    PopLx = "Merchant",
-                    CallBack = "MerchantBack",
-                    ParentObj = "screenParam.ParentMerchant"
-                });
-            }
-        </i-col>
-
-    </row>
-
     <row>
         <i-col span="2" class="RowTitle">
             @{
                 RenderControl(new ButtonRender()
                 {
-                    Click = "Merchant",
+                    Click = "SelMerchant",
                     Text = "商户",
                     Enable = true,
                     Type = "primary"
                 });
             }
         </i-col>
-        <i-col span="2">
+        <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.MERCHANTID"
-                });
-            }
-        </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.MERNAME",
+                    vModel = "dataParam.MERCHANTNAME",
                     Readonly = "true"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            权债发生月
+            收款年月
         </i-col>
         <i-col span="6">
             @{
@@ -88,11 +57,12 @@
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
-                    vModel = "dataParam.TYPE",
-                    ServiceMothod = m => m.fkfs()
+                    vModel = "dataParam.PAYID",
+                    ServiceMothod = m => m.pay(),
                 });
             }
         </i-col>
+
         <i-col span="2" class="RowTitle">
             收款金额
         </i-col>
@@ -124,14 +94,13 @@
         @{
             RenderControl(new ButtonRender()
             {
-                Click = "screenParam.addCol",
-                Text = "添加一行",
+                Click = "SelBill",
+                Text = "选择账单",
                 Enable = true,
-                Type = "primary"
+                Type = "primary",
+                Icon = "plus-circled"
             });
         }
-    </row>
-    <row>
         <i-col span="24">
             <i-table size="small" :border="true"
                      :columns="screenParam.colDef" :data="dataParam.BILL_OBTAIN_ITEM"></i-table>
@@ -139,5 +108,32 @@
     </row>
 }
 
-
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopBill",
+                    Caption = "选择账单",
+                    Width = "900",
+                    Src = "screenParam.srcPopBill"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopMerchant",
+                    Caption = "选择商户",
+                    Width = "900",
+                    Src = "screenParam.srcPopMerchant"
+                });
+            }
+        </i-col>
+    </row>
+}
 

@@ -383,7 +383,7 @@ namespace z.ERP.Services
             DataTable billObtain = DbHelper.ExecuteTable(sql);
             billObtain.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT M.*,B.CONTRACTID,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY ,D.NAME TERMMC " +
+            string sqlitem = $@"SELECT M.*,B.CONTRACTID,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY ,D.NAME TERMMC,B.YEARMONTH " +
                 " FROM BILL_OBTAIN_ITEM M ,BILL B,CONTRACT C,FEESUBJECT D " +
                 " where M.FINAL_BILLID=B.BILLID(+) and B.CONTRACTID=C.CONTRACTID(+) and B.TERMID=D.TRIMID(+)";
             if (!Data.BILLID.IsEmpty())
