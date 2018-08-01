@@ -1,0 +1,18 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<ViewDropDownListRender>
+
+<i-select v-model="@Model.vModel" :disabled="@(!Model.UseEnable?"alwaysdisabled":(Model.Enable?"disabled":"!disabled"))">
+    @{
+        foreach (var item in Model.Data)
+        {
+            if (item.IsSelected || item.Key == Model.Value)
+            {
+                <i-option :value="@item.Key">@item.Value</i-option>
+            }
+            else
+            {
+                <i-option :value="@item.Key">@item.Value</i-option>
+            }
+        }
+    }
+</i-select>

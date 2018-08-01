@@ -21,6 +21,7 @@
     define.screenParam.floorData = [];
     define.searchParam.FLOORID = 0;
     define.dataParam.ORGIDCASCADER = [];
+    define.dataParam.enable = false
     _.Ajax('GetBranch', {
         Data: { ID: "" }
     }, function (data) {
@@ -46,7 +47,7 @@ define.newRecord = function () {
         return;
     };
     define.dataParam.TYPE = 1;
-    define.dataParam.STATUS = 2;
+    define.dataParam.STATUS = 1;
     define.dataParam.RENT_STATUS = 1;
     define.dataParam.ORGIDCASCADER = [];
     define.dataParam.BRANCHID = define.searchParam.BRANCHID;
@@ -120,7 +121,19 @@ define.showone = function (data, callback) {
         Data: { SHOPID: data }
     }, function (data) {
         $.extend(define.dataParam, data.shopelement);
-        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.split(",");
+        if (define.dataParam.ORGIDCASCADER != null)
+            define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.split(",");
+        if (define.dataParam.CATEGORYIDCASCADER != null)
+            define.dataParam.CATEGORYIDCASCADER = define.dataParam.CATEGORYIDCASCADER.split(",");
+        if (define.dataParam.STATUS == 2) {
+            define.myve.topbuttonVisible = define.isvisible(false);
+            //define.myve.disabled = define.enable(true);
+        }
+        else
+        {
+            define.myve.topbuttonVisible = define.isvisible(true);
+            //define.myve.disabled = define.enable(true);
+        }
         callback && callback();
     });
 }
