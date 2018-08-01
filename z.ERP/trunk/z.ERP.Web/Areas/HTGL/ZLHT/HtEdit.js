@@ -145,7 +145,7 @@
                     on: {
                         'on-blur': function (event) {
                             for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
-                                if (event.target.value = editDetail.dataParam.CONTRACT_RENT[i].INX) {
+                                if (event.target.value == editDetail.dataParam.CONTRACT_RENT[i].INX) {
                                     editDetail.dataParam.CONTJSKL[params.index].INX = event.target.value;
                                     Vue.set(editDetail.dataParam.CONTJSKL[params.index], 'STARTDATE', editDetail.dataParam.CONTRACT_RENT[i].STARTDATE);
                                     Vue.set(editDetail.dataParam.CONTJSKL[params.index], 'ENDDATE', editDetail.dataParam.CONTRACT_RENT[i].ENDDATE);
@@ -383,7 +383,7 @@
             },
         },
         {
-            title: '清算标记', key: 'QSBJ', width: 150,
+            title: '月清算标记', key: 'QSBJ', width: 150,
             render: function (h, params) {
                 return h('Select', {
                     props: {
@@ -406,8 +406,38 @@
                     }
                 },
                 [
-                    h('Option', { props: { value: "1" } }, '清算'),
-                    h('Option', { props: { value: "2" } }, '不清算')
+                    h('Option', { props: { value: "1" } }, '是'),
+                    h('Option', { props: { value: "2" } }, '否')
+                ])
+            }
+        },
+
+        {
+            title: '区间清算标记', key: 'QJQSBJ', width: 150,
+            render: function (h, params) {
+                return h('Select', {
+                    props: {
+                        value: params.row.QJQSBJ
+                    },
+                    on: {
+                        'on-change': function (event) {
+                            var len = 0;
+                            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                                var lenold = len;
+                                len += editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM.length;
+                                var colIndex = params.index + 1;
+
+                                if ((colIndex > lenold) && (colIndex <= len)) {
+                                    editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[params.index - lenold].QJQSBJ = event;
+                                    break;
+                                }
+                            };
+                        }
+                    }
+                },
+                [
+                    h('Option', { props: { value: "1" } }, '是'),
+                    h('Option', { props: { value: "2" } }, '否')
                 ])
             }
         },
@@ -492,9 +522,12 @@
                         }
                     }
                 },
-                [h('Option', { props: { value: 1 } }, '按日计算固定金额'),
-                  h('Option', { props: { value: 2 } }, '月固定金额')
-                ])
+                 [
+                    h('Option', { props: { value: 1 } }, '按日计算固定金额'),
+                    h('Option', { props: { value: 2 } }, '月固定金额'),
+                    h('Option', { props: { value: 3 } }, '按销售金额比例')
+                 ]
+                )
             }
         },
         {
@@ -524,6 +557,21 @@
                         'on-enter': function (event) {
                             editDetail.dataParam.CONTRACT_COST[params.index].COST = event.target.value;
                             Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'PRICE', (event.target.value / editDetail.dataParam.AREAR).toFixed(2));
+                        }
+                    },
+                })
+            },
+        },
+        {
+            title: "比例", key: 'KL', width: 100,
+            render: function (h, params) {
+                return h('Input', {
+                    props: {
+                        value: params.row.KL
+                    },
+                    on: {
+                        'on-blur': function (event) {
+                            Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'KL', event.target.value);
                         }
                     },
                 })
@@ -749,7 +797,8 @@ editDetail.otherMethods = {
             editDetail.dataParam.CONTRACT_COST.push({
                 INX: maxIndex,
                 TERMID: val.sj[i].TERMID,
-                NAME: val.sj[i].NAME
+                NAME: val.sj[i].NAME,
+                KL:0
             });
         };
     },
@@ -1295,6 +1344,29 @@ editDetail.IsValidSave = function () {
 
                 }
             };
+        };
+    };
+
+    if (editDetail.dataParam.CONTRACT_COST.length != 0) {
+        for (var i = 0; i < editDetail.dataParam.CONTRACT_COST.length; i++) {
+            if (!editDetail.dataParam.CONTRACT_COST[i].SFFS) {
+                iview.Message.info("请确定每月收费项目中的收费方式!");
+                return false;
+            };
+
+            if (((editDetail.dataParam.CONTRACT_COST[i].SFFS == 1)
+                || (editDetail.dataParam.CONTRACT_COST[i].SFFS == 2))
+                && ((!editDetail.dataParam.CONTRACT_COST[i].COST) || (editDetail.dataParam.CONTRACT_COST[i].COST <= 0))
+                ) {
+                iview.Message.info("请确定每月收费项目中的固定费用型收费方式对应的金额!");
+                return false;
+            }
+            if ((editDetail.dataParam.CONTRACT_COST[i].SFFS == 3)
+                && ((!editDetail.dataParam.CONTRACT_COST[i].KL) || (editDetail.dataParam.CONTRACT_COST[i].KL <= 0))
+                ) {
+                iview.Message.info("请确定每月收费项目中正确的销售金额比例!");
+                return false;
+            }
         };
     };
 

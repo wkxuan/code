@@ -105,5 +105,16 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        /// <summary>
+        /// 区间清算标记
+        /// <summary>
+        [Field("区间清算标记")]
+        public string QJQSBJ
+        {
+            get; set;
+        }
+
+        
     }
 }

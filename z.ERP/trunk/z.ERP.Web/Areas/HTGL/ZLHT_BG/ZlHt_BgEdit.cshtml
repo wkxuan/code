@@ -336,6 +336,20 @@
             }
         </i-col>
     </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            起始日清算
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<起始日清算>()
+                {
+                    vModel = "dataParam.QS_START"
+                });
+            }
+        </i-col>
+    </row>
     <row>
         <i-col span="2" class="RowTitle">
             其他条款
