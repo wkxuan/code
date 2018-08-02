@@ -208,7 +208,7 @@
         },
 
         {
-            title: "结束金额", key: 'SALES_END', width: 120,
+            title: "结束金额(包含)", key: 'SALES_END', width: 120,
             render: function (h, params) {
                 return h('Input', {
                     props: {
@@ -1327,16 +1327,11 @@ editDetail.IsValidSave = function () {
                 if(
                     (editDetail.dataParam.CONTJSKL[i].INX==editDetail.dataParam.CONTJSKL[j].INX)&&
                     (editDetail.dataParam.CONTJSKL[i].GROUPNO == editDetail.dataParam.CONTJSKL[j].GROUPNO) &&
-                    (j>=i)&&
+                    (j>i)&&
                     ((editDetail.dataParam.CONTJSKL[j].SALES_START < editDetail.dataParam.CONTJSKL[i].SALES_END)||
                       (editDetail.dataParam.CONTJSKL[j].SALES_END < editDetail.dataParam.CONTJSKL[i].SALES_END)||
                     (editDetail.dataParam.CONTJSKL[j].SALES_START < editDetail.dataParam.CONTJSKL[i].SALES_START) ||
                       (editDetail.dataParam.CONTJSKL[j].SALES_END < editDetail.dataParam.CONTJSKL[i].SALES_START)
-                    )
-                    &&
-                   ((editDetail.dataParam.CONTJSKL[i].SALES_START != editDetail.dataParam.CONTJSKL[j].SALES_START)
-                    ||
-                    (editDetail.dataParam.CONTJSKL[i].SALES_END != editDetail.dataParam.CONTJSKL[j].SALES_END)
                     )
                    ) {
                     iview.Message.info("扣率组销售额段之间有重叠!");
