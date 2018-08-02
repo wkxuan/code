@@ -136,7 +136,7 @@
     //扣率信息
     editDetail.screenParam.colDefJskl = [
         {
-            title: '时间段', key: 'INX', width: 80,
+            title: '时间段', key: 'INX', width: 100, sortable: true,
             render: function (h, params) {
                 return h('Input', {
                     props: {
@@ -161,7 +161,7 @@
             },
         },
         {
-            title: '扣点序号', key: 'GROUPNO', width: 100,
+            title: '扣点序号', key: 'GROUPNO', width: 120, sortable: true,
             render: function (h, params) {
                 return h('Input', {
                     props: {
@@ -176,7 +176,7 @@
             },
         },
         {
-            title: '开始日期', key: 'STARTDATE', width: 150,
+            title: '开始日期', key: 'STARTDATE', width: 140, sortable: true,
             render: function (h, params) {
                 if (this.row.STARTDATE) {
                     return h('div', new Date(this.row.STARTDATE).Format('yyyy-MM-dd'));
@@ -184,7 +184,7 @@
             }
         },
         {
-            title: '结束日期', key: 'ENDDATE', width: 150,
+            title: '结束日期', key: 'ENDDATE', width: 140,
             render: function (h, params) {
                 if (this.row.ENDDATE) {
                     return h('div', new Date(this.row.ENDDATE).Format('yyyy-MM-dd'));
@@ -1327,11 +1327,11 @@ editDetail.IsValidSave = function () {
                 if(
                     (editDetail.dataParam.CONTJSKL[i].INX==editDetail.dataParam.CONTJSKL[j].INX)&&
                     (editDetail.dataParam.CONTJSKL[i].GROUPNO == editDetail.dataParam.CONTJSKL[j].GROUPNO) &&
-                    (j>i)&&
-                    ((editDetail.dataParam.CONTJSKL[j].SALES_START < editDetail.dataParam.CONTJSKL[i].SALES_END)||
-                      (editDetail.dataParam.CONTJSKL[j].SALES_END < editDetail.dataParam.CONTJSKL[i].SALES_END)||
-                    (editDetail.dataParam.CONTJSKL[j].SALES_START < editDetail.dataParam.CONTJSKL[i].SALES_START) ||
-                      (editDetail.dataParam.CONTJSKL[j].SALES_END < editDetail.dataParam.CONTJSKL[i].SALES_START)
+                    (j>i) &&
+                    ((parseFloat(editDetail.dataParam.CONTJSKL[j].SALES_START) < parseFloat(editDetail.dataParam.CONTJSKL[i].SALES_END))||
+                      (parseFloat(editDetail.dataParam.CONTJSKL[j].SALES_END) < parseFloat(editDetail.dataParam.CONTJSKL[i].SALES_END))||
+                    (parseFloat(editDetail.dataParam.CONTJSKL[j].SALES_START) < parseFloat(editDetail.dataParam.CONTJSKL[i].SALES_START)) ||
+                      (parseFloat(editDetail.dataParam.CONTJSKL[j].SALES_END) < parseFloat(editDetail.dataParam.CONTJSKL[i].SALES_START))
                     )
                    ) {
                     iview.Message.info("扣率组销售额段之间有重叠!");
