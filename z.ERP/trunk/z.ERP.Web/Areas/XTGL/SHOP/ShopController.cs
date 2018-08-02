@@ -16,7 +16,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
             ViewBag.Title = "资产单元信息";
             return View(new DefineRender()
             {
-                Permission_Chk = "10100902"
+                Permission_Chk = "104004"
             });
         }
 
