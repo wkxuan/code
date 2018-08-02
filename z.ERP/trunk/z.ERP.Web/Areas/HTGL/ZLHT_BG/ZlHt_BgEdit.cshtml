@@ -102,6 +102,38 @@
             }
         </i-col>
     </row>  
+
+
+     <row>
+
+        <i-col span="2" class="RowTitle">
+            原合同号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACT_OLD",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+
+
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            变更日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.JHRQ",
+                });
+            }
+        </i-col>
+    </row>
+
     <row>
         <i-col span="2" class="RowTitle">
             @{
@@ -109,7 +141,7 @@
                 {
                     Click = "Merchant",
                     Text = "商户",
-                    Enable = true,
+                    Enable = false,
                     Type = "primary"
                 });
             }
@@ -118,7 +150,8 @@
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.MERCHANTID"
+                    vModel = "dataParam.MERCHANTID",
+                    Enable=false
                 });
             }
         </i-col>
@@ -180,6 +213,7 @@
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "dataParam.CONT_START",
+                    Enable=false
                 });
             }
         </i-col>
@@ -194,19 +228,6 @@
                 });
             }
         </i-col>
-
-        <i-col span="2" class="RowTitle">
-            原合同号
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CONTRACT_OLD",
-                    Readonly = "true"
-                });
-            }
-        </i-col>
     </row>
 
     <row>
@@ -218,7 +239,8 @@
                 RenderControl(new ServiceDropDownListRender()
                 {
                     vModel = "dataParam.ORGID",
-                    ServiceMothod = m => m.org_zs()
+                    ServiceMothod = m => m.org_zs(),
+                    Enable=false
                 });
             }
         </i-col>

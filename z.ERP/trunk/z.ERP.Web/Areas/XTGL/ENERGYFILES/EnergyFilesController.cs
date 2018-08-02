@@ -32,7 +32,7 @@ namespace z.ERP.Web.Areas.XTGL.ENERGYFILES
             v.Require(a => a.MULTIPLE);
             v.Require(a => a.PRICE);
             v.Require(a => a.VALUE_LAST);
-            v.Require(a => a.DESCRIPTION);
+         //   v.Require(a => a.DESCRIPTION);
             v.Verify();
             return CommonSave(DefineSave);
         }

@@ -90,8 +90,19 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
+        public DataGridResult GetJsklGroup(SearchItem item)
+        {
+            string sql = $@"select * from CONTRACT_GROUP A where 1=1";
+            item.HasKey("GROUPNO", a => sql += $" and A.GROUPNO = '{a}'");
+            item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
+            item.HasKey("DESCRIPTION", a => sql += $" and A.DESCRIPTION like '%{a}%'");
+            sql += " ORDER BY  A.GROUPNO";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
 
-        
+
 
         public object GetBrand(BRANDEntity Data)
         {
@@ -136,7 +147,8 @@ namespace z.ERP.Services
             };
         }
 
-        public object GetBill(BILLEntity Data)
+        //和下面重名
+        public object GetBill_Bak(BILLEntity Data)
         {
             string sql = " SELECT  A.BILLID,A.BRANCHID,A.MERCHANTID,A.CONTRACTID,A.TERMID,A.NIANYUE,A.YEARMONTH,A.MUST_MONEY "
                 +" ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION "
@@ -161,9 +173,10 @@ namespace z.ERP.Services
         public DataGridResult GetBill(SearchItem item)
         {
             string sql = " SELECT  A.BILLID,A.BRANCHID,A.MERCHANTID,A.CONTRACTID,A.TERMID,A.NIANYUE,A.YEARMONTH,A.MUST_MONEY "
-                + " ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION "
-                       + " FROM BILL A " +
-                "  WHERE  1=1 ";
+                + " ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION,B.NAME BRANCHNAME "
+                + " ,A.REPORTER_NAME,A.REPORTER_TIME,F.NAME TERMMC"
+                + " FROM BILL A,BRANCH B,FEESUBJECT F " +
+                "  WHERE  A.BRANCHID=B.ID  and A.TERMID =F.TRIMID";
             item.HasKey("BILLID", a => sql += $" and A.BILLID like '%{a}%'");
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID like '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");

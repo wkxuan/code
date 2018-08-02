@@ -102,9 +102,23 @@
         </i-col> 
     </row>
 
-    <row>
+    @*<row>
         <i-table size="small" :border="true"
                  :columns="colDef" :data="goodsData"></i-table>
+    </row>*@
+    <row>
+        <i-col span="12">商铺</i-col>
+        <i-col span="12">扣率组</i-col>
+    </row>
+    <row>        
+        <i-col span="12">
+            <i-table size="small" :border="true"
+                 :columns="colDef" :data="goodsData"></i-table>
+        </i-col>
+        <i-col span="12">
+             <i-table size="small" :border="true"
+                 :columns="colDefGroup" :data="goodsGroup"></i-table>
+        </i-col>
     </row>
 
 }
@@ -135,8 +149,16 @@
                     { title: "商铺代码", key: "CODE", width: 200,       },
                     { title: '业态代码', key: 'CATEGORYCODE', width: 200 },
                     { title: '业态名称', key: 'CATEGORYNAME', width: 200 },
+                ],colDefGroup :[
+                    { title: "时间段", key: "INX", width: 90, },
+                    { title: '开始日期', key: 'STARTDATE', width: 100 },
+                    { title: '结束日期', key: 'ENDDATE', width: 100 },
+                    { title: '销售金额起', key: 'SALES_START', width: 100 },
+                    { title: '销售金额止', key: 'SALES_END', width: 100 },
+                    { title: '结算扣率', key: 'JSKL', width: 100 },
                 ],
-                goodsData:[]
+                goodsData:[],
+                goodsGroup:[]
 
             },
             mounted:function(){
@@ -145,6 +167,7 @@
                     Data: { GOODSID: @goods.GOODSID }
                 }, function (data) {
                     _self.goodsData = data.goods_shop[0];
+                    _self.goodsGroup = data.goods_group[0];
                 });
             },
             methods: {

@@ -7,8 +7,8 @@
     //添加时的初始化数据
     editDetail.dataParam.STATUS = 1;
     editDetail.dataParam.STYLE = 2;
-    editDetail.dataParam.JXSL = 0.17;
-    editDetail.dataParam.XXSL = 0.17;
+    editDetail.dataParam.JXSL = 0.16;
+    editDetail.dataParam.XXSL = 0.16;
 
 
     //初始化弹窗所要传递参数
@@ -721,7 +721,7 @@ editDetail.otherMethods = {
         for (var i = 0; i <= yearsValue; i++) {
             var copyHtQsr = (beginHtq); 
             nestYear = getNextYears(beginHtq);
-            if (nestYear < (editDetail.dataParam.CONT_END)) { 
+            if (nestYear < (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd'))) {
                 rentData = {
                    INX: i + 1,
                    STARTDATE: copyHtQsr,
@@ -736,7 +736,7 @@ editDetail.otherMethods = {
                 rentData = {
                    INX: i + 1,
                    STARTDATE: copyHtQsr,
-                   ENDDATE: (editDetail.dataParam.CONT_END),
+                   ENDDATE: (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')),
                    RENTS: 0,
                    RENTS_JSKL: 0,
                    SUMRENTS: 0
@@ -756,10 +756,10 @@ editDetail.otherMethods = {
             if (editDetail.dataParam.CONTRACT_RENT[i].ENDDATE == undefined) {
                 iview.Message.info("日期段的结束日期不能为空");
                 return;
-            } else if (new Date(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE) > new Date(editDetail.dataParam.CONT_END)) {
+            } else if (new Date(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')) {
                 iview.Message.info("日期段中的结束日期不能大于租约结束日期");
                 return;
-            } else if (new Date(editDetail.dataParam.CONTRACT_RENT[i].STARTDATE) > new Date(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE)) {
+            } else if (new Date(editDetail.dataParam.CONTRACT_RENT[i].STARTDATE).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE).Format('yyyy-MM-dd')) {
                 iview.Message.info("日期段中结束日期不能小于开始日期");
                 return;
             }
@@ -1075,6 +1075,7 @@ function getNextYears(date) { //获取当前日前的下一年上一天
     var tomYear = new Date(date);
     tomYear.setFullYear(tomYear.getFullYear() + 1); //下一年的今天
     tomYear.setDate(tomYear.getDate() - 1); //下一年的昨天
+    var tomYear = new Date(tomYear).Format('yyyy-MM-dd');
     return (tomYear);
 };
 
@@ -1084,5 +1085,6 @@ function addDate(date, days) {
     }
     var lastDay = new Date(date); //日前复制防止原来日期发生变化
     lastDay.setDate(lastDay.getDate() + days); //日期加天数
+    var lastDay = new Date(lastDay).Format('yyyy-MM-dd');
     return lastDay;
 };

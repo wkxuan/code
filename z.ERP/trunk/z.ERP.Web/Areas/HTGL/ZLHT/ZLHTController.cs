@@ -24,7 +24,8 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                 Permission_Add = "10600201",
                 Permission_Edit = "10600201",
                 Permission_Del = "10600201",
-                Permission_Exec = "10600202"
+                Permission_Exec = "10600202",
+                Permission_Bg = "10600203"
             });
         }
 
@@ -94,6 +95,13 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         public void ExecData(CONTRACTEntity Data)
         {
             service.HtglService.ExecData(Data);
+        }
+
+
+        public UIResult SearchInit()
+        {
+            SearchItem item = new SearchItem();
+            return service.XtglService.GetFeeRule(item);
         }
 
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
+using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
 
@@ -82,8 +83,9 @@ namespace z.ERP.Services
             v.Require(a => a.CONTRACTID);
             v.Require(a => a.MERCHANTID);
             v.Require(a => a.STYLE);
-            v.Require(a => a.JXSL);
-            v.Require(a => a.XXSL);
+            v.Require(a => a.BRANDID);
+            //v.Require(a => a.XXSL);
+            v.Require(a => a.JSKL_GROUP);
 
             SaveData.JXSL = (SaveData.JXSL.ToDouble() / 100).ToString();
             SaveData.XXSL = (SaveData.XXSL.ToDouble() / 100).ToString();
@@ -120,8 +122,8 @@ namespace z.ERP.Services
         }
         public object ShowOneEdit(GOODSEntity Data)
         {
-            string sql = $@"select G.*,M.NAME SHMC,C.ALLID from GOODS G,MERCHANT M,GOODS_KINDPID C where G.MERCHANTID=M.MERCHANTID ";
-            sql += " AND G.KINDID=C.ID";
+            string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D";
+            sql += "  where G.MERCHANTID=M.MERCHANTID  AND G.KINDID=C.ID and G.BRANDID =D.ID ";
             if (!Data.GOODSID.IsEmpty())
                 sql += (" and G.GOODSID= " + Data.GOODSID);
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -136,11 +138,23 @@ namespace z.ERP.Services
                 sqlshop += (" and G.GOODSID= " + Data.GOODSID);
             DataTable dtshop = DbHelper.ExecuteTable(sqlshop);
 
+            string sql_jsklGroup = $@"SELECT L.CONTRACTID,L.GROUPNO,L.INX,to_char(L.STARTDATE,'YYYY.MM.DD') STARTDATE, " +
+                " to_char(L.ENDDATE,'YYYY.MM.DD') ENDDATE,L.SALES_START,L.SALES_END,L.JSKL   FROM CONTJSKL L WHERE 1=1 ";
+            if (!dt.Rows[0]["CONTRACTID"].ToString().IsEmpty())
+                sql_jsklGroup += (" and CONTRACTID= " + dt.Rows[0]["CONTRACTID"].ToString());
+            if (!dt.Rows[0]["JSKL_GROUP"].ToString().IsEmpty())
+                sql_jsklGroup += (" and GROUPNO= " + dt.Rows[0]["JSKL_GROUP"].ToString());
+            sql_jsklGroup += "  order by GROUPNO";
+            DataTable jsklGroup = DbHelper.ExecuteTable(sql_jsklGroup);
+
             var result = new
             {
                 goods = dt,
                 goods_shop = new dynamic[] {
                    dtshop
+                },
+                goods_group = new dynamic[] {
+                   jsklGroup
                 }
             };
             return result;
@@ -162,10 +176,26 @@ namespace z.ERP.Services
             sql_shop += " order by S.CODE";
             DataTable shop = DbHelper.ExecuteTable(sql_shop);
 
+            string sql_jsklGroup = $@"SELECT GROUPNO value,JSKL label FROM CONTRACT_GROUP WHERE 1=1";
+            if (!Data.CONTRACTID.IsEmpty())
+                sql_jsklGroup += (" and CONTRACTID= " + Data.CONTRACTID);
+            sql_jsklGroup += "  order by GROUPNO";
+            DataTable jsklGroup = DbHelper.ExecuteTable(sql_jsklGroup);
+            DataTable jskl = null;
+            if (jsklGroup.Rows.Count == 1)
+            {
+                string sql_jskl = $@"SELECT L.CONTRACTID,L.GROUPNO,L.INX,to_char(L.STARTDATE,'YYYY.MM.DD') STARTDATE, " +
+                " to_char(L.ENDDATE,'YYYY.MM.DD') ENDDATE,L.SALES_START,L.SALES_END,L.JSKL   FROM CONTJSKL L WHERE 1=1 ";
+                if (!Data.CONTRACTID.IsEmpty())
+                    sql_jskl += (" and CONTRACTID= " + Data.CONTRACTID);
+                sql_jskl += "  order by INX";
+                jskl = DbHelper.ExecuteTable(sql_jskl);
+            }
             var result = new
             {
                 contract = dt,
-                shop = shop
+                shop = shop,
+                jsklGroup = jskl
             };
 
             return result;
@@ -185,6 +215,25 @@ namespace z.ERP.Services
                     expand = true
                 })?.ToArray());
             return new Tuple<dynamic>(treeOrg);
+        }
+
+        public string ExecData(GOODSEntity Data)
+        {
+            GOODSEntity mer = DbHelper.Select(Data);
+            if (mer.STATUS == ((int)商品状态.审核).ToString())
+            {
+                throw new LogicException("商品(" + Data.GOODSDM+ ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                mer.VERIFY = employee.Id;
+                mer.VERIFY_NAME = employee.Name;
+                mer.VERIFY_TIME = DateTime.Now.ToString();
+                mer.STATUS = ((int)商品状态.审核).ToString();
+                DbHelper.Save(mer);
+                Tran.Commit();
+            }
+            return mer.GOODSDM;
         }
     }
 }

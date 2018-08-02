@@ -17,7 +17,10 @@
                 }
             </i-col>
         </span>
-        <i-col span="3" class="RowTitle">设备代码</i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            设备代码
+        </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -44,6 +47,28 @@
 
     <row>
         <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelShop",
+                    Text = "单元",
+                    Enable = false,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.SHOPCODE",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="4" class="RowTitle">
             出厂日期
         </i-col>
         <i-col span="6">
@@ -51,18 +76,6 @@
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "dataParam.FACTORY_DATE",
-                    Enable = false
-                });
-            }
-        </i-col>
-        <i-col span="4" class="RowTitle">
-            描述
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.DESCRIPTION",
                     Enable = false
                 });
             }
@@ -115,7 +128,7 @@
         </i-col>
 
         <i-col span="4" class="RowTitle">
-            <span class="mustElement">*</span>
+         @*   <span class="mustElement">*</span> *@
             最后度数日期
         </i-col>
         <i-col span="6">
@@ -142,30 +155,24 @@
                     Enable = false
                 });
             }
-        </i-col>
-
-        <i-col span="4" class="RowTitle">
-            <span class="mustElement">*</span>
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelShop",
-                    Text = "单元",
-                    Enable = false,
-                    Type = "primary"
-                });
-            }
+        </i-col><i-col span="4" class="RowTitle">
+            描述
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.SHOPCODE",
+                    vModel = "dataParam.DESCRIPTION",
                     Enable = false
                 });
             }
         </i-col>
     </row>
+<row>
+
+
+</row>
+
 }
 
 @section pops{

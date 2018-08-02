@@ -2,63 +2,23 @@
     editDetail.others = true;
     editDetail.branchid = true;
     editDetail.Key = 'BILLID';
-    //初始化弹窗所要传递参数
-    editDetail.screenParam.ParentMerchant = {};
-    //账单收款
+    //保证金收款
     editDetail.dataParam.TYPE = 3;
+    //初始化弹窗所要传递参数
+    editDetail.screenParam.showPopBill = false;
+    editDetail.screenParam.showPopMerchant = false;
+    editDetail.screenParam.srcPopBill = __BaseUrl + "/" + "Pop/Pop/PopBillList/";
+    editDetail.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+
+    editDetail.screenParam.popParam = {};
+
     editDetail.screenParam.colDef = [
-    {
-        title: "账单号", key: 'FINAL_BILLID', width: 160,
-        render: function (h, params) {
-            return h('div',
-                [
-            h('Input', {
-                props: {
-                    value: params.row.FINAL_BILLID
-                },
-                style: { marginRight: '5px', width: '80px' },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.BILL_OBTAIN_ITEM[params.index].FINAL_BILLID = event.target.value;
-                    }
-                },
-            }),
-                ])
-        },
-    },
+    { title: '账单号', key: 'FINAL_BILLID', width: 100 },
+    { title: '权债年月', key: 'YEARMONTH', width: 100 },
     { title: '租约号', key: 'CONTRACTID', width: 100 },
-    {
-        title: "类型", key: 'TYPE', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.TYPE
-                },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.BILL_OBTAIN_ITEM[params.index].TYPE = event.target.value;
-                    }
-                },
-            })
-        },
-    },
-   { title: '收费项目', key: 'TERMMC', width: 100 },
-    {
-        title: "应收金额", key: 'MUST_MONEY', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.MUST_MONEY
-                },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.BILL_OBTAIN_ITEM[params.index].MUST_MONEY = event.target.value;
-                    }
-                },
-            })
-        },
-    },
-   { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
+    { title: '收费项目', key: 'TERMMC', width: 150 },
+    { title: '应收金额', key: 'MUST_MONEY', width: 100 },
+    { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
     {
         title: "付款金额", key: 'RECEIVE_MONEY', width: 100,
         render: function (h, params) {
@@ -96,6 +56,7 @@
         }
     }
     ];
+
     if (!editDetail.dataParam.BILL_OBTAIN_ITEM) {
         editDetail.dataParam.BILL_OBTAIN_ITEM = [{
             FINAL_BILLID: "",
@@ -106,7 +67,7 @@
     editDetail.screenParam.addCol = function () {
         var temp = editDetail.dataParam.BILL_OBTAIN_ITEM || [];
         temp.push({});
-        editDetail.dataParam.BILL_OBTAIN_ITEM = temp;
+        editDetail.dataParam.BILL_OBTAIN__ITEM = temp;
     }
 }
 editDetail.showOne = function (data, callback) {
@@ -118,15 +79,97 @@ editDetail.showOne = function (data, callback) {
         callback && callback(data);
     });
 }
+
+///html中绑定方法
 editDetail.otherMethods = {
-    //点击商户弹窗
-    Merchant: function () {
-        Vue.set(editDetail.screenParam, "PopMerchant", true);
+    SelMerchant: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info("请选择分店!");
+            return;
+        };
+        editDetail.screenParam.showPopMerchant = true;
     },
-    //商户弹窗返回
-    MerchantBack: function (val) {
-        Vue.set(editDetail.screenParam, "PopMerchant", false);
-        editDetail.dataParam.MERCHANTID = val.sj[0].MERCHANTID;
-        editDetail.dataParam.MERNAME = val.sj[0].NAME;
-    },
+    SelBill: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info("请选择分店!");
+            return;
+        };
+        if (!editDetail.dataParam.MERCHANTID) {
+            iview.Message.info("请选择商户!");
+            return;
+        };
+        editDetail.screenParam.showPopBill = true;
+        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID };
+    }
+}
+
+///接收弹窗返回参数
+editDetail.popCallBack = function (data) {
+    if (editDetail.screenParam.showPopBill) {
+        editDetail.screenParam.showPopBill = false;
+        var sjitem = [];
+        for (var i = 0; i < data.sj.length; i++) {
+            sjitem.push({ FINAL_BILLID: data.sj[i].BILLID,YEARMONTH:data.sj[i].YEARMONTH,CONTRACTID:data.sj[i].CONTRACTID,
+                TERMMC:data.sj[i].TERMMC,
+                MUST_MONEY:data.sj[i].MUST_MONEY,
+                UNPAID_MONEY:data.sj[i].MUST_MONEY,
+                RECEIVE_MONEY: data.sj[i].MUST_MONEY,
+                TYPE:1
+            });
+            
+        }
+        editDetail.dataParam.BILL_OBTAIN_ITEM = sjitem;
+    }
+    else if (editDetail.screenParam.showPopMerchant) {
+        editDetail.screenParam.showPopMerchant = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
+            editDetail.dataParam.MERCHANTNAME = data.sj[i].NAME;
+        }
+    }
+}
+
+editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.YEARMONTH = null;
+    editDetail.dataParam.PAYID = null;
+    editDetail.dataParam.PAYNAME = null;
+    editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.MERCHANTNAME = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.BILL_OBTAIN_ITEM = [];
+}
+
+editDetail.IsValidSave = function () {
+
+
+    if (!editDetail.dataParam.BRANCHID) {
+        iview.Message.info("请选择分店!");
+        return false;
+    };
+    if (!editDetail.dataParam.MERCHANTID) {
+        iview.Message.info("请选择商户!");
+        return false;
+    };
+    if (!editDetail.dataParam.PAYID) {
+        iview.Message.info("请选择付款方式!");
+        return false;
+    };
+    if (!editDetail.dataParam.NIANYUE) {
+        iview.Message.info("请选择付款年月!");
+        return false;
+    };
+    if (editDetail.dataParam.BILL_OBTAIN_ITEM.length == 0) {
+        iview.Message.info("请录入账单信息!");
+        return false;
+    } else {
+        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
+            if (!editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY) {
+                iview.Message.info("请录入付款金额!");
+                return false;
+            };
+        };
+    };
+
+    return true;
 }

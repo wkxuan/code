@@ -15,7 +15,6 @@
     editDetail.screenParam.ParentShop = {};
     editDetail.screenParam.ParentFeeSubject = {};
     editDetail.screenParam.ParentPay = {};
-
     editDetail.screenParam.FEERULE = [];
 
     //品牌表格
@@ -354,7 +353,6 @@
             //    return h('div',
             //      new Date(this.row.CREATEDATE).Format('yyyy-MM-dd'));
             //}
-
             title: '生成日期',
             key: 'CREATEDATE',
             width: 150,
@@ -365,7 +363,6 @@
                     },
                     on: {
                         'on-change': function (event) {
-                            //  Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'CREATEDATE', event);
                             var len = 0;
                             for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
                                 var lenold = len;
@@ -513,21 +510,20 @@
             render: function (h, params) {
                 return h('Select',
                     {
-                    props: {
-                        value: params.row.SFFS
-                    },
-                    on: {
-                        'on-change': function (event) {
-                            Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'SFFS', event);
+                        props: {
+                            value: params.row.SFFS
+                        },
+                        on: {
+                            'on-change': function (event) {
+                                Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'SFFS', event);
+                            }
                         }
-                    }
-                },
-                 [
+                    },
+                [
                     h('Option', { props: { value: 1 } }, '按日计算固定金额'),
                     h('Option', { props: { value: 2 } }, '月固定金额'),
                     h('Option', { props: { value: 3 } }, '按销售金额比例')
-                 ]
-                )
+                ])
             }
         },
         {
@@ -571,7 +567,7 @@
                     },
                     on: {
                         'on-blur': function (event) {
-                            Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'KL', event.target.value);
+                            editDetail.dataParam.CONTRACT_COST[params.index].KL = event.target.value;
                         }
                     },
                 })
@@ -611,15 +607,15 @@
             render: function (h, params) {
                 return h('Select',
                     {
-                    props: {
-                        value: params.row.IF_RENT_FEERULE
-                    },
-                    on: {
-                        'on-change': function (event) {
-                            Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'IF_RENT_FEERULE', event);
+                        props: {
+                            value: params.row.IF_RENT_FEERULE
+                        },
+                        on: {
+                            'on-change': function (event) {
+                                Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'IF_RENT_FEERULE', event);
+                            }
                         }
-                    }
-                },
+                    },
                 [
                     h('Option', { props: { value: 1 } }, '是'),
                     h('Option', { props: { value: 2 } }, '否')
@@ -797,8 +793,7 @@ editDetail.otherMethods = {
             editDetail.dataParam.CONTRACT_COST.push({
                 INX: maxIndex,
                 TERMID: val.sj[i].TERMID,
-                NAME: val.sj[i].NAME,
-                KL:0
+                NAME: val.sj[i].NAME
             });
         };
     },
@@ -982,15 +977,13 @@ editDetail.otherMethods = {
         var yearsValue = getYears(new Date(editDetail.dataParam.CONT_START), new Date(editDetail.dataParam.CONT_END));
         var nestYear = null;
         var rentData = null;
-
-        
         var beginHtq = editDetail.dataParam.CONT_START;
 
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
             var copyHtQsr = (beginHtq);
             nestYear = getNextYears(beginHtq);
-            if (nestYear < (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd'))) {
+            if (nestYear < (editDetail.dataParam.CONT_END)) {
                 rentData = {
                     INX: i + 1,
                     STARTDATE: copyHtQsr,
@@ -1005,7 +998,7 @@ editDetail.otherMethods = {
                 rentData = {
                     INX: i + 1,
                     STARTDATE: copyHtQsr,
-                    ENDDATE: (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')),
+                    ENDDATE: (editDetail.dataParam.CONT_END),
                     RENTS: 0,
                     RENTS_JSKL: 0,
                     SUMRENTS: 0
@@ -1026,10 +1019,10 @@ editDetail.otherMethods = {
             if (editDetail.dataParam.CONTRACT_RENT[i].ENDDATE == undefined) {
                 iview.Message.info("日期段的结束日期不能为空");
                 return;
-            } else if (new Date(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')) {
+            } else if (new Date(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE) > new Date(editDetail.dataParam.CONT_END)) {
                 iview.Message.info("日期段中的结束日期不能大于租约结束日期");
                 return;
-            } else if (new Date(editDetail.dataParam.CONTRACT_RENT[i].STARTDATE).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE).Format('yyyy-MM-dd')) {
+            } else if (new Date(editDetail.dataParam.CONTRACT_RENT[i].STARTDATE) > new Date(editDetail.dataParam.CONTRACT_RENT[i].ENDDATE)) {
                 iview.Message.info("日期段中结束日期不能小于开始日期");
                 return;
             }
@@ -1243,6 +1236,17 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请选择商户!");
         return false;
     };
+
+    if (!editDetail.dataParam.JHRQ) {
+        iview.Message.info("请维护变更日期!");
+        return false;
+    };
+
+    if (new Date(editDetail.dataParam.JHRQ).Format('yyyy-MM-dd') < new Date().Format('yyyy-MM-dd')) {
+        iview.Message.info("变更日期不能小于当前日期!");
+        return false;
+    };
+
     if (!editDetail.dataParam.CONT_START) {
         iview.Message.info("请维护开始日期!");
         return false;
@@ -1304,7 +1308,6 @@ editDetail.IsValidSave = function () {
                 iview.Message.info("请生成月度分解信息!");
                 return false;
             };
-
             if (editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM.length > 0) {
                 for (var j = 0; j < editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM.length; j++) {
                     if (!editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[j].CREATEDATE) {
@@ -1390,7 +1393,11 @@ editDetail.IsValidSave = function () {
             };
         };
     };
-
+    editDetail.dataParam.CONTRACT_UPDATE = [];
+    editDetail.dataParam.CONTRACT_UPDATE.push({
+        CONTRACTID_OLD: editDetail.dataParam.CONTRACT_OLD,
+        JHRQ: editDetail.dataParam.JHRQ
+    });
     return true;
 }
 
@@ -1401,7 +1408,18 @@ editDetail.showOne = function (data, callback) {
         Data: { CONTRACTID: data }
     }, function (data) {
         $.extend(editDetail.dataParam, data.contract);
-        editDetail.dataParam.BILLID = data.contract.CONTRACTID;
+        if (!data.contract.CONTRACT_OLD) {
+            editDetail.dataParam.BILLID = null;
+            editDetail.dataParam.CONTRACTID = null;
+            editDetail.dataParam.CONTRACT_OLD = data.contract.CONTRACTID;
+        }
+        else {
+            editDetail.dataParam.BILLID = data.contract.CONTRACTID;
+            editDetail.dataParam.CONTRACT_OLD = data.contract.CONTRACT_OLD;
+        };
+
+
+
         editDetail.dataParam.CONTRACT_BRAND = data.contractBrand;
         editDetail.dataParam.CONTRACT_SHOP = data.contractShop;
         editDetail.dataParam.CONTRACT_RENT = data.ContractParm.CONTRACT_RENT;
@@ -1413,7 +1431,6 @@ editDetail.showOne = function (data, callback) {
         callback && callback(data);
     });
 };
-
 editDetail.mountedInit = function () {
     _.Ajax('SearchInit', {
         Data: {}
@@ -1432,8 +1449,6 @@ function getNextYears(date) { //获取当前日前的下一年上一天
     var tomYear = new Date(date);
     tomYear.setFullYear(tomYear.getFullYear() + 1); //下一年的今天
     tomYear.setDate(tomYear.getDate() - 1); //下一年的昨天
-
-    var tomYear = new Date(tomYear).Format('yyyy-MM-dd');
     return (tomYear);
 };
 
@@ -1443,6 +1458,5 @@ function addDate(date, days) {
     }
     var lastDay = new Date(date); //日前复制防止原来日期发生变化
     lastDay.setDate(lastDay.getDate() + days); //日期加天数
-    var lastDay = new Date(lastDay).Format('yyyy-MM-dd');
-    return    lastDay;
+    return lastDay;
 };
