@@ -41,7 +41,7 @@
                     PermissionKey = Model?.Permission_Add
                 });
             }
-        <span v-show="topbuttonVisible">
+        <span v-show="topbtnModVisible">
             @{
                 RenderControl(new ButtonRender()
                 {
@@ -81,7 +81,7 @@
                     Type = "error"
                 });
             }*@
-            <span v-show="topbuttonVisible">
+            <span v-show="topbtnChkVisible">
                 @{
                     RenderControl(new ButtonRender()
                     {

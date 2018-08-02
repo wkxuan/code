@@ -5,6 +5,7 @@
 
     this.enabled = function (val) { return val; }
     this.isvisible = function (val) { return val; }
+    this.btnChkvisible = false;
     this.alwaysenabled = true;
     this.IsValidSave = function () {
         return true;
@@ -29,7 +30,8 @@
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 disabled: _this.enabled(true),
-                topbuttonVisible: _this.isvisible(true),
+                topbtnModVisible: _this.isvisible(true),
+                topbtnChkVisible: _this.btnChkvisible,
                 alwaysdisabled: _this.alwaysenabled,
                 _key: undefined,
                 tableH: 500
@@ -138,12 +140,16 @@
                 },
                 chk: function (event) {
                     var _self = this;
+                    if (!ve._key) {
+                        _self.$Message.error("请选择数据");
+                        return;
+                    };
                     if (!_this.IsValidSave())
                         return;
                     check(function (data) {
                         showlist(function () {
                             _this.showone(data, function () {
-                                ve.disabled = _this.enabled(false);
+                                //ve.disabled = _this.enabled(false);
                                 ve.dataParam = _this.dataParam;
                                 _self.$Message.info("审核成功");
                             });

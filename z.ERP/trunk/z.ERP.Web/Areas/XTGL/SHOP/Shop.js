@@ -21,7 +21,7 @@
     define.screenParam.floorData = [];
     define.searchParam.FLOORID = 0;
     define.dataParam.ORGIDCASCADER = [];
-    define.dataParam.enable = false
+    define.btnChkvisible = true;
     _.Ajax('GetBranch', {
         Data: { ID: "" }
     }, function (data) {
@@ -126,13 +126,13 @@ define.showone = function (data, callback) {
         if (define.dataParam.CATEGORYIDCASCADER != null)
             define.dataParam.CATEGORYIDCASCADER = define.dataParam.CATEGORYIDCASCADER.split(",");
         if (define.dataParam.STATUS == 2) {
-            define.myve.topbuttonVisible = define.isvisible(false);
-            //define.myve.disabled = define.enable(true);
+            define.myve.topbtnModVisible = define.isvisible(false);
+            define.myve.topbtnChkVisible = define.isvisible(false);
         }
         else
         {
-            define.myve.topbuttonVisible = define.isvisible(true);
-            //define.myve.disabled = define.enable(true);
+            define.myve.topbtnModVisible = define.isvisible(true);
+            define.myve.topbtnChkVisible = define.isvisible(true);
         }
         callback && callback();
     });
