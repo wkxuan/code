@@ -178,9 +178,7 @@
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
-    <Compile Include="Areas\Share\Render\ViewDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\DropDownListsRender.cs" />
-    <Compile Include="Areas\Share\Render\ViewEnumDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\PopRender.cs" />
     <Compile Include="Areas\Share\Render\PopsRender.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
@@ -456,7 +454,6 @@
     <Content Include="Areas\HTGL\LYHT_BG\LyHt_BgDetail.cshtml" />
     <Content Include="Areas\HTGL\LYHT_BG\LyHt_BgEdit.cshtml" />
     <Content Include="Areas\Pop\Pop\PopSysuserList.cshtml" />
-    <Content Include="Areas\Share\ViewDropDownList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
