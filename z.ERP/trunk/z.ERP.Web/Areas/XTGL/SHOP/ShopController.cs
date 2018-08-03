@@ -4,6 +4,8 @@ using z.ERP.Entities;
 using z.Extensions;
 using System;
 using z.MVC5.Results;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Define;
 
 namespace z.ERP.Web.Areas.XTGL.SHOP
 {
@@ -12,7 +14,10 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
         public ActionResult Shop()
         {
             ViewBag.Title = "资产单元信息";
-            return View();
+            return View(new DefineRender()
+            {
+                Permission_Chk = "104004"
+            });
         }
 
         public string Save(SHOPEntity DefineSave)
@@ -41,6 +46,24 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
         {
             var v = GetVerify(DefineDelete);
             CommenDelete(DefineDelete);
+        }
+        public string Check(SHOPEntity DefineSave)
+        {
+            DefineSave.STATUS = "2";
+            var v = GetVerify(DefineSave);
+            v.IsUnique(a => a.SHOPID);
+            v.IsUnique(a => a.CODE);
+            v.Require(a => a.NAME);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.FLOORID);
+            v.Require(a => a.ORGID);
+            v.Require(a => a.CATEGORYID);
+            v.Require(a => a.TYPE);
+            v.Require(a => a.AREA_BUILD);
+            v.Require(a => a.STATUS);
+            v.Require(a => a.RENT_STATUS);
+            v.Verify();
+            return CommonSave(DefineSave);
         }
         public UIResult GetBranch(BRANCHEntity Data)
         {

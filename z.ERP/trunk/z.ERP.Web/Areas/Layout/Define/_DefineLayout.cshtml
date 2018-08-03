@@ -16,7 +16,7 @@
 }
 
 <div id="def_Main">
-    <row class="topbutton">
+    <row class="topbutton" >
 
         @{
             RenderControl(new ButtonRender()
@@ -29,56 +29,72 @@
 
             });
         }
-        @{ 
-            RenderControl(new ButtonRender()
-            {
-                Click = "add",
-                Text = "新增",
-                Enable = true,
-                Type = "primary",
-                Invisible = (Model?.Invisible_Add).GetValueOrDefault(),
-                PermissionKey = Model?.Permission_Add                
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "mod",
-                Text = "修改",
-                Enable = true,
-                Type = "primary",
-                PermissionKey = Model?.Permission_Mod
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "save",
-                Text = "存档",
-                Enable = false,
-                Type = "primary",
-             //    PermissionKey =Model?.Permission_Save
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "quit",
-                Text = "放弃",
-                Enable = false,
-                Type = "warning"
-            });
-        }
-        @*@{
-            RenderControl(new ButtonRender()
-            {
-                Click = "del",
-                Text = "删除",
-                Enable= true,
-                Type = "error"
-            });
-        }*@
-    </row>
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "add",
+                    Text = "新增",
+                    Enable = true,
+                    Type = "primary",
+                    Invisible = (Model?.Invisible_Add).GetValueOrDefault(),
+                    PermissionKey = Model?.Permission_Add
+                });
+            }
+        <span v-show="topbtnModVisible">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "mod",
+                    Text = "修改",
+                    Enable = true,
+                    Type = "primary",
+                    PermissionKey = Model?.Permission_Mod
+                });
+            }
+        </span>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "save",
+                    Text = "存档",
+                    Enable = false,
+                    Type = "primary",
+                    //    PermissionKey =Model?.Permission_Save
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "quit",
+                    Text = "放弃",
+                    Enable = false,
+                    Type = "warning"
+                });
+            }
+            @*@{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "del",
+                    Text = "删除",
+                    Enable= true,
+                    Type = "error"
+                });
+            }*@
+            <span v-show="topbtnChkVisible">
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "chk",
+                        Text = "审核",
+                        Enable = true,
+                        Type = "primary",
+                        Invisible = (Model?.Invisible_Chk).GetValueOrDefault(),
+                        PermissionKey = Model?.Permission_Chk
+                    });
+                }
+            </span>
+</row>
     <row>
         <i-col span="8">
             <div ref="tableHeight">

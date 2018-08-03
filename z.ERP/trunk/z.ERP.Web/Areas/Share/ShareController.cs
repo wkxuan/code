@@ -95,5 +95,14 @@ namespace z.ERP.Web.Areas.Share
         {
             return View(render);
         }
+        /// <summary>
+        /// 支持仅可显示功能
+        /// </summary>
+        /// <param name="render"></param>
+        /// <returns></returns>
+        public ActionResult ViewDropDownList(ViewDropDownListRender render)
+        {
+            return View(render);
+        }
     }
 }

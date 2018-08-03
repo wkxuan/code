@@ -5,9 +5,11 @@
     if (Model.HasPermission)
     {
         <i-button id="@Model.Id"
-                  icon="@Model.Icon" v-on:click="@Model.Click"
-                  :disabled="@(Model.Enable?"!disabled":"disabled")">@Model.Text</i-button>
+                  icon="@Model.Icon" v-on:click="@Model.Click"                  
+                  :disabled="@(Model.Enable?"!disabled":"disabled")"
+                  >@Model.Text</i-button>
     }
 }
 
 @*type="@Model.Type"*@ 
+@*v-show="@(Model.Isvisible ? "topbuttonVisible" : "!topbuttonVisible")"*@

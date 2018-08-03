@@ -120,5 +120,15 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        /// <summary>
+        /// 生成日期是否和租金保持一致
+        /// </summary>
+        [Field("生成日期是否和租金保持一致")]
+        public string IF_RENT_FEERULE
+        {
+            get; set;
+        }
+
+        
     }
 }
