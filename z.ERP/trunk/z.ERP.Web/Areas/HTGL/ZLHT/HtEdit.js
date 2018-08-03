@@ -1057,11 +1057,13 @@ editDetail.otherMethods = {
                 var localItem = [];
                 for (var j = 0; j < data.length; j++) {
                     if (data[j].INX == editDetail.dataParam.CONTRACT_RENT[i].INX) {
+                        data[j].QSBJ = "1";      //增加默认值
+                        data[j].QJQSBJ = "2";
                         localItem.push(data[j]);
                     };
                 };
                 editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM = localItem;
-
+                
             };
 
             Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data);
