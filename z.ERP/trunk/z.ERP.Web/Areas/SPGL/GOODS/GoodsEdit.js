@@ -7,7 +7,7 @@
     editDetail.dataParam.TYPE = 1;
     
     editDetail.screenParam.colDef = [
-        { title: "商铺代码", key: "CODE", width: 100,       },
+        { title: "商铺代码", key: "CODE", width: 150,       },
         { title: '业态代码', key: 'CATEGORYCODE', width: 100 },
         { title: '业态名称', key: 'CATEGORYNAME', width: 100 },        
 
