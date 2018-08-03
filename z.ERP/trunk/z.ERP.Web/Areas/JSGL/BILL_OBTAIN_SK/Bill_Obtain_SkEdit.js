@@ -4,6 +4,7 @@
     editDetail.Key = 'BILLID';
     //保证金收款
     editDetail.dataParam.TYPE = 3;
+    editDetail.dataParam.ALL_MONEY = 0;
     //初始化弹窗所要传递参数
     editDetail.screenParam.showPopBill = false;
     editDetail.screenParam.showPopMerchant = false;
@@ -29,6 +30,11 @@
                 on: {
                     'on-blur': function (event) {
                         editDetail.dataParam.BILL_OBTAIN_ITEM[params.index].RECEIVE_MONEY = event.target.value;
+                        let sumJE = 0;
+                        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
+                            sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
+                        }
+                        editDetail.dataParam.ALL_MONEY = sumJE;
                     }
                 },
             })
@@ -49,6 +55,11 @@
                     on: {
                         click: function (event) {
                             editDetail.dataParam.BILL_OBTAIN_ITEM.splice(params.index, 1);
+                        let sumJE = 0;
+                        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
+                            sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
+                        }
+                        editDetail.dataParam.ALL_MONEY = sumJE;
                         }
                     },
                 }, '删除')
@@ -107,6 +118,7 @@ editDetail.otherMethods = {
 editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopBill) {
         editDetail.screenParam.showPopBill = false;
+        let SumJE = 0;
         var sjitem = [];
         for (var i = 0; i < data.sj.length; i++) {
             sjitem.push({ FINAL_BILLID: data.sj[i].BILLID,YEARMONTH:data.sj[i].YEARMONTH,CONTRACTID:data.sj[i].CONTRACTID,
@@ -116,9 +128,10 @@ editDetail.popCallBack = function (data) {
                 RECEIVE_MONEY: data.sj[i].MUST_MONEY,
                 TYPE:1
             });
-            
+            SumJE += data.sj[i].MUST_MONEY;
         }
         editDetail.dataParam.BILL_OBTAIN_ITEM = sjitem;
+        editDetail.dataParam.ALL_MONEY = SumJE;
     }
     else if (editDetail.screenParam.showPopMerchant) {
         editDetail.screenParam.showPopMerchant = false;
@@ -168,6 +181,17 @@ editDetail.IsValidSave = function () {
                 iview.Message.info("请录入付款金额!");
                 return false;
             };
+            if (editDetail.dataParam.BILL_OBTAIN_ITEM[i].UNPAID_MONEY > 0 &&
+                (editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY > editDetail.dataParam.BILL_OBTAIN_ITEM[i].UNPAID_MONEY))
+            {
+                iview.Message.info("单号[" + editDetail.dataParam.BILL_OBTAIN_ITEM[i].FINAL_BILLID + "] 的付款金额不能大于未付款金额!");
+                return false;
+            }
+            if (editDetail.dataParam.BILL_OBTAIN_ITEM[i].UNPAID_MONEY < 0 &&
+                (editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY < editDetail.dataParam.BILL_OBTAIN_ITEM[i].UNPAID_MONEY)) {
+                iview.Message.info("单号[" + editDetail.dataParam.BILL_OBTAIN_ITEM[i].FINAL_BILLID + "]当为负数金额时，付款金额不能小于未付款金额!");
+                return false;
+            }
         };
     };
 

@@ -24,7 +24,11 @@
 }
 ////获取父页面参数
 search.popInitParam = function (data) {
-    search.searchParam.BRANCHID = data.BRANCHID;
+    if (data)
+    {
+        search.searchParam.BRANCHID = data.BRANCHID;
+        search.searchParam.MERCHANTID = data.MERCHANTID;
+    }
 }
 search.otherMethods = {
     SelFeeSubject: function () {

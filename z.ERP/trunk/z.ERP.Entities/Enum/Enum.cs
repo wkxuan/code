@@ -218,4 +218,13 @@ namespace z.ERP.Entities.Enum
     {
         月末 = -1
     }
+    public enum 账单状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        部分付款 = 3,
+        全部付款 = 4,
+        返还  = 5,
+        终止 = 6,
+    }
 }

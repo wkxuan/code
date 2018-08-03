@@ -177,8 +177,8 @@ namespace z.ERP.Services
                 + " ,A.REPORTER_NAME,A.REPORTER_TIME,F.NAME TERMMC"
                 + " FROM BILL A,BRANCH B,FEESUBJECT F " +
                 "  WHERE  A.BRANCHID=B.ID  and A.TERMID =F.TRIMID";
-            item.HasKey("BILLID", a => sql += $" and A.BILLID like '%{a}%'");
-            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID like '%{a}%'");
+            item.HasKey("BILLID", a => sql += $" and A.BILLID = '{a}'");
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID = '{a}'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
             item.HasKey("TYPE", a => sql += $" and A.TYPE = '{a}'");
