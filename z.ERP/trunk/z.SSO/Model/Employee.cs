@@ -14,7 +14,7 @@ namespace z.SSO.Model
         /// 调用方id
         /// 如果是web项目,则为当前登陆人,如果是接口项目,则为接口调用方配置的登陆id
         /// </summary>
-        public int PlatformId
+        public string PlatformId
         {
             get;
             set;

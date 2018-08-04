@@ -125,6 +125,8 @@
     <Compile Include="P1Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MERCHANTEntity.cs" />
+    <Compile Include="Service\Pos\FindGoodsFilter.cs" />
+    <Compile Include="Service\Pos\FindGoodsResult.cs" />
     <Compile Include="STATIONEntity.cs" />
     <Compile Include="SYSUSEREntity.cs" />
   </ItemGroup>

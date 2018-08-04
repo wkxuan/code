@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.ServiceModel;
 using System.Text;
 using System.Web;
 
@@ -69,13 +70,17 @@ namespace z.Context
         {
             if (CurrentContext == null)
             {
-                if (HttpContext.Current != null)
+                if (OperationContext.Current != null)
+                {
+                    CurrentContext = new WcfApplicationContext();
+                }
+                else if (HttpContext.Current != null)
                 {
                     CurrentContext = new HttpApplicationContext();
                 }
                 else
                 {
-                    return null;
+                    CurrentContext = new ThreadApplicationContext();
                 }
             }
             return CurrentContext;

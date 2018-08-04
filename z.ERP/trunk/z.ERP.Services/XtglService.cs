@@ -36,7 +36,7 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
- 
+
 
         public DataGridResult GetPay(SearchItem item)
         {
@@ -185,7 +185,7 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME " +
                    "  FROM SHOP A,CATEGORY B,ORG C,BRANCH D,FLOOR F "
-                   +" WHERE  A.CATEGORYID = B.CATEGORYID(+) and A.ORGID=C.ORGID(+)"
+                   + " WHERE  A.CATEGORYID = B.CATEGORYID(+) and A.ORGID=C.ORGID(+)"
                    + " and  A.BRANCHID = D.ID and A.FLOORID=F.ID";
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
@@ -200,7 +200,7 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT  A.*,B.CATEGORYCODE,B.CATEGORYNAME,B.CATEGORYIDCASCADER,A.AREA_BUILD AREA,C.ORGIDCASCADER " +
                    "  FROM SHOP A,CATEGORY B,ORG C WHERE  A.CATEGORYID = B.CATEGORYID(+) "
-                   +" and A.ORGID=C.ORGID(+)";
+                   + " and A.ORGID=C.ORGID(+)";
             item.HasKey("SHOPID", a => sql += $" and A.SHOPID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -228,7 +228,7 @@ namespace z.ERP.Services
 
         public DataGridResult GetPeriod(SearchItem item)
         {
-            string sql = $@"select YEARMONTH,to_char(DATE_START,'yyyy-mm-dd') DATE_START,to_char(DATE_END,'yyyy-mm-dd')"+
+            string sql = $@"select YEARMONTH,to_char(DATE_START,'yyyy-mm-dd') DATE_START,to_char(DATE_END,'yyyy-mm-dd')" +
                 " DATE_END from PERIOD where 1=1";
             item.HasKey("YEAR", a => sql += $" and substr(YEARMONTH,1,4) = '{a}'");
             sql += "order by YEARMONTH";
@@ -242,7 +242,7 @@ namespace z.ERP.Services
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH = '{a}'");
             sql += "order by STATIONBH";
             int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);                        
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
         public object GetStaionElement(STATIONEntity DefineSave)
@@ -250,7 +250,7 @@ namespace z.ERP.Services
             string sql = $@"select STATIONBH,TYPE,IP from STATION where 1=1 ";
             sql += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
             sql += "order by STATIONBH";
-            
+
 
             DataTable dt = DbHelper.ExecuteTable(sql);
 
@@ -283,7 +283,7 @@ namespace z.ERP.Services
             };
             return result;
         }
-        
+
 
         public string SaveSataion(STATIONEntity DefineSave)
         {
@@ -297,11 +297,20 @@ namespace z.ERP.Services
 
             DefineSave.STATION_PAY?.ForEach(sdb =>
             {
-                GetVerify(sdb).Require(a => a.PAYID);                
+                GetVerify(sdb).Require(a => a.PAYID);
             });
 
             v.Verify();
-            DbHelper.Save(DefineSave);
+            using (var tran = DbHelper.BeginTransaction())
+            {
+                using (var tran1 = DbHelper.BeginTransaction())
+                {
+                    DbHelper.Save(DefineSave);
+                    tran1.Commit();
+                }
+                tran.Commit();
+            }
+
 
             return DefineSave.STATIONBH;
         }
@@ -309,7 +318,7 @@ namespace z.ERP.Services
         public void DeleteStation(STATIONEntity DeleteData)
         {
             var v = GetVerify(DeleteData);
-            string sql = $@"delete from STATION_PAY where  STATIONBH="  + DeleteData.STATIONBH.ToString();
+            string sql = $@"delete from STATION_PAY where  STATIONBH=" + DeleteData.STATIONBH.ToString();
             DbHelper.ExecuteNonQuery(sql);
             DbHelper.Delete(DeleteData);
         }
@@ -329,7 +338,7 @@ namespace z.ERP.Services
             v.IsNumber(a => a.ID);
             v.IsNumber(a => a.CATEGORYID);
             v.IsUnique(a => a.ID);
-            v.IsUnique(a => a.NAME);           
+            v.IsUnique(a => a.NAME);
             v.Verify();
             DbHelper.Save(SaveData);
             return SaveData.ID;
@@ -346,13 +355,13 @@ namespace z.ERP.Services
 
         public virtual UIResult TreeCategoryList()
         {
-            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();              
+            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
             return new UIResult(TreeModel.Create(p,
                 a => a.CATEGORYCODE,
                 a => new TreeModel()
                 {
                     code = a.CATEGORYCODE,
-                    title = a.CATEGORYCODE + " " + a.CATEGORYNAME,                    
+                    title = a.CATEGORYCODE + " " + a.CATEGORYNAME,
                     expand = true
                 })?.ToArray());
         }
@@ -375,7 +384,7 @@ namespace z.ERP.Services
                 a => new TreeModel()
                 {
                     code = a.ORGCODE,
-                    title = a.ORGCODE + " " +a.ORGNAME,
+                    title = a.ORGCODE + " " + a.ORGNAME,
                     expand = true
                 })?.ToArray());
         }
@@ -401,7 +410,8 @@ namespace z.ERP.Services
                     expand = true
                 })?.ToArray());
         }
-        public void Org_Update(string ID,int BRANCHID) {
+        public void Org_Update(string ID, int BRANCHID)
+        {
             ORGEntity Data = new ORGEntity
             {
                 ORGID = ID
@@ -413,7 +423,7 @@ namespace z.ERP.Services
 
         public string Org_BRANCHID(string CODE)
         {
-            var sql = " select BRANCHID from ORG where ORGCODE='"+ CODE + "'";
+            var sql = " select BRANCHID from ORG where ORGCODE='" + CODE + "'";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.Rows[0][0].ToString();
         }
@@ -461,7 +471,7 @@ namespace z.ERP.Services
             }
             return brand.ID;
         }
-        
+
     }
 
 }
