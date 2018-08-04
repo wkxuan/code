@@ -4,7 +4,9 @@
     this.beforeVue = function () { }
 
     this.enabled = function (val) { return val; }
-
+    this.isvisible = function (val) { return val; }
+    this.btnChkvisible = false;
+    this.alwaysenabled = true;
     this.IsValidSave = function () {
         return true;
     }
@@ -28,6 +30,9 @@
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 disabled: _this.enabled(true),
+                topbtnModVisible: _this.isvisible(true),
+                topbtnChkVisible: _this.btnChkvisible,
+                alwaysdisabled: _this.alwaysenabled,
                 _key: undefined,
                 tableH: 500
             },
@@ -132,11 +137,30 @@
                 },
                 seachList: function (event) {
                     showlist();
-                }
+                },
+                chk: function (event) {
+                    var _self = this;
+                    if (!ve._key) {
+                        _self.$Message.error("请选择数据");
+                        return;
+                    };
+                    if (!_this.IsValidSave())
+                        return;
+                    check(function (data) {
+                        showlist(function () {
+                            _this.showone(data, function () {
+                                //ve.disabled = _this.enabled(false);
+                                ve.dataParam = _this.dataParam;
+                                _self.$Message.info("审核成功");
+                            });
+                        });
+                    })
+                },
             }
         };
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
         var ve = new Vue(options);
+        _this.myve = ve;
 
         function showlist(callback) {
             _.Search({
@@ -163,6 +187,14 @@
                 DefineDelete: data
             }, function (data) {
                 callback && callback();
+            });
+        }
+
+        function check(callback) {
+            _.Ajax('Check', {
+                DefineSave: ve.dataParam
+            }, function (data) {
+                callback && callback(data);
             });
         }
     }
@@ -201,12 +233,13 @@
         _this.service = "";
         _this.method = "";
         _this.methodList = "";
+        _this.myve = null;
     }
 
     setTimeout(function () {
         _this.vueInit();
         _this.beforeVue();
-        _this.vue();
+        _this.vue();         
     }, 100);
 }
 var define = new _Define();

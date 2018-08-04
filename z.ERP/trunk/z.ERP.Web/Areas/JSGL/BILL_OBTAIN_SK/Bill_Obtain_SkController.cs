@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
@@ -11,12 +13,16 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
         public ActionResult Bill_Obtain_SkList()
         {
             ViewBag.Title = "商户收款处理";
-            return View();
+            return View(new SearchRender()
+            {
+                Permission_Add = "10700201",
+                Permission_Del = "10700201"
+            });
         }
         public ActionResult Bill_Obtain_SkEdit(string Id)
         {
-            ViewBag.Title = "编辑商户收款处理";
-            return View(model: Id);
+            ViewBag.Title = "编辑商户收款处理";            
+            return View("Bill_Obtain_SkEdit", (EditRender)Id);
         }
         public ActionResult Bill_Obtain_SkDetail(string Id)
         {

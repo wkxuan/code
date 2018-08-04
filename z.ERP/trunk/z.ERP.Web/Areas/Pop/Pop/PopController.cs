@@ -48,6 +48,16 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "用户";
             return View();
         }
+        public ActionResult PopJsklGroupList()
+        {
+            ViewBag.Title = "扣率组";
+            return View();
+        }
+        public ActionResult PopBrandList()
+        {
+            ViewBag.Title = "品牌";
+            return View();
+        }
     }
 
 }

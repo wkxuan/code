@@ -336,5 +336,16 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        /// <summary>
+        /// 起始日清算
+        /// <summary>
+        [Field("起始日清算")]
+        public string QS_START
+        {
+            get; set;
+        }
+
+        
     }
 }

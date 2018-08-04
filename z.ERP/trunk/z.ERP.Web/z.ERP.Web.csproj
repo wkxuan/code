@@ -177,6 +177,8 @@
     <Compile Include="Areas\Share\Render\DropDownListsRender.cs" />
     <Compile Include="Areas\Share\Render\PopRender.cs" />
     <Compile Include="Areas\Share\Render\PopsRender.cs" />
+    <Compile Include="Areas\Share\Render\ViewDropDownListRender.cs" />
+    <Compile Include="Areas\Share\Render\ViewEnumDropDownListRender.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
@@ -257,6 +259,8 @@
     <Content Include="Areas\Pop\PopBrand.js" />
     <Content Include="Areas\Pop\PopMerchant.js" />
     <Content Include="Areas\Pop\PopContract.js" />
+    <Content Include="Areas\Pop\Pop\PopBrandList.js" />
+    <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
     <Content Include="Areas\Pop\Pop\PopMerchantList.js" />
     <Content Include="Areas\Pop\Pop\PopContractList.js" />
     <Content Include="Areas\Pop\Pop\PopBillList.js" />
@@ -453,6 +457,9 @@
     <Content Include="Areas\Pop\Pop\PopSysuserList.cshtml" />
     <Content Include="Areas\HTGL\ZLHT_BG\ZlHt_BgDetail.cshtml" />
     <Content Include="Areas\HTGL\ZLHT_BG\ZlHt_BgEdit.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopJsklGroupList.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopBrandList.cshtml" />
+    <Content Include="Areas\Share\ViewDropDownList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

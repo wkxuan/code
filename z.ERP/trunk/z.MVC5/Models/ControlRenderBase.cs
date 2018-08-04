@@ -50,10 +50,35 @@ namespace z.MVC5.Models
                 _enable = value;
             }
         }
-
+        public bool UseEnable
+        {
+            get
+            {
+                return _enable;
+            }
+            set
+            {
+                _enable = value;
+            }
+        }
         /// <summary>
         /// 可用
         /// </summary>
         private bool _enable = true;
+        public bool Isvisible
+        {
+            get
+            {
+                return _visible;
+            }
+            set
+            {
+                _visible = value;
+            }
+        }
+        /// <summary>
+        /// 可见
+        /// </summary>
+        private bool _visible = true;
     }
 }

@@ -23,7 +23,8 @@ namespace z.ERP.Entities.Enum
     public enum 月费用收费方式
     {
         按日计算固定金额 = 1,
-        月固定金额 = 2
+        月固定金额 = 2,
+        按销售金额比例=3
 
     }
 
@@ -158,6 +159,12 @@ namespace z.ERP.Entities.Enum
         品种 = 1,
         大类 = 2
     }
+    public enum 商品状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        淘汰 = 3,
+    }
     public enum 用户类型
     {
         收款员 = 1,
@@ -194,6 +201,12 @@ namespace z.ERP.Entities.Enum
         自然周期 = 2
     }
 
+    public enum 起始日清算
+    {
+        是 = 1,
+        否 = 2
+    }
+
     public enum 收款类型
     {
         预收款 = 1,
@@ -211,5 +224,14 @@ namespace z.ERP.Entities.Enum
     public enum 月末标记
     {
         月末 = -1
+    }
+    public enum 账单状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        部分付款 = 3,
+        全部付款 = 4,
+        返还  = 5,
+        终止 = 6,
     }
 }

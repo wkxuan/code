@@ -79,10 +79,16 @@ namespace z.ERP.Web.Areas.ZLHT_BG.ZlHt_Bg
         {
             service.HtglService.DeleteContract(DeleteData);
         }
-        [Permission("10600202")]
-        public void ExecData(CONTRACTEntity Data)
+        //[Permission("10600202")]
+        //public void ExecData(CONTRACTEntity Data)
+        //{
+        //    service.HtglService.ExecHtBgData(Data);
+        //}
+
+        public UIResult SearchInit()
         {
-            service.HtglService.ExecHtBgData(Data);
+            SearchItem item = new SearchItem();
+            return service.XtglService.GetFeeRule(item);
         }
 
     }

@@ -97,5 +97,12 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             service.HtglService.ExecData(Data);
         }
 
+
+        public UIResult SearchInit()
+        {
+            SearchItem item = new SearchItem();
+            return service.XtglService.GetFeeRule(item);
+        }
+
     }
 }

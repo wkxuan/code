@@ -1,0 +1,29 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.PopSearch;
+@inherits PopSearchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.GROUPNO",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">描述</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.DESCRIPTION"
+                });
+            }
+        </i-col>
+    </row>
+}
+

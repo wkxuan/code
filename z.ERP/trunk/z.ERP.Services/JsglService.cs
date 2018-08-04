@@ -7,6 +7,7 @@ using System;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
 using z.SSO.Model;
+using z.ERP.Entities.Procedures;
 
 namespace z.ERP.Services
 {
@@ -383,7 +384,7 @@ namespace z.ERP.Services
             DataTable billObtain = DbHelper.ExecuteTable(sql);
             billObtain.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT M.*,B.CONTRACTID,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY ,D.NAME TERMMC " +
+            string sqlitem = $@"SELECT M.*,B.CONTRACTID,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY ,D.NAME TERMMC,B.YEARMONTH " +
                 " FROM BILL_OBTAIN_ITEM M ,BILL B,CONTRACT C,FEESUBJECT D " +
                 " where M.FINAL_BILLID=B.BILLID(+) and B.CONTRACTID=C.CONTRACTID(+) and B.TERMID=D.TRIMID(+)";
             if (!Data.BILLID.IsEmpty())
@@ -407,11 +408,12 @@ namespace z.ERP.Services
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-                billObtain.VERIFY = employee.Id;
-                billObtain.VERIFY_NAME = employee.Name;
-                billObtain.VERIFY_TIME = DateTime.Now.ToString();
-                billObtain.STATUS = ((int)普通单据状态.审核).ToString();
-                DbHelper.Save(billObtain);
+                Exec_BILL_OBTAIN exec_billobtain = new Exec_BILL_OBTAIN()
+                {
+                    p_BILLID = Data.BILLID,
+                    p_VERIFY = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_billobtain);
                 Tran.Commit();
             }
             return billObtain.BILLID;
