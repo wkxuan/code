@@ -18,7 +18,7 @@ namespace z.ERP.WebService
             ResponseDTO res = new ResponseDTO();
             try
             {
-                UserApplication.Login(dto.Key, null);
+                UserApplication.Login(dto.SecretKey, null);
                 List<Type> types = Assembly.GetExecutingAssembly().FindAllType(a => a.BaseOn<BaseController>()).ToList();
                 Type thistype = null;
                 MethodInfo thisMethod = null;
@@ -44,31 +44,33 @@ namespace z.ERP.WebService
                 BaseController cb = new BaseController();
                 var t = cb.Create(thistype);
                 ParameterInfo[] pinfo = thisMethod.GetParameters();
-                if (pinfo == null || pinfo.Count() != 1)
+                if (pinfo.Count() > 1)
                 {
-                    throw new Exception($"方法{thisMethod.Name}有且只能有一个参数");
+                    throw new Exception($"方法{thisMethod.Name}最多能有一个参数");
                 }
-                object pram;
-                if (dto.Context.TryToObj(pinfo.First().ParameterType, out pram))
-                {
-                    object obj = thisMethod.Invoke(t, new object[] { pram });
-                    return new ResponseDTO()
+                object pram = null;
+                if (pinfo.Count() == 1)
+                    if (!dto.Context.TryToObj(pinfo.First().ParameterType, out pram))
                     {
-                        Success = true,
-                        Context = obj.ToJson()
-                    };
-                }
+                        throw new Exception("参数格式不正确");
+                    }
+                object obj;
+                if (pram != null)
+                    obj = thisMethod.Invoke(t, new object[] { pram });
                 else
+                    obj = thisMethod.Invoke(t, null);
+                return new ResponseDTO()
                 {
-                    throw new Exception("参数格式不正确");
-                }
+                    Success = true,
+                    Context = obj.ToJson()
+                };
             }
             catch (Exception ex)
             {
                 return new ResponseDTO()
                 {
                     Success = false,
-                    Msg = ex.Message,
+                    Msg = ex.InnerMessage (),
                     Context = ""
                 };
             }
