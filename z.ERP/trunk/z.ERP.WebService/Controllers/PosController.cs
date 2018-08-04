@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using z.ERP.WebService.Controllers.Model;
+using z.ERP.Entities.Service.Pos;
 using z.ERP.WebService.Model;
 
 namespace z.ERP.WebService.Controllers
 {
-    public class PosController : ControllerBase
+    public class PosController : BaseController
     {
-        [ServiceAble("PosSale")]
-        public PosSaleModel Sale(PosSaleModel Model)
+        internal PosController() : base()
         {
-            return new Controllers.Model.PosSaleModel()
-            {
-                a = "1111111111111111111111111"
-            };
+
+        }
+
+        [ServiceAble("FindGoods")]
+        public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
+        {
+            return service.PosService.FindGoods(filter);
         }
     }
 }

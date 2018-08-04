@@ -22,14 +22,6 @@ namespace z.SSO
         {
         }
 
-        public override bool HasLogin
-        {
-            get
-            {
-                return ApplicationContextBase.GetContext()?.principal?.Identity?.Name.IsNotEmpty() ?? false;
-            }
-        }
-
         public UserService.ISSOService service
         {
             get
@@ -49,7 +41,7 @@ namespace z.SSO
                 {
                     Id = ConfigExtension.TestModel_User,
                     Name = $"测试模式:{ConfigExtension.TestModel_User}",
-                    PlatformId = -1
+                    PlatformId = ""
                 };
                 teste.PermissionHandle = HasPermission;
                 return teste as T;
@@ -58,14 +50,14 @@ namespace z.SSO
             T e = ApplicationContextBase.GetContext().GetData<T>(LoginKey + key);
             if (!key.IsEmpty() && e == null && ApplicationContextBase.GetContext().principal != null)
             {
-                Model.User user = service.GetUserById(key)?.ToObj(a => new User() { Id = a.Id, Name = a.Name });
+                User user = service.GetUserById(key)?.ToObj(a => new User() { Id = a.Id, Name = a.Name });
                 if (user == null)
                     throw new NoLoginException();
                 Employee emp = new Employee()
                 {
                     Id = user.Id,
                     Name = user.Name,
-                    PlatformId = -1
+                    PlatformId = ""
                 };
                 emp.PermissionHandle = HasPermission;
                 return emp as T;

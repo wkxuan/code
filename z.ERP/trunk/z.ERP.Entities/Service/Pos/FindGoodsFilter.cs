@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace z.ERP.WebService.Controllers.Model
+namespace z.ERP.Entities.Service.Pos
 {
-    public class PosSaleModel
+    public class FindGoodsFilter
     {
-        public string a
+        public string goodsdm
         {
             get;
             set;
         }
-        public string b
+        public int? clerkid
         {
             get;
             set;

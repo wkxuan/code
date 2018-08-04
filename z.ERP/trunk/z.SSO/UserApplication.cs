@@ -50,12 +50,14 @@ namespace z.SSO
         {
             get
             {
-                switch (settings.Type)
+                switch (settings.Type.ToUpper())
                 {
                     case "ERP":
                         return new ERPUserHelper(settings);
                     case "PORTAL":
                         return new PortalUserHelper(settings);
+                    case "SERVICE":
+                        return new ServiceUserHelper(settings);
                     default:
                         throw new Exception($"配置节点{SSOSettings.Name}的类型{settings.Type}未知");
                 }
