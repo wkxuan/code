@@ -243,8 +243,37 @@ namespace z.ERP.Services
 
             //先计算出来每个年月对应的生成日期
             DateTime dt = ContractData.CONT_START.ToDateTime();
-            //var ym = Convert.ToInt32(dt.Year.ToString()) * 100 + Convert.ToInt32(dt.Month.ToString());
             var ym = dt.Year * 100 + dt.Month;
+            switch (feeRule.PAY_CYCLE.ToInt()) {
+                case 3:
+                    switch (dt.Month) {
+                        case 1:
+                        case 2:
+                        case 3:
+                            ym = dt.Year * 100 +1;
+                            break;
+                        case 4:
+                        case 5:
+                        case 6:
+                            ym = dt.Year * 100 + 4;
+                            break;
+                        case 7:
+                        case 8:
+                        case 9:
+                            ym = dt.Year * 100 + 7;
+                            break;
+                        case 10:
+                        case 11:
+                        case 12:
+                            ym = dt.Year * 100 + 10;
+                            break;
+                    }
+                    break;
+                default:
+                    ym = dt.Year * 100 + dt.Month;
+                    break;
+            }
+
 
             List<PERIODEntity> Perio = new List<PERIODEntity>();
             Perio = DbHelper.SelectList(new PERIODEntity()).
@@ -279,7 +308,6 @@ namespace z.ERP.Services
                     ymLast = ym + feeRule.PAY_CYCLE.ToInt();
                 }
 
-
                 var scn = scny.ToString().Substring(0, 4).ToInt();
                 var scy = scny.ToString().Substring(4, 2).ToInt();
 
@@ -295,6 +323,7 @@ namespace z.ERP.Services
                 }
                 zjfjListGd.Add(zjfj);
 
+
                 if ((per.YEARMONTH.ToString().Substring(4, 2).ToInt() + 1) > 12)
                 {
                     per.YEARMONTH = ((per.YEARMONTH.ToString().Substring(0, 4).ToInt() + 1) * 100
@@ -304,7 +333,6 @@ namespace z.ERP.Services
                 {
                     per.YEARMONTH = (per.YEARMONTH.ToInt() + 1).ToString();
                 }
-
 
                 if (per.YEARMONTH.ToInt() == ymLast)
                 {

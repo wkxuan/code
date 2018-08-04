@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\ServiceUser.cs" />
+    <Compile Include="ServiceUserHelper.cs" />
     <Compile Include="PortalUserHelper.cs" />
     <Compile Include="ERPUserHelper.cs" />
     <Compile Include="Model\PermissionType.cs" />

@@ -464,21 +464,5 @@ namespace z.Extensions
         }
 
         #endregion
-        #region 加密
-        public static string ToMD5(this string str)
-        {
-            System.Security.Cryptography.MD5CryptoServiceProvider md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
-            byte[] bytValue, bytHash;
-            bytValue = Encoding.UTF8.GetBytes(str);
-            bytHash = md5.ComputeHash(bytValue);
-            md5.Clear();
-            string sTemp = "";
-            for (int i = 0; i < bytHash.Length; i++)
-            {
-                sTemp += bytHash[i].ToString("X").PadLeft(2, '0');
-            }
-            return sTemp.ToLower();
-        }
-        #endregion
     }
 }

@@ -9,6 +9,7 @@ using System.Web.Security;
 using z.CacheBox;
 using z.Context;
 using z.DBHelper.Helper;
+using z.Encryption;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
@@ -24,14 +25,6 @@ namespace z.SSO
 
         public PortalUserHelper(SSOSettings _settings) : base(_settings)
         {
-        }
-
-        public override bool HasLogin
-        {
-            get
-            {
-                return ApplicationContextBase.GetContext()?.principal?.Identity?.Name.IsNotEmpty() ?? false;
-            }
         }
 
         public override T GetUser<T>()
@@ -53,7 +46,7 @@ namespace z.SSO
                     {
                         Id = ConfigExtension.TestModel_User,
                         Name = $"测试模式:{ConfigExtension.TestModel_User}",
-                        PlatformId = -1
+                        PlatformId = ""
                     } as T;
                     return teste;
                 }
@@ -74,7 +67,7 @@ namespace z.SSO
             {
                 Id = user.USERID,
                 Name = user.USERNAME,
-                PlatformId = -1
+                PlatformId = ""
             };
             e.PermissionHandle = HasPermission;
             return e;
@@ -118,7 +111,7 @@ namespace z.SSO
 
         public string salt(SYSUSEREntity user, string psw)
         {
-            return (user.USERID + LoginSalt + psw).ToMD5();
+            return MD5Encryption.Encrypt(user.USERID + LoginSalt + psw);
         }
 
         public override void LogOut()

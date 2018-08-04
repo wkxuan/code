@@ -66,6 +66,27 @@ namespace z.Extensions
         }
 
         /// <summary>
+        /// 试图反序列化json
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="type"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static bool TryToObj(this string str, Type type, out object obj)
+        {
+            try
+            {
+                obj = str.ToObj(type);
+                return true;
+            }
+            catch
+            {
+                obj = null;
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 反序列化json
         /// </summary>
         /// <param name="str"></param>
@@ -261,12 +282,12 @@ namespace z.Extensions
         public static void SetPropertyValue<T>(this T t, string name, object value)
         {
             Type type = t.GetType();
-            PropertyInfo p = type.GetProperty(name);
+            PropertyInfo p = type.GetProperty(name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
             if (p == null)
             {
                 throw new Exception($"类型{t.GetType().Name}没有名为{name}的属性");
             }
-            p.SetValue(t, value, null);
+            p.SetValue(t, Convert.ChangeType(value, p.PropertyType), null);
             return;
             //下面的报错
             var param_obj = Expression.Parameter(type);
@@ -409,6 +430,7 @@ namespace z.Extensions
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
+
         #endregion
         #region 程序集
         /// <summary>

@@ -7,6 +7,12 @@ namespace z.ERP.WebService
 {
     public class RequestDTO
     {
+        public string SecretKey
+        {
+            get;
+            set;
+        }
+
         public string ServiceName
         {
             get;

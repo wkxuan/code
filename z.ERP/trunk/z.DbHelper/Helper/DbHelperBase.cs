@@ -34,17 +34,13 @@ namespace z.DBHelper.Helper
         /// 数据库链接
         /// </summary>
         protected DbConnection _dbConnection;
-        /// <summary>
-        /// 数据库命令对象
-        /// </summary>
-        protected DbCommand _dbCommand;
 
         [ThreadStatic]
-        static bool isFirstTransaction = false;
+        int TransactionCount = 0;
         /// <summary>
         /// 事务对象
         /// </summary>
-        protected DbTransaction _Transaction = null;
+        protected zDbTransaction _zTransaction = null;
 
         string _select = "SELECT {0} FROM {1} WHERE {2}";
         string _insert = "INSERT INTO {0}({1}) VALUES({2})";
@@ -124,22 +120,21 @@ namespace z.DBHelper.Helper
             return FieldName;
         }
 
-        /// <summary>
-        /// 初始化操作
-        /// </summary>
-        protected abstract void Init();
+        ///// <summary>
+        ///// 初始化操作
+        ///// </summary>
+        //protected abstract void Init();
 
-        /// <summary>
-        /// 完成操作
-        /// </summary>
-        protected abstract void Done();
+        ///// <summary>
+        ///// 完成操作
+        ///// </summary>
+        //protected abstract void Done();
         #endregion
         #region 构造
 
         public DbHelperBase(string ConnectionStr)
         {
             _dbConnectionInfoStr = ConnectionStr;
-            Open();
         }
 
         public DbHelperBase(IDbConnectionInfo conn)
@@ -148,11 +143,6 @@ namespace z.DBHelper.Helper
             _dbConnectionInfo = conn;
         }
 
-
-        ~DbHelperBase()
-        {
-            Close();
-        }
         #endregion
         #region 数据操作
         #region 查表
@@ -174,9 +164,8 @@ namespace z.DBHelper.Helper
         public DataTable ExecuteTable(string sql, int pageSize, int pageIndex)
         {
             DataTable dt = new DataTable();
-            try
+            RunSql(_dbCommand =>
             {
-                Init();
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
                 lock (ObjectExtension.Locker)
                 {
@@ -185,21 +174,16 @@ namespace z.DBHelper.Helper
                         dt = this.ReaderToTable(reader);
                     }
                 }
-                Done();
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.InnerMessage(), sql);
-            }
+            });
             return dt;
         }
 
         public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount)
         {
+            int outall = 0;
             DataTable dt = ExecuteTable(sql, pageSize, pageIndex);
-            try
+            RunSql(_dbCommand =>
             {
-                Init();
                 _dbCommand.CommandText = GetCountSql(sql);
                 lock (ObjectExtension.Locker)
                 {
@@ -208,20 +192,16 @@ namespace z.DBHelper.Helper
                         DataTable dtcount = this.ReaderToTable(reader);
                         if (dtcount.IsOneLine())
                         {
-                            int.TryParse(dtcount.Rows[0][0].ToString(), out allCount);
+                            int.TryParse(dtcount.Rows[0][0].ToString(), out outall);
                         }
                         else
                         {
-                            allCount = 0;
+                            outall = 0;
                         }
                     }
                 }
-                Done();
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.InnerMessage(), sql);
-            }
+            });
+            allCount = outall;
             return dt;
         }
         #endregion
@@ -249,9 +229,8 @@ namespace z.DBHelper.Helper
         public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex) where T : new()
         {
             List<T> list = new List<T>();
-            try
+            RunSql(_dbCommand =>
             {
-                Init();
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
                 lock (ObjectExtension.Locker)
                 {
@@ -260,21 +239,16 @@ namespace z.DBHelper.Helper
                         list = this.ReaderToObject<T>(reader);
                     }
                 }
-                Done();
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.InnerMessage(), sql);
-            }
+            });
             return list;
         }
 
         public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, out int allCount) where T : new()
         {
+            int resall = 0;
             List<T> list = ExecuteObject<T>(sql, pageSize, pageIndex);
-            try
+            RunSql(_dbCommand =>
             {
-                Init();
                 _dbCommand.CommandText = GetCountSql(sql);
                 lock (ObjectExtension.Locker)
                 {
@@ -283,20 +257,16 @@ namespace z.DBHelper.Helper
                         DataTable dtcount = this.ReaderToTable(reader);
                         if (dtcount.IsOneLine())
                         {
-                            int.TryParse(dtcount.Rows[0][0].ToString(), out allCount);
+                            int.TryParse(dtcount.Rows[0][0].ToString(), out resall);
                         }
                         else
                         {
-                            allCount = 0;
+                            resall = 0;
                         }
                     }
                 }
-                Done();
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.InnerMessage(), sql);
-            }
+            });
+            allCount = resall;
             return list;
         }
         #endregion
@@ -313,9 +283,8 @@ namespace z.DBHelper.Helper
                 return 0;
             string tmpStr = "";
             int influenceRowCount = 0;
-            try
+            RunSql(_dbCommand =>
             {
-                Init();
                 for (int i = 0; i < sql.Count; i++)
                 {
                     tmpStr = sql[i];
@@ -327,13 +296,8 @@ namespace z.DBHelper.Helper
                         fun(i, cntnow, influenceRowCount);
                     }
                 }
-                Done();
-                return influenceRowCount;
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.InnerMessage(), _dbCommand.CommandText);
-            }
+            });
+            return influenceRowCount;
         }
 
         /// <summary>
@@ -359,7 +323,6 @@ namespace z.DBHelper.Helper
         #region 对象增删改查
         public int Save(TableEntityBase info)
         {
-            Init();
             IDbDataParameter[] dbprams = info.GetPrimaryKey().Select(a =>
            {
                if (a.GetAttribute<PrimaryKeyAttribute>() != null)
@@ -374,16 +337,18 @@ namespace z.DBHelper.Helper
                p.Value = (value == null || string.IsNullOrEmpty(value.ToString()) ? DBNull.Value : value);
                return p;
            }).ToArray();
-            _dbCommand.Parameters.Clear();
-            _dbCommand.Parameters.AddRange(dbprams);
-            string tablename = info.GetTableName();
-            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
-            _dbCommand.CommandText = string.Format(_selectcount, tablename, where);
-            IDataReader reader = _dbCommand.ExecuteReader();
             int i = 0;
-            if (reader.Read())
-                i = reader.GetValue(0).ToString().ToInt();
-            Done();
+            RunSql(_dbCommand =>
+            {
+                _dbCommand.Parameters.Clear();
+                _dbCommand.Parameters.AddRange(dbprams);
+                string tablename = info.GetTableName();
+                string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
+                _dbCommand.CommandText = string.Format(_selectcount, tablename, where);
+                IDataReader reader = _dbCommand.ExecuteReader();
+                if (reader.Read())
+                    i = reader.GetValue(0).ToString().ToInt();
+            });
             if (i == 0)
                 return Insert(info);
             else
@@ -397,31 +362,25 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int Insert(TableEntityBase info)
         {
-            int res;
-            Init();
+            int res = 0;
             IDbDataParameter[] dbprams = info.GetAllField().Select(a =>
             {
                 IDbDataParameter p = GetDbDataParameter(a, info);
                 return p;
             }).ToArray();
-            _dbCommand.Parameters.Clear();
-            _dbCommand.Parameters.AddRange(dbprams);
-            _dbCommand.CommandText = string.Format(_insert, info.GetTableName(),
-                string.Join(",", dbprams.Select(a => a.ParameterName)),
-                string.Join(",", dbprams.Select(a => ":" + a.ParameterName))
-                );
-            try
+            RunSql(_dbCommand =>
             {
+                _dbCommand.Parameters.Clear();
+                _dbCommand.Parameters.AddRange(dbprams);
+                _dbCommand.CommandText = string.Format(_insert, info.GetTableName(),
+                    string.Join(",", dbprams.Select(a => a.ParameterName)),
+                    string.Join(",", dbprams.Select(a => ":" + a.ParameterName))
+                    );
                 res = _dbCommand.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
-            }
+            });
             #region 处理子表
             _InsertChildren(info);
             #endregion
-            Done();
             return res;
         }
 
@@ -435,8 +394,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int Update(TableEntityBase info)
         {
-            int res;
-            Init();
+            int res = 0;
             IDbDataParameter[] dbprams = info.GetFieldWithoutPrimaryKey().Select(a =>
            {
                if (a.GetAttribute<PrimaryKeyAttribute>() != null)
@@ -453,28 +411,23 @@ namespace z.DBHelper.Helper
               IDbDataParameter p = GetDbDataParameter(a, info);
               return p;
           })).ToArray();
-            _dbCommand.Parameters.Clear();
-            _dbCommand.Parameters.AddRange(dbprams);
-            string tablename = info.GetTableName();
-            string set = string.Join(",", info.GetFieldWithoutPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
-            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
-            if (string.IsNullOrEmpty(where))
+            RunSql(_dbCommand =>
             {
-                throw new DataBaseException("没有主键,不能更新");
-            }
-            _dbCommand.CommandText = string.Format(_update, tablename, set, where);
-            try
-            {
+                _dbCommand.Parameters.Clear();
+                _dbCommand.Parameters.AddRange(dbprams);
+                string tablename = info.GetTableName();
+                string set = string.Join(",", info.GetFieldWithoutPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
+                string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
+                if (string.IsNullOrEmpty(where))
+                {
+                    throw new DataBaseException("没有主键,不能更新");
+                }
+                _dbCommand.CommandText = string.Format(_update, tablename, set, where);
                 res = _dbCommand.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
-            }
+            });
             #region 处理子表
             _DeleteChildren(info);
             _InsertChildren(info);
-            Done();
             return res;
             #endregion
         }
@@ -486,8 +439,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int Delete(TableEntityBase info)
         {
-            Init();
-            int res;
+            int res = 0;
             _DeleteChildren(info);
             IDbDataParameter[] dbprams = info.GetPrimaryKey().Select(a =>
             {
@@ -507,18 +459,13 @@ namespace z.DBHelper.Helper
             {
                 throw new DataBaseException("没有主键,不能删除");
             }
-            _dbCommand.Parameters.Clear();
-            _dbCommand.Parameters.AddRange(dbprams);
-            _dbCommand.CommandText = string.Format(_delete, tablename, where);
-            try
+            RunSql(_dbCommand =>
             {
+                _dbCommand.Parameters.Clear();
+                _dbCommand.Parameters.AddRange(dbprams);
+                _dbCommand.CommandText = string.Format(_delete, tablename, where);
                 res = _dbCommand.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
-            }
-            Done();
+            });
             return res;
         }
 
@@ -531,7 +478,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int DeleteList(TableEntityBase info)
         {
-            int res;
+            int res = 0;
             PropertyInfo[] Allprop = info.GetAllField().Where(a =>
             {
                 return a.GetValue(info, null) != null;
@@ -547,17 +494,13 @@ namespace z.DBHelper.Helper
             {
                 throw new DataBaseException("没有删除条件，不能删除");
             }
-            _dbCommand.Parameters.Clear();
-            _dbCommand.Parameters.AddRange(dbprams);
-            _dbCommand.CommandText = string.Format(_delete, tablename, where);
-            try
+            RunSql(_dbCommand =>
             {
+                _dbCommand.Parameters.Clear();
+                _dbCommand.Parameters.AddRange(dbprams);
+                _dbCommand.CommandText = string.Format(_delete, tablename, where);
                 res = _dbCommand.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
-            }
+            });
             return res;
         }
 
@@ -569,8 +512,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public T Select<T>(T info) where T : TableEntityBase
         {
-            T res;
-            Init();
+            T res = default(T);
             IDbDataParameter[] dbprams = info.GetPrimaryKey().Select(a =>
             {
                 if (a.GetAttribute<PrimaryKeyAttribute>() != null)
@@ -587,23 +529,18 @@ namespace z.DBHelper.Helper
             {
                 throw new DataBaseException($"表{info.GetTableName()}没有主键,不能使用select方法");
             }
-            _dbCommand.Parameters.Clear();
-            _dbCommand.Parameters.AddRange(dbprams);
-            string tablename = info.GetTableName();
-            string select = string.Join(",", info.GetAllField().Select(a => GetFieldName(a.Name)));
-            string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
-            _dbCommand.CommandText = string.Format(_select, select, tablename, where);
-            try
+            RunSql(_dbCommand =>
             {
+                _dbCommand.Parameters.Clear();
+                _dbCommand.Parameters.AddRange(dbprams);
+                string tablename = info.GetTableName();
+                string select = string.Join(",", info.GetAllField().Select(a => GetFieldName(a.Name)));
+                string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
+                _dbCommand.CommandText = string.Format(_select, select, tablename, where);
                 IDataReader reader = _dbCommand.ExecuteReader();
                 res = this.ReaderToEntity(info.GetType(), reader).FirstOrDefault() as T;
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
-            }
+            });
             res = _SelectChildren(res);
-            Done();
             return res;
         }
 
@@ -615,8 +552,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public List<T> SelectList<T>(T info) where T : TableEntityBase, new()
         {
-            List<T> res;
-            Init();
+            List<T> res = new List<T>();
             PropertyInfo[] Allprop = info.GetAllField().Where(a =>
             {
                 return a.GetValue(info, null) != null;
@@ -626,58 +562,46 @@ namespace z.DBHelper.Helper
                 IDbDataParameter p = GetDbDataParameter(a, info);
                 return p;
             }).ToArray();
-            _dbCommand.Parameters.Clear();
-            _dbCommand.Parameters.AddRange(dbprams);
-            string tablename = info.GetTableName();
-            string select = string.Join(",", info.GetAllField().Select(a => GetFieldName(a.Name)));
-            string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
-            _dbCommand.CommandText = string.Format(_select, select, tablename, where.IsEmpty(" 1=1 "));
-            try
+            RunSql(_dbCommand =>
             {
+                _dbCommand.Parameters.Clear();
+                _dbCommand.Parameters.AddRange(dbprams);
+                string tablename = info.GetTableName();
+                string select = string.Join(",", info.GetAllField().Select(a => GetFieldName(a.Name)));
+                string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
+                _dbCommand.CommandText = string.Format(_select, select, tablename, where.IsEmpty(" 1=1 "));
                 IDataReader reader = _dbCommand.ExecuteReader();
                 res = this.ReaderToEntity(info.GetType(), reader).Select(a => a as T).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
-            }
+            });
             res.ForEach(a => a = _SelectChildren(a));
-            Done();
             return res;
         }
         #endregion
         #region 存储过程
         public T ExecuteProcedure<T>(T info) where T : ProcedureEntityBase
         {
-            Init();
-            _dbCommand.CommandType = CommandType.StoredProcedure;
-            IDbDataParameter[] dbprams = info.GetAllProcedureField().Select(a =>
+            T res = default(T);
+            RunSql(_dbCommand =>
             {
-                ProcedureFieldAttribute attr = a.GetAttribute<ProcedureFieldAttribute>();
-                IDbDataParameter p = GetDbDataParameter(a, info);
-                object value = a.GetValue(info, null);
-                p.Value = (value == null || string.IsNullOrEmpty(value.ToString()) ? DBNull.Value : value);
-                p.Direction = attr.Direction;
-                p.ParameterName = attr.Fieldname;
-                p.Size = attr.Size;
-                return p;
-            }).ToArray();
-            _dbCommand.Parameters.Clear();
-            _dbCommand.Parameters.AddRange(dbprams);
-            _dbCommand.CommandText = info.GetProcedureName();
-            try
-            {
+                _dbCommand.CommandType = CommandType.StoredProcedure;
+                IDbDataParameter[] dbprams = info.GetAllProcedureField().Select(a =>
+                {
+                    ProcedureFieldAttribute attr = a.GetAttribute<ProcedureFieldAttribute>();
+                    IDbDataParameter p = GetDbDataParameter(a, info);
+                    object value = a.GetValue(info, null);
+                    p.Value = (value == null || string.IsNullOrEmpty(value.ToString()) ? DBNull.Value : value);
+                    p.Direction = attr.Direction;
+                    p.ParameterName = attr.Fieldname;
+                    p.Size = attr.Size;
+                    return p;
+                }).ToArray();
+                _dbCommand.Parameters.Clear();
+                _dbCommand.Parameters.AddRange(dbprams);
+                _dbCommand.CommandText = info.GetProcedureName();
                 _dbCommand.ExecuteNonQuery();
-                return ReadDataParameter(dbprams, info);
-            }
-            catch (Exception ex)
-            {
-                throw new DataBaseException(ex.Message, _dbCommand.CommandText, info);
-            }
-            finally
-            {
-                Done();
-            }
+                res = ReadDataParameter(dbprams, info);
+            });
+            return res;
         }
 
         #endregion
@@ -691,7 +615,7 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public virtual bool HasTransaction()
         {
-            return _dbCommand != null && _dbCommand.Transaction != null;
+            return _zTransaction != null && _zTransaction.Transaction != null;
         }
 
         /// <summary>
@@ -699,26 +623,54 @@ namespace z.DBHelper.Helper
         /// </summary>
         public virtual zDbTransaction BeginTransaction(IsolationLevel? iso = null)
         {
-            Init();
-            zDbTransaction t = new zDbTransaction(iso.HasValue ? _dbConnection.BeginTransaction(iso.Value) : _dbConnection.BeginTransaction());
-            t.AfterCommit = Done;
-            t.AfterRollback = Done;
-            _dbCommand.Transaction = t.Transaction;
-            return t;
+            if (_zTransaction != null)
+                return new zDbTransaction();
+            OpenConnection();
+            _zTransaction = new zDbTransaction(iso.HasValue ? _dbConnection.BeginTransaction(iso.Value) : _dbConnection.BeginTransaction());
+            Action done = () =>
+            {
+                if (this._dbConnection.State != ConnectionState.Closed)
+                {
+                    this._dbConnection.Close();
+                }
+                this._dbConnection.Dispose();
+                this._dbConnection = null;
+            };
+            _zTransaction.AfterCommit = done;
+            _zTransaction.AfterRollback = done;
+            return _zTransaction;
         }
 
 
         #endregion
         #region 链接操作
-        public virtual void Open()
+        //public virtual void Open()
+        //{
+        //    //连接数据库
+        //    if (_dbConnection == null || _dbConnection.State != ConnectionState.Open)
+        //    {
+        //        _dbConnection = GetDbConnection(_dbConnectionInfoStr);
+        //        _dbConnection.Open();
+        //    }
+        //    if (_dbConnection.State == ConnectionState.Closed)
+        //    {
+        //        _dbConnection.Open();
+        //    }
+        //    else if (_dbConnection.State == ConnectionState.Broken)
+        //    {
+        //        _dbConnection.Close();
+        //        _dbConnection.Open();
+        //    }
+        //}
+
+        void OpenConnection()
         {
-            //连接数据库
-            if (_dbConnection == null || _dbConnection.State != ConnectionState.Open)
+            if (_dbConnection == null)
             {
                 _dbConnection = GetDbConnection(_dbConnectionInfoStr);
                 _dbConnection.Open();
             }
-            if (_dbConnection.State == ConnectionState.Closed)
+            else if (_dbConnection.State == ConnectionState.Closed)
             {
                 _dbConnection.Open();
             }
@@ -729,26 +681,42 @@ namespace z.DBHelper.Helper
             }
         }
 
-        public virtual void Close()
+        void RunSql(Action<DbCommand> comm)
         {
+            DbCommand _dbCommand = null;
             try
             {
-                if (_dbConnection != null)
+                OpenConnection();
+                _dbCommand = _dbConnection.CreateCommand();
+                if (HasTransaction())
                 {
-                    if (_dbConnection.State != ConnectionState.Closed)
+                    _dbCommand.Transaction = _zTransaction.Transaction;
+                }
+                comm?.Invoke(_dbCommand);
+                _dbCommand.Dispose();
+                if (!HasTransaction())
+                {
+                    if (this._dbConnection.State != ConnectionState.Closed)
                     {
-                        _dbConnection.Close();
-                        _dbConnection.Dispose();
-                        _dbConnection = null;
-                        _dbCommand.Dispose();
+                        this._dbConnection.Close();
                     }
+                    this._dbConnection.Dispose();
+                    this._dbConnection = null;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                string sql = _dbCommand?.CommandText;
+                object obj = _dbCommand?.Parameters;
+                if (sql.IsEmpty())
+                    throw new DataBaseException(ex.InnerMessage());
+                else if (obj == null)
+                    throw new DataBaseException(ex.InnerMessage(), sql);
+                else
+                    throw new DataBaseException(ex.InnerMessage(), sql, obj);
             }
         }
+
 
         #endregion
         #region 辅助方法
@@ -760,7 +728,7 @@ namespace z.DBHelper.Helper
                 T t = new T();
                 reader.FieldCount.ForEach(i =>
                {
-                   t.SetPropertyValue(reader.GetName(i), reader.GetValue(i).ToString());
+                   t.SetPropertyValue(reader.GetName(i), reader.GetValue(i));
                });
                 res.Add(t);
             }

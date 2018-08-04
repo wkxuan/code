@@ -9,6 +9,7 @@ using z.Context;
 using z.SSO;
 using z.SSO.Model;
 using System.Linq;
+using z.Encryption;
 
 namespace z.ERP.Services
 {
@@ -159,20 +160,20 @@ namespace z.ERP.Services
                         .Where(a => a.USER_FLAG.ToInt() == (int)用户标记.正常)
                         .FirstOrDefault();
             if (e == null)
-                throw new Exception("用户不存在或已停用");
+                throw new Exception($"用户{code}不存在或已停用");
             if (salt(e.USERID, password) == e.PASSWORD)
             {
                 return e.ToObj(a => new User() { Id = e.USERID, Name = e.USERNAME });
             }
             else
             {
-                throw new Exception("密码错误");
+                throw new Exception($"用户{code}密码错误");
             }
         }
 
         string salt(string userid, string pass)
         {
-            return (userid + LoginSalt + pass).ToMD5();
+            return MD5Encryption.Encrypt(userid + LoginSalt + pass);
         }
 
         public string[] GetPermissionByUserId(string userid)

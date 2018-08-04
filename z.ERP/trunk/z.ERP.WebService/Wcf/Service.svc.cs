@@ -4,6 +4,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using z.Encryption;
+using z.ERP.WebService.Controllers;
+using z.ERP.WebService.Model;
 
 namespace z.ERP.WebService.Wcf
 {
@@ -13,13 +16,26 @@ namespace z.ERP.WebService.Wcf
     {
         public ResponseDTO Do(RequestDTO dto)
         {
-            dto = new RequestDTO() {
-                ServiceName = "PosSale",
-                Context = "{a:'1',b:'2'}"
-            };
             ServiceTransfer st = new ServiceTransfer();
             return st.Do(dto);
         }
-        
+
+        public LoginResponseDTO Login(LoginRequestDTO dto)
+        {
+            try
+            {
+                CommonController Controller = new CommonController();
+                return Controller.Login(dto);
+            }
+            catch (Exception ex)
+            {
+                return new LoginResponseDTO()
+                {
+                    Success = false,
+                    ErrorMsg = ex.Message
+                };
+            }
+        }
+
     }
 }

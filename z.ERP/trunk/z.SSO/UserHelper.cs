@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Security;
 using z.Context;
 using z.Exceptions;
+using z.Extensions;
 using z.LogFactory;
 using z.SSO.Model;
 
@@ -44,9 +45,12 @@ namespace z.SSO
         /// 是否已经登陆
         /// </summary>
         /// <returns></returns>
-        public abstract bool HasLogin
+        public virtual bool HasLogin
         {
-            get;
+            get
+            {
+                return ApplicationContextBase.GetContext()?.principal?.Identity?.Name.IsNotEmpty() ?? false;
+            }
         }
 
         protected LogWriter log
