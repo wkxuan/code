@@ -134,108 +134,108 @@
 
     //扣率信息
     editDetail.screenParam.colDefJskl = [
-        {
-            title: '时间段', key: 'INX', width: 80,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.INX
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
-                                if (event.target.value == editDetail.dataParam.CONTRACT_RENT[i].INX) {
-                                    editDetail.dataParam.CONTJSKL[params.index].INX = event.target.value;
-                                    Vue.set(editDetail.dataParam.CONTJSKL[params.index], 'STARTDATE', editDetail.dataParam.CONTRACT_RENT[i].STARTDATE);
-                                    Vue.set(editDetail.dataParam.CONTJSKL[params.index], 'ENDDATE', editDetail.dataParam.CONTRACT_RENT[i].ENDDATE);
-                                    break;
-                                }
-                                else {
-                                    editDetail.dataParam.CONTJSKL[params.index].INX = null;
-                                }
-                            };
-                        }
-                    },
-                })
-            },
-        },
-        {
-            title: '扣点序号', key: 'GROUPNO', width: 100,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.GROUPNO
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            editDetail.dataParam.CONTJSKL[params.index].GROUPNO = event.target.value;
-                        }
-                    },
-                })
-            },
-        },
-        {
-            title: '开始日期', key: 'STARTDATE', width: 150,
-            render: function (h, params) {
-                if (this.row.STARTDATE) {
-                    return h('div', new Date(this.row.STARTDATE).Format('yyyy-MM-dd'));
-                }
-            }
-        },
-        {
-            title: '结束日期', key: 'ENDDATE', width: 150,
-            render: function (h, params) {
-                if (this.row.ENDDATE) {
-                    return h('div', new Date(this.row.ENDDATE).Format('yyyy-MM-dd'));
-                }
-            }
-        },
-        {
-            title: "起始金额", key: 'SALES_START', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.SALES_START
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            editDetail.dataParam.CONTJSKL[params.index].SALES_START = event.target.value;
-                        }
-                    },
-                })
-            },
-        },
+          {
+              title: '时间段', key: 'INX', width: 100, sortable: true,
+              render: function (h, params) {
+                  return h('Input', {
+                      props: {
+                          value: params.row.INX
+                      },
+                      on: {
+                          'on-blur': function (event) {
+                              for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                                  if (event.target.value == editDetail.dataParam.CONTRACT_RENT[i].INX) {
+                                      editDetail.dataParam.CONTJSKL[params.index].INX = event.target.value;
+                                      Vue.set(editDetail.dataParam.CONTJSKL[params.index], 'STARTDATE', editDetail.dataParam.CONTRACT_RENT[i].STARTDATE);
+                                      Vue.set(editDetail.dataParam.CONTJSKL[params.index], 'ENDDATE', editDetail.dataParam.CONTRACT_RENT[i].ENDDATE);
+                                      break;
+                                  }
+                                  else {
+                                      editDetail.dataParam.CONTJSKL[params.index].INX = null;
+                                  }
+                              };
+                          }
+                      },
+                  })
+              },
+          },
+          {
+              title: '扣点序号', key: 'GROUPNO', width: 120, sortable: true,
+              render: function (h, params) {
+                  return h('Input', {
+                      props: {
+                          value: params.row.GROUPNO
+                      },
+                      on: {
+                          'on-blur': function (event) {
+                              editDetail.dataParam.CONTJSKL[params.index].GROUPNO = event.target.value;
+                          }
+                      },
+                  })
+              },
+          },
+          {
+              title: '开始日期', key: 'STARTDATE', width: 140, sortable: true,
+              render: function (h, params) {
+                  if (this.row.STARTDATE) {
+                      return h('div', new Date(this.row.STARTDATE).Format('yyyy-MM-dd'));
+                  }
+              }
+          },
+          {
+              title: '结束日期', key: 'ENDDATE', width: 140,
+              render: function (h, params) {
+                  if (this.row.ENDDATE) {
+                      return h('div', new Date(this.row.ENDDATE).Format('yyyy-MM-dd'));
+                  }
+              }
+          },
+          {
+              title: "起始金额", key: 'SALES_START', width: 120,
+              render: function (h, params) {
+                  return h('Input', {
+                      props: {
+                          value: params.row.SALES_START
+                      },
+                      on: {
+                          'on-blur': function (event) {
+                              editDetail.dataParam.CONTJSKL[params.index].SALES_START = event.target.value;
+                          }
+                      },
+                  })
+              },
+          },
 
-        {
-            title: "结束金额", key: 'SALES_END', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.SALES_END
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            editDetail.dataParam.CONTJSKL[params.index].SALES_END = event.target.value;
-                        }
-                    },
-                })
-            },
-        },
-        {
-            title: "扣点", key: 'JSKL', width: 100,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.JSKL
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            editDetail.dataParam.CONTJSKL[params.index].JSKL = event.target.value;
-                        }
-                    },
-                })
-            },
-        },
+          {
+              title: "结束金额(包含)", key: 'SALES_END', width: 120,
+              render: function (h, params) {
+                  return h('Input', {
+                      props: {
+                          value: params.row.SALES_END
+                      },
+                      on: {
+                          'on-blur': function (event) {
+                              editDetail.dataParam.CONTJSKL[params.index].SALES_END = event.target.value;
+                          }
+                      },
+                  })
+              },
+          },
+          {
+              title: "扣点", key: 'JSKL', width: 100,
+              render: function (h, params) {
+                  return h('Input', {
+                      props: {
+                          value: params.row.JSKL
+                      },
+                      on: {
+                          'on-blur': function (event) {
+                              editDetail.dataParam.CONTJSKL[params.index].JSKL = event.target.value;
+                          }
+                      },
+                  })
+              },
+          },
     ]
 
     //租金表格
@@ -1324,22 +1324,18 @@ editDetail.IsValidSave = function () {
         return false;
     };
     //增加对扣率信息连续性金额判断
+    //增加对扣率信息连续性金额判断
     if (editDetail.dataParam.CONTJSKL.length != 0) {
         for (var i = 0; i < editDetail.dataParam.CONTJSKL.length; i++) {
             for (var j = 0; j < editDetail.dataParam.CONTJSKL.length; j++) {
-                if(
-                    (editDetail.dataParam.CONTJSKL[i].INX==editDetail.dataParam.CONTJSKL[j].INX)&&
+                if (
+                    (editDetail.dataParam.CONTJSKL[i].INX == editDetail.dataParam.CONTJSKL[j].INX) &&
                     (editDetail.dataParam.CONTJSKL[i].GROUPNO == editDetail.dataParam.CONTJSKL[j].GROUPNO) &&
-                    (j>=i)&&
-                    ((editDetail.dataParam.CONTJSKL[j].SALES_START < editDetail.dataParam.CONTJSKL[i].SALES_END)||
-                      (editDetail.dataParam.CONTJSKL[j].SALES_END < editDetail.dataParam.CONTJSKL[i].SALES_END)||
-                    (editDetail.dataParam.CONTJSKL[j].SALES_START < editDetail.dataParam.CONTJSKL[i].SALES_START) ||
-                      (editDetail.dataParam.CONTJSKL[j].SALES_END < editDetail.dataParam.CONTJSKL[i].SALES_START)
-                    )
-                    &&
-                   ((editDetail.dataParam.CONTJSKL[i].SALES_START != editDetail.dataParam.CONTJSKL[j].SALES_START)
-                    ||
-                    (editDetail.dataParam.CONTJSKL[i].SALES_END != editDetail.dataParam.CONTJSKL[j].SALES_END)
+                    (j > i) &&
+                    ((parseFloat(editDetail.dataParam.CONTJSKL[j].SALES_START) < parseFloat(editDetail.dataParam.CONTJSKL[i].SALES_END)) ||
+                      (parseFloat(editDetail.dataParam.CONTJSKL[j].SALES_END) < parseFloat(editDetail.dataParam.CONTJSKL[i].SALES_END)) ||
+                    (parseFloat(editDetail.dataParam.CONTJSKL[j].SALES_START) < parseFloat(editDetail.dataParam.CONTJSKL[i].SALES_START)) ||
+                      (parseFloat(editDetail.dataParam.CONTJSKL[j].SALES_END) < parseFloat(editDetail.dataParam.CONTJSKL[i].SALES_START))
                     )
                    ) {
                     iview.Message.info("扣率组销售额段之间有重叠!");
