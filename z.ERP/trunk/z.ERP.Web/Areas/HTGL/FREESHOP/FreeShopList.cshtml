@@ -1,0 +1,143 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">单号</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.BILLID"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">分店</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "searchParam.STATUS",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            租约
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.CONTRACTID"
+                });
+            }
+        </i-col>        
+        <i-col span="2" class="RowTitle">
+            退铺日期_起
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.FREEDATE_START"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            退铺日期_止
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.FREEDATE_END"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            登记人
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.REPORTER"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            登记时间_起
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_TIME_START"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            登记时间_止
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_TIME_END"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            审核人
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.VERIFY"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            审核时间_起
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.VERIFY_TIME_START"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            审核时间_止
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.VERIFY_TIME_END"
+                });
+            }
+        </i-col>
+    </row>
+}

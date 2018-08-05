@@ -475,5 +475,169 @@ namespace z.ERP.Services
             return con.CONTRACTID;
             throw new LogicException($"租约变更审核过程待完善!");
         }
+
+        public DataGridResult GetFreeShopList(SearchItem item)
+        {
+            string sql = $@"select L.* ,B.NAME BRANCHNAME,M.NAME MERCHANTNAME,M.MERCHANTID " +
+                " from FREESHOP L,BRANCH B,CONTRACT C,MERCHANT M " +
+                "  where L.BRANCHID =B.ID and L.CONTRACTID=C.CONTRACTID " +
+                "  and C.MERCHANTID=M.MERCHANTID";
+            item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
+            item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID={a}");
+            item.HasKey("MERCHANTID", a => sql += $" and L.MERCHANTID={a}");
+            item.HasKey("FREEDATE_START ", a => sql += $" and L.FREEDATE>={a}");
+            item.HasKey("FREEDATE_END", a => sql += $" and L.FREEDATE<={a}");
+            item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
+            item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
+            item.HasKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
+            item.HasKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
+            item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
+            item.HasKey("VERIFY_TIME_START", a => sql += $" and L.VERIFY_TIME>={a}");
+            item.HasKey("VERIFY_TIME_END", a => sql += $" and L.VERIFY_TIME<={a}");
+            sql += " ORDER BY  L.BILLID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<退铺单状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+        public string SaveFreeShop(FREESHOPEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.BILLID.IsEmpty())
+                SaveData.BILLID = NewINC("FREESHOP");
+            SaveData.STATUS = ((int)退铺单状态.未审核).ToString();
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            SaveData.VERIFY = employee.Id;
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.CONTRACTID);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                SaveData.FREESHOPITEM?.ForEach(item =>
+                {
+                    GetVerify(item).Require(a => a.SHOPID);
+                });
+                DbHelper.Save(SaveData);
+                Tran.Commit();
+            }
+            return SaveData.BILLID;
+        }
+
+        public object GetContractList(CONTRACTEntity Data)
+        {
+            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.BRANCHID from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
+            if (!Data.CONTRACTID.IsEmpty())
+                sql += (" and T.CONTRACTID= " + Data.CONTRACTID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
+
+            string sql_shop = $@"SELECT P.SHOPID,P.CATEGORYID,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME,T.BRANCHID "
+                + " FROM CONTRACT_SHOP P,SHOP S,CATEGORY Y,CONTRACT T "
+                + " WHERE  P.SHOPID=S.SHOPID and P.CATEGORYID=Y.CATEGORYID and P.CONTRACTID = T.CONTRACTID";
+            if (!Data.CONTRACTID.IsEmpty())
+                sql_shop += (" and P.CONTRACTID= " + Data.CONTRACTID);
+            sql_shop += " order by S.CODE";
+            DataTable shop = DbHelper.ExecuteTable(sql_shop);
+                        
+            var result = new
+            {
+                contract = dt,
+                shop = shop,
+            };
+
+            return result;
+        }
+
+        public object ShowOneFreeShopEdit(FREESHOPEntity Data)
+        {
+            string sql = $@" SELECT L.*,M.MERCHANTID,M.NAME SHMC FROM FREESHOP L,CONTRACT C,MERCHANT M";
+            sql += "  where L.CONTRACTID=C.CONTRACTID and C.MERCHANTID=M.MERCHANTID ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and L.BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);            
+
+            string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
+                "  FROM FREESHOPITEM G,SHOP S,CATEGORY Y  " +
+                "  WHERE G.SHOPID=S.SHOPID AND S.CATEGORYID= Y.CATEGORYID";
+            if (!Data.BILLID.IsEmpty())
+                sqlshop += (" and G.BILLID= " + Data.BILLID);
+            DataTable dtshop = DbHelper.ExecuteTable(sqlshop);
+
+            var result = new
+            {
+                freeShop = dt,
+                freeShopItem = new dynamic[] {
+                   dtshop
+                }
+            };
+            return result;
+        }
+        
+        public Tuple<dynamic, DataTable> GetFreeShopDetail(FREESHOPEntity Data)
+        {
+            string sql = $@" SELECT L.*,M.MERCHANTID,M.NAME SHMC,B.NAME BRANCHNAME " +
+                " FROM FREESHOP L,CONTRACT C,MERCHANT M,BRANCH B ";
+            sql += "  where L.CONTRACTID=C.CONTRACTID and C.MERCHANTID=M.MERCHANTID and C.BRANCHID=B.ID ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and L.BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<退铺单状态>("STATUS", "STATUSMC");
+
+            string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
+                "  FROM FREESHOPITEM G,SHOP S,CATEGORY Y  " +
+                "  WHERE G.SHOPID=S.SHOPID AND S.CATEGORYID= Y.CATEGORYID";
+            if (!Data.BILLID.IsEmpty())
+                sqlshop += (" and G.BILLID= " + Data.BILLID);
+            DataTable dtshop = DbHelper.ExecuteTable(sqlshop);
+
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtshop);
+        }
+        public string ExecFreeShop(FREESHOPEntity Data)
+        {
+            FREESHOPEntity freeShop = DbHelper.Select(Data);
+            if (freeShop.STATUS == ((int)退铺单状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                freeShop.VERIFY = employee.Id;
+                freeShop.VERIFY_NAME = employee.Name;
+                freeShop.VERIFY_TIME = DateTime.Now.ToString();
+                freeShop.STATUS = ((int)退铺单状态.审核).ToString();
+                DbHelper.Save(freeShop);
+                Tran.Commit();
+            }
+            return freeShop.BILLID;
+        }
+        public string StopFreeShop(FREESHOPEntity Data)
+        {
+            FREESHOPEntity freeShop = DbHelper.Select(Data);
+            if (Convert.ToDateTime(freeShop.FREEDATE) >= Convert.ToDateTime(DateTime.Now.ToShortString()))
+            {
+                throw new LogicException("退铺日期大于当前日期不能终止合同!");
+            }
+            if (freeShop.STATUS == ((int)退铺单状态.终止).ToString())
+            {
+                throw new LogicException("单据(" + Data.BILLID + ")已经终止不能再次终止!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                STOPFREESHOP stopFreeShop = new STOPFREESHOP()
+                {
+                    P_BILLID = Data.BILLID,
+                    P_TERMINATE = employee.Id
+                };
+                DbHelper.ExecuteProcedure(stopFreeShop);
+                Tran.Commit();
+            }
+            return freeShop.BILLID;
+        }
+
+
     }
 }

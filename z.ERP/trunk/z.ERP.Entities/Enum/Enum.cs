@@ -234,4 +234,10 @@ namespace z.ERP.Entities.Enum
         返还  = 5,
         终止 = 6,
     }
+    public enum 退铺单状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        终止 = 3,
+    }
 }

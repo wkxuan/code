@@ -276,6 +276,9 @@ namespace z.ERP.Services
             item.HasKey("REPORTER", a => sql += $" and A.REPORTER = '{a}'");
             item.HasKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
             item.HasKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
+            item.HasKey("YXHTBJ", a => sql += $" and A.STATUS in (2,3,4)");
+            item.HasKey("FREESHOPBJ", a => sql += $" and not exists (select 1 from FREESHOP P where P.CONTRACTID = A.CONTRACTID)");
+
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

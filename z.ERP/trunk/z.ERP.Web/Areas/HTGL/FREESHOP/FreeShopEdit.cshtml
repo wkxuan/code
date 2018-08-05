@@ -1,0 +1,110 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Entities;
+@inherits EditDetailViewBase<string>
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelContract",
+                    Text = "租约",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACTID",                   
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            商户
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERCHANTID",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.SHMC",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            退铺日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FREEDATE"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            备注
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="24">
+            <i-table size="small" :border="true"
+                     :columns="screenParam.colDef" :data="dataParam.FREESHOPITEM"></i-table>
+        </i-col>
+    </row>
+}
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopContract",
+                    Caption = "选择租约",
+                    Width = "900",
+                    Src = "screenParam.srcPopContract"
+                });
+            }
+        </i-col>
+    </row>
+}
+
