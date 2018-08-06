@@ -8,6 +8,8 @@ using z.MVC5.Results;
 using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
+using z.ERP.Web.Areas.Layout.Search;
+using z.MVC5.Attributes;
 using z.ERP.Web.Areas.Layout.EditDetail;
 
 namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
@@ -18,7 +20,11 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
         {
             ViewBag.Title = "店铺拆分处理";
             ViewBag.Type = "3";
-            return View();
+            return View(new SearchRender()
+            {
+                Permission_Add = "10400201",
+                Permission_Del = "10400201"
+            });
         }
         public ActionResult AssetSpiltDetail(string Id)
         {
@@ -36,12 +42,13 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
             return View("AssetSpiltEdit",model: (EditRender)Id);
         }
 
+        [Permission("10400201")]
         public void Delete(List<ASSETCHANGEEntity> DeleteData)
         {
             service.DpglService.DeleteAssetChange(DeleteData);
         }
 
-
+        [Permission("10400201")]
         public string Save(ASSETCHANGEEntity SaveData)
         {
             return service.DpglService.SaveAssetChange(SaveData);
@@ -64,6 +71,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
             return new UIResult(service.DpglService.GetOneShop(Data));
         }
 
+        [Permission("10400202")]
         public void ExecData(ASSETCHANGEEntity Data)
         {
             service.DpglService.ExecAssetSpilt(Data);

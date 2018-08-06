@@ -31,8 +31,8 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
             ViewBag.Title = "资产面积变更";
             return View(new SearchRender()
             {
-                Permission_Add = "10400201",
-                Permission_Del = "10400201"
+                Permission_Add = "10400101",
+                Permission_Del = "10400101"
             });
         }
         public ActionResult AssetChangeDetail(string Id)
@@ -50,12 +50,13 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
             return View("AssetChangeEdit",model: (EditRender)Id);
         }
 
+        [Permission("10400101")]
         public void Delete(List<ASSETCHANGEEntity> DeleteData)
         {
             service.DpglService.DeleteAssetChange(DeleteData);
         }
 
-        [Permission("10400201")]
+        [Permission("10400101")]
         public string Save(ASSETCHANGEEntity SaveData)
         {
             return service.DpglService.SaveAssetChange(SaveData);
@@ -76,7 +77,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
         {
             return new UIResult(service.DpglService.GetOneShop(Data));
         }
-        [Permission("10400202")]
+        [Permission("10400102")]
         public void ExecData(ASSETCHANGEEntity Data)
         {
             service.DpglService.ExecAssetChange(Data);
