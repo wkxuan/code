@@ -6,6 +6,7 @@ using z.Extensions;
 using System;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
+using z.ERP.Entities.Procedures;
 
 namespace z.ERP.Services
 {
@@ -132,7 +133,6 @@ namespace z.ERP.Services
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            SaveData.VERIFY = employee.Id;
             v.Require(a => a.BILLID);
             v.Require(a => a.CHANGE_TYPE);
             v.Require(a => a.BRANCHID);
@@ -182,7 +182,41 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
-        public string ExecData(ASSETCHANGEEntity Data)
+        public string ExecAssetChange(ASSETCHANGEEntity Data)
+        {
+            ASSETCHANGEEntity assetchange = DbHelper.Select(Data);
+            if (assetchange.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+            //using (var Tran = DbHelper.BeginTransaction())
+            //{
+            //    assetchange.VERIFY = employee.Id;
+            //    assetchange.VERIFY_NAME = employee.Name;
+            //    assetchange.VERIFY_TIME = DateTime.Now.ToString();
+            //    assetchange.STATUS = ((int)普通单据状态.审核).ToString();
+            //    DbHelper.Save(assetchange);
+            //    Tran.Commit();
+            //}
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                EXEC_ASSET_CHANGE exec_asset_change = new EXEC_ASSET_CHANGE()
+                {
+                    V_BILLID = Data.BILLID,
+                    V_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_asset_change);
+                Tran.Commit();
+            }
+            return assetchange.BILLID;
+        }
+
+        /// <summary>
+        /// 资产拆分审核
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public string ExecAssetSpilt(ASSETCHANGEEntity Data)
         {
             ASSETCHANGEEntity assetchange = DbHelper.Select(Data);
             if (assetchange.STATUS == ((int)普通单据状态.审核).ToString())
@@ -191,11 +225,12 @@ namespace z.ERP.Services
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-                assetchange.VERIFY = employee.Id;
-                assetchange.VERIFY_NAME = employee.Name;
-                assetchange.VERIFY_TIME = DateTime.Now.ToString();
-                assetchange.STATUS = ((int)普通单据状态.审核).ToString();
-                DbHelper.Save(assetchange);
+                EXEC_ASSET_SPILT exec_asset_spilt = new EXEC_ASSET_SPILT()
+                {
+                    V_BILLID = Data.BILLID,
+                    V_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_asset_spilt);
                 Tran.Commit();
             }
             return assetchange.BILLID;

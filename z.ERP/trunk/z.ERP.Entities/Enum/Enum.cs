@@ -109,7 +109,8 @@ namespace z.ERP.Entities.Enum
     public enum 单元状态
     {
         不可用 = 1,
-        正常 = 2
+        正常 = 2,
+        拆分=3
     }
     public enum 租用状态
     {
@@ -233,5 +234,11 @@ namespace z.ERP.Entities.Enum
         全部付款 = 4,
         返还  = 5,
         终止 = 6,
+    }
+    public enum 退铺单状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        终止 = 3,
     }
 }

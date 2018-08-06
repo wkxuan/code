@@ -1,0 +1,129 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Detail;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits DetailLayout<dynamic>
+
+@section Title{
+    @Html.Raw("详情");
+}
+
+@{
+        var assetSpilt = ViewBag.assetSpilt;
+    }
+    @section btn{
+    @{
+            if (@assetSpilt.STATUS == "1")
+            {
+                RenderControl(new ButtonRender()
+                {
+                    Text = "审核",
+                    Click = "exec",
+            });
+        }
+    }
+}
+
+@section content{
+    <row>
+        <i-col span="2" class="RowTitle">单据号</i-col>
+        <i-col span="4">
+            <i-input v-model="BILLID" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="4">
+            <i-input v-model="BRANCHNAME" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="4">
+            <i-input v-model="STATUSMC" readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        @*<i-col span="2" class="RowTitle">变更类型</i-col>
+            <i-col span="4" class="RowText"> @assetchange.CHANGE_TYPE   </i-col>*@
+        <i-col span="2" class="RowTitle">备注</i-col>
+        <i-col span="16">
+            <i-input v-model="DISCRIPTION" readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="18">
+            <i-table size="small" border="true" 
+                     :columns="colDef" :data="ASSETCHANGEITEM" height="160"
+                     v-on:on-current-change="filter"></i-table>
+        </i-col>
+    </row>
+<row>
+    <i-col span="18">
+        <i-table size="small" border="true"
+                 :columns="colDef2" :data="ASSETCHANGEITEM2" height="200"></i-table>
+    </i-col>
+</row>
+}
+@section foot{
+    <script type="text/javascript">
+        var _self;
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true,
+                BILLID:"@assetSpilt.BILLID",
+                BRANCHNAME:"@assetSpilt.BRANCHNAME",
+                STATUSMC:"@assetSpilt.STATUSMC",
+                DISCRIPTION:"@assetSpilt.DISCRIPTION",
+                colDef : [
+                {title: "店铺代码", key: 'CODE', width: 100},
+                { title: '原建筑面积', key: 'AREA_BUILD_OLD', width: 100 },
+                { title: '原使用面积', key: 'AREA_USABLE_OLD', width: 100 },
+                { title: '原租赁面积', key: 'AREA_RENTABLE_OLD', width: 100 }
+                ],
+                colDef2 : [
+                {title: "新店铺代码", key: 'ASSETCODE_NEW', width: 100},
+                { title: '新建筑面积', key: 'AREA_BUILD_NEW', width: 100 },
+                { title: '新使用面积', key: 'AREA_USABLE_NEW', width: 100 },
+                { title: '新租赁面积', key: 'AREA_RENTABLE_NEW', width: 100 }
+                ],
+                ASSETCHANGEITEM:[],
+                ASSETCHANGEITEM2:[],
+                ASSETCHANGEITEM2_BS:[]
+            },
+            mounted:function(){
+                 _self = this;
+                _.Ajax('SearchAssetSpilt', {
+                    Data: { BILLID: @assetSpilt.BILLID }
+                }, function (data) {
+                    _self.ASSETCHANGEITEM = data.assetSpiltitem;
+                    _self.ASSETCHANGEITEM2 = data.assetSpiltitem2;
+                    _self.ASSETCHANGEITEM2_BS = data.assetSpiltitem2;
+                });
+            },
+            methods: {
+                exec: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: {BILLID: @assetSpilt.BILLID},
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                },
+                filter: function (curRow, oldRow) {
+                    var itemCurRow = curRow;
+                    var tempItem2 = _self.ASSETCHANGEITEM2_BS;
+                    var filterdata = tempItem2.filter(function (row2) {
+                        return parseInt(row2.ASSETID) === curRow.ASSETID;
+                    });
+                    Vue.set(_self, "ASSETCHANGEITEM2", filterdata);
+                }
+            }
+        });
+    </script>
+}

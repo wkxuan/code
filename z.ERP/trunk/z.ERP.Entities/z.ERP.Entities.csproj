@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\FREESHOPEntity.cs" />
+    <Compile Include="Auto\FREESHOPITEMEntity.cs" />
     <Compile Include="Auto\MENUTREEEntity.cs" />
     <Compile Include="Auto\PLATFORMEntity.cs" />
     <Compile Include="Auto\SYSUSEREntity.cs" />
@@ -47,10 +49,14 @@
     <Compile Include="BILL_OBTAINEntity.cs" />
     <Compile Include="BILL_ADJUSTEntity .cs" />
     <Compile Include="BILL_RETURNEntity.cs" />
+    <Compile Include="FREESHOPEntity.cs" />
     <Compile Include="MENUTREEModule.cs" />
+    <Compile Include="Procedures\EXEC_ASSET_SPILT.cs" />
+    <Compile Include="Procedures\EXEC_ASSET_CHANGE.cs" />
     <Compile Include="Procedures\Exec_BILL_OBTAIN.cs" />
     <Compile Include="Procedures\EXEC_CONTRACT.cs" />
     <Compile Include="Procedures\ProTest.cs" />
+    <Compile Include="Procedures\STOPFREESHOP.cs" />
     <Compile Include="ROLEEntity.cs" />
     <Compile Include="Auto\ASSETCHANGEEntity.cs" />
     <Compile Include="Auto\ASSETCHANGEITEM2Entity.cs" />

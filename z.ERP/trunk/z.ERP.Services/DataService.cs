@@ -174,7 +174,7 @@ namespace z.ERP.Services
         {
             string sql = " SELECT  A.BILLID,A.BRANCHID,A.MERCHANTID,A.CONTRACTID,A.TERMID,A.NIANYUE,A.YEARMONTH,A.MUST_MONEY "
                 + " ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION,B.NAME BRANCHNAME "
-                + " ,A.REPORTER_NAME,A.REPORTER_TIME,F.NAME TERMMC"
+                + " ,A.REPORTER_NAME,A.REPORTER_TIME,F.NAME TERMMC,A.MUST_MONEY - A.RECEIVE_MONEY UNPAID_MONEY"
                 + " FROM BILL A,BRANCH B,FEESUBJECT F " +
                 "  WHERE  A.BRANCHID=B.ID  and A.TERMID =F.TRIMID";
             item.HasKey("BILLID", a => sql += $" and A.BILLID = '{a}'");
@@ -187,6 +187,7 @@ namespace z.ERP.Services
             item.HasKey("REPORTER", a => sql += $" and A.REPORTER = '{a}'");
             item.HasKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
             item.HasKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
+            item.HasKey("WFDJ", a => sql += $" and A.MUST_MONEY - A.RECEIVE_MONEY<>0");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -275,6 +276,9 @@ namespace z.ERP.Services
             item.HasKey("REPORTER", a => sql += $" and A.REPORTER = '{a}'");
             item.HasKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
             item.HasKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
+            item.HasKey("YXHTBJ", a => sql += $" and A.STATUS in (2,3,4)");
+            item.HasKey("FREESHOPBJ", a => sql += $" and not exists (select 1 from FREESHOP P where P.CONTRACTID = A.CONTRACTID)");
+
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

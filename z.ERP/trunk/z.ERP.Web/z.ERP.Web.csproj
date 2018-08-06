@@ -147,6 +147,7 @@
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
+    <Compile Include="Areas\HTGL\FREESHOP\FreeShopController.cs" />
     <Compile Include="Areas\HTGL\LYHT\LYHTController.cs" />
     <Compile Include="Areas\HTGL\LYHT_BG\LyHt_BgController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
@@ -228,6 +229,8 @@
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.js" />
+    <Content Include="Areas\HTGL\FREESHOP\FreeShopEdit.js" />
+    <Content Include="Areas\HTGL\FREESHOP\FreeShopList.js" />
     <Content Include="Areas\HTGL\LYHT\HtEdit.js" />
     <Content Include="Areas\HTGL\LYHT\HtList.js" />
     <Content Include="Areas\HTGL\LYHT_BG\LyHt_BgEdit.js" />
@@ -392,7 +395,7 @@
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterDetail.cshtml" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.cshtml" />
     <Content Include="Areas\XTGL\TreeTest\List.cshtml" />
-    <Content Include="Areas\DPGL\ASSETCHANGE\Detail.cshtml" />
+    <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeDetail.cshtml" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.cshtml" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.cshtml" />
     <Content Include="Areas\Share\CommonWindow.cshtml" />
@@ -404,7 +407,7 @@
     <Content Include="Areas\PPGL\BRAND\BrandDetail.cshtml" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.cshtml" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.cshtml" />
-    <Content Include="Areas\DPGL\ASSETSPILT\Detail.cshtml" />
+    <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltDetail.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsDetail.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsList.cshtml" />
@@ -460,6 +463,9 @@
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopBrandList.cshtml" />
     <Content Include="Areas\Share\ViewDropDownList.cshtml" />
+    <Content Include="Areas\HTGL\FREESHOP\FreeShopList.cshtml" />
+    <Content Include="Areas\HTGL\FREESHOP\FreeShopEdit.cshtml" />
+    <Content Include="Areas\HTGL\FREESHOP\FreeShopDetail.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
