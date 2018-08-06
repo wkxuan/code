@@ -28,8 +28,8 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string GetLastDealid()
         {
-            var e = employee; //当前登陆人
-            return "1212";
+            string sql = $"select nvl(max(dealid),0) from sale where posno = {employee.PlatformId}";
+            return  DbHelper.ExecuteTable(sql).Rows[0][0].ToString(); 
         }
 
         public UserYYYResult GetYYY(string code)
