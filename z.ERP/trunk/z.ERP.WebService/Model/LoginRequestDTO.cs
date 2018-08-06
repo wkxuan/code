@@ -24,11 +24,5 @@ namespace z.ERP.WebService.Model
             get;
             set;
         }
-
-        public string PlatformPassword
-        {
-            get;
-            set;
-        }
     }
 }

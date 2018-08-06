@@ -12,11 +12,10 @@ namespace z.ERP.WebService.Controllers
     {
         public LoginResponseDTO Login(LoginRequestDTO dto)
         {
-            var Plat = service.HomeService.GetUserByCode(dto.PlatformId, dto.PlatformPassword);
             var user = service.HomeService.GetUserByCode(dto.UserName, dto.UserPassword);
             string LoginStr = ServiceUserHelper.GetSrc(new ServiceUser()
             {
-                PlatformId = Plat.Id,
+                PlatformId = dto.PlatformId,
                 Id = user.Id,
                 Name = user.Name
             });
