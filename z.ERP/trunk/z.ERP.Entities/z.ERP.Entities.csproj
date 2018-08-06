@@ -48,6 +48,8 @@
     <Compile Include="BILL_ADJUSTEntity .cs" />
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="MENUTREEModule.cs" />
+    <Compile Include="Procedures\EXEC_ASSET_SPILT.cs" />
+    <Compile Include="Procedures\EXEC_ASSET_CHANGE.cs" />
     <Compile Include="Procedures\EXEC_CONTRACT.cs" />
     <Compile Include="Procedures\ProTest.cs" />
     <Compile Include="ROLEEntity.cs" />

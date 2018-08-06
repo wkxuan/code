@@ -397,7 +397,7 @@
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterDetail.cshtml" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.cshtml" />
     <Content Include="Areas\XTGL\TreeTest\List.cshtml" />
-    <Content Include="Areas\DPGL\ASSETCHANGE\Detail.cshtml" />
+    <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeDetail.cshtml" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.cshtml" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.cshtml" />
     <Content Include="Areas\Share\CommonWindow.cshtml" />
@@ -409,7 +409,7 @@
     <Content Include="Areas\PPGL\BRAND\BrandDetail.cshtml" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.cshtml" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.cshtml" />
-    <Content Include="Areas\DPGL\ASSETSPILT\Detail.cshtml" />
+    <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltDetail.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsDetail.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsList.cshtml" />

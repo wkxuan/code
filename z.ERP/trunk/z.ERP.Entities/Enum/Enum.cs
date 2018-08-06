@@ -109,7 +109,8 @@ namespace z.ERP.Entities.Enum
     public enum 单元状态
     {
         不可用 = 1,
-        正常 = 2
+        正常 = 2,
+        拆分=3
     }
     public enum 租用状态
     {

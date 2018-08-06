@@ -12,11 +12,11 @@
 }
 
 @{
-    var adjust = ViewBag.billAdjust;
+    var assetchange = ViewBag.assetchange;
 }
 @section btn{
     @{
-        if (@adjust.STATUS == "1")
+        if (@assetchange.STATUS == "1")
         {
             RenderControl(new ButtonRender()
             {
@@ -43,33 +43,17 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle">权债发生月</i-col>
-        <i-col span="4">
-            <i-input v-model="NIANYUE" readonly="true"></i-input>
-        </i-col>
-        <i-col span="2" class="RowTitle">开始日期</i-col>
-        <i-col span="4">
-            <i-input v-model="START_DATE" readonly="true"></i-input>
-        </i-col>
-        <i-col span="2" class="RowTitle">结束日期</i-col>
-        <i-col span="4">
-            <i-input v-model="END_DATE" readonly="true"></i-input>
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">收付实现月</i-col>
-        <i-col span="4">
-            <i-input v-model="YEARMONTH" readonly="true"></i-input>
-        </i-col>
+        @*<i-col span="2" class="RowTitle">变更类型</i-col>
+            <i-col span="4" class="RowText"> @assetchange.CHANGE_TYPE   </i-col>*@
         <i-col span="2" class="RowTitle">备注</i-col>
-        <i-col span="10">
-            <i-input v-model="DESCRIPTION" readonly="true"></i-input>
+        <i-col span="16">
+            <i-input v-model="DISCRIPTION" readonly="true"></i-input>
         </i-col>
     </row>
     <row>
         <i-col span="18">
             <i-table size="small" border="true"
-                     :columns="colDef" :data="ADJUST_ITEM" height="200"></i-table>
+                     :columns="colDef" :data="ASSETCHANGEITEM" height="400"></i-table>
         </i-col>
     </row>
 }
@@ -80,27 +64,27 @@
             data: {
                 Mainpanel: 'condition',
                 disabled:true,
-                BILLID:"@adjust.BILLID",
-                BRANCHNAME:"@adjust.BRANCHNAME",
-                STATUSMC:"@adjust.STATUSMC",
-                NIANYUE:"@adjust.NIANYUE",
-                YEARMONTH:"@adjust.YEARMONTH",
-                START_DATE:"@adjust.START_DATE",
-                END_DATE:"@adjust.END_DATE",
-                DESCRIPTION:"@adjust.DESCRIPTION",
+                BILLID:"@assetchange.BILLID",
+                BRANCHNAME:"@assetchange.BRANCHNAME",
+                STATUSMC:"@assetchange.STATUSMC",
+                DISCRIPTION:"@assetchange.DISCRIPTION",
                 colDef : [
-                {title: "合同号", key: 'CONTRACTID', width: 100},
-                { title: '收费项目', key: 'TERMID', width: 100 },
-                { title: '调整金额', key: 'MUST_MONEY', width: 100 }
+                {title: "店铺代码", key: 'CODE', width: 100},
+                { title: '原建筑面积', key: 'AREA_BUILD_OLD', width: 100 },
+                { title: '原使用面积', key: 'AREA_USABLE_OLD', width: 100 },
+                { title: '原租赁面积', key: 'AREA_RENTABLE_OLD', width: 100 },
+                { title: '新建筑面积', key: 'AREA_BUILD_NEW', width: 100 },
+                { title: '新使用面积', key: 'AREA_USABLE_NEW', width: 100 },
+                { title: '新租赁面积', key: 'AREA_RENTABLE_NEW', width: 100 }
                 ],
-                ADJUST_ITEM:[]
+                ASSETCHANGEITEM:[]
             },
             mounted:function(){
                 var _self = this;
-                _.Ajax('SearchBill_Adjust', {
-                    Data: { BILLID: @adjust.BILLID }
+                _.Ajax('SearchAssetChange', {
+                    Data: { BILLID: @assetchange.BILLID }
                 }, function (data) {
-                    _self.ADJUST_ITEM = data.billAdjustItem;
+                    _self.ASSETCHANGEITEM = data.assetchangeitem;
                 });
             },
             methods: {
@@ -108,7 +92,7 @@
                     event.stopPropagation();
                     var _self = this;
                     _.Ajax('ExecData', {
-                        Data: {BILLID: @adjust.BILLID},
+                        Data: {BILLID: @assetchange.BILLID},
                     }, function (data) {
                         _self.$Message.info("审核成功");
                         setTimeout(function () {
