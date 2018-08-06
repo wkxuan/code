@@ -995,6 +995,7 @@ editDetail.otherMethods = {
                     INX: i + 1,
                     STARTDATE: copyHtQsr,
                     ENDDATE: nestYear,
+                    DJLX: '2',  //默认月金额
                     RENTS: 0,
                     RENTS_JSKL: 0,
                     SUMRENTS: 0
@@ -1006,6 +1007,7 @@ editDetail.otherMethods = {
                     INX: i + 1,
                     STARTDATE: copyHtQsr,
                     ENDDATE: (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')),
+                    DJLX: '2',  //默认月金额
                     RENTS: 0,
                     RENTS_JSKL: 0,
                     SUMRENTS: 0

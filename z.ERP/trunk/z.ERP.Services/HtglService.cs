@@ -529,7 +529,9 @@ namespace z.ERP.Services
 
         public object GetContractList(CONTRACTEntity Data)
         {
-            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.BRANCHID from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
+            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.BRANCHID  "
+               + " T.REPORTER_NAME,T.REPORTER_TIME "
+               + "  from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
             if (!Data.CONTRACTID.IsEmpty())
                 sql += (" and T.CONTRACTID= " + Data.CONTRACTID);
             DataTable dt = DbHelper.ExecuteTable(sql);

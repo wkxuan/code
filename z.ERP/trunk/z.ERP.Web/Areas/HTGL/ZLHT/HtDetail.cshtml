@@ -96,15 +96,23 @@
        </i-col>
     </row>
     <row>
-       <i-col span="10">
+       <i-col span="8">
            <i-table height="200" size="small" :border="true"
                     :columns="colGroup" :data="CONTRACT_GROUP"></i-table>
        </i-col>
-        <i-col span="14">
+        <i-col span="16">
             <i-table height="200" size="small" :border="true"
                      :columns="colDefJskl" :data="CONTJSKL"></i-table>
         </i-col>
     </row>
+
+    <row>
+        <i-col span="24">
+            <i-table height="300" size="small" :border="true"
+                     :columns="colDefRENTITEM" :data="CONTRACT_RENTITEM"></i-table>
+        </i-col>
+    </row>
+
       <row>
        <i-col span="24">
            <i-table height="200" size="small" :border="true"
@@ -142,7 +150,7 @@
                 ],
                 CONTRACT_BRAND:[],
                 colDefSHOP : [
-                   {title: "商铺代码", key: 'CODE', width: 100},
+                   {title: "商铺代码", key: 'CODE', width: 120},
                    { title: '业态代码', key: 'CATEGORYCODE', width: 100 },
                    { title: '业态名称', key: 'CATEGORYNAME', width: 100 },
                    { title: '建筑面积', key: 'AREA', width: 100 },
@@ -165,13 +173,53 @@
                 ],
                 CONTRACT_GROUP:[],
                 colDefJskl:[
-                   { title: '扣点序号', key: 'GROUPNO', width: 100 },
+                   { title: '扣点序号', key: 'GROUPNO', width: 90 },
                    { title: '时间段', key: 'INX', width: 80 },
                    { title: '开始日期', key: 'STARTDATE', width: 150 },
                    { title: '结束日期', key: 'ENDDATE', width: 150},
-                   { title: "扣点", key: 'JSKL', width: 120 },
+                   { title: '起始金额', key: 'SALES_START',width:120},
+                   { title: '结束金额(包含)', key: 'SALES_END',width:120},
+                   { title: "扣点", key: 'JSKL', width: 80 },
                 ],
                 CONTJSKL:[],
+
+                colDefRENTITEM:[
+                    { title: '时间段', key: 'INX', width: 80 },
+                    { title: '开始日期', key: 'STARTDATE', width: 150},
+                    { title: '结束日期', key: 'ENDDATE', width: 150},
+                    { title: '年月', key: 'YEARMONTH', width: 100},
+                    { title: '租金', key: 'RENTS', width: 200},
+                    { title: '生成日期',key: 'CREATEDATE',width: 150},
+                    { title: '月清算标记', key: 'QSBJ', width: 100,
+                    render: function (h, params){
+                        return h('Select', {
+                            props: {
+                                value: params.row.QSBJ
+                            }
+                        },
+                            [
+                            h('Option', { props: { value: "1" } }, '是'),
+                            h('Option', { props: { value: "2" } }, '否')
+                            ])
+                        }
+                    },
+                    {title: '区间清算标记', key: 'QJQSBJ', width: 100,
+                    render: function (h, params){
+                        return h('Select', {
+                            props: {
+                                value: params.row.QJQSBJ
+                            }
+                        },
+                            [
+                            h('Option', { props: { value: "1" } }, '是'),
+                            h('Option', { props: { value: "2" } }, '否')
+                            ])
+                    }
+                    }
+                ],
+                CONTRACT_RENTITEM:[],
+               
+
                 colDefCOST:[
                   { title: '序号', key: 'INX', width: 100 },
                   { title: "费用项目名称", key: 'NAME', width: 120 },
@@ -202,6 +250,7 @@
                     _self.CONTRACT_RENT = data.ContractParm.CONTRACT_RENT;;
                     _self.CONTRACT_GROUP = data.ContractParm.CONTRACT_GROUP;
                     _self.CONTJSKL = data.ContractParm.CONTJSKL;
+                    _self.CONTRACT_RENTITEM = data.ContractRentParm.CONTRACT_RENTITEM;
                     _self.CONTRACT_COST = data.contractCost;
                     _self.CONTRACT_PAY = data.contractPay;
                 });

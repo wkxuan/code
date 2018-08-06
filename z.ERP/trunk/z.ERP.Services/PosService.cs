@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using z.ERP.Entities;
-using z.ERP.Entities.Enum;
 using z.ERP.Entities.Service.Pos;
-using z.ERP.Model.Vue;
 using z.Extensions;
-using z.MVC5.Results;
 
 namespace z.ERP.Services
 {
