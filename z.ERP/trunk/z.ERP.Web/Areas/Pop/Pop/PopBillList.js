@@ -5,6 +5,9 @@
         { title: "分店名称", key: "BRANCHNAME", width: 200 },
         { title: "债权发生月", key: "NIANYUE", width: 100 },
         { title: "收付实现月", key: "YEARMONTH", width: 100 },
+        { title: '应收金额', key: 'MUST_MONEY', width: 100 },
+        { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
+        { title: '已付金额', key: 'RECEIVE_MONEY', width: 100 },
         { title: "开始日期", key: "START_DATE", width: 100 },
         { title: "结束日期", key: "END_DATE", width: 100 },
         { title: "状态", key: "STATUSMC", width: 100 },
@@ -24,7 +27,12 @@
 }
 ////获取父页面参数
 search.popInitParam = function (data) {
-    search.searchParam.BRANCHID = data.BRANCHID;
+    if (data)
+    {
+        search.searchParam.BRANCHID = data.BRANCHID;
+        search.searchParam.MERCHANTID = data.MERCHANTID;
+        search.searchParam.WFDJ = data.WFDJ;
+    }
 }
 search.otherMethods = {
     SelFeeSubject: function () {

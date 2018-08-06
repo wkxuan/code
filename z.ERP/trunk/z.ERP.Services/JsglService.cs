@@ -7,6 +7,7 @@ using System;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
 using z.SSO.Model;
+using z.ERP.Entities.Procedures;
 
 namespace z.ERP.Services
 {
@@ -407,11 +408,12 @@ namespace z.ERP.Services
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-                billObtain.VERIFY = employee.Id;
-                billObtain.VERIFY_NAME = employee.Name;
-                billObtain.VERIFY_TIME = DateTime.Now.ToString();
-                billObtain.STATUS = ((int)普通单据状态.审核).ToString();
-                DbHelper.Save(billObtain);
+                Exec_BILL_OBTAIN exec_billobtain = new Exec_BILL_OBTAIN()
+                {
+                    p_BILLID = Data.BILLID,
+                    p_VERIFY = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_billobtain);
                 Tran.Commit();
             }
             return billObtain.BILLID;

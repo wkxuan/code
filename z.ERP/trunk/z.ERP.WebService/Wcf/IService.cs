@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using z.ERP.WebService.Model;
 
 namespace z.ERP.WebService.Wcf
 {
@@ -11,6 +12,10 @@ namespace z.ERP.WebService.Wcf
     [ServiceContract]
     public interface IService
     {
+        [OperationContract]
         ResponseDTO Do(RequestDTO dto);
+
+        [OperationContract]
+        LoginResponseDTO Login(LoginRequestDTO dto);
     }
 }

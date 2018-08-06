@@ -7,6 +7,7 @@ using z.ERP.WebService.Controllers;
 using z.ERP.WebService.Model;
 using z.Extensions;
 using z.Extensiont;
+using z.SSO;
 
 namespace z.ERP.WebService
 {
@@ -17,7 +18,8 @@ namespace z.ERP.WebService
             ResponseDTO res = new ResponseDTO();
             try
             {
-                List<Type> types = Assembly.GetExecutingAssembly().FindAllType(a => a.BaseOn<ControllerBase>()).ToList();
+                UserApplication.Login(dto.SecretKey, null);
+                List<Type> types = Assembly.GetExecutingAssembly().FindAllType(a => a.BaseOn<BaseController>()).ToList();
                 Type thistype = null;
                 MethodInfo thisMethod = null;
                 types.ForEachWithBreak(tt =>
@@ -25,7 +27,7 @@ namespace z.ERP.WebService
                     tt.GetMethods().ForEachWithBreak(a =>
                       {
                           ServiceAbleAttribute attr = a.GetAttribute<ServiceAbleAttribute>();
-                          if (attr.Key == dto.ServiceName)
+                          if (attr != null && attr.Key == dto.ServiceName)
                           {
                               thistype = tt;
                               thisMethod = a;
@@ -39,15 +41,25 @@ namespace z.ERP.WebService
                 {
                     throw new Exception($"找不到接口方法{dto.ServiceName}");
                 }
-                ControllerBase cb = new ControllerBase();
+                BaseController cb = new BaseController();
                 var t = cb.Create(thistype);
                 ParameterInfo[] pinfo = thisMethod.GetParameters();
-                if (pinfo == null || pinfo.Count() != 1)
+                if (pinfo.Count() > 1)
                 {
-                    throw new Exception($"方法{thisMethod.Name}有且只能有一个参数");
+                    throw new Exception($"方法{thisMethod.Name}最多能有一个参数");
                 }
-                object obj = thisMethod.Invoke(t, new object[] { dto.Context.ToObj(pinfo.First().ParameterType) });
-                return new WebService.ResponseDTO()
+                object pram = null;
+                if (pinfo.Count() == 1)
+                    if (!dto.Context.TryToObj(pinfo.First().ParameterType, out pram))
+                    {
+                        throw new Exception("参数格式不正确");
+                    }
+                object obj;
+                if (pram != null)
+                    obj = thisMethod.Invoke(t, new object[] { pram });
+                else
+                    obj = thisMethod.Invoke(t, null);
+                return new ResponseDTO()
                 {
                     Success = true,
                     Context = obj.ToJson()
@@ -58,7 +70,7 @@ namespace z.ERP.WebService
                 return new ResponseDTO()
                 {
                     Success = false,
-                    Msg = ex.Message,
+                    Msg = ex.InnerMessage (),
                     Context = ""
                 };
             }

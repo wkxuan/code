@@ -17,14 +17,5 @@ namespace z.ERP.Web.Areas.Share.Render
                 return "CommonWindow";
             }
         }
-
-        /// <summary>
-        /// 主键
-        /// </summary>
-        public string Id
-        {
-            get;
-            set;
-        }
     }
 }

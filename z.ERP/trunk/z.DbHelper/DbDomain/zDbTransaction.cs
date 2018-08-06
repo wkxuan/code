@@ -8,6 +8,17 @@ namespace z.DBHelper.DbDomain
 {
     public class zDbTransaction : IDisposable
     {
+        /// <summary>
+        /// 假事务
+        /// </summary>
+        public zDbTransaction()
+        {
+        }
+
+        /// <summary>
+        /// 真事务
+        /// </summary>
+        /// <param name="t"></param>
         public zDbTransaction(DbTransaction t)
         {
             Transaction = t;
@@ -43,20 +54,29 @@ namespace z.DBHelper.DbDomain
 
         public void Commit()
         {
-            BeforeCommit?.Invoke();
-            Transaction?.Commit();
-            AfterCommit?.Invoke();
+            if (Transaction != null)
+            {
+                BeforeCommit?.Invoke();
+                Transaction?.Commit();
+                AfterCommit?.Invoke();
+            }
         }
         public void Rollback()
         {
-            BeforeRollback?.Invoke();
-            Transaction?.Rollback();
-            AfterRollback?.Invoke();
+            if (Transaction != null)
+            {
+                BeforeRollback?.Invoke();
+                Transaction?.Rollback();
+                AfterRollback?.Invoke();
+            }
         }
 
         public void Dispose()
         {
-            Transaction.Dispose();
+            if (Transaction != null)
+            {
+                Transaction.Dispose();
+            }
         }
     }
 }

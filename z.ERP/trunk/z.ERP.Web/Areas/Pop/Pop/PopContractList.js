@@ -25,6 +25,8 @@ search.popInitParam = function (data) {
     if (data)
     {
         search.searchParam.BRANCHID = data.BRANCHID;
+        search.searchParam.YXHTBJ = data.YXHTBJ;
+        search.searchParam.FREESHOPBJ = data.FREESHOPBJ;
     }    
 }
 search.otherMethods = {

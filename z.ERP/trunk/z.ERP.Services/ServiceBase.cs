@@ -147,6 +147,13 @@ namespace z.ERP.Services
                 return ioc.Create<UserService>();
             }
         }
+        public PosService PosService
+        {
+            get
+            {
+                return ioc.Create<PosService>();
+            }
+        }
         #endregion
 
         #region 通用方法

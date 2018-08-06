@@ -4,6 +4,7 @@
     editDetail.Key = 'BILLID';
     //保证金收款
     editDetail.dataParam.TYPE = 3;
+    editDetail.dataParam.ALL_MONEY = 0;
     //初始化弹窗所要传递参数
     editDetail.screenParam.showPopBill = false;
     editDetail.screenParam.showPopMerchant = false;
@@ -29,6 +30,11 @@
                 on: {
                     'on-blur': function (event) {
                         editDetail.dataParam.BILL_OBTAIN_ITEM[params.index].RECEIVE_MONEY = event.target.value;
+                        let sumJE = 0;
+                        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
+                            sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
+                        }
+                        editDetail.dataParam.ALL_MONEY = sumJE;
                     }
                 },
             })
@@ -49,6 +55,11 @@
                     on: {
                         click: function (event) {
                             editDetail.dataParam.BILL_OBTAIN_ITEM.splice(params.index, 1);
+                        let sumJE = 0;
+                        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
+                            sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
+                        }
+                        editDetail.dataParam.ALL_MONEY = sumJE;
                         }
                     },
                 }, '删除')
@@ -67,7 +78,7 @@
     editDetail.screenParam.addCol = function () {
         var temp = editDetail.dataParam.BILL_OBTAIN_ITEM || [];
         temp.push({});
-        editDetail.dataParam.BILL_OBTAIN__ITEM = temp;
+        editDetail.dataParam.BILL_OBTAIN_ITEM = temp;
     }
 }
 editDetail.showOne = function (data, callback) {
@@ -99,26 +110,34 @@ editDetail.otherMethods = {
             return;
         };
         editDetail.screenParam.showPopBill = true;
-        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID };
+        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID,WFDJ : 1 };
     }
 }
 
 ///接收弹窗返回参数
 editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopBill) {
-        editDetail.screenParam.showPopBill = false;
-        var sjitem = [];
-        for (var i = 0; i < data.sj.length; i++) {
-            sjitem.push({ FINAL_BILLID: data.sj[i].BILLID,YEARMONTH:data.sj[i].YEARMONTH,CONTRACTID:data.sj[i].CONTRACTID,
-                TERMMC:data.sj[i].TERMMC,
-                MUST_MONEY:data.sj[i].MUST_MONEY,
-                UNPAID_MONEY:data.sj[i].MUST_MONEY,
-                RECEIVE_MONEY: data.sj[i].MUST_MONEY,
-                TYPE:1
-            });
-            
+        editDetail.screenParam.showPopBill = false;                
+        if (editDetail.dataParam.BILL_OBTAIN_ITEM.length>0) {
+            if (!editDetail.dataParam.BILL_OBTAIN_ITEM[0].FINAL_BILLID) {
+                editDetail.dataParam.BILL_OBTAIN_ITEM.splice(0, 1);
+            }            
         }
-        editDetail.dataParam.BILL_OBTAIN_ITEM = sjitem;
+        for (var i = 0; i < data.sj.length; i++) {
+            editDetail.dataParam.BILL_OBTAIN_ITEM.push({
+                FINAL_BILLID: data.sj[i].BILLID, YEARMONTH: data.sj[i].YEARMONTH, CONTRACTID: data.sj[i].CONTRACTID,
+                TERMMC: data.sj[i].TERMMC,
+                MUST_MONEY: data.sj[i].MUST_MONEY,
+                UNPAID_MONEY: data.sj[i].UNPAID_MONEY,
+                RECEIVE_MONEY: data.sj[i].UNPAID_MONEY,
+                TYPE:1
+            });            
+        }
+        let sumJE = 0;
+        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
+            sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
+        }
+        editDetail.dataParam.ALL_MONEY = sumJE;
     }
     else if (editDetail.screenParam.showPopMerchant) {
         editDetail.screenParam.showPopMerchant = false;
@@ -168,6 +187,17 @@ editDetail.IsValidSave = function () {
                 iview.Message.info("请录入付款金额!");
                 return false;
             };
+            if (editDetail.dataParam.BILL_OBTAIN_ITEM[i].UNPAID_MONEY > 0 &&
+                (editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY > editDetail.dataParam.BILL_OBTAIN_ITEM[i].UNPAID_MONEY))
+            {
+                iview.Message.info("单号[" + editDetail.dataParam.BILL_OBTAIN_ITEM[i].FINAL_BILLID + "] 的付款金额不能大于未付款金额!");
+                return false;
+            }
+            if (editDetail.dataParam.BILL_OBTAIN_ITEM[i].UNPAID_MONEY < 0 &&
+                (editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY < editDetail.dataParam.BILL_OBTAIN_ITEM[i].UNPAID_MONEY)) {
+                iview.Message.info("单号[" + editDetail.dataParam.BILL_OBTAIN_ITEM[i].FINAL_BILLID + "]当为负数金额时，付款金额不能小于未付款金额!");
+                return false;
+            }
         };
     };
 
