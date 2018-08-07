@@ -20,7 +20,7 @@
             set;
         }
 
-        public string userid
+        public string userId
         {
             get;
             set;

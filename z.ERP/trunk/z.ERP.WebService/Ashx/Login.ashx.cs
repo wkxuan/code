@@ -17,18 +17,18 @@ namespace z.ERP.WebService.Ashx
         public void ProcessRequest(HttpContext context)
         {
             LoginResponseDTO res;
-            LoginRequestDTO dto = new Model.LoginRequestDTO()
+            LoginRequestDTO dto = new LoginRequestDTO()
             {
-                PlatformId = HttpExtension.GetRequestParam("PlatformId"),
-                UserName = HttpExtension.GetRequestParam("UserName"),
-                UserPassword = HttpExtension.GetRequestParam("UserPassword")
+                platformId = HttpExtension.GetRequestParam("PlatformId"),
+                userCode = HttpExtension.GetRequestParam("UserName"),
+                userPassword = HttpExtension.GetRequestParam("UserPassword")
             };
-            if (dto.PlatformId.IsEmpty() || dto.UserName.IsEmpty() || dto.UserPassword.IsEmpty())
+            if (dto.platformId.IsEmpty() || dto.userCode.IsEmpty() || dto.userPassword.IsEmpty())
             {
                 res = new LoginResponseDTO()
                 {
-                    Success = false,
-                    ErrorMsg = "登陆信息不完整"
+                    success = false,
+                    errorMsg = "登陆信息不完整"
                 };
             }
             else

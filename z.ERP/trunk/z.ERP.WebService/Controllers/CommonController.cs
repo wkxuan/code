@@ -9,19 +9,20 @@ namespace z.ERP.WebService.Controllers
     {
         LoginResponseDTO _login(LoginRequestDTO dto)
         {
-            var user = service.HomeService.GetUserByCode(dto.UserName, dto.UserPassword);
+            var user = service.HomeService.GetUserByCode(dto.userCode, dto.userPassword);
             string LoginStr = ServiceUserHelper.GetSrc(new ServiceUser()
             {
-                PlatformId = dto.PlatformId,
+                PlatformId = dto.platformId,
                 Id = user.Id,
                 Name = user.Name
             });
             UserApplication.Login(LoginStr, null);
             return new LoginResponseDTO()
             {
-                Success = true,
-                SecretKey = LoginStr,
-                UserName = employee.Name
+                success = true,
+                secretKey = LoginStr,
+                userId = employee.Id,
+                userName = employee.Name
             };
         }
 
@@ -42,8 +43,8 @@ namespace z.ERP.WebService.Controllers
             if (dto == null)
                 return new LoginResponseDTO()
                 {
-                    Success = false,
-                    ErrorMsg = "传入对象为空"
+                    success = false,
+                    errorMsg = "传入对象为空"
                 };
             try
             {
@@ -53,8 +54,8 @@ namespace z.ERP.WebService.Controllers
             {
                 return new LoginResponseDTO()
                 {
-                    Success = false,
-                    ErrorMsg = ex.Message
+                    success = false,
+                    errorMsg = ex.Message
                 };
             }
         }
