@@ -12,11 +12,11 @@ function _Define() {
         _this.screenParam.dataDef = [];
 
         _this.screenParam.payColDef = [
-        { type: 'selection', width: 55,align: 'center'},
+        { type: 'selection', width: 55, align: 'center' },
         { title: '代码', key: 'PAYID', width: 62 },
         { title: '名称', key: 'NAME', width: 148 }];
         _this.screenParam.payDataDef = [];
-        
+
         _.Ajax('GetStaionPayList', {
         }, function (data) {
             for (var i = 0; i < data.pay.length; i++) {
@@ -60,7 +60,7 @@ function _Define() {
                 disabled: _this.enabled(true),
                 _key: undefined
             },
-            mounted: function(){
+            mounted: function () {
                 //页面打开先查询左边列表信息
                 let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
@@ -74,7 +74,7 @@ function _Define() {
                         _this.screenParam.dataDef = data.rows;
                     }
                 })
-                },
+            },
             methods: {
                 //添加
                 add: function (event) {
@@ -99,7 +99,7 @@ function _Define() {
                 },
                 //保存
                 save: function (event) {
-                    
+
                     var _self = this;
                     _self.dataParam.STATION_PAY = this.$refs.selection.getSelection();
                     if (!_this.IsValidSave(_self))
@@ -195,22 +195,20 @@ function _Define() {
                 }, function (data) {
                     _this.dataParam = data.staion[0];
                     ve.dataParam = _this.dataParam;
-                    for (var j = 0; j < ve.screenParam.payDataDef.length; j++)
-                    {
+                    for (var j = 0; j < ve.screenParam.payDataDef.length; j++) {
                         ve.screenParam.payDataDef[j]._checked = false;
-                         for (var i = 0; i < data.station_pay[0].length; i++) {
-                            if (data.station_pay[0][i].PAYID == ve.screenParam.payDataDef[j].PAYID)
-                            {
+                        for (var i = 0; i < data.station_pay[0].length; i++) {
+                            if (data.station_pay[0][i].PAYID == ve.screenParam.payDataDef[j].PAYID) {
                                 ve.screenParam.payDataDef[j]._checked = true;
-                            }                            
-                        }                        
+                            }
+                        }
                     };
                     callback && callback();
                 })
             }
         }
 
-        function save(callback) {            
+        function save(callback) {
             _.Ajax('Save', {
                 DefineSave: ve.dataParam,
                 PaySave: ve.dataParam.STATION_PAY

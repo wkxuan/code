@@ -70,7 +70,7 @@ namespace z.ERP.WebService
                 return new ResponseDTO()
                 {
                     Success = false,
-                    Msg = ex.InnerMessage (),
+                    ErrorMsg = ex.InnerMessage (),
                     Context = ""
                 };
             }

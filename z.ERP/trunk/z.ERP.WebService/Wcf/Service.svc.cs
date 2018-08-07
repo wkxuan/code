@@ -10,25 +10,12 @@ namespace z.ERP.WebService.Wcf
     {
         public ResponseDTO Do(RequestDTO dto)
         {
-            ServiceTransfer st = new ServiceTransfer();
-            return st.Do(dto);
+            return new CommonController().Do(dto);
         }
 
         public LoginResponseDTO Login(LoginRequestDTO dto)
         {
-            try
-            {
-                CommonController Controller = new CommonController();
-                return Controller.Login(dto);
-            }
-            catch (Exception ex)
-            {
-                return new LoginResponseDTO()
-                {
-                    Success = false,
-                    ErrorMsg = ex.Message
-                };
-            }
+            return new CommonController().Login(dto);
         }
 
     }
