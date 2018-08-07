@@ -25,8 +25,8 @@ namespace z.ERP.WebService.Wcf
             {
                 return new LoginResponseDTO()
                 {
-                    Success = false,
-                    ErrorMsg = ex.Message
+                    success = false,
+                    errorMsg = ex.Message
                 };
             }
         }
