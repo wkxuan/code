@@ -2,25 +2,31 @@
 {
     public class LoginResponseDTO
     {
-        public bool Success
+        public bool success
         {
             get;
             set;
         }
 
-        public string ErrorMsg
+        public string errorMsg
         {
             get;
             set;
         }
 
-        public string SecretKey
+        public string secretKey
         {
             get;
             set;
         }
 
-        public string UserName
+        public string userid
+        {
+            get;
+            set;
+        }
+
+        public string userName
         {
             get;
             set;
