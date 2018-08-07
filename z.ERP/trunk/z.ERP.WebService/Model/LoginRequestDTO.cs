@@ -7,19 +7,19 @@ namespace z.ERP.WebService.Model
 {
     public class LoginRequestDTO
     {
-        public string userCode
+        public string UserCode
         {
             get;
             set;
         }
 
-        public string userPassword
+        public string UserPassword
         {
             get;
             set;
         }
 
-        public string platformId
+        public string PlatformId
         {
             get;
             set;

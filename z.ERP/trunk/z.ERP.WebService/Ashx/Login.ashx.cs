@@ -19,16 +19,16 @@ namespace z.ERP.WebService.Ashx
             LoginResponseDTO res;
             LoginRequestDTO dto = new LoginRequestDTO()
             {
-                platformId = HttpExtension.GetRequestParam("PlatformId"),
-                userCode = HttpExtension.GetRequestParam("UserName"),
-                userPassword = HttpExtension.GetRequestParam("UserPassword")
+                PlatformId = HttpExtension.GetRequestParam("PlatformId"),
+                UserCode = HttpExtension.GetRequestParam("UserCode"),
+                UserPassword = HttpExtension.GetRequestParam("UserPassword")
             };
-            if (dto.platformId.IsEmpty() || dto.userCode.IsEmpty() || dto.userPassword.IsEmpty())
+            if (dto.PlatformId.IsEmpty() || dto.UserCode.IsEmpty() || dto.UserPassword.IsEmpty())
             {
                 res = new LoginResponseDTO()
                 {
-                    success = false,
-                    errorMsg = "登陆信息不完整"
+                    Success = false,
+                    ErrorMsg = "登陆信息不完整"
                 };
             }
             else
