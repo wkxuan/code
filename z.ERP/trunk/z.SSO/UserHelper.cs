@@ -39,7 +39,7 @@ namespace z.SSO
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public abstract T GetUser<T>() where T : User;
+        public abstract T GetUser<T>(bool throwError = true) where T : User;
 
         /// <summary>
         /// 是否已经登陆

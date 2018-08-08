@@ -99,8 +99,8 @@ namespace z.LogFactory
             if (ConfigDic == null || ConfigDic.Count == 0)
             {
                 ConfigDic = new Dictionary<string, LogConfigBase>();
-                string path = System.AppDomain.CurrentDomain.BaseDirectory + @"\Log.config";
-                if (System.IO.File.Exists(path))
+                string path = AppDomain.CurrentDomain.BaseDirectory + @"\Log.config";
+                if (File.Exists(path))
                 {
 
                     StreamReader sr = File.OpenText(path);

@@ -127,6 +127,10 @@
       <Project>{34b3dd30-91d0-4e47-ab99-9ebd4bb51747}</Project>
       <Name>z.IOC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.LogFactory\z.LogFactory.csproj">
+      <Project>{31E4C7DC-E998-4068-AEC8-0AFAC6BBE68D}</Project>
+      <Name>z.LogFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.SSO\z.SSO.csproj">
       <Project>{df833680-d044-4c57-96f9-217a1812c0b3}</Project>
       <Name>z.SSO</Name>

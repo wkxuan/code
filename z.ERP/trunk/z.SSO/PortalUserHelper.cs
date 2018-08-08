@@ -27,7 +27,7 @@ namespace z.SSO
         {
         }
 
-        public override T GetUser<T>()
+        public override T GetUser<T>(bool throwError = true)
         {
             string key = ApplicationContextBase.GetContext()?.principal?.Identity.Name;
             T e = ApplicationContextBase.GetContext().GetData<T>(LoginKey + key);
@@ -50,7 +50,8 @@ namespace z.SSO
                     } as T;
                     return teste;
                 }
-                throw new NoLoginException();
+                if (throwError)
+                    throw new NoLoginException();
             }
             return e;
         }
