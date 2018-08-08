@@ -8,13 +8,31 @@ namespace z.ERP.Entities.Service.Pos
 {
     public class UserYYYResult
     {
-        public string Id
+        public string clerkId
         {
             get;
             set;
         }
 
-        public string Name
+        public string clerkName
+        {
+            get;
+            set;
+        }
+
+        public string shopId
+        {
+            get;
+            set;
+        }
+
+        public string shopCode
+        {
+            get;
+            set;
+        }
+
+        public string shopName
         {
             get;
             set;

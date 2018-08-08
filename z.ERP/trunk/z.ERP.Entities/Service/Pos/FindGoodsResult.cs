@@ -31,10 +31,6 @@ namespace z.ERP.Entities.Service.Pos
         {
             get; set;
         }
-        public string Shopid
-        {
-            get; set;
-        }
 
     }
 }

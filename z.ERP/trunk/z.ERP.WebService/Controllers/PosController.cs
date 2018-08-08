@@ -37,16 +37,16 @@ namespace z.ERP.WebService.Controllers
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        [ServiceAble("GetYYY")]
-        public UserYYYResult GetYYY(string code)
+        [ServiceAble("GetClerkShop")]
+        public UserYYYResult GetClerkShop(string usercode)
         {
-            return service.PosService.GetYYY(code);
+            return service.PosService.GetClerkShop(usercode);
         }
 
-        [ServiceAble("GetFKFS")]
-        public List<FKFSResult> GetFKFS()
+        [ServiceAble("GetPayList")]
+        public List<FKFSResult> GetPayList()
         {
-            return service.PosService.GetFKFS();
+            return service.PosService.GetPayList();
         }
 
         [ServiceAble("GetDeal")]
