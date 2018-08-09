@@ -64,7 +64,8 @@ namespace z.ERP.Entities.Enum
     {
         保证金押金 = 1,
         每月收费项目 = 2,
-        能源费费 = 3
+        能源费费 = 3,
+        其他=4
     }
     public enum 收费项目现金货扣
     {
@@ -207,6 +208,12 @@ namespace z.ERP.Entities.Enum
     {
         是 = 1,
         否 = 2
+    }
+
+    public enum 销售额标记
+    {
+        含税 = 1,
+        未税 = 2
     }
 
     public enum 收款类型

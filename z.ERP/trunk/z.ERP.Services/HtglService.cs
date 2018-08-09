@@ -110,7 +110,9 @@ namespace z.ERP.Services
             {
                 throw new LogicException("请确认租约编号!");
             }
-            string sql = $@"SELECT A.*,B.NAME MERNAME,C.NAME FDNAME,D.ORGNAME,E.CONTRACTID_OLD,E.JHRQ,F.NAME AS OPERATERULENAME  FROM CONTRACT A,MERCHANT B,";
+            string sql = $@"SELECT A.*,B.NAME MERNAME,C.NAME FDNAME,D.ORGNAME,E.CONTRACTID_OLD,E.JHRQ,";
+            sql += " (select NAME from FEERULE L where L.ID=A.FEERULE_RENT) FEERULE_RENTNAME,";
+            sql += " F.NAME AS OPERATERULENAME  FROM CONTRACT A,MERCHANT B,";
             sql += "   BRANCH C, ORG D,CONTRACT_UPDATE E,OPERATIONRULE F WHERE A.MERCHANTID=B.MERCHANTID AND A.CONTRACTID=E.CONTRACTID(+) ";
             sql += " AND A.BRANCHID=C.ID AND A.ORGID=D.ORGID AND A.OPERATERULE=F.ID ";
             sql += (" AND A.CONTRACTID= " + Data.CONTRACTID);
@@ -122,7 +124,9 @@ namespace z.ERP.Services
 
             contract.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             contract.NewEnumColumns<联营合同合作方式>("OPERATERULE", "OPERATERULEMC");
-            
+
+            contract.NewEnumColumns<起始日清算>("QS_START", "QS_STARTMC");
+            contract.NewEnumColumns<销售额标记>("TAB_FLAG", "TAB_FLAGMC");
 
 
 

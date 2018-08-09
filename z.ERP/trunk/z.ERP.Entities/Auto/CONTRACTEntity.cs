@@ -346,6 +346,18 @@ namespace z.ERP.Entities
             get; set;
         }
 
+        /// <summary>
+        /// 销售额标记
+        /// <summary>
+        [Field("销售额标记")]
+        public string TAB_FLAG
+        {
+            get; set;
+        }
+
+
         
+
+
     }
 }
