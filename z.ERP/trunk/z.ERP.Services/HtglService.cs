@@ -29,8 +29,8 @@ namespace z.ERP.Services
             item.HasArrayKey("HTLX", a => sql += $" and A.HTLX in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
 
-            item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=A.CONTRACTID and UPPERCASE(U.CODE) LIKE 'UPPERCASE({a})%'))");
-            item.HasKey("BRANDNAME", a => sql += $" and exists(select 1 from CONTRACT_BRAND P,BRAND U where  P.BRANDID=U.ID and P.CONTRACTID=A.CONTRACTID and UPPERCASE(U.NAME) LIKE 'UPPERCASE({a})%'))");
+            item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=A.CONTRACTID and UPPER(U.CODE) LIKE '{a.ToUpper()}%')");
+            item.HasKey("BRANDNAME", a => sql += $" and exists(select 1 from CONTRACT_BRAND P,BRAND U where  P.BRANDID=U.ID and P.CONTRACTID=A.CONTRACTID and UPPER(U.NAME) LIKE '{a.ToUpper()}%')");
             sql += " ORDER BY  D.SHOPDM";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -532,7 +532,7 @@ namespace z.ERP.Services
 
         public object GetContractList(CONTRACTEntity Data)
         {
-            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.BRANCHID  "
+            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.BRANCHID,  "
                + " T.REPORTER_NAME,T.REPORTER_TIME "
                + "  from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
             if (!Data.CONTRACTID.IsEmpty())
