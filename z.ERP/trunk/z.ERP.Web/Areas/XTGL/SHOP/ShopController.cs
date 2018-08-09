@@ -35,7 +35,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
             v.Require(a => a.ORGID);
             v.Require(a => a.CATEGORYID);
             v.Require(a => a.TYPE);
-            v.Require(a => a.AREA_BUILD);
+            v.Require(a => a.AREA_RENTABLE);
             v.Require(a => a.STATUS);
             v.Require(a => a.RENT_STATUS);
             v.Verify();
@@ -59,7 +59,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
             v.Require(a => a.ORGID);
             v.Require(a => a.CATEGORYID);
             v.Require(a => a.TYPE);
-            v.Require(a => a.AREA_BUILD);
+            v.Require(a => a.AREA_RENTABLE);
             v.Require(a => a.STATUS);
             v.Require(a => a.RENT_STATUS);
             v.Verify();

@@ -16,17 +16,17 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
     {
         public ActionResult Bill_NoticeList()
         {
-            ViewBag.Title = "租赁结算单";
+            ViewBag.Title = "缴费通知单";
             return View();
         }
         public ActionResult Bill_NoticeEdit(string Id)
         {
-            ViewBag.Title = "租赁结算单";
+            ViewBag.Title = "缴费通知单";
             return View("Bill_NoticeEdit", model: (EditRender)Id); 
         }
         public ActionResult Bill_NoticeDetail(string Id)
         {
-            ViewBag.Title = "租赁结算单";
+            ViewBag.Title = "缴费通知单";
             var entity = service.JsglService.GetBillNoticeElement(new BILL_NOTICEEntity(Id));
             ViewBag.billNotice = entity.Item1;
             ViewBag.billNoticeItem = entity.Item2;

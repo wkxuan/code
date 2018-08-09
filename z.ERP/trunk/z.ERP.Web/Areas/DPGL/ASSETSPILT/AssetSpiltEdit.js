@@ -285,7 +285,6 @@ editDetail.otherMethods = {
                 return parseInt(row2.ASSETID) !== curRow.ASSETID;
             })
         }
-
     }
 }
 
