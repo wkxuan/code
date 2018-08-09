@@ -524,8 +524,9 @@
                 },
                  [
                     h('Option', { props: { value: 1 } }, '按日计算固定金额'),
-                    h('Option', { props: { value: 2 } }, '月固定金额'),
-                    h('Option', { props: { value: 3 } }, '按销售金额比例')
+                    h('Option', { props: { value: 2 } }, '按日计算月固定金额'),
+                    h('Option', { props: { value: 3 } }, '按销售金额比例'),
+                    h('Option', { props: { value: 4 } }, '月固定金额'),
                  ]
                 )
             }

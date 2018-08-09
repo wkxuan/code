@@ -33,7 +33,7 @@ namespace z.SSO
             }
         }
 
-        public override T GetUser<T>()
+        public override T GetUser<T>(bool throwError = true)
         {
             if (ConfigExtension.TestModel)//测试模式
             {
@@ -62,7 +62,7 @@ namespace z.SSO
                 emp.PermissionHandle = HasPermission;
                 return emp as T;
             }
-            if (e == null)
+            if (e == null && throwError)
             {
                 throw new NoLoginException();
             }

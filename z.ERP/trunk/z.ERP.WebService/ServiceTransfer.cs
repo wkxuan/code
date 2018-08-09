@@ -16,8 +16,7 @@ namespace z.ERP.WebService
         public ResponseDTO Do(RequestDTO dto)
         {
             ResponseDTO res = new ResponseDTO();
-            try
-            {
+
                 UserApplication.Login(dto.SecretKey, null);
                 List<Type> types = Assembly.GetExecutingAssembly().FindAllType(a => a.BaseOn<BaseController>()).ToList();
                 Type thistype = null;
@@ -64,16 +63,7 @@ namespace z.ERP.WebService
                     Success = true,
                     Context = obj.ToJson()
                 };
-            }
-            catch (Exception ex)
-            {
-                return new ResponseDTO()
-                {
-                    Success = false,
-                    ErrorMsg = ex.InnerMessage (),
-                    Context = ""
-                };
-            }
+         
         }
     }
 }
