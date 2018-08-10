@@ -5,5 +5,5 @@
          placeholder="@Model.Placeholder" :readonly="@Model.Readonly" v-on:on-change="@Model.Change"
          v-on:on-enter="@Model.Enter"
          :disabled="@(Model.Enable?"!disabled":"disabled")"
-         type="@Model.type">
+         type="@Model.type" :rows="@Model.rows">
 </i-input>
