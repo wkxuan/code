@@ -8,19 +8,19 @@ namespace z.ERP.Entities.Service.Pos
 {
     public class GoodsResult
     {
-        public string sheetid
+        public int sheetid
         {
             get; set;
         }
-        public string inx
+        public int inx
         {
             get; set;
         }
-        public string shopid
+        public int shopid
         {
             get; set;
         }
-        public string goodsid
+        public int goodsid
         {
             get; set;
         }
@@ -28,23 +28,23 @@ namespace z.ERP.Entities.Service.Pos
         {
             get; set;
         }
-        public string price
+        public decimal price
         {
             get; set;
         }
-        public string quantity
+        public float quantity
         {
             get; set;
         }
-        public string sale_amount
+        public decimal sale_amount
         {
             get; set;
         }
-        public string discount_amount
+        public decimal discount_amount
         {
             get; set;
         }
-        public string coupon_amount
+        public decimal coupon_amount
         {
             get; set;
         }

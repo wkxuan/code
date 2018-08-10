@@ -1,50 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace z.ERP.Entities.Service.Pos
 {
     public class SaleRequest
     {
-        public string key
-        {
-            get; set;
-        }
         public string posno
         {
             get; set;
         }
-        public string dealid
+
+        public int dealid
         {
             get; set;
         }
-        public string sale_time
+        public DateTime sale_time
         {
             get; set;
         }
-        public string account_date
+        public DateTime account_date
         {
             get; set;
         }
-        public string cashierid
+        public int cashierid
         {
             get; set;
         }
-        public string sale_amount
+        public decimal sale_amount
         {
             get; set;
         }
-        public string change_amount
+        public decimal change_amount
         {
             get; set;
         }
-        public string member_type
+        public int member_cardid
         {
             get; set;
         }
-        public string manage_card
+        public int crm_recordid
         {
             get; set;
         }
@@ -52,7 +46,7 @@ namespace z.ERP.Entities.Service.Pos
         {
             get; set;
         }
-        public string dealid_old
+        public int? dealid_old
         {
             get; set;
         }

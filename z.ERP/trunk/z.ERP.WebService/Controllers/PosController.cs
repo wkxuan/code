@@ -50,9 +50,9 @@ namespace z.ERP.WebService.Controllers
         }
 
         [ServiceAble("GetDeal")]
-        public DealResult GetDeal(string dealid)
+        public SaleRequest GetDeal(GetDealFilter filter)
         {
-            return service.PosService.GetDeal();
+            return service.PosService.GetDeal(filter);
         }
 
         [ServiceAble("Sale")]

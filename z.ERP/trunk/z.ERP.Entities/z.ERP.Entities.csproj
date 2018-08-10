@@ -132,6 +132,7 @@
     <Compile Include="P1Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MERCHANTEntity.cs" />
+    <Compile Include="Service\Pos\GetDealFilter.cs" />
     <Compile Include="Service\Pos\DealResult.cs" />
     <Compile Include="Service\Pos\ClerkResultt.cs" />
     <Compile Include="Service\Pos\GoodsResult.cs" />

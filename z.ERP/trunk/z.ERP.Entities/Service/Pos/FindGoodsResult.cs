@@ -1,33 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace z.ERP.Entities.Service.Pos
+﻿namespace z.ERP.Entities.Service.Pos
 {
     public class FindGoodsResult
     {
-        public string Goodsid
+        public int goodsid
         {
             get; set;
         }
-        public string Name
+        public string name
         {
             get; set;
         }
         /// <summary>
         /// 类型：1品类2大类
         /// </summary>
-        public string Type
+        public int type
         {
             get; set;
         }
-        public string Price
+        public decimal price
         {
             get; set;
         }
-        public string Member_Price
+        public decimal member_Price
+        {
+            get; set;
+        }
+
+        public int shopid
         {
             get; set;
         }

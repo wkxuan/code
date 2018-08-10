@@ -13,7 +13,7 @@ namespace z.ERP.Entities.Service.Pos
             get;
             set;
         }
-        public int? shopId
+        public int? shopid
         {
             get;
             set;
