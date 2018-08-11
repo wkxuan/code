@@ -68,4 +68,27 @@
             }
         </i-col>
     </row>
+
+
+    <row>
+        <i-col span="2" class="RowTitle">资产代码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.SHOPDM"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">品牌名称</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.BRANDNAME"
+                });
+            }
+        </i-col>
+    </row>
 }

@@ -23,8 +23,9 @@ namespace z.ERP.Entities.Enum
     public enum 月费用收费方式
     {
         按日计算固定金额 = 1,
-        月固定金额 = 2,
-        按销售金额比例=3
+        按日计算月固定金额 = 2,
+        按销售金额比例=3,
+        月固定金额=4
 
     }
 
@@ -63,7 +64,8 @@ namespace z.ERP.Entities.Enum
     {
         保证金押金 = 1,
         每月收费项目 = 2,
-        能源费费 = 3
+        能源费费 = 3,
+        其他=4
     }
     public enum 收费项目现金货扣
     {
@@ -109,7 +111,8 @@ namespace z.ERP.Entities.Enum
     public enum 单元状态
     {
         不可用 = 1,
-        正常 = 2
+        正常 = 2,
+        拆分=3
     }
     public enum 租用状态
     {
@@ -205,6 +208,12 @@ namespace z.ERP.Entities.Enum
     {
         是 = 1,
         否 = 2
+    }
+
+    public enum 销售额标记
+    {
+        含税 = 1,
+        未税 = 2
     }
 
     public enum 收款类型

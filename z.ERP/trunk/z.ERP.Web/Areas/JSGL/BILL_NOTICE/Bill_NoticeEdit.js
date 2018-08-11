@@ -1,27 +1,36 @@
 ﻿editDetail.beforeVue = function () {
-    editDetail.others = true;
+    editDetail.others = false;
     editDetail.branchid = true;
     editDetail.Key = 'BILLID';
+
+    //初始化弹窗所要传递参数
+    editDetail.screenParam.showPopBill = false;
+    editDetail.screenParam.showPopContract = false;    
+    editDetail.screenParam.srcPopBill = __BaseUrl + "/" + "Pop/Pop/PopBillList/";
+    editDetail.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
+    editDetail.screenParam.popParam = {};
+
     editDetail.screenParam.colDef = [
-    {
-        title: "账单号", key: 'FINAL_BILLID', width: 160,
-        render: function (h, params) {
-            return h('div',
-                [
-            h('Input', {
-                props: {
-                    value: params.row.FINAL_BILLID
-                },
-                style: { marginRight: '5px', width: '80px' },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.BILL_NOTICE_ITEM[params.index].FINAL_BILLID = event.target.value;
-                    }
-                },
-            }),
-                ])
-        },
-    },
+    //{
+    //    title: "账单号", key: 'FINAL_BILLID', width: 160,
+    //    render: function (h, params) {
+    //        return h('div',
+    //            [
+    //        h('Input', {
+    //            props: {
+    //                value: params.row.FINAL_BILLID
+    //            },
+    //            style: { marginRight: '5px', width: '80px' },
+    //            on: {
+    //                'on-blur': function (event) {
+    //                    editDetail.dataParam.BILL_NOTICE_ITEM[params.index].FINAL_BILLID = event.target.value;
+    //                }
+    //            },
+    //        }),
+    //            ])
+    //    },
+    //},
+    { title: '账单号', key: 'FINAL_BILLID', width: 100 },
     { title: '收费项目', key: 'TERMMC', width: 100 },
     { title: "应收金额", key: 'MUST_MONEY', width: 100 },
     { title: "未付金额", key: 'UNPAID_MONEY', width: 100 },
@@ -83,4 +92,99 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILL_NOTICE_ITEM = data.billNoticeItem;
         callback && callback(data);
     });
+}
+
+///html中绑定方法
+editDetail.otherMethods = {
+    ///选择合同
+    SelContract: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info("请选择分店!");
+            return ;
+        };
+        editDetail.screenParam.showPopContract = true;
+        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
+    },
+    SelBill: function () {
+        if (!editDetail.dataParam.CONTACTID) {
+            iview.Message.info("请选择租约!");
+            return;
+        };
+        editDetail.screenParam.showPopBill = true;
+        editDetail.screenParam.popParam = {
+            BRANCHID: editDetail.dataParam.BRANCHID,
+            CONTACTID: editDetail.dataParam.CONTACTID
+        };
+    }
+}
+
+///接收弹窗返回参数
+editDetail.popCallBack = function (data) {
+    if (editDetail.screenParam.showPopContract) {
+        editDetail.screenParam.showPopContract = false;
+    };
+    if (editDetail.screenParam.showPopBill) {
+        editDetail.screenParam.showPopBill = false;
+
+        //删除空行
+        if (editDetail.dataParam.BILL_NOTICE_ITEM.length > 0) {
+            if (!editDetail.dataParam.BILL_NOTICE_ITEM[0].FINAL_BILLID) {
+                editDetail.dataParam.BILL_NOTICE_ITEM.splice(0, 1);
+            }
+        }
+        //接收选中的数据
+        for (var i = 0; i < data.sj.length; i++) {
+            if ((editDetail.dataParam.BILL_NOTICE_ITEM.length === 0)
+                || (editDetail.dataParam.BILL_NOTICE_ITEM.length > 0
+                && editDetail.dataParam.BILL_NOTICE_ITEM.filter(function (item) {
+                return parseInt(item.FINAL_BILLID) === data.sj[i].BILLID; }).length === 0))
+                editDetail.dataParam.BILL_NOTICE_ITEM.push({
+                    FINAL_BILLID: data.sj[i].BILLID,
+                    TERMMC: data.sj[i].TERMMC,
+                    MUST_MONEY: data.sj[i].MUST_MONEY,
+                    UNPAID_MONEY: data.sj[i].UNPAID_MONEY,
+                    NOTICE_MONEY: data.sj[i].UNPAID_MONEY
+                });
+        }
+    }
+}
+
+editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.NIANYUE = null;
+    editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.CONTRACTID = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.BILL_NOTICE_ITEM = [];
+}
+
+editDetail.IsValidSave = function () {
+
+
+    if (!editDetail.dataParam.BRANCHID) {
+        iview.Message.info("请选择分店!");
+        return false;
+    };
+
+    //if (editDetail.dataParam.BILL_ADJUST_ITEM.length == 0) {
+    //    iview.Message.info("请录入费用信息!");
+    //    return false;
+    //} else {
+    //    for (var i = 0; i < editDetail.dataParam.BILL_ADJUST_ITEM.length; i++) {
+    //        if (!editDetail.dataParam.BILL_ADJUST_ITEM[i].CONTRACTID) {
+    //            iview.Message.info("请录入租约!");
+    //            return false;
+    //        };
+    //        if (!editDetail.dataParam.BILL_ADJUST_ITEM[i].TERMID) {
+    //            iview.Message.info("请选择收费项目!");
+    //            return false;
+    //        };
+    //        if (!editDetail.dataParam.BILL_ADJUST_ITEM[i].MUST_MONEY) {
+    //            iview.Message.info("请录入费用金额!");
+    //            return false;
+    //        };
+    //    };
+    //};
+
+    return true;
 }

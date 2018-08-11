@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
-using z.Encryption;
 using z.ERP.WebService.Controllers;
 using z.ERP.WebService.Model;
 
@@ -16,25 +10,12 @@ namespace z.ERP.WebService.Wcf
     {
         public ResponseDTO Do(RequestDTO dto)
         {
-            ServiceTransfer st = new ServiceTransfer();
-            return st.Do(dto);
+            return new CommonController().Do(dto);
         }
 
         public LoginResponseDTO Login(LoginRequestDTO dto)
         {
-            try
-            {
-                CommonController Controller = new CommonController();
-                return Controller.Login(dto);
-            }
-            catch (Exception ex)
-            {
-                return new LoginResponseDTO()
-                {
-                    Success = false,
-                    ErrorMsg = ex.Message
-                };
-            }
+            return new CommonController().Login(dto);
         }
 
     }

@@ -18,8 +18,10 @@
     define.screenParam.componentVisible = false;
     define.screenParam.branchData = [];
     define.searchParam.BRANCHID = 0;
+    define.dataParam.BRANCHID = 0;
     define.screenParam.floorData = [];
     define.searchParam.FLOORID = 0;
+    define.dataParam.FLOORID = 0;
     define.dataParam.ORGIDCASCADER = [];
     define.btnChkvisible = true;
     _.Ajax('GetBranch', {
@@ -51,7 +53,7 @@ define.newRecord = function () {
     define.dataParam.RENT_STATUS = 1;
     define.dataParam.ORGIDCASCADER = [];
     define.dataParam.BRANCHID = define.searchParam.BRANCHID;
-    define.dataParam.FLOORID = define.searchParam.FLOORID;
+    //define.dataParam.FLOORID = define.searchParam.FLOORID;
 }
 define.otherMethods = {
     branchChange: function (value) {
@@ -77,7 +79,7 @@ define.otherMethods = {
                 for (var i = 0; i < data.dt.length; i++) {
                     define.screenParam.floorData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
                 }
-                define.searchParam.FLOORID = data.dt[0].ID;
+                define.dataParam.FLOORID = data.dt[0].ID;
             }
             else {
 
@@ -85,18 +87,27 @@ define.otherMethods = {
         });
     },
     floorChange: function (value) {
-        define.dataParam.SHOPID = "";
-        define.dataParam.CODE = "";
-        define.dataParam.NAME = "";
-        define.dataParam.ORGIDCASCADER = [];
-        define.dataParam.CATEGORYIDCASCADER = [];
-        define.dataParam.TYPE = "";
-        define.dataParam.AREA_BUILD = "";
-        define.dataParam.AREA_USABLE = "";
-        define.dataParam.AREA_RENTABLE = "";
-        define.dataParam.AREA_STATUS = "";
-        define.dataParam.RENT_STATUS = "";
-        define.showlist();
+        if (define.dataParam.FLOORID == 0) {
+            define.searchParam.FLOORID = "";
+        }
+        else {
+            define.searchParam.FLOORID = define.dataParam.FLOORID;
+        }
+        if (define.myve.disabled)
+        {
+            define.dataParam.SHOPID = "";
+            define.dataParam.CODE = "";
+            define.dataParam.NAME = "";
+            define.dataParam.ORGIDCASCADER = [];
+            define.dataParam.CATEGORYIDCASCADER = [];
+            define.dataParam.TYPE = "";
+            define.dataParam.AREA_BUILD = "";
+            define.dataParam.AREA_USABLE = "";
+            define.dataParam.AREA_RENTABLE = "";
+            define.dataParam.AREA_STATUS = "";
+            define.dataParam.RENT_STATUS = "";
+            define.showlist();
+        }
     },
     orgChange: function (value, selectedData) {
         define.dataParam.ORGID = value[value.length - 1];

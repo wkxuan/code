@@ -524,8 +524,9 @@
                 },
                  [
                     h('Option', { props: { value: 1 } }, '按日计算固定金额'),
-                    h('Option', { props: { value: 2 } }, '月固定金额'),
-                    h('Option', { props: { value: 3 } }, '按销售金额比例')
+                    h('Option', { props: { value: 2 } }, '按日计算月固定金额'),
+                    h('Option', { props: { value: 3 } }, '按销售金额比例'),
+                    h('Option', { props: { value: 4 } }, '月固定金额'),
                  ]
                 )
             }
@@ -995,6 +996,7 @@ editDetail.otherMethods = {
                     INX: i + 1,
                     STARTDATE: copyHtQsr,
                     ENDDATE: nestYear,
+                    DJLX: '2',  //默认月金额
                     RENTS: 0,
                     RENTS_JSKL: 0,
                     SUMRENTS: 0
@@ -1006,6 +1008,7 @@ editDetail.otherMethods = {
                     INX: i + 1,
                     STARTDATE: copyHtQsr,
                     ENDDATE: (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')),
+                    DJLX: '2',  //默认月金额
                     RENTS: 0,
                     RENTS_JSKL: 0,
                     SUMRENTS: 0

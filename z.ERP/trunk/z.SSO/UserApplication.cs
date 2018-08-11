@@ -33,9 +33,17 @@ namespace z.SSO
             _userHelper.LogOut();
         }
 
-        public static T GetUser<T>() where T : User
+        public static T GetUser<T>(bool throwError = true) where T : User
         {
-            return _userHelper.GetUser<T>();
+            return _userHelper.GetUser<T>(throwError);
+        }
+
+        public static bool HasLogin
+        {
+            get
+            {
+                return _userHelper.HasLogin;
+            }
         }
 
         public static SSOSettings settings

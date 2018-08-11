@@ -7,7 +7,7 @@ namespace z.ERP.WebService.Model
 {
     public class LoginRequestDTO
     {
-        public string UserName
+        public string UserCode
         {
             get;
             set;
@@ -20,12 +20,6 @@ namespace z.ERP.WebService.Model
         }
 
         public string PlatformId
-        {
-            get;
-            set;
-        }
-
-        public string PlatformPassword
         {
             get;
             set;

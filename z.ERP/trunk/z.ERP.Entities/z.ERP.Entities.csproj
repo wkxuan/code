@@ -51,6 +51,8 @@
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="FREESHOPEntity.cs" />
     <Compile Include="MENUTREEModule.cs" />
+    <Compile Include="Procedures\EXEC_ASSET_SPILT.cs" />
+    <Compile Include="Procedures\EXEC_ASSET_CHANGE.cs" />
     <Compile Include="Procedures\Exec_BILL_OBTAIN.cs" />
     <Compile Include="Procedures\EXEC_CONTRACT.cs" />
     <Compile Include="Procedures\ProTest.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="P1Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MERCHANTEntity.cs" />
+    <Compile Include="Service\Pos\GetDealFilter.cs" />
     <Compile Include="Service\Pos\DealResult.cs" />
     <Compile Include="Service\Pos\ClerkResultt.cs" />
     <Compile Include="Service\Pos\GoodsResult.cs" />

@@ -13,7 +13,7 @@ namespace z.ERP.WebService
             set;
         }
 
-        public string Msg
+        public string ErrorMsg
         {
             get;
             set;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using z.ERP.Services;
 using z.IOC.Simple;
+using z.LogFactory;
 using z.SSO;
 using z.SSO.Model;
 
@@ -31,7 +32,7 @@ namespace z.ERP.WebService.Controllers
         {
             get
             {
-                return UserApplication.GetUser<Employee>();
+                return UserApplication.GetUser<ServiceUser>();
             }
         }
 
@@ -39,6 +40,14 @@ namespace z.ERP.WebService.Controllers
         {
             get;
             set;
+        }
+
+        protected LogWriter Log
+        {
+            get
+            {
+                return new LogWriter("Pos");
+            }
         }
 
     }

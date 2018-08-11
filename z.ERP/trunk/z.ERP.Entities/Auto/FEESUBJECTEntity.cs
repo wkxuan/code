@@ -80,5 +80,14 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        /// <summary>
+        /// 科目代码
+        /// <summary>
+        [Field("科目代码")]
+        public string SUBJECT_CODE
+        {
+            get; set;
+        }
     }
 }

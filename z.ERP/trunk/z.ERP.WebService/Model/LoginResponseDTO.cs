@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace z.ERP.WebService.Model
+﻿namespace z.ERP.WebService.Model
 {
     public class LoginResponseDTO
     {
@@ -20,6 +15,12 @@ namespace z.ERP.WebService.Model
         }
 
         public string SecretKey
+        {
+            get;
+            set;
+        }
+
+        public string UserId
         {
             get;
             set;

@@ -177,7 +177,7 @@ namespace z.Extensions
             return i;
         }
         /// <summary>
-        /// 字符串转Decimal
+        /// 字符串转Double
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>

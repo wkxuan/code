@@ -49,6 +49,12 @@
         <i-col span="4">
             <i-input v-model="STATUSMC" :readonly="true"></i-input>
         </i-col>
+
+
+        <i-col span="2" class="RowTitle">建筑面积</i-col>
+        <i-col span="4">
+            <i-input v-model="AREA_BUILD" :readonly="true"></i-input>
+        </i-col>
     </row>
     <row>
         <i-col span="2" class="RowText">商户代码</i-col>
@@ -62,6 +68,10 @@
         <i-col span="2" class="RowTitle">招商部门</i-col>
         <i-col span="4">
             <i-input v-model="ORGNAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">租用面积</i-col>
+        <i-col span="4">
+            <i-input v-model="AREAR" :readonly="true"></i-input>
         </i-col>
     </row>
 
@@ -77,6 +87,37 @@
         <i-col span="2" class="RowTitle">合作方式</i-col>
         <i-col span="4">
             <i-input v-model="OPERATERULENAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">进项税率</i-col>
+        <i-col span="4">
+            <i-input v-model="JXSL" :readonly="true"></i-input>
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowText">租金规则</i-col>
+        <i-col span="4">
+            <i-input v-model="FEERULE_RENTNAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">起始清算日</i-col>
+        <i-col span="4">
+            <i-input v-model="QS_STARTMC" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">销售额标记</i-col>
+        <i-col span="4">
+            <i-input v-model="TAB_FLAGMC" :readonly="true"></i-input>
+        </i-col>
+
+        <i-col span="2" class="RowTitle">销项税率</i-col>
+        <i-col span="4">
+            <i-input v-model="XXSL" :readonly="true"></i-input>
+        </i-col>
+    </row>
+
+     <row>
+        <i-col span="2" class="RowText">其他条款</i-col>
+        <i-col span="22">
+            <i-input v-model="DESCRIPTION" :readonly="true"></i-input>
         </i-col>
     </row>
     <row>

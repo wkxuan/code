@@ -18,17 +18,32 @@
             }
         </i-col>
         <i-col span="3" class="RowTitle">楼层</i-col>
+        <span v-show="disabled">
+            <i-col span="9">
+                @{
+                    RenderControl(new DropDownListsRender()
+                    {
+                        vModel = "dataParam.FLOORID",
+                        Data = "screenParam.floorData",
+                        Change = "floorChange",
+                        Enable = true
+                    });
+                }
+            </i-col>
+        </span>
+        <span v-show="!disabled">
         <i-col span="9">
             @{
                 RenderControl(new DropDownListsRender()
                 {
-                    vModel = "searchParam.FLOORID",
+                    vModel = "dataParam.FLOORID",
                     Data = "screenParam.floorData",
                     Change = "floorChange",
-                    Enable = true
+                    Enable = false
                 });
             }
         </i-col>
+        </span>
     </row>
 <row>
     <i-col span="3" class="RowTitle">
@@ -153,13 +168,13 @@
         </i-col>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
-            建筑面积
+            租赁面积
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.AREA_BUILD",
+                    vModel = "dataParam.AREA_RENTABLE",
                     Enable = false
                 });
             }
@@ -177,12 +192,12 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">租赁面积</i-col>
+        <i-col span="3" class="RowTitle">建筑面积</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.AREA_RENTABLE",
+                    vModel = "dataParam.AREA_BUILD",
                     Enable = false
                 });
             }

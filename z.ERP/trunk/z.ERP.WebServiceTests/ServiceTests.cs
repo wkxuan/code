@@ -1,11 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using z.ERP.WebService.Wcf;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using z.ERP.Entities.Service.Pos;
+using z.ERP.WebService.Model;
 using z.Extensions;
 
 namespace z.ERP.WebService.Wcf.Tests

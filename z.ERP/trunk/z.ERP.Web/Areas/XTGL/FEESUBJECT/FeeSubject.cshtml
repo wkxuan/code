@@ -58,7 +58,7 @@
         </i-col>
     </row>
     <row>
-        <i-col span="3" class="RowTitle">
+        @*<i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             成本费用
         </i-col>
@@ -70,7 +70,9 @@
                     Enable=false
                 });
             }
-        </i-col>
+        </i-col>*@
+
+
 
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
@@ -85,8 +87,6 @@
                 });
             }
         </i-col>
-    </row>
-    <row>
         <i-col span="3" class="RowTitle">停用标记</i-col>
         <i-col span="6">
             @{
@@ -94,6 +94,20 @@
                 {
                     vModel = "dataParam.VOID_FLAG",
                     MultiSelect = false,
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            科目代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.SUBJECT_CODE",
                     Enable = false
                 });
             }

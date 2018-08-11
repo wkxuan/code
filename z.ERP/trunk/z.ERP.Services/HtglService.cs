@@ -19,8 +19,8 @@ namespace z.ERP.Services
         }
         public DataGridResult GetContract(SearchItem item)
         {
-            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME FROM CONTRACT A,BRANCH B,MERCHANT C " +
-                         " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID ";
+            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,D.SHOPDM,E.BRANDNAME FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_SHOPXX D,CONTRACT_BRANDXX E " +
+                         " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=D.CONTRACTID AND A.CONTRACTID=E.CONTRACTID ";
 
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
             item.HasKey("NAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
@@ -28,7 +28,10 @@ namespace z.ERP.Services
             item.HasKey("STYLE", a => sql += $" and A.STYLE = '{a}'");
             item.HasArrayKey("HTLX", a => sql += $" and A.HTLX in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
-            sql += " ORDER BY  A.CONTRACTID DESC";
+
+            item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=A.CONTRACTID and UPPER(U.CODE) LIKE '{a.ToUpper()}%')");
+            item.HasKey("BRANDNAME", a => sql += $" and exists(select 1 from CONTRACT_BRAND P,BRAND U where  P.BRANDID=U.ID and P.CONTRACTID=A.CONTRACTID and UPPER(U.NAME) LIKE '{a.ToUpper()}%')");
+            sql += " ORDER BY  D.SHOPDM";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
@@ -107,7 +110,9 @@ namespace z.ERP.Services
             {
                 throw new LogicException("请确认租约编号!");
             }
-            string sql = $@"SELECT A.*,B.NAME MERNAME,C.NAME FDNAME,D.ORGNAME,E.CONTRACTID_OLD,E.JHRQ,F.NAME AS OPERATERULENAME  FROM CONTRACT A,MERCHANT B,";
+            string sql = $@"SELECT A.*,B.NAME MERNAME,C.NAME FDNAME,D.ORGNAME,E.CONTRACTID_OLD,E.JHRQ,";
+            sql += " (select NAME from FEERULE L where L.ID=A.FEERULE_RENT) FEERULE_RENTNAME,";
+            sql += " F.NAME AS OPERATERULENAME  FROM CONTRACT A,MERCHANT B,";
             sql += "   BRANCH C, ORG D,CONTRACT_UPDATE E,OPERATIONRULE F WHERE A.MERCHANTID=B.MERCHANTID AND A.CONTRACTID=E.CONTRACTID(+) ";
             sql += " AND A.BRANCHID=C.ID AND A.ORGID=D.ORGID AND A.OPERATERULE=F.ID ";
             sql += (" AND A.CONTRACTID= " + Data.CONTRACTID);
@@ -119,7 +124,9 @@ namespace z.ERP.Services
 
             contract.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             contract.NewEnumColumns<联营合同合作方式>("OPERATERULE", "OPERATERULEMC");
-            
+
+            contract.NewEnumColumns<起始日清算>("QS_START", "QS_STARTMC");
+            contract.NewEnumColumns<销售额标记>("TAB_FLAG", "TAB_FLAGMC");
 
 
 
@@ -529,7 +536,9 @@ namespace z.ERP.Services
 
         public object GetContractList(CONTRACTEntity Data)
         {
-            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.BRANCHID from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
+            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.BRANCHID,  "
+               + " T.REPORTER_NAME,T.REPORTER_TIME "
+               + "  from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
             if (!Data.CONTRACTID.IsEmpty())
                 sql += (" and T.CONTRACTID= " + Data.CONTRACTID);
             DataTable dt = DbHelper.ExecuteTable(sql);

@@ -27,6 +27,7 @@ define.otherMethods = {
 
 define.newRecord = function () {
     define.dataParam.VOID_FLAG = "1";
+    define.dataParam.ACCOUNT = "2";
 };
 
 

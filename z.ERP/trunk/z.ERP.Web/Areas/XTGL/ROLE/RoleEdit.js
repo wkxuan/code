@@ -1,9 +1,13 @@
 ﻿editDetail.beforeVue = function () {
+    editDetail.others = false;
     editDetail.branchid = false;
     editDetail.service = "UserService";
     editDetail.method = "GetRoleElement";
     editDetail.screenParam.USERMODULE = editDetail.screenParam.USERMODULE || [];
     editDetail.screenParam.fee = editDetail.screenParam.fee || [];
+    editDetail.screenParam.showPopCrmRole = false;
+    editDetail.screenParam.srcPopCrmRole = "http://47.93.116.29:8002/PopupPage/defczgqx.aspx?personid=-5";
+    editDetail.screenParam.popParam = {};
 
     editDetail.screenParam.colDef_Menu = [
         { type: 'selection', width: 60, align: 'center' },
@@ -13,7 +17,7 @@
 
     editDetail.screenParam.colDef_Menufee = [
         { type: 'selection', width: 60, align: 'center' },
-        { title: '费用项目名称', key: 'NAME', width: 350 }
+        { title: '费用项目名称', key: 'NAME', width: 150 }
     ];
 
     editDetail.screenParam.selectData = function (selection, row) {
@@ -126,6 +130,15 @@ editDetail.IsValidSave = function () {
 editDetail.otherMethods = {
     orgChange: function (value, selectedData) {
          editDetail.dataParam.ORGID = value[value.length - 1];
+    },
+    SelCrmRole: function () {
+        if(editDetail.dataParam.ROLECODE=="")
+        {
+            iview.Message.info("请输入角色代码!");
+            return;
+        }
+        editDetail.screenParam.srcPopCrmRole = "http://47.93.116.29:8002/PopupPage/defczgqx.aspx?personid=" + editDetail.dataParam.ROLECODE;
+        editDetail.screenParam.showPopCrmRole = true;
     }
 }
 
@@ -149,7 +162,10 @@ editDetail.mountedInit = function () {
 
 editDetail.billchange = function () {
 }
-
+//接收子页面返回值
+editDetail.popCallBack = function (data) {
+    editDetail.screenParam.showPopCrmRole = false;
+};
 
 
 

@@ -2,10 +2,14 @@
     search.searchParam.MERCHANTID = "";
     var col = [
         { title: '状态', key: 'STATUSMC', width: 80 },
+        { title: '合同号', key: 'CONTRACTID', width: 100 },
+        { title: '资产代码', key: 'SHOPDM', width: 150 },
+        { title: '品牌名称', key: 'BRANDNAME', width: 150 },
         { title: '核算方式', key: 'STYLEMC', width: 100 },
         { title: "商户代码", key: 'MERCHANTID', width: 90 },
         { title: '商户名称', key: 'MERNAME', width: 100 },
-        { title: '合同号', key: 'CONTRACTID', width: 100 },
+        { title: '录入员', key :'REPORTER_NAME',width:100},
+        { title: '录入时间', key :'REPORTER_TIME',width:100},
         { title: "分店代码", key: 'BRANCHID', width: 90 },
         { title: '分店名称', key: 'NAME', width: 100 },
         { title: '描述', key: 'DESCRIPTION', width: 200 },

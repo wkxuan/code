@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using z.ERP.Entities.Service.Pos;
 using z.ERP.WebService.Model;
 
@@ -40,22 +37,22 @@ namespace z.ERP.WebService.Controllers
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        [ServiceAble("GetYYY")]
-        public UserYYYResult GetYYY(string code)
+        [ServiceAble("GetClerkShop")]
+        public UserYYYResult GetClerkShop(string usercode)
         {
-            return service.PosService.GetYYY(code);
+            return service.PosService.GetClerkShop(usercode);
         }
 
-        [ServiceAble("GetFKFS")]
-        public List<FKFSResult> GetFKFS()
+        [ServiceAble("GetPayList")]
+        public List<FKFSResult> GetPayList()
         {
-            return service.PosService.GetFKFS();
+            return service.PosService.GetPayList();
         }
 
         [ServiceAble("GetDeal")]
-        public DealResult GetDeal(string dealid)
+        public SaleRequest GetDeal(GetDealFilter filter)
         {
-            return service.PosService.GetDeal();
+            return service.PosService.GetDeal(filter);
         }
 
         [ServiceAble("Sale")]

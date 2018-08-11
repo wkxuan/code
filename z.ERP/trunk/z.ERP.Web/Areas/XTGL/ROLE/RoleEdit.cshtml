@@ -1,8 +1,8 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Edit;
+@using z.ERP.Web.Areas.Layout.EditDetail;
 @using z.ERP.Entities;
-@inherits EditViewBase<string>
+@inherits EditDetailViewBase<string>
 @section baseParam{
     <row>
         <i-col span="2" class="RowTitle">
@@ -58,8 +58,6 @@
             }
         </i-col>
     </row>
-}
-@section detailParam{
     <row>
         <i-col span="10">菜单权限
             <i-table size="small" :border="true" height="370"
@@ -76,6 +74,36 @@
                      v-on:on-select-all="screenParam.selectDataAllfee"
                      v-on:on-select-cancel="screenParam.selectCancelfee"></i-table>
         </i-col>
-    </row>
+        <i-col span="5">其他权限
+        <row>
+            <i-col>
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "SelCrmRole",
+                        Text = "CRM权限",
+                        Enable = true,
+                        Type = "primary"
+                    });
+                }
+            </i-col>
+        </row>
+        </i-col>    
+</row>
 }
 
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopCrmRole",
+                    Src = "screenParam.srcPopCrmRole",
+                    Caption = "CRM权限",
+                    Width = "800"
+                });
+            }
+        </i-col>
+    </row>
+}
