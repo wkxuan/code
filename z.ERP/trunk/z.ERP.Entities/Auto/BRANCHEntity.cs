@@ -105,6 +105,22 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
+        /// 银行
+        /// <summary>
+        [Field("银行")]
+        public string BANK
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 账户
+        /// <summary>
+        [Field("账户")]
+        public string ACCOUNT
+        {
+            get; set;
+        }
+        /// <summary>
         /// 打印标题
         /// <summary>
         [Field("打印标题")]

@@ -23,6 +23,11 @@
                 Text = "审核",
                 Click = "exec",
             });
+            RenderControl(new ButtonRender()
+            {
+                Text = "打印",
+                Click = "Print",
+            });
         }
     }
 }
@@ -117,6 +122,14 @@
                         setTimeout(function () {
                             window.location.reload();
                         }, 100);
+                    });
+                },
+                Print :function (event) {
+                    event.stopPropagation();
+                    _.OpenPage({
+                        id: 10700201,
+                        title: '打印',
+                        url: "JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkPrint/" + @billObtain.BILLID,
                     });
                 }
             }

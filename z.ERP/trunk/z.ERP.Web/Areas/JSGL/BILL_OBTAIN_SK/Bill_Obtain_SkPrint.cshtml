@@ -1,0 +1,153 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Print;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits PrintLayout<dynamic>
+
+@{
+    dynamic billObtain = ViewBag.billObtain;
+    DataTable billObtainItem = ViewBag.billObtainItem;
+}
+
+@section content{
+    <table border="0" cellpadding="0" cellspacing="0" class="noborder">
+        <caption>
+            <h1>
+                商户费用核销单
+            </h1>
+        </caption>
+        <tr>
+            <td colspan="4" style="text-align:right">
+                <span id="BOX"></span>
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="padding-left: 5px;">
+                <table style="width: 100%;">
+                    <tr style="line-height: 20px;">
+                        <td class="textjustify" style="width: 80px;">
+                            记录编号：
+                        </td>
+                        <td class="style1">
+                            @billObtain.BILLID
+                        </td>
+                        <td class="style2">
+                            权债发生月：
+                        </td>
+                        <td class="style4">
+                            @billObtain.NIANYUE
+                        </td>
+                        <td class="textjustify" style="width: 70px;">
+                            收款方式：
+                        </td>
+                        <td>
+                            @billObtain.FKFS
+                        </td>
+                    </tr>
+                    <tr style="line-height: 20px;">
+                        <td class="textjustify" style="width: 80px;">
+                            商户：
+                        </td>
+                        <td class="style1">
+                            @billObtain.MERCHANTNAME
+                        </td>
+                        <td class="textjustify">
+                            收款金额：
+                        </td>
+                        <td colspan="1">
+                            @billObtain.ALL_MONEY
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td id="datatable" colspan="4">
+                <table class="table" border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%">
+                                缴费单编号
+                            </th>
+                            <th style="width: 15%">
+                                项目
+                            </th>
+                            <th style="width: 15%">
+                                合同号
+                            </th>
+                            <th style="width: 15%">
+                                收费年月
+                            </th>
+                            <th style="width: 20%">
+                                单据金额
+                            </th>
+                            <th style="width: 20%">
+                                收款金额
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (DataRow dr in billObtainItem.Rows)
+                            {
+                                <tr>
+                                    <td>@dr["FINAL_BILLID"].ToString()</td>
+                                    <td>@dr["TERMMC"].ToString()</td>
+                                    <td>@dr["CONTRACTID"].ToString()</td>
+                                    <td>@dr["NIANYUE"].ToString()</td>
+                                    <td>@dr["MUST_MONEY"].ToString()</td>
+                                    <td>@dr["RECEIVE_MONEY"].ToString()</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="text-align: center" colspan="4">
+                                合&nbsp;&nbsp;计
+                            </td>
+                            <td style="text-align: center">
+                                <span>@billObtain.MUST_MONEY</span>
+                            </td>
+                            <td style="text-align: center">
+                                <span>@billObtain.ALL_MONEY</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </td>
+        </tr>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: right; width: 60%; padding-right: 10px;">
+                                打印时间：<span>@ViewBag.CurrentDate</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: left; width: 60%; padding-right: 10px;">
+                                备注：<br>
+                                1.本公司指定的银行账户信息如下：<br>
+                                公司名称：	@billObtain.BRANCHNAME<br>
+                                开户银行：  @billObtain.BANK<br>
+                                银行账号：	@billObtain.ACCOUNT<br>                      
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+}

@@ -5,6 +5,7 @@ using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Results;
+using System;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
 {
@@ -57,6 +58,14 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
                     billObtainItem = res.Item2
                 }
                 );
+        }
+        public ActionResult Bill_Obtain_SkPrint(string Id)
+        {
+            var entity = service.JsglService.GetBillObtainPrint(new BILL_OBTAINEntity(Id));
+            ViewBag.billObtain = entity.Item1;
+            ViewBag.billObtainItem = entity.Item2;
+            ViewBag.CurrentDate = System.DateTime.Now;
+            return View();
         }
     }
 }
