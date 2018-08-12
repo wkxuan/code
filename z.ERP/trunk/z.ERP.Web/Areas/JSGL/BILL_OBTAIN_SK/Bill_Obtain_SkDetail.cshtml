@@ -23,6 +23,9 @@
                 Text = "审核",
                 Click = "exec",
             });
+        }
+        else
+        {
             RenderControl(new ButtonRender()
             {
                 Text = "打印",
@@ -36,41 +39,41 @@
     <row>
         <i-col span="2" class="RowTitle">单据号</i-col>
         <i-col span="4">
-            <i-input v-model="BILLID" readonly="true"></i-input>
+            <i-input v-model="BILLID" :readonly="true"></i-input>
         </i-col>
         <i-col span="2" class="RowTitle">门店名称</i-col>
         <i-col span="4">
-            <i-input v-model="BRANCHNAME" readonly="true"></i-input>
+            <i-input v-model="BRANCHNAME" :readonly="true"></i-input>
         </i-col>
         <i-col span="2" class="RowTitle">状态</i-col>
         <i-col span="4">
-            <i-input v-model="STATUSMC" readonly="true"></i-input>
+            <i-input v-model="STATUSMC" :readonly="true"></i-input>
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">商户名称</i-col>
         <i-col span="4">
-            <i-input v-model="MERCHANTNAME" readonly="true"></i-input>
+            <i-input v-model="MERCHANTNAME" :readonly="true"></i-input>
         </i-col>
         <i-col span="2" class="RowTitle">权债发生月</i-col>
         <i-col span="4">
-            <i-input v-model="NIANYUE" readonly="true"></i-input>
+            <i-input v-model="NIANYUE" :readonly="true"></i-input>
         </i-col>
         <i-col span="2" class="RowTitle">收款金额</i-col>
         <i-col span="4">
-            <i-input v-model="ALL_MONEY" readonly="true"></i-input>
+            <i-input v-model="ALL_MONEY" :readonly="true"></i-input>
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">备注</i-col>
         <i-col span="18">
-            <i-input v-model="DESCRIPTION" readonly="true"></i-input>
+            <i-input v-model="DESCRIPTION" :readonly="true"></i-input>
         </i-col>
 
     </row>
     <row>
         <i-col span="18">
-            <i-table size="small" border="true"
+            <i-table size="small" :border="true"
                      :columns="colDef" :data="OBTAIN_ITEM" height="200"></i-table>
         </i-col>
     </row>

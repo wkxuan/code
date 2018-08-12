@@ -26,7 +26,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="4" style="padding-left: 5px;">
+            @*<td colspan="4" style="padding-left: 5px;">
                 <table style="width: 100%;">
                     <tr style="line-height: 20px;">
                         <td class="textjustify" style="width: 80px;">
@@ -35,30 +35,45 @@
                         <td class="style1">
                             @billObtain.BILLID
                         </td>
-                        <td class="style2">
+                    </tr>
+                    <tr style="line-height: 20px;">
+
+                    </tr>
+                </table>
+            </td>*@
+            <td colspan="4" style="padding-left: 5px;">
+                <table style="width: 100%;">
+                    <tr style="line-height: 20px;">
+                        <td  class="leftRow">
+                            记录编号：
+                        </td>
+                        <td  class="rightRow">
+                            @billObtain.BILLID
+                        </td>
+                        <td  class="leftRow">
                             权债发生月：
                         </td>
-                        <td class="style4">
+                        <td  class="rightRow">
                             @billObtain.NIANYUE
                         </td>
-                        <td class="textjustify" style="width: 70px;">
+                        <td class="leftRow">
                             收款方式：
                         </td>
-                        <td>
+                        <td class="rightRow">
                             @billObtain.FKFS
                         </td>
                     </tr>
                     <tr style="line-height: 20px;">
-                        <td class="textjustify" style="width: 80px;">
+                        <td class="leftRow">
                             商户：
                         </td>
-                        <td class="style1">
+                        <td class="rightRow">
                             @billObtain.MERCHANTNAME
                         </td>
-                        <td class="textjustify">
+                        <td class="leftRow">
                             收款金额：
                         </td>
-                        <td colspan="1">
+                        <td class="rightRow">
                             @billObtain.ALL_MONEY
                         </td>
                     </tr>
