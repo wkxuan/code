@@ -626,7 +626,7 @@ namespace z.ERP.Services
         public string StopFreeShop(FREESHOPEntity Data)
         {
             FREESHOPEntity freeShop = DbHelper.Select(Data);
-            if (Convert.ToDateTime(freeShop.FREEDATE) >= Convert.ToDateTime(DateTime.Now.ToShortString()))
+            if (Convert.ToDateTime(freeShop.FREEDATE) > Convert.ToDateTime(DateTime.Now.ToShortString()))
             {
                 throw new LogicException("退铺日期大于当前日期不能终止合同!");
             }
