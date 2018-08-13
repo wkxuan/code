@@ -8,12 +8,12 @@ namespace z.ERP.Entities.Service.Pos
 {
     public class PayResult
     {
-        public string payid
+        public int payid
         {
             get;
             set;
         }
-        public string amount
+        public decimal amount
         {
             get;
             set;

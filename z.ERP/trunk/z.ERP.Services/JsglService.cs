@@ -384,7 +384,7 @@ namespace z.ERP.Services
             DataTable billObtain = DbHelper.ExecuteTable(sql);
             billObtain.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT M.*,B.CONTRACTID,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY ,D.NAME TERMMC,B.YEARMONTH " +
+            string sqlitem = $@"SELECT M.*,B.NIANYUE,B.CONTRACTID,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY ,D.NAME TERMMC,B.YEARMONTH " +
                 " FROM BILL_OBTAIN_ITEM M ,BILL B,CONTRACT C,FEESUBJECT D " +
                 " where M.FINAL_BILLID=B.BILLID(+) and B.CONTRACTID=C.CONTRACTID(+) and B.TERMID=D.TRIMID(+)";
             if (!Data.BILLID.IsEmpty())
@@ -597,6 +597,28 @@ namespace z.ERP.Services
         //    dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
         //    return new DataGridResult(dt, count);
         //}
-        
+
+        public Tuple<dynamic, DataTable> GetBillObtainPrint(BILL_OBTAINEntity Data)
+        {
+            string sql = $@"SELECT A.BILLID,A.NIANYUE,A.ALL_MONEY,A.DESCRIPTION,A.BRANCHID,A.STATUS, "
+                        + "B.NAME BRANCHNAME,'('||A.MERCHANTID||')'||C.NAME MERCHANTNAME,F.NAME FKFS,B.ACCOUNT,B.BANK, "
+                        + "(select sum(L.MUST_MONEY) from BILL_OBTAIN_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) MUST_MONEY "
+                        + " FROM BILL_OBTAIN A,BRANCH B,MERCHANT C,FKFS F "
+                        + " WHERE A.BRANCHID=B.ID and A.MERCHANTID = C.MERCHANTID(+) "
+                        + "and A.PAYID =F.ID ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" AND A.BILLID= " + Data.BILLID);
+            DataTable billObtain = DbHelper.ExecuteTable(sql);
+            billObtain.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT M.*,B.NIANYUE,B.CONTRACTID,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY ,D.NAME TERMMC,B.YEARMONTH " +
+                " FROM BILL_OBTAIN_ITEM M ,BILL B,CONTRACT C,FEESUBJECT D " +
+                " where M.FINAL_BILLID=B.BILLID(+) and B.CONTRACTID=C.CONTRACTID(+) and B.TERMID=D.TRIMID(+)";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and M.BILLID= " + Data.BILLID);
+            DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
+
+            return new Tuple<dynamic, DataTable>(billObtain.ToOneLine(), billObtainItem);
+        }
     }
 }

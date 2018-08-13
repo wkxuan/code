@@ -137,6 +137,29 @@
         </i-col>
     </row>
     <row>
+        <i-col span="3" class="RowTitle">银行</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.BANK",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">账户</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ACCOUNT",
+                    Enable=false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
         <i-col span="3" class="RowTitle">地址</i-col>
         <i-col span="15">
             @{

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using z.ERP.Entities.Service.Pos;
 using z.Extensions;
 using System.Data;
+using System.Linq;
 
 namespace z.ERP.Services
 {
@@ -15,12 +16,13 @@ namespace z.ERP.Services
 
         public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
         {
-            string sql = "select a.goodsid,a.name,a.type,a.price,a.member_price from GOODS a where 1=1";
+            string sql = "select a.goodsid,a.name,a.type,nvl(a.price,0) price,nvl(a.member_price,0) member_price,b.shopid";
+            sql += "        from GOODS a,GOODS_SHOP b where a.goodsid=b.goodsid";
 
-            if (filter.shopId.HasValue)
-                sql += $" and exists(select 1 from GOODS_SHOP b where a.goodsid=b.goodsid and b.shopid = {filter.shopId})";
+            if (filter.shopid.HasValue)
+                sql += $"  and b.shopid = {filter.shopid}";
             if (filter.goodsdm.IsNotEmpty())
-                sql += $" and (goodsdm = '{filter.goodsdm}' or barcode = '{filter.goodsdm}')";
+                sql += $"  and (goodsdm = '{filter.goodsdm}' or barcode = '{filter.goodsdm}')";
             return DbHelper.ExecuteObject<FindGoodsResult>(sql);
         }
 
@@ -77,13 +79,107 @@ namespace z.ERP.Services
             return DbHelper.ExecuteObject<FKFSResult>(sql);
         }
 
-        public DealResult GetDeal()
+        public SaleRequest GetDeal(GetDealFilter filter)
         {
-            return new DealResult();
+            string sql = "select posno,dealid,sale_time,account_date,cashierid,sale_amount,change_amount,";
+            sql += $" member_cardid,crm_recordid,posno_old,dealid_old from sale";
+            sql += $" where posno={filter.posno} and dealid={filter.dealid}";
+
+
+            string sqlGoods = "select * from sale_goods";
+            sqlGoods += $" where posno={filter.posno} and dealid={filter.dealid}";
+
+
+            string sqlPay = "select * from sale_pay";
+            sqlPay += $" where posno={filter.posno} and dealid={filter.dealid}";
+
+            string sqlClerk = "select * from sale_clerk";
+            sqlClerk += $" where posno={filter.posno} and dealid={filter.dealid}";
+
+
+
+
+            return new SaleRequest();
         }
 
         public void Sale(SaleRequest request)
         {
+            string posNo = request.posno;
+            decimal goodsSaleAmount = request.goodslist.Sum(a => a.sale_amount);
+            decimal payAmount = request.paylist.Sum(a => a.amount);
+
+            if (goodsSaleAmount != payAmount)
+            {
+                throw new Exception("商品列表中销售金额合计与支付列表中的销售金额合计不相等!");
+            }
+
+            int goodsCount = request.goodslist.Count;
+            int payCount = request.paylist.Count;
+            int clerkCount = request.clerklist.Count;
+
+            string[] sqlarr = new string[1+goodsCount+payCount+clerkCount];
+
+            sqlarr[0] = "insert into sale(posno,dealid,sale_time,account_date,cashierid,sale_amount,";
+            sqlarr[0] += "change_amount,member_cardid,crm_recordid,posno_old,dealid_old)";
+            sqlarr[0] += $"values({posNo},{request.dealid},{request.sale_time},";
+            if (request.account_date.ToString().IsEmpty())
+                sqlarr[0] += $"{request.sale_time.Date},";
+            else
+                sqlarr[0] += $"{request.account_date.Date},";
+            sqlarr[0] += $"{request.cashierid},{goodsSaleAmount},{request.change_amount},";
+            sqlarr[0] += $"{request.member_cardid},{request.crm_recordid},";
+
+            if(request.posno.IsNotEmpty()  && request.dealid_old.HasValue)
+                sqlarr[0] += $"{request.posno_old},{request.dealid_old})";
+            else
+                sqlarr[0] += "null,null)";
+
+            int j;
+
+            for(int i=1;i<=goodsCount;i++)
+            {
+                j = 0;
+                sqlarr[i] = "insert into sale_goods(posno,dealid,sheetid,inx,shopid,goodsid,goodscode,";
+                sqlarr[i] += "price,quantity,sale_amount,discount_amount,coupon_amount)";
+                sqlarr[i] += $"values({posNo},{request.dealid},{request.goodslist[j].sheetid},";
+                sqlarr[i] += $"{request.goodslist[j].inx},{request.goodslist[j].shopid},{request.goodslist[j].goodsid},";
+                sqlarr[i] += $"{request.goodslist[j].goodscode},{request.goodslist[j].price},{request.goodslist[j].quantity},";
+                sqlarr[i] += $"{request.goodslist[j].sale_amount},{request.goodslist[j].discount_amount},";
+                sqlarr[i] += $"{request.goodslist[j].coupon_amount})";
+                j++;
+            }
+
+            for (int i = 1 + goodsCount; i <= goodsCount + payCount; i++)
+            {
+                j = 0;
+                sqlarr[i] = "insert into sale_pay(posno,dealid,payid,amount)";
+                sqlarr[i] += $"values({posNo},{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount})";
+                j++;
+            }
+
+            for (int i = 1 + goodsCount + payCount; i <= goodsCount + payCount + clerkCount; i++)
+            {
+                j = 0;
+                sqlarr[i] = "insert into sale_clerk(posno,dealid,sheetid,clerkid)";
+                sqlarr[i] += $"values({posNo},{request.dealid},{request.clerklist[j].sheetid},{request.clerklist[j].clerkid})";
+                j++;
+            }
+
+            int insertCount = 0;
+            try
+            {
+                 insertCount = DbHelper.ExecuteNonQuery(sqlarr);
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("提交数据库时发生异常!");
+            }
+           
+            if(insertCount != 1+ goodsCount + payCount + clerkCount)
+            {
+                throw new Exception("写入数据不完整!");
+            }
         }
     }
 }

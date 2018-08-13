@@ -8,12 +8,12 @@ namespace z.ERP.Entities.Service.Pos
 {
     public class ClerkResultt
     {
-        public string sheetid
+        public int sheetid
         {
             get;
             set;
         }
-        public string clerkid
+        public int clerkid
         {
             get;
             set;
