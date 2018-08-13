@@ -27,7 +27,7 @@ namespace z.ERP.WebService.Controllers
         /// </summary>
         /// <returns></returns>
         [ServiceAble("GetLastDealid")]
-        public string GetLastDealid()
+        public long GetLastDealid()
         {
             return service.PosService.GetLastDealid();
         }

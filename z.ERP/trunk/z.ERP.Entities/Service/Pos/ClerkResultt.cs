@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace z.ERP.Entities.Service.Pos
 {
-    public class ClerkResultt
+    public class ClerkResult
     {
         public int sheetid
         {

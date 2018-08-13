@@ -117,7 +117,7 @@
      <row>
         <i-col span="2" class="RowText">其他条款</i-col>
         <i-col span="22">
-            <i-input v-model="DESCRIPTION" :readonly="true"></i-input>
+            <i-input v-model="DESCRIPTION" :readonly="true" type="textarea" :rows="5"></i-input>
         </i-col>
     </row>
     <row>
@@ -176,6 +176,16 @@
                 CONT_START:"@contract.CONT_START",
                 CONT_END:"@contract.CONT_END",
                 OPERATERULENAME:"@contract.OPERATERULENAME",
+
+
+                AREA_BUILD:"@contract.AREA_BUILD",
+                AREAR:"@contract.AREAR",
+                JXSL:"@contract.JXSL",
+                FEERULE_RENTNAME:"@contract.FEERULE_RENTNAME",
+                QS_STARTMC:"@contract.QS_STARTMC",
+                TAB_FLAGMC:"@contract.TAB_FLAGMC",
+                XXSL:"@contract.XXSL",
+                DESCRIPTION:" ",
 
                 colDefPP : [
                     {title: "品牌代码", key: 'BRANDID', width: 100},
@@ -237,6 +247,7 @@
                 _.Ajax('SearchContract', {
                     Data: { CONTRACTID: @contract.CONTRACTID }
                 }, function (data) {
+                    _self.DESCRIPTION=data.contract.DESCRIPTION;
                     _self.CONTRACT_BRAND = data.contractBrand;
                     _self.CONTRACT_SHOP = data.contractShop;
 

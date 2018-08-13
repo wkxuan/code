@@ -30,10 +30,10 @@ namespace z.ERP.Services
         /// 最大交易号
         /// </summary>
         /// <returns></returns>
-        public string GetLastDealid()
+        public long GetLastDealid()
         {
             string sql = $"select nvl(max(dealid),0) from sale where posno = '{employee.PlatformId}'";
-            return  DbHelper.ExecuteTable(sql).Rows[0][0].ToString(); 
+            return long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString()); 
         }
 
         public UserYYYResult GetClerkShop(string usercode)  
@@ -81,25 +81,52 @@ namespace z.ERP.Services
 
         public SaleRequest GetDeal(GetDealFilter filter)
         {
-            string sql = "select posno,dealid,sale_time,account_date,cashierid,sale_amount,change_amount,";
-            sql += $" member_cardid,crm_recordid,posno_old,dealid_old from sale";
-            sql += $" where posno={filter.posno} and dealid={filter.dealid}";
+            string sqlSale = "select posno,dealid,sale_time,account_date,cashierid,sale_amount,change_amount,";
+            sqlSale += $" nvl(member_cardid,-1) member_cardid,nvl(crm_recordid,-1) crm_recordid,";
+            sqlSale += $" posno_old,nvl(dealid_old,-1) dealid_old from sale";
+            sqlSale += $" where posno='{filter.posno}' and dealid={filter.dealid}";
 
 
-            string sqlGoods = "select * from sale_goods";
-            sqlGoods += $" where posno={filter.posno} and dealid={filter.dealid}";
+            string sqlGoods = "select sheetid,inx,shopid,goodsid,goodscode,price,quantity,";
+            sqlGoods += "  sale_amount,discount_amount,coupon_amount from sale_goods";
+            sqlGoods += $" where posno='{filter.posno}' and dealid={filter.dealid}";
 
 
-            string sqlPay = "select * from sale_pay";
-            sqlPay += $" where posno={filter.posno} and dealid={filter.dealid}";
+            string sqlPay = "select payid,amount from sale_pay";
+            sqlPay += $" where posno='{filter.posno}' and dealid={filter.dealid}";
 
-            string sqlClerk = "select * from sale_clerk";
-            sqlClerk += $" where posno={filter.posno} and dealid={filter.dealid}";
+            string sqlClerk = "select sheetid,clerkid from sale_clerk";
+            sqlClerk += $" where posno='{filter.posno}' and dealid={filter.dealid}";
+
+            DataTable saleDt = DbHelper.ExecuteTable(sqlSale);
+         //   List<SaleRequest> saleList = DbHelper.ExecuteObject<SaleRequest>(sqlSale);
+
+            if(!saleDt.IsNotNull())
+                throw new Exception("销售记录不存在!");
 
 
+            //   saleList[0].goodslist = DbHelper.ExecuteObject<GoodsResult>(sqlGoods);
+            //   saleList[0].paylist = DbHelper.ExecuteObject<PayResult>(sqlPay);
+            //   saleList[0].clerklist = DbHelper.ExecuteObject<ClerkResult>(sqlClerk);
 
-
-            return new SaleRequest();
+            
+            return new SaleRequest()
+            {
+                posno = saleDt.Rows[0][0].ToString(),
+                dealid = saleDt.Rows[0][1].ToString().ToInt(),
+                sale_time = saleDt.Rows[0][2].ToString().ToDateTime(),
+                account_date = saleDt.Rows[0][3].ToString().ToDateTime(),
+                cashierid = saleDt.Rows[0][4].ToString().ToInt(),
+                sale_amount = saleDt.Rows[0][5].ToString().ToDecimal(),
+                change_amount = saleDt.Rows[0][6].ToString().ToDecimal(),
+                member_cardid = saleDt.Rows[0][7].ToString().ToInt(),
+                crm_recordid = saleDt.Rows[0][8].ToString().ToInt(),
+                posno_old = saleDt.Rows[0][9].ToString(),
+                dealid_old = saleDt.Rows[0][10].ToString().ToInt(),
+                goodslist = DbHelper.ExecuteObject<GoodsResult>(sqlGoods),
+                paylist = DbHelper.ExecuteObject<PayResult>(sqlPay),
+                clerklist = DbHelper.ExecuteObject<ClerkResult>(sqlClerk)
+            };
         }
 
         public void Sale(SaleRequest request)
@@ -121,18 +148,24 @@ namespace z.ERP.Services
 
             sqlarr[0] = "insert into sale(posno,dealid,sale_time,account_date,cashierid,sale_amount,";
             sqlarr[0] += "change_amount,member_cardid,crm_recordid,posno_old,dealid_old)";
-            sqlarr[0] += $"values({posNo},{request.dealid},{request.sale_time},";
+            sqlarr[0] += $"values('{posNo}',{request.dealid},to_date('{request.sale_time}','yyyy-mm-dd HH24:MI:SS'),";
             if (request.account_date.ToString().IsEmpty())
-                sqlarr[0] += $"{request.sale_time.Date},";
+                sqlarr[0] += $"to_date('{request.sale_time.Date}','yyyy-mm-dd HH24:MI:SS'),";
             else
-                sqlarr[0] += $"{request.account_date.Date},";
+                sqlarr[0] += $"to_date('{request.account_date.Date}','yyyy-mm-dd HH24:MI:SS'),";
             sqlarr[0] += $"{request.cashierid},{goodsSaleAmount},{request.change_amount},";
             sqlarr[0] += $"{request.member_cardid},{request.crm_recordid},";
 
-            if(request.posno.IsNotEmpty()  && request.dealid_old.HasValue)
-                sqlarr[0] += $"{request.posno_old},{request.dealid_old})";
+            if(request.posno.IsNotEmpty())   
+                sqlarr[0] += $"'{request.posno_old}',";
             else
-                sqlarr[0] += "null,null)";
+                sqlarr[0] += "null,";
+
+            if(request.dealid_old.HasValue && request.dealid_old>0)
+                sqlarr[0] += $"{request.dealid_old})";
+            else
+                sqlarr[0] += "null)";
+
 
             int j;
 
@@ -141,9 +174,9 @@ namespace z.ERP.Services
                 j = 0;
                 sqlarr[i] = "insert into sale_goods(posno,dealid,sheetid,inx,shopid,goodsid,goodscode,";
                 sqlarr[i] += "price,quantity,sale_amount,discount_amount,coupon_amount)";
-                sqlarr[i] += $"values({posNo},{request.dealid},{request.goodslist[j].sheetid},";
+                sqlarr[i] += $"values('{posNo}',{request.dealid},{request.goodslist[j].sheetid},";
                 sqlarr[i] += $"{request.goodslist[j].inx},{request.goodslist[j].shopid},{request.goodslist[j].goodsid},";
-                sqlarr[i] += $"{request.goodslist[j].goodscode},{request.goodslist[j].price},{request.goodslist[j].quantity},";
+                sqlarr[i] += $"'{request.goodslist[j].goodscode}',{request.goodslist[j].price},{request.goodslist[j].quantity},";
                 sqlarr[i] += $"{request.goodslist[j].sale_amount},{request.goodslist[j].discount_amount},";
                 sqlarr[i] += $"{request.goodslist[j].coupon_amount})";
                 j++;
@@ -153,7 +186,7 @@ namespace z.ERP.Services
             {
                 j = 0;
                 sqlarr[i] = "insert into sale_pay(posno,dealid,payid,amount)";
-                sqlarr[i] += $"values({posNo},{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount})";
+                sqlarr[i] += $"values('{posNo}',{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount})";
                 j++;
             }
 
@@ -161,7 +194,7 @@ namespace z.ERP.Services
             {
                 j = 0;
                 sqlarr[i] = "insert into sale_clerk(posno,dealid,sheetid,clerkid)";
-                sqlarr[i] += $"values({posNo},{request.dealid},{request.clerklist[j].sheetid},{request.clerklist[j].clerkid})";
+                sqlarr[i] += $"values('{posNo}',{request.dealid},{request.clerklist[j].sheetid},{request.clerklist[j].clerkid})";
                 j++;
             }
 
