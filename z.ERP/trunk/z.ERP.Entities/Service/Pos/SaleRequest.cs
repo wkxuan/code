@@ -26,7 +26,7 @@ namespace z.ERP.Entities.Service.Pos
         {
             get; set;
         }
-        public decimal sale_amount
+        public decimal sale_amount    
         {
             get; set;
         }
@@ -58,7 +58,7 @@ namespace z.ERP.Entities.Service.Pos
         {
             get; set;
         }
-        public List<ClerkResultt> clerklist
+        public List<ClerkResult> clerklist
         {
             get; set;
         }

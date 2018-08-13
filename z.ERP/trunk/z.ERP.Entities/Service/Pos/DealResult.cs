@@ -48,7 +48,7 @@ namespace z.ERP.Entities.Service.Pos
         {
             get; set;
         }
-        public List<ClerkResultt> clerklist
+        public List<ClerkResult> clerklist
         {
             get; set;
         }

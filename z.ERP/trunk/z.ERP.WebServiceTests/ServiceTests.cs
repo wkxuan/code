@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using z.ERP.Entities.Service.Pos;
-using z.ERP.WebService.Model;
 using z.Extensions;
 
 namespace z.ERP.WebService.Wcf.Tests
@@ -18,7 +17,7 @@ namespace z.ERP.WebService.Wcf.Tests
                 ServiceName = "Sale",
                 Context = new SaleRequest()
                 {
-                     account_date="11122"
+                    // account_date="2018-"
                 }.ToJson()
             };
             ServiceTransfer st = new ServiceTransfer();
