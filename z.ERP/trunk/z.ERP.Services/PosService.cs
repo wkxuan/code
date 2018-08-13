@@ -30,10 +30,10 @@ namespace z.ERP.Services
         /// 最大交易号
         /// </summary>
         /// <returns></returns>
-        public string GetLastDealid()
+        public long GetLastDealid()
         {
             string sql = $"select nvl(max(dealid),0) from sale where posno = '{employee.PlatformId}'";
-            return  DbHelper.ExecuteTable(sql).Rows[0][0].ToString(); 
+            return long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString()); 
         }
 
         public UserYYYResult GetClerkShop(string usercode)  
