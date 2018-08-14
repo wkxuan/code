@@ -110,6 +110,20 @@
 
     <row>
         <i-col span="3" class="RowTitle">
+            优惠券
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.COUPONID",                   
+                    ServiceMothod = m => m.coupon(),
+                    Enable = false,
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">
             停用标记
         </i-col>
         <i-col span="6">

@@ -54,6 +54,13 @@ define.IsValidSave = function () {
         iview.Message.info("显示序号必须为数字!");
         return false;
     }
+
+    if (define.dataParam.TYPE == "3" && !define.dataParam.COUPONID)
+    {
+        iview.Message.info("类型是优惠券时必须选择对应优惠券!");
+        return false;
+    }
+
     return true;
 }
 

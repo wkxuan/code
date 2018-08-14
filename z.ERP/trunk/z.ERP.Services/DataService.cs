@@ -84,6 +84,14 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
+
+        public List<SelectItem> coupon()    //优惠券
+        {
+            string sql = "select YHQID,YHQMC from YHQDEF where 1=1 order by YHQID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("YHQID", "YHQMC");
+        }
+
         public List<SelectItem> feeRule()
         {
             string sql = $@"SELECT ID,NAME FROM FEERULE   ORDER BY  ID ";

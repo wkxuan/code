@@ -88,5 +88,10 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        public string COUPONID
+        {
+            get; set;
+        }
     }
 }
