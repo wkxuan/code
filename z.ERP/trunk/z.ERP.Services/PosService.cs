@@ -156,7 +156,7 @@ namespace z.ERP.Services
             sqlarr[0] += $"{request.cashierid},{goodsSaleAmount},{request.change_amount},";
             sqlarr[0] += $"{request.member_cardid},{request.crm_recordid},";
 
-            if(request.posno.IsNotEmpty())   
+            if(request.posno.IsNotEmpty() || request.posno=="")   
                 sqlarr[0] += $"'{request.posno_old}',";
             else
                 sqlarr[0] += "null,";
