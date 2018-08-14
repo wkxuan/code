@@ -53,6 +53,8 @@
     define.Key = "USERID";
     define.screenParam.showPopRole = false;
     define.screenParam.srcPopRole = __BaseUrl + "/" + "Pop/Pop/PopRoleList/";
+    define.screenParam.showPopShop = false;
+    define.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
     define.screenParam.popParam = {};
 }
 
@@ -79,7 +81,10 @@ define.otherMethods = {
     },
     SelRole: function () {
         define.screenParam.showPopRole = true;
-}
+    },
+    SelShop:function () {
+        define.screenParam.showPopShop = true;
+    }
 }
 
 define.mountedInit = function () {
@@ -92,8 +97,56 @@ define.mountedInit = function () {
 
 //接收子页面返回值
 define.popCallBack = function (data) {
-    define.screenParam.showPopRole = false;
-    for (var i = 0; i < data.sj.length; i++) {
-        define.dataParam.USER_ROLE.push(data.sj[i]);
-    };
+    if (define.screenParam.showPopRole)
+    {
+        define.screenParam.showPopRole = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            define.dataParam.USER_ROLE.push(data.sj[i]);
+        };
+    }
+
+    else if (define.screenParam.showPopShop)
+    {
+        define.screenParam.showPopShop = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            define.dataParam.SHOPID = data.sj[i].SHOPID;
+            define.dataParam.SHOPCODE = data.sj[i].SHOPCODE;
+        };
+    }
+
 };
+
+
+define.IsValidSave = function () {
+    if (!define.dataParam.USERCODE)
+    {
+        iview.Message.info("用户代码不能为空!");
+        return false;
+    }
+
+    if (!define.dataParam.USERNAME)
+    {
+        iview.Message.info("用户名称不能为空!");
+        return false;
+    }
+
+    if (!define.dataParam.USER_TYPE)
+    {
+        iview.Message.info("用户类型不能为空!");
+        return false;
+    }
+
+    if (!define.dataParam.ORGID) {
+        iview.Message.info("所属机构不能为空!");
+        return false;
+    }
+
+
+    if (define.dataParam.USER_TYPE == "2" && !define.dataParam.SHOPID)
+    {
+        iview.Message.info("营业员必须选择店铺!");
+        return false;
+    }
+
+    return true;
+};  

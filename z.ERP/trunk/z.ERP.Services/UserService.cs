@@ -1,13 +1,8 @@
 ﻿using System.Data;
-using System.Linq;
 using z.MVC5.Results;
 using z.ERP.Entities;
-using System.Collections.Generic;
 using z.Extensions;
 using System;
-using z.ERP.Entities.Enum;
-using z.Exceptions;
-using z.ERP.Model.Vue;
 using z.SSO.Model;
 
 
@@ -21,9 +16,9 @@ namespace z.ERP.Services
         }
         public DataGridResult GetUser(SearchItem item)
         {
-            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME,B.ORGID,B.ORGCODE,B.ORGNAME 
-             from SYSUSER A,ORG B 
-             where  A.ORGID=B.ORGID and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";
+            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME,A.SHOPID,B.ORGID,B.ORGCODE,B.ORGNAME,C.CODE SHOPCODE,C.NAME SHOPNAME
+             from SYSUSER A,ORG B,SHOP C 
+             where A.SHOPID=C.SHOPID(+) and A.ORGID=B.ORGID(+) ";  //and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";
             item.HasKey("USERCODE", a => sql += $" and A.USERCODE like '%{a}%'");
             item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");
             sql += " ORDER BY  A.USERCODE";
@@ -33,7 +28,8 @@ namespace z.ERP.Services
         }
         public DataGridResult GetUserElement(SearchItem item)
         {
-            string sql = $@"select A.*,B.ORGIDCASCADER from SYSUSER A,ORG B where A.ORGID=B.ORGID(+)  ";
+            string sql = $@"select A.*,B.ORGIDCASCADER,C.CODE SHOPCODE,C.NAME SHOPNAME ";
+            sql += " from SYSUSER A,ORG B,SHOP C where A.ORGID=B.ORGID(+) and A.SHOPID=C.SHOPID(+)  ";
             item.HasKey("USERID", a => sql += $" and A.USERID = '{a}'");
             item.HasKey("USERCODE", a => sql += $" and A.USERCODE like '%{a}%'");
             item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");

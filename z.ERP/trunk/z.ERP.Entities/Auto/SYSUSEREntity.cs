@@ -87,5 +87,10 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        public string SHOPID
+        {
+            get; set;
+        }
     }
 }
