@@ -167,11 +167,10 @@ namespace z.ERP.Services
                 sqlarr[0] += "null)";
 
 
-            int j;
+            int j = 0;
 
             for(int i=1;i<=goodsCount;i++)
             {
-                j = 0;
                 sqlarr[i] = "insert into sale_goods(posno,dealid,sheetid,inx,shopid,goodsid,goodscode,";
                 sqlarr[i] += "price,quantity,sale_amount,discount_amount,coupon_amount)";
                 sqlarr[i] += $"values('{posNo}',{request.dealid},{request.goodslist[j].sheetid},";
@@ -182,17 +181,19 @@ namespace z.ERP.Services
                 j++;
             }
 
+            j = 0;
+
             for (int i = 1 + goodsCount; i <= goodsCount + payCount; i++)
             {
-                j = 0;
+
                 sqlarr[i] = "insert into sale_pay(posno,dealid,payid,amount)";
                 sqlarr[i] += $"values('{posNo}',{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount})";
                 j++;
             }
 
+            j = 0;
             for (int i = 1 + goodsCount + payCount; i <= goodsCount + payCount + clerkCount; i++)
             {
-                j = 0;
                 sqlarr[i] = "insert into sale_clerk(posno,dealid,sheetid,clerkid)";
                 sqlarr[i] += $"values('{posNo}',{request.dealid},{request.clerklist[j].sheetid},{request.clerklist[j].clerkid})";
                 j++;
@@ -201,11 +202,11 @@ namespace z.ERP.Services
             int insertCount = 0;
             try
             {
-                 insertCount = DbHelper.ExecuteNonQuery(sqlarr);
+                insertCount = DbHelper.ExecuteNonQuery(sqlarr);
             }
             catch (Exception)
             {
-
+                
                 throw new Exception("提交数据库时发生异常!");
             }
            
