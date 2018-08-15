@@ -9,6 +9,7 @@ using z.ERP.Model;
 using z.ERP.Entities.Enum;
 using System.Data;
 using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Web.Areas.Layout.Search;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
 {
@@ -17,7 +18,11 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
         public ActionResult Bill_NoticeList()
         {
             ViewBag.Title = "缴费通知单";
-            return View();
+            return View(new SearchRender()
+            {
+                Permission_Add = "10700501",
+                Permission_Del = "10700501"
+            });
         }
         public ActionResult Bill_NoticeEdit(string Id)
         {
@@ -64,6 +69,14 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
         {
             //return new UIResult(service.DataService.GetBill(Data));
             return new UIResult();
+        }
+        public ActionResult Bill_Notice_Print(string Id)
+        {
+            var entity = service.JsglService.GetBillNoticePrint(new BILL_NOTICEEntity(Id));
+            ViewBag.billNotice = entity.Item1;
+            ViewBag.billNoticeItem = entity.Item2;
+            ViewBag.CurrentDate = System.DateTime.Now;
+            return View();
         }
     }
 }

@@ -495,41 +495,62 @@ namespace z.ERP.Services
                         + "WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)";
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
-            DataTable billObtain = DbHelper.ExecuteTable(sql);
-            billObtain.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            DataTable billNotice = DbHelper.ExecuteTable(sql);
+            billNotice.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
             string sqlitem = $@"SELECT M.*,B.MUST_MONEY,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,C.NAME TERMMC " +
                 " FROM BILL_NOTICE_ITEM M ,BILL B,FEESUBJECT C " +
                 " where M.FINAL_BILLID=B.BILLID(+) and B.TERMID=C.TRIMID(+) ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
-            DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
+            DataTable billNoticeItem = DbHelper.ExecuteTable(sqlitem);
 
-            return new Tuple<dynamic, DataTable>(billObtain.ToOneLine(), billObtainItem);
+            return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);
         }
+        public Tuple<dynamic, DataTable> GetBillNoticePrint(BILL_NOTICEEntity Data)
+        {
+            string sql = $@"SELECT A.*,TO_CHAR(A.VERIFY_TIME,'YYYYMM') CZNY,B.NAME BRANCHNAME,'('||D.MERCHANTID||')'||D.NAME MERCHANTNAME,F.SHOPDM "
+                 + ",(select sum(L.MUST_MONEY) from BILL_NOTICE_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) MUST_MONEY "
+                 + ",(select sum(M.NOTICE_MONEY) from BILL_NOTICE_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) NOTICE_MONEY "
+                + "FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D,CONTRACT_SHOPXX F "
+                        + "WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+) and A.CONTRACTID=F.CONTRACTID(+)";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" AND A.BILLID= " + Data.BILLID);
+            DataTable billNotice = DbHelper.ExecuteTable(sql);
+            billNotice.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
+            string sqlitem = $@"SELECT M.*,(case B.TYPE when 0 then '收费单' else '' end ) BILLTYPE,B.MUST_MONEY,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,C.NAME TERMMC " +
+                ",TO_CHAR(B.START_DATE,'YYYY-MM-DD')||'至'||to_char(B.END_DATE,'YYYY-MM-DD')   FYQJ "+
+                " FROM BILL_NOTICE_ITEM M ,BILL B,FEESUBJECT C " +
+                " where M.FINAL_BILLID=B.BILLID(+) and B.TERMID=C.TRIMID(+) ";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and M.BILLID= " + Data.BILLID);
+            DataTable billNoticeItem = DbHelper.ExecuteTable(sqlitem);
+
+            return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);
+        }
         /// <summary>
-        /// 保证金收取审核
+        /// 缴费通知单审核
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
         public string ExecBillNotice(BILL_NOTICEEntity Data)
         {
-            BILL_NOTICEEntity billObtain = DbHelper.Select(Data);
-            if (billObtain.STATUS == ((int)普通单据状态.审核).ToString())
+            BILL_NOTICEEntity billNotice = DbHelper.Select(Data);
+            if (billNotice.STATUS == ((int)普通单据状态.审核).ToString())
             {
                 throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-                billObtain.VERIFY = employee.Id;
-                billObtain.VERIFY_NAME = employee.Name;
-                billObtain.VERIFY_TIME = DateTime.Now.ToString();
-                billObtain.STATUS = ((int)普通单据状态.审核).ToString();
-                DbHelper.Save(billObtain);
+                billNotice.VERIFY = employee.Id;
+                billNotice.VERIFY_NAME = employee.Name;
+                billNotice.VERIFY_TIME = DateTime.Now.ToString();
+                billNotice.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(billNotice);
                 Tran.Commit();
             }
-            return billObtain.BILLID;
+            return billNotice.BILLID;
         }
 
         public Tuple<dynamic > GetJoinBillDetail(JOIN_BILLEntity Data)

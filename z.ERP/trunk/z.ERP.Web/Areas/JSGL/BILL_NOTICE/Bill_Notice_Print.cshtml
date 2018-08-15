@@ -1,0 +1,147 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Print;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits PrintLayout<dynamic>
+
+@{
+    dynamic billNotice = ViewBag.billNotice;
+    DataTable billNoticeItem = ViewBag.billNoticeItem;
+}
+
+@section content{
+    <table border="0" cellpadding="0" cellspacing="0" class="noborder">
+        <caption>
+            <h1>
+                商户缴费通知单
+            </h1>
+        </caption>
+        <tr>
+            <td colspan="4" style="text-align:right">
+                <span id="BOX"></span>
+                <br />
+            </td>
+        </tr>
+        <tr>
+
+            <td colspan="4" style="padding-left: 5px;">
+                <table style="width: 90%;">
+                    <tr style="line-height: 20px;">
+                        <td  class="leftRow">
+                            单据编号：
+                        </td>
+                        <td  class="rightRow">
+                            @billNotice.BILLID
+                        </td>
+                        <td  class="leftRow">
+                            出账月份：
+                        </td>
+                        <td  class="rightRow">
+                            @billNotice.CZNY
+                        </td>
+                    </tr>
+                    <tr style="line-height: 20px;">
+                        <td class="leftRow">
+                            商户：
+                        </td>
+                        <td class="rightRow">
+                            @billNotice.MERCHANTNAME
+                        </td>
+                        <td class="leftRow">
+                            租约：
+                        </td>
+                        <td class="rightRow">
+                            @billNotice.CONTRACTID
+                        </td>
+                        <td class="leftRow">
+                            商铺：
+                        </td>
+                        <td class="rightRow">
+                            @billNotice.SHOPDM
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td id="datatable" colspan="4">
+                <table class="table" border="1" cellpadding="1" cellspacing="1" style="width: 90%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%">
+                                类型
+                            </th>
+                            <th style="width: 15%">
+                                项目
+                            </th>
+                            <th style="width: 15%">
+                                所属期间
+                            </th>
+                            <th style="width: 20%">
+                                账单金额
+                            </th>
+                            <th style="width: 20%">
+                                应收(+)/应付(-)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (DataRow dr in billNoticeItem.Rows)
+                            {
+                                <tr>
+                                    <td>@dr["BILLTYPE"].ToString()</td>
+                                    <td>@dr["TERMMC"].ToString()</td>
+                                    <td>@dr["FYQJ"].ToString()</td>
+                                    <td>@dr["MUST_MONEY"].ToString()</td>
+                                    <td>@dr["NOTICE_MONEY"].ToString()</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="text-align: center" colspan="3">
+                                合&nbsp;&nbsp;计
+                            </td>
+                            <td style="text-align: center">
+                                <span>@billNotice.MUST_MONEY</span>
+                            </td>
+                            <td style="text-align: center">
+                                <span>@billNotice.NOTICE_MONEY</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </td>
+        </tr>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    <table style="width: 90%;">
+                        <tr>
+                            <td style="text-align: right; width: 60%; padding-right: 10px;">
+                                打印时间：<span>@ViewBag.CurrentDate</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <table style="width: 90%;">
+                        <tr>
+                            <td style="text-align: left; width: 60%; padding-right: 10px;">
+                                备注：<br>
+                                1.请于 YYYY-MM-DD 之前缴付上述款项，请注明缴费项目和期间：<br>            
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+}

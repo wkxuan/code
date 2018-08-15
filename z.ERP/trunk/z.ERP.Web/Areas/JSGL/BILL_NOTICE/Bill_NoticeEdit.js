@@ -106,7 +106,7 @@ editDetail.otherMethods = {
         editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
     },
     SelBill: function () {
-        if (!editDetail.dataParam.CONTACTID) {
+        if (!editDetail.dataParam.CONTRACTID) {
             iview.Message.info("请选择租约!");
             return;
         };
@@ -122,6 +122,11 @@ editDetail.otherMethods = {
 editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopContract) {
         editDetail.screenParam.showPopContract = false;
+        //接收选中的数据
+
+        editDetail.dataParam.CONTRACTID = data.sj[0].CONTRACTID;
+        editDetail.dataParam.MERCHANTID = data.sj[0].MERCHANTID;
+        editDetail.dataParam.MERCHANTNAME = data.sj[0].MERCHANTNAME;
     };
     if (editDetail.screenParam.showPopBill) {
         editDetail.screenParam.showPopBill = false;

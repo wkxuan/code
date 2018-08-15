@@ -24,6 +24,14 @@
                 Click = "exec",
             });
         }
+        else
+        {
+            RenderControl(new ButtonRender()
+            {
+                Text = "打印",
+                Click = "Print",
+            });
+        }
     }
 }
 
@@ -50,10 +58,6 @@
     <i-col span="2" class="RowTitle">商户名称</i-col>
     <i-col span="4">
         <i-input v-model="MERCHANTNAME" readonly="true"></i-input>
-    </i-col>
-    <i-col span="2" class="RowTitle">权债发生月</i-col>
-    <i-col span="4">
-        <i-input v-model="NIANYUE" readonly="true"></i-input>
     </i-col>
 </row>
 <row>
@@ -114,6 +118,14 @@
                         setTimeout(function () {
                             window.location.reload();
                         }, 100);
+                    });
+                },
+                Print :function (event) {
+                    event.stopPropagation();
+                    _.OpenPage({
+                        id: 10700501,
+                        title: '打印',
+                        url: "JSGL/BILL_NOTICE/Bill_Notice_Print/" + @billNotice.BILLID,
                     });
                 }
             }
