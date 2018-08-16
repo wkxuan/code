@@ -61,7 +61,10 @@
             _.Search({
                 Service: "XtglService",
                 Method: "GetBrandData",
-                Data: {ID:_self.ID,NAME:_self.NAME  },
+                Data: {
+                    ID: _self.ID, NAME: _self.NAME,
+                    MERCHANTID: _self.parenttochild.MERCHANTID
+                },
                 Success: function (data) {
                     if (data.rows.length != 0) {
                         Vue.set(_self, "Data", data.rows);

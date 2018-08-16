@@ -750,7 +750,13 @@ editDetail.otherMethods = {
     },
     //点击品牌弹窗
     srchColPP: function () {
+        if (!editDetail.dataParam.MERCHANTID) {
+            iview.Message.info("请先选择商户!");
+            return false;
+        }
+
         Vue.set(editDetail.screenParam, "PopBrand", true);
+        editDetail.screenParam.ParentBrand = { MERCHANTID: editDetail.dataParam.MERCHANTID };
     },
     //返回品牌弹窗
     BrandBack: function (val) {
