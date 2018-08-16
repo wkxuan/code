@@ -39,7 +39,16 @@ namespace z.ERP.Services
         public long GetLastDealid()
         {
             string sql = $"select nvl(max(dealid),0) from sale where posno = '{employee.PlatformId}'";
-            return long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString()); 
+
+            long lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
+
+            if(lastDealid==0)
+            {
+                sql = $"select nvl(max(dealid),0) from his_sale where posno = '{employee.PlatformId}'";
+                lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
+            }
+
+            return lastDealid; 
         }
 
         public UserYYYResult GetClerkShop(string usercode)  
@@ -82,26 +91,36 @@ namespace z.ERP.Services
             sql += $"         and void_flag = 1 and a.stationbh = '{employee.PlatformId}'";
             sql += $"       order by b.flag";
 
-            return DbHelper.ExecuteObject<FKFSResult>(sql);
+            List<FKFSResult> payList = DbHelper.ExecuteObject<FKFSResult>(sql);
+            if (payList.Count <= 0)
+                throw new Exception("该款台没有配置支付方式!");
+
+            return payList;
         }
 
         public SaleRequest GetDeal(GetDealFilter filter)
         {
+            string strTable = "";
+            string sql = $"select count(1) from sale where posno='{filter.posno}' and dealid={filter.dealid}";
+            int saleCount = int.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
+            if(saleCount==0)
+            {
+                strTable = "his_";
+            }
+
             string sqlSale = "select posno,dealid,sale_time,account_date,cashierid,sale_amount,change_amount,";
-            sqlSale += $" nvl(member_cardid,-1) member_cardid,nvl(crm_recordid,-1) crm_recordid,";
-            sqlSale += $" posno_old,nvl(dealid_old,-1) dealid_old from sale";
+            sqlSale += " nvl(member_cardid,-1) member_cardid,nvl(crm_recordid,-1) crm_recordid,";
+            sqlSale += $" posno_old,nvl(dealid_old,-1) dealid_old from {strTable}sale";
             sqlSale += $" where posno='{filter.posno}' and dealid={filter.dealid}";
 
-
             string sqlGoods = "select sheetid,inx,shopid,goodsid,goodscode,price,quantity,";
-            sqlGoods += "  sale_amount,discount_amount,coupon_amount from sale_goods";
+            sqlGoods += $" sale_amount,discount_amount,coupon_amount from {strTable}sale_goods";
             sqlGoods += $" where posno='{filter.posno}' and dealid={filter.dealid}";
 
-
-            string sqlPay = "select payid,amount from sale_pay";
+            string sqlPay = $"select payid,amount from {strTable}sale_pay";
             sqlPay += $" where posno='{filter.posno}' and dealid={filter.dealid}";
 
-            string sqlClerk = "select sheetid,clerkid from sale_clerk";
+            string sqlClerk = $"select sheetid,clerkid from {strTable}sale_clerk";
             sqlClerk += $" where posno='{filter.posno}' and dealid={filter.dealid}";
 
             DataTable saleDt = DbHelper.ExecuteTable(sqlSale);
@@ -110,11 +129,9 @@ namespace z.ERP.Services
             if(!saleDt.IsNotNull())
                 throw new Exception("销售记录不存在!");
 
-
             //   saleList[0].goodslist = DbHelper.ExecuteObject<GoodsResult>(sqlGoods);
             //   saleList[0].paylist = DbHelper.ExecuteObject<PayResult>(sqlPay);
             //   saleList[0].clerklist = DbHelper.ExecuteObject<ClerkResult>(sqlClerk);
-
             
             return new SaleRequest()
             {
