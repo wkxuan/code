@@ -54,6 +54,7 @@
     <Compile Include="Procedures\EXEC_ASSET_SPILT.cs" />
     <Compile Include="Procedures\EXEC_ASSET_CHANGE.cs" />
     <Compile Include="Procedures\Exec_BILL_OBTAIN.cs" />
+    <Compile Include="Procedures\EXEC_CONTRACT_UPDATE.cs" />
     <Compile Include="Procedures\EXEC_CONTRACT.cs" />
     <Compile Include="Procedures\ProTest.cs" />
     <Compile Include="Procedures\STOPFREESHOP.cs" />

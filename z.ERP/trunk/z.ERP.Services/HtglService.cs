@@ -469,18 +469,17 @@ namespace z.ERP.Services
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-               
-                //EXEC_CONTRACT exec_contract = new EXEC_CONTRACT()
-                //{
-                //    V_CONTRACTID = Data.CONTRACTID,
-                //    V_USERID = employee.Id
-                //};
-                //DbHelper.ExecuteProcedure(exec_contract);
+
+                EXEC_CONTRACT_UPDATE exec_contract = new EXEC_CONTRACT_UPDATE()
+                {
+                    in_CONTRACTID = Data.CONTRACTID,
+                    in_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_contract);
                 Tran.Commit();
             }
 
             return con.CONTRACTID;
-            throw new LogicException($"租约变更审核过程待完善!");
         }
 
         public DataGridResult GetFreeShopList(SearchItem item)
