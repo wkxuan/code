@@ -711,8 +711,8 @@ namespace z.DBHelper.Helper
             catch (Exception ex)
             {
                 Done();
-                if (ex.InnerMessage().Equals("池式连接请求超时"))
-                    throw new FailException("池式连接请求超时");
+                //if (ex.InnerMessage().Equals("池式连接请求超时"))
+                //    throw new FailException("池式连接请求超时");
                 string sql = _dbCommand?.CommandText;
                 object obj = _dbCommand?.Parameters;
                 if (sql.IsEmpty())
