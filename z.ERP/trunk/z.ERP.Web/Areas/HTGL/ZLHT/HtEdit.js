@@ -446,7 +446,7 @@
     //收费项目
     editDetail.screenParam.colDefCOST = [
         { type: 'selection', width: 60, align: 'center', },
-        { title: '序号', key: 'INX', width: 60 },
+        { title: '序号', key: 'INX', width: 70 },
         {
             title: "费用项目", key: 'TERMID', width: 100,
             render: function (h, params) {
@@ -1193,11 +1193,11 @@ editDetail.otherMethods = {
     delColCost: function () {
         var selectton = this.$refs.selectCost.getSelection();
         if (selectton.length == 0) {
-            iview.Message.info("请选中要删除的数据!");
+            iview.Message.info("请选中要删除的数据1!");
         } else {
             for (var i = 0; i < selectton.length; i++) {
                 for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
-                    if (editDetail.dataParam.CONTRACT_COST[j].PAYID == selectton[i].PAYID) {
+                    if (editDetail.dataParam.CONTRACT_COST[j].INX == selectton[i].INX) {
                         editDetail.dataParam.CONTRACT_COST.splice(j, 1);
                     }
                 }
