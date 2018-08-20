@@ -1193,7 +1193,7 @@ editDetail.otherMethods = {
     delColCost: function () {
         var selectton = this.$refs.selectCost.getSelection();
         if (selectton.length == 0) {
-            iview.Message.info("请选中要删除的数据1!");
+            iview.Message.info("请选中要删除的数据!");
         } else {
             for (var i = 0; i < selectton.length; i++) {
                 for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
