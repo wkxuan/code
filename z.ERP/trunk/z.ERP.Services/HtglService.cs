@@ -168,7 +168,8 @@ namespace z.ERP.Services
             DataTable contract_pay = DbHelper.ExecuteTable(sqlPay);
 
 
-            string sqlCost = $@"SELECT A.*,B.NAME FROM CONTRACT_COST A,FEESUBJECT B WHERE A.TERMID=B.TRIMID ";
+            string sqlCost = $@"SELECT A.*,B.NAME,C.NAME FEERULENAME FROM CONTRACT_COST A,FEESUBJECT B,FEERULE C";
+            sqlCost += " WHERE A.TERMID=B.TRIMID AND A.FEERULEID=C.ID ";
             sqlCost += (" AND CONTRACTID= " + Data.CONTRACTID);
             sqlCost += " ORDER BY TERMID,STARTDATE";
             DataTable contract_cost = DbHelper.ExecuteTable(sqlCost);

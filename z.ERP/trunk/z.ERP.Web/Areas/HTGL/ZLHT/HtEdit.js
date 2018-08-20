@@ -446,7 +446,7 @@
     //收费项目
     editDetail.screenParam.colDefCOST = [
         { type: 'selection', width: 60, align: 'center', },
-        { title: '序号', key: 'INX', width: 70 },
+        { title: '序号', key: 'INX', width: 60 },
         {
             title: "费用项目", key: 'TERMID', width: 100,
             render: function (h, params) {
@@ -548,7 +548,7 @@
             },
         },
         {
-            title: "金额", key: 'COST', width: 150,
+            title: "金额", key: 'COST', width: 120,
             render: function (h, params) {
                 return h('Input', {
                     props: {
@@ -1356,7 +1356,15 @@ editDetail.IsValidSave = function () {
     if (editDetail.dataParam.CONTRACT_COST.length != 0) {
         for (var i = 0; i < editDetail.dataParam.CONTRACT_COST.length; i++) {
             if (!editDetail.dataParam.CONTRACT_COST[i].SFFS) {
-                iview.Message.info("请确定每月收费项目中的收费方式!");
+                iview.Message.info("请选择收费项目中的收费方式!");
+                return false;
+            };
+            if (!editDetail.dataParam.CONTRACT_COST[i].FEERULEID) {
+                iview.Message.info("请选择收费项目中的收费规则!");
+                return false;
+            };
+            if (!editDetail.dataParam.CONTRACT_COST[i].IF_RENT_FEERULE) {
+                iview.Message.info("请确定收费项目中的'生成日期是否和租金保持一致!");
                 return false;
             };
 
