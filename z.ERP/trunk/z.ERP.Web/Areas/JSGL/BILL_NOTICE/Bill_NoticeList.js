@@ -15,6 +15,19 @@
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "JsglService";
     search.method = "GetBillNoticeList";
+
+    search.screenParam.showPopMerchant = false;
+    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+    search.screenParam.showPopSysuser = false;
+    search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
+    search.screenParam.showPopContract = false;
+    search.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
+
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTERNAME = "";
+    search.searchParam.VERIFY = "";
+    search.searchParam.VERIFYNAME = "";
+    search.screenParam.popParam = {};
 }
 
 search.browseHref = function (row, index) {
@@ -32,3 +45,54 @@ search.addHref = function (row) {
     });
 }
 
+
+search.otherMethods = {
+    SelSysuser: function () {
+        search.screenParam.showPopSysuser = true;
+        btnFlag = "REPORTER";
+    },
+    SelSysuser_sh: function () {
+        search.screenParam.showPopSysuser = true;
+        btnFlag = "VERIFY";
+    },
+    SelMerchant: function () {
+        search.screenParam.showPopMerchant = true;
+    },
+    SelContract: function () {
+        search.screenParam.showPopContract = true;
+    }
+}
+
+//接收子页面返回值
+search.popCallBack = function (data) {
+
+    if (search.screenParam.showPopSysuser){
+        search.screenParam.showPopSysuser = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            if (btnFlag == "REPORTER") {
+                search.searchParam.REPORTER = data.sj[i].USERID;
+                search.searchParam.REPORTERNAME = data.sj[i].USERNAME;
+            }
+            else if (btnFlag == "VERIFY") {
+                search.searchParam.VERIFY = data.sj[i].USERID;
+                search.searchParam.VERIFYNAME = data.sj[i].USERNAME;
+            }
+
+        };
+    }
+
+    if (search.screenParam.showPopMerchant) {
+        search.screenParam.showPopMerchant = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+        }
+    }
+
+    if (search.screenParam.showPopContract) {
+        search.screenParam.showPopContract = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            search.searchParam.CONTRACTID = data.sj[i].CONTRACTID;
+        }
+    }
+};

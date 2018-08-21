@@ -424,6 +424,8 @@ namespace z.ERP.Services
             string sql = $@"SELECT L.*,B.NAME BRANCHNAME,C.MERCHANTID,D.NAME MERCHANTNAME " +
                 " FROM BILL_NOTICE L,BRANCH B,CONTRACT C,MERCHANT D " +
                 "  WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)  ";
+
+            item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID= {a}");
             item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID = {a}");
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
