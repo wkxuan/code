@@ -15,6 +15,7 @@
     editDetail.screenParam.showPopShop = false;
     editDetail.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
     editDetail.screenParam.popParam = {};
+    editDetail.dataParam.ASSETCHANGEITEM = [];
 
 
     editDetail.screenParam.colDef = [
@@ -206,6 +207,11 @@ editDetail.IsValidSave = function () {
                 iview.Message.info("请选择单元!");
                 return false;
             };
+
+            if (!editDetail.dataParam.ASSETCHANGEITEM[i].AREA_RENTABLE_NEW) {
+                iview.Message.info("请输入新租赁面积!");
+                return false;
+            }
         };
     };
 
