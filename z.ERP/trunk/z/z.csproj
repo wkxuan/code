@@ -66,7 +66,6 @@
     <Compile Include="Encryption\MD5Encryption.cs" />
     <Compile Include="Encryption\Base64Encryption.cs" />
     <Compile Include="Encryption\RSAEncryption.cs" />
-    <Compile Include="Exceptions\FailException.cs" />
     <Compile Include="Exceptions\zExceptionBase.cs" />
     <Compile Include="Extensions\ConfigExtension.cs" />
     <Compile Include="Exceptions\DataBaseException.cs" />

@@ -17,7 +17,6 @@ namespace z.ERP.Web
     {
         protected void Application_Start()
         {
-
             new MvcStart().Init(DebugSettings.DefaultPage);
         }
     }

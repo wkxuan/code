@@ -9,7 +9,6 @@
     editDetail.screenParam.srcPopBill = __BaseUrl + "/" + "Pop/Pop/PopBillList/";
     editDetail.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
     editDetail.screenParam.popParam = {};
-    editDetail.dataParam.BILL_NOTICE_ITEM = [];
 
     editDetail.screenParam.colDef = [
     //{
@@ -78,7 +77,7 @@
             NOTICE_MONEY: "",
             MUST_MONEY: "",
         }]
-    } 
+    }
     editDetail.screenParam.addCol = function () {
         var temp = editDetail.dataParam.BILL_NOTICE_ITEM || [];
         temp.push({});
@@ -171,26 +170,6 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请选择分店!");
         return false;
     };
-
-    if (!editDetail.dataParam.CONTRACTID) {
-        iview.Message.info("请选择租约!");
-        return false;
-    }
-
-    if (editDetail.dataParam.BILL_NOTICE_ITEM.length == 0) {
-        iview.Message.info("请选择账单!");
-        return false;
-    }
-    else
-    {
-        for(var i=0;i<editDetail.dataParam.BILL_NOTICE_ITEM.length;i++){
-            if (!editDetail.dataParam.BILL_NOTICE_ITEM[i].NOTICE_MONEY)
-            {
-                iview.Message.info("请录入通知金额!");
-                return false;
-            }
-        }
-    }
 
     //if (editDetail.dataParam.BILL_ADJUST_ITEM.length == 0) {
     //    iview.Message.info("请录入费用信息!");

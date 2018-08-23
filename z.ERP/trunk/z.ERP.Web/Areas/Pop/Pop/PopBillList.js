@@ -32,7 +32,6 @@ search.popInitParam = function (data) {
         search.searchParam.BRANCHID = data.BRANCHID;
         search.searchParam.MERCHANTID = data.MERCHANTID;
         search.searchParam.WFDJ = data.WFDJ;
-        search.searchParam.FTYPE = data.FTYPE;   //费用项目类型
     }
 }
 search.otherMethods = {

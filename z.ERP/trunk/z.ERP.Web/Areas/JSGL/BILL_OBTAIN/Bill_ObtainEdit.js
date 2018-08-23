@@ -11,7 +11,6 @@
     editDetail.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
 
     editDetail.screenParam.popParam = {};
-    editDetail.dataParam.BILL_OBTAIN_ITEM = [];
 
     editDetail.screenParam.colDef = [
     { title: '账单号', key: 'FINAL_BILLID', width: 100 },
@@ -92,10 +91,7 @@ editDetail.otherMethods = {
             return;
         };
         editDetail.screenParam.showPopBill = true;
-        editDetail.screenParam.popParam = {
-            MERCHANTID: editDetail.dataParam.MERCHANTID,
-            FTYPE: "1"    //保证金类型
-        };
+        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID };
     }
 }
 
@@ -104,9 +100,7 @@ editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopBill) {
         editDetail.screenParam.showPopBill = false;
         for (var i = 0; i < data.sj.length; i++) {
-            data.sj[i].FINAL_BILLID = data.sj[i].BILLID;
             editDetail.dataParam.BILL_OBTAIN_ITEM.push(data.sj[i]);
-            
         }
     }
     else if (editDetail.screenParam.showPopMerchant) {
@@ -115,7 +109,6 @@ editDetail.popCallBack = function (data) {
             editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
             editDetail.dataParam.MERCHANTNAME = data.sj[i].NAME;
         }
-        editDetail.dataParam.BILL_OBTAIN_ITEM = [];   //重新选择商户时清空账单明细
     }
 }
 
@@ -145,8 +138,8 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请选择付款方式!");
         return false;
     };
-    if (!editDetail.dataParam.NIANYUE) {
-        iview.Message.info("请选择收款年月!");
+    if (!editDetail.dataParam.YEARMONTH) {
+        iview.Message.info("请选择付款年月!");
         return false;
     };
     if (editDetail.dataParam.BILL_OBTAIN_ITEM.length == 0) {

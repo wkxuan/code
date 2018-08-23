@@ -1180,7 +1180,7 @@ editDetail.otherMethods = {
         } else {
             for (var i = 0; i < selectton.length; i++) {
                 for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
-                    if (editDetail.dataParam.CONTRACT_COST[j].INX == selectton[i].INX) {
+                    if (editDetail.dataParam.CONTRACT_COST[j].PAYID == selectton[i].PAYID) {
                         editDetail.dataParam.CONTRACT_COST.splice(j, 1);
                     }
                 }

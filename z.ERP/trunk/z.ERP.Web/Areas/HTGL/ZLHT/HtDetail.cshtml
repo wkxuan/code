@@ -140,11 +140,11 @@
        </i-col>
     </row>
     <row>
-       <i-col span="7">
+       <i-col span="8">
            <i-table height="200" size="small" :border="true"
                     :columns="colGroup" :data="CONTRACT_GROUP"></i-table>
        </i-col>
-        <i-col span="17">
+        <i-col span="16">
             <i-table height="200" size="small" :border="true"
                      :columns="colDefJskl" :data="CONTJSKL"></i-table>
         </i-col>
@@ -197,8 +197,6 @@
                 XXSL:"@contract.XXSL",
                 DESCRIPTION:" ",
 
-                FEERULE:[],
-
                 colDefPP : [
                     {title: "品牌代码", key: 'BRANDID', width: 100},
                     { title: '品牌名称', key: 'NAME', width: 200 },
@@ -216,33 +214,20 @@
                    { title: '时间段', key: 'INX', width: 80 },
                    {title: '开始日期',key: 'STARTDATE',width: 150},
                    {title: '结束日期',key: 'ENDDATE', width: 150},
-                   {title: '金额类型', key: 'DJLX', width: 150,
-                       render: function (h, params){
-                           return h('Select', {
-                               props: {
-                                   value: params.row.DJLX
-                               }
-                           },
-                               [h('Option', { props: { value: '1' } }, '日金额'),
-                                h('Option', { props: { value: '2' } }, '月金额')
-                               ])
-                       }
-                   },
-                   {title: "单价", key: 'PRICE', width: 150},
-                   {title: "租金", key: 'RENTS', width: 150 },
-                 //  {title: "保底扣点", key: 'RENTS_JSKL', width: 120},
-                   { title: "总租金", key: 'SUMRENTS', width: 150},
+                   {title: "保底(毛利or销售)", key: 'RENTS', width: 150 },
+                   {title: "保底扣点", key: 'RENTS_JSKL', width: 120},
+                   { title: "总保底(毛利or销售)", key: 'SUMRENTS', width: 150},
                 ],
                 CONTRACT_RENT:[],
                 colGroup:[
                     { title: '扣点序号', key: 'GROUPNO', width: 100 },
                     {title: "基础扣点", key: 'JSKL', width: 120},
-                    { title: "描述", key: 'DESCRIPTION', width: 100},
+                    { title: "描述", key: 'DESCRIPTION', width: 120},
                 ],
                 CONTRACT_GROUP:[],
                 colDefJskl:[
-                   { title: '扣点序号', key: 'GROUPNO', width: 80 },
-                   { title: '时间段', key: 'INX', width: 70 },
+                   { title: '扣点序号', key: 'GROUPNO', width: 90 },
+                   { title: '时间段', key: 'INX', width: 80 },
                    { title: '开始日期', key: 'STARTDATE', width: 150 },
                    { title: '结束日期', key: 'ENDDATE', width: 150},
                    { title: '起始金额', key: 'SALES_START',width:120},
@@ -289,31 +274,12 @@
 
 
                 colDefCOST:[
-                  { title: '序号', key: 'INX', width: 70 },
-                  {title: "费用项目", key: 'TERMID', width: 100},
+                  { title: '序号', key: 'INX', width: 100 },
                   { title: "费用项目名称", key: 'NAME', width: 120 },
                   { title: '开始日期', key: 'STARTDATE',width: 150 },
                   {title: '结束日期',key: 'ENDDATE',width: 150 },
                   {title: '收费方式', key: 'SFFSMC', width: 150 },
-                  { title: "单价", key: 'PRICE', width: 100},
                   {title: "金额", key: 'COST', width: 120 },
-                  { title: "比例", key: 'KL', width: 100},
-                  {title: '收费规则', key: 'FEERULENAME', width: 150},
-                  {title: '生成日期是否和租金保持一致', key: 'IF_RENT_FEERULE', width: 150,
-                  render: function (h, params) {
-                      return h('Select',
-                          {
-                              props: {
-                                  value: params.row.IF_RENT_FEERULE
-                              }
-                          },
-                      [
-                          h('Option', { props: { value: 1 } }, '是'),
-                          h('Option', { props: { value: 2 } }, '否')
-                      ]
-                      )
-                  }
-                  }
                 ],
                 CONTRACT_COST:[],
                 colDefPAY:[
