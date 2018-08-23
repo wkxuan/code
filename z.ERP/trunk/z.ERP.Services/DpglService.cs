@@ -143,7 +143,6 @@ namespace z.ERP.Services
                 SaveData.ASSETCHANGEITEM2?.ForEach(newasset =>
                {
                    GetVerify(newasset).Require(a => a.ASSETID);
-                   GetVerify(newasset).Require(a => a.AREA_RENTABLE_NEW);
                });
                 DbHelper.Save(SaveData);
 
