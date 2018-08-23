@@ -30,6 +30,8 @@ namespace z.ERP.Services
             item.HasKey("PIZ", a => sql += $" and B.PIZ = '{a}'");
             item.HasKey("QQ", a => sql += $" and B.QQ = '{a}'");
             item.HasKey("WEIXIN", a => sql += $" and B.WEIXIN = '{a}'");
+            item.HasKey("CONTRACTID", a => sql += $" and EXISTS(SELECT 1 FROM CONTRACT_BRAND D WHERE D.BRANDID=B.ID AND D.CONTRACTID={a})");
+            item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM MERCHANT_BRAND D WHERE D.BRANDID=B.ID AND D.MERCHANTID={a})");
 
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

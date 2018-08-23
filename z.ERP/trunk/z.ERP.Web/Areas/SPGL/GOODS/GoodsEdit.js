@@ -107,7 +107,7 @@ editDetail.otherMethods = {
     },    
     SelJsklGroup: function () {
         if (!editDetail.dataParam.CONTRACTID) {
-            iview.Message.info("请选择租约!");
+            iview.Message.info("请先选择租约!");
             return;
         };
         editDetail.screenParam.showPopJsklGroup = true;
@@ -117,7 +117,13 @@ editDetail.otherMethods = {
         editDetail.screenParam.showPopContract = true;
     },
     SelBrand: function () {
+        if (!editDetail.dataParam.CONTRACTID) {
+            iview.Message.info("请先选择租约!");
+            return;
+        };
+
         editDetail.screenParam.showPopBrand = true;
+        editDetail.screenParam.popParam = { CONTRACTID: editDetail.dataParam.CONTRACTID };
     },
     Getpym: function () {
         editDetail.dataParam.PYM = editDetail.dataParam.NAME.toPYM().substr(0,6);

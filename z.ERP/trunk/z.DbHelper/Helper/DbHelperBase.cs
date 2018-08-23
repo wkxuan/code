@@ -683,6 +683,15 @@ namespace z.DBHelper.Helper
 
         void RunSql(Action<DbCommand> comm)
         {
+            Action Done = () =>
+            {
+                if (this._dbConnection.State != ConnectionState.Closed)
+                {
+                    this._dbConnection.Close();
+                }
+                this._dbConnection.Dispose();
+                this._dbConnection = null;
+            };
             DbCommand _dbCommand = null;
             try
             {
@@ -696,16 +705,14 @@ namespace z.DBHelper.Helper
                 _dbCommand.Dispose();
                 if (!HasTransaction())
                 {
-                    if (this._dbConnection.State != ConnectionState.Closed)
-                    {
-                        this._dbConnection.Close();
-                    }
-                    this._dbConnection.Dispose();
-                    this._dbConnection = null;
+                    Done();
                 }
             }
             catch (Exception ex)
             {
+                Done();
+                //if (ex.InnerMessage().Equals("池式连接请求超时"))
+                //    throw new FailException("池式连接请求超时");
                 string sql = _dbCommand?.CommandText;
                 object obj = _dbCommand?.Parameters;
                 if (sql.IsEmpty())

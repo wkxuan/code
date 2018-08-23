@@ -37,24 +37,48 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            租约号
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelMerchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTID"
+                });
+            }
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTNAME"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelContract",
+                    Text = "租约",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "searchParam.CONTRACTID"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            商户
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTID"
                 });
             }
         </i-col>
@@ -73,13 +97,21 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            登记人
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelSysuser",
+                    Text = "登记人",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.REPORTER"
+                    vModel = "searchParam.REPORTERNAME"
                 });
             }
         </i-col>
@@ -108,13 +140,21 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            审核人
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelSysuser_sh",
+                    Text = "审核人",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.VERIFY"
+                    vModel = "searchParam.VERIFYNAME"
                 });
             }
         </i-col>
@@ -141,4 +181,49 @@
             }
         </i-col>
     </row>
+}
+
+
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopMerchant",
+                    Caption = "选择商户",
+                    Width = "900",
+                    Src = "screenParam.srcPopMerchant"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopSysuser",
+                    Src = "screenParam.srcPopSysuser",
+                    Caption = "选择人员",
+                    Width = "800"
+                });
+            }
+        </i-col>
+    </row>
+     <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopContract",
+                    Caption = "选择租约",
+                    Width = "900",
+                    Src = "screenParam.srcPopContract"
+                });
+            }
+        </i-col>
+    </row>
+
 }

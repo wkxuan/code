@@ -9,3 +9,10 @@
 }
 
 
+//获取父页面参数
+search.popInitParam = function (data) {
+    if (data) {
+        search.searchParam.MERCHANTID = data.MERCHANTID;
+        search.searchParam.CONTRACTID = data.CONTRACTID;
+    }
+}

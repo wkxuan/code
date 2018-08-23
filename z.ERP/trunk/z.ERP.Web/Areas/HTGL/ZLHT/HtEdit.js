@@ -548,7 +548,7 @@
             },
         },
         {
-            title: "金额", key: 'COST', width: 150,
+            title: "金额", key: 'COST', width: 120,
             render: function (h, params) {
                 return h('Input', {
                     props: {
@@ -750,7 +750,13 @@ editDetail.otherMethods = {
     },
     //点击品牌弹窗
     srchColPP: function () {
+        if (!editDetail.dataParam.MERCHANTID) {
+            iview.Message.info("请先选择商户!");
+            return false;
+        }
+
         Vue.set(editDetail.screenParam, "PopBrand", true);
+        editDetail.screenParam.ParentBrand = { MERCHANTID: editDetail.dataParam.MERCHANTID };
     },
     //返回品牌弹窗
     BrandBack: function (val) {
@@ -1191,7 +1197,7 @@ editDetail.otherMethods = {
         } else {
             for (var i = 0; i < selectton.length; i++) {
                 for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
-                    if (editDetail.dataParam.CONTRACT_COST[j].PAYID == selectton[i].PAYID) {
+                    if (editDetail.dataParam.CONTRACT_COST[j].INX == selectton[i].INX) {
                         editDetail.dataParam.CONTRACT_COST.splice(j, 1);
                     }
                 }
@@ -1350,7 +1356,15 @@ editDetail.IsValidSave = function () {
     if (editDetail.dataParam.CONTRACT_COST.length != 0) {
         for (var i = 0; i < editDetail.dataParam.CONTRACT_COST.length; i++) {
             if (!editDetail.dataParam.CONTRACT_COST[i].SFFS) {
-                iview.Message.info("请确定每月收费项目中的收费方式!");
+                iview.Message.info("请选择收费项目中的收费方式!");
+                return false;
+            };
+            if (!editDetail.dataParam.CONTRACT_COST[i].FEERULEID) {
+                iview.Message.info("请选择收费项目中的收费规则!");
+                return false;
+            };
+            if (!editDetail.dataParam.CONTRACT_COST[i].IF_RENT_FEERULE) {
+                iview.Message.info("请确定收费项目中的'生成日期是否和租金保持一致!");
                 return false;
             };
 

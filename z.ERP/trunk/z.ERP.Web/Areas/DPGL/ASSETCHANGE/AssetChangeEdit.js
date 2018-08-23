@@ -15,6 +15,7 @@
     editDetail.screenParam.showPopShop = false;
     editDetail.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
     editDetail.screenParam.popParam = {};
+    editDetail.dataParam.ASSETCHANGEITEM = [];
 
 
     editDetail.screenParam.colDef = [
