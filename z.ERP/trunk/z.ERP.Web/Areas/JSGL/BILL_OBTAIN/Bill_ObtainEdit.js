@@ -84,7 +84,12 @@ editDetail.showOne = function (data, callback) {
 ///html中绑定方法
 editDetail.otherMethods = {
     SelMerchant: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info("请选择分店!");
+            return;
+        }
         editDetail.screenParam.showPopMerchant = true;
+        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
     },
     SelBill: function () {
         if (!editDetail.dataParam.MERCHANTID) {
@@ -93,6 +98,7 @@ editDetail.otherMethods = {
         };
         editDetail.screenParam.showPopBill = true;
         editDetail.screenParam.popParam = {
+            BRANCHID: editDetail.dataParam.BRANCHID,
             MERCHANTID: editDetail.dataParam.MERCHANTID,
             FTYPE: "1"    //保证金类型
         };

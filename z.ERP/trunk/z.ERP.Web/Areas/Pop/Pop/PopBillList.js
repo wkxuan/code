@@ -1,8 +1,9 @@
 ﻿search.beforeVue = function () {
     var col = [
-        { title: "单据编号", key: "BILLID", width: 100 },
-        { title: "分店编号", key: "BRANCHID", width: 100 },
-        { title: "分店名称", key: "BRANCHNAME", width: 200 },
+        { title: "账单号", key: "BILLID", width: 75 },
+        { title: "分店编号", key: "BRANCHID", width: 90 },
+        { title: "分店名称", key: "BRANCHNAME", width: 150 },
+        { title: "租约号", key: "CONTRACTID", width: 80 },
         { title: "债权发生月", key: "NIANYUE", width: 100 },
         { title: "收付实现月", key: "YEARMONTH", width: 100 },
         { title: '应收金额', key: 'MUST_MONEY', width: 100 },
@@ -31,8 +32,10 @@ search.popInitParam = function (data) {
     {
         search.searchParam.BRANCHID = data.BRANCHID;
         search.searchParam.MERCHANTID = data.MERCHANTID;
+        search.searchParam.CONTRACTID = data.CONTRACTID;
         search.searchParam.WFDJ = data.WFDJ;
         search.searchParam.FTYPE = data.FTYPE;   //费用项目类型
+        search.searchParam.RRETURNFLAG = data.RRETURNFLAG;
     }
 }
 search.otherMethods = {

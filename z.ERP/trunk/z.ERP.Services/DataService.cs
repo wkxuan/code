@@ -185,10 +185,11 @@ namespace z.ERP.Services
                 + " ,A.REPORTER_NAME,A.REPORTER_TIME,F.NAME TERMMC,A.MUST_MONEY - A.RECEIVE_MONEY UNPAID_MONEY"
                 + " FROM BILL A,BRANCH B,FEESUBJECT F " +
                 "  WHERE  A.BRANCHID=B.ID  and A.TERMID =F.TRIMID";
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
             item.HasKey("BILLID", a => sql += $" and A.BILLID = '{a}'");
-            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID = '{a}'");
-            item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
-            item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID = {a}");
+            item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = {a}");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS = {a}");
             item.HasKey("TYPE", a => sql += $" and A.TYPE = '{a}'");
             item.HasKey("NIANYUE", a => sql += $" and A.NIANYUE = '{a}'");
             item.HasKey("YEARMONTH", a => sql += $" and A.YEARMONTH = '{a}'");
@@ -197,6 +198,8 @@ namespace z.ERP.Services
             item.HasKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
             item.HasKey("WFDJ", a => sql += $" and A.MUST_MONEY - A.RECEIVE_MONEY<>0");
             item.HasKey("FTYPE",a => sql += $" and F.TYPE = {a}");    //费用项目类型
+            item.HasKey("RRETURNFLAG", a => sql += $" and A.RECEIVE_MONEY <> 0");
+            
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
