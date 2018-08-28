@@ -57,6 +57,7 @@
     <Compile Include="SpglService.cs" />
     <Compile Include="TestServiceOverride.cs" />
     <Compile Include="TestService.cs" />
+    <Compile Include="WriteDataService.cs" />
     <Compile Include="WyglService.cs" />
     <Compile Include="XtglService.cs" />
   </ItemGroup>

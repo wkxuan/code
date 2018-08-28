@@ -208,6 +208,7 @@
     <Compile Include="Areas\XTGL\FEERULE\FeeRuleController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
+    <Compile Include="Areas\XTGL\RCL\RCLController.cs" />
     <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
     <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
     <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
@@ -286,6 +287,7 @@
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
+    <Content Include="Areas\XTGL\RCL\RCL.js" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.js" />
     <Content Include="Areas\XTGL\ROLE\RoleList.js" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.js" />
@@ -468,6 +470,7 @@
     <Content Include="Areas\HTGL\FREESHOP\FreeShopDetail.cshtml" />
     <Content Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkPrint.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_Print.cshtml" />
+    <Content Include="Areas\XTGL\RCL\RCL.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

@@ -43,6 +43,8 @@
     <Compile Include="Auto\FREESHOPEntity.cs" />
     <Compile Include="Auto\FREESHOPITEMEntity.cs" />
     <Compile Include="Auto\MENUTREEEntity.cs" />
+    <Compile Include="Auto\RCL_HOSTEntity.cs" />
+    <Compile Include="Auto\WRITEDATAEntity.cs" />
     <Compile Include="Auto\PLATFORMEntity.cs" />
     <Compile Include="Auto\SYSUSEREntity.cs" />
     <Compile Include="BILL_NOTICEEntity.cs" />

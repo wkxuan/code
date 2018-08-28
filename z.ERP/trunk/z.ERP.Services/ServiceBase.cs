@@ -154,6 +154,14 @@ namespace z.ERP.Services
                 return ioc.Create<PosService>();
             }
         }
+
+        public WriteDataService WriteDataService
+        {
+            get
+            {
+                return ioc.Create<WriteDataService>();
+            }
+        }
         #endregion
 
         #region 通用方法
