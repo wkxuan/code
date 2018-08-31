@@ -12,6 +12,8 @@ editDetail.beforeVue = function () {
     editDetail.screenParam.showPopShop = false;
     editDetail.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
     editDetail.screenParam.popParam = {};
+    editDetail.dataParam.ASSETCHANGEITEM = [];
+    editDetail.dataParam.ASSETCHANGEITEM2 = [];
 
     editDetail.screenParam.colDef = [
     //{
@@ -210,6 +212,11 @@ editDetail.beforeVue = function () {
     }
 
     editDetail.screenParam.addCol2 = function () {
+        if (!itemCurRow)
+        {
+                iview.Message.info("请选择单元!");
+                return;
+        }
         var temp = editDetail.dataParam.ASSETCHANGEITEM2 || [];
         temp.push({});
         editDetail.dataParam.ASSETCHANGEITEM2 = temp;
@@ -274,7 +281,14 @@ editDetail.otherMethods = {
         }
         else {
             for (inx in editDetail.dataParam.ASSETCHANGEITEM2)
-            { tempItem2.push(editDetail.dataParam.ASSETCHANGEITEM2[inx]); }
+            {
+                if ((tempItem2.length === 0)|| (tempItem2.length > 0  && tempItem2.filter(function (item) {
+              return item.ASSETCODE_NEW === editDetail.dataParam.ASSETCHANGEITEM2[inx].ASSETCODE_NEW;
+                }).length === 0))
+                {
+                    tempItem2.push(editDetail.dataParam.ASSETCHANGEITEM2[inx]);
+                }
+            }
         }
         filterdata = tempItem2.filter(function (row2) {
             return parseInt(row2.ASSETID) === curRow.ASSETID;
@@ -292,13 +306,19 @@ editDetail.otherMethods = {
 editDetail.popCallBack = function (data) {
     editDetail.screenParam.showPopShop = false;
     for (var i = 0; i < data.sj.length; i++) {
-        var shop = {};
-        shop.ASSETID = data.sj[i].SHOPID;
-        shop.CODE = data.sj[i].SHOPCODE;
-        shop.AREA_BUILD_OLD = data.sj[i].AREA_BUILD;
-        shop.AREA_USABLE_OLD = data.sj[i].AREA_USABLE;
-        shop.AREA_RENTABLE_OLD = data.sj[i].AREA_RENTABLE;
-        editDetail.dataParam.ASSETCHANGEITEM.push(shop);
+        if ((editDetail.dataParam.ASSETCHANGEITEM.length === 0)
+              || (editDetail.dataParam.ASSETCHANGEITEM.length > 0
+              && editDetail.dataParam.ASSETCHANGEITEM.filter(function (item) {
+              return parseInt(item.ASSETID) === data.sj[i].SHOPID;
+        }).length === 0)) {
+            var shop = {};
+            shop.ASSETID = data.sj[i].SHOPID;
+            shop.CODE = data.sj[i].SHOPCODE;
+            shop.AREA_BUILD_OLD = data.sj[i].AREA_BUILD;
+            shop.AREA_USABLE_OLD = data.sj[i].AREA_USABLE;
+            shop.AREA_RENTABLE_OLD = data.sj[i].AREA_RENTABLE;
+            editDetail.dataParam.ASSETCHANGEITEM.push(shop);
+        }
     };
 };
 

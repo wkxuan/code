@@ -152,7 +152,7 @@ editDetail.otherMethods = {
             return;
         } else {
             editDetail.screenParam.showPopShop = true;
-            editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID,STATUS:"2" };
+            editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, STATUS: "2" };
         }
     }
 }
@@ -172,15 +172,22 @@ editDetail.showOne = function (data, callback) {
 //接收子页面返回值
 editDetail.popCallBack = function (data) {
     editDetail.screenParam.showPopShop = false;
+
+    //接收选中的数据
     for (var i = 0; i < data.sj.length; i++) {
-        var shop = {};
-        shop.ASSETID = data.sj[i].SHOPID;
-        shop.CODE = data.sj[i].SHOPCODE;
-        shop.AREA_BUILD_OLD = data.sj[i].AREA_BUILD;
-        shop.AREA_USABLE_OLD = data.sj[i].AREA_USABLE;
-        shop.AREA_RENTABLE_OLD = data.sj[i].AREA_RENTABLE;
-        editDetail.dataParam.ASSETCHANGEITEM.push(shop);
-    };
+        if ((editDetail.dataParam.ASSETCHANGEITEM.length === 0)
+            || (editDetail.dataParam.ASSETCHANGEITEM.length > 0
+            && editDetail.dataParam.ASSETCHANGEITEM.filter(function (item) {
+            return parseInt(item.ASSETID) === data.sj[i].SHOPID;
+        }).length === 0))
+            editDetail.dataParam.ASSETCHANGEITEM.push({
+                ASSETID: data.sj[i].SHOPID,
+                CODE: data.sj[i].SHOPCODE,
+                AREA_BUILD_OLD: data.sj[i].AREA_BUILD,
+                AREA_USABLE_OLD: data.sj[i].AREA_USABLE,
+                AREA_RENTABLE_OLD: data.sj[i].AREA_RENTABLE
+            });
+    }
 };
 
 
@@ -207,6 +214,11 @@ editDetail.IsValidSave = function () {
                 iview.Message.info("请选择单元!");
                 return false;
             };
+
+            if (!editDetail.dataParam.ASSETCHANGEITEM[i].AREA_RENTABLE_NEW) {
+                iview.Message.info("请输入新租赁面积!");
+                return false;
+            }
         };
     };
 
