@@ -56,6 +56,15 @@
     <Compile Include="Procedures\EXEC_ASSET_SPILT.cs" />
     <Compile Include="Procedures\EXEC_ASSET_CHANGE.cs" />
     <Compile Include="Procedures\Exec_BILL_OBTAIN.cs" />
+    <Compile Include="Procedures\WRITE_BILL_NOTICE.cs" />
+    <Compile Include="Procedures\WRITE_CONTRACT_UPDATE.cs" />
+    <Compile Include="Procedures\WRITE_BILLFROMSALE.cs" />
+    <Compile Include="Procedures\WRITE_BILL.cs" />
+    <Compile Include="Procedures\WRITE_HIS_SALE.cs" />
+    <Compile Include="Procedures\WRITE_CONTRACT_PAY_RATE.cs" />
+    <Compile Include="Procedures\WRITE_CONTRACT_SUMMARY.cs" />
+    <Compile Include="Procedures\WRITE_GOODS_SUMMARY.cs" />
+    <Compile Include="Procedures\UPDATE_SALE_GOODS_RATE.cs" />
     <Compile Include="Procedures\EXEC_CONTRACT_UPDATE.cs" />
     <Compile Include="Procedures\EXEC_CONTRACT.cs" />
     <Compile Include="Procedures\ProTest.cs" />

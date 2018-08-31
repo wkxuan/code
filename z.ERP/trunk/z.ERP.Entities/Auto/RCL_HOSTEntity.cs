@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("RCL_HOSTEntity", "日结表为了互斥")]
+    [DbTable("RCL_HOST", "日结表为了互斥")]
     public partial class RCL_HOSTEntity : TableEntityBase
     {
         public RCL_HOSTEntity()

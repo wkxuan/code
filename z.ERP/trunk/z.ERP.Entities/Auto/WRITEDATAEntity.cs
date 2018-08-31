@@ -11,7 +11,7 @@ using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("WRITEDATAEntity", "日结表")]
+    [DbTable("WRITEDATA", "日结表")]
     public partial class WRITEDATAEntity : TableEntityBase
     {
         public WRITEDATAEntity()
@@ -33,6 +33,12 @@ namespace z.ERP.Entities
 
         [Field("状态")]
         public string STATUS
+        {
+            get; set;
+        }
+
+        [Field("分店")]
+        public string BRANCHID
         {
             get; set;
         }
