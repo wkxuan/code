@@ -11,8 +11,9 @@ namespace z.ERP.Entities.Procedures
     [DbProcedure("UPDATE_SALE_GOODS_RATE")]
     public class UPDATE_SALE_GOODS_RATE : ProcedureEntityBase
     {
+        [DbType(DbType.DateTime)]
         [ProcedureField("in_RQ")]
-        public string in_RQ
+        public DateTime in_RQ
         {
             get;
             set;

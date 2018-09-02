@@ -80,7 +80,7 @@ namespace z.ERP.Services
                                 {
                                     UPDATE_SALE_GOODS_RATE update_sale_goods_rate = new UPDATE_SALE_GOODS_RATE()
                                     {
-                                        in_RQ = WRITEDATA.RQ,
+                                        in_RQ = WRITEDATA.RQ.ToDateTime(),
                                         in_BRANCHID = fd.ID
                                     };
                                     DbHelper.ExecuteProcedure(update_sale_goods_rate);
