@@ -11,8 +11,9 @@ namespace z.ERP.Entities.Procedures
     [DbProcedure("WRITE_CONTRACT_SUMMARY")]
     public class WRITE_CONTRACT_SUMMARY : ProcedureEntityBase
     {
+        [DbType(DbType.DateTime)]
         [ProcedureField("in_RQ")]
-        public string in_RQ
+        public DateTime in_RQ
         {
             get;
             set;

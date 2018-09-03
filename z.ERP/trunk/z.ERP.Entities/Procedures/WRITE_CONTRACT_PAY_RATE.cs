@@ -11,8 +11,10 @@ namespace z.ERP.Entities.Procedures
     [DbProcedure("WRITE_CONTRACT_PAY_RATE")]
     public class WRITE_CONTRACT_PAY_RATE : ProcedureEntityBase
     {
+        [DbType(DbType.DateTime)]
+
         [ProcedureField("in_RQ")]
-        public string in_RQ
+        public DateTime in_RQ
         {
             get;
             set;

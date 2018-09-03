@@ -11,9 +11,10 @@ namespace z.ERP.Entities.Procedures
     [DbProcedure("WRITE_HIS_SALE")]
     public class WRITE_HIS_SALE : ProcedureEntityBase
     {
+        [DbType(DbType.DateTime)]
 
         [ProcedureField("in_RQ")]
-        public string in_RQ
+        public DateTime in_RQ
         {
             get;
             set;

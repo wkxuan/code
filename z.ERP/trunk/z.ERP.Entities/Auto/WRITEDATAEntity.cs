@@ -26,6 +26,7 @@ namespace z.ERP.Entities
  
         [PrimaryKey]
         [Field("日期")]
+        [DbType(DbType.DateTime)]
         public string RQ
         {
             get; set;
