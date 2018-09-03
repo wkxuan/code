@@ -21,6 +21,9 @@ namespace z.ERP.Services
 
         public void CanRcl(WRITEDATAEntity WRITEDATA)
         {
+            if (employee.Id.ToInt() < 0) {
+                throw new LogicException($"请用操作员登陆做日处理!");
+            }
             //1:判断表里面有记录就提示不让在做日处理          
             var sql = " SELECT 1 FROM RCL_HOST";
             DataTable dt = DbHelper.ExecuteTable(sql);
