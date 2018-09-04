@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using z.Context;
 using z.DbHelper.DbDomain;
 using z.DBHelper.Helper;
 using z.ERP.Entities;
 using z.Extensions;
-using z.IOC.RealProxyIOC;
 using z.IOC.Simple;
 using z.LogFactory;
 using z.SSO;

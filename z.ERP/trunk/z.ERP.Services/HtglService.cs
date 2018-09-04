@@ -59,10 +59,28 @@ namespace z.ERP.Services
                     }
                 }
             }
-
-            if (SaveData.CONTRACTID.IsEmpty())
+            if (SaveData.CONTRACT_OLD.IsEmpty())
             {
-                SaveData.CONTRACTID = NewINC("CONTRACT");
+                SaveData.HTLX = ((int)合同类型.原始合同).ToString();
+            }
+            else
+            {
+                SaveData.HTLX = ((int)合同类型.变更合同).ToString();
+            }
+
+            if (SaveData.CONTRACTID.IsEmpty())    // 合同号规则:核算方式(1租赁2联营)+门店(2位)+5位流水  变更合同 9开头
+            {
+                string tblname;
+                int leadCode;
+                if (SaveData.HTLX == "1")
+                    leadCode =  (SaveData.STYLE + SaveData.BRANCHID.PadLeft(2, '0')).ToInt() ;
+                else
+                    leadCode = ("9" + SaveData.BRANCHID.PadLeft(2, '0')).ToInt();
+
+                tblname = "CONTRACT_" + leadCode.ToString();
+
+
+                SaveData.CONTRACTID = (NewINC(tblname).ToInt()+ leadCode * 100000).ToString();
                 SaveData.STATUS = ((int)合同状态.未审核).ToString();
             }
             else
@@ -77,14 +95,7 @@ namespace z.ERP.Services
                 SaveData.VERIFY_NAME = con.VERIFY_NAME;
                 SaveData.VERIFY_TIME = con.VERIFY_TIME;
             }
-            if (SaveData.CONTRACT_OLD.IsEmpty())
-            {
-                SaveData.HTLX = ((int)合同类型.原始合同).ToString();
-            }
-            else
-            {
-                SaveData.HTLX = ((int)合同类型.变更合同).ToString();
-            }
+
 
             SaveData.QZRQ = SaveData.CONT_START;
 
