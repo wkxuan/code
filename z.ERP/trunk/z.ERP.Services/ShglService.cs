@@ -71,7 +71,7 @@ namespace z.ERP.Services
             var v = GetVerify(SaveData);
             if (SaveData.MERCHANTID.IsEmpty())
             {
-                SaveData.MERCHANTID = NewINC("MERCHANT");
+                SaveData.MERCHANTID = NewINC("MERCHANT").PadLeft(6,'0');  //暂定6位
                 SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
             }
             else
