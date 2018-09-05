@@ -12,7 +12,6 @@
         { title: '录入时间', key :'REPORTER_TIME',width:100},
         { title: "分店代码", key: 'BRANCHID', width: 90 },
         { title: '分店名称', key: 'NAME', width: 100 },
-        { title: '描述', key: 'DESCRIPTION', width: 200 },
         {
             title: '变更', key: 'action', width: 80,
             align: 'center', fixed: 'right',
