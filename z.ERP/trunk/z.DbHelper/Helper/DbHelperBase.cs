@@ -146,26 +146,27 @@ namespace z.DBHelper.Helper
         #endregion
         #region 数据操作
         #region 查表
-        public DataTable ExecuteTable(string sql)
+        public DataTable ExecuteTable(string sql, params DbParameter[] parameters)
         {
-            return ExecuteTable(sql, 0, 0);
+            return ExecuteTable(sql, 0, 0, parameters);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, params DbParameter[] parameters)
         {
-            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex);
+            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, parameters);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, params DbParameter[] parameters)
         {
-            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount);
+            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount, parameters);
         }
 
-        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex)
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, params DbParameter[] parameters)
         {
             DataTable dt = new DataTable();
             RunSql(_dbCommand =>
             {
+                _dbCommand.Parameters.AddRange(parameters);
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
                 lock (ObjectExtension.Locker)
                 {
@@ -178,10 +179,10 @@ namespace z.DBHelper.Helper
             return dt;
         }
 
-        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount)
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount, params DbParameter[] parameters)
         {
             int outall = 0;
-            DataTable dt = ExecuteTable(sql, pageSize, pageIndex);
+            DataTable dt = ExecuteTable(sql, pageSize, pageIndex, parameters);
             RunSql(_dbCommand =>
             {
                 _dbCommand.CommandText = GetCountSql(sql);
@@ -206,31 +207,32 @@ namespace z.DBHelper.Helper
         }
         #endregion
         #region 查对象
-        public T ExecuteOneObject<T>(string sql) where T : new()
+        public T ExecuteOneObject<T>(string sql, params DbParameter[] parameters) where T : new()
         {
-            return ExecuteObject<T>(sql, 0, 0).FirstOrDefault();
+            return ExecuteObject<T>(sql, 0, 0, parameters).FirstOrDefault();
         }
 
-        public List<T> ExecuteObject<T>(string sql) where T : new()
+        public List<T> ExecuteObject<T>(string sql, params DbParameter[] parameters) where T : new()
         {
-            return ExecuteObject<T>(sql, 0, 0);
+            return ExecuteObject<T>(sql, 0, 0, parameters);
         }
 
-        public List<T> ExecuteObject<T>(string sql, PageInfo pageinfo) where T : new()
+        public List<T> ExecuteObject<T>(string sql, PageInfo pageinfo, params DbParameter[] parameters) where T : new()
         {
-            return ExecuteObject<T>(sql, pageinfo.PageSize, pageinfo.PageIndex);
+            return ExecuteObject<T>(sql, pageinfo.PageSize, pageinfo.PageIndex, parameters);
         }
 
-        public List<T> ExecuteObject<T>(string sql, PageInfo pageinfo, out int allCount) where T : new()
+        public List<T> ExecuteObject<T>(string sql, PageInfo pageinfo, out int allCount, params DbParameter[] parameters) where T : new()
         {
-            return ExecuteObject<T>(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount);
+            return ExecuteObject<T>(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount, parameters);
         }
 
-        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex) where T : new()
+        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, params DbParameter[] parameters) where T : new()
         {
             List<T> list = new List<T>();
             RunSql(_dbCommand =>
             {
+                _dbCommand.Parameters.AddRange(parameters);
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
                 lock (ObjectExtension.Locker)
                 {
@@ -243,10 +245,10 @@ namespace z.DBHelper.Helper
             return list;
         }
 
-        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, out int allCount) where T : new()
+        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, out int allCount, params DbParameter[] parameters) where T : new()
         {
             int resall = 0;
-            List<T> list = ExecuteObject<T>(sql, pageSize, pageIndex);
+            List<T> list = ExecuteObject<T>(sql, pageSize, pageIndex, parameters);
             RunSql(_dbCommand =>
             {
                 _dbCommand.CommandText = GetCountSql(sql);

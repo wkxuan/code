@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ORACLE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ORACLE SqlServer</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <DocumentationFile>bin\Debug\z.DBHelper.xml</DocumentationFile>
@@ -56,6 +56,7 @@
     <Compile Include="Connection\IConnection.cs" />
     <Compile Include="Connection\OracleConnection.cs" />
     <Compile Include="Connection\MysqlConnection.cs" />
+    <Compile Include="Connection\SqlServerDbConnection.cs" />
     <Compile Include="Connection\SybaseConnection.cs" />
     <Compile Include="Connection\SqliteConnection.cs" />
     <Compile Include="DbDomain\DbProcedureAttribute.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Helper\DbHelperBase.cs" />
     <Compile Include="Helper\OracleDbHelper.cs" />
     <Compile Include="Helper\MysqlDbHelper.cs" />
+    <Compile Include="Helper\SqlServerDbHelper.cs" />
     <Compile Include="Helper\SybaseDbHelper.cs" />
     <Compile Include="Helper\sqliteDbHelper.cs" />
     <Compile Include="Info\MergeInfo.cs" />

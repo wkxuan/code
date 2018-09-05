@@ -1,12 +1,12 @@
-﻿#if ORACLE
-using Oracle.ManagedDataAccess.Client;
+﻿#if SqlServer
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Reflection;
 using System.Text;
-using z;
 using z.DbHelper.DbDomain;
 using z.DBHelper.Connection;
 using z.DBHelper.Info;
@@ -15,14 +15,13 @@ using z.Extensions;
 
 namespace z.DBHelper.Helper
 {
-    public class OracleDbHelper : DbHelperBase
+    public class SqlServerDbHelper : DbHelperBase
     {
-        #region 构造
         /// <summary>
         /// 使用链接类初始化oracle的链接
         /// </summary>
         /// <param name="Connection"></param>
-        public OracleDbHelper(OracleDbConnection Connection)
+        public SqlServerDbHelper(SqlServerDbConnection Connection)
             : base(Connection)
         {
 
@@ -32,23 +31,26 @@ namespace z.DBHelper.Helper
         /// 使用链接字符串初始化oracle的链接
         /// </summary>
         /// <param name="Connection"></param>
-        public OracleDbHelper(string Connection)
+        public SqlServerDbHelper(string Connection)
             : base(Connection)
         {
 
         }
-        #endregion
-        #region sql方法
+
         public override string GetMergerSql(MergeInfo info)
         {
+            if (info.Pk == null || info.Pk.Count == 0)
+            {
+                throw new DataBaseException("Merger方法不能没有主键", info.ToJson());
+            }
             bool needinsert = info.InsertPram != null && info.InsertPram.Count != 0;
             bool needupdate = info.UpdatePram != null && info.UpdatePram.Count != 0;
             if (!needinsert && !needupdate)
             {
-                throw new DataBaseException("Merger方法的insert和update参数不能同时为空");
+                throw new DataBaseException("Merger方法的insert和update参数不能同时为空", info.ToJson());
             }
             string mainsql = @"  merge into {0} a
-                            using (select {1} from dual) b
+                            using (select {1}) b
                             on (1 = 1 {2})";
             string sql0 = info.TableName;
             List<string> sql1list = new List<string>();
@@ -117,32 +119,41 @@ namespace z.DBHelper.Helper
                                             );
                 mainsql += insertsql;
             }
-            return mainsql;
+            return mainsql + ";";
         }
-
         string SetValueToStr(MergePramInfo info)
         {
             if (info.Type == typeof(string))
             {
-                return "'" + info.Value.Replace("'", "''") + "'";
+                return "'" + info.Value?.Replace("'", "''") + "'";
             }
             else if (info.Type == typeof(DateTime))
             {
-                return "to_date('" + info.Value + "','yyyy-mm-dd hh24:mi:ss')";
+                return "( SELECT CASE ISDATE('" + info.Value + "') WHEN 1 THEN cast('" + info.Value + "' as DATETIME) ELSE cast('1900-1-1' as DATETIME) END )";
             }
             else
             {
-                return "'" + info.Value.Replace("'", "''") + "'";
+                return "'" + info.Value?.Replace("'", "''") + "'";
             }
+        }
+
+        protected override string GetCountSql(string sql)
+        {
+            return string.Format("select count(1) from({0})", sql);
+        }
+
+        protected override DbConnection GetDbConnection(string _dbConnectionInfoStr)
+        {
+            return new SqlConnection(_dbConnectionInfoStr);
         }
 
         protected override IDbDataParameter GetDbDataParameter(PropertyInfo p, EntityBase info)
         {
-            OracleParameter resp;
+            SqlParameter resp;
             DbTypeAttribute dba = p.GetAttribute<DbTypeAttribute>();
             if (dba == null)
             {
-                resp = new OracleParameter(p.Name, OracleDbType.Varchar2);
+                resp = new SqlParameter(p.Name, SqlDbType.VarChar);
                 resp.Value = p.GetValue(info, null);
             }
             else
@@ -155,7 +166,7 @@ namespace z.DBHelper.Helper
                     case DbType.DateTime2:
                     case DbType.DateTimeOffset:
                         {
-                            resp = new OracleParameter(p.Name, OracleDbType.Date);
+                            resp = new SqlParameter(p.Name, SqlDbType.Date);
                             string value = p.GetValue(info, null)?.ToString();
                             if (value == null || string.IsNullOrEmpty(value.ToString()))
                             {
@@ -175,14 +186,14 @@ namespace z.DBHelper.Helper
                     case DbType.UInt64:
                     case DbType.Byte:
                         {
-                            resp = new OracleParameter(p.Name, OracleDbType.Int64);
+                            resp = new SqlParameter(p.Name, SqlDbType.Int);
                             resp.Value = p.GetValue(info, null);
                             break;
                         }
                     case DbType.Decimal:
                     case DbType.Double:
                         {
-                            resp = new OracleParameter(p.Name, OracleDbType.Double);
+                            resp = new SqlParameter(p.Name, SqlDbType.Decimal);
                             resp.Value = p.GetValue(info, null);
                             break;
                         }
@@ -193,6 +204,11 @@ namespace z.DBHelper.Helper
                 }
             }
             return resp;
+        }
+
+        protected override string GetPageSql(string sql, int pageSize = 0, int pageIndex = 0)
+        {
+            throw new NotImplementedException();
         }
 
         protected override object GetParameterValue(IDbDataParameter p, PropertyInfo pinfo)
@@ -234,62 +250,10 @@ namespace z.DBHelper.Helper
             }
         }
 
-        /// <summary>
-        /// 取分页sql
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
-        /// <returns></returns>
-        protected override string GetPageSql(string sql, int pageSize = 0, int pageIndex = 0)
-        {
-            if (pageSize < 1 || pageIndex < 0)
-            {
-                return sql;
-            }
-            int start = pageIndex * pageSize + 1;
-            int end = start + pageSize;
-            StringBuilder builder = new StringBuilder();
-            builder.Append("SELECT * FROM (SELECT V.*, ROWNUM AS N FROM (");
-            builder.Append(sql);
-            builder.Append(") V) WHERE N >= ");
-            builder.Append(start);
-            builder.Append(" AND N < ");
-            builder.Append(end);
-            string ret = builder.ToString();
-            builder.Length = 0;
-            builder = null;
-            return ret;
-        }
-
-        /// <summary>
-        /// 取总数sql
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <returns></returns>
-        protected override string GetCountSql(string sql)
-        {
-            return string.Format("select count(1) from({0})", sql);
-        }
-
         protected override string GetPramCols(string cols)
         {
             return ":" + cols;
         }
-
-        protected override string GetFieldName(string FieldName)
-        {
-            return $"\"{FieldName}\"";
-        }
-        #endregion
-        #region 链接操作
-        protected override DbConnection GetDbConnection(string _dbConnectionInfoStr)
-        {
-            return new OracleConnection(_dbConnectionInfoStr);
-        }
-        
-        #endregion
-
     }
 }
 #endif
