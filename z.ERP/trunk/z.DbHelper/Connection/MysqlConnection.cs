@@ -1,4 +1,4 @@
-﻿
+﻿#if MYSQL
 namespace z.DBHelper.Connection
 {
     public class MysqlConnection : IDbConnectionInfo
@@ -79,3 +79,4 @@ namespace z.DBHelper.Connection
 
     }
 }
+#endif

@@ -1,4 +1,4 @@
-﻿
+﻿#if SYBASE
 namespace z.DBHelper.Connection
 {
     public class SybaseConnection : IDbConnectionInfo
@@ -86,3 +86,4 @@ namespace z.DBHelper.Connection
 
     }
 }
+#endif
