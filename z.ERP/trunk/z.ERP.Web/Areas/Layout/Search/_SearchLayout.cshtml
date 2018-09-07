@@ -16,44 +16,56 @@
 }
 
 @{
-    if ( Model!=null&& !Model.Permission_Edit.IsEmpty() && !employee.HasPermission(Model.Permission_Edit))
-    {
-        <script type="text/javascript">
-            var CanEdit = false;
-        </script>
-    }
-    else
+    if ( Model!=null&& !Model.Permission_Edit.IsEmpty() && employee.HasPermission(Model.Permission_Edit))
     {
         <script type="text/javascript">
             var CanEdit = true;
         </script>
     }
-
-
-    if (Model != null && !Model.Permission_Exec.IsEmpty() && !employee.HasPermission(Model.Permission_Exec))
+    else
     {
         <script type="text/javascript">
-            var CanExec = false;
+            var CanEdit = false;
+        </script>
+    }
+
+    if (Model != null && !Model.Permission_Browse.IsEmpty() && employee.HasPermission(Model.Permission_Browse))
+    {
+        <script type="text/javascript">
+            var CanBrowse = true;
         </script>
     }
     else
+    {
+        <script type="text/javascript">
+            var CanBrowse = false;
+        </script>
+    }
+
+    if (Model != null && !Model.Permission_Exec.IsEmpty() && employee.HasPermission(Model.Permission_Exec))
     {
         <script type="text/javascript">
             var CanExec = true;
         </script>
     }
-
-
-    if (Model != null && !Model.Permission_Bg.IsEmpty() && !employee.HasPermission(Model.Permission_Bg))
+    else
     {
         <script type="text/javascript">
-            var CanBg = false;
+            var CanExec = false;
+        </script>
+    }
+
+
+    if (Model != null && !Model.Permission_Bg.IsEmpty() && employee.HasPermission(Model.Permission_Bg))
+    {
+        <script type="text/javascript">
+            var CanBg = true;
         </script>
     }
     else
     {
         <script type="text/javascript">
-            var CanBg = true;
+            var CanBg = false;
         </script>
     }
 }

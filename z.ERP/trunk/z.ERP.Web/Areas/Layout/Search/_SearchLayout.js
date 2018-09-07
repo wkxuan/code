@@ -164,17 +164,43 @@
         _this.colOperate = [{
             title: '操作',
             key: 'action',
-            width: 130,
+            width: 155,
             align: 'center',
             fixed: 'right',
             render: function (h, params) {
-                if ((!CanEdit) && (!CanExec)) {
                     return h('div',
-                        []
-                    );
-                }
-                else {
-                    if ((CanEdit) && (!CanExec)) {
+                          [
+                           (CanBrowse)  &&  h('Button',
+                                {
+                                    props: { type: 'primary', size: 'small', disabled: false },
+                                    style: { marginRight: '5px' },
+                                    on: { click: function (event) { _this.browseHref(params.row, params.index) } },
+                                }, '浏览'),
+                           (CanEdit) &&  h('Button',
+                                  {
+                                      props: { type: 'primary', size: 'small', disabled: false },
+                                      style: { marginRight: '5px' },
+                                      on: { click: function (event) { _this.modHref(params.row, params.index) } },
+
+                                  }, '修改'),
+                           (CanBg) && h('Button',
+                                  {
+                                      props: { type: 'primary', size: 'small', disabled: false },
+                                      style: { marginRight: '5px' },
+                                      on: { click: function (event) { _this.bgHref(params.row, params.index) } },
+
+                                  }, '变更'),
+                          ]
+                    )
+
+                /*  if ((!CanEdit) && (!CanExec)) {
+                      return h('div',
+                          []
+                      );
+                  }
+                  else { 
+
+                     if ((CanEdit) && (!CanExec)) {
                         return h('div',
                             [
                                 h('Button',
@@ -225,8 +251,8 @@
 
                             ]
                         );
-                    }
-                }
+                    }   
+                }*/
             }
         }]
     };

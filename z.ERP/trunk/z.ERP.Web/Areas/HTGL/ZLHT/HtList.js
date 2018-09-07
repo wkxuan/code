@@ -14,7 +14,7 @@
         { title: '审核时间', key: 'VERIFY_TIME', width: 110, sortable: true },
         { title: "分店代码", key: 'BRANCHID', width: 90 },
         { title: '分店名称', key: 'NAME', width: 100},
-        {
+      /*  {
             title: '变更', key: 'action', width: 70,
             align: 'center', fixed: 'right',
             render: function (h, params) {
@@ -39,7 +39,7 @@
                     );
                 }
             }
-        }
+        } */
 
     ];
     search.searchParam.STYLE = "1";
