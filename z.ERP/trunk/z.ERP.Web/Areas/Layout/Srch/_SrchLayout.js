@@ -1,4 +1,4 @@
-﻿function _Search() {
+﻿function _Srch() {
 
     var _this = this;
 
@@ -86,44 +86,6 @@
                     }
 
                 },
-
-                add: function (event) {
-                    event.stopPropagation();
-                    _this.addHref();
-                },
-                browse: function (row, index) {
-                    //if (CanEdit)
-                   // _this.browseHref(row, index); //放按钮出来
-                },
-
-                del: function (event) {
-                    event.stopPropagation();
-                    var _self = this;
-                    console.log(this);
-                    var selectton = this.$refs.selectData.getSelection();
-                    if (selectton.length == 0) {
-                        this.$Message.info("请选中要删除的数据!");
-                    }
-                    else {
-                        this.$Modal.confirm({
-                            title: '提示',
-                            content: '是否删除',
-                            onOk: function () {
-                                _.Ajax('Delete', {
-                                    DeleteData: selectton
-                                }, function (data) {
-                                    showList(function (data) {
-                                        Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
-                                        _self.$Message.info("删除成功");
-                                    });
-                                });
-                            },
-                            onCancel: function () {
-                                this.id = "关闭"
-                            }
-                        });
-                    }
-                },
                 changePageCount: function (index) {
                     let mess = this;
                     _this.pageInfo.PageSize = mess.pageSize;
@@ -166,95 +128,8 @@
         }
     }
 
-    this.addHref = function () {
-    }
-
-    this.modHref = function (row, index) {
-    }
 
 
-
-    this.browseHref = function (row, index) {
-    }
-
-
-    this.colDefInit = function () {
-        _this.colMul = [{
-            type: 'selection',
-            width: 60,
-            align: 'center',
-            fixed: 'left',
-        }];
-
-        _this.colOperate = [{
-            title: '操作',
-            key: 'action',
-            width: 130,
-            align: 'center',
-            fixed: 'right',
-            render: function (h, params) {
-                if ((!CanEdit) && (!CanExec)) {
-                    return h('div',
-                        []
-                    );
-                }
-                else {
-                    if ((CanEdit) && (!CanExec)) {
-                        return h('div',
-                            [
-                                h('Button',
-                                {
-
-                                    props: { type: 'primary', size: 'small', disabled: false },
-                                    style: { marginRight: '5px' },
-
-                                    on: { click: function (event) { _this.modHref(params.row, params.index) } },
-
-                                }, '修改')
-                            ]
-                        );
-                    };
-                    if ((!CanEdit) && (CanExec)) {
-                        return h('div',
-                            [
-                                 h('Button',
-                                 {
-                                     props: { type: 'error', size: 'small', disabled: false },
-                                     style: { marginRight: '5px' },
-                                     on: { click: function (event) { _this.browseHref(params.row, params.index) } },
-                                 }, '浏览')
-
-                            ]
-                        );
-                    };
-                    if ((CanEdit) && (CanExec)) {
-                        return h('div',
-                            [
-                                h('Button',
-                                {
-
-                                    props: { type: 'primary', size: 'small', disabled: false },
-                                    style: { marginRight: '5px' },
-
-                                    on: { click: function (event) { _this.modHref(params.row, params.index) } },
-
-                                }, '修改'),
-
-
-                                 h('Button',
-                                 {
-                                     props: { type: 'error', size: 'small', disabled: false },
-                                     style: { marginRight: '5px' },
-                                     on: { click: function (event) { _this.browseHref(params.row, params.index) } },
-                                 }, '浏览')
-
-                            ]
-                        );
-                    }
-                }
-            }
-        }]
-    };
 
 
 
@@ -267,10 +142,9 @@
     };
 
     setTimeout(function () {
-        _this.colDefInit();
         _this.vueInit();
         _this.beforeVue();
         _this.vue();
     }, 100);
 }
-var search = new _Search();
+var srch = new _Srch();

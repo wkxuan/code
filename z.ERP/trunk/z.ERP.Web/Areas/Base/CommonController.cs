@@ -35,6 +35,8 @@ namespace z.ERP.Web.Areas.Base
             ParameterInfo[] info = mi.GetParameters();
             if (info == null || info.Count() != 1 || !info[0].ParameterType.BaseOn<SearchItem>())
                 throw new Exception($"Method:{Method}参数错误,必须只有一个参数SearchItem");
+
+           // Data.PageInfo.PageIndex=
             var d = mi.Invoke(list, new object[] { Data }) as DataGridResult;
             return d;
         }

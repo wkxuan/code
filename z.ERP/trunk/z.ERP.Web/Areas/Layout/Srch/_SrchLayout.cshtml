@@ -1,13 +1,13 @@
-﻿@inherits ViewBase<SearchRender>
+﻿@inherits ViewBase<SrchRender>
 @using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Web.Areas.Layout.Search
+@using z.ERP.Web.Areas.Layout.Srch
 @using z.MVC5.Views
 @{
     Layout = ThisLayout;
 }
 @{
     WebFiles = new string[] {
-                    "Areas/Layout/Search/_SearchLayout.js"
+                    "Areas/Layout/Srch/_SrchLayout.js"
                 };
 }
 @section head{
@@ -16,46 +16,6 @@
 }
 
 @{
-    if ( Model!=null&& !Model.Permission_Edit.IsEmpty() && !employee.HasPermission(Model.Permission_Edit))
-    {
-        <script type="text/javascript">
-            var CanEdit = false;
-        </script>
-    }
-    else
-    {
-        <script type="text/javascript">
-            var CanEdit = true;
-        </script>
-    }
-
-
-    if (Model != null && !Model.Permission_Exec.IsEmpty() && !employee.HasPermission(Model.Permission_Exec))
-    {
-        <script type="text/javascript">
-            var CanExec = false;
-        </script>
-    }
-    else
-    {
-        <script type="text/javascript">
-            var CanExec = true;
-        </script>
-    }
-
-
-    if (Model != null && !Model.Permission_Bg.IsEmpty() && !employee.HasPermission(Model.Permission_Bg))
-    {
-        <script type="text/javascript">
-            var CanBg = false;
-        </script>
-    }
-    else
-    {
-        <script type="text/javascript">
-            var CanBg = true;
-        </script>
-    }
 }
 
 <div id="search">
@@ -79,28 +39,6 @@
                         Text = "清空",
                         Enable = true,
                         Type = "primary"
-                    });
-                }
-
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "add",
-                        Text = "新增",
-                        Enable = true,
-                        Type = "primary",
-                        PermissionKey = Model?.Permission_Add
-                    });
-                }
-
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "del",
-                        Text = "删除",
-                        Enable = true,
-                        Type = "error",
-                        PermissionKey = Model?.Permission_Del
                     });
                 }
 
