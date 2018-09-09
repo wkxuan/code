@@ -9,7 +9,7 @@
         { title: "分店代码", key: 'BRANCHID', width: 90 },
         { title: '分店名称', key: 'NAME', width: 100 },
         { title: '描述', key: 'DESCRIPTION', width: 200 },
-        {
+        /*{
             title: '变更', key: 'action', width: 80,
             align: 'center', fixed: 'right',
             render: function (h, params) {
@@ -34,10 +34,9 @@
                     );
                 }
             }
-        }
+        }*/
     ];
     search.searchParam.STYLE = "2";
-
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "HtglService";
     search.method = "GetContract";
