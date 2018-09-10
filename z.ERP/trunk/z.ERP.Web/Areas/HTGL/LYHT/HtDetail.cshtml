@@ -23,14 +23,18 @@
 
 @section btn{
     @{
-        if (@contract.STATUS == "1")
+        if (Model != null && !Model.Permission_Exec.IsEmpty() && employee.HasPermission(Model.Permission_Exec))
         {
-            RenderControl(new ButtonRender()
+            if (@contract.STATUS == "1")
             {
-                Text = "审核",
-                Click = "exec",
-            });
+                RenderControl(new ButtonRender()
+                {
+                    Text = "审核",
+                    Click = "exec",
+                });
+            }
         }
+
     }
 }
 

@@ -9,9 +9,9 @@
         { title: "商户代码", key: 'MERCHANTID', width: 105, sortable: true },
         { title: '商户名称', key: 'MERNAME', width: 100 },
         { title: '录入员', key :'REPORTER_NAME',width:100},
-        { title: '录入时间', key: 'REPORTER_TIME', width: 110, sortable: true },
+        { title: '录入时间', key: 'REPORTER_TIME', width: 150, sortable: true },
         { title: '审核人', key: 'VERIFY_NAME', width: 100, },
-        { title: '审核时间', key: 'VERIFY_TIME', width: 110, sortable: true },
+        { title: '审核时间', key: 'VERIFY_TIME', width: 150, sortable: true },
         { title: "分店代码", key: 'BRANCHID', width: 90 },
         { title: '分店名称', key: 'NAME', width: 100},
       /*  {

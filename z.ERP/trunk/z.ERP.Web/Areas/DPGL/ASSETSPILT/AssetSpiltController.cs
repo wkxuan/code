@@ -1,13 +1,8 @@
 ﻿using z.ERP.Web.Areas.Base;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
 using System.Collections.Generic;
 using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Attributes;
 using z.ERP.Web.Areas.Layout.EditDetail;
@@ -22,8 +17,11 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
             ViewBag.Type = "3";
             return View(new SearchRender()
             {
+                Permission_Browse = "10400200",
                 Permission_Add = "10400201",
-                Permission_Del = "10400201"
+                Permission_Del = "10400201",
+                Permission_Edit = "10400201",
+                Permission_Exec = "10400202",
             });
         }
         public ActionResult AssetSpiltDetail(string Id)

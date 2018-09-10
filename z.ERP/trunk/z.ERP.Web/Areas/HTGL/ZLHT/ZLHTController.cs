@@ -16,7 +16,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             ViewBag.Title = "租约列表信息";
             return View(new SearchRender()
             {
-                Permission_Browse = "10600204",
+                Permission_Browse = "10600200",
                 Permission_Add = "10600201",
                 Permission_Edit = "10600201",
                 Permission_Del = "10600201",

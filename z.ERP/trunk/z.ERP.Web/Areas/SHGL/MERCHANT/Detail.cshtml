@@ -116,7 +116,7 @@
             mounted:function(){
                 var _self = this;
                 _.Ajax('SearchMerchant', {
-                    Data: { MERCHANTID: @merchant.MERCHANTID }
+                    Data: { MERCHANTID: "@merchant.MERCHANTID" }
                 }, function (data) {
                     _self.BrandData = data.merchantBrand;
                 });
@@ -126,7 +126,7 @@
                     event.stopPropagation();
                     var _self = this;
                     _.Ajax('ExecData', {
-                        Data: {MERCHANTID: @merchant.MERCHANTID},
+                        Data: {MERCHANTID: "@merchant.MERCHANTID"},
                     }, function (data) {
                         _self.$Message.info("审核成功");
                         setTimeout(function () {
@@ -138,7 +138,7 @@
                     event.stopPropagation();
                     var _self = this;
                     _.Ajax('Output', {
-                        Id: @merchant.MERCHANTID,
+                        Id: "@merchant.MERCHANTID",
                     }, function (data) {
                         window.open(__BaseUrl+data);
                     });

@@ -31,8 +31,11 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
             ViewBag.Title = "资产面积变更";
             return View(new SearchRender()
             {
+                Permission_Browse = "10400100",
                 Permission_Add = "10400101",
-                Permission_Del = "10400101"
+                Permission_Del = "10400101",
+                Permission_Edit = "10400101",
+                Permission_Exec = "10400102"
             });
         }
         public ActionResult AssetChangeDetail(string Id)
