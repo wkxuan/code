@@ -22,17 +22,28 @@
     search.method = "GetGoods";
 }
 
-//浏览双击跳转页面
+
+
+//跳转页面
 search.browseHref = function (row, index) {
-    _.OpenPage("SPGL/GOODS/GoodsDetail/" + row.GOODSID, function (data) {
+    _.OpenPage({
+        id: 105002,
+        title: '浏览商品信息',
+        url: "SPGL/GOODS/GoodsDetail/" + row.GOODSID
     });
 }
-//添加跳转页面
+
 search.addHref = function (row) {
-    _.OpenPage("SPGL/GOODS/GoodsEdit/", function (data) {
+    _.OpenPage({
+        id: 105002,
+        title: '新增商品信息',
+        url: "SPGL/GOODS/GoodsEdit/"
     });
 }
 search.modHref = function (row, index) {
-    _.OpenPage("SPGL/GOODS/GoodsEdit/" + row.GOODSID, function (data) {
+    _.OpenPage({
+        id: 105002,
+        title: '编辑商品信息',
+        url: "SPGL/GOODS/GoodsEdit/" + row.GOODSID
     });
 }

@@ -19,17 +19,25 @@
 }
 
 search.browseHref = function (row, index) {
-    _.OpenPage("JSGL/BILL_ADJUST/Bill_AdjustDetail/" + row.BILLID, function (data) {
-    })
-}
-
-search.modHref = function (row, index) {
-    _.OpenPage("JSGL/BILL_ADJUST/Bill_AdjustEdit/" + row.BILLID, function (data) {
+    _.OpenPage({
+        id: 107002,
+        title: '浏览费用调整单',
+        url: "JSGL/BILL_ADJUST/Bill_AdjustDetail/" + row.BILLID
     });
 }
 
 search.addHref = function (row) {
-    _.OpenPage("JSGL/BILL_ADJUST/Bill_AdjustEdit/", function (data) {
+    _.OpenPage({
+        id: 107002,
+        title: '新增费用调整单',
+        url: "JSGL/BILL_ADJUST/Bill_AdjustEdit/"
+    });
+}
+search.modHref = function (row, index) {
+    _.OpenPage({
+        id: 107002,
+        title: '编辑费用调整单',
+        url: "JSGL/BILL_ADJUST/Bill_AdjustEdit/" + row.BILLID
     });
 }
 

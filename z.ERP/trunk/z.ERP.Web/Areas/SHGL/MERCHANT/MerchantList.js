@@ -24,7 +24,7 @@
 search.browseHref = function (row, index) {
     _.OpenPage({
         id: 10200102,
-        title: '商户信息浏览',
+        title: '浏览商户信息',
         url: "SHGL/MERCHANT/Detail/" + row.MERCHANTID
     });
 };
@@ -32,14 +32,14 @@ search.addHref = function (row) {
 
     _.OpenPage({
         id: 10200101,
-        title: '新增商户',
+        title: '新增商户信息',
         url: "SHGL/MERCHANT/MerchantEdit/"
     });
 };
 search.modHref = function (row, index) {
     _.OpenPage({
         id: 10200101,
-        title: '修改商户',
+        title: '编辑商户信息',
         url: "SHGL/MERCHANT/MerchantEdit/" + row.MERCHANTID
     });
 };

@@ -63,15 +63,15 @@
 search.browseHref = function (row, index) {
     if (row.HTLX == 1) {
         _.OpenPage({
-            id: 10600102,
-            title: '联营租约详情',
+            id: 10600100,
+            title: '浏览联营租约详情',
             url: "HTGL/LYHT/HtDetail/" + row.CONTRACTID
         });
     }
     else {
         _.OpenPage({
-            id: 10600102,
-            title: '联营变更租约详情',
+            id: 10600100,
+            title: '浏览联营租约变更详情',
             url: "HTGL/LYHT_BG/LyHt_BgDetail/" + row.CONTRACTID
         });
     };
@@ -95,7 +95,7 @@ search.modHref = function (row, index) {
                 if (row.HTLX == 1) {
                     _.OpenPage({
                         id: 10600101,
-                        title: '修改联营租约',
+                        title: '编辑联营租约',
                         url: "HTGL/LYHT/HtEdit/" + row.CONTRACTID
                     });
                 };

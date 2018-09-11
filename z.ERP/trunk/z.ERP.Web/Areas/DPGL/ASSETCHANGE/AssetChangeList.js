@@ -21,17 +21,26 @@
 //search.searchParam.TYPE = false;
 //searchParam.CHANGE_TYPE = ViewBag.Type;
 //浏览双击跳转页面
+
 search.browseHref = function (row, index) {
-    _.OpenPage("DPGL/ASSETCHANGE/AssetChangeDetail/" + row.BILLID, function (data) {
-    });
-}
-//添加跳转页面
-search.addHref = function (row) {
-    _.OpenPage("DPGL/ASSETCHANGE/AssetChangeEdit/", function (data) {
+    _.OpenPage({
+        id: 104001,
+        title: '浏览资产面积变更单',
+        url: "DPGL/ASSETCHANGE/AssetChangeDetail/" + row.BILLID
     });
 }
 
+search.addHref = function (row) {
+    _.OpenPage({
+        id: 104001,
+        title: '新增资产面积变更单',
+        url: "DPGL/ASSETCHANGE/AssetChangeEdit/"
+    });
+}
 search.modHref = function (row, index) {
-   _.OpenPage("DPGL/ASSETCHANGE/AssetChangeEdit/" + row.BILLID, function (data) {
-   });
+    _.OpenPage({
+        id: 104001,
+        title: '编辑资产面积变更单',
+        url: "DPGL/ASSETCHANGE/AssetChangeEdit/" + row.BILLID
+    });
 }

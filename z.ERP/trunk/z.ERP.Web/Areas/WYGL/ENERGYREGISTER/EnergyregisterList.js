@@ -29,16 +29,25 @@
 }
 
 search.browseHref = function (row, index) {
-    _.OpenPage("WYGL/ENERGYREGISTER/EnergyreGisterDetail/" + row.BILLID, function (data) {
-    })
-}
-search.addHref = function (row) {
-    _.OpenPage("WYGL/ENERGYREGISTER/EnergyreGisterEdit/", function (data) {
-    })
+    _.OpenPage({
+        id: 103002,
+        title: '浏览能源费用处理',
+        url: "WYGL/ENERGYREGISTER/EnergyreGisterDetail/" + row.BILLID
+    });
 }
 
+search.addHref = function (row) {
+    _.OpenPage({
+        id: 103002,
+        title: '新增能源费用处理',
+        url: "WYGL/ENERGYREGISTER/EnergyreGisterEdit/"
+    });
+}
 search.modHref = function (row, index) {
-    _.OpenPage("WYGL/ENERGYREGISTER/EnergyreGisterEdit/" + row.BILLID, function (data) {
+    _.OpenPage({
+        id: 103002,
+        title: '编辑能源费用处理',
+        url: "WYGL/ENERGYREGISTER/EnergyreGisterEdit/" + row.BILLID
     });
 }
 

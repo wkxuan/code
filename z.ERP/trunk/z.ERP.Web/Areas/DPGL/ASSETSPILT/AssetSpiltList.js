@@ -21,17 +21,26 @@
 //search.searchParam.TYPE = false;
 //searchParam.CHANGE_TYPE = ViewBag.Type;
 //浏览双击跳转页面
+
 search.browseHref = function (row, index) {
-    _.OpenPage("DPGL/ASSETSPILT/AssetSpiltDetail/" + row.BILLID, function (data) {
-    });
-}
-//添加跳转页面
-search.addHref = function (row) {
-    _.OpenPage("DPGL/ASSETSPILT/AssetSpiltEdit/", function (data) {
+    _.OpenPage({
+        id: 104002,
+        title: '浏览资产拆分单',
+        url: "DPGL/ASSETSPILT/AssetSpiltDetail/" + row.BILLID
     });
 }
 
+search.addHref = function (row) {
+    _.OpenPage({
+        id: 104002,
+        title: '新增资产拆分单',
+        url: "DPGL/ASSETSPILT/AssetSpiltEdit/"
+    });
+}
 search.modHref = function (row, index) {
-    _.OpenPage("DPGL/ASSETSPILT/AssetSpiltEdit/" + row.BILLID, function (data) {
-   });
+    _.OpenPage({
+        id: 104002,
+        title: '编辑资产拆分单',
+        url: "DPGL/ASSETSPILT/AssetSpiltEdit/" + row.BILLID
+    });
 }

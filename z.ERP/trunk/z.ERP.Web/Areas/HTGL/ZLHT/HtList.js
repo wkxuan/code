@@ -51,15 +51,15 @@
 search.browseHref = function (row, index) {
     if (row.HTLX == 1) {
         _.OpenPage({
-            id: 10600202,
-            title: '租赁租约详情',
+            id: 10600200,
+            title: '浏览租赁租约详情',
             url: "HTGL/ZLHT/HtDetail/" + row.CONTRACTID
         })
     }
     else {
         _.OpenPage({
-            id: 10600202,
-            title: '租赁租约变更详情',
+            id: 10600200,
+            title: '浏览租赁租约变更详情',
             url: "HTGL/ZLHT_BG/ZlHt_BgDetail/" + row.CONTRACTID
         })
     }
@@ -68,7 +68,7 @@ search.browseHref = function (row, index) {
 search.addHref = function (row) {
     _.OpenPage({
         id: 10600201,
-        title: '添加租赁租约',
+        title: '新增租赁租约',
         url: "HTGL/ZLHT/HtEdit/"
     });
 
@@ -84,7 +84,7 @@ search.modHref = function (row, index) {
                 if (row.HTLX == 1) {
                     _.OpenPage({
                         id: 10600201,
-                        title: '添加租赁租约',
+                        title: '编辑租赁租约',
                         url: "HTGL/ZLHT/HtEdit/" + row.CONTRACTID
                     });
                 };

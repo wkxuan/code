@@ -25,8 +25,8 @@ search.otherMethods = {
 search.addHref = function (row) {
     _.OpenPage({
         id: 02000701,
-        title: '添加新角色',
-        url: "XTGL/ROLE/RoleEdit/-1"
+        title: '新增角色',
+        url: "XTGL/ROLE/RoleEdit/"
     });
 }
 
@@ -35,7 +35,7 @@ search.addHref = function (row) {
 search.modHref = function (row, index) {
     _.OpenPage({
         id: 02000702,
-        title: '修改角色',
+        title: '编辑角色',
         url: "XTGL/ROLE/RoleEdit/" + row.ROLEID
     });
 }

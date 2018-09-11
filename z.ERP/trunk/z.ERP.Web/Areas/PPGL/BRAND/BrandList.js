@@ -27,7 +27,7 @@
 search.browseHref = function (row, index) {
     _.OpenPage({
         id: 102002,
-        title: '品牌信息浏览',
+        title: '浏览品牌信息',
         url: "PPGL/BRAND/BrandDetail/" + row.ID
     });
 }
@@ -35,14 +35,14 @@ search.browseHref = function (row, index) {
 search.addHref = function (row) {
     _.OpenPage({
         id: 102002,
-        title: '品牌信息添加',
+        title: '新增品牌信息',
         url: "PPGL/BRAND/BrandEdit/"
     });
 }
 search.modHref = function (row, index) {
     _.OpenPage({
         id: 102002,
-        title: '品牌信息修改',
+        title: '编辑品牌信息',
         url: "PPGL/BRAND/BrandEdit/" + row.ID
     });
 }
