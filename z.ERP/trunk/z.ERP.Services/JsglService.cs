@@ -43,7 +43,7 @@ namespace z.ERP.Services
         }
         public DataGridResult GetBillReturnList(SearchItem item)
         {
-            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,D.NAME MERCHANTNAME " +
+            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,D.MERCHANTID,D.NAME MERCHANTNAME " +
                 " FROM BILL_RETURN L,BRANCH B ,CONTRACT C,MERCHANT D " +
                 "  WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID = D.MERCHANTID(+) ";
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");

@@ -2,6 +2,7 @@
 using z.ERP.Entities;
 using z.MVC5.Results;
 using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Search;
 
 
 namespace z.ERP.Web.Areas.JSGL.JOINBILL
@@ -12,7 +13,14 @@ namespace z.ERP.Web.Areas.JSGL.JOINBILL
         public ActionResult JoinBillList()
         {
             ViewBag.Title = "联营结算单";
-            return View();
+            return View(new SearchRender()
+            {
+                Permission_Browse = "10700600",
+                Permission_Add = "10700601",
+                Permission_Del = "10700601",
+                Permission_Edit = "10700601",
+                Permission_Exec = "10700602"
+            });
         }
         public ActionResult JoinBillEdit(string Id)
         {

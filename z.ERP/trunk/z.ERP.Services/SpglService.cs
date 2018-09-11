@@ -20,7 +20,8 @@ namespace z.ERP.Services
 
         public DataGridResult GetGoods(SearchItem item)
         {
-            string sql = $@"SELECT * FROM GOODS G WHERE 1=1 ";
+            string sql = $@"SELECT G.*,K.CODE KINDCODE,K.NAME KINDNAME,M.NAME MERCHANTNAME FROM GOODS G,GOODS_KIND K,MERCHANT M";
+            sql += " WHERE G.MERCHANTID=M.MERCHANTID(+) AND G.KINDID=K.ID(+)";
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("BARCODE", a => sql += $" and G.BARCODE={a}");
             item.HasKey("NAME", a => sql += $" and G.NAME  LIKE '%{a}%'");
@@ -33,6 +34,7 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<商品类型>("TYPE", "TYPEMC");
             return new DataGridResult(dt, count);
         }
 

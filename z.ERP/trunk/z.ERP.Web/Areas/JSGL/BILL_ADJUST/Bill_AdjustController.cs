@@ -21,8 +21,11 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
             ViewBag.Title = "费用调整单";
             return View(new SearchRender()
             {
+                Permission_Browse = "10700200",
                 Permission_Add = "10700201",
-                Permission_Del = "10700201"
+                Permission_Del = "10700201",
+                Permission_Edit = "10700201",
+                Permission_Exec = "10700202"
             });
         }
         public ActionResult Bill_AdjustEdit(string Id)
@@ -32,7 +35,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
         }
         public ActionResult Bill_AdjustDetail(string Id)
         {
-            ViewBag.Title = "费用调整单单";
+            ViewBag.Title = "费用调整单";
             var entity = service.JsglService.GetBillAdjustElement(new BILL_ADJUSTEntity(Id));
             ViewBag.billAdjust = entity.Item1;
             ViewBag.billAdjustItem = entity.Item2;

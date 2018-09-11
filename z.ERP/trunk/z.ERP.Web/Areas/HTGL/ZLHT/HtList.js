@@ -1,19 +1,19 @@
 ﻿search.beforeVue = function () {
     search.searchParam.MERCHANTID = "";
     var col = [
-        { title: '状态', key: 'STATUSMC', width: 80 },
         { title: '合同号', key: 'CONTRACTID', width: 95, sortable: true },
+        { title: '状态', key: 'STATUSMC', width: 80 },
         { title: '资产代码', key: 'SHOPDM', width: 110, sortable: true },
         { title: '品牌名称', key: 'BRANDNAME', width: 110 },
         { title: '核算方式', key: 'STYLEMC', width: 95 },
         { title: "商户代码", key: 'MERCHANTID', width: 105, sortable: true },
-        { title: '商户名称', key: 'MERNAME', width: 100 },
-        { title: '录入员', key :'REPORTER_NAME',width:100},
+        { title: '商户名称', key: 'MERNAME', width: 200 },
+        { title: '录入员', key :'REPORTER_NAME',width:90},
         { title: '录入时间', key: 'REPORTER_TIME', width: 150, sortable: true },
-        { title: '审核人', key: 'VERIFY_NAME', width: 100, },
+        { title: '审核人', key: 'VERIFY_NAME', width: 90, },
         { title: '审核时间', key: 'VERIFY_TIME', width: 150, sortable: true },
         { title: "分店代码", key: 'BRANCHID', width: 90 },
-        { title: '分店名称', key: 'NAME', width: 100},
+        { title: '分店名称', key: 'NAME', width: 150},
       /*  {
             title: '变更', key: 'action', width: 70,
             align: 'center', fixed: 'right',

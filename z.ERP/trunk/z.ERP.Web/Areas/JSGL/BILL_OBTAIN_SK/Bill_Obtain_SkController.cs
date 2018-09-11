@@ -16,8 +16,11 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
             ViewBag.Title = "商户收款处理";
             return View(new SearchRender()
             {
-                Permission_Add = "10700201",
-                Permission_Del = "10700201"
+                Permission_Browse = "10700700",
+                Permission_Add = "10700701",
+                Permission_Del = "10700701",
+                Permission_Edit = "10700701",
+                Permission_Exec = "10700702"
             });
         }
         public ActionResult Bill_Obtain_SkEdit(string Id)
