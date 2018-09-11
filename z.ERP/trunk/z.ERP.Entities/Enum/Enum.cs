@@ -84,6 +84,7 @@ namespace z.ERP.Entities.Enum
     }
     public enum 收款方式找零方式
     {
+        不限制 = 0,
         不能多收 = 1,
         多收不找零 = 2
     }
