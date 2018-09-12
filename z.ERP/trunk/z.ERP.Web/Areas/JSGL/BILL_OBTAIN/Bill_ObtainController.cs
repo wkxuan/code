@@ -13,7 +13,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN
     {
         public ActionResult Bill_ObtainList()
         {
-            ViewBag.Title = "保证金收取";
+            ViewBag.Title = "保证金收取单";
             return View(new SearchRender()
             {
                 Permission_Browse = "10700300",

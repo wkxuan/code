@@ -31,17 +31,25 @@
 }
 
 search.browseHref = function (row, index) {
-    _.OpenPage("JSGL/BILL_RETURN/Bill_ReturnDetail/" + row.BILLID, function (data) {
-    })
-}
-
-search.modHref = function (row, index) {
-    _.OpenPage("JSGL/BILL_RETURN/Bill_ReturnEdit/" + row.BILLID, function (data) {
+    _.OpenPage({
+        id: 107001,
+        title: '浏览保证金返还单',
+        url: "JSGL/BILL_RETURN/Bill_ReturnDetail/" + row.BILLID
     });
 }
 
 search.addHref = function (row) {
-    _.OpenPage("JSGL/BILL_RETURN/Bill_ReturnEdit/", function (data) {
+    _.OpenPage({
+        id: 107001,
+        title: '新增保证金返还单',
+        url: "JSGL/BILL_RETURN/Bill_ReturnEdit/"
+    });
+}
+search.modHref = function (row, index) {
+    _.OpenPage({
+        id: 107001,
+        title: '编辑保证金返还单',
+        url: "JSGL/BILL_RETURN/Bill_ReturnEdit/" + row.BILLID
     });
 }
 

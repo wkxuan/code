@@ -12,7 +12,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
     {
         public ActionResult Bill_NoticeList()
         {
-            ViewBag.Title = "缴费通知单";
+            ViewBag.Title = "商户缴费通知单";
             return View(new SearchRender()
             {
                 Permission_Browse = "10700500",

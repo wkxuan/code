@@ -19,18 +19,26 @@
     search.searchParam.TYPE = 2;
 }
 
-search.browseHref = function (row, index) {
-    _.OpenPage("JSGL/BILL_OBTAIN/Bill_ObtainDetail/" + row.BILLID, function (data) {
-    })
-}
 
-search.modHref = function (row, index) {
-    _.OpenPage("JSGL/BILL_OBTAIN/Bill_ObtainEdit/" + row.BILLID, function (data) {
+search.browseHref = function (row, index) {
+    _.OpenPage({
+        id: 107003,
+        title: '浏览保证金收取单',
+        url: "JSGL/BILL_OBTAIN/Bill_ObtainDetail/" + row.BILLID
     });
 }
 
 search.addHref = function (row) {
-    _.OpenPage("JSGL/BILL_OBTAIN/Bill_ObtainEdit/", function (data) {
+    _.OpenPage({
+        id: 107003,
+        title: '新增保证金收取单',
+        url: "JSGL/BILL_OBTAIN/Bill_ObtainEdit/"
     });
 }
-
+search.modHref = function (row, index) {
+    _.OpenPage({
+        id: 107003,
+        title: '编辑保证金收取单',
+        url: "JSGL/BILL_OBTAIN/Bill_ObtainEdit/" + row.BILLID
+    });
+}

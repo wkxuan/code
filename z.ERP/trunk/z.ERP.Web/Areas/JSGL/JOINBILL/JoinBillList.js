@@ -22,11 +22,17 @@
 }
 
 search.browseHref = function (row, index) {
-    _.OpenPage("JSGL/JOINBILL/JoinBillDetail/" + row.BILLID, function (data) {
-    })
+    _.OpenPage({
+        id: 107006,
+        title: '浏览联营结算单',
+        url: "JSGL/JOINBILL/JoinBillDetail/" + row.BILLID
+    });
 }
 
 search.modHref = function (row, index) {
-    _.OpenPage("JSGL/JOINBILL/JoinBillEdit/" + row.BILLID, function (data) {
+    _.OpenPage({
+        id: 107006,
+        title: '编辑联营结算单',
+        url: "JSGL/JOINBILL/JoinBillEdit/" + row.BILLID
     });
 }

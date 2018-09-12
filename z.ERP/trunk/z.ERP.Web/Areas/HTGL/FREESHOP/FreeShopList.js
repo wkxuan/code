@@ -24,7 +24,7 @@
 
 search.browseHref = function (row, index) {
     _.OpenPage({
-        id: 10600300,
+        id: 106003,
         title: '浏览退铺单',
         url: "HTGL/FREESHOP/FreeShopDetail/" + row.BILLID
     });
@@ -32,14 +32,14 @@ search.browseHref = function (row, index) {
 
 search.addHref = function (row) {
     _.OpenPage({
-        id: 10600301,
+        id: 106003,
         title: '新增退铺单',
         url: "HTGL/FREESHOP/FreeShopEdit/"
     });
 }
 search.modHref = function (row, index) {
     _.OpenPage({
-        id: 10600301,
+        id: 106003,
         title: '编辑退铺单',
         url: "HTGL/FREESHOP/FreeShopEdit/" + row.BILLID
     });

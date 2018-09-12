@@ -20,18 +20,25 @@
 }
 
 search.browseHref = function (row, index) {
-    _.OpenPage("JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkDetail/" + row.BILLID, function (data) {
-    })
-}
-
-search.modHref = function (row, index) {
-    _.OpenPage("JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkEdit/" + row.BILLID, function (data) {
+    _.OpenPage({
+        id: 107007,
+        title: '浏览租赁核销单',
+        url: "JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkDetail/" + row.BILLID
     });
 }
 
 search.addHref = function (row) {
-    _.OpenPage("JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkEdit/", function (data) {
+    _.OpenPage({
+        id: 107007,
+        title: '新增租赁核销单',
+        url: "JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkEdit/"
     });
 }
-
+search.modHref = function (row, index) {
+    _.OpenPage({
+        id: 107007,
+        title: '编辑租赁核销单',
+        url: "JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkEdit/" + row.BILLID
+    });
+}
 

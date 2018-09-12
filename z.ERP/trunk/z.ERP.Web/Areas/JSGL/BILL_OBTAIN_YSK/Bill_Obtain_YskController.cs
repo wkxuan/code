@@ -12,7 +12,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_YSH
     {
         public ActionResult Bill_Obtain_YskList()
         {
-            ViewBag.Title = "预收款收取";
+            ViewBag.Title = "预收款收取单";
 
             return View(new SearchRender()
             {

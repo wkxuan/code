@@ -31,17 +31,25 @@
 }
 
 search.browseHref = function (row, index) {
-    _.OpenPage("JSGL/BILL_NOTICE/Bill_NoticeDetail/" + row.BILLID, function (data) {
-    })
-}
-
-search.modHref = function (row, index) {
-    _.OpenPage("JSGL/BILL_NOTICE/Bill_NoticeEdit/" + row.BILLID, function (data) {
+    _.OpenPage({
+        id: 107005,
+        title: '浏览商户缴费通知单',
+        url: "JSGL/BILL_NOTICE/Bill_NoticeDetail/" + row.BILLID
     });
 }
 
 search.addHref = function (row) {
-    _.OpenPage("JSGL/BILL_NOTICE/Bill_NoticeEdit/", function (data) {
+    _.OpenPage({
+        id: 107005,
+        title: '新增商户缴费通知单',
+        url: "JSGL/BILL_NOTICE/Bill_NoticeEdit/"
+    });
+}
+search.modHref = function (row, index) {
+    _.OpenPage({
+        id: 107005,
+        title: '编辑商户缴费通知单',
+        url: "JSGL/BILL_NOTICE/Bill_NoticeEdit/" + row.BILLID
     });
 }
 
