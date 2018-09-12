@@ -149,11 +149,12 @@
             </div>
             <p slot="content">
                  @*结果显示*@
-                    <i-table :highlight-row="true" size="small" :border="true" height="450"
+                    <i-table :highlight-row="true" size="small" :border="true" 
                              :columns="screenParam.colDef" :data="screenParamData.dataDef"
                              v-on:on-row-dblclick="browse"  ref="selectData"></i-table>
-                    <page :total="pagedataCount" :page-size="pageSize" show-total
-                          v-on:on-change="changePageCount"></page>
+                    <page :total="pagedataCount" :page-size="pageSize" show-total 
+                          v-on:on-change="changePageCount" ></page>
+                <!--show-sizer v-on:on-page-size-change ="changePageSizer"-->
 
                 @RenderSection("resultOthers", false)
             </p>

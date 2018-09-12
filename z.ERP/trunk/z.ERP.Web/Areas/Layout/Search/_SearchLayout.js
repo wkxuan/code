@@ -140,7 +140,22 @@
                         }
                     });
 
-                }
+                },
+
+          /*      changePageSizer: function (value) {
+                    let mess = this;
+                    _this.pageInfo.PageSize = value;
+                    Vue.set(ve.screenParamData, "dataDef", []);
+                    showList(function (data) {
+                        if (_this.screenParam.dataDef.length > 0) {
+                            ve.panelName = 'result';
+                            Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
+                        }
+                        else {
+                            mess.$Message.info("没有满足当前查询条件的结果!");
+                        }
+                    });
+                } */
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
@@ -189,7 +204,7 @@
         _this.colOperate = [{
             title: '操作',
             key: 'action',
-            width: 155,
+            width: 160,
             align: 'center',
             fixed: 'right',
             render: function (h, params) {
@@ -198,20 +213,20 @@
                            (CanBrowse)  &&  h('Button',
                                 {
                                     props: { type: 'primary', size: 'small', disabled: false },
-                                    style: { marginRight: '5px' },
+                                    style: { marginRight: '1px' },
                                     on: { click: function (event) { _this.browseHref(params.row, params.index) } },
                                 }, '浏览'),
                            (CanEdit) &&  h('Button',
                                   {
                                       props: { type: 'primary', size: 'small', disabled: false },
-                                      style: { marginRight: '5px' },
+                                      style: { marginRight: '1px' },
                                       on: { click: function (event) { _this.modHref(params.row, params.index) } },
 
                                   }, '修改'),
                            (CanBg) && h('Button',
                                   {
                                       props: { type: 'primary', size: 'small', disabled: false },
-                                      style: { marginRight: '5px' },
+                                      style: { marginRight: '1px' },
                                       on: { click: function (event) { _this.bgHref(params.row, params.index) } },
 
                                   }, '变更'),

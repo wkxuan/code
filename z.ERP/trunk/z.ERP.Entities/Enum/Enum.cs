@@ -138,7 +138,7 @@ namespace z.ERP.Entities.Enum
         审核 = 2,
         启动 = 3,
         到期 = 4,
-        清退 = 5,
+        终止 = 5,
     }
 
     public enum 联营合同合作方式

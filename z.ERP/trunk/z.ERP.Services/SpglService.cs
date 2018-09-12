@@ -33,7 +33,7 @@ namespace z.ERP.Services
             sql += " ORDER BY  GOODSDM DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<商品状态>("STATUS", "STATUSMC");
             dt.NewEnumColumns<商品类型>("TYPE", "TYPEMC");
             return new DataGridResult(dt, count);
         }
@@ -44,7 +44,7 @@ namespace z.ERP.Services
             if (!Data.GOODSID.IsEmpty())
                 sql += (" and GOODSID= " + Data.GOODSID);
             DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<商品状态>("STATUS", "STATUSMC");
             dt.NewEnumColumns<商品类型>("TYPE", "TYPEMC");
             dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
             dt.Rows[0]["JXSL"] = dt.Rows[0]["JXSL"].ToString().ToDouble() * 100;
@@ -94,7 +94,7 @@ namespace z.ERP.Services
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            SaveData.STATUS = ((int)商品状态.未审核).ToString();
 
             SaveData.GOODS_SHOP.ForEach(sdb =>
             {
