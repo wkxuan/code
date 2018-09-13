@@ -41,7 +41,7 @@ define.IsValidSave = function () {
         return false;
     }
 
-    if (!define.dataParam.ZLFS) {
+    if (define.dataParam.ZLFS==null) {
         iview.Message.info("找零方式不能为空!");
         return false;
     }

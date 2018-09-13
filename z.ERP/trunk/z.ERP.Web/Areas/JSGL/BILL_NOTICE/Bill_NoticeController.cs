@@ -1,13 +1,8 @@
 ﻿using z.ERP.Web.Areas.Base;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
 using System.Collections.Generic;
 using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
 using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
 
@@ -17,11 +12,14 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
     {
         public ActionResult Bill_NoticeList()
         {
-            ViewBag.Title = "缴费通知单";
+            ViewBag.Title = "商户缴费通知单";
             return View(new SearchRender()
             {
+                Permission_Browse = "10700500",
                 Permission_Add = "10700501",
-                Permission_Del = "10700501"
+                Permission_Del = "10700501",
+                Permission_Edit = "10700501",
+                Permission_Exec = "10700502"
             });
         }
         public ActionResult Bill_NoticeEdit(string Id)

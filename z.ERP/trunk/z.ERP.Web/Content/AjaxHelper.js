@@ -127,7 +127,10 @@ zQuery.extend({
             data: {
                 Service: Options.Service,
                 Method: Options.Method,
-                Data: { Values: Options.Data }
+                Data: {
+                    Values: Options.Data,
+                    PageInfo: Options.PageInfo
+                }
             },
             success: function (data) {
                 Options.Success && Options.Success(data);

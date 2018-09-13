@@ -1,9 +1,7 @@
 ﻿search.beforeVue = function () {
     var col = [
-        { title: "账单号", key: "BILLID", width: 75 },
-        { title: "分店编号", key: "BRANCHID", width: 90 },
-        { title: "分店名称", key: "BRANCHNAME", width: 150 },
-        { title: "租约号", key: "CONTRACTID", width: 80 },
+        { title: "账单号", key: "BILLID", width: 80 },
+        { title: "租约号", key: "CONTRACTID", width: 100 },
         { title: "债权发生月", key: "NIANYUE", width: 100 },
         { title: "收付实现月", key: "YEARMONTH", width: 100 },
         { title: '应收金额', key: 'MUST_MONEY', width: 100 },
@@ -11,9 +9,11 @@
         { title: '已付金额', key: 'RECEIVE_MONEY', width: 100 },
         { title: "开始日期", key: "START_DATE", width: 100 },
         { title: "结束日期", key: "END_DATE", width: 100 },
-        { title: "状态", key: "STATUSMC", width: 100 },
-        { title: "登记人", key: "REPORTER_NAME", width: 100 },
-        { title: "登记时间", key: "REPORTER_TIME", width: 100 }
+        { title: "状态", key: "STATUSMC", width: 80 },
+        { title: "分店编号", key: "BRANCHID", width: 90 },
+        { title: "分店名称", key: "BRANCHNAME", width: 150 },
+        { title: "登记人", key: "REPORTER_NAME", width: 90 },
+        { title: "登记时间", key: "REPORTER_TIME", width: 150 }
     ];
     search.screenParam.colDef = col.concat(search.colMul);
     search.service = "DataService";

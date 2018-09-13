@@ -84,6 +84,7 @@ namespace z.ERP.Entities.Enum
     }
     public enum 收款方式找零方式
     {
+        不限制 = 0,
         不能多收 = 1,
         多收不找零 = 2
     }
@@ -137,7 +138,7 @@ namespace z.ERP.Entities.Enum
         审核 = 2,
         启动 = 3,
         到期 = 4,
-        清退 = 5,
+        终止 = 5,
     }
 
     public enum 联营合同合作方式

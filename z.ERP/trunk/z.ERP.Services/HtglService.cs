@@ -10,6 +10,7 @@ using System.Linq;
 using z.Extensiont;
 using z.ERP.Entities.Procedures;
 
+
 namespace z.ERP.Services
 {
     public class HtglService : ServiceBase
@@ -285,6 +286,46 @@ namespace z.ERP.Services
                         case 11:
                         case 12:
                             ym = dt.Year * 100 + 10;
+                            break;
+                    }
+                    break;
+                case 6:
+                    switch (dt.Month)
+                    {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 5:
+                        case 6:
+                            ym = dt.Year * 100 + 1;
+                            break;
+                        case 7:
+                        case 8:
+                        case 9:
+                        case 10:
+                        case 11:
+                        case 12:
+                            ym = dt.Year * 100 + 7;
+                            break;
+                    }
+                    break;
+                case 12:
+                    switch (dt.Month)
+                    {
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 8:
+                        case 9:
+                        case 10:
+                        case 11:
+                        case 12:
+                            ym = dt.Year * 100 + 1;
                             break;
                     }
                     break;

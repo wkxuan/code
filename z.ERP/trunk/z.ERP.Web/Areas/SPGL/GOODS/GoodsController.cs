@@ -19,6 +19,7 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
             ViewBag.Title = "商品信息";
             return View(new SearchRender()
             {
+                Permission_Browse = "10500200",
                 Permission_Add = "10500201",
                 Permission_Del = "10500201",
                 Permission_Edit = "10500201",

@@ -1,15 +1,33 @@
 ﻿search.beforeVue = function () {
     search.searchParam.MERCHANTID = "";
     var col = [
-        { title: '状态', key: 'STATUSMC', width: 80 },
+      /*  { title: '状态', key: 'STATUSMC', width: 80 },
         { title: '核算方式', key: 'STYLEMC', width: 100 },
         { title: "商户代码", key: 'MERCHANTID', width: 90 },
         { title: '商户名称', key: 'MERNAME', width: 100 },
         { title: '合同号', key: 'CONTRACTID', width: 100 },
         { title: "分店代码", key: 'BRANCHID', width: 90 },
         { title: '分店名称', key: 'NAME', width: 100 },
-        { title: '描述', key: 'DESCRIPTION', width: 200 },
-        {
+        { title: '描述', key: 'DESCRIPTION', width: 200 }, */
+
+        { title: '合同号', key: 'CONTRACTID', width: 95, sortable: true },
+        { title: '状态', key: 'STATUSMC', width: 80 },
+        { title: '资产代码', key: 'SHOPDM', width: 110, sortable: true },
+        { title: '品牌名称', key: 'BRANDNAME', width: 110 },
+        { title: '核算方式', key: 'STYLEMC', width: 95 },
+        { title: "商户代码", key: 'MERCHANTID', width: 105, sortable: true },
+        { title: '商户名称', key: 'MERNAME', width: 200 },
+        { title: '录入员', key: 'REPORTER_NAME', width: 90 },
+        { title: '录入时间', key: 'REPORTER_TIME', width: 150, sortable: true },
+        { title: '审核人', key: 'VERIFY_NAME', width: 90, },
+        { title: '审核时间', key: 'VERIFY_TIME', width: 150, sortable: true },
+        { title: "分店代码", key: 'BRANCHID', width: 90 },
+        { title: '分店名称', key: 'NAME', width: 100 },
+
+
+
+
+        /*{
             title: '变更', key: 'action', width: 80,
             align: 'center', fixed: 'right',
             render: function (h, params) {
@@ -34,10 +52,9 @@
                     );
                 }
             }
-        }
+        }*/
     ];
     search.searchParam.STYLE = "2";
-
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "HtglService";
     search.method = "GetContract";
@@ -46,15 +63,15 @@
 search.browseHref = function (row, index) {
     if (row.HTLX == 1) {
         _.OpenPage({
-            id: 10600102,
-            title: '联营租约详情',
+            id: 10600100,
+            title: '浏览联营租约详情',
             url: "HTGL/LYHT/HtDetail/" + row.CONTRACTID
         });
     }
     else {
         _.OpenPage({
-            id: 10600102,
-            title: '联营变更租约详情',
+            id: 10600100,
+            title: '浏览联营租约变更详情',
             url: "HTGL/LYHT_BG/LyHt_BgDetail/" + row.CONTRACTID
         });
     };
@@ -78,7 +95,7 @@ search.modHref = function (row, index) {
                 if (row.HTLX == 1) {
                     _.OpenPage({
                         id: 10600101,
-                        title: '修改联营租约',
+                        title: '编辑联营租约',
                         url: "HTGL/LYHT/HtEdit/" + row.CONTRACTID
                     });
                 };

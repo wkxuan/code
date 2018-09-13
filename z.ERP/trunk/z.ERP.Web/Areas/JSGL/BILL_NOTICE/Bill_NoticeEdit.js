@@ -104,7 +104,10 @@ editDetail.otherMethods = {
             return ;
         };
         editDetail.screenParam.showPopContract = true;
-        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
+        editDetail.screenParam.popParam = {
+            BRANCHID: editDetail.dataParam.BRANCHID
+        };
+
     },
     SelBill: function () {
         if (!editDetail.dataParam.CONTRACTID) {
@@ -114,7 +117,7 @@ editDetail.otherMethods = {
         editDetail.screenParam.showPopBill = true;
         editDetail.screenParam.popParam = {
             BRANCHID: editDetail.dataParam.BRANCHID,
-            CONTACTID: editDetail.dataParam.CONTACTID
+            CONTRACTID: editDetail.dataParam.CONTRACTID
         };
     }
 }

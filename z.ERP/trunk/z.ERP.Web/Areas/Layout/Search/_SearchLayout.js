@@ -24,24 +24,28 @@
             data: {
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
+                pageInfo:_this.pageInfo,
                 panelName: 'condition',
                 disabled: _this.enabled(true),
 
                 screenParamData: {
                     dataDef: []
-                }
+                },
+                pagedataCount: 0,
+                pageSize: 10,
             },
 
             mounted: function () {
-                _this.mountedInit();
+                _this.mountedInit();        
             },
             methods: {
                 seach: function (event) {
                     event.stopPropagation();
                     var mess = this;
-
                     if (!_this.IsValidSrch())
                         return;
+                    _this.pageInfo.PageSize = mess.pageSize;
+                    _this.pageInfo.PageIndex = 0;
                     Vue.set(ve.screenParamData, "dataDef", []);
                     showList(function (data) {
                         if (_this.screenParam.dataDef.length > 0) {
@@ -119,19 +123,55 @@
                             }
                         });
                     }
-                }
+                },
+                changePageCount: function (index) {
+                    let mess = this;
+                    _this.pageInfo.PageSize = mess.pageSize;
+                    _this.pageInfo.PageIndex = (index - 1);
+
+                    Vue.set(ve.screenParamData, "dataDef", []);
+                    showList(function (data) {
+                        if (_this.screenParam.dataDef.length > 0) {
+                            ve.panelName = 'result';
+                            Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
+                        }
+                        else {
+                            mess.$Message.info("没有满足当前查询条件的结果!");
+                        }
+                    });
+
+                },
+
+          /*      changePageSizer: function (value) {
+                    let mess = this;
+                    _this.pageInfo.PageSize = value;
+                    Vue.set(ve.screenParamData, "dataDef", []);
+                    showList(function (data) {
+                        if (_this.screenParam.dataDef.length > 0) {
+                            ve.panelName = 'result';
+                            Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
+                        }
+                        else {
+                            mess.$Message.info("没有满足当前查询条件的结果!");
+                        }
+                    });
+                } */
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
         var ve = new Vue(options);
         function showList(callback) {
             ve.searchParam = _this.searchParam;
+            ve.pageInfo=_this.pageInfo;
+
             _.Search({
                 Service: _this.service,
                 Method: _this.method,
                 Data: ve.searchParam,
+                PageInfo:ve.pageInfo,
                 Success: function (data) {
                     _this.screenParam.dataDef = data.rows;
+                    ve.pagedataCount = data.total;
                     callback && callback();
                 }
             })
@@ -164,17 +204,43 @@
         _this.colOperate = [{
             title: '操作',
             key: 'action',
-            width: 130,
+            width: 160,
             align: 'center',
             fixed: 'right',
             render: function (h, params) {
-                if ((!CanEdit) && (!CanExec)) {
                     return h('div',
-                        []
-                    );
-                }
-                else {
-                    if ((CanEdit) && (!CanExec)) {
+                          [
+                           (CanBrowse)  &&  h('Button',
+                                {
+                                    props: { type: 'primary', size: 'small', disabled: false },
+                                    style: { marginRight: '1px' },
+                                    on: { click: function (event) { _this.browseHref(params.row, params.index) } },
+                                }, '浏览'),
+                           (CanEdit) &&  h('Button',
+                                  {
+                                      props: { type: 'primary', size: 'small', disabled: false },
+                                      style: { marginRight: '1px' },
+                                      on: { click: function (event) { _this.modHref(params.row, params.index) } },
+
+                                  }, '修改'),
+                           (CanBg) && h('Button',
+                                  {
+                                      props: { type: 'primary', size: 'small', disabled: false },
+                                      style: { marginRight: '1px' },
+                                      on: { click: function (event) { _this.bgHref(params.row, params.index) } },
+
+                                  }, '变更'),
+                          ]
+                    )
+
+                /*  if ((!CanEdit) && (!CanExec)) {
+                      return h('div',
+                          []
+                      );
+                  }
+                  else { 
+
+                     if ((CanEdit) && (!CanExec)) {
                         return h('div',
                             [
                                 h('Button',
@@ -225,8 +291,8 @@
 
                             ]
                         );
-                    }
-                }
+                    }   
+                }*/
             }
         }]
     };
@@ -234,6 +300,7 @@
 
 
     this.vueInit = function () {
+        _this.pageInfo = {};
         _this.searchParam = {};
         _this.screenParam = {};
         _this.service = "";

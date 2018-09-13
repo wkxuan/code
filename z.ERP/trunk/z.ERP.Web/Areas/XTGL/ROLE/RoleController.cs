@@ -15,8 +15,10 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
             ViewBag.Title = "角色信息";
             return View(new SearchRender()
             {
-                Permission_Add = "102007",
-                Permission_Del = "102007"
+                Permission_Add = "10200701",
+                Permission_Del = "10200701",
+                Permission_Edit = "10100702",
+
             });
         }
         public ActionResult RoleEdit(string Id)

@@ -171,6 +171,8 @@
     <Compile Include="Areas\Layout\Print\PrintViewBase.cs" />
     <Compile Include="Areas\Layout\Search\SearchRender.cs" />
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
+    <Compile Include="Areas\Layout\Srch\SrchRender.cs" />
+    <Compile Include="Areas\Layout\Srch\SrchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="Areas\XTGL\PAY\PayController.cs" />
     <Compile Include="Areas\XTGL\PERIOD\PeriodController.cs" />
     <Compile Include="Areas\XTGL\SHOP\ShopController.cs" />
+    <Compile Include="Areas\XTGL\SrchORG\SrchORGController.cs" />
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\SYSUSER\SysuserController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
@@ -257,6 +260,7 @@
     <Content Include="Areas\Layout\Edit\_Edit.js" />
     <Content Include="Areas\Layout\PopSearch\_PopSearchLayout.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
+    <Content Include="Areas\Layout\Srch\_SrchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
     <Content Include="Areas\Pop\PopPay.js" />
     <Content Include="Areas\Pop\PopFeeSubject.js" />
@@ -295,6 +299,7 @@
     <Content Include="Areas\XTGL\RCL\RCL.js" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.js" />
     <Content Include="Areas\XTGL\ROLE\RoleList.js" />
+    <Content Include="Areas\XTGL\SrchORG\SrchORG.js" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.js" />
     <Content Include="Areas\XTGL\ORG\Org.js" />
     <Content Include="Areas\XTGL\SHOP\Shop.js" />
@@ -481,6 +486,8 @@
     <Content Include="Areas\SPGL\SALEBILL\SaleBillDetail.cshtml" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.cshtml" />
+    <Content Include="Areas\Layout\Srch\_SrchLayout.cshtml" />
+    <Content Include="Areas\XTGL\SrchORG\SrchORG.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

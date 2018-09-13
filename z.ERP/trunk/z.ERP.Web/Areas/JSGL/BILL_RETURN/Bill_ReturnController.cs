@@ -4,6 +4,7 @@ using z.ERP.Entities;
 using System.Collections.Generic;
 using z.MVC5.Results;
 using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Web.Areas.Layout.Search;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_RETURN
 {
@@ -11,8 +12,16 @@ namespace z.ERP.Web.Areas.JSGL.BILL_RETURN
     {
         public ActionResult Bill_ReturnList()
         {
-            ViewBag.Title = "保证金返还";
-            return View();
+            ViewBag.Title = "保证金返还单";
+
+            return View(new SearchRender()
+            {
+                Permission_Browse = "10700100",
+                Permission_Add = "10700101",
+                Permission_Del = "10700101",
+                Permission_Edit = "10700101",
+                Permission_Exec = "10700102"
+            });
         }
         public ActionResult Bill_ReturnEdit(string Id)
         {

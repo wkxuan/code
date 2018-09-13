@@ -35,6 +35,19 @@ namespace z.ERP.Services
 
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+
+        public DataGridResult SrcORG(SearchItem item)
+        {
+            string sql = $@"SELECT ORGCODE,ORGNAME FROM ORG WHERE 1=1 ";
+            item.HasKey("ORGCODE", a => sql += $" and ORGCODE LIKE '%{a}%'");
+            item.HasKey("ORGNAME", a => sql += $" and ORGNAME LIKE '%{a}%'");
+            sql += " ORDER BY  ORGCODE";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
 

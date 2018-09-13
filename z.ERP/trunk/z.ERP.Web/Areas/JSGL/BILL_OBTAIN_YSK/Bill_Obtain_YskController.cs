@@ -1,14 +1,10 @@
 ﻿using z.ERP.Web.Areas.Base;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
 using System.Collections.Generic;
 using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
 using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Web.Areas.Layout.Search;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_YSH
 {
@@ -16,8 +12,16 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_YSH
     {
         public ActionResult Bill_Obtain_YskList()
         {
-            ViewBag.Title = "预收款收取";
-            return View();
+            ViewBag.Title = "预收款收取单";
+
+            return View(new SearchRender()
+            {
+                Permission_Browse = "10700400",
+                Permission_Add = "10700401",
+                Permission_Del = "10700401",
+                Permission_Edit = "10700401",
+                Permission_Exec = "10700402"
+            });
         }
         public ActionResult Bill_Obtain_YskEdit(string Id)
         {

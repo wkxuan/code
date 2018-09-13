@@ -1,13 +1,8 @@
 ﻿using z.ERP.Web.Areas.Base;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
 using System.Collections.Generic;
 using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Attributes;
 using z.ERP.Web.Areas.Layout.EditDetail;
@@ -18,11 +13,14 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN
     {
         public ActionResult Bill_ObtainList()
         {
-            ViewBag.Title = "保证金收取";
+            ViewBag.Title = "保证金收取单";
             return View(new SearchRender()
             {
-                Permission_Add = "10700201",
-                Permission_Del = "10700201"
+                Permission_Browse = "10700300",
+                Permission_Add = "10700301",
+                Permission_Del = "10700301",
+                Permission_Edit = "10700301",
+                Permission_Exec = "10700302"
             });
         }
         public ActionResult Bill_ObtainEdit(string Id)
