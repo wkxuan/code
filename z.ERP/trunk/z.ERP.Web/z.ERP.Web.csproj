@@ -198,6 +198,7 @@
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\PPGL\BRAND\BrandController.cs" />
     <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
+    <Compile Include="Areas\SPGL\SALEBILL\SaleBillController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFilesController.cs" />
@@ -264,6 +265,8 @@
     <Content Include="Areas\Pop\PopMerchant.js" />
     <Content Include="Areas\Pop\PopContract.js" />
     <Content Include="Areas\Pop\Pop\PopBrandList.js" />
+    <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />
+    <Content Include="Areas\Pop\Pop\PopGoodsList.js" />
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
     <Content Include="Areas\Pop\Pop\PopMerchantList.js" />
     <Content Include="Areas\Pop\Pop\PopContractList.js" />
@@ -279,6 +282,8 @@
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.js" />
     <Content Include="Areas\SPGL\GOODS\GoodsList.js" />
+    <Content Include="Areas\SPGL\SALEBILL\SaleBillEdit.js" />
+    <Content Include="Areas\SPGL\SALEBILL\SaleBillList.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
@@ -471,6 +476,11 @@
     <Content Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkPrint.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_Print.cshtml" />
     <Content Include="Areas\XTGL\RCL\RCL.cshtml" />
+    <Content Include="Areas\SPGL\SALEBILL\SaleBillList.cshtml" />
+    <Content Include="Areas\SPGL\SALEBILL\SaleBillEdit.cshtml" />
+    <Content Include="Areas\SPGL\SALEBILL\SaleBillDetail.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopGoodsList.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopGoodsShopList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,29 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.PopSearch;
+@inherits PopSearchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            商品代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.GOODSDM",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">商品名称</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.NAME"
+                });
+            }
+        </i-col>
+    </row>
+}
+

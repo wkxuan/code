@@ -58,6 +58,16 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "品牌";
             return View();
         }
+        public ActionResult PopGoodsList()
+        {
+            ViewBag.Title = "商品";
+            return View();
+        }
+        public ActionResult PopGoodsShopList()
+        {
+            ViewBag.Title = "商品";
+            return View();
+        }
     }
 
 }

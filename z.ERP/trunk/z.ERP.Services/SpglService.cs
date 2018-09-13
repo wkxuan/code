@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
+using z.ERP.Entities.Procedures;
 using z.ERP.Model.Vue;
 using z.Exceptions;
 using z.Extensions;
@@ -234,6 +235,142 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
             return mer.GOODSDM;
+        }        
+        public DataGridResult GetSaleBillList(SearchItem item)
+        {
+            string sql = $@"SELECT L.*,B.NAME BRANCHMC,S1.USERNAME SYYMC,S2.USERNAME YYYMC  FROM SALEBILL L,BRANCH B,SYSUSER S1,SYSUSER S2" +
+                " where L.BRANCHID = B.ID  and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID  ";
+            item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and L.BRANCHID={a}");
+            item.HasKey("MERCHANTID", a => sql += $" and L.MERCHANTID={a}");
+            item.HasKey("ACCOUNT_DATE_START ", a => sql += $" and L.ACCOUNT_DATE>={a}");
+            item.HasKey("ACCOUNT_DATE_END", a => sql += $" and L.ACCOUNT_DATE<={a}");
+            item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
+            item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
+            item.HasKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
+            item.HasKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
+            item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
+            item.HasKey("VERIFY_TIME_START", a => sql += $" and L.VERIFY_TIME>={a}");
+            item.HasKey("VERIFY_TIME_END", a => sql += $" and L.VERIFY_TIME<={a}");
+            sql += " ORDER BY  BILLID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+        public string SaveSaleBill(SALEBILLEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.BILLID.IsEmpty())
+                SaveData.BILLID = NewINC("SALEBILL");
+            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            SaveData.VERIFY = employee.Id;
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.ACCOUNT_DATE);
+            v.Require(a => a.CASHIERID);
+            v.Require(a => a.CLERKID);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                SaveData.SALEBILLITEM?.ForEach(item =>
+                {
+                    GetVerify(item).Require(a => a.GOODSID);
+                    GetVerify(item).Require(a => a.PAYID);
+                    GetVerify(item).Require(a => a.QUANTITY);
+                    GetVerify(item).Require(a => a.AMOUNT);
+                });
+                DbHelper.Save(SaveData);
+                Tran.Commit();
+            }
+            return SaveData.BILLID;
+        }
+        public object ShowOneSaleBillEdit(SALEBILLEntity Data)
+        {
+            string sql = $@" SELECT L.*,B.NAME BRANCHMC,S1.USERNAME SYYMC,S2.USERNAME YYYMC" +
+                "   FROM SALEBILL L,BRANCH B,SYSUSER S1,SYSUSER S2 " +
+                "  where L.BRANCHID = B.ID and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and L.BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            string sqlsale = $@"SELECT G.*,S.GOODSDM,S.NAME,P.NAME PAYNAME,O.CODE   FROM SALEBILLITEM G,GOODS S,PAY P,SHOP O " +
+                "  WHERE G.GOODSID=S.GOODSID and G.PAYID = P.PAYID  and G.SHOPID= O.SHOPID" ;
+            if (!Data.BILLID.IsEmpty())
+                sqlsale += (" and G.BILLID= " + Data.BILLID);
+            DataTable dtsale = DbHelper.ExecuteTable(sqlsale);
+
+            var result = new
+            {
+                saleBill = dt,
+                saleBillItem = new dynamic[] {
+                   dtsale
+                }
+            };
+            return result;
+        }
+
+        public void DeleteSaleBill(List<SALEBILLEntity> DeleteData)
+        {
+            foreach (var con in DeleteData)
+            {
+                SALEBILLEntity Data = DbHelper.Select(con);
+                if (Data.STATUS != ((int)普通单据状态.未审核).ToString())
+                {
+                    throw new LogicException($"租约({Data.BILLID})已经不是未审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var salebill in DeleteData)
+                {
+                    var v = GetVerify(salebill);
+                    //校验
+                    DbHelper.Delete(salebill);
+                }
+                Tran.Commit();
+            }
+        }
+        public Tuple<dynamic, DataTable> GetSaleBillDetail(SALEBILLEntity Data)
+        {
+            string sql = $@" SELECT L.*,B.NAME BRANCHMC,S1.USERNAME SYYMC,S2.USERNAME YYYMC" +
+                "   FROM SALEBILL L,BRANCH B,SYSUSER S1,SYSUSER S2 " +
+                "  where L.BRANCHID = B.ID and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and L.BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<退铺单状态>("STATUS", "STATUSMC");
+
+            string sqlsale = $@"SELECT G.*,S.GOODSDM,S.NAME,P.NAME PAYNAME,O.CODE  FROM SALEBILLITEM G,GOODS S,PAY P,SHOP O " +
+                "  WHERE G.GOODSID=S.GOODSID and G.PAYID = P.PAYID  and G.SHOPID= O.SHOPID";
+            if (!Data.BILLID.IsEmpty())
+                sqlsale += (" and G.BILLID= " + Data.BILLID);
+            DataTable dtsale = DbHelper.ExecuteTable(sqlsale);
+
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtsale);
+        }
+        public string ExecSaleBillData(SALEBILLEntity Data)
+        {
+            SALEBILLEntity mer = DbHelper.Select(Data);
+            if (mer.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("商品(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                EXEC_SALEBILL execsalebill = new EXEC_SALEBILL()
+                {
+                    P_BILLID = Data.BILLID,
+                    P_VERIFY = employee.Id
+                };
+                DbHelper.ExecuteProcedure(execsalebill);
+                Tran.Commit();
+            }
+            return mer.BILLID;
         }
     }
 }

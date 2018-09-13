@@ -1,0 +1,162 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Entities;
+@inherits EditDetailViewBase<string>
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            记账日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.ACCOUNT_DATE"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            POS终端
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.POSNO",
+                    Enable = false,
+                    Placeholder="保存完自动写入，需要提前定义"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelSyysuser",
+                    Text = "收银员",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.SYYMC",
+                    Enable = false,
+                });
+            }
+        </i-col>
+
+        @*<i-col span="2" class="RowTitle">
+            收银员
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CASHIERID"
+                });
+            }
+        </i-col>*@
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelYyysuser",
+                    Text = "营业员",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.YYYMC",
+                    Enable = false,
+                });
+            }
+        </i-col>
+
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            备注
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="24">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchColGoods",
+                    Text = "选择商品",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            <i-table size="small" :border="true"
+                     :columns="screenParam.colDef" :data="dataParam.SALEBILLITEM" ref="selectsaleitem"></i-table>
+        </i-col>
+    </row>
+}
+
+@section pops{
+<row>
+    <i-col>
+        @{
+            RenderControl(new PopsRender()
+            {
+                vModel = "screenParam.showPopSyyuser",                
+                Caption = "选择人员",
+                Width = "800",
+                Src = "screenParam.srcPopSyyuser",
+            });
+        }
+    </i-col>
+</row>
+<row>
+    <i-col>
+        @{
+            RenderControl(new PopsRender()
+            {
+                vModel = "screenParam.showPopGoods",
+                Caption = "选择商品",
+                Width = "900",
+                Src = "screenParam.srcPopGoods"
+            });
+        }
+    </i-col>
+</row>
+
+
+}
+

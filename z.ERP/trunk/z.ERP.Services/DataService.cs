@@ -295,5 +295,37 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+
+        public DataGridResult GetGoodsShopList(SearchItem item)
+        {
+            string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE KINDDM,C.NAME KINDMC,S.CODE,S.NAME SPMC,P.SHOPID " +
+                "from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D ,GOODS_SHOP P,SHOP S" +
+                "  where G.MERCHANTID=M.MERCHANTID  AND G.KINDID=C.ID and G.BRANDID =D.ID and G.GOODSID = P.GOODSID  and P.SHOPID=S.SHOPID";
+
+            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+            item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
+            item.HasKey("NAME", a => sql += $" and G.NAME like '%{a}%'");
+            item.HasKey("YYY", a => sql += $" and exists(select 1 from SYSUSER S where P.SHOPID = S.SHOPID and S.USERID = '{a}')");
+            
+            sql += " ORDER BY  G.GOODSDM";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public object GetPay(PAYEntity Data)
+        {
+            string sql = " SELECT  * FROM " +
+                "  PAY A" +
+                "  WHERE  1 = 1 ";
+            if (!Data.PAYID.IsEmpty())
+                sql += " AND A.PAYID='" + Data.PAYID + "'";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
+        }
+
     }
 }
