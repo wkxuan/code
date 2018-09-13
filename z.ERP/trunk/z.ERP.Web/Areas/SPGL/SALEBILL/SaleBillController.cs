@@ -19,6 +19,7 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
             ViewBag.Title = "销售补录单";
             return View(new SearchRender()
             {
+                Permission_Browse = "10500400",
                 Permission_Add = "10500401",
                 Permission_Del = "10500401",
                 Permission_Edit = "10500401",
