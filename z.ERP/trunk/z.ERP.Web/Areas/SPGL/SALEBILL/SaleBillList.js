@@ -21,7 +21,7 @@
 
 search.browseHref = function (row, index) {
     _.OpenPage({
-        id: 10500301,
+        id: 10500401,
         title: '销售补录单详情',
         url: "SPGL/SALEBILL/SaleBillDetail/" + row.BILLID
     })
@@ -29,7 +29,7 @@ search.browseHref = function (row, index) {
 
 search.modHref = function (row, index) {
     _.OpenPage({
-        id: 10500301,
+        id: 10500401,
         title: '编辑销售补录单',
         url: "SPGL/SALEBILL/SaleBillEdit/" + row.BILLID
     })
@@ -38,7 +38,7 @@ search.modHref = function (row, index) {
 
 search.addHref = function (row) {
     _.OpenPage({
-        id: 10500301,
+        id: 10500401,
         title: '添加销售补录单',
         url: "SPGL/SALEBILL/SaleBillEdit/"
     })

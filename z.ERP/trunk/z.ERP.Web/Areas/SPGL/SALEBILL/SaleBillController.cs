@@ -19,10 +19,10 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
             ViewBag.Title = "销售补录单";
             return View(new SearchRender()
             {
-                Permission_Add = "10500301",
-                Permission_Del = "10500301",
-                Permission_Edit = "10500301",
-                Permission_Exec = "10500302"
+                Permission_Add = "10500401",
+                Permission_Del = "10500401",
+                Permission_Edit = "10500401",
+                Permission_Exec = "10500402"
             });
         }
         public ActionResult SaleBillEdit(string Id)
@@ -38,7 +38,7 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
             ViewBag.salebillitem = entity.Item2;
             return View(entity);            
         }
-        [Permission("10500301")]
+        [Permission("10500401")]
         public string Save(SALEBILLEntity SaveData)
         {
             return service.SpglService.SaveSaleBill(SaveData);            
@@ -53,7 +53,7 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
         {
             return new UIResult(service.SpglService.ShowOneSaleBillEdit(Data));
         }
-        [Permission("10500302")]
+        [Permission("10500402")]
         public void ExecData(SALEBILLEntity Data)
         {
             service.SpglService.ExecSaleBillData(Data);
