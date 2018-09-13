@@ -35,7 +35,7 @@ namespace z.ERP.Services
             sql += " ORDER BY  D.SHOPDM";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
             dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
             return new DataGridResult(dt, count);
         }
@@ -134,7 +134,7 @@ namespace z.ERP.Services
                 throw new LogicException("找不到租约!");
             }
 
-            contract.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            contract.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
             contract.NewEnumColumns<联营合同合作方式>("OPERATERULE", "OPERATERULEMC");
 
             contract.NewEnumColumns<起始日清算>("QS_START", "QS_STARTMC");
