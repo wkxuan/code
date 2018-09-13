@@ -184,8 +184,8 @@ namespace z.ERP.Services
             item.HasKey("NIANYUE", a => sql += $" and A.NIANYUE = '{a}'");
             item.HasKey("YEARMONTH", a => sql += $" and A.YEARMONTH = '{a}'");
             item.HasKey("REPORTER", a => sql += $" and A.REPORTER = '{a}'");
-            item.HasKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
-            item.HasKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
+            item.HasDateKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
+            item.HasDateKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
             item.HasKey("WFDJ", a => sql += $" and A.MUST_MONEY - A.RECEIVE_MONEY<>0");
             item.HasKey("FTYPE",a => sql += $" and F.TYPE = {a}");    //费用项目类型
             item.HasKey("RRETURNFLAG", a => sql += $" and A.RECEIVE_MONEY <> 0");
@@ -277,8 +277,8 @@ namespace z.ERP.Services
             item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             item.HasKey("REPORTER", a => sql += $" and A.REPORTER = '{a}'");
-            item.HasKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
-            item.HasKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
+            item.HasDateKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
+            item.HasDateKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
             item.HasKey("YXHTBJ", a => sql += $" and A.STATUS in (2,3,4)");
             item.HasKey("FREESHOPBJ", a => sql += $" and not exists (select 1 from FREESHOP P where P.CONTRACTID = A.CONTRACTID)");
 

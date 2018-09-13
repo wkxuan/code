@@ -204,7 +204,7 @@
         _this.colOperate = [{
             title: '操作',
             key: 'action',
-            width: 160,
+            width: 165,
             align: 'center',
             fixed: 'right',
             render: function (h, params) {
