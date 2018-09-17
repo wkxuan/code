@@ -22,10 +22,10 @@ namespace z.ERP.Web.Areas.XTGL.STATION
            return service.XtglService.SaveSataion(DefineSave);             
         }
 
-        public UIResult SearchStation(STATIONEntity Staion)
+        public UIResult SearchStation(STATIONEntity Data)
         {            
          //   return new UIResult(service.XtglService.GetStaionElement(Staion));
-            var res = service.XtglService.GetStaionElement(Staion);
+            var res = service.XtglService.GetStaionElement(Data);
             return new UIResult(
                 new
                 {

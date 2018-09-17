@@ -1,4 +1,5 @@
 ﻿define.beforeVue = function () {
+    define.dataParam.IP = "";
     define.screenParam.colDef = [
     { title: "POS终端号", key: 'STATIONBH', width: 150 },
     { title: "IP地址", key: 'IP', width: 150 }
@@ -35,11 +36,12 @@ define.mountedInit = function () {
     });
 }
 
-define.showone = function (data, callback) {
+define.showone = function (key, callback) {
     _.Ajax('SearchStation', {
-        Data: { STATIONBH: data }
+        Data: { STATIONBH: key }
     }, function (data) {
-        $.extend(define.dataParam, data.Pay);
+     
+        $.extend(define.dataParam, data.Station);
         for (var j = 0; j < define.dataParam.payDataDef.length; j++) {
             define.dataParam.payDataDef[j]._checked = false;
             for (var i = 0; i < data.Pay.length; i++) {
