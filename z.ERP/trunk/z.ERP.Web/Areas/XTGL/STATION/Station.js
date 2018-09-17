@@ -14,14 +14,11 @@
     define.service = "XtglService";
     define.method = "GetStaionElement";
     define.methodList = "GetStaion";
-    define.Key = 'STATIONBH';
+    define.Key = "STATIONBH";
 
     define.screenParam.showPopShop = false;
     define.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
     define.screenParam.popParam = {};
-
-
-
 
 }
 
@@ -44,19 +41,16 @@ define.showone = function (data, callback) {
     }, function (data) {
         $.extend(define.dataParam, data.Pay);
         for (var j = 0; j < define.dataParam.payDataDef.length; j++) {
-            define.dataParam.payDataDef[j]._checked = true;
+            define.dataParam.payDataDef[j]._checked = false;
             for (var i = 0; i < data.Pay.length; i++) {
                 if (data.Pay[i].PAYID == define.dataParam.payDataDef[j].PAYID) {
                     define.dataParam.payDataDef[j]._checked = true;
                 }
             } 
         };
-
         callback && callback();
     });
 }
-
-
 
 define.otherMethods = {
     SelShop: function () {
