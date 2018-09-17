@@ -48,5 +48,11 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        [Field("店铺")]
+        public string SHOPID
+        {
+            get;set;
+        }
     }
 }

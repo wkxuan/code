@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.WebPages;
+﻿using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
 using z.MVC5.Results;
-using static z.ERP.Services.XtglService;
+using z.ERP.Web.Areas.Layout.Define;
 
 namespace z.ERP.Web.Areas.XTGL.STATION
 {
@@ -16,16 +11,28 @@ namespace z.ERP.Web.Areas.XTGL.STATION
         public ActionResult Station()
         {
             ViewBag.Title = "收银终端信息";
-            return View();
+            return View(new DefineRender()
+            {
+                Permission_Add = "10500101",
+                Permission_Mod = "10500102"
+            });
         }
         public string Save(STATIONEntity DefineSave)
         {
            return service.XtglService.SaveSataion(DefineSave);             
         }
 
-        public UIResult GetStaionElement(STATIONEntity Staion)
+        public UIResult SearchStation(STATIONEntity Staion)
         {            
-            return new UIResult(service.XtglService.GetStaionElement(Staion));
+         //   return new UIResult(service.XtglService.GetStaionElement(Staion));
+            var res = service.XtglService.GetStaionElement(Staion);
+            return new UIResult(
+                new
+                {
+                    Station = res.Item1,
+                    Pay = res.Item2
+                }
+                );
         }
 
         public UIResult GetStaionPayList()

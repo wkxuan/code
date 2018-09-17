@@ -1,7 +1,102 @@
-﻿
+﻿define.beforeVue = function () {
+    define.screenParam.colDef = [
+    { title: "POS终端号", key: 'STATIONBH', width: 150 },
+    { title: "IP地址", key: 'IP', width: 150 }
+    ];
+
+    define.screenParam.payColDef = [
+    { type: 'selection', width: 60, align: 'center' },
+    { title: '代码', key: 'PAYID', width: 80 },
+    { title: '名称', key: 'NAME', width: 160 }]; 
+
+    define.screenParam.dataDef = [];
+    define.dataParam.payDataDef = [];
+    define.service = "XtglService";
+    define.method = "GetStaionElement";
+    define.methodList = "GetStaion";
+    define.Key = 'STATIONBH';
+
+    define.screenParam.showPopShop = false;
+    define.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
+    define.screenParam.popParam = {};
 
 
-function _Define() {
+
+
+}
+
+define.mountedInit = function () {
+    _.Ajax('GetStaionPayList', {
+    }, function (data) {
+        for (var i = 0; i < data.pay.length; i++) {
+            define.dataParam.payDataDef.push({
+                _checked: false,
+                PAYID: data.pay[i]["PAYID"],
+                NAME: data.pay[i]["NAME"],
+            });
+        }
+    });
+}
+
+define.showone = function (data, callback) {
+    _.Ajax('SearchStation', {
+        Data: { STATIONBH: data }
+    }, function (data) {
+        $.extend(define.dataParam, data.Pay);
+        for (var j = 0; j < define.dataParam.payDataDef.length; j++) {
+            define.dataParam.payDataDef[j]._checked = true;
+            for (var i = 0; i < data.Pay.length; i++) {
+                if (data.Pay[i].PAYID == define.dataParam.payDataDef[j].PAYID) {
+                    define.dataParam.payDataDef[j]._checked = true;
+                }
+            } 
+        };
+
+        callback && callback();
+    });
+}
+
+
+
+define.otherMethods = {
+    SelShop: function () {
+        define.screenParam.showPopShop = true;
+    }
+}
+
+//接收子页面返回值
+define.popCallBack = function (data) {
+    if (define.screenParam.showPopShop) {
+       define.screenParam.showPopShop = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            define.dataParam.SHOPID = data.sj[i].SHOPID;
+            define.dataParam.SHOPCODE = data.sj[i].SHOPCODE;
+        };
+     }
+};
+
+define.IsValidSave = function () {
+    if (!define.dataParam.STATIONBH) {
+        iview.Message.info("终端号不能为空!");
+        return false;
+    }
+    if (!define.dataParam.IP) {
+        iview.Message.info("IP地址不能为空!");
+        return false;
+    }
+    if (!define.dataParam.TYPE) {
+        iview.Message.info("类型不能为空!");
+        return false;
+    }
+    if (define.dataParam.TYPE == "2" && !define.dataParam.SHOPID) {
+        iview.Message.info("类型为店铺时，店铺不能为空!");
+        return false;
+    }
+    return true;
+}
+
+
+/*function _Define() {
     var _this = this;
 
     //vue之前的操作(主要是实现v-model绑定数据的声明)
@@ -31,6 +126,12 @@ function _Define() {
         _this.method = "GetStaionElement";
         _this.methodList = "GetStaion";
         _this.Key = 'STATIONBH';
+
+        _this.screenParam.showPopShop = false;
+        _this.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
+        _this.screenParam.popParam = {};
+
+
     }
 
     //控件是否可用，扩展函数,待完善
@@ -226,6 +327,9 @@ function _Define() {
         }
     }
 
+
+
+
     //初始化vue绑定的对象
     this.vueInit = function () {
         _this.dataParam = {};
@@ -244,3 +348,4 @@ function _Define() {
     }, 100);
 }
 var define = new _Define();
+*/

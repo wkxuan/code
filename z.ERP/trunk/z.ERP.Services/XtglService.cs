@@ -253,37 +253,58 @@ namespace z.ERP.Services
         }
         public DataGridResult GetStaion(SearchItem item)
         {
-            string sql = $@"select STATIONBH from STATION where 1=1 ";
+            string sql = $@"select * from STATION where 1=1 ";
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH = '{a}'");
             sql += "order by STATIONBH";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public object GetStaionElement(STATIONEntity DefineSave)
+
+        public Tuple<dynamic, DataTable> GetStaionElement(STATIONEntity Data)
         {
-            string sql = $@"select STATIONBH,TYPE,IP from STATION where 1=1 ";
-            sql += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
-            sql += "order by STATIONBH";
+            string sql = $@"select STATIONBH,TYPE,IP,SHOPID from STATION where 1=1 ";
+
+            if (!Data.STATIONBH.IsEmpty())
+              sql += " and STATIONBH = " + Data.STATIONBH.ToString();
+
+            sql += " order by STATIONBH";
 
 
-            DataTable dt = DbHelper.ExecuteTable(sql);
+            DataTable station = DbHelper.ExecuteTable(sql);
 
             var sqlpay = $@"SELECT S.STATIONBH,S.PAYID,P.NAME from STATION_PAY S,PAY P WHERE S.PAYID=P.PAYID ";
-            sqlpay += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
+            if (!Data.STATIONBH.IsEmpty())
+                sqlpay += " and STATIONBH = " + Data.STATIONBH.ToString();
             sqlpay += " order by S.PAYID";
-            DataTable dt1 = DbHelper.ExecuteTable(sqlpay);
+            DataTable pay = DbHelper.ExecuteTable(sqlpay);
 
-            var result = new
-            {
-                staion = dt,
-                station_pay = new dynamic[]
-                {
-                    dt1
-                }
-            };
-            return result;
+            return new Tuple<dynamic, DataTable>(station.ToOneLine(), pay);
         }
+        /*    public object GetStaionElement(STATIONEntity DefineSave)
+            {
+                string sql = $@"select STATIONBH,TYPE,IP,SHOPID from STATION where 1=1 ";
+                sql += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
+                sql += "order by STATIONBH";
+
+
+                DataTable dt = DbHelper.ExecuteTable(sql);
+
+                var sqlpay = $@"SELECT S.STATIONBH,S.PAYID,P.NAME from STATION_PAY S,PAY P WHERE S.PAYID=P.PAYID ";
+                sqlpay += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
+                sqlpay += " order by S.PAYID";
+                DataTable dt1 = DbHelper.ExecuteTable(sqlpay);
+
+                var result = new
+                {
+                    staion = dt,
+                    station_pay = new dynamic[]
+                    {
+                        dt1
+                    }
+                };
+                return result;
+            }  */
 
         public object GetStaionPayList()
         {
