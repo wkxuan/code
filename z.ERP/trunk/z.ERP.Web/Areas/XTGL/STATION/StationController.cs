@@ -24,7 +24,6 @@ namespace z.ERP.Web.Areas.XTGL.STATION
 
         public UIResult SearchStation(STATIONEntity Data)
         {            
-         //   return new UIResult(service.XtglService.GetStaionElement(Staion));
             var res = service.XtglService.GetStaionElement(Data);
             return new UIResult(
                 new
@@ -32,7 +31,7 @@ namespace z.ERP.Web.Areas.XTGL.STATION
                     Station = res.Item1,
                     Pay = res.Item2
                 }
-                );
+            );
         }
 
         public UIResult GetStaionPayList()

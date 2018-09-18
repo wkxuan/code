@@ -1,73 +1,7 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@*
-using z.ERP.Web.Areas.Layout.Empty
-@inherits EmptyViewBase
-*@
-
 @using z.ERP.Web.Areas.Layout.Define
 @inherits DefineViewBase
-
-@*
-    @section head{
-    <script src="~/Areas/Pop/PopContract/PopContract.js"></script>
-    }
-
-    @section btn{
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "add",
-                Text = "新增",
-                Enable = true
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "mod",
-                Text = "修改",
-                //Enable = false
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "save",
-                Text = "存档",
-                Enable = false
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "quit",
-                Text = "放弃",
-                Enable = false
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "del",
-                Text = "删除",
-                //Enable=false
-            });
-        }
-    }*@
-
-@* @section content{
-
- <row>
-    <i-col span="5">
-        <div ref="tableHeight">
-            <card  style="height:100%">        
-                <i-table :highlight-row="true" size="small" :border="true"
-                         :columns="screenParam.colDef" :data="screenParam.dataDef"
-                         v-on:on-current-change="showlist" :disabled="disabled" height="500"></i-table>
-            </card>
-        </div>
-    </i-col> *@
 
 @section search{
     <row>
@@ -94,7 +28,6 @@ using z.ERP.Web.Areas.Layout.Empty
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.STATIONBH",
-                 //   Id = "tb_bh",
                     Enable = false
                 });
             }
@@ -109,7 +42,6 @@ using z.ERP.Web.Areas.Layout.Empty
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.IP",
-                //    Id = "tb_ip",
                     Enable = false
                 });
             }
@@ -126,7 +58,6 @@ using z.ERP.Web.Areas.Layout.Empty
                 RenderControl(new EnumDropDownListRender<POS类型>
                 {
                     vModel = "dataParam.TYPE",
-                //    Id = "tb_type",
                     Enable = false
                 });
             }
@@ -159,8 +90,11 @@ using z.ERP.Web.Areas.Layout.Empty
             收款方式
         </i-col>
         <i-col span="10">
-        <i-table ref="selection" size="small" border height="350"
-                    :columns="screenParam.payColDef" :data="dataParam.payDataDef" ></i-table>
+        <i-table  size="small" border height="350"
+                    :columns="screenParam.payColDef" :data="screenParam.STATION_PAY_DATA"   
+                    v-on:on-select="screenParam.selectData"
+                    v-on:on-select-all="screenParam.selectDataAll"
+                    v-on:on-select-cancel="screenParam.selectCancel"></i-table>
        </i-col>
     </row>
 }

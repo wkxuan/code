@@ -339,11 +339,7 @@ namespace z.ERP.Services
             v.Verify();
             using (var tran = DbHelper.BeginTransaction())
             {
-                using (var tran1 = DbHelper.BeginTransaction())
-                {
-                    DbHelper.Save(DefineSave);
-                    tran1.Commit();
-                }
+                DbHelper.Save(DefineSave);
                 tran.Commit();
             }
 
