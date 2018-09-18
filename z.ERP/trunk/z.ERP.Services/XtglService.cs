@@ -325,7 +325,7 @@ namespace z.ERP.Services
         {
             var v = GetVerify(DefineSave);
             if (DefineSave.STATIONBH.IsEmpty())
-                DefineSave.STATIONBH = CommonService.NewINC("STATION").PadLeft(6, '0');
+                DefineSave.STATIONBH = CommonService.NewINC("STATION").PadLeft(5, '0');
             v.Require(a => a.STATIONBH);
             v.Require(a => a.TYPE);
             v.Require(a => a.IP);
