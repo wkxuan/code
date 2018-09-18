@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,6 +46,7 @@
   <ItemGroup>
     <Compile Include="JsglService.cs" />
     <Compile Include="PosService.cs" />
+    <Compile Include="ReportService.cs" />
     <Compile Include="UserService.cs" />
     <Compile Include="HtglService.cs" />
     <Compile Include="ServiceBase.cs" />
