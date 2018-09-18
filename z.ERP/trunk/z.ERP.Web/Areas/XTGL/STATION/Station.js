@@ -47,6 +47,12 @@
 
 }
 
+define.newRecord = function () {
+    for (var j = 0; j < define.screenParam.STATION_PAY_DATA.length; j++) {
+        Vue.set(define.screenParam.STATION_PAY_DATA[j], '_checked', false);
+    }
+}
+
 define.mountedInit = function () {
     _.Ajax('GetStaionPayList', {
     }, function (data) {
@@ -76,6 +82,7 @@ define.showone = function (data, callback) {
             };
             //赋值防止左边列表变化后直接保存
             Vue.set(define.dataParam, 'STATION_PAY', localData);
+           // Vue.set(define.dataParam, 'STATION', localData)
         };
         callback && callback();
     });
@@ -115,5 +122,6 @@ define.IsValidSave = function () {
         iview.Message.info("类型为店铺时，店铺不能为空!");
         return false;
     };
+
     return true;
 };

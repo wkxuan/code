@@ -266,7 +266,7 @@ namespace z.ERP.Services
             string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID from STATION S where 1=1 ";
 
             if (!Data.STATIONBH.IsEmpty())
-              sql += " and S.STATIONBH = " + Data.STATIONBH.ToString();
+              sql += $" and S.STATIONBH = '{ Data.STATIONBH}'";
 
             sql += " order by S.STATIONBH";
 
@@ -275,7 +275,7 @@ namespace z.ERP.Services
 
             var sqlpay = $@"SELECT S.STATIONBH,S.PAYID,P.NAME from STATION_PAY S,PAY P WHERE S.PAYID=P.PAYID ";
             if (!Data.STATIONBH.IsEmpty())
-                sqlpay += " and STATIONBH = " + Data.STATIONBH.ToString();
+                sqlpay += $" and STATIONBH = '{Data.STATIONBH.ToString()}'";
             sqlpay += " order by S.PAYID";
             DataTable pay = DbHelper.ExecuteTable(sqlpay);
 
