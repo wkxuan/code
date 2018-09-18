@@ -253,7 +253,7 @@ namespace z.ERP.Services
         }
         public DataGridResult GetStaion(SearchItem item)
         {
-            string sql = $@"select * from STATION where 1=1 ";
+            string sql = $@"select S.*,P.CODE SHOPCODE from STATION S,SHOP P where S.SHOPID=P.SHOPID(+) ";
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH = '{a}'");
             sql += "order by STATIONBH";
             int count;
@@ -263,12 +263,12 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable> GetStaionElement(STATIONEntity Data)
         {
-            string sql = $@"select STATIONBH,TYPE,IP,SHOPID from STATION where 1=1 ";
+            string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID from STATION S where 1=1 ";
 
             if (!Data.STATIONBH.IsEmpty())
-              sql += " and STATIONBH = " + Data.STATIONBH.ToString();
+              sql += " and S.STATIONBH = " + Data.STATIONBH.ToString();
 
-            sql += " order by STATIONBH";
+            sql += " order by S.STATIONBH";
 
 
             DataTable station = DbHelper.ExecuteTable(sql);

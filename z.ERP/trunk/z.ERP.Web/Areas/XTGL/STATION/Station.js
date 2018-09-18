@@ -36,12 +36,11 @@ define.mountedInit = function () {
     });
 }
 
-define.showone = function (key, callback) {
+define.showone = function (data, callback) {
     _.Ajax('SearchStation', {
-        Data: { STATIONBH: key }
+        Data: { STATIONBH: data }
     }, function (data) {
-     
-        $.extend(define.dataParam, data.Station);
+        $.extend(define.dataParam, data.Pay);
         for (var j = 0; j < define.dataParam.payDataDef.length; j++) {
             define.dataParam.payDataDef[j]._checked = false;
             for (var i = 0; i < data.Pay.length; i++) {

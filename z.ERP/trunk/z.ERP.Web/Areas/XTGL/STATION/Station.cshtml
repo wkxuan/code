@@ -91,10 +91,10 @@ using z.ERP.Web.Areas.Layout.Empty
         </i-col>
         <i-col span="5">
             @{
-                RenderControl(new TextBoxRender
+                RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.STATIONBH",
-                    Id = "tb_bh",
+                 //   Id = "tb_bh",
                     Enable = false
                 });
             }
@@ -106,10 +106,10 @@ using z.ERP.Web.Areas.Layout.Empty
         </i-col>
         <i-col span="5">
             @{
-                RenderControl(new TextBoxRender
+                RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.IP",
-                    Id = "tb_ip",
+                //    Id = "tb_ip",
                     Enable = false
                 });
             }
@@ -126,7 +126,7 @@ using z.ERP.Web.Areas.Layout.Empty
                 RenderControl(new EnumDropDownListRender<POS类型>
                 {
                     vModel = "dataParam.TYPE",
-                    Id = "tb_type",
+                //    Id = "tb_type",
                     Enable = false
                 });
             }
