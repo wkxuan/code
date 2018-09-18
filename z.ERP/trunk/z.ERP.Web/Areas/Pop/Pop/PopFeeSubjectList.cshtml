@@ -4,10 +4,10 @@
 @inherits PopSearchViewBase
 @section conditionParam{
 <row>
-    <i-col span="2" class="RowTitle">
+    <i-col span="3" class="RowTitle">
         代码
     </i-col>
-    <i-col span="6">
+    <i-col span="5">
         @{
             RenderControl(new TextBoxRender()
             {
@@ -15,8 +15,8 @@
             });
         }
     </i-col>
-    <i-col span="2" class="RowTitle">名称</i-col>
-    <i-col span="6">
+    <i-col span="3" class="RowTitle">名称</i-col>
+    <i-col span="5">
         @{
             RenderControl(new TextBoxRender()
             {
@@ -24,8 +24,8 @@
             });
         }
     </i-col>
-    <i-col span="2" class="RowTitle">拼音码</i-col>
-    <i-col span="6">
+    <i-col span="3" class="RowTitle">拼音码</i-col>
+    <i-col span="5">
         @{
             RenderControl(new TextBoxRender()
             {
@@ -35,8 +35,8 @@
     </i-col>
 </row>
 <row>
-    <i-col span="2" class="RowTitle">项目类型</i-col>
-    <i-col span="6">
+    <i-col span="3" class="RowTitle">项目类型</i-col>
+    <i-col span="5">
         @{
             RenderControl(new EnumDropDownListRender<收费项目类型>()
             {
@@ -44,8 +44,8 @@
             });
         }
     </i-col>
-    <i-col span="2" class="RowTitle">成本费用</i-col>
-    <i-col span="6">
+    <i-col span="3" class="RowTitle">成本费用</i-col>
+    <i-col span="5">
         @{
             RenderControl(new EnumDropDownListRender<收费项目成本费用>()
             {
@@ -54,8 +54,8 @@
         }
     </i-col>
 
-    <i-col span="2" class="RowTitle">现金货扣</i-col>
-    <i-col span="6">
+    <i-col span="3" class="RowTitle">现金货扣</i-col>
+    <i-col span="5">
         @{
             RenderControl(new EnumDropDownListRender<收费项目现金货扣>()
             {
