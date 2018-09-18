@@ -27,7 +27,8 @@ namespace z.ERP.Services
             item.HasKey("NAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
             item.HasKey("STYLE", a => sql += $" and A.STYLE = '{a}'");
-            item.HasArrayKey("HTLX", a => sql += $" and A.HTLX in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            // item.HasArrayKey("HTLX", a => sql += $" and A.HTLX in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("HTLX", a => sql += $" and A.HTLX = {a}");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = {a}");
             item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=A.CONTRACTID and UPPER(U.CODE) LIKE '{a.ToUpper()}%')");
