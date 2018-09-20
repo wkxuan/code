@@ -86,6 +86,11 @@
                     }
 
                 },
+
+                browse: function (row, index){
+                    //
+                },
+
                 changePageCount: function (index) {
                     let mess = this;
                     _this.pageInfo.PageSize = mess.pageSize;

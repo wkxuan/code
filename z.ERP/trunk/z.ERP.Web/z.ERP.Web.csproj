@@ -176,6 +176,7 @@
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
     <Compile Include="Areas\Report\ContractSale\ContractSaleController.cs" />
+    <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
     <Compile Include="Areas\Share\Render\DropDownListsRender.cs" />
@@ -283,6 +284,7 @@
     <Content Include="Areas\Pop\Pop\PopShopList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\Report\ContractSale\ContractSale.js" />
+    <Content Include="Areas\Report\GoodsSale\GoodsSale.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
@@ -491,12 +493,12 @@
     <Content Include="Areas\Layout\Srch\_SrchLayout.cshtml" />
     <Content Include="Areas\XTGL\SrchORG\SrchORG.cshtml" />
     <Content Include="Areas\Report\ContractSale\ContractSale.cshtml" />
+    <Content Include="Areas\Report\GoodsSale\GoodsSale.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Home\" />
-    <Folder Include="Areas\Report\GoodsSale\" />
     <Folder Include="Areas\XTGL\Views\Tree\" />
   </ItemGroup>
   <ItemGroup>
@@ -518,6 +520,10 @@
     <ProjectReference Include="..\z.ERP.Services\z.ERP.Services.csproj">
       <Project>{4F92BE72-D196-4EE6-903C-10A1D7B0FADF}</Project>
       <Name>z.ERP.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\z.ERP.WebService\z.ERP.WebService.csproj">
+      <Project>{92FBA900-7903-471F-805B-DAD6E157C894}</Project>
+      <Name>z.ERP.WebService</Name>
     </ProjectReference>
     <ProjectReference Include="..\z.IOC\z.IOC.csproj">
       <Project>{34b3dd30-91d0-4e47-ab99-9ebd4bb51747}</Project>

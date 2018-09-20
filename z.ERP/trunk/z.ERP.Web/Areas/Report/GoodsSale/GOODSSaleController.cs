@@ -4,11 +4,11 @@ using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.Report.ContractSale
 {
-    public class ContractSaleController : BaseController
+    public class GoodsSaleController : BaseController
     {
-        public ActionResult ContractSale()
+        public ActionResult GoodsSale()
         {
-            ViewBag.Title = "租约销售查询";
+            ViewBag.Title = "商品销售查询";
             return View();
         }
 
