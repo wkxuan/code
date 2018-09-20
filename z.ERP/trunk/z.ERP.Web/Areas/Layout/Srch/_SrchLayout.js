@@ -72,9 +72,11 @@
                     if (notExistsData()) {
                         this.$Message.error("没有要导出的数据!");
                     } else {
-                        this.$Message.error("尚未提供导出方法!");
+                        // this.$Message.error("尚未提供导出方法!");
+                               this.$refs.selectData.exportCsv({
+                                filename: (new Date()).toString()
+                            });
                     }
-
                 },
                 //打印待完善
                 print: function (event) {
