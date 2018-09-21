@@ -1,0 +1,96 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Srch;
+@inherits SrchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+     @*   <i-col span="2" class="RowTitle">
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "SelSysuser",
+                Text = "收款员",
+                Enable = true,
+                Type = "primary"
+            });
+        }
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "searchParam.CASHIERNAME"
+            });
+        }
+    </i-col> *@
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            交易时间
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.SALE_TIME_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.SALE_TIME_END"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            记账日期
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.ACCOUNT_DATE_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.ACCOUNT_DATE_END"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopSysuser",
+                    Src = "screenParam.srcPopSysuser",
+                    Caption = "选择收款员",
+                    Width = "800"
+                });
+            }
+        </i-col>     
+    </row>
+
+}

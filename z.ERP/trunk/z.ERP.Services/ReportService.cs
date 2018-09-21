@@ -55,5 +55,24 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
+
+        public DataGridResult SaleRecord(SearchItem item)
+        {
+            string sql = $"SELECT S.POSNO,S.DEALID,S.SALE_TIME,S.ACCOUNT_DATE,U.USERNAME CASHIERNAME, U.USERCODE CASHIERCODE,";
+            sql += " S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
+            sql += " FROM SALE S, SYSUSER U ";
+            sql += " WHERE S.CASHIERID = U.USERID ";
+            item.HasDateKey("SALE_TIME_START", a => sql += $" and S.SALE_TIME >= {a}");
+            item.HasDateKey("SALE_TIME_END", a => sql += $" and S.SALE_TIME <= {a}");
+            item.HasDateKey("ACCOUNT_DATE_START", a => sql += $" and S.ACCOUNT_DATE >= {a}");
+            item.HasDateKey("ACCOUNT_DATE_END", a => sql += $" and S.ACCOUNT_DATE <= {a}");
+            item.HasKey("CASHIERID", a => sql += $" and S.CASHIERID = {a}");
+
+            sql += " ORDER BY  S.POSNO,S.DEALID ";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
     }
 }

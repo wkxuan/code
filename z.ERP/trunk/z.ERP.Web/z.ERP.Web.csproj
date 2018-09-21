@@ -177,6 +177,7 @@
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
     <Compile Include="Areas\Report\ContractSale\ContractSaleController.cs" />
     <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
+    <Compile Include="Areas\Report\SaleRecord\SaleRecordController.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
     <Compile Include="Areas\Share\Render\DropDownListsRender.cs" />
@@ -285,6 +286,7 @@
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\Report\ContractSale\ContractSale.js" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.js" />
+    <Content Include="Areas\Report\SaleRecord\SaleRecord.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
@@ -494,6 +496,7 @@
     <Content Include="Areas\XTGL\SrchORG\SrchORG.cshtml" />
     <Content Include="Areas\Report\ContractSale\ContractSale.cshtml" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.cshtml" />
+    <Content Include="Areas\Report\SaleRecord\SaleRecord.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
