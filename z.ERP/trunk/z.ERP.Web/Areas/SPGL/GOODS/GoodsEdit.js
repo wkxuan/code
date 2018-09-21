@@ -33,7 +33,8 @@
         }]
     };
     //KINDID
-    editDetail.screenParam.Kind = [];
+   // editDetail.screenParam.Kind = [];
+    editDetail.dataParam.ORGIDCASCADER = null;
     editDetail.screenParam.showPopJsklGroup = false;
     editDetail.screenParam.srcPopJsklGroup = __BaseUrl + "/" + "Pop/Pop/PopJsklGroupList/";
     editDetail.screenParam.showPopContract = false;
@@ -56,12 +57,12 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.KINDID = data.goods[0].KINDID;
         editDetail.dataParam.GOODS_SHOP = data.goods_shop[0];
         editDetail.dataParam.GOODS_GROUP = data.goods_group[0];
-
-        var arr = data.goods[0].CODE.split(",") || [];
-        console.log(arr);
+        editDetail.dataParam.PKIND_ID = editDetail.dataParam.PKIND_ID.split(",");
+       // var arr = data.goods[0].CODE.split(",") || [];
+       // console.log(arr);
         //editDetail.screenParam.Kind = arr;
-        Vue.set(editDetail.screenParam, "Kind", arr);
-        console.log(editDetail.screenParam.Kind);
+      //  Vue.set(editDetail.screenParam, "Kind", arr);
+      //  console.log(editDetail.screenParam.Kind);
 
         callback && callback(data);
     });

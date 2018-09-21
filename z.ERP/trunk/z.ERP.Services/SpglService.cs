@@ -125,7 +125,7 @@ namespace z.ERP.Services
         }
         public object ShowOneEdit(GOODSEntity Data)
         {
-            string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D";
+            string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE,C.PKIND_ID from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D";
             sql += "  where G.MERCHANTID=M.MERCHANTID  AND G.KINDID=C.ID and G.BRANDID =D.ID ";
             if (!Data.GOODSID.IsEmpty())
                 sql += (" and G.GOODSID= " + Data.GOODSID);
