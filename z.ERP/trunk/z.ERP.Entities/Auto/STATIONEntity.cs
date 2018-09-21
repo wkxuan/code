@@ -54,5 +54,10 @@ namespace z.ERP.Entities
         {
             get;set;
         }
+        [Field("分店")]
+        public string BRANCHID
+        {
+            get; set;
+        }
     }
 }

@@ -31,7 +31,24 @@
                 });
             }
         </i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            分店
+        </i-col>
+        <i-col span="5">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                    Enable = false
+                });
+            }
+        </i-col>
 
+
+    </row>
+    <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             IP地址
@@ -45,9 +62,6 @@
                 });
             }
         </i-col>
-
-    </row>
-    <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             类型
@@ -61,6 +75,10 @@
                 });
             }
         </i-col>
+        
+
+    </row>
+    <row>
         <i-col span="3" class="RowTitle">
             @{
                 RenderControl(new ButtonRender()
@@ -81,7 +99,6 @@
                 });
             }
         </i-col>
-
     </row>
     <row>
         <i-col span="3" class="RowTitle">
@@ -89,7 +106,7 @@
             收款方式
         </i-col>
         <i-col span="10">
-        <i-table  size="small" border height="350"
+        <i-table  size="small" border height="330"
                     :columns="screenParam.payColDef" :data="screenParam.STATION_PAY_DATA"   
                     v-on:on-select="screenParam.selectData"
                     v-on:on-select-all="screenParam.selectDataAll"

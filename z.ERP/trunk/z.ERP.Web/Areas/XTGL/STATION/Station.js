@@ -90,7 +90,12 @@ define.showone = function (data, callback) {
 
 define.otherMethods = {
     SelShop: function () {
+        if (!define.dataParam.BRANCHID) {
+            iview.Message.info("分店不能为空!");
+            exit;
+        }        
         define.screenParam.showPopShop = true;
+        define.screenParam.popParam = { BRANCHID: define.dataParam.BRANCHID };
     }
 }
 
@@ -108,6 +113,10 @@ define.popCallBack = function (data) {
 define.IsValidSave = function () {
     if (!define.dataParam.STATIONBH) {
         iview.Message.info("终端号不能为空!");
+        return false;
+    }
+    if (!define.dataParam.BRANCHID) {
+        iview.Message.info("分店不能为空!");
         return false;
     }
     if (!define.dataParam.IP) {

@@ -327,6 +327,7 @@ namespace z.ERP.Services
             if (DefineSave.STATIONBH.IsEmpty())
                 DefineSave.STATIONBH = CommonService.NewINC("STATION").PadLeft(5, '0');
             v.Require(a => a.STATIONBH);
+            v.Require(a => a.BRANCHID);
             v.Require(a => a.TYPE);
             v.Require(a => a.IP);
             v.IsUnique(a => a.IP);
