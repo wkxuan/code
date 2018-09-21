@@ -41,7 +41,7 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable> GetGoodsDetail(GOODSEntity Data)
         {
-            string sql = $@"select * from GOODS where 1=1 ";
+            string sql = $@"select G.*,K.NAME KINDNAME from GOODS G,GOODS_KIND K where G.KINDID=K.ID(+) ";
             if (!Data.GOODSID.IsEmpty())
                 sql += (" and GOODSID= " + Data.GOODSID);
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -107,7 +107,7 @@ namespace z.ERP.Services
             v.Verify();
             DbHelper.Save(SaveData);
 
-            return SaveData.GOODSDM;
+            return SaveData.GOODSID;
         }
         
         public void DeleteGoods(List<GOODSEntity> DeleteData)
