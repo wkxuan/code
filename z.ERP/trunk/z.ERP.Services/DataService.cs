@@ -75,6 +75,13 @@ namespace z.ERP.Services
             return dt.ToSelectItem("ID", "NAME");
         }
 
+        public List<SelectItem> feesubject()
+        {
+            string sql = $@"SELECT TRIMID,NAME FROM FeeSubject A  ORDER BY TRIMID";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("TRIMID", "NAME");
+        }
+
         public List<SelectItem> coupon()    //优惠券
         {
             string sql = "select YHQID,YHQMC from YHQDEF where 1=1 order by YHQID ";
@@ -149,9 +156,9 @@ namespace z.ERP.Services
         public object GetBill_Bak(BILLEntity Data)
         {
             string sql = " SELECT  A.BILLID,A.BRANCHID,A.MERCHANTID,A.CONTRACTID,A.TERMID,A.NIANYUE,A.YEARMONTH,A.MUST_MONEY "
-                +" ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION "
-                       +" FROM BILL A " +
-                "  WHERE  1=1 ";
+                +" ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION,B.NAME FEENAME"
+                       + " FROM BILL A,FeeSubject B " +
+                "  WHERE  A.TRIMID= B.TRIMID";
             if (!Data.BILLID.IsEmpty())
                 sql += " AND A.BILLID='" + Data.BILLID + "'";
             if (!Data.BRANCHID.IsEmpty())
@@ -176,23 +183,24 @@ namespace z.ERP.Services
                 + " FROM BILL A,BRANCH B,FEESUBJECT F " +
                 "  WHERE  A.BRANCHID=B.ID  and A.TERMID =F.TRIMID";
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
-            item.HasKey("BILLID", a => sql += $" and A.BILLID = '{a}'");
+            item.HasKey("BILLID", a => sql += $" and A.BILLID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID = {a}");
+            item.HasKey("TRIMID", a => sql += $" and A.TERMID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = {a}");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = {a}");
-            item.HasKey("TYPE", a => sql += $" and A.TYPE = '{a}'");
-            item.HasKey("NIANYUE", a => sql += $" and A.NIANYUE = '{a}'");
-            item.HasKey("YEARMONTH", a => sql += $" and A.YEARMONTH = '{a}'");
-            item.HasKey("REPORTER", a => sql += $" and A.REPORTER = '{a}'");
-            item.HasKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
-            item.HasKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
+            item.HasKey("TYPE", a => sql += $" and A.TYPE = {a}");
+            item.HasKey("NIANYUE", a => sql += $" and A.NIANYUE = {a}");
+            item.HasKey("YEARMONTH", a => sql += $" and A.YEARMONTH = {a}");
+            item.HasKey("REPORTER", a => sql += $" and A.REPORTER = {a}");
+            item.HasDateKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= {a}");
+            item.HasDateKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= {a}");
             item.HasKey("WFDJ", a => sql += $" and A.MUST_MONEY - A.RECEIVE_MONEY<>0");
             item.HasKey("FTYPE",a => sql += $" and F.TYPE = {a}");    //费用项目类型
             item.HasKey("RRETURNFLAG", a => sql += $" and A.RECEIVE_MONEY <> 0");
             
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            dt.NewEnumColumns<结算单状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<账单状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
 
@@ -268,7 +276,7 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult GetContract(SearchItem item)
         {
-            string sql = " SELECT  A.CONTRACTID,A.BRANCHID,A.MERCHANTID,A.CONT_START,A.CONT_END "
+            string sql = " SELECT  A.* "
                 + " ,B.NAME MERCHANTNAME,C.NAME BRANCHNAME "
                        + " FROM CONTRACT A,MERCHANT B,BRANCH C " +
                 "  WHERE  A.MERCHANTID=B.MERCHANTID AND A.BRANCHID=C.ID";
@@ -277,14 +285,47 @@ namespace z.ERP.Services
             item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             item.HasKey("REPORTER", a => sql += $" and A.REPORTER = '{a}'");
-            item.HasKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
-            item.HasKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
+            item.HasDateKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= '{a}'");
+            item.HasDateKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= '{a}'");
             item.HasKey("YXHTBJ", a => sql += $" and A.STATUS in (2,3,4)");
             item.HasKey("FREESHOPBJ", a => sql += $" and not exists (select 1 from FREESHOP P where P.CONTRACTID = A.CONTRACTID)");
 
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
+
+        public DataGridResult GetGoodsShopList(SearchItem item)
+        {
+            string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE KINDDM,C.NAME KINDMC,S.CODE,S.NAME SPMC,P.SHOPID " +
+                "from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D ,GOODS_SHOP P,SHOP S" +
+                "  where G.MERCHANTID=M.MERCHANTID  AND G.KINDID=C.ID and G.BRANDID =D.ID and G.GOODSID = P.GOODSID  and P.SHOPID=S.SHOPID";
+
+            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+            item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
+            item.HasKey("NAME", a => sql += $" and G.NAME like '%{a}%'");
+            item.HasKey("YYY", a => sql += $" and exists(select 1 from SYSUSER S where P.SHOPID = S.SHOPID and S.USERID = '{a}')");
+            
+            sql += " ORDER BY  G.GOODSDM";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public object GetPay(PAYEntity Data)
+        {
+            string sql = " SELECT  * FROM " +
+                "  PAY A" +
+                "  WHERE  1 = 1 ";
+            if (!Data.PAYID.IsEmpty())
+                sql += " AND A.PAYID='" + Data.PAYID + "'";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
+        }
+
     }
 }

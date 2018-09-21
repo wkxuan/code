@@ -64,6 +64,14 @@ namespace z.MVC5.Results
             });
         }
 
+        public bool HasDateKey(string key, Action<string> act = null)
+        {
+            return CommonHas(key, a =>
+            {
+                act?.Invoke("to_date('"+a.ToDateTime().ToString("yyyy-MM-dd") +"','YYYY-MM-DD')");
+            });
+        }
+
         public bool HasTimeKey(string key, Action<string> act = null)
         {
             return CommonHas(key, a =>

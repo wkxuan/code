@@ -48,13 +48,22 @@
 
         <i-col span="2" class="RowTitle">合同类型</i-col>
         <i-col span="6">
+        @*    @{
+        RenderControl(new EnumCheckBoxListRender<合同类型>()
+        {
+            vModel = "searchParam.HTLX",
+            MultiSelect = true
+        });
+    } *@
+
             @{
-                RenderControl(new EnumCheckBoxListRender<合同类型>()
+                RenderControl(new EnumDropDownListRender<合同类型>()
                 {
-                    vModel = "searchParam.HTLX",
-                    MultiSelect = true
+                    vModel = "searchParam.HTLX"
                 });
             }
+
+
         </i-col>
 
         <i-col span="2" class="RowTitle">商场</i-col>

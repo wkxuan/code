@@ -1,132 +1,123 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Empty
-@inherits EmptyViewBase
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
 
-@section head{
-<script src="~/Areas/Pop/PopContract/PopContract.js"></script>
+@section search{
+    <row>
+        <i-col span="3" class="RowTitle">终端号</i-col>
+        <i-col span="9">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.STATIONBH"
+                });
+            }
+        </i-col>
+    </row>
 }
 
-@section btn{
-    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "add",
-            Text = "新增",
-            Enable = true
-        });
-    }
-    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "mod",
-            Text = "修改",
-            //Enable = false
-        });
-    }
-    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "save",
-            Text = "存档",
-            Enable = false
-        });
-    }
-    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "quit",
-            Text = "放弃",
-            Enable = false
-        });
-    }
-    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "del",
-            Text = "删除",
-            //Enable=false
-        });
-    }
+@section element{
+    <row>
+        <i-col span="3" class="RowTitle">
+            终端号
+        </i-col>
+        <i-col span="5">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.STATIONBH",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            IP地址
+        </i-col>
+        <i-col span="5">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.IP",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            类型
+        </i-col>
+        <i-col span="5">
+            @{
+                RenderControl(new EnumDropDownListRender<POS类型>
+                {
+                    vModel = "dataParam.TYPE",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelShop",
+                    Text = "店铺",
+                    Enable = false,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="5">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.SHOPCODE",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            收款方式
+        </i-col>
+        <i-col span="10">
+        <i-table  size="small" border height="350"
+                    :columns="screenParam.payColDef" :data="screenParam.STATION_PAY_DATA"   
+                    v-on:on-select="screenParam.selectData"
+                    v-on:on-select-all="screenParam.selectDataAll"
+                    v-on:on-select-cancel="screenParam.selectCancel"></i-table>
+       </i-col>
+    </row>
 }
 
-@section content{
+@section pops{
 
- <row>
-    <i-col span="5">
-        <div ref="tableHeight">
-            <card  style="height:100%">
-              @*  <p slot="title">列表信息</p>  *@          
-                <i-table :highlight-row="true" size="small" :border="true"
-                         :columns="screenParam.colDef" :data="screenParam.dataDef"
-                         v-on:on-current-change="showlist" :disabled="disabled" height="500"></i-table>
-            </card>
-        </div>
-    </i-col>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopShop",
+                    Src = "screenParam.srcPopShop",
+                    Caption = "选择店铺",
+                    Width = "800"
+                });
+            }
+        </i-col>
+    </row>
 
-    <i-col span="16">
-        <div ref="cardHeigth">
-            <card class="elementcard"  style="height:100%">
-            @*    <p slot="title">包含元素</p>   *@
-                <row>
-                    <i-col span="3" class="RowTitle">
-                        POS终端号
-                    </i-col>
-                    <i-col span="10">
-                        @{
-                            RenderControl(new TextBoxRender
-                            {
-                                vModel = "dataParam.STATIONBH",
-                                Id = "tb_bh",
-                                Enable = false
-                            });
-                        }
-                    </i-col>
-                </row>
-                <row>
-                    <i-col span="3" class="RowTitle">
-                        类型
-                    </i-col>
-                    <i-col span="10">
-                        @{
-                            RenderControl(new EnumDropDownListRender<POS类型>
-                            {
-                                vModel = "dataParam.TYPE",
-                                Id = "tb_type",
-                                Enable = false
-                            });
-                        }
-                    </i-col>
-                </row>
-                <row>
-                    <i-col span="3" class="RowTitle">
-                        IP
-                    </i-col>
-                    <i-col span="10">
-                        @{
-                            RenderControl(new TextBoxRender
-                            {
-                                vModel = "dataParam.IP",
-                                Id = "tb_ip",
-                                Enable = false
-                            });
-                        }
-                    </i-col>
-                </row>
-                <row>
-                    <i-col span="3" class="RowTitle">
-                        收款方式
-                    </i-col>
-                    <i-col span="10"> 
-                        <i-table ref="selection" size="small" border
-                                  :columns="screenParam.payColDef" :data="screenParam.payDataDef" height="350"></i-table>
-                    </i-col>
-                </row>
-            </card>
-        </div>
-    </i-col>
-</row>
 }
+
+
+
 
 
 

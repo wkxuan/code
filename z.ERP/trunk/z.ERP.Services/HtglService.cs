@@ -27,7 +27,8 @@ namespace z.ERP.Services
             item.HasKey("NAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
             item.HasKey("STYLE", a => sql += $" and A.STYLE = '{a}'");
-            item.HasArrayKey("HTLX", a => sql += $" and A.HTLX in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            // item.HasArrayKey("HTLX", a => sql += $" and A.HTLX in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("HTLX", a => sql += $" and A.HTLX = {a}");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = {a}");
             item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=A.CONTRACTID and UPPER(U.CODE) LIKE '{a.ToUpper()}%')");
@@ -35,7 +36,7 @@ namespace z.ERP.Services
             sql += " ORDER BY  D.SHOPDM";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
             dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
             return new DataGridResult(dt, count);
         }
@@ -134,7 +135,7 @@ namespace z.ERP.Services
                 throw new LogicException("找不到租约!");
             }
 
-            contract.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            contract.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
             contract.NewEnumColumns<联营合同合作方式>("OPERATERULE", "OPERATERULEMC");
 
             contract.NewEnumColumns<起始日清算>("QS_START", "QS_STARTMC");
@@ -544,15 +545,15 @@ namespace z.ERP.Services
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID={a}");
             item.HasKey("MERCHANTID", a => sql += $" and L.MERCHANTID={a}");
-            item.HasKey("FREEDATE_START ", a => sql += $" and L.FREEDATE>={a}");
-            item.HasKey("FREEDATE_END", a => sql += $" and L.FREEDATE<={a}");
+            item.HasDateKey("FREEDATE_START", a => sql += $" and L.FREEDATE>={a}");
+            item.HasDateKey("FREEDATE_END", a => sql += $" and L.FREEDATE<={a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
-            item.HasKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
-            item.HasKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
+            item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
+            item.HasDateKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
             item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
-            item.HasKey("VERIFY_TIME_START", a => sql += $" and L.VERIFY_TIME>={a}");
-            item.HasKey("VERIFY_TIME_END", a => sql += $" and L.VERIFY_TIME<={a}");
+            item.HasDateKey("VERIFY_TIME_START", a => sql += $" and L.VERIFY_TIME>={a}");
+            item.HasDateKey("VERIFY_TIME_END", a => sql += $" and L.VERIFY_TIME<={a}");
             sql += " ORDER BY  L.BILLID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

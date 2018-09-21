@@ -2,6 +2,7 @@
     var col = [
         { title: "账单号", key: "BILLID", width: 80 },
         { title: "租约号", key: "CONTRACTID", width: 100 },
+        { title: "费用项目", key: "TERMMC", width: 100 },
         { title: "债权发生月", key: "NIANYUE", width: 100 },
         { title: "收付实现月", key: "YEARMONTH", width: 100 },
         { title: '应收金额', key: 'MUST_MONEY', width: 100 },
@@ -19,10 +20,10 @@
     search.service = "DataService";
     search.method = "GetBill";
 
-    search.screenParam.TERMID = 0;
+  //  search.screenParam.TERMID = 0;
 
-    search.screenParam.srcPopFeeSubject = __BaseUrl + "/" + "Pop/Pop/PopFeeSubjectList/";
-    search.screenParam.showFeeSubject = false;
+  //  search.screenParam.srcPopFeeSubject = __BaseUrl + "/" + "Pop/Pop/PopFeeSubjectList/";
+  //  search.screenParam.showFeeSubject = false;
 
 
 }
@@ -38,6 +39,7 @@ search.popInitParam = function (data) {
         search.searchParam.RRETURNFLAG = data.RRETURNFLAG;
     }
 }
+/*
 search.otherMethods = {
     SelFeeSubject: function () {
         search.screenParam.showPopFeeSubject = true;
@@ -51,5 +53,5 @@ search.popCallBack = function (data) {
         search.screenParam.TERMNAME = data.sj[i].NAME;
     };
 
-};
+};*/
 

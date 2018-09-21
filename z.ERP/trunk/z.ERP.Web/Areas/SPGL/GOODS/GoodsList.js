@@ -40,10 +40,30 @@ search.addHref = function (row) {
         url: "SPGL/GOODS/GoodsEdit/"
     });
 }
-search.modHref = function (row, index) {
+/*search.modHref = function (row, index) {
     _.OpenPage({
         id: 105002,
         title: '编辑商品信息',
         url: "SPGL/GOODS/GoodsEdit/" + row.GOODSID
     });
+} */
+
+search.modHref = function (row, index) {
+    _.Search({
+        Service: search.service,
+        Method: search.method,
+        Data: { GOODSID: row.GOODSID },
+        Success: function (data) {
+            if (row.STATUS == 1) {
+                    _.OpenPage({
+                        id: 105002,
+                        title: '编辑商品信息',
+                        url: "SPGL/GOODS/GoodsEdit/" + row.GOODSID
+                    });
+            } else {
+                iview.Message.info('当前商品已审核,不能编辑!');
+                return;
+            }
+        }
+    })
 }

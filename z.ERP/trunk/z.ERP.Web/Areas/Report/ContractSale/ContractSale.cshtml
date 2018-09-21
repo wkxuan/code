@@ -1,0 +1,184 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Srch;
+@inherits SrchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+        
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelMerchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTID",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="4" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTNAME",
+                    Enable = true
+                });
+            }
+        </i-col>
+ 
+
+    </row>
+        <row>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelBrand",
+                    Text = "品牌",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.BRANDID",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="4" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.BRANDNAME",
+                    Enable = true
+                });
+            }
+        </i-col>
+            <i-col span="2" class="RowTitle">
+                商品分类
+            </i-col>
+            <i-col span="6" class="RowTitle">
+                @{
+                    RenderControl(new CascaderRender()
+                    {
+                        vModel = "searchParam.KINDID",
+                        Data = "screenParam.dataKind",
+                        Change = "changeKind",
+                        Not_level_last = true
+                    });
+                }
+            </i-col>
+
+
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelContract",
+                    Text = "租约",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.CONTRACTID",
+                    Enable = true
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            销售日期
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.RQ_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.RQ_END"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopMerchant",
+                    Caption = "选择商户",
+                    Width = "900",
+                    Src = "screenParam.srcPopMerchant"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopContract",
+                    Caption = "选择租约",
+                    Width = "900",
+                    Src = "screenParam.srcPopContract"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopBrand",
+                    Caption = "选择品牌",
+                    Width = "900",
+                    Src = "screenParam.srcPopBrand"
+                });
+            }
+        </i-col>
+    </row>
+
+}

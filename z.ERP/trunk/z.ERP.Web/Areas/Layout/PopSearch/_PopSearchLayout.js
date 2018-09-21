@@ -44,6 +44,9 @@
                     //父页面是单据
                     if (window.parent.editDetail != undefined)
                         _this.popInitParam(window.parent.editDetail.screenParam.popParam);
+                        //父页面是报表
+                    else if (window.parent.srch != undefined)
+                        _this.popInitParam(window.parent.srch.screenParam.popParam);
                         //父页面是查询
                     else if (window.parent.search != undefined)
                         _this.popInitParam(window.parent.search.screenParam.popParam);
@@ -69,8 +72,11 @@
                     //this.$emit('setdialog', data)
                     if (window.parent.editDetail != undefined)
                         window.parent.editDetail.popCallBack(data)
+                    else if (window.parent.srch != undefined)
+                        window.parent.srch.popCallBack(data)
                     else if (window.parent.search != undefined)
                         window.parent.search.popCallBack(data)
+                    
                     else if (window.parent.define != undefined)
                         window.parent.define.popCallBack(data);
                     //清空查询结果

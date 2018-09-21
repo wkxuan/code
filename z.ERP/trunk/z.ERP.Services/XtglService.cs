@@ -253,37 +253,58 @@ namespace z.ERP.Services
         }
         public DataGridResult GetStaion(SearchItem item)
         {
-            string sql = $@"select STATIONBH from STATION where 1=1 ";
+            string sql = $@"select S.*,P.CODE SHOPCODE from STATION S,SHOP P where S.SHOPID=P.SHOPID(+) ";
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH = '{a}'");
             sql += "order by STATIONBH";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public object GetStaionElement(STATIONEntity DefineSave)
+
+        public Tuple<dynamic, DataTable> GetStaionElement(STATIONEntity Data)
         {
-            string sql = $@"select STATIONBH,TYPE,IP from STATION where 1=1 ";
-            sql += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
-            sql += "order by STATIONBH";
+            string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID from STATION S where 1=1 ";
+
+            if (!Data.STATIONBH.IsEmpty())
+              sql += $" and S.STATIONBH = '{ Data.STATIONBH}'";
+
+            sql += " order by S.STATIONBH";
 
 
-            DataTable dt = DbHelper.ExecuteTable(sql);
+            DataTable station = DbHelper.ExecuteTable(sql);
 
             var sqlpay = $@"SELECT S.STATIONBH,S.PAYID,P.NAME from STATION_PAY S,PAY P WHERE S.PAYID=P.PAYID ";
-            sqlpay += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
+            if (!Data.STATIONBH.IsEmpty())
+                sqlpay += $" and STATIONBH = '{Data.STATIONBH.ToString()}'";
             sqlpay += " order by S.PAYID";
-            DataTable dt1 = DbHelper.ExecuteTable(sqlpay);
+            DataTable pay = DbHelper.ExecuteTable(sqlpay);
 
-            var result = new
-            {
-                staion = dt,
-                station_pay = new dynamic[]
-                {
-                    dt1
-                }
-            };
-            return result;
+            return new Tuple<dynamic, DataTable>(station.ToOneLine(), pay);
         }
+        /*    public object GetStaionElement(STATIONEntity DefineSave)
+            {
+                string sql = $@"select STATIONBH,TYPE,IP,SHOPID from STATION where 1=1 ";
+                sql += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
+                sql += "order by STATIONBH";
+
+
+                DataTable dt = DbHelper.ExecuteTable(sql);
+
+                var sqlpay = $@"SELECT S.STATIONBH,S.PAYID,P.NAME from STATION_PAY S,PAY P WHERE S.PAYID=P.PAYID ";
+                sqlpay += " and STATIONBH = " + DefineSave.STATIONBH.ToString();
+                sqlpay += " order by S.PAYID";
+                DataTable dt1 = DbHelper.ExecuteTable(sqlpay);
+
+                var result = new
+                {
+                    staion = dt,
+                    station_pay = new dynamic[]
+                    {
+                        dt1
+                    }
+                };
+                return result;
+            }  */
 
         public object GetStaionPayList()
         {
@@ -304,7 +325,7 @@ namespace z.ERP.Services
         {
             var v = GetVerify(DefineSave);
             if (DefineSave.STATIONBH.IsEmpty())
-                DefineSave.STATIONBH = CommonService.NewINC("STATION").PadLeft(6, '0');
+                DefineSave.STATIONBH = CommonService.NewINC("STATION").PadLeft(5, '0');
             v.Require(a => a.STATIONBH);
             v.Require(a => a.TYPE);
             v.Require(a => a.IP);
@@ -318,11 +339,7 @@ namespace z.ERP.Services
             v.Verify();
             using (var tran = DbHelper.BeginTransaction())
             {
-                using (var tran1 = DbHelper.BeginTransaction())
-                {
-                    DbHelper.Save(DefineSave);
-                    tran1.Commit();
-                }
+                DbHelper.Save(DefineSave);
                 tran.Commit();
             }
 

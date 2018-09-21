@@ -21,6 +21,7 @@ namespace z.ERP.Services
              where A.SHOPID=C.SHOPID(+) and A.ORGID=B.ORGID(+) ";  //and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";
             item.HasKey("USERCODE", a => sql += $" and A.USERCODE like '%{a}%'");
             item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");
+            item.HasKey("USER_TYPE", a => sql += $" and A.USER_TYPE = '{a}'");
             sql += " ORDER BY  A.USERCODE";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

@@ -9,3 +9,10 @@
     search.method = "GetUser";
 }
 
+
+//获取父页面参数
+search.popInitParam = function (data) {
+    if (data) {
+        search.searchParam.USER_TYPE = data.USER_TYPE;
+    }
+}

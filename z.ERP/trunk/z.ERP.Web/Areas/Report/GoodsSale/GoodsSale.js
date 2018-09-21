@@ -1,0 +1,87 @@
+﻿srch.beforeVue = function () {
+    var col = [
+        {
+            title: '日期', key: 'RQ', width: 100,
+            render: function (h, params) {
+                return h('div',
+                  new Date(this.row.RQ).Format('yyyy-MM-dd'));
+            }
+        },
+        { title: '商品编码', key: 'GOODSDM', width: 95 },
+        { title: '商品条码', key: 'BARCODE', width: 130 },
+        { title: '商品名称', key: 'GOODSNAME', width: 120 },
+        { title: '租约号', key: 'CONTRACTID', width: 95 },
+        { title: '商户编号', key: 'MERCHANTID', width: 90 },
+        { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
+        { title: '分类编码', key: 'KINDCODE', width: 100 },
+        { title: '分类名称', key: 'KINDNAME', width: 100 },
+        { title: '品牌',key:'BRANDNAME',width: 100},
+        { title: '销售金额', key: 'AMOUNT', width: 100 },
+        { title: '销售成本', key: 'COST', width: 100 },
+        { title: '折扣金额', key: 'DIS_AMOUNT', width: 100 },
+        { title: '优惠金额', key: 'PER_AMOUNT', width: 100 },
+
+    ];
+    srch.screenParam.colDef = col;
+    srch.service = "ReportService";
+    srch.method = "GOODSSale";
+
+    srch.screenParam.showPopMerchant = false;
+    srch.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+    srch.screenParam.showPopContract = false;
+    srch.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
+    srch.screenParam.showPopBrand = false;
+    srch.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
+
+    srch.screenParam.popParam = {};
+    srch.screenParam.KINDID = [];
+};
+
+srch.mountedInit = function () {
+    _.Ajax('SearchKind', {
+        Data: {}
+    }, function (data) {
+        Vue.set(srch.screenParam, "dataKind", data.treeorg.Obj);
+    });
+}
+
+srch.otherMethods = {
+    SelMerchant: function () {
+        srch.screenParam.showPopMerchant = true;
+    },
+    SelContract: function () {
+        srch.screenParam.showPopContract = true;
+    },
+    SelBrand: function(){
+        srch.screenParam.showPopBrand = true;
+    },
+    changeKind: function (value, selectedData) {
+        srch.screenParam.KINDID = value[value.length - 1];
+    },
+}
+
+srch.popCallBack = function (data) {
+
+    if (srch.screenParam.showPopMerchant) {
+        srch.screenParam.showPopMerchant = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+            srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+        }
+    }
+
+    if (srch.screenParam.showPopContract) {
+        srch.screenParam.showPopContract = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            srch.searchParam.CONTRACTID = data.sj[i].CONTRACTID;
+        }
+    }
+
+    if (srch.screenParam.showPopBrand) {
+        srch.screenParam.showPopBrand = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            srch.searchParam.BRANDID = data.sj[i].BRANDID;
+            srch.searchParam.BRANDNAME = data.sj[i].NAME;
+        }
+    }
+};

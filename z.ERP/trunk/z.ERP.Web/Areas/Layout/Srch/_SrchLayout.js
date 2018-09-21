@@ -31,8 +31,9 @@
                 screenParamData: {
                     dataDef: []
                 },
+                arrPageSize:[10,20,50,100],
                 pagedataCount: 0,
-                pageSize: 10,
+                pageSize: 10
             },
 
             mounted: function () {
@@ -72,9 +73,11 @@
                     if (notExistsData()) {
                         this.$Message.error("没有要导出的数据!");
                     } else {
-                        this.$Message.error("尚未提供导出方法!");
+                        // this.$Message.error("尚未提供导出方法!");
+                               this.$refs.selectData.exportCsv({
+                                filename: (new Date()).toString()
+                            });
                     }
-
                 },
                 //打印待完善
                 print: function (event) {
@@ -86,6 +89,11 @@
                     }
 
                 },
+
+                browse: function (row, index){
+                    //
+                },
+
                 changePageCount: function (index) {
                     let mess = this;
                     _this.pageInfo.PageSize = mess.pageSize;
@@ -102,7 +110,22 @@
                         }
                     });
 
-                }
+                },
+
+             changePageSizer: function (value) {
+                  let mess = this;
+                  _this.pageInfo.PageSize = value;
+                  Vue.set(ve.screenParamData, "dataDef", []);
+                  showList(function (data) {
+                      if (_this.screenParam.dataDef.length > 0) {
+                          ve.panelName = 'result';
+                          Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
+                      }
+                      else {
+                          mess.$Message.info("没有满足当前查询条件的结果!");
+                      }
+                  });
+              } 
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
