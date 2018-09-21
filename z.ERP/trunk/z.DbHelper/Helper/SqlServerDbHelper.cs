@@ -208,7 +208,11 @@ namespace z.DBHelper.Helper
 
         protected override string GetPageSql(string sql, int pageSize = 0, int pageIndex = 0)
         {
-            throw new NotImplementedException();
+            if (pageSize < 1 || pageIndex < 0)
+            {
+                return sql;
+            }
+            throw new Exception("未实现分页功能");
         }
 
         protected override object GetParameterValue(IDbDataParameter p, PropertyInfo pinfo)
@@ -253,6 +257,25 @@ namespace z.DBHelper.Helper
         protected override string GetPramCols(string cols)
         {
             return ":" + cols;
+        }
+
+        protected override void FastInsertTable(DataTable dt)
+        {
+            SqlBulkCopy bulkCopy = new SqlBulkCopy(_dbConnectionInfoStr);
+            bulkCopy.DestinationTableName = dt.TableName;
+            bulkCopy.BatchSize = dt.Rows.Count;
+            foreach (DataColumn dc in dt.Columns)
+            {
+                bulkCopy.ColumnMappings.Add(dc.ColumnName, dc.ColumnName);
+            }
+            RunSql(_dbCommand =>
+           {
+               bulkCopy.WriteToServer(dt);
+           }, () =>
+            {
+                if (bulkCopy != null)
+                    bulkCopy.Close();
+            });
         }
     }
 }

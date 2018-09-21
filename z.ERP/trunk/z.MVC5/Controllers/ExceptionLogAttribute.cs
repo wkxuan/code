@@ -37,7 +37,7 @@ namespace z.MVC5.Controllers
                     Ex = filterContext.Exception.GetInnerException(),
                     Site = filterContext.RouteData.GetRequiredString("controller") + "/" + filterContext.RouteData.GetRequiredString("action")
                 }));
-                Log.Error(filterContext.Exception);
+                Log.Error("登陆", filterContext.Exception);
                 filterContext.Result = new ViewResult() { ViewName = "/Areas/Base/Error.cshtml", ViewData = viewdata };
             }
         }

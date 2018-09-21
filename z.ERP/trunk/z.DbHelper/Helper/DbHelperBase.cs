@@ -120,15 +120,11 @@ namespace z.DBHelper.Helper
             return FieldName;
         }
 
-        ///// <summary>
-        ///// 初始化操作
-        ///// </summary>
-        //protected abstract void Init();
-
-        ///// <summary>
-        ///// 完成操作
-        ///// </summary>
-        //protected abstract void Done();
+        /// <summary>
+        /// 快速插入一张表
+        /// </summary>
+        /// <param name="dt"></param>
+        protected abstract void FastInsertTable(DataTable dt);
         #endregion
         #region 构造
 
@@ -320,6 +316,16 @@ namespace z.DBHelper.Helper
         public int ExecuteNonQuery(string sql)
         {
             return ExecuteNonQuery(new List<string>() { sql });
+        }
+
+
+        /// <summary>
+        /// 批量插入表
+        /// </summary>
+        /// <param name="dt"></param>
+        public void InsertTable(DataTable dt)
+        {
+            FastInsertTable(dt);
         }
         #endregion
         #region 对象增删改查
@@ -683,7 +689,7 @@ namespace z.DBHelper.Helper
             }
         }
 
-        void RunSql(Action<DbCommand> comm)
+        protected void RunSql(Action<DbCommand> comm, Action done = null)
         {
             Action Done = () =>
             {
@@ -723,6 +729,10 @@ namespace z.DBHelper.Helper
                     throw new DataBaseException(ex.InnerMessage(), sql);
                 else
                     throw new DataBaseException(ex.InnerMessage(), sql, obj);
+            }
+            finally
+            {
+                done?.Invoke();
             }
         }
 

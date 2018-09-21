@@ -2,9 +2,7 @@
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.Extensions;
-using System;
 using z.MVC5.Results;
-using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.Define;
 
 namespace z.ERP.Web.Areas.XTGL.SHOP

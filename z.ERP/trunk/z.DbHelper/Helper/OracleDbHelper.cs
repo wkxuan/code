@@ -281,13 +281,19 @@ namespace z.DBHelper.Helper
         {
             return $"\"{FieldName}\"";
         }
+
+        protected override void FastInsertTable(DataTable dt)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
         #region 链接操作
         protected override DbConnection GetDbConnection(string _dbConnectionInfoStr)
         {
             return new OracleConnection(_dbConnectionInfoStr);
         }
-        
+
         #endregion
 
     }

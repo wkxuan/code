@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using z.Exceptions;
 using z.Extensions;
+using z.LogFactory;
 using z.MVC5.Attributes;
 using z.MVC5.Models;
 using z.MVC5.Results;
@@ -18,6 +19,13 @@ namespace z.MVC5.Controllers
 {
     public class ActionProcessAttribute : ActionFilterAttribute
     {
+        protected LogWriter Log
+        {
+            get
+            {
+                return new LogWriter("Controller");
+            }
+        }
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             if (filterContext.HttpContext.Request.IsAjaxRequest())
@@ -27,6 +35,7 @@ namespace z.MVC5.Controllers
                 if (filterContext.Exception != null)
                 {
                     filterContext.ExceptionHandled = true;
+                    Log.Error("ajax异常", filterContext.Exception.GetInnerException());
                     if (filterContext.Exception.GetInnerException() is zExceptionBase)
                     {
                         zExceptionBase ex = filterContext.Exception.GetInnerException() as zExceptionBase;

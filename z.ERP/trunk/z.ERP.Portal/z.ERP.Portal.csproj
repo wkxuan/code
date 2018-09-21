@@ -562,10 +562,6 @@
       <Project>{A8E30B43-EF68-4D4A-AF11-2ECBFB8B227F}</Project>
       <Name>z.MVC5</Name>
     </ProjectReference>
-    <ProjectReference Include="..\z.Services\z.Services.csproj">
-      <Project>{ae30665b-d558-4338-8148-e8543fce9825}</Project>
-      <Name>z.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\z.SSO\z.SSO.csproj">
       <Project>{df833680-d044-4c57-96f9-217a1812c0b3}</Project>
       <Name>z.SSO</Name>

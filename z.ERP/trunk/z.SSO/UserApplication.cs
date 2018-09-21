@@ -50,7 +50,10 @@ namespace z.SSO
         {
             get
             {
-                return ConfigExtension.GetSection<SSOSettings>(SSOSettings.Name);
+                SSOSettings set= ConfigExtension.GetSection<SSOSettings>(SSOSettings.Name);
+                if (set == null)
+                    throw new Exception("没有找到SSOSettings配置");
+                return set;
             }
         }
 
@@ -66,6 +69,8 @@ namespace z.SSO
                         return new PortalUserHelper(settings);
                     case "SERVICE":
                         return new ServiceUserHelper(settings);
+                    case "THREAD":
+                        return new ThreadUserHelper(settings);
                     default:
                         throw new Exception($"配置节点{SSOSettings.Name}的类型{settings.Type}未知");
                 }
