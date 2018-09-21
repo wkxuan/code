@@ -705,6 +705,7 @@ namespace z.DBHelper.Helper
             {
                 OpenConnection();
                 _dbCommand = _dbConnection.CreateCommand();
+                _dbCommand.CommandTimeout = 3600;
                 if (HasTransaction())
                 {
                     _dbCommand.Transaction = _zTransaction.Transaction;
