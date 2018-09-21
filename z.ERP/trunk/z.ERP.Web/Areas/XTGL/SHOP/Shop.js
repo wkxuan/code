@@ -17,11 +17,10 @@
     define.Data = [];
     define.screenParam.componentVisible = false;
     define.screenParam.branchData = [];
-    define.searchParam.BRANCHID = 0;
-    define.dataParam.BRANCHID = 0;
+
+
     define.screenParam.floorData = [];
-    define.searchParam.FLOORID = 0;
-    define.dataParam.FLOORID = 0;
+
     define.dataParam.ORGIDCASCADER = [];
     define.btnChkvisible = true;
     _.Ajax('GetBranch', {
@@ -33,6 +32,24 @@
                 define.screenParam.branchData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
             }
             define.searchParam.BRANCHID = data.dt[0].ID;
+            define.dataParam.BRANCHID = define.searchParam.BRANCHID;
+        }
+        else {
+
+        }
+    });
+
+    _.Ajax('GetFloor', {
+        Data: { BRANCHID: define.dataParam.BRANCHID }
+    }, function (data) {
+        if (data.dt) {
+            define.screenParam.floorData = [];
+            for (var i = 0; i < data.dt.length; i++) {
+                define.screenParam.floorData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
+            }
+            define.dataParam.FLOORID = data.dt[0].ID;
+            define.searchParam.FLOORID = define.dataParam.FLOORID;
+            define.showlist();
         }
         else {
 
@@ -53,7 +70,7 @@ define.newRecord = function () {
     define.dataParam.RENT_STATUS = 1;
     define.dataParam.ORGIDCASCADER = [];
     define.dataParam.BRANCHID = define.searchParam.BRANCHID;
-    //define.dataParam.FLOORID = define.searchParam.FLOORID;
+    define.dataParam.FLOORID = define.searchParam.FLOORID;
 }
 define.otherMethods = {
     branchChange: function (value) {
@@ -73,13 +90,15 @@ define.otherMethods = {
         define.dataParam.RENT_STATUS = "";
         _.Ajax('GetFloor', {
             Data: { BRANCHID: value }
-        }, function (data) {
-            if (data.dt) {
+        }, function (Data) {
+            if (Data.dt) {
                 define.screenParam.floorData = [];
-                for (var i = 0; i < data.dt.length; i++) {
-                    define.screenParam.floorData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
+                for (var i = 0; i < Data.dt.length; i++) {
+                    define.screenParam.floorData.push({ value: Data.dt[i].ID, label: Data.dt[i].NAME })
                 }
-                define.dataParam.FLOORID = data.dt[0].ID;
+                define.dataParam.FLOORID = Data.dt[0].ID;
+                define.searchParam.FLOORID = define.dataParam.FLOORID;
+                define.showlist();
             }
             else {
 
