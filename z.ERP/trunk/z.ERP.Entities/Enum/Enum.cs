@@ -9,8 +9,7 @@ namespace z.ERP.Entities.Enum
     public enum 物业标记
     {
         保底租金 = 1,
-        保底租金含物业费 = 2,
-        保底租金金额段 = 3,    //不同销售额段，不同租金
+        保底租金含物业费 = 2
     }
     public enum 合作方式
     {

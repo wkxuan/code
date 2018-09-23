@@ -70,9 +70,9 @@
             // 
             // btn_login
             // 
-            this.btn_login.Location = new System.Drawing.Point(170, 150);
+            this.btn_login.Location = new System.Drawing.Point(152, 150);
             this.btn_login.Name = "btn_login";
-            this.btn_login.Size = new System.Drawing.Size(75, 23);
+            this.btn_login.Size = new System.Drawing.Size(129, 23);
             this.btn_login.TabIndex = 4;
             this.btn_login.Text = "登 陆";
             this.btn_login.UseVisualStyleBackColor = true;
@@ -89,6 +89,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Location = new System.Drawing.Point(0, 0);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Login";

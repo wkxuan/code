@@ -33,12 +33,13 @@
             // 
             // btn_rcl
             // 
-            this.btn_rcl.Location = new System.Drawing.Point(121, 79);
+            this.btn_rcl.Location = new System.Drawing.Point(177, 174);
             this.btn_rcl.Name = "btn_rcl";
             this.btn_rcl.Size = new System.Drawing.Size(75, 23);
             this.btn_rcl.TabIndex = 0;
             this.btn_rcl.Text = "日处理";
             this.btn_rcl.UseVisualStyleBackColor = true;
+     
             // 
             // MainForm
             // 
@@ -46,6 +47,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(428, 265);
             this.Controls.Add(this.btn_rcl);
+            this.Location = new System.Drawing.Point(0, 0);
             this.Name = "MainForm";
             this.Text = "MainForm";
             this.ResumeLayout(false);
