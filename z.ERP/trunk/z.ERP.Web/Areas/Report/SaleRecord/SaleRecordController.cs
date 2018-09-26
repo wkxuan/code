@@ -8,7 +8,7 @@ namespace z.ERP.Web.Areas.Report.SaleRecord
     {
         public ActionResult SaleRecord()
         {
-            ViewBag.Title = "POS销售查询";
+            ViewBag.Title = "实时销售查询";
             return View();
         }
     }

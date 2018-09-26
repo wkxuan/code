@@ -98,7 +98,6 @@
                     let mess = this;
                     _this.pageInfo.PageSize = mess.pageSize;
                     _this.pageInfo.PageIndex = (index - 1);
-
                     Vue.set(ve.screenParamData, "dataDef", []);
                     showList(function (data) {
                         if (_this.screenParam.dataDef.length > 0) {
@@ -113,7 +112,8 @@
                 },
 
              changePageSizer: function (value) {
-                  let mess = this;
+                 let mess = this;
+                 this.pageSize = value;
                   _this.pageInfo.PageSize = value;
                   Vue.set(ve.screenParamData, "dataDef", []);
                   showList(function (data) {

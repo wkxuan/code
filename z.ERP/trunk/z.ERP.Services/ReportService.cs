@@ -29,6 +29,10 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
 
+            if (count > 0)
+            {
+
+ 
             string sqlsum = $"SELECT SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT ";
             sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K ";
             sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
@@ -53,7 +57,7 @@ namespace z.ERP.Services
             dr["DIS_AMOUNT"] = dtSum.Rows[0]["DIS_AMOUNT"].ToString();
             dr["PER_AMOUNT"] = dtSum.Rows[0]["PER_AMOUNT"].ToString();
             dt.Rows.Add(dr);
-
+            }
             return new DataGridResult(dt, count);
         }
 
@@ -79,6 +83,8 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
 
+            if(count > 0)
+            {
             string sqlsum = $"SELECT SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT";
             sqlsum += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
             sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
@@ -101,7 +107,7 @@ namespace z.ERP.Services
             dr["DIS_AMOUNT"] = dtSum.Rows[0]["DIS_AMOUNT"].ToString();
             dr["PER_AMOUNT"] = dtSum.Rows[0]["PER_AMOUNT"].ToString();
             dt.Rows.Add(dr);
-
+            }
             return new DataGridResult(dt, count);
         }
 
@@ -122,21 +128,26 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
 
-            string sqlsum = $"SELECT sum(S.SALE_AMOUNT) SALE_AMOUNT";
-            sqlsum += " FROM SALE S, SYSUSER U ";
-            sqlsum += " WHERE S.CASHIERID = U.USERID ";
-            item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
-            item.HasDateKey("SALE_TIME_END", a => sql += $" and trunc(S.SALE_TIME) <= {a}");
-            item.HasDateKey("ACCOUNT_DATE_START", a => sqlsum += $" and S.ACCOUNT_DATE >= {a}");
-            item.HasDateKey("ACCOUNT_DATE_END", a => sqlsum += $" and S.ACCOUNT_DATE <= {a}");
-            item.HasKey("CASHIERID", a => sqlsum += $" and S.CASHIERID = {a}");
+            if (count > 0)
+            {
+                string sqlsum = $"SELECT sum(S.SALE_AMOUNT) SALE_AMOUNT";
+                sqlsum += " FROM SALE S, SYSUSER U ";
+                sqlsum += " WHERE S.CASHIERID = U.USERID ";
+                item.HasDateKey("SALE_TIME_START", a => sqlsum += $" and trunc(S.SALE_TIME) >= {a}");
+                item.HasDateKey("SALE_TIME_END", a => sqlsum += $" and trunc(S.SALE_TIME) <= {a}");
+                item.HasDateKey("ACCOUNT_DATE_START", a => sqlsum += $" and S.ACCOUNT_DATE >= {a}");
+                item.HasDateKey("ACCOUNT_DATE_END", a => sqlsum += $" and S.ACCOUNT_DATE <= {a}");
+                item.HasKey("CASHIERID", a => sqlsum += $" and S.CASHIERID = {a}");
 
-            DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
-            DataRow dr = dt.NewRow();
-            dr["POSNO"] = "合计";
-            dr["SALE_AMOUNT"] = dtSum.Rows[0]["SALE_AMOUNT"].ToString();
-            dt.Rows.Add(dr);
+                DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
+                DataRow dr = dt.NewRow();
+                dr["POSNO"] = "合计";
+                dr["SALE_AMOUNT"] = dtSum.Rows[0]["SALE_AMOUNT"].ToString();
+                dt.Rows.Add(dr);
+                
+            }
             return new DataGridResult(dt, count);
+
         }
 
     }
