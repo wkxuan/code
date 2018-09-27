@@ -125,6 +125,7 @@ namespace z.ERP.Services
             }
             string sql = $@"SELECT A.*,B.NAME MERNAME,C.NAME FDNAME,D.ORGNAME,E.CONTRACTID_OLD,E.JHRQ,";
             sql += " (select NAME from FEERULE L where L.ID=A.FEERULE_RENT) FEERULE_RENTNAME,";
+            sql += " (select NAME from LATEFEERULE LA where LA.ID=A.ZNID_RENT) LATEFEERULENAME,";
             sql += " F.NAME AS OPERATERULENAME  FROM CONTRACT A,MERCHANT B,";
             sql += "   BRANCH C, ORG D,CONTRACT_UPDATE E,OPERATIONRULE F WHERE A.MERCHANTID=B.MERCHANTID AND A.CONTRACTID=E.CONTRACTID(+) ";
             sql += " AND A.BRANCHID=C.ID AND A.ORGID=D.ORGID AND A.OPERATERULE=F.ID ";
@@ -181,8 +182,8 @@ namespace z.ERP.Services
             DataTable contract_pay = DbHelper.ExecuteTable(sqlPay);
 
 
-            string sqlCost = $@"SELECT A.*,B.NAME,C.NAME FEERULENAME FROM CONTRACT_COST A,FEESUBJECT B,FEERULE C";
-            sqlCost += " WHERE A.TERMID=B.TRIMID AND A.FEERULEID=C.ID ";
+            string sqlCost = $@"SELECT A.*,B.NAME,C.NAME FEERULENAME,D.NAME LATEFEERULENAME FROM CONTRACT_COST A,FEESUBJECT B,FEERULE C,LATEFEERULE D";
+            sqlCost += " WHERE A.TERMID=B.TRIMID AND A.FEERULEID=C.ID AND A.ZNGZID=D.ID(+) ";
             sqlCost += (" AND CONTRACTID= " + Data.CONTRACTID);
             sqlCost += " ORDER BY TERMID,STARTDATE";
             DataTable contract_cost = DbHelper.ExecuteTable(sqlCost);

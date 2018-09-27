@@ -448,7 +448,7 @@
         { type: 'selection', width: 60, align: 'center', },
         { title: '序号', key: 'INX', width: 70 },
         {
-            title: "费用项目", key: 'TERMID', width: 100,
+            title: "费用项目", key: 'TERMID', width: 95,
             render: function (h, params) {
                 return h('Input', {
                     props: {
@@ -477,7 +477,7 @@
         {
             title: '开始日期',
             key: 'STARTDATE',
-            width: 150,
+            width: 140,
             render: function (h, params) {
                 return h('DatePicker', {
                     props: {
@@ -494,7 +494,7 @@
         {
             title: '结束日期',
             key: 'ENDDATE',
-            width: 150,
+            width: 140,
             render: function (h, params) {
                 return h('DatePicker', {
                     props: {
@@ -564,7 +564,7 @@
             },
         },
         {
-            title: "比例", key: 'KL', width: 100,
+            title: "比例(%)", key: 'KL', width: 100,
             render: function (h, params) {
                 return h('Input', {
                     props: {
@@ -608,7 +608,36 @@
         },
 
         {
-            title: '生成日期是否和租金保持一致', key: 'IF_RENT_FEERULE', width: 150,
+            title: '滞纳规则', key: 'ZNGZID', width: 150,
+            render: function (h, params) {
+                var allLateFeeRule = [];
+                if (editDetail.screenParam.LATEFEERULE.length > 0) {
+                    for (var i = 0; i < editDetail.screenParam.LATEFEERULE.length; i++) {
+                        allLateFeeRule.push(h('Option',
+                                {
+                                    props:
+                                      { value: editDetail.screenParam.LATEFEERULE[i].ID }
+                                }, editDetail.screenParam.LATEFEERULE[i].NAME));
+                    };
+                };
+                return h('Select',
+                    {
+                        props: {
+                            value: params.row.ZNGZID
+                        },
+                        on: {
+                            'on-change': function (event) {
+                                Vue.set(editDetail.dataParam.CONTRACT_COST[params.index], 'ZNGZID', event);
+                            }
+                        }
+                    },
+                    allLateFeeRule
+                )
+            }
+        },
+
+        {
+            title: '生成日期是否和租金保持一致', key: 'IF_RENT_FEERULE', width: 130,
             render: function (h, params) {
                 return h('Select',
                     {
@@ -698,7 +727,7 @@
             },
         },
         {
-            title: "比例", key: 'KL', width: 120,
+            title: "比例(%)", key: 'KL', width: 120,
             render: function (h, params) {
                 return h('Input', {
                     props: {
@@ -1433,6 +1462,11 @@ editDetail.mountedInit = function () {
         Data: {}
     }, function (data) {
         Vue.set(editDetail.screenParam, "FEERULE", data.rows);
+    });
+    _.Ajax('LateFeeRuleInit', {
+        Data: {}
+    }, function (data) {
+        Vue.set(editDetail.screenParam, "LATEFEERULE", data.rows);
     });
 };
 

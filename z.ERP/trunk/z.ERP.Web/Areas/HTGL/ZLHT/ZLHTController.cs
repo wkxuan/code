@@ -101,5 +101,11 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             return service.XtglService.GetFeeRule(item);
         }
 
+        public UIResult LateFeeRuleInit()
+        {
+            SearchItem item = new SearchItem();
+            return service.XtglService.GetLateFeeRule(item);
+        }
+
     }
 }

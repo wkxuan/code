@@ -314,8 +314,19 @@
             }
         </i-col>
     </row>
-
     <row>
+        <i-col span="2" class="RowTitle">
+            租金滞纳规则
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.ZNID_RENT",
+                    ServiceMothod = m => m.LateFeeRule()
+                });
+            }
+        </i-col>
         <i-col span="2" class="RowTitle">
             起始日清算
         </i-col>

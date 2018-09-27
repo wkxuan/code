@@ -95,6 +95,14 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
+
+        public List<SelectItem> LateFeeRule()
+        {
+            string sql = $@"SELECT ID,NAME FROM LateFeeRule  ORDER BY  ID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ID", "NAME");
+        }
+
         public DataGridResult GetJsklGroup(SearchItem item)
         {
             string sql = $@"select * from CONTRACT_GROUP A where 1=1";
