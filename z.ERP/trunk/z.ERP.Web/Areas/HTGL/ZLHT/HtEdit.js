@@ -1398,7 +1398,8 @@ editDetail.IsValidSave = function () {
             };
 
             if (((editDetail.dataParam.CONTRACT_COST[i].SFFS == 1)
-                || (editDetail.dataParam.CONTRACT_COST[i].SFFS == 2))
+                || (editDetail.dataParam.CONTRACT_COST[i].SFFS == 2)
+                || (editDetail.dataParam.CONTRACT_COST[i].SFFS == 4))
                 && ((!editDetail.dataParam.CONTRACT_COST[i].COST) || (editDetail.dataParam.CONTRACT_COST[i].COST <= 0))
                 ) {
                 iview.Message.info("请确定每月收费项目中的固定费用型收费方式对应的金额!");
