@@ -56,5 +56,11 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        [Field("滞纳金比例")]
+        public string RATIO
+        {
+            get; set;
+        }
     }
 }

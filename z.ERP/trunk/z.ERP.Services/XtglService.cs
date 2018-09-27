@@ -158,7 +158,7 @@ namespace z.ERP.Services
         }
         public DataGridResult GetLateFeeRule(SearchItem item)
         {
-            string sql = $@"select A.ID,A.NAME,A.DAYS,A.AMOUNTS from LATEFEERULE A where 1=1 ";
+            string sql = $@"select A.ID,A.NAME,A.DAYS,A.AMOUNTS,A.RATIO*100 RATIO from LATEFEERULE A where 1=1 ";
             item.HasKey("ID", a => sql += $" and A.ID = '{a}'");
             sql += "order by A.ID";
             int count;
@@ -167,7 +167,7 @@ namespace z.ERP.Services
         }
         public DataGridResult GetLateFeeRuleElement(SearchItem item)
         {
-            string sql = $@"select A.ID,A.NAME,A.DAYS,A.AMOUNTS from LATEFEERULE A where 1=1 ";
+            string sql = $@"select A.ID,A.NAME,A.DAYS,A.AMOUNTS,A.RATIO*100 RATIO from LATEFEERULE A where 1=1 ";
             item.HasKey("ID", a => sql += $" and A.ID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
