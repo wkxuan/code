@@ -106,7 +106,8 @@ namespace z.ERP.Entities.Enum
     {
         铺位 = 1,
         临时场地 = 2,
-        广告位 = 3
+        广告位 = 3,
+        写字间 = 4
     }
     public enum 单元状态
     {
