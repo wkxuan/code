@@ -7,7 +7,7 @@
     this.IsValidSave = function () {
         return true;
     }
-
+    this.popCallBack = function (data) { };
     this.enabled = function (val) { return val; }
 
     this.clearKey = function () { }

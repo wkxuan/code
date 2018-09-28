@@ -15,8 +15,11 @@
     editDetail.screenParam.ParentShop = {};
     editDetail.screenParam.ParentFeeSubject = {};
     editDetail.screenParam.ParentPay = {};
-
     editDetail.screenParam.FEERULE = [];
+
+    editDetail.screenParam.PopSysuser = false;
+    editDetail.screenParam.srcPopSigner = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
+    editDetail.screenParam.popParam = {};
 
     //品牌表格
     editDetail.screenParam.colDefPP = [
@@ -766,7 +769,24 @@
     }
 }
 
+editDetail.popCallBack = function (data) {
+
+    if (editDetail.screenParam.PopSigner) {
+        editDetail.screenParam.PopSigner = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            editDetail.dataParam.SIGNER = data.sj[i].USERID;
+            editDetail.dataParam.SIGNER_NAME = data.sj[i].USERNAME;
+
+        };
+    }
+};
+
 editDetail.otherMethods = {
+    SelSigner: function () {
+        Vue.set(editDetail.screenParam, "PopSigner", true);
+        editDetail.screenParam.popParam = { USER_TYPE: "7" };
+    },
+
     //点击商户弹窗
     Merchant: function () {
         Vue.set(editDetail.screenParam, "PopMerchant", true);

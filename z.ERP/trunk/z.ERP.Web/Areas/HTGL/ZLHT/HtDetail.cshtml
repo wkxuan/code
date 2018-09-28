@@ -125,6 +125,14 @@
         <i-col span="4">
             <i-input v-model="CONTRACTID_PAPER" readonly="true"></i-input>
         </i-col>
+        <i-col span="2" class="RowTitle">合同员</i-col>
+        <i-col span="4">
+            <i-input v-model="SIGNER_NAME" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">原合同号</i-col>
+        <i-col span="4">
+            <i-input v-model="CONTRACT_OLD" readonly="true"></i-input>
+        </i-col>
     </row>
 
      <row>
@@ -207,6 +215,8 @@
                 XXSL:"@contract.XXSL",
                 LATEFEERULENAME:"@contract.LATEFEERULENAME",
                 CONTRACTID_PAPER:"@contract.CONTRACTID_PAPER",
+                SIGNER_NAME:"@contract.SIGNER_NAME",
+                CONTRACT_OLD:"@contract.CONTRACT_OLD",
 
                 DESCRIPTION:" ",
 

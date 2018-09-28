@@ -101,6 +101,18 @@
                 });
             }
         </i-col>
+       <i-col>
+           @{
+               RenderControl(new PopsRender()
+               {
+                   vModel = "screenParam.PopSigner",
+                   Src = "screenParam.srcPopSigner",
+                   Caption = "选择合同员",
+                   Width = "760"
+               });
+           }
+
+       </i-col>
     </row>  
     <row>
         <i-col span="2" class="RowTitle">
@@ -196,9 +208,30 @@
         </i-col>
 
         <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelSigner",
+                    Text = "合同员",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.SIGNER_NAME",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
             原合同号
         </i-col>
-        <i-col span="6">
+        <i-col span="2">
             @{
                 RenderControl(new TextBoxRender()
                 {

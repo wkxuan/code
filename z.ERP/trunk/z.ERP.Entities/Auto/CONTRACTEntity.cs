@@ -355,8 +355,16 @@ namespace z.ERP.Entities
             get; set;
         }
 
-
-        
+        [Field("合同员id")]
+        public string SIGNER
+        {
+            get;set;
+        }
+        [Field("合同员名称")]
+        public string SIGNER_NAME
+        {
+            get;set;
+        }
 
 
     }
