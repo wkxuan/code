@@ -4,8 +4,7 @@ using z.ERP.Entities;
 using z.Extensions;
 using System;
 using z.SSO.Model;
-
-
+using z.ERP.Entities.Enum;
 
 namespace z.ERP.Services
 {
@@ -16,15 +15,16 @@ namespace z.ERP.Services
         }
         public DataGridResult GetUser(SearchItem item)
         {
-            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME,A.SHOPID,B.ORGID,B.ORGCODE,B.ORGNAME,C.CODE SHOPCODE,C.NAME SHOPNAME
+            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME,A.SHOPID,A.USER_TYPE,B.ORGID,B.ORGCODE,B.ORGNAME,C.CODE SHOPCODE,C.NAME SHOPNAME
              from SYSUSER A,ORG B,SHOP C 
              where A.SHOPID=C.SHOPID(+) and A.ORGID=B.ORGID(+) ";  //and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";
             item.HasKey("USERCODE", a => sql += $" and A.USERCODE like '%{a}%'");
             item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");
-            item.HasKey("USER_TYPE", a => sql += $" and A.USER_TYPE = '{a}'");
+            item.HasKey("USER_TYPE", a => sql += $" and A.USER_TYPE in ({a})");
             sql += " ORDER BY  A.USERCODE";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<用户类型>("USER_TYPE", "USER_TYPEMC");
             return new DataGridResult(dt, count);
         }
         public DataGridResult GetUserElement(SearchItem item)

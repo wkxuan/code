@@ -15,13 +15,13 @@
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "SpglService";
     search.method = "GetSaleBillList";
-    //账单收款
+
     search.searchParam.TYPE = 3;
 }
 
 search.browseHref = function (row, index) {
     _.OpenPage({
-        id: 10500401,
+        id: 105004,
         title: '浏览销售补录单',
         url: "SPGL/SALEBILL/SaleBillDetail/" + row.BILLID
     })
@@ -29,7 +29,7 @@ search.browseHref = function (row, index) {
 
 search.modHref = function (row, index) {
     _.OpenPage({
-        id: 10500401,
+        id: 105004,
         title: '编辑销售补录单',
         url: "SPGL/SALEBILL/SaleBillEdit/" + row.BILLID
     })
@@ -38,7 +38,7 @@ search.modHref = function (row, index) {
 
 search.addHref = function (row) {
     _.OpenPage({
-        id: 10500401,
+        id: 105004,
         title: '新增销售补录单',
         url: "SPGL/SALEBILL/SaleBillEdit/"
     })

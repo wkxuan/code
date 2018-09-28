@@ -108,12 +108,12 @@ editDetail.showOne = function (data, callback) {
 editDetail.otherMethods = {
     SelSyysuser: function () {        
         editDetail.screenParam.showPopSyyuser = true;
-        editDetail.screenParam.popParam = { USER_TYPE: 1};
+        editDetail.screenParam.popParam = { USER_TYPE: "1"};
         btnFlag = "SYYFlag";
     },
     SelYyysuser: function () {
         editDetail.screenParam.showPopSyyuser = true;
-        editDetail.screenParam.popParam = { USER_TYPE: 2 };
+        editDetail.screenParam.popParam = { USER_TYPE: "1,2" };
         btnFlag = "YYYFlag";
     },
     srchColGoods: function () {
