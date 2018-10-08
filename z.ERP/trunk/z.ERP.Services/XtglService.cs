@@ -204,8 +204,8 @@ namespace z.ERP.Services
                    + " and  A.BRANCHID = D.ID and A.FLOORID=F.ID";
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
-            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
-            item.HasKey("FLOORID", a => sql += $" and A.FLOORID = '{a}'");
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and A.FLOORID = {a}");
             sql += " ORDER BY  A.CODE";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

@@ -32,22 +32,37 @@
     srch.service = "ReportService";
     srch.method = "SaleRecord";
 
-  /*  srch.screenParam.showPopSysuser = false;
-    srch.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
-    srch.screenParam.popParam = {}; */
+    srch.screenParam.showPopMerchant = false;
+    srch.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+    srch.screenParam.showPopShop = false;
+    srch.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
+    srch.screenParam.popParam = {};
 };
-/*
+
 srch.otherMethods = {
-    SelSysuser: function () {
-        srch.screenParam.showPopSysuser = true;
+    SelMerchant: function(){
+        srch.screenParam.showPopMerchant = true;
+    },
+    SelShop: function () {
+        srch.screenParam.showPopShop = true;
+        if (srch.searchParam.BRANCHID)
+            srch.screenParam.popParam = { BRANCHID: srch.searchParam.BRANCHID };
     }
 }
 
-search.popCallBack = function (data) {
-    if (srch.screenParam.showPopSysuser) {
-        srch.screenParam.showPopSysuser = false;
-        srch.searchParam.CASHIERID = data.sj[i].USERID;
-        srch.searchParam.CASHIERNAME = data.sj[i].USERNAME;
-        srch.screenParam.popParam = { USER_TYPE: '1' };
+srch.popCallBack = function (data) {
+    if (srch.screenParam.showPopMerchant) {
+        srch.screenParam.showPopMerchant = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+            srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+        }
     }
-} */
+    if (srch.screenParam.showPopShop) {
+        srch.screenParam.showPopShop = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            srch.searchParam.SHOPID = data.sj[i].SHOPID;
+            srch.searchParam.SHOPCODE = data.sj[i].SHOPCODE;
+        }
+    }
+} 
