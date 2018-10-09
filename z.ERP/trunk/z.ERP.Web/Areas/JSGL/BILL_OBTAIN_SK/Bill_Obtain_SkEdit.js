@@ -5,6 +5,7 @@
     //保证金收款
     editDetail.dataParam.TYPE = 3;
     editDetail.dataParam.ALL_MONEY = 0;
+    editDetail.dataParam.ADVANCE_MONEY = 0;
     //初始化弹窗所要传递参数
     editDetail.screenParam.showPopBill = false;
     editDetail.screenParam.showPopMerchant = false;
@@ -144,6 +145,7 @@ editDetail.popCallBack = function (data) {
         for (var i = 0; i < data.sj.length; i++) {
             editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
             editDetail.dataParam.MERCHANTNAME = data.sj[i].NAME;
+            editDetail.dataParam.MERCHANT_MONEY = data.sj[i].MERCHANT_MONEY;
         }
     }
 }
@@ -156,6 +158,9 @@ editDetail.clearKey = function () {
     editDetail.dataParam.MERCHANTID = null;
     editDetail.dataParam.MERCHANTNAME = null;
     editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.MERCHANT_MONEY = 0;
+    editDetail.dataParam.ALL_MONEY = 0;
+    editDetail.dataParam.ADVANCE_MONEY = 0;
     editDetail.dataParam.BILL_OBTAIN_ITEM = [];
 }
 
@@ -182,6 +187,7 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请录入账单信息!");
         return false;
     } else {
+        let fkje = 0;
         for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
             if (!editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY) {
                 iview.Message.info("请录入付款金额!");
@@ -198,7 +204,28 @@ editDetail.IsValidSave = function () {
                 iview.Message.info("单号[" + editDetail.dataParam.BILL_OBTAIN_ITEM[i].FINAL_BILLID + "]当为负数金额时，付款金额不能小于未付款金额!");
                 return false;
             }
+            fkje += editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY;
         };
+        if (!editDetail.dataParam.ALL_MONEY)
+        {
+            editDetail.dataParam.ALL_MONEY = 0;
+        }
+        if (!editDetail.dataParam.ADVANCE_MONEY) {
+            editDetail.dataParam.ADVANCE_MONEY = 0;
+        }
+        if (!editDetail.dataParam.MERCHANT_MONEY) {
+            editDetail.dataParam.MERCHANT_MONEY = 0;
+        }
+        if (editDetail.dataParam.ADVANCE_MONEY > editDetail.dataParam.MERCHANT_MONEY)
+        {
+            iview.Message.info("冲销预收款金额不能大于商户余额");
+            return false;
+        }
+        if (fkje != parseFloat(editDetail.dataParam.ALL_MONEY) + parseFloat(editDetail.dataParam.ADVANCE_MONEY))
+        {
+            iview.Message.info("收款金额 + 冲销预收款金额 不等于 明细付款金额之和!");
+            return false;
+        }
     };
 
     return true;

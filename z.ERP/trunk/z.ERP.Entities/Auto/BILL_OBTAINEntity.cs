@@ -146,5 +146,21 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        /// <summary>
+        /// 冲销预收款金额
+        /// <summary>
+        [Field("冲销预收款金额")]
+        public string ADVANCE_MONEY
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 商户余额
+        /// <summary>
+        [Field("商户余额")]
+        public string MERCHANT_MONEY
+        {
+            get; set;
+        }
     }
 }
