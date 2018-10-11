@@ -25,12 +25,12 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
         }
         public ActionResult Bill_Obtain_SkEdit(string Id)
         {
-            ViewBag.Title = "编辑商户收款处理";            
+            ViewBag.Title = "编辑租赁核销单";            
             return View("Bill_Obtain_SkEdit", (EditRender)Id);
         }
         public ActionResult Bill_Obtain_SkDetail(string Id)
         {
-            ViewBag.Title = "浏览商户收款处理";
+            ViewBag.Title = "浏览租赁核销单";
             var entity = service.JsglService.GetBillObtainElement(new BILL_OBTAINEntity(Id));
             ViewBag.billObtain = entity.Item1;
             ViewBag.billObtainItem = entity.Item2;
