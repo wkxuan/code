@@ -505,6 +505,15 @@ namespace z.ERP.Services
             return brand.ID;
         }
 
+        public DataGridResult GetPosO2OWftCfg(SearchItem item)
+        {
+            string sql = $@"select * from POSO2OWFTCFG where 1=1 ";
+            item.HasKey("POSNO", a => sql += $" and POSNO = '{a}'");
+            sql += " order by POSNO";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 
 }

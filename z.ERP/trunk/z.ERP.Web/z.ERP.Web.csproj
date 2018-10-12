@@ -228,6 +228,7 @@
     <Compile Include="Areas\XTGL\FEERULE\FeeRuleController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
+    <Compile Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfgController.cs" />
     <Compile Include="Areas\XTGL\RCL\RCLController.cs" />
     <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
     <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
@@ -316,6 +317,7 @@
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
+    <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.js" />
     <Content Include="Areas\XTGL\RCL\RCL.js" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.js" />
     <Content Include="Areas\XTGL\ROLE\RoleList.js" />
@@ -511,11 +513,13 @@
     <Content Include="Areas\Report\ContractSale\ContractSale.cshtml" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.cshtml" />
     <Content Include="Areas\Report\SaleRecord\SaleRecord.cshtml" />
+    <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Home\" />
+    <Folder Include="Areas\XTGL\Views\PosO2OWftCfg\" />
     <Folder Include="Areas\XTGL\Views\Tree\" />
   </ItemGroup>
   <ItemGroup>

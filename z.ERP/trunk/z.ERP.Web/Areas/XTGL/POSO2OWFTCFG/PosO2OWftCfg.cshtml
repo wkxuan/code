@@ -1,0 +1,98 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+
+@section search{
+    <row>
+        <i-col span="5" class="RowTitle">终端号</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.POSNO"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section element{
+
+<row>
+    <i-col span="4" class="RowTitle">
+        终端号
+    </i-col>
+    <i-col span="5" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.POSNO",
+                Enable = false,
+              //  Readonly = "true"
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="4" class="RowTitle">
+        前置机地址
+    </i-col>
+    <i-col span="15" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.URL",
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="4" class="RowTitle">
+        PID
+    </i-col>
+    <i-col span="15" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.PID",
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="4" class="RowTitle">
+        秘钥Key
+    </i-col>
+    <i-col span="15" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.KEY",
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="4" class="RowTitle">
+        日志路径
+    </i-col>
+    <i-col span="15" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.LOG",
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+}

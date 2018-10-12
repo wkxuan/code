@@ -43,6 +43,7 @@
     <Compile Include="Auto\FREESHOPEntity.cs" />
     <Compile Include="Auto\FREESHOPITEMEntity.cs" />
     <Compile Include="Auto\MENUTREEEntity.cs" />
+    <Compile Include="Auto\POSO2OWFTCFGEntity.cs" />
     <Compile Include="Auto\RCL_HOSTEntity.cs" />
     <Compile Include="Auto\SALEBILLEntity.cs" />
     <Compile Include="Auto\SALEBILLITEMEntity.cs" />
