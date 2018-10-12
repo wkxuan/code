@@ -2,7 +2,8 @@
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<DateBoxRender>
 
 <date-picker  type="date" format="yyyy-MM-dd" v-on:on-change="@Model.vModel=$event" 
-                :value= "@Model.vModel"
-              :disabled="@(Model.Enable?"!disabled":"disabled")"></date-picker>  
+              :value= "@Model.vModel"
+              :disabled="@(Model.Enable?"!disabled":"disabled")"
+              :readonly="@(Model.Enable?"false":"true")"></date-picker>  
 
 <!--v-model="@Model.vModel"-->
