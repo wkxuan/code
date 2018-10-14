@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
 using z.ERP.Entities.Procedures;
@@ -12,56 +13,69 @@ using z.Extensions;
 
 namespace z.ERP.Services
 {
-    public class WriteDataService: ServiceBase
+    public class WriteDataService : ServiceBase
     {
         internal WriteDataService()
         {
 
         }
 
-        public void CanRcl(WRITEDATAEntity WRITEDATA)
+        public void CanRcl(WRITEDATAEntity WRITEDATA, RichTextBox LogData)
         {
-            if (employee.Id.ToInt() < 0) {
-                throw new LogicException($"请用操作员登陆做日处理!");
+            if (employee.Id.ToInt() < 0)
+            {
+                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "请用操作员登陆做日处理!");
+                return;
             }
             //1:判断表里面有记录就提示不让在做日处理          
             var sql = " SELECT 1 FROM RCL_HOST";
             DataTable dt = DbHelper.ExecuteTable(sql);
-            if (dt.Rows.Count != 0) {
-                throw new LogicException($"日处理正在进行中!");
+            if (dt.Rows.Count != 0)
+            {
+                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "日处理正在进行中!");
+                return;
             }
 
             List<BRANCHEntity> fdListrcl = DbHelper.SelectList(new BRANCHEntity() { STATUS = "1" });
             var boll = false;
-            foreach (var fd in fdListrcl) {
+            foreach (var fd in fdListrcl)
+            {
                 WRITEDATAEntity data = DbHelper.Select(new WRITEDATAEntity() { RQ = WRITEDATA.RQ, BRANCHID = fd.ID });
-                if (data == null){
+                if (data == null)
+                {
                     boll = true;
                     break;
-                } else {
-                    if (data.STATUS != 日处理步骤.成功.ToString()) {
+                }
+                else
+                {
+                    if (data.STATUS != "0")
+                    {
                         boll = true;
                         break;
                     }
                 }
             }
-            if (!boll) {
-                throw new LogicException($"当前日期的日处理已经完成!");
+            if (!boll)
+            {
+                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "当前日期的日处理已经完成!");
+                return;
             }
 
             RCL_HOSTEntity host = new RCL_HOSTEntity();
             //2:插入互斥日结表
-            host.HOSTNAME= Environment.MachineName;
+            host.HOSTNAME = Environment.MachineName;
             DbHelper.Save(host);
 
             //循环分店信息:
             List<BRANCHEntity> fdList = DbHelper.SelectList(new BRANCHEntity() { STATUS = "1" });
 
-            foreach (var fd in fdList) {
+            foreach (var fd in fdList)
+            {
 
                 WRITEDATAEntity data = new WRITEDATAEntity();
                 WRITEDATAEntity data1 = DbHelper.Select(new WRITEDATAEntity() { RQ = WRITEDATA.RQ, BRANCHID = fd.ID });
-                if (data1 != null) {
+                if (data1 != null)
+                {
                     data.STATUS = data1.STATUS;
                 }
 
@@ -79,11 +93,15 @@ namespace z.ERP.Services
                 {
                     break;
                 }
-                else {
-                    while (data.STATUS.ToInt() <= 9) {
+                else
+                {
+
+                    while (data.STATUS.ToInt() <= 9)
+                    {
                         switch (data.STATUS.ToInt())
                         {
                             case 1:
+                                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "更新交易商品税率");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -102,15 +120,18 @@ namespace z.ERP.Services
                                         Tran.Commit();
                                         data.STATUS = writedata.STATUS;
                                     }
-                                   
+
                                 }
-                                catch (Exception e){ 
+                                catch (Exception e)
+                                {
                                     DbHelper.Delete(host);
-                                    throw new LogicException(e.Message);
+                                    LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
                                 break;
                             case 2:
-                                try {
+                                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "汇总商品销售表");
+                                try
+                                {
                                     using (var Tran = DbHelper.BeginTransaction())
                                     {
                                         WRITE_GOODS_SUMMARY write_goods_summary = new WRITE_GOODS_SUMMARY()
@@ -127,16 +148,18 @@ namespace z.ERP.Services
                                         Tran.Commit();
                                         data.STATUS = writedata.STATUS;
                                     }
-                           
+
                                 }
                                 catch (Exception e)
                                 {
                                     DbHelper.Delete(host);
-                                    throw new LogicException(e.Message);
+                                    LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
                                 break;
                             case 3:
-                                try {
+                                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "汇总统计维度表");
+                                try
+                                {
                                     using (var Tran = DbHelper.BeginTransaction())
                                     {
                                         WRITE_CONTRACT_SUMMARY write_contract_summary = new WRITE_CONTRACT_SUMMARY()
@@ -153,17 +176,19 @@ namespace z.ERP.Services
                                         Tran.Commit();
                                         data.STATUS = writedata.STATUS;
                                     }
-                          
+
                                 }
                                 catch (Exception e)
                                 {
                                     DbHelper.Delete(host);
-                                    throw new LogicException(e.Message);
+                                    LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
-                
+
                                 break;
                             case 4:
-                                try {
+                                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "汇总手续费表");
+                                try
+                                {
                                     using (var Tran = DbHelper.BeginTransaction())
                                     {
                                         WRITE_CONTRACT_PAY_RATE write_contract_pay_rate = new WRITE_CONTRACT_PAY_RATE()
@@ -180,17 +205,19 @@ namespace z.ERP.Services
                                         Tran.Commit();
                                         data.STATUS = writedata.STATUS;
                                     }
-                     
+
                                 }
                                 catch (Exception e)
                                 {
                                     DbHelper.Delete(host);
-                                    throw new LogicException(e.Message);
+                                    LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
-                 
+
                                 break;
                             case 5:
-                                try {
+                                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "转移交易数据");
+                                try
+                                {
                                     using (var Tran = DbHelper.BeginTransaction())
                                     {
                                         WRITE_HIS_SALE write_his_sale = new WRITE_HIS_SALE()
@@ -211,11 +238,12 @@ namespace z.ERP.Services
                                 catch (Exception e)
                                 {
                                     DbHelper.Delete(host);
-                                    throw new LogicException(e.Message);
+                                    LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
-                      
+
                                 break;
                             case 6:
+                                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "生成租金每月收费项目账单");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -239,12 +267,14 @@ namespace z.ERP.Services
                                 catch (Exception e)
                                 {
                                     DbHelper.Delete(host);
-                                    throw new LogicException(e.Message);
+                                    LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
-                    
+
                                 break;
                             case 7:
-                                try {
+                                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "生成销售相关账单");
+                                try
+                                {
                                     using (var Tran = DbHelper.BeginTransaction())
                                     {
                                         WRITE_BILLFROMSALE write_billfromsale = new WRITE_BILLFROMSALE()
@@ -266,12 +296,14 @@ namespace z.ERP.Services
                                 catch (Exception e)
                                 {
                                     DbHelper.Delete(host);
-                                    throw new LogicException(e.Message);
+                                    LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
 
                                 break;
                             case 8:
-                                try {
+                                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "租约变更启动 ");
+                                try
+                                {
                                     using (var Tran = DbHelper.BeginTransaction())
                                     {
                                         WRITE_CONTRACT_UPDATE write_contract_update = new WRITE_CONTRACT_UPDATE()
@@ -293,12 +325,14 @@ namespace z.ERP.Services
                                 catch (Exception e)
                                 {
                                     DbHelper.Delete(host);
-                                    throw new LogicException(e.Message);
+                                    LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
-                   
+
                                 break;
                             case 9:
-                                try {
+                                LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "生成缴费通知单");
+                                try
+                                {
                                     using (var Tran = DbHelper.BeginTransaction())
                                     {
                                         WRITE_BILL_NOTICE write_bill_notice = new WRITE_BILL_NOTICE()
@@ -320,9 +354,9 @@ namespace z.ERP.Services
                                 catch (Exception e)
                                 {
                                     DbHelper.Delete(host);
-                                    throw new LogicException(e.Message);
+                                    LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
-       
+
                                 break;
                             default:
                                 break;
@@ -340,9 +374,11 @@ namespace z.ERP.Services
                 }
             }
             DbHelper.Delete(host);
+            LogData.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "成功结束!");
         }
 
-        public void UpdateSatus(WRITEDATAEntity data) {
+        public void UpdateSatus(WRITEDATAEntity data)
+        {
             DbHelper.Update(data);
         }
     }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using z.ERP.Entities;
 
 namespace z.ERP.Console
 {
@@ -17,9 +18,20 @@ namespace z.ERP.Console
             InitializeComponent();
             ButtonClick(btn_rcl, () =>
             {
+                LogText.Clear();
+                LogText.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "开始");
+                var msg = string.Empty;
                 var e = employee;
-                var a = service.SpglService.GetKindInit();
+                WRITEDATAEntity WRITEDATA = new WRITEDATAEntity();
+                WRITEDATA.RQ = this.WriteRq.Value.ToShortDateString();
+
+                service.WriteDataService.CanRcl(WRITEDATA, LogText);
             });
+        }
+
+        private void LogText_TextChanged(object sender, EventArgs e)
+        {
+            LogText.ScrollToCaret();
         }
     }
 }

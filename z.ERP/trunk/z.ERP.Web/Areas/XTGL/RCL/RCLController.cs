@@ -22,7 +22,7 @@ namespace z.ERP.Web.Areas.XTGL.RCL
 
         public void Exec(WRITEDATAEntity WRITEDATA)
         {
-            service.WriteDataService.CanRcl(WRITEDATA);
+            //  service.WriteDataService.CanRcl(WRITEDATA);
         }
     }
 }

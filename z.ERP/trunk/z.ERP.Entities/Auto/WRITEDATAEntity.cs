@@ -4,7 +4,7 @@
  * 生成人：书房
  * 代码生成器版本号：1.2.6655.1027
  *
- */ 
+ */
 
 using System.Data;
 using z.DbHelper.DbDomain;
@@ -23,7 +23,7 @@ namespace z.ERP.Entities
             RQ = rq;
         }
 
- 
+
         [PrimaryKey]
         [Field("日期")]
         [DbType(DbType.DateTime)]
