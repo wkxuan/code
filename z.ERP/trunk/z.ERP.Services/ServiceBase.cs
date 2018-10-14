@@ -165,6 +165,14 @@ namespace z.ERP.Services
                 return ioc.Create<ReportService>();
             }
         }
+        public CwglService CwglService
+        {
+            get
+            {
+                return ioc.Create<CwglService>();
+            }
+        }
+        
         #endregion
 
         #region 通用方法

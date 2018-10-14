@@ -159,6 +159,7 @@
     <Compile Include="App_Start\DebugSettings.cs" />
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
+    <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
     <Compile Include="Areas\HTGL\FREESHOP\FreeShopController.cs" />
@@ -248,6 +249,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.js" />
@@ -514,6 +516,7 @@
     <Content Include="Areas\Report\GoodsSale\GoodsSale.cshtml" />
     <Content Include="Areas\Report\SaleRecord\SaleRecord.cshtml" />
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.cshtml" />
+    <Content Include="Areas\CWGL\PZDC\Pzdc.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

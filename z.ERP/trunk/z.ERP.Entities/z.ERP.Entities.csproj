@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\VOUCHER_RECORDEntity.cs" />
+    <Compile Include="Auto\VOUCHER_MAKESQLEntity.cs" />
     <Compile Include="Auto\FREESHOPEntity.cs" />
     <Compile Include="Auto\FREESHOPITEMEntity.cs" />
     <Compile Include="Auto\MENUTREEEntity.cs" />
