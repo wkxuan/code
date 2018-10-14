@@ -91,6 +91,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\z.ERP.Entities\z.ERP.Entities.csproj">
+      <Project>{4115FE85-9E35-45E1-BFE9-C19F62BAB612}</Project>
+      <Name>z.ERP.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.ERP.Services\z.ERP.Services.csproj">
       <Project>{4F92BE72-D196-4EE6-903C-10A1D7B0FADF}</Project>
       <Name>z.ERP.Services</Name>
