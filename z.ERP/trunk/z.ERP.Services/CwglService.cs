@@ -48,7 +48,7 @@ namespace z.ERP.Services
         {
             var iPZBH = string.Empty;
 
-            //DbCommand dbCommand = GetSqlStringCommond("select sum(SFJE) SFJE from wy_sfxmjfd where ZXRQ>=@pDATE1 and ZXRQ<=@pDATE2");            
+            //DbCommand dbCommand = GetSqlStringCommond("select sum(SFJE) SFJE from wy_sfxmjfd where ZXRQ>=@pDATE1 and ZXRQ<=@pDATE2");
             //DbParameter param = (DbParameter)dbCommand.CreateParameter();
             //param.Value = "2018.10.1";
             //param.ParameterName = "@pDATE1";
@@ -57,7 +57,17 @@ namespace z.ERP.Services
             //param.ParameterName = "@pDATE2";
             //dbCommand.Parameters.Add(param);
 
-            DbParameter[] param = new DbParameter[2];
+            DbParameter[] param = new DbParameter[2] {
+                           new OracleParameter("pDATE1",new DateTime (2018,10,1)),
+                           new OracleParameter("pDATE2",new DateTime (2018,10,1)) };
+            DataTable dt = DbHelper.ExecuteTable("select sum(BILLID) SFJE from WORKITEM where PROC_TIME>=:pDATE1 and PROC_TIME<=:pDATE2", param);
+            DataTable dt1 = DbHelper.ExecuteTable("select sum(BILLID) SFJE from WORKITEM where PROC_TIME>=:pDATE1 and PROC_TIME<=:pDATE2",
+                new OracleParameter("pDATE1", new DateTime(2018, 10, 1)),
+                           new OracleParameter("pDATE2", new DateTime(2018, 10, 1))
+                           );
+
+
+
 
             DbParameter selectPara1 = new OracleParameter("@pDATE1", OracleDbType.Varchar2, 40);
             DbParameter selectPara2 = new OracleParameter("@pDATE2", OracleDbType.Varchar2, 40);
@@ -69,7 +79,7 @@ namespace z.ERP.Services
             param[0] = selectPara1;
             param[1] = selectPara2;
 
-            var pzparme = new 
+            var pzparme = new
             {
                 pDATE1 = "2018.10.1",
                 pDATE2 = "2018.10.1",
@@ -85,8 +95,8 @@ namespace z.ERP.Services
             {
                 //iPZBH = CommonService.NewINC("PZBH");       
                 //获取sql         
-                List<VOUCHER_MAKESQLEntity> p = DbHelper.SelectList(new VOUCHER_MAKESQLEntity()).Where(a => a.VOUCHERID=="1")
-                    .OrderBy(a => a.VOUCHERID).ToList();                
+                List<VOUCHER_MAKESQLEntity> p = DbHelper.SelectList(new VOUCHER_MAKESQLEntity()).Where(a => a.VOUCHERID == "1")
+                    .OrderBy(a => a.VOUCHERID).ToList();
                 foreach (var sqltxt in p)
                 {
                     var sqlflid = sqltxt.MAKESQL; //应该循环的SQL语句
@@ -98,13 +108,13 @@ namespace z.ERP.Services
                             List<VOUCHER_RECORDEntity> record = DbHelper.SelectList(new VOUCHER_RECORDEntity()).
                                 Where(a => a.VOUCHERID == "1").Where(a => a.SQLINX == sqltxt.SQLINX)
                                 .OrderBy(a => a.VOUCHERID).ToList();
-                            foreach( var fldata in record)
+                            foreach (var fldata in record)
                             {
                                 var fldat = fldata.SQLCOLTORECORD; //借方贷方金额
                                 var bmdat = fldata.SQLCOLTOMERCHANT;    //商户
                                 var wldwdat = fldata.SQLCOLTOORG;       //部门
                                 var fzdat = fldata.SQLCOLTOUSER;        //人员
-                                
+
                                 DataTable dtflid = DbHelper.ExecuteTable(sqlflid, param);
                                 //DataTable dtflid = DbHelper.ExecuteTable(sqlflid, pzparme);
                             }
@@ -112,7 +122,7 @@ namespace z.ERP.Services
                         else if (sqltxt.EXESQLTYPE == "U")
                         {
                             //DbHelper.ExecuteObject
-                           // provider.ExecuteSql(sqlflid, pzparme);
+                            // provider.ExecuteSql(sqlflid, pzparme);
                         }
                     }
                 }
