@@ -15,10 +15,10 @@ namespace z.ERP.Web.Areas.CWGL.PZDC
             ViewBag.Title = "凭证导出";
             return View();
         }
-        public string ExportPz(string Data)
-        {
-            return service.CwglService.ExportPz(Data);
-        }
+        //public string ExportPz(string Data)
+        //{
+        //    return service.CwglService.ExportPz(Data);
+        //}
     }
 
 }

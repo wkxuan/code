@@ -59,17 +59,21 @@
         <i-col span="4">
             <i-input v-model="MERCHANT_MONEY" :readonly="true"></i-input>
         </i-col>
+        <i-col span="2" class="RowTitle">付款方式</i-col>
+        <i-col span="4">
+            <i-input v-model="FKFSNAME" readonly="true"></i-input>
+        </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">权债发生月</i-col>
         <i-col span="4">
             <i-input v-model="NIANYUE" :readonly="true"></i-input>
         </i-col>
-        <i-col span="2" class="RowTitle">冲销预收款额</i-col>
+        <i-col span="2" class="RowTitle">冲销预付款额</i-col>
         <i-col span="4">
             <i-input v-model="ADVANCE_MONEY" :readonly="true"></i-input>
         </i-col>
-        <i-col span="2" class="RowTitle">收款金额</i-col>
+        <i-col span="2" class="RowTitle">付款金额</i-col>
         <i-col span="4">
             <i-input v-model="ALL_MONEY" :readonly="true"></i-input>
         </i-col>
@@ -107,6 +111,7 @@
                 ALL_MONEY:"@billObtain.ALL_MONEY",
                 ADVANCE_MONEY:"@billObtain.ADVANCE_MONEY",
                 MERCHANT_MONEY:"@billObtain.MERCHANT_MONEY",
+                FKFSNAME:"@billObtain.FKFSNAME",
                 colDef : [
                 {title: "账单号", key: 'FINAL_BILLID', width: 100},
                 { title: '租约号', key: 'CONTRACTID', width: 100 },
@@ -142,7 +147,7 @@
                 Print :function (event) {
                     event.stopPropagation();
                     _.OpenPage({
-                        id: 10700201,
+                        id: 10700200,
                         title: '打印',
                         url: "JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkPrint/" + @billObtain.BILLID,
                     });

@@ -54,14 +54,14 @@
     <row>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
-            收款方式
+            付款方式
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
-                    vModel = "dataParam.PAYID",
-                    ServiceMothod = m => m.pay(),
+                    vModel = "dataParam.FKFSID",
+                    ServiceMothod = m => m.fkfs(),
                 });
             }
         </i-col>

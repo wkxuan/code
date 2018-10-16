@@ -147,7 +147,7 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请选择商户!");
         return false;
     };
-    if (!editDetail.dataParam.PAYID) {
+    if (!editDetail.dataParam.FKFSID) {
         iview.Message.info("请选择付款方式!");
         return false;
     };

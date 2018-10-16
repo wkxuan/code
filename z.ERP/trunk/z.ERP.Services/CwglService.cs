@@ -45,20 +45,17 @@ namespace z.ERP.Services
 
             return dbCmd;
         }
-        public string ExportPz(string Data)
+        public DataGridResult ExportPz(SearchItem item)
         {
             var iPZBH = string.Empty;
+            string VOUCHERID, pFDBH, pDATE1, pDATE2, pCWNY;
+            item.HasKey("pDATE1", a => pDATE1 =$"{a}");
+            item.HasKey("pDATE2", a => pDATE2 = $"{a}");
+            item.HasKey("VOUCHERID", a => VOUCHERID = $"{a}");
+            item.HasKey("BRANCHID", a => pFDBH = $"{a}");
+            item.HasKey("CWNY", a => pCWNY = $"{a}");
 
-            //DbCommand dbCommand = GetSqlStringCommond("select sum(SFJE) SFJE from wy_sfxmjfd where ZXRQ>=@pDATE1 and ZXRQ<=@pDATE2");
-            //DbParameter param = (DbParameter)dbCommand.CreateParameter();
-            //param.Value = "2018.10.1";
-            //param.ParameterName = "@pDATE1";
-            //dbCommand.Parameters.Add(param);
-            //param.Value = "2018.10.1";
-            //param.ParameterName = "@pDATE2";
-            //dbCommand.Parameters.Add(param);
-
-            DbParameter[] param = new DbParameter[2] {
+            DbParameter[] param = new DbParameter[3] {
                            new OracleParameter("pDATE1",new DateTime (2018,10,1)),
                            new OracleParameter("pDATE2",new DateTime (2018,10,1)) };
             DataTable dt = DbHelper.ExecuteTable("select sum(BILLID) SFJE from WORKITEM where PROC_TIME>=:pDATE1 and PROC_TIME<=:pDATE2", param);
@@ -70,28 +67,6 @@ namespace z.ERP.Services
 
 
 
-            DbParameter selectPara1 = new OracleParameter("@pDATE1", OracleDbType.Varchar2, 40);
-            DbParameter selectPara2 = new OracleParameter("@pDATE2", OracleDbType.Varchar2, 40);
-
-            selectPara1.Value = "2018.10.1";
-            selectPara2.Value = "2018.10.2";
-
-
-            param[0] = selectPara1;
-            param[1] = selectPara2;
-
-            var pzparme = new
-            {
-                pDATE1 = "2018.10.1",
-                pDATE2 = "2018.10.1",
-                pPZLB = "XXXX",
-                pPZRQ = System.DateTime.Now,
-                pCWNY = "201810",
-                //pJLBH1 = res.KSDH,
-                //pJLBH2 = res.JSDH,
-                //pJLBH_IN = res.PJLBH,
-                pSYSDATE = System.DateTime.Now
-            };
             using (var Tran = DbHelper.BeginTransaction())
             {
                 //iPZBH = CommonService.NewINC("PZBH");       
@@ -112,11 +87,20 @@ namespace z.ERP.Services
                             foreach (var fldata in record)
                             {
                                 var fldat = fldata.SQLCOLTORECORD; //借方贷方金额
-                                var bmdat = fldata.SQLCOLTOMERCHANT;    //商户
-                                var wldwdat = fldata.SQLCOLTOORG;       //部门
+                                var wldwdat = fldata.SQLCOLTOMERCHANT;    //商户
+                                var bmdat = fldata.SQLCOLTOORG;       //部门
                                 var fzdat = fldata.SQLCOLTOUSER;        //人员
 
                                 DataTable dtflid = DbHelper.ExecuteTable(sqlflid, param);
+                                foreach (DataRow tr in dtflid.Rows)
+                                {
+                                    string JFJE = tr[fldat].ToString();
+                                    if (!string.IsNullOrEmpty(wldwdat))
+                                    {
+                                        string MERCHANTID = tr[wldwdat].ToString();
+                                    }
+                                    
+                                }
                                 //DataTable dtflid = DbHelper.ExecuteTable(sqlflid, pzparme);
                             }
                         }
@@ -130,7 +114,7 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
 
-            return iPZBH;
+            return null;
         }
     }
 }

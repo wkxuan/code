@@ -34,7 +34,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
             var entity = service.JsglService.GetBillObtainElement(new BILL_OBTAINEntity(Id));
             ViewBag.billObtain = entity.Item1;
             ViewBag.billObtainItem = entity.Item2;
-            return View();
+            return View(entity);
         }
 
         public void Delete(List<BILL_OBTAINEntity> DeleteData)
@@ -64,7 +64,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
         }
         public ActionResult Bill_Obtain_SkPrint(string Id)
         {
-            var entity = service.JsglService.GetBillObtainPrint(new BILL_OBTAINEntity(Id));
+              var entity = service.JsglService.GetBillObtainPrint(new BILL_OBTAINEntity(Id));
             ViewBag.billObtain = entity.Item1;
             ViewBag.billObtainItem = entity.Item2;
             ViewBag.CurrentDate = System.DateTime.Now;

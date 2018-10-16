@@ -376,9 +376,10 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable> GetBillObtainElement(BILL_OBTAINEntity Data)
         {
-            string sql = $@"SELECT A.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME "
-                        + "FROM BILL_OBTAIN A,BRANCH B,MERCHANT C "
-                        + "WHERE A.BRANCHID=B.ID and A.MERCHANTID = C.MERCHANTID(+)";
+            string sql = $@"SELECT A.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME,D.NAME FKFSNAME "
+                        + "FROM BILL_OBTAIN A,BRANCH B,MERCHANT C,FKFS D "
+                        + "WHERE A.BRANCHID=B.ID and A.MERCHANTID = C.MERCHANTID(+)"
+                        + " AND A.FKFSID=D.ID(+)";
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billObtain = DbHelper.ExecuteTable(sql);
@@ -623,12 +624,12 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable> GetBillObtainPrint(BILL_OBTAINEntity Data)
         {
-            string sql = $@"SELECT A.BILLID,A.NIANYUE,A.ALL_MONEY,A.DESCRIPTION,A.BRANCHID,A.STATUS, "
+            string sql = $@"SELECT A.BILLID,A.NIANYUE,A.ALL_MONEY,A.DESCRIPTION,A.BRANCHID,A.STATUS,A.ADVANCE_MONEY, "
                         + "B.NAME BRANCHNAME,'('||A.MERCHANTID||')'||C.NAME MERCHANTNAME,F.NAME FKFS,B.ACCOUNT,B.BANK, "
                         + "(select sum(L.MUST_MONEY) from BILL_OBTAIN_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) MUST_MONEY "
                         + " FROM BILL_OBTAIN A,BRANCH B,MERCHANT C,FKFS F "
                         + " WHERE A.BRANCHID=B.ID and A.MERCHANTID = C.MERCHANTID(+) "
-                        + "and A.PAYID =F.ID ";
+                        + "and A.FKFSID =F.ID ";
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billObtain = DbHelper.ExecuteTable(sql);
@@ -639,6 +640,7 @@ namespace z.ERP.Services
                 " where M.FINAL_BILLID=B.BILLID(+) and B.CONTRACTID=C.CONTRACTID(+) and B.TERMID=D.TRIMID(+)";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
+            sqlitem += $" order by M.FINAL_BILLID";
             DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
 
             return new Tuple<dynamic, DataTable>(billObtain.ToOneLine(), billObtainItem);
