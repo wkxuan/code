@@ -23,7 +23,8 @@
                         
                     </div>
                     <i-table :highlight-row="true" size="small" :border="true" 
-                             :columns="colDef" :data="dataDef"></i-table>
+                             :columns="colDef" :data="dataDef"
+                             v-on:on-current-change="select"></i-table>
                 </card>
             </div>
         </i-col>
@@ -53,15 +54,7 @@
                             @{
                                 RenderControl(new TextBoxRender()
                                 {
-                                    vModel = "NY_START",
-                                });
-                            }
-                        </i-col>
-                        <i-col span="8">
-                            @{
-                                RenderControl(new TextBoxRender()
-                                {
-                                    vModel = "NY_END",
+                                    vModel = "CWNY",
                                 });
                             }
                         </i-col>

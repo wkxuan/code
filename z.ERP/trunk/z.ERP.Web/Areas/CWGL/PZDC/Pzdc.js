@@ -1,4 +1,5 @@
-﻿var pzdc = new Vue({
+﻿let selectid = "";
+var pzdc = new Vue({
     el: "#List_Main",
     data: {        
         colDef: [{ title: '凭证编号', key: 'VOUCHERID' },
@@ -7,10 +8,9 @@
         dataDef: [],
         disabled: true,
         BRANCHID: 1,
-        NY_START: 201810,
-        NY_END: 201810,
-        RQ_START: null,
-        RQ_END: null,
+        CWNY: 201810,        
+        RQ_START: "",
+        RQ_END:"",
     },
     mounted: function () {
         _.Search({
@@ -23,27 +23,33 @@
     },
     methods: {
         exportPz: function (event) {
+            if (!selectid)
+            {
+                iview.Message.info("请先选择凭证模板!");
+                return false;
+            }
             if (!this.BRANCHID)
             {
                 iview.Message.info("分店不能为空!");
                 return false;
             }
-            if (!this.NY_START) {
-                iview.Message.info("开始年月不能为空!");
+            if (!this.CWNY) {
+                iview.Message.info("年月不能为空!");
                 return false;
             }
-            if (!this.NY_END) {
-                iview.Message.info("结束年月不能为空!");
-                return false;
-            }
-            _.Ajax('ExportPz', {
-                Data: { VOUCHERID: 1, BRANCHID: 1, NY_START:1}
-            }, function (data) {
-                if (data)
-                {
-                    alert('导出成功！');
+            _.Search({
+                Service: 'CwglService',
+                Method: 'ExportPz',
+                Data: { VOUCHERID: selectid, BRANCHID: this.BRANCHID, CWNY: this.CWNY, pDATE2: this.RQ_END, pDATE1: this.RQ_START },
+                PageInfo: 1,
+                Success: function (data) {
+                    pzdc.dataDef = data.rows;
                 }
-            });
+            })
+
+        },
+        select: function (currentRow, oldCurrentRow) {
+            selectid = currentRow.VOUCHERID            
         },
     }
 
