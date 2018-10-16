@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using z.DbHelper.DbDomain;
+using z.DBHelper.DbDomain;
 using z.ERP.Entities;
 using z.MVC5.Results;
 
@@ -62,8 +63,8 @@ namespace z.ERP.Services
                            new OracleParameter("pDATE2",new DateTime (2018,10,1)) };
             DataTable dt = DbHelper.ExecuteTable("select sum(BILLID) SFJE from WORKITEM where PROC_TIME>=:pDATE1 and PROC_TIME<=:pDATE2", param);
             DataTable dt1 = DbHelper.ExecuteTable("select sum(BILLID) SFJE from WORKITEM where PROC_TIME>=:pDATE1 and PROC_TIME<=:pDATE2",
-                new OracleParameter("pDATE1", new DateTime(2018, 10, 1)),
-                           new OracleParameter("pDATE2", new DateTime(2018, 10, 1))
+                new zParameter("pDATE1", new DateTime(2018, 10, 1)),
+                           new zParameter("pDATE2", new DateTime(2018, 10, 1))
                            );
 
 

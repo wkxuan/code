@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using z.DbHelper.DbDomain;
+using z.DBHelper.DbDomain;
 using z.Exceptions;
 using z.Extensiont;
 
@@ -21,6 +22,18 @@ namespace z.ERP.Services
     {
         internal CommonService()
         {
+        }
+
+
+        public void a()
+        {
+            string sql = "select 1 from dual where 1=1 and a={{aa}} {{@ and b={{bb}} @}} {{@ and c in ({{cc}}) @}}";
+            zParameter[] parameters = new zParameter[] {
+                new zParameter ("aa",1),
+                new zParameter ("bb",1),
+                new zParameter ("cc",new string[] { "cc1","cc2" })
+            };
+            DbHelper.ExecuteTable(sql, parameters);
         }
 
         /// <summary>
@@ -60,6 +73,7 @@ namespace z.ERP.Services
             DbHelper.Save(info);
             return key;
         }
+
 
         /// <summary>
         /// 通用的单表存储方式

@@ -14,6 +14,11 @@ namespace z.ERP.Services
 
         }
 
+        public void a()
+        {
+
+        }
+
         public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
         {
             string sql = "select a.goodsid,a.name,a.type,nvl(a.price,0) price,nvl(a.member_price,0) member_price,b.shopid";
