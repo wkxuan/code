@@ -63,21 +63,21 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            收款方式
+            付款方式
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
-                    vModel = "dataParam.PAYID",
-                    ServiceMothod = m => m.pay(),
+                    vModel = "dataParam.FKFSID",
+                    ServiceMothod = m => m.fkfs(),
                 });
             }
         </i-col>
     </row>
     <row>        
         <i-col span="2" class="RowTitle">
-            收款金额
+            付款金额
         </i-col>
         <i-col span="6">
             @{
@@ -88,7 +88,7 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            冲销预收款金额
+            冲销预付款金额
         </i-col>
         <i-col span="6">
             @{
@@ -98,7 +98,7 @@
                 });
             }
         </i-col>
-        收款金额 + 冲销预收款金额 = 明细付款金额之和
+        &nbsp;&nbsp;付款金额 + 冲销预付款金额 = 明细付款金额之和
     </row>
 
     <row>
