@@ -136,18 +136,17 @@ namespace z.DBHelper.Helper
             }
         }
 
-        protected override IDbDataParameter GetDbDataParameter(PropertyInfo p, EntityBase info)
+        protected override DbParameter GetParameter(string name, object value, DbType? Type = null)
         {
             OracleParameter resp;
-            DbTypeAttribute dba = p.GetAttribute<DbTypeAttribute>();
-            if (dba == null)
+            if (!Type.HasValue)
             {
-                resp = new OracleParameter(p.Name, OracleDbType.Varchar2);
-                resp.Value = p.GetValue(info, null);
+                resp = new OracleParameter(name, OracleDbType.Varchar2);
+                resp.Value = value;
             }
             else
             {
-                switch (dba.DbType)
+                switch (Type.Value)
                 {
                     case DbType.Time:
                     case DbType.DateTime:
@@ -155,15 +154,14 @@ namespace z.DBHelper.Helper
                     case DbType.DateTime2:
                     case DbType.DateTimeOffset:
                         {
-                            resp = new OracleParameter(p.Name, OracleDbType.Date);
-                            string value = p.GetValue(info, null)?.ToString();
+                            resp = new OracleParameter(name, OracleDbType.Date);
                             if (value == null || string.IsNullOrEmpty(value.ToString()))
                             {
                                 resp.Value = DBNull.Value;
                             }
                             else
                             {
-                                resp.Value = value.ToDateTime(true);
+                                resp.Value = value.ToString().ToDateTime(true);
                             }
                             break;
                         }
@@ -175,63 +173,24 @@ namespace z.DBHelper.Helper
                     case DbType.UInt64:
                     case DbType.Byte:
                         {
-                            resp = new OracleParameter(p.Name, OracleDbType.Int64);
-                            resp.Value = p.GetValue(info, null);
+                            resp = new OracleParameter(name, OracleDbType.Int64);
+                            resp.Value = value;
                             break;
                         }
                     case DbType.Decimal:
                     case DbType.Double:
                         {
-                            resp = new OracleParameter(p.Name, OracleDbType.Double);
-                            resp.Value = p.GetValue(info, null);
+                            resp = new OracleParameter(name, OracleDbType.Double);
+                            resp.Value = value;
                             break;
                         }
                     default:
                         {
-                            throw new DataBaseException("字段类型" + dba.DbType + "还没有对应处理程序");
+                            throw new DataBaseException("字段类型" + Type.Value + "还没有对应处理程序");
                         }
                 }
             }
             return resp;
-        }
-
-        protected override object GetParameterValue(IDbDataParameter p, PropertyInfo pinfo)
-        {
-            DbTypeAttribute dba = pinfo.GetAttribute<DbTypeAttribute>();
-            if (dba == null)
-            {
-                return p.Value.ToString();
-            }
-            switch (dba.DbType)
-            {
-                case DbType.Time:
-                case DbType.DateTime:
-                case DbType.Date:
-                case DbType.DateTime2:
-                case DbType.DateTimeOffset:
-                    {
-                        return p.Value.ToString().ToDateTime();
-                    }
-                case DbType.Int16:
-                case DbType.Int32:
-                case DbType.Int64:
-                case DbType.UInt16:
-                case DbType.UInt32:
-                case DbType.UInt64:
-                case DbType.Byte:
-                    {
-                        return p.Value.ToString().ToInt();
-                    }
-                case DbType.Decimal:
-                case DbType.Double:
-                    {
-                        return p.Value.ToString().ToDouble();
-                    }
-                default:
-                    {
-                        throw new DataBaseException("字段类型" + dba.DbType + "还没有对应处理程序");
-                    }
-            }
         }
 
         /// <summary>

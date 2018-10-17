@@ -51,7 +51,18 @@
     <i-col span="4">
         <i-input v-model="NIANYUE" readonly="true"></i-input>
     </i-col>
+
+</row>
+<row>
+    <i-col span="2" class="RowTitle">付款方式</i-col>
+    <i-col span="4">
+        <i-input v-model="FKFSNAME" readonly="true"></i-input>
+    </i-col>
     <i-col span="2" class="RowTitle">收款金额</i-col>
+    <i-col span="4">
+        <i-input v-model="ALL_MONEY" readonly="true"></i-input>
+    </i-col>
+    <i-col span="2" class="RowTitle">账户余额</i-col>
     <i-col span="4">
         <i-input v-model="ALL_MONEY" readonly="true"></i-input>
     </i-col>
@@ -61,10 +72,7 @@
     <i-col span="10">
         <i-input v-model="DESCRIPTION" readonly="true"></i-input>
     </i-col>
-    <i-col span="2" class="RowTitle">账户余额</i-col>
-    <i-col span="4">
-        <i-input v-model="ALL_MONEY" readonly="true"></i-input>
-    </i-col>
+
 </row>
 }
 @section foot{
@@ -83,6 +91,7 @@
                 TYPE:"@billObtain_Ysk.TYPE",
                 MERCHANTNAME:"@billObtain_Ysk.MERCHANTNAME",
                 ALL_MONEY:"@billObtain_Ysk.ALL_MONEY",
+                FKFSNAME:"@billObtain_Ysk.FKFSNAME",
                 DESCRIPTION:"@billObtain_Ysk.DESCRIPTION"
             },
             methods: {

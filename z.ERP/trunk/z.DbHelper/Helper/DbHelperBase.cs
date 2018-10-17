@@ -13,6 +13,7 @@ using z.DbHelper.DbDomain;
 using z.Extensions;
 using z.Extensiont;
 using z.DBHelper.DbDomain;
+using System.Text.RegularExpressions;
 
 namespace z.DBHelper.Helper
 {
@@ -88,27 +89,14 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         protected abstract DbConnection GetDbConnection(string _dbConnectionInfoStr);
 
-        ///// <summary>
-        ///// 取数据库操作对象
-        ///// </summary>
-        ///// <param name="dbconnection"></param>
-        ///// <returns></returns>
-        //protected abstract DbCommand GetDbCommand(DbConnection dbconnection);
-
         /// <summary>
-        /// 获取参数列表
+        /// 获取一个参数
         /// </summary>
-        /// <param name="p"></param>
-        /// <param name="info"></param>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <param name="DbType"></param>
         /// <returns></returns>
-        protected abstract IDbDataParameter GetDbDataParameter(PropertyInfo p, EntityBase info);
-
-        /// <summary>
-        /// 获取一个参数的值
-        /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        protected abstract object GetParameterValue(IDbDataParameter p, PropertyInfo pinfo);
+        protected abstract DbParameter GetParameter(string name, object value, DbType? DbType = null);
 
         /// <summary>
         /// 获取select中字段的名称
@@ -125,6 +113,7 @@ namespace z.DBHelper.Helper
         /// </summary>
         /// <param name="dt"></param>
         protected abstract void FastInsertTable(DataTable dt);
+
         #endregion
         #region 构造
 
@@ -142,22 +131,22 @@ namespace z.DBHelper.Helper
         #endregion
         #region 数据操作
         #region 查表
-        public DataTable ExecuteTable(string sql, params DbParameter[] parameters)
+        public DataTable ExecuteTable(string sql, DbParameter[] parameters)
         {
             return ExecuteTable(sql, 0, 0, parameters);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, params DbParameter[] parameters)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, DbParameter[] parameters)
         {
             return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, parameters);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, params DbParameter[] parameters)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, DbParameter[] parameters)
         {
             return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount, parameters);
         }
 
-        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, params DbParameter[] parameters)
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, DbParameter[] parameters)
         {
             DataTable dt = new DataTable();
             RunSql(_dbCommand =>
@@ -175,12 +164,13 @@ namespace z.DBHelper.Helper
             return dt;
         }
 
-        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount, params DbParameter[] parameters)
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount, DbParameter[] parameters)
         {
             int outall = 0;
             DataTable dt = ExecuteTable(sql, pageSize, pageIndex, parameters);
             RunSql(_dbCommand =>
             {
+                _dbCommand.Parameters.AddRange(parameters);
                 _dbCommand.CommandText = GetCountSql(sql);
                 lock (ObjectExtension.Locker)
                 {
@@ -201,6 +191,42 @@ namespace z.DBHelper.Helper
             allCount = outall;
             return dt;
         }
+
+        public DataTable ExecuteTable(string sql, params zParameter[] parameters)
+        {
+            string _sql = sql;
+            DbParameter[] ps = RenderSql(ref _sql);
+            return ExecuteTable(_sql, ps);
+        }
+
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, params zParameter[] parameters)
+        {
+            string _sql = sql;
+            DbParameter[] ps = RenderSql(ref _sql);
+            return ExecuteTable(_sql, pageinfo, ps);
+        }
+
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, params zParameter[] parameters)
+        {
+            string _sql = sql;
+            DbParameter[] ps = RenderSql(ref _sql);
+            return ExecuteTable(_sql, pageinfo, out allCount, ps);
+        }
+
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, params zParameter[] parameters)
+        {
+            string _sql = sql;
+            DbParameter[] ps = RenderSql(ref _sql);
+            return ExecuteTable(_sql, pageSize, pageIndex, ps);
+        }
+
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount, params zParameter[] parameters)
+        {
+            string _sql = sql;
+            DbParameter[] ps = RenderSql(ref _sql);
+            return ExecuteTable(_sql, pageSize, pageIndex, out allCount, ps);
+        }
+
         #endregion
         #region 查对象
         public T ExecuteOneObject<T>(string sql, params DbParameter[] parameters) where T : new()
@@ -833,6 +859,56 @@ namespace z.DBHelper.Helper
             return t;
         }
 
+        DbParameter GetDbDataParameter(PropertyInfo p, EntityBase info)
+        {
+            DbTypeAttribute dba = p.GetAttribute<DbTypeAttribute>();
+            return GetParameter(p.Name, p.GetValue(info, null), dba?.DbType);
+        }
+
+        /// <summary>
+        /// 获取一个参数的值
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        object GetParameterValue(IDbDataParameter p, PropertyInfo pinfo)
+        {
+            DbTypeAttribute dba = pinfo.GetAttribute<DbTypeAttribute>();
+            if (dba == null)
+            {
+                return p.Value.ToString();
+            }
+            switch (dba.DbType)
+            {
+                case DbType.Time:
+                case DbType.DateTime:
+                case DbType.Date:
+                case DbType.DateTime2:
+                case DbType.DateTimeOffset:
+                    {
+                        return p.Value.ToString().ToDateTime();
+                    }
+                case DbType.Int16:
+                case DbType.Int32:
+                case DbType.Int64:
+                case DbType.UInt16:
+                case DbType.UInt32:
+                case DbType.UInt64:
+                case DbType.Byte:
+                    {
+                        return p.Value.ToString().ToInt();
+                    }
+                case DbType.Decimal:
+                case DbType.Double:
+                    {
+                        return p.Value.ToString().ToDouble();
+                    }
+                default:
+                    {
+                        throw new DataBaseException("字段类型" + dba.DbType + "还没有对应处理程序");
+                    }
+            }
+        }
+
         public override string ToString()
         {
             return _dbConnectionInfoStr.ToString();
@@ -926,6 +1002,88 @@ namespace z.DBHelper.Helper
             return info;
         }
 
+        /// <summary>
+        /// 渲染参数化sql
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        DbParameter[] RenderSql(ref string sql, params zParameter[] parameters)
+        {
+            List<DbParameter> res = new List<DbParameter>();
+            Func<string, string> fp = str => $":{str}";  //参数化方法
+            int pnameinx = 1;
+            //if (!parameters.IsEmpty())
+            //    foreach (var p in parameters)
+            //    {
+            //        if (p.IsArray)
+            //        {
+            //            var arrv = (p.Value as IEnumerable<object>).ToArray();
+            //            string pname = string.Join(",", arrv.Select((b, i) => fp($"p{pnameinx}_{i}")));
+            //            if (ReplaceStr(ref sql, a.Key, pname))
+            //            {
+            //                res.AddRange(arrv.Select((b, i) => new SqlParameter(p($"p{pnameinx}_{i}"), b.Value<string>())));
+            //                pnameinx++;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            string pname = fp($"{p.Name}");
+            //            if (ReplaceStr(ref sql, p.Name, pname))
+            //            {
+            //                res.Add(GetParameter(pname, p.Value, p.Type));
+            //                pnameinx++;
+            //            }
+            //        }
+            //        switch (a.Value.Type)
+            //        {
+            //            case JTokenType.Array:
+            //                {
+            //                    var arrv = a.Value.ToArray();
+            //                    string pname = string.Join(",", arrv.Select((b, i) => p($"p{pnameinx}_{i}")));
+            //                    if (ReplaceStr(ref sql, a.Key, pname))
+            //                    {
+            //                        res.AddRange(arrv.Select((b, i) => new SqlParameter(p($"p{pnameinx}_{i}"), b.Value<string>())));
+            //                        pnameinx++;
+            //                    }
+            //                    break;
+            //                }
+            //            default:
+            //                {
+            //                    string pname = p($"{pnameinx}");
+            //                    if (ReplaceStr(ref sql, a.Key, pname))
+            //                    {
+            //                        res.Add(new SqlParameter(pname, a.Value.Value<string>()));
+            //                        pnameinx++;
+            //                    }
+            //                    break;
+            //                }
+            //        };
+            //    }
+            return res.ToArray();
+        }
+
+        void render(string sql, zParameter[] parameters)
+        {
+            Regex rin = new Regex(@"{{^@([^@]+?)}}");
+            while (rin.IsMatch(sql))
+            {
+
+            }
+        }
+
+        bool ReplaceStr(ref string sql, string oldValue, string newValue)
+        {
+            string vl = "{{" + oldValue + "}}";
+            bool res = sql.Contains(vl);
+            Regex regex = new Regex(@"{{@([^@]+?)" + vl + @"([^@]+?)@}}");   //可空标记替换符
+            sql = regex.Replace(sql, m =>
+            {
+                return m.Value.Substring(3, m.Value.Length - 6);
+            });
+            sql = sql.Replace(vl, newValue);
+            return res;
+        }
         #endregion
     }
 }

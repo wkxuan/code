@@ -68,7 +68,7 @@ namespace z.ERP.Entities
         /// 付款方式
         /// <summary>
         [Field("付款方式")]
-        public string PAYID
+        public string FKFSID
         {
             get; set;
         }
