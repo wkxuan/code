@@ -82,8 +82,7 @@ namespace z.DbHelper.DbDomain
         /// <returns></returns>
         public PropertyInfo[] GetPrimaryKey()
         {
-            return GetType().GetProperties()
-                .Where(a => a.PropertyType == typeof(string))
+            return GetAllField()
                 .Where(a => a.GetAttribute<PrimaryKeyAttribute>() != null)
                 .ToArray();
         }
@@ -103,8 +102,7 @@ namespace z.DbHelper.DbDomain
         /// <returns></returns>
         public PropertyInfo[] GetFieldWithoutPrimaryKey()
         {
-            return GetType().GetProperties()
-                .Where(a => a.PropertyType == typeof(string))
+            return GetAllField()
                 .Where(a => a.GetAttribute<PrimaryKeyAttribute>() == null)
                 .ToArray();
         }

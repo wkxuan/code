@@ -184,6 +184,16 @@ namespace z.DBHelper.Helper
                             resp.Value = value;
                             break;
                         }
+                    case DbType.String:
+                    case DbType.StringFixedLength:
+                    case DbType.Xml:
+                    case DbType.AnsiString:
+                    case DbType.AnsiStringFixedLength:
+                        {
+                            resp = new OracleParameter(name, OracleDbType.Varchar2);
+                            resp.Value = value;
+                            break;
+                        }
                     default:
                         {
                             throw new DataBaseException("字段类型" + Type.Value + "还没有对应处理程序");

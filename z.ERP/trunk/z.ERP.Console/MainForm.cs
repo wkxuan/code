@@ -25,7 +25,11 @@ namespace z.ERP.Console
                 WRITEDATAEntity WRITEDATA = new WRITEDATAEntity();
                 WRITEDATA.RQ = this.WriteRq.Value.ToShortDateString();
 
-                service.WriteDataService.CanRcl(WRITEDATA, LogText);
+                RCLEntity rcldata = new RCLEntity();
+                rcldata.RQ = this.WriteRq.Value.ToShortDateString();
+
+                service.WriteDataService.CanHyRcl(rcldata, LogText);
+                //service.WriteDataService.CanRcl(WRITEDATA, LogText);
             });
         }
 
