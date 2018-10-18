@@ -155,11 +155,15 @@
     <Compile Include="Service\Pos\DealResult.cs" />
     <Compile Include="Service\Pos\ClerkResultt.cs" />
     <Compile Include="Service\Pos\GoodsResult.cs" />
+    <Compile Include="Service\Pos\PayDetailResult.cs" />
     <Compile Include="Service\Pos\PayResult.cs" />
     <Compile Include="Service\Pos\FindGoodsFilter.cs" />
     <Compile Include="Service\Pos\FindGoodsResult.cs" />
     <Compile Include="Service\Pos\FKFSResult.cs" />
+    <Compile Include="Service\Pos\PaySumResult.cs" />
     <Compile Include="Service\Pos\SaleRequest.cs" />
+    <Compile Include="Service\Pos\SaleSummaryFilter.cs" />
+    <Compile Include="Service\Pos\SaleSummaryResult.cs" />
     <Compile Include="Service\Pos\UserYYYResult.cs" />
     <Compile Include="STATIONEntity.cs" />
     <Compile Include="SYSUSEREntity.cs" />
