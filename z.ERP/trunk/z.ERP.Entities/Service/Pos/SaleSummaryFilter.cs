@@ -6,18 +6,23 @@ using System.Threading.Tasks;
 
 namespace z.ERP.Entities.Service.Pos
 {
-    public class FindGoodsFilter
+    public class SaleSummaryFilter
     {
-        public string goodscode
-        {
-            get;
-            set;
-        }
-        public int? shopid
-        {
-            get;
-            set;
-        }
 
+        public string posno
+        {
+            get;
+            set;
+        }
+        public DateTime? saledate_begin
+        {
+            get;
+            set;
+        }
+        public DateTime? saledate_end
+        {
+            get;
+            set;
+        }
     }
 }

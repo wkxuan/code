@@ -60,5 +60,11 @@ namespace z.ERP.WebService.Controllers
         {
             service.PosService.Sale(Request);
         }
+
+        [ServiceAble("GetSaleSummary")]
+        public SaleSummaryResult GetSaleSummary(SaleSummaryFilter filter)
+        {
+            return service.PosService.GetSaleSummary(filter);
+        }
     }
 }
