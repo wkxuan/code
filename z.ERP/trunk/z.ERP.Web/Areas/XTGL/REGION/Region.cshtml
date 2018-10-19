@@ -1,0 +1,133 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+
+@section search{
+    <row>
+        <i-col span="3" class="RowTitle">分店</i-col>
+        <i-col span="9">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    Data = "screenParam.branchData",
+                    Change = "branchChange",
+                    Enable = true
+                });
+            }
+        </i-col>
+    </row>
+}
+@section element{
+    <row>
+        <span v-if="screenParam.componentVisible">
+            <i-col span="2" class="RowTitle">区域编码</i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new TextBoxRender()
+                    {
+                        vModel = "dataParam.ID"
+                    });
+                }
+            </i-col>
+        </span>
+        <i-col span="3" class="RowTitle">区域代码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CODE",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            区域名称
+            </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.NAME",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>        
+            管理机构
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new CascaderRender()
+                {
+                    vModel = "dataParam.ORGIDCASCADER",
+                    Data = "screenParam.ORGData",
+                    Change = "orgChange",
+                    Not_level_last = true,
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            建筑面积
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.AREA_BUILD",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="3" class="RowTitle">使用面积</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.AREA_USABLE",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">租赁面积</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.AREA_RENTABLE",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+
+    <row>
+        <i-col span="3" class="RowTitle">停用标记</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumCheckBoxListRender<停用标记>()
+                {
+                    vModel = "dataParam.STATUS",
+                    MultiSelect = false,
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+}
