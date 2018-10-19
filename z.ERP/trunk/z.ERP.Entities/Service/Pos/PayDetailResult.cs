@@ -14,6 +14,12 @@
             set;
         }
 
+        public int returnflag
+        {
+            get;
+            set;
+        }
+
         public int payid
         {
             get;

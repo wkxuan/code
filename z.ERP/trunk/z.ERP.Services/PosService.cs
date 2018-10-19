@@ -274,7 +274,8 @@ namespace z.ERP.Services
 
         public SaleSummaryResult GetSaleSummary(SaleSummaryFilter filter)
         {
-            string sql = $"select s.posno,s.dealid,p.payid,y.name payname, p.amount"
+            string sql = $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+                   + "       p.payid,y.name payname, p.amount"
                    + "  from sale s, sale_pay p,pay y"
                    + " where s.posno = p.posno"
                    + "   and s.dealid = p.dealid"
@@ -300,7 +301,8 @@ namespace z.ERP.Services
 
             sql += " union all ";
 
-             sql += $"select s.posno,s.dealid,p.payid,y.name payname, p.amount"
+             sql += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+                   + "       p.payid,y.name payname, p.amount"
                    + "  from his_sale s, his_sale_pay p,pay y"
                    + " where s.posno = p.posno"
                    + "   and s.dealid = p.dealid"
@@ -389,10 +391,12 @@ namespace z.ERP.Services
 
             List<PaySumResult> sumlist = DbHelper.ExecuteObject<PaySumResult>(sqlsum);
             decimal salesum = detaillist.Sum(a => a.amount);
+            decimal salereturn = sumlist.Sum(a => a.amountreturn);
 
             return new SaleSummaryResult()
             {
                 saleamountsum = salesum,
+                saleamountreturn = salereturn,
                 paysumlist = sumlist,
                 paydetaillist = detaillist
             };

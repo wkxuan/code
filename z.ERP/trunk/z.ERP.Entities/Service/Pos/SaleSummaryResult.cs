@@ -10,6 +10,12 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
+        public decimal saleamountreturn
+        {
+            get;
+            set;
+        }
+
         public List<PaySumResult> paysumlist
         {
             get;
