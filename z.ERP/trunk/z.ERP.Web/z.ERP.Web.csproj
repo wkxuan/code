@@ -231,6 +231,7 @@
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfgController.cs" />
     <Compile Include="Areas\XTGL\RCL\RCLController.cs" />
+    <Compile Include="Areas\XTGL\REGION\RegionController.cs" />
     <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
     <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
     <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
@@ -321,6 +322,7 @@
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.js" />
     <Content Include="Areas\XTGL\RCL\RCL.js" />
+    <Content Include="Areas\XTGL\REGION\Region.js" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.js" />
     <Content Include="Areas\XTGL\ROLE\RoleList.js" />
     <Content Include="Areas\XTGL\SrchORG\SrchORG.js" />
@@ -517,6 +519,7 @@
     <Content Include="Areas\Report\SaleRecord\SaleRecord.cshtml" />
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.cshtml" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.cshtml" />
+    <Content Include="Areas\XTGL\REGION\Region.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
