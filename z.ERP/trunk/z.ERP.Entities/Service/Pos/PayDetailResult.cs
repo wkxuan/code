@@ -1,4 +1,6 @@
-﻿namespace z.ERP.Entities.Service.Pos
+﻿using System;
+
+namespace z.ERP.Entities.Service.Pos
 {
     public class PayDetailResult
     {
@@ -15,6 +17,12 @@
         }
 
         public int returnflag
+        {
+            get;
+            set;
+        }
+
+        public string sale_time
         {
             get;
             set;
