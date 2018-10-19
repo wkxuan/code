@@ -91,6 +91,7 @@
     <Compile Include="MENUTREEModule.cs" />
     <Compile Include="Procedures\EXEC_ASSET_SPILT.cs" />
     <Compile Include="Procedures\EXEC_ASSET_CHANGE.cs" />
+    <Compile Include="Procedures\Exec_BILL_ADJUST.cs" />
     <Compile Include="Procedures\Exec_BILL_OBTAIN.cs" />
     <Compile Include="Procedures\EXEC_SALEBILL.cs" />
     <Compile Include="Procedures\WRITE_BILL_NOTICE.cs" />

@@ -295,11 +295,12 @@ namespace z.ERP.Services
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-                billAdjust.VERIFY = employee.Id;
-                billAdjust.VERIFY_NAME = employee.Name;
-                billAdjust.VERIFY_TIME = DateTime.Now.ToString();
-                billAdjust.STATUS = ((int)普通单据状态.审核).ToString();
-                DbHelper.Save(billAdjust);
+                Exec_BILL_ADJUST exec_billadjust = new Exec_BILL_ADJUST()
+                {
+                    p_BILLID = Data.BILLID,
+                    p_VERIFY = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_billadjust);
                 Tran.Commit();
             }
             return billAdjust.BILLID;

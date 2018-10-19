@@ -7,10 +7,9 @@
         <i-col span="2" class="RowTitle">单号</i-col>
         <i-col span="6">
             @{
-                RenderControl(new ServiceDropDownListRender()
+                RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
+                    vModel = "searchParam.BILLID"
                 });
             }
         </i-col>
