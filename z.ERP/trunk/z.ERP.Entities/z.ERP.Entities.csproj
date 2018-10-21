@@ -200,6 +200,7 @@
     <Compile Include="Service\Pos\UserYYYResult.cs" />
     <Compile Include="STATIONEntity.cs" />
     <Compile Include="SYSUSEREntity.cs" />
+    <Compile Include="VOUCHER_PARAMEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\z.DbHelper\z.DbHelper.csproj">

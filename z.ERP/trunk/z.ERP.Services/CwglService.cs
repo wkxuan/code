@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using z.DbHelper.DbDomain;
 using z.DBHelper.DbDomain;
 using z.ERP.Entities;
+using z.ERP.Entities.Enum;
+using z.Exceptions;
+using z.Extensions;
 using z.MVC5.Results;
 
 namespace z.ERP.Services
@@ -27,51 +30,34 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        //public DbCommand GetSqlStringCommond(string sqlQuery)
-        //{
-        //    DbCommand dbCmd = this._dbConnection.CreateCommand();
-
-        //    dbCmd.CommandText = sqlQuery;
-        //    dbCmd.CommandType = CommandType.Text;
-
-        //    return dbCmd;
-        //}
-        public DbCommand GetSqlStringCommond(string sqlQuery)
-        {
-            DbCommand dbCmd = this._dbConnection.CreateCommand();
-
-            dbCmd.CommandText = sqlQuery;
-            dbCmd.CommandType = CommandType.Text;
-
-            return dbCmd;
+        public class PZDCMOUDLE {
+            public string PZRQ { get; set;}
+            public string JFJE { get; set; }
         }
-        public DataGridResult ExportPz(SearchItem item)
+        public string ExportPz(VOUCHER_PARAMEntity Data)
         {
             var iPZBH = string.Empty;
-            string VOUCHERID, pFDBH, pDATE1, pDATE2, pCWNY;
-            item.HasKey("pDATE1", a => pDATE1 =$"{a}");
-            item.HasKey("pDATE2", a => pDATE2 = $"{a}");
-            item.HasKey("VOUCHERID", a => VOUCHERID = $"{a}");
-            item.HasKey("BRANCHID", a => pFDBH = $"{a}");
-            item.HasKey("CWNY", a => pCWNY = $"{a}");
+            Int32 pFDBH = Data.BRANCHID;
+            Int32 pCWNY = Data.CWNY;
+            Int32 pVOUCHERID = Data.VOUCHERID;
+            DateTime pDATE1 = Data.DATE1;
+            DateTime pDATE2 = Data.DATE2;            
 
-            DbParameter[] param = new DbParameter[2] {
-                           new OracleParameter("pDATE1",new DateTime (2018,10,1)),
-                           new OracleParameter("pDATE2",new DateTime (2018,10,1)) };
-            DataTable dt = DbHelper.ExecuteTable("select sum(BILLID) SFJE from WORKITEM where PROC_TIME>=:pDATE1 and PROC_TIME<=:pDATE2", param);
-            DataTable dt1 = DbHelper.ExecuteTable("select sum(BILLID) SFJE from WORKITEM where PROC_TIME>=:pDATE1 and PROC_TIME<=:pDATE2",
-                new zParameter("pDATE1", new DateTime(2018, 10, 1)),
-                           new zParameter("pDATE2", new DateTime(2018, 10, 1))
-                           );
+            DataTable resultdt = new DataTable();
+            resultdt.Columns.Add("PZRQ", typeof(String));
+            resultdt.Columns.Add("JFJE", typeof(decimal));
 
-
-
+            zParameter[] param = new zParameter[4] {
+                           new zParameter("pDATE1",new DateTime (pDATE1.Year,pDATE1.Month,pDATE1.Day),DbType.Date),
+                           new zParameter("pDATE2",new DateTime (pDATE2.Year,pDATE2.Month,pDATE2.Day),DbType.Date),
+                           new zParameter("pCWNY",pCWNY,DbType.Int32),
+                           new zParameter("pFDBH",pFDBH,DbType.Int32)};            
 
             using (var Tran = DbHelper.BeginTransaction())
             {
                 //iPZBH = CommonService.NewINC("PZBH");       
                 //获取sql         
-                List<VOUCHER_MAKESQLEntity> p = DbHelper.SelectList(new VOUCHER_MAKESQLEntity()).Where(a => a.VOUCHERID == "1")
+                List<VOUCHER_MAKESQLEntity> p = DbHelper.SelectList(new VOUCHER_MAKESQLEntity()).Where(a => a.VOUCHERID == pVOUCHERID.ToString())
                     .OrderBy(a => a.VOUCHERID).ToList();
                 foreach (var sqltxt in p)
                 {
@@ -93,13 +79,17 @@ namespace z.ERP.Services
 
                                 DataTable dtflid = DbHelper.ExecuteTable(sqlflid, param);
                                 foreach (DataRow tr in dtflid.Rows)
-                                {
+                                {                                    
                                     string JFJE = tr[fldat].ToString();
                                     if (!string.IsNullOrEmpty(wldwdat))
                                     {
                                         string MERCHANTID = tr[wldwdat].ToString();
                                     }
-                                    
+                                    ;
+                                    DataRow rowNew = resultdt.NewRow();
+                                    rowNew["PZRQ"] = "22233";
+                                    rowNew["JFJE"] = "2.0";                                    
+                                    resultdt.Rows.Add(rowNew);                                    
                                 }
                                 //DataTable dtflid = DbHelper.ExecuteTable(sqlflid, pzparme);
                             }
@@ -113,8 +103,15 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
-
-            return null;
+            //if (resultdt.Rows.Count > 0)
+            //{
+            //    return GetExport("凭证导出", a =>
+            //    {
+            //        a.SetTable(resultdt);
+            //    });
+            //}
+            //else
+                return "未导出数据";           
         }
     }
 }
