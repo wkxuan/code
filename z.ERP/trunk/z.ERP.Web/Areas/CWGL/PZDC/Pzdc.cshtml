@@ -80,6 +80,19 @@
                             }
                         </i-col>
                     </row>
+                    <row>
+                        <i-col span="3" class="RowTitle">
+                            凭证日期
+                        </i-col>
+                        <i-col span="8">
+                            @{
+                                RenderControl(new DateBoxRender()
+                                {
+                                    vModel = "PZRQ"
+                                });
+                            }
+                        </i-col>
+                    </row>
                 </card>
             </div>
         </i-col>

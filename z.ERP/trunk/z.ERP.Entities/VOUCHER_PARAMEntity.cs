@@ -49,5 +49,13 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        /// <summary>
+        /// 凭证日期
+        /// <summary>
+        [Field("凭证日期")]
+        public DateTime PZRQ
+        {
+            get; set;
+        }
     }
 }

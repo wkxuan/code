@@ -520,6 +520,7 @@
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.cshtml" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.cshtml" />
     <Content Include="Areas\XTGL\REGION\Region.cshtml" />
+    <Content Include="File\Template\凭证导出.xlsx" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
