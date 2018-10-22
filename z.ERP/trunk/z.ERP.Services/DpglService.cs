@@ -31,9 +31,11 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable> GetRegion(REGIONEntity Data)
         {
-            string sql = $@"select A.*,B.ORGIDCASCADER from REGION A,ORG B where A.ORGID=B.ORGID(+) ";
+            string sql = "select A.*,B.ORGIDCASCADER from REGION A,ORG B where A.ORGID=B.ORGID(+)";
+            if (!Data.BRANCHID.IsEmpty())
+                sql += (" AND A.BRANCHID = " + Data.BRANCHID);
             if (!Data.REGIONID.IsEmpty())
-                sql += (" AND A.ID= " + Data.REGIONID);
+                sql += (" AND A.REGIONID= " + Data.REGIONID);
             if (!Data.CODE.IsEmpty())
                 sql += (" AND A.CODE= " + Data.CODE);
             if (!Data.NAME.IsEmpty())
@@ -49,6 +51,7 @@ namespace z.ERP.Services
             item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
             item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
+            item.HasKey("REGIONID", a => sql += $" and A.REGIONID= {a}");
             sql += " ORDER BY  A.ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -83,6 +86,7 @@ namespace z.ERP.Services
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             item.HasKey("FLOORID", a => sql += $" and A.FLOORID = '{a}'");
+            item.HasKey("REGIONID", a => sql += $" and A.REGIONID = {a}");
             sql += " ORDER BY  A.CODE";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

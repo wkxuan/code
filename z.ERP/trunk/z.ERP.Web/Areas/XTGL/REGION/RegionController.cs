@@ -54,11 +54,11 @@ namespace z.ERP.Web.Areas.XTGL.REGION
         }
         public UIResult GetRegion(REGIONEntity Data)
         {
-            var res = service.DpglService.GetRegion(Data);
+            var res =  service.DpglService.GetRegion(Data);
             return new UIResult(
                 new
                 {
-                    regionelement = res.Item1
+                    regionlement = res.Item1
                 }
                 );
         }

@@ -17,12 +17,11 @@
     define.Data = [];
     define.screenParam.componentVisible = false;
     define.screenParam.branchData = [];
-
-
+    define.screenParam.regionData = [];
     define.screenParam.floorData = [];
-
     define.dataParam.ORGIDCASCADER = [];
     define.btnChkvisible = true;
+
     _.Ajax('GetBranch', {
         Data: { ID: "" }
     }, function (data) {
@@ -38,9 +37,23 @@
 
         }
     });
-
-    _.Ajax('GetFloor', {
+    _.Ajax('GetRegion', {
         Data: { BRANCHID: define.dataParam.BRANCHID }
+    }, function (data) {
+        if (data.dt) {
+            define.screenParam.regionData = [];
+            for (var i = 0; i < data.dt.length; i++) {
+                define.screenParam.regionData.push({ value: data.dt[i].REGIONID, label: data.dt[i].NAME })
+            }
+            define.dataParam.REGIONID = data.dt[0].REGIONID;
+            define.searchParam.REGIONID = define.dataParam.REGIONID;
+        }
+        else {
+
+        }
+    });
+    _.Ajax('GetFloor', {
+        Data: { REGIONID: define.dataParam.REGIONID }
     }, function (data) {
         if (data.dt) {
             define.screenParam.floorData = [];
@@ -58,18 +71,24 @@
 }
 define.newRecord = function () {
     if (define.searchParam.BRANCHID == 0) {
-        iview.Message.info("请请选择门店!");
+        iview.Message.info("请选择门店!");
+        return;
+    };
+    if (define.searchParam.REGIONID == 0) {
+        iview.Message.info("请选择区域!");
         return;
     };
     if (define.searchParam.FLOORID == 0) {
-        iview.Message.info("请请选择楼层!");
+        iview.Message.info("请选择楼层!");
         return;
     };
+
     define.dataParam.TYPE = 1;
     define.dataParam.STATUS = 1;
     define.dataParam.RENT_STATUS = 1;
     define.dataParam.ORGIDCASCADER = [];
     define.dataParam.BRANCHID = define.searchParam.BRANCHID;
+    define.dataParam.REGIONID = define.searchParam.REGIONID;
     define.dataParam.FLOORID = define.searchParam.FLOORID;
 }
 define.otherMethods = {
@@ -88,8 +107,23 @@ define.otherMethods = {
         define.dataParam.AREA_RENTABLE = "";
         define.dataParam.AREA_STATUS = "";
         define.dataParam.RENT_STATUS = "";
-        _.Ajax('GetFloor', {
+        _.Ajax('GetRegion', {
             Data: { BRANCHID: value }
+        }, function (Data) {
+            if (Data.dt) {
+                define.screenParam.regionData = [];
+                for (var i = 0; i < Data.dt.length; i++) {
+                    define.screenParam.regionData.push({ value: Data.dt[i].REGIONID, label: Data.dt[i].NAME })
+                }
+                define.dataParam.REGIONID = Data.dt[0].RGIONID;
+                define.searchParam.REGIONID = define.dataParam.RGIONID;
+            }
+            else {
+
+            }
+        });
+        _.Ajax('GetFloor', {
+            Data: { REGIONID: value }
         }, function (Data) {
             if (Data.dt) {
                 define.screenParam.floorData = [];
@@ -104,6 +138,43 @@ define.otherMethods = {
 
             }
         });
+    },
+    regionChange: function (value) {
+        if (define.dataParam.REGIONID == 0) {
+            define.searchParam.REGIONID = "";
+        }
+        else {
+            define.searchParam.REGIONID = define.dataParam.REGIONID;
+        }
+        if (define.myve.disabled) {
+            define.dataParam.SHOPID = "";
+            define.dataParam.CODE = "";
+            define.dataParam.NAME = "";
+            define.dataParam.ORGIDCASCADER = [];
+            define.dataParam.CATEGORYIDCASCADER = [];
+            define.dataParam.TYPE = "";
+            define.dataParam.AREA_BUILD = "";
+            define.dataParam.AREA_USABLE = "";
+            define.dataParam.AREA_RENTABLE = "";
+            define.dataParam.AREA_STATUS = "";
+            define.dataParam.RENT_STATUS = "";
+            _.Ajax('GetFloor', {
+                Data: { REGIONID: value }
+            }, function (Data) {
+                if (Data.dt) {
+                    define.screenParam.floorData = [];
+                    for (var i = 0; i < Data.dt.length; i++) {
+                        define.screenParam.floorData.push({ value: Data.dt[i].ID, label: Data.dt[i].NAME })
+                    }
+                    define.dataParam.FLOORID = Data.dt[0].ID;
+                    define.searchParam.FLOORID = define.dataParam.FLOORID;
+                    define.showlist();
+                }
+                else {
+
+                }
+            });
+        }
     },
     floorChange: function (value) {
         if (define.dataParam.FLOORID == 0) {

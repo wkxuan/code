@@ -23,9 +23,10 @@ namespace z.ERP.Web.Areas.XTGL.FLOOR
                 DefineSave.ID = service.CommonService.NewINC("FLOOR");
             }
             v.IsUnique(a => a.ID);
-            v.IsUnique(a => a.CODE);
+            v.Require(a => a.CODE);
             v.Require(a => a.NAME);
             v.Require(a => a.BRANCHID);
+            v.Require(a => a.REGIONID);
             v.Require(a => a.ORGID);
             v.Require(a => a.AREA_BUILD);
             v.Require(a => a.STATUS);
@@ -52,6 +53,12 @@ namespace z.ERP.Web.Areas.XTGL.FLOOR
         {
             return new UIResult(service.DataService.GetBranch(Data));
         }
+
+        public UIResult GetRegion(REGIONEntity Data)
+        {
+            return new UIResult(service.DataService.GetRegion(Data));
+        }
+
         public UIResult GetFloor(FLOOREntity Data)
         {
             var res = service.DpglService.GetFloor(Data);

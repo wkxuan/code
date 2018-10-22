@@ -18,9 +18,9 @@ namespace z.ERP.Entities
         {
         }
 
-        public REGIONEntity(string id)
+        public REGIONEntity(string regionid)
         {
-            REGIONID = id;
+            REGIONID = regionid;
         }
 
         /// <summary>

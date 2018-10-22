@@ -56,6 +56,13 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        [Field("区域编号")]
+        public string REGIONID
+        {
+            get; set;
+        }
+
         /// <summary>
         /// 楼层编号
         /// <summary>
