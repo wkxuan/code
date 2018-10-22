@@ -176,14 +176,14 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
-            //if (resultdt.Rows.Count > 0)
-            //{
-            //    return GetExport("凭证导出", a =>
-            //    {
-            //        a.SetTable(resultdt);
-            //    });
-            //}
-            //else
+            if (resultdt.Rows.Count > 0)
+            {
+                return GetExport("凭证导出", a =>
+                {
+                    a.SetTable(resultdt);
+                });
+            }
+            else
                 return "未导出数据";           
         }
     }
