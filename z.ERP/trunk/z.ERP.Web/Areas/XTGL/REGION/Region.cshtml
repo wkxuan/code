@@ -17,40 +17,12 @@
                 });
             }
         </i-col>
-
-        <i-col span="3" class="RowTitle">区域</i-col>
-        <span v-show="disabled">
-            <i-col span="9">
-                @{
-                    RenderControl(new DropDownListsRender()
-                    {
-                        vModel = "dataParam.REGIONID",
-                        Data = "screenParam.regionData",
-                        Change = "regionChange",
-                        Enable = true
-                    });
-                }
-            </i-col>
-        </span>
-        <span v-show="!disabled">
-            <i-col span="9">
-                @{
-                    RenderControl(new DropDownListsRender()
-                    {
-                        vModel = "dataParam.REGIONID",
-                        Data = "screenParam.regionData",
-                        Change = "regionChange",
-                        Enable = false
-                    });
-                }
-            </i-col>
-        </span>
-</row>
+    </row>
 }
 @section element{
     <row>
         <span v-if="screenParam.componentVisible">
-            <i-col span="2" class="RowTitle">楼层编码</i-col>
+            <i-col span="2" class="RowTitle">区域编码</i-col>
             <i-col span="6">
                 @{
                     RenderControl(new TextBoxRender()
@@ -60,7 +32,7 @@
                 }
             </i-col>
         </span>
-        <i-col span="3" class="RowTitle">楼层代码</i-col>
+        <i-col span="3" class="RowTitle">区域代码</i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
@@ -73,7 +45,7 @@
 
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
-            楼层名称
+            区域名称
             </i-col>
         <i-col span="6">
             @{
@@ -145,7 +117,7 @@
 
 
     <row>
-        <i-col span="3" class="RowTitle">使用标记</i-col>
+        <i-col span="3" class="RowTitle">停用标记</i-col>
         <i-col span="6">
             @{
                 RenderControl(new EnumCheckBoxListRender<停用标记>()

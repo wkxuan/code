@@ -52,6 +52,6 @@ namespace z.DBHelper.DbDomain
                 return Value.GetType().IsArray;
             }
         }
-
+        
     }
 }

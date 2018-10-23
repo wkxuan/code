@@ -444,6 +444,54 @@ namespace z.Extensions
                 return "";
             return str.SubstringSafe(length);
         }
+
+        /// <summary>
+        /// 替换第一个匹配项
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="match"></param>
+        /// <param name="replacement"></param>
+        /// <returns></returns>
+        public static string ReplaceOne(this string source, string match, string replacement)
+        {
+            Func<char[], char[], int> IndexOf = (s, m) =>
+            {
+                int inx = -1;
+                for (int i = 0; i < s.Length - m.Length + 1; i++)
+                {
+                    if (s[i] == m[0])
+                    {
+                        bool isMatch = true;
+                        for (int j = 0; j < m.Length; j++)
+                        {
+                            if (s[i + j] != m[j])
+                            {
+                                isMatch = false;
+                                break;
+                            }
+                        }
+                        if (isMatch)
+                        {
+                            inx = i;
+                            break;
+                        }
+                    }
+                }
+                return inx;
+            };
+            char[] sArr = source.ToCharArray();
+            char[] mArr = match.ToCharArray();
+            char[] rArr = replacement.ToCharArray();
+            int idx = IndexOf(sArr, mArr);
+            if (idx == -1)
+            {
+                return source;
+            }
+            else
+            {
+                return new string(sArr.Take(idx).Concat(rArr).Concat(sArr.Skip(idx + mArr.Length)).ToArray());
+            }
+        }
         #endregion
         #region 反射
 

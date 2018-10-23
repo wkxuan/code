@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting;
@@ -35,7 +36,14 @@ namespace z.ERP.Services
              * 
              * 
              */
-            string sql = "select 1 from dual where 1=1 and a={{aa}} {{@ and b={{bb}} @}} {{@ and c in ({{cc}}) @}}";
+
+            zParameter[] param = new zParameter[2] {
+                           new zParameter("pDATE1",new DateTime (2017,10,1),DbType.Date),
+                           new zParameter("pDATE2",new DateTime (2018,10,1),DbType.Date) };
+            string sql = "select sum(1) SFJE from WORKITEM where PROC_TIME>={{pDATE1}} and PROC_TIME<={{pDATE2}}";
+            DataTable dt = DbHelper.ExecuteTable(sql, param);
+
+            sql = "select 1 from dual where 1=1 and a={{aa}} {{@ and b={{bb}} @}} {{@ and c in ({{cc}}) @}}";
             zParameter[] parameters = new zParameter[] {
                 new zParameter ("aa",1),
                 new zParameter ("bb",1),

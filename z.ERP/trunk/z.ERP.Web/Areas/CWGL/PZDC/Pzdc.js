@@ -10,9 +10,12 @@ var pzdc = new Vue({
         BRANCHID: 1,
         CWNY: 201810,        
         RQ_START: "",
-        RQ_END:"",
+        RQ_END: "",
+        PZRQ:""
     },
     mounted: function () {
+        //this.PZRQ = Date;
+        //this.CWNY = 201810;
         _.Search({
             Service: 'CwglService',
             Method: 'GetVoucher',
@@ -37,15 +40,25 @@ var pzdc = new Vue({
                 iview.Message.info("年月不能为空!");
                 return false;
             }
-            _.Search({
-                Service: 'CwglService',
-                Method: 'ExportPz',
-                Data: { VOUCHERID: selectid, BRANCHID: this.BRANCHID, CWNY: this.CWNY, pDATE2: this.RQ_END, pDATE1: this.RQ_START },
-                PageInfo: 1,
-                Success: function (data) {
-                    pzdc.dataDef = data.rows;
-                }
-            })
+            
+            _.Ajax('ExportPz', {
+                data: {
+                    VOUCHERID: selectid, BRANCHID: this.BRANCHID, CWNY: this.CWNY, DATE1: this.RQ_START,
+                    DATE2: this.RQ_END,
+                    PZRQ: this.PZRQ
+                },
+            }, function (data) {
+                window.open(__BaseUrl + data);
+            });
+            //_.Search({
+            //    Service: 'CwglService',
+            //    Method: 'ExportPz',
+            //    Data: { VOUCHERID: selectid, BRANCHID: this.BRANCHID, CWNY: this.CWNY, pDATE2: this.RQ_END, pDATE1: this.RQ_START },
+            //    PageInfo: 1,
+            //    Success: function (data) {
+            //        pzdc.dataDef = data.rows;
+            //    }
+            //})
 
         },
         select: function (currentRow, oldCurrentRow) {

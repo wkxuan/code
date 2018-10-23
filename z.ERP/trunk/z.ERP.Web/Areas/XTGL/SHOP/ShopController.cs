@@ -29,6 +29,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
             v.IsUnique(a => a.CODE);
             v.Require(a => a.NAME);
             v.Require(a => a.BRANCHID);
+            v.Require(a => a.REGIONID);
             v.Require(a => a.FLOORID);
             v.Require(a => a.ORGID);
             v.Require(a => a.CATEGORYID);
@@ -53,6 +54,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
             v.IsUnique(a => a.CODE);
             v.Require(a => a.NAME);
             v.Require(a => a.BRANCHID);
+            v.Require(a => a.REGIONID);
             v.Require(a => a.FLOORID);
             v.Require(a => a.ORGID);
             v.Require(a => a.CATEGORYID);
@@ -66,6 +68,10 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
         public UIResult GetBranch(BRANCHEntity Data)
         {
             return new UIResult(service.DataService.GetBranch(Data));
+        }
+        public UIResult GetRegion(REGIONEntity Data)
+        {
+            return new UIResult(service.DataService.GetRegion(Data));
         }
         public UIResult GetFloor(FLOOREntity Data)
         {

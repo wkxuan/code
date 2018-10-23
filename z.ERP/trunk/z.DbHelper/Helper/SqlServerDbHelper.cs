@@ -147,65 +147,6 @@ namespace z.DBHelper.Helper
             return new SqlConnection(_dbConnectionInfoStr);
         }
 
-        protected override IDbDataParameter GetDbDataParameter(PropertyInfo p, EntityBase info)
-        {
-            SqlParameter resp;
-            DbTypeAttribute dba = p.GetAttribute<DbTypeAttribute>();
-            if (dba == null)
-            {
-                resp = new SqlParameter(p.Name, SqlDbType.VarChar);
-                resp.Value = p.GetValue(info, null);
-            }
-            else
-            {
-                switch (dba.DbType)
-                {
-                    case DbType.Time:
-                    case DbType.DateTime:
-                    case DbType.Date:
-                    case DbType.DateTime2:
-                    case DbType.DateTimeOffset:
-                        {
-                            resp = new SqlParameter(p.Name, SqlDbType.Date);
-                            string value = p.GetValue(info, null)?.ToString();
-                            if (value == null || string.IsNullOrEmpty(value.ToString()))
-                            {
-                                resp.Value = DBNull.Value;
-                            }
-                            else
-                            {
-                                resp.Value = value.ToDateTime(true);
-                            }
-                            break;
-                        }
-                    case DbType.Int16:
-                    case DbType.Int32:
-                    case DbType.Int64:
-                    case DbType.UInt16:
-                    case DbType.UInt32:
-                    case DbType.UInt64:
-                    case DbType.Byte:
-                        {
-                            resp = new SqlParameter(p.Name, SqlDbType.Int);
-                            resp.Value = p.GetValue(info, null);
-                            break;
-                        }
-                    case DbType.Decimal:
-                    case DbType.Double:
-                        {
-                            resp = new SqlParameter(p.Name, SqlDbType.Decimal);
-                            resp.Value = p.GetValue(info, null);
-                            break;
-                        }
-                    default:
-                        {
-                            throw new DataBaseException("字段类型" + dba.DbType + "还没有对应处理程序");
-                        }
-                }
-            }
-            return resp;
-        }
-
         protected override string GetPageSql(string sql, int pageSize = 0, int pageIndex = 0)
         {
             if (pageSize < 1 || pageIndex < 0)
@@ -215,48 +156,9 @@ namespace z.DBHelper.Helper
             throw new Exception("未实现分页功能");
         }
 
-        protected override object GetParameterValue(IDbDataParameter p, PropertyInfo pinfo)
-        {
-            DbTypeAttribute dba = pinfo.GetAttribute<DbTypeAttribute>();
-            if (dba == null)
-            {
-                return p.Value.ToString();
-            }
-            switch (dba.DbType)
-            {
-                case DbType.Time:
-                case DbType.DateTime:
-                case DbType.Date:
-                case DbType.DateTime2:
-                case DbType.DateTimeOffset:
-                    {
-                        return p.Value.ToString().ToDateTime();
-                    }
-                case DbType.Int16:
-                case DbType.Int32:
-                case DbType.Int64:
-                case DbType.UInt16:
-                case DbType.UInt32:
-                case DbType.UInt64:
-                case DbType.Byte:
-                    {
-                        return p.Value.ToString().ToInt();
-                    }
-                case DbType.Decimal:
-                case DbType.Double:
-                    {
-                        return p.Value.ToString().ToDouble();
-                    }
-                default:
-                    {
-                        throw new DataBaseException("字段类型" + dba.DbType + "还没有对应处理程序");
-                    }
-            }
-        }
-
         protected override string GetPramCols(string cols)
         {
-            return ":" + cols;
+            return "@" + cols;
         }
 
         protected override void FastInsertTable(DataTable dt)
@@ -264,6 +166,7 @@ namespace z.DBHelper.Helper
             SqlBulkCopy bulkCopy = new SqlBulkCopy(_dbConnectionInfoStr);
             bulkCopy.DestinationTableName = dt.TableName;
             bulkCopy.BatchSize = dt.Rows.Count;
+            bulkCopy.BulkCopyTimeout = 3600;
             foreach (DataColumn dc in dt.Columns)
             {
                 bulkCopy.ColumnMappings.Add(dc.ColumnName, dc.ColumnName);
@@ -276,6 +179,73 @@ namespace z.DBHelper.Helper
                 if (bulkCopy != null)
                     bulkCopy.Close();
             });
+        }
+
+        protected override DbParameter GetParameter(string name, object value, DbType? Type = null)
+        {
+            SqlParameter resp;
+            if (!Type.HasValue)
+            {
+                resp = new SqlParameter(name, SqlDbType.VarChar);
+                resp.Value = value;
+            }
+            else
+            {
+                switch (Type.Value)
+                {
+                    case DbType.Time:
+                    case DbType.DateTime:
+                    case DbType.Date:
+                    case DbType.DateTime2:
+                    case DbType.DateTimeOffset:
+                        {
+                            resp = new SqlParameter(name, SqlDbType.Date);
+                            if (value == null || string.IsNullOrEmpty(value.ToString()))
+                            {
+                                resp.Value = DBNull.Value;
+                            }
+                            else
+                            {
+                                resp.Value = value.ToString().ToDateTime(true);
+                            }
+                            break;
+                        }
+                    case DbType.Int16:
+                    case DbType.Int32:
+                    case DbType.Int64:
+                    case DbType.UInt16:
+                    case DbType.UInt32:
+                    case DbType.UInt64:
+                    case DbType.Byte:
+                        {
+                            resp = new SqlParameter(name, SqlDbType.Int);
+                            resp.Value = value;
+                            break;
+                        }
+                    case DbType.Decimal:
+                    case DbType.Double:
+                        {
+                            resp = new SqlParameter(name, SqlDbType.Decimal);
+                            resp.Value = value;
+                            break;
+                        }
+                    case DbType.String:
+                    case DbType.StringFixedLength:
+                    case DbType.Xml:
+                    case DbType.AnsiString:
+                    case DbType.AnsiStringFixedLength:
+                        {
+                            resp = new SqlParameter(name, SqlDbType.NVarChar);
+                            resp.Value = value;
+                            break;
+                        }
+                    default:
+                        {
+                            throw new DataBaseException("字段类型" + Type.Value + "还没有对应处理程序");
+                        }
+                }
+            }
+            return resp;
         }
     }
 }

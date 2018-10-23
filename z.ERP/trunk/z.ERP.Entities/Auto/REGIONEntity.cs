@@ -4,31 +4,31 @@
  * 生成人：书房
  * 代码生成器版本号：1.2.6655.1027
  *
- */ 
+ */
 
 using System.Data;
 using z.DbHelper.DbDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("FLOOR", "楼层")]
-    public partial class FLOOREntity : TableEntityBase
+    [DbTable("REGION", "区域")]
+    public partial class REGIONEntity : TableEntityBase
     {
-        public FLOOREntity()
+        public REGIONEntity()
         {
         }
 
-        public FLOOREntity(string id)
+        public REGIONEntity(string regionid)
         {
-            ID = id;
+            REGIONID = regionid;
         }
 
         /// <summary>
         /// 楼层编号
         /// <summary>
         [PrimaryKey]
-        [Field("楼层编号")]
-        public string ID
+        [Field("区域编号")]
+        public string REGIONID
         {
             get; set;
         }
@@ -40,17 +40,10 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-
-        [Field("区域编号")]
-        public string REGIONID
-        {
-            get; set;
-        }
-
         /// <summary>
         /// 楼层代码
         /// <summary>
-        [Field("楼层代码")]
+        [Field("区域代码")]
         public string CODE
         {
             get; set;
@@ -58,7 +51,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 楼层名称
         /// <summary>
-        [Field("楼层名称")]
+        [Field("区域名称")]
         public string NAME
         {
             get; set;

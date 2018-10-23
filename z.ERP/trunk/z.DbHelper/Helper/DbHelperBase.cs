@@ -195,35 +195,35 @@ namespace z.DBHelper.Helper
         public DataTable ExecuteTable(string sql, params zParameter[] parameters)
         {
             string _sql = sql;
-            DbParameter[] ps = RenderSql(ref _sql);
+            DbParameter[] ps = RenderSql(ref _sql, parameters);
             return ExecuteTable(_sql, ps);
         }
 
         public DataTable ExecuteTable(string sql, PageInfo pageinfo, params zParameter[] parameters)
         {
             string _sql = sql;
-            DbParameter[] ps = RenderSql(ref _sql);
+            DbParameter[] ps = RenderSql(ref _sql, parameters);
             return ExecuteTable(_sql, pageinfo, ps);
         }
 
         public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, params zParameter[] parameters)
         {
             string _sql = sql;
-            DbParameter[] ps = RenderSql(ref _sql);
+            DbParameter[] ps = RenderSql(ref _sql, parameters);
             return ExecuteTable(_sql, pageinfo, out allCount, ps);
         }
 
         public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, params zParameter[] parameters)
         {
             string _sql = sql;
-            DbParameter[] ps = RenderSql(ref _sql);
+            DbParameter[] ps = RenderSql(ref _sql, parameters);
             return ExecuteTable(_sql, pageSize, pageIndex, ps);
         }
 
         public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount, params zParameter[] parameters)
         {
             string _sql = sql;
-            DbParameter[] ps = RenderSql(ref _sql);
+            DbParameter[] ps = RenderSql(ref _sql, parameters);
             return ExecuteTable(_sql, pageSize, pageIndex, out allCount, ps);
         }
 
@@ -331,6 +331,8 @@ namespace z.DBHelper.Helper
         /// <returns></returns>
         public int ExecuteNonQuery(params string[] sql)
         {
+            if (sql == null || sql.Length == 0)
+                return 0;
             return ExecuteNonQuery(sql.ToList());
         }
 
@@ -358,19 +360,19 @@ namespace z.DBHelper.Helper
         public int Save(TableEntityBase info)
         {
             IDbDataParameter[] dbprams = info.GetPrimaryKey().Select(a =>
-           {
-               if (a.GetAttribute<PrimaryKeyAttribute>() != null)
-               {
-                   if (string.IsNullOrEmpty(a.GetValue(info, null)?.ToString()))
-                   {
-                       throw new DataBaseException("字段:" + a.Name + "是主键,在保存时不能为空");
-                   }
-               }
-               IDbDataParameter p = GetDbDataParameter(a, info);
-               object value = a.GetValue(info, null);
-               p.Value = (value == null || string.IsNullOrEmpty(value.ToString()) ? DBNull.Value : value);
-               return p;
-           }).ToArray();
+            {
+                if (a.GetAttribute<PrimaryKeyAttribute>() != null)
+                {
+                    if (string.IsNullOrEmpty(a.GetValue(info, null)?.ToString()))
+                    {
+                        throw new DataBaseException("字段:" + a.Name + "是主键,在保存时不能为空");
+                    }
+                }
+                IDbDataParameter p = GetDbDataParameter(a, info);
+                object value = a.GetValue(info, null);
+                p.Value = (value == null || string.IsNullOrEmpty(value.ToString()) ? DBNull.Value : value);
+                return p;
+            }).ToArray();
             int i = 0;
             RunSql(_dbCommand =>
             {
@@ -408,8 +410,8 @@ namespace z.DBHelper.Helper
                 _dbCommand.Parameters.AddRange(dbprams);
                 _dbCommand.CommandText = string.Format(_insert, info.GetTableName(),
                     string.Join(",", dbprams.Select(a => a.ParameterName)),
-                    string.Join(",", dbprams.Select(a => ":" + a.ParameterName))
-                    );
+                    string.Join(",", dbprams.Select(a => GetPramCols(a.ParameterName)))
+                     );
                 res = _dbCommand.ExecuteNonQuery();
             });
             #region 处理子表
@@ -430,21 +432,21 @@ namespace z.DBHelper.Helper
         {
             int res = 0;
             IDbDataParameter[] dbprams = info.GetFieldWithoutPrimaryKey().Select(a =>
-           {
-               if (a.GetAttribute<PrimaryKeyAttribute>() != null)
-               {
-                   if (string.IsNullOrEmpty(a.GetValue(info, null)?.ToString()))
-                   {
-                       throw new DataBaseException("字段:" + a.Name + "是主键,在更新时不能为空");
-                   }
-               }
-               IDbDataParameter p = GetDbDataParameter(a, info);
-               return p;
-           }).ToArray().Concat(info.GetPrimaryKey().Select(a =>
-          {
-              IDbDataParameter p = GetDbDataParameter(a, info);
-              return p;
-          })).ToArray();
+            {
+                if (a.GetAttribute<PrimaryKeyAttribute>() != null)
+                {
+                    if (string.IsNullOrEmpty(a.GetValue(info, null)?.ToString()))
+                    {
+                        throw new DataBaseException("字段:" + a.Name + "是主键,在更新时不能为空");
+                    }
+                }
+                IDbDataParameter p = GetDbDataParameter(a, info);
+                return p;
+            }).ToArray().Concat(info.GetPrimaryKey().Select(a =>
+            {
+                IDbDataParameter p = GetDbDataParameter(a, info);
+                return p;
+            })).ToArray();
             RunSql(_dbCommand =>
             {
                 _dbCommand.Parameters.Clear();
@@ -518,10 +520,10 @@ namespace z.DBHelper.Helper
                 return a.GetValue(info, null) != null;
             }).ToArray();
             IDbDataParameter[] dbprams = Allprop.Select(a =>
-               {
-                   IDbDataParameter p = GetDbDataParameter(a, info);
-                   return p;
-               }).ToArray();
+            {
+                IDbDataParameter p = GetDbDataParameter(a, info);
+                return p;
+            }).ToArray();
             string tablename = info.GetTableName();
             string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
             if (string.IsNullOrEmpty(where))
@@ -773,9 +775,9 @@ namespace z.DBHelper.Helper
             {
                 T t = new T();
                 reader.FieldCount.ForEach(i =>
-               {
-                   t.SetPropertyValue(reader.GetName(i), reader.GetValue(i));
-               });
+                {
+                    t.SetPropertyValue(reader.GetName(i), reader.GetValue(i));
+                });
                 res.Add(t);
             }
             reader.Close();
@@ -793,7 +795,7 @@ namespace z.DBHelper.Helper
             DataTable dt = new DataTable();
             for (int count = 0; count < reader.FieldCount; count++)
             {
-                dt.Columns.Add(reader.GetName(count).ToUpper(), reader.GetFieldType(count));
+                dt.Columns.Add(reader.GetName(count), reader.GetFieldType(count));
             }
             while (reader.Read())
             {
@@ -987,9 +989,9 @@ namespace z.DBHelper.Helper
                                           null);
                         List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
                         attrs.ForEach(a =>
-                            {
-                                item.SetPropertyValue(a.ChildrenKey, info.GetPropertyValue(a.ParentKey));
-                            });
+                        {
+                            item.SetPropertyValue(a.ChildrenKey, info.GetPropertyValue(a.ParentKey));
+                        });
                         List<TableEntityBase> res = SelectList(item);
                         key.SetArrValue(info, res);
                     }
@@ -1011,79 +1013,75 @@ namespace z.DBHelper.Helper
         DbParameter[] RenderSql(ref string sql, params zParameter[] parameters)
         {
             List<DbParameter> res = new List<DbParameter>();
-            Func<string, string> fp = str => $":{str}";  //参数化方法
+            if (!sql.Contains("{{"))  //没有参数符号的,跳过
+            {
+                return parameters?.Select(p => GetParameter(p.Name, p.Value, p.Type)).ToArray();
+            }
             int pnameinx = 1;
-            //if (!parameters.IsEmpty())
-            //    foreach (var p in parameters)
-            //    {
-            //        if (p.IsArray)
-            //        {
-            //            var arrv = (p.Value as IEnumerable<object>).ToArray();
-            //            string pname = string.Join(",", arrv.Select((b, i) => fp($"p{pnameinx}_{i}")));
-            //            if (ReplaceStr(ref sql, a.Key, pname))
-            //            {
-            //                res.AddRange(arrv.Select((b, i) => new SqlParameter(p($"p{pnameinx}_{i}"), b.Value<string>())));
-            //                pnameinx++;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            string pname = fp($"{p.Name}");
-            //            if (ReplaceStr(ref sql, p.Name, pname))
-            //            {
-            //                res.Add(GetParameter(pname, p.Value, p.Type));
-            //                pnameinx++;
-            //            }
-            //        }
-            //        switch (a.Value.Type)
-            //        {
-            //            case JTokenType.Array:
-            //                {
-            //                    var arrv = a.Value.ToArray();
-            //                    string pname = string.Join(",", arrv.Select((b, i) => p($"p{pnameinx}_{i}")));
-            //                    if (ReplaceStr(ref sql, a.Key, pname))
-            //                    {
-            //                        res.AddRange(arrv.Select((b, i) => new SqlParameter(p($"p{pnameinx}_{i}"), b.Value<string>())));
-            //                        pnameinx++;
-            //                    }
-            //                    break;
-            //                }
-            //            default:
-            //                {
-            //                    string pname = p($"{pnameinx}");
-            //                    if (ReplaceStr(ref sql, a.Key, pname))
-            //                    {
-            //                        res.Add(new SqlParameter(pname, a.Value.Value<string>()));
-            //                        pnameinx++;
-            //                    }
-            //                    break;
-            //                }
-            //        };
-            //    }
+            Func<string> newp = () =>
+            {
+                return $"p{pnameinx++}";
+            };
+            Regex rin = new Regex(@"{{[^@]([^@]+?)}}");
+            Regex rin0 = new Regex(@"(?<={{)[^@]([^@]+?)(?=}})");
+            Regex errcs = new Regex(@"{{| |}}|@");
+            while (rin0.IsMatch(sql))
+            {
+                string cs = rin0.Match(sql).Value;
+                if (errcs.IsMatch(cs))
+                    throw new Exception("sql匹配失败,请检查占位符是否有特殊字符或{{标签没有闭合");
+                zParameter pram = parameters?.FirstOrDefault(p => p.Name == cs);
+                if (pram != null) //参数存在,则拼接进去
+                {
+                    //先替换掉可空标记
+                    Regex regex = new Regex(@"{{@([^@]*?){{" + cs + @"}}([^@]*?)@}}");   //可空标记替换符
+                    sql = regex.Replace(sql, m =>
+                    {
+                        return $" {m.Value.Substring(3, m.Value.Length - 6)} ";
+                    });
+                    //替换占位符,产生参数数组
+                    string zstr = "{{" + cs + "}}";
+                    if (pram.IsArray)  //数组参数
+                    {
+                        var arrv = (pram.Value as IEnumerable<object>).ToArray();
+                        if (arrv == null)
+                            throw new Exception("数组参数类型错误");
+                        if (arrv.Count() == 0)
+                            throw new Exception("数组参数个数不能为0");
+                        string[] pnames = arrv.Select(p =>
+                          {
+                              string pname = newp();
+                              res.Add(GetParameter(pname, p, pram.Type));
+                              return GetPramCols(pname);
+                          }).ToArray();
+                        sql = sql.ReplaceOne(zstr, string.Join(",", pnames));
+                    }
+                    else  //单个参数
+                    {
+                        string pname = newp();
+                        sql = sql.ReplaceOne(zstr, $" {GetPramCols(pname)} ");
+                        res.Add(GetParameter(pname, pram.Value, pram.Type));
+                    }
+                }
+                else //参数不存在,删除可空标记占位符
+                {
+                    Regex rnull = new Regex(@"{{@([^@]+?){{" + cs + @"}}([^@]+?)@}}");
+                    sql = rnull.Replace(sql, " ");
+                    //参数不存在,但是sql不可空,则报错
+                    Regex rnotnull = new Regex(@"{{" + cs + @"}}");
+                    if (rnotnull.IsMatch(sql))
+                        throw new Exception($"参数{cs}不可为空");
+                }
+            }
+            //如果还有残余的占位符,说明sql有问题了
+            {
+                Regex regex = new Regex(@"[{{|}}]");
+                if (regex.IsMatch(sql))
+                    throw new Exception("占位符异常");
+            }
             return res.ToArray();
         }
 
-        void render(string sql, zParameter[] parameters)
-        {
-            Regex rin = new Regex(@"{{^@([^@]+?)}}");
-            while (rin.IsMatch(sql))
-            {
-
-            }
-        }
-
-        bool ReplaceStr(ref string sql, string oldValue, string newValue)
-        {
-            string vl = "{{" + oldValue + "}}";
-            bool res = sql.Contains(vl);
-            Regex regex = new Regex(@"{{@([^@]+?)" + vl + @"([^@]+?)@}}");   //可空标记替换符
-            sql = regex.Replace(sql, m =>
-            {
-                return m.Value.Substring(3, m.Value.Length - 6);
-            });
-            sql = sql.Replace(vl, newValue);
-            return res;
-        }
         #endregion
     }
 }

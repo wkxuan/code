@@ -98,16 +98,6 @@
         @{
             RenderControl(new ButtonRender()
             {
-                Click = "SelBill",
-                Text = "选择账单",
-                Enable = true,
-                Type = "primary",
-                Icon = "plus-circled"
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
                 Click = "screenParam.addCol",
                 Text = "添加一行",
                 Enable = true,
@@ -133,19 +123,6 @@
     </row>
 }
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopBill",
-                    Caption = "选择账单",
-                    Width = "800",
-                    Src = "screenParam.srcPopBill"
-                });
-            }
-        </i-col>
-    </row>
 <row>
     <i-col>
         @{

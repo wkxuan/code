@@ -4,29 +4,33 @@ using z.ERP.Entities;
 using z.Extensions;
 using System;
 using z.MVC5.Results;
+using z.ERP.Web.Areas.Layout.Define;
 
-namespace z.ERP.Web.Areas.XTGL.FLOOR
+namespace z.ERP.Web.Areas.XTGL.REGION
 {
-    public class FloorController: BaseController
+    public class RegionController: BaseController
     {
-        public ActionResult Floor()
+        public ActionResult Region()
         {
-            ViewBag.Title = "楼层信息";
-            return View();
+            ViewBag.Title = "区域信息";
+            return View(new DefineRender()
+            {
+                Permission_Add = "10101501",
+                Permission_Mod = "10101502"
+            });
         }
 
-        public string Save(FLOOREntity DefineSave)
+        public string Save(REGIONEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
-            if (DefineSave.ID.IsEmpty())
+            if (DefineSave.REGIONID.IsEmpty())
             {
-                DefineSave.ID = service.CommonService.NewINC("FLOOR");
+                DefineSave.REGIONID = service.CommonService.NewINC("REGION");
             }
-            v.IsUnique(a => a.ID);
-            v.Require(a => a.CODE);
+            v.IsUnique(a => a.REGIONID);
+            v.IsUnique(a => a.CODE);
             v.Require(a => a.NAME);
             v.Require(a => a.BRANCHID);
-            v.Require(a => a.REGIONID);
             v.Require(a => a.ORGID);
             v.Require(a => a.AREA_BUILD);
             v.Require(a => a.STATUS);
@@ -34,7 +38,7 @@ namespace z.ERP.Web.Areas.XTGL.FLOOR
             return CommonSave(DefineSave);
         }
 
-        public void Delete(FLOOREntity DefineDelete)
+        public void Delete(REGIONEntity DefineDelete)
         {
             var v = GetVerify(DefineDelete);
             CommenDelete(DefineDelete);
@@ -53,19 +57,13 @@ namespace z.ERP.Web.Areas.XTGL.FLOOR
         {
             return new UIResult(service.DataService.GetBranch(Data));
         }
-
         public UIResult GetRegion(REGIONEntity Data)
         {
-            return new UIResult(service.DataService.GetRegion(Data));
-        }
-
-        public UIResult GetFloor(FLOOREntity Data)
-        {
-            var res = service.DpglService.GetFloor(Data);
+            var res =  service.DpglService.GetRegion(Data);
             return new UIResult(
                 new
                 {
-                    floorelement = res.Item1
+                    regionlement = res.Item1
                 }
                 );
         }
