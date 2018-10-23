@@ -10,9 +10,12 @@ var pzdc = new Vue({
         BRANCHID: 1,
         CWNY: 201810,        
         RQ_START: "",
-        RQ_END:"",
+        RQ_END: "",
+        PZRQ:""
     },
     mounted: function () {
+        //this.PZRQ = Date;
+        //this.CWNY = 201810;
         _.Search({
             Service: 'CwglService',
             Method: 'GetVoucher',
@@ -39,7 +42,11 @@ var pzdc = new Vue({
             }
             
             _.Ajax('ExportPz', {
-                data: { VOUCHERID: selectid, BRANCHID: this.BRANCHID, CWNY: this.CWNY, DATE1: this.RQ_START, DATE2: this.RQ_END },
+                data: {
+                    VOUCHERID: selectid, BRANCHID: this.BRANCHID, CWNY: this.CWNY, DATE1: this.RQ_START,
+                    DATE2: this.RQ_END,
+                    PZRQ: this.PZRQ
+                },
             }, function (data) {
                 window.open(__BaseUrl + data);
             });

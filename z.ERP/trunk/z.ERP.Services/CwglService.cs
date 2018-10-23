@@ -30,10 +30,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public class PZDCMOUDLE {
-            public string PZRQ { get; set;}
-            public string JFJE { get; set; }
-        }
         public string ExportPz(VOUCHER_PARAMEntity Data)
         {
             var iPZBH = string.Empty;
@@ -41,11 +37,46 @@ namespace z.ERP.Services
             Int32 pCWNY = Data.CWNY;
             Int32 pVOUCHERID = Data.VOUCHERID;
             DateTime pDATE1 = Data.DATE1;
-            DateTime pDATE2 = Data.DATE2;            
+            DateTime pDATE2 = Data.DATE2;
+            DateTime pPZRQ = Data.PZRQ;
+            Int32 Year = Data.PZRQ.Year;
+            Int32 MM = Data.PZRQ.Month;
+
 
             DataTable resultdt = new DataTable();
-            resultdt.Columns.Add("PZRQ", typeof(String));
-            resultdt.Columns.Add("JFJE", typeof(decimal));
+            resultdt.Columns.Add("PZID", typeof(Int32));   //凭证ID
+            resultdt.Columns.Add("YEAR", typeof(String));  //会计年
+            resultdt.Columns.Add("KJQJ", typeof(String));  //会计期间
+            resultdt.Columns.Add("ZDRQ", typeof(DateTime));  //制单日期
+            resultdt.Columns.Add("PZLB", typeof(String));  //凭证类别
+            resultdt.Columns.Add("PZBH", typeof(Int32));  //凭证号
+            resultdt.Columns.Add("ZDR", typeof(String));  //制单人
+            resultdt.Columns.Add("DJZS", typeof(Int32));  //所附单据数
+            resultdt.Columns.Add("KMBM", typeof(String));  //科目编码
+            resultdt.Columns.Add("ZY", typeof(String));  //摘要
+            resultdt.Columns.Add("BZMC", typeof(String));  //币种名称
+            resultdt.Columns.Add("YBJF", typeof(decimal));  //原币借方
+            resultdt.Columns.Add("YBDF", typeof(decimal));  //原币贷方
+            resultdt.Columns.Add("JFJE", typeof(decimal));  //借方金额
+            resultdt.Columns.Add("DFJE", typeof(decimal));  //贷方金额
+            resultdt.Columns.Add("BMBM", typeof(String));  //部门编码
+            resultdt.Columns.Add("ZYBM", typeof(String));  //职员编码
+            resultdt.Columns.Add("KHBM", typeof(String));  //客户编码
+            resultdt.Columns.Add("GYSBM", typeof(String));  //供应商编码
+            resultdt.Columns.Add("XMDLBM", typeof(String));  //项目大类编码
+            resultdt.Columns.Add("XMBM", typeof(String));  //项目编码
+            resultdt.Columns.Add("YWY", typeof(String));  //业务员
+            resultdt.Columns.Add("LC", typeof(String));  //楼层
+            resultdt.Columns.Add("ZDYX10", typeof(String));  //自定义项10
+            resultdt.Columns.Add("ZDYX11", typeof(String));  //自定义项11
+            resultdt.Columns.Add("ZDYX12", typeof(String));  //自定义项12
+            resultdt.Columns.Add("ZDYX13", typeof(String));  //自定义项13
+            resultdt.Columns.Add("ZDYX14", typeof(String));  //自定义项14
+            resultdt.Columns.Add("ZDYX15", typeof(String));  //自定义项15
+            resultdt.Columns.Add("ZDYX16", typeof(String));  //自定义项16
+            resultdt.Columns.Add("XJLLXM", typeof(String));  //现金流量项目
+            resultdt.Columns.Add("XJLLJFJE", typeof(String));  //现金流量借方金额
+            resultdt.Columns.Add("XJLLDFJE", typeof(String));  //现金流量贷方金额
 
             zParameter[] param = new zParameter[4] {
                            new zParameter("pDATE1",new DateTime (pDATE1.Year,pDATE1.Month,pDATE1.Day),DbType.Date),
@@ -55,7 +86,7 @@ namespace z.ERP.Services
 
             using (var Tran = DbHelper.BeginTransaction())
             {
-                //iPZBH = CommonService.NewINC("PZBH");       
+                iPZBH = CommonService.NewINC("PZBH");       
                 //获取sql         
                 List<VOUCHER_MAKESQLEntity> p = DbHelper.SelectList(new VOUCHER_MAKESQLEntity()).Where(a => a.VOUCHERID == pVOUCHERID.ToString())
                     .OrderBy(a => a.VOUCHERID).ToList();
@@ -73,22 +104,64 @@ namespace z.ERP.Services
                             foreach (var fldata in record)
                             {
                                 var fldat = fldata.SQLCOLTORECORD; //借方贷方金额
+                                var flfat = fldata.SQLCOLTORECORD; //贷方贷方金额
                                 var wldwdat = fldata.SQLCOLTOMERCHANT;    //商户
                                 var bmdat = fldata.SQLCOLTOORG;       //部门
-                                var fzdat = fldata.SQLCOLTOUSER;        //人员
-
+                                var rydat = fldata.SQLCOLTOUSER;        //人员
                                 DataTable dtflid = DbHelper.ExecuteTable(sqlflid, param);
                                 foreach (DataRow tr in dtflid.Rows)
                                 {                                    
                                     string JFJE = tr[fldat].ToString();
+                                    string DFJE = tr[flfat].ToString();
+                                    string MERCHANTID = string.Empty;
+                                    string ORGDM = string.Empty;
+                                    string RYDM = string.Empty;
                                     if (!string.IsNullOrEmpty(wldwdat))
                                     {
-                                        string MERCHANTID = tr[wldwdat].ToString();
+                                        MERCHANTID = tr[wldwdat].ToString();
                                     }
-                                    ;
+                                    if (!string.IsNullOrEmpty(bmdat))
+                                    {
+                                        ORGDM = tr[bmdat].ToString();
+                                    }
+                                    if (!string.IsNullOrEmpty(rydat))
+                                    {
+                                        RYDM = tr[rydat].ToString();
+                                    }
                                     DataRow rowNew = resultdt.NewRow();
-                                    rowNew["PZRQ"] = "22233";
-                                    rowNew["JFJE"] = "2.0";                                    
+                                    rowNew["PZID"] = "";   //凭证ID
+                                    rowNew["YEAR"] = Year;  //会计年
+                                    rowNew["KJQJ"] = MM;  //会计期间
+                                    rowNew["ZDRQ"] = DateTime.Now.Date;  //制单日期
+                                    rowNew["PZLB"] = "记";  //凭证类别
+                                    rowNew["PZBH"] = iPZBH;  //凭证号
+                                    rowNew["ZDR"] = employee.Name;  //制单人
+                                    rowNew["DJZS"] = "";  //所附单据数
+                                    rowNew["KMBM"] = "";  //rowNew[
+                                    rowNew["ZY"] = "";  //摘要
+                                    rowNew["BZMC"] = "人民币";  //币种名称
+                                    rowNew["YBJF"] = "";  //原币借方
+                                    rowNew["YBDF"] = "";  //原币贷方
+                                    rowNew["JFJE"] = JFJE;  //借方金额
+                                    rowNew["DFJE"] = DFJE;  //贷方金额
+                                    rowNew["BMBM"] = ORGDM;  //部门编码
+                                    rowNew["ZYBM"] = RYDM;  //职员编码
+                                    rowNew["KHBM"] = "";  //客户编码
+                                    rowNew["GYSBM"] = MERCHANTID;  //供应商编码
+                                    rowNew["XMDLBM"] = "";  //项目大类编码
+                                    rowNew["XMBM"] = "";  //项目编码
+                                    rowNew["YWY"] = "";  //业务员
+                                    rowNew["LC"] = "";  //楼层
+                                    rowNew["ZDYX10"] = "";  //自定义项10
+                                    rowNew["ZDYX11"] = "";  //自定义项11
+                                    rowNew["ZDYX12"] = "";  //自定义项12
+                                    rowNew["ZDYX13"] = "";  //自定义项13
+                                    rowNew["ZDYX14"] = "";  //自定义项14
+                                    rowNew["ZDYX15"] = "";  //自定义项15
+                                    rowNew["ZDYX16"] = "";  //自定义项16
+                                    rowNew["XJLLXM"] = "";  //现金流量项目
+                                    rowNew["XJLLJFJE"] = "";  //现金流量借方金额
+                                    rowNew["XJLLDFJE"] = "";  //现金流量贷方金额                               
                                     resultdt.Rows.Add(rowNew);                                    
                                 }
                                 //DataTable dtflid = DbHelper.ExecuteTable(sqlflid, pzparme);
@@ -103,14 +176,14 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
-            //if (resultdt.Rows.Count > 0)
-            //{
-            //    return GetExport("凭证导出", a =>
-            //    {
-            //        a.SetTable(resultdt);
-            //    });
-            //}
-            //else
+            if (resultdt.Rows.Count > 0)
+            {
+                return GetExport("凭证导出", a =>
+                {
+                    a.SetTable(resultdt);
+                });
+            }
+            else
                 return "未导出数据";           
         }
     }
