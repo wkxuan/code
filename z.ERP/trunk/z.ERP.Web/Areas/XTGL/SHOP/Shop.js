@@ -31,7 +31,7 @@
                 define.screenParam.branchData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
             }
             define.searchParam.BRANCHID = data.dt[0].ID;
-            define.dataParam.BRANCHID = define.searchParam.BRANCHID;
+            define.dataParam.BRANCHID = data.dt[0].ID;
         }
         else {
 
@@ -42,11 +42,13 @@
     }, function (data) {
         if (data.dt) {
             define.screenParam.regionData = [];
+            define.dataParam.REGIONID = 0;
+            define.searchParam.REGIONID = 0;
             for (var i = 0; i < data.dt.length; i++) {
                 define.screenParam.regionData.push({ value: data.dt[i].REGIONID, label: data.dt[i].NAME })
             }
             define.dataParam.REGIONID = data.dt[0].REGIONID;
-            define.searchParam.REGIONID = define.dataParam.REGIONID;
+            define.searchParam.REGIONID = data.dt[0].REGIONID;
         }
         else {
 
@@ -57,11 +59,13 @@
     }, function (data) {
         if (data.dt) {
             define.screenParam.floorData = [];
+            define.dataParam.FLOORID = 0;
+            define.searchParam.FLOORID = 0;
             for (var i = 0; i < data.dt.length; i++) {
                 define.screenParam.floorData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
             }
             define.dataParam.FLOORID = data.dt[0].ID;
-            define.searchParam.FLOORID = define.dataParam.FLOORID;
+            define.searchParam.FLOORID = data.dt[0].ID;
             define.showlist();
         }
         else {
@@ -72,24 +76,26 @@
 define.newRecord = function () {
     if (define.searchParam.BRANCHID == 0) {
         iview.Message.info("请选择门店!");
-        return;
+     //   return;
     };
     if (define.searchParam.REGIONID == 0) {
         iview.Message.info("请选择区域!");
-        return;
+      //  return;
     };
     if (define.searchParam.FLOORID == 0) {
         iview.Message.info("请选择楼层!");
-        return;
+      //  return;
     };
 
-    define.dataParam.TYPE = 1;
+  //  define.dataParam.TYPE = 1;
     define.dataParam.STATUS = 1;
     define.dataParam.RENT_STATUS = 1;
     define.dataParam.ORGIDCASCADER = [];
     define.dataParam.BRANCHID = define.searchParam.BRANCHID;
     define.dataParam.REGIONID = define.searchParam.REGIONID;
     define.dataParam.FLOORID = define.searchParam.FLOORID;
+
+    return true;
 }
 define.otherMethods = {
     branchChange: function (value) {
@@ -112,11 +118,13 @@ define.otherMethods = {
         }, function (Data) {
             if (Data.dt) {
                 define.screenParam.regionData = [];
+                define.dataParam.REGIONID = 0;
+                define.searchParam.REGIONID = 0;
                 for (var i = 0; i < Data.dt.length; i++) {
                     define.screenParam.regionData.push({ value: Data.dt[i].REGIONID, label: Data.dt[i].NAME })
                 }
                 define.dataParam.REGIONID = Data.dt[0].RGIONID;
-                define.searchParam.REGIONID = define.dataParam.RGIONID;
+                define.searchParam.REGIONID = Data.dt[0].RGIONID;
             }
             else {
 
@@ -127,11 +135,13 @@ define.otherMethods = {
         }, function (Data) {
             if (Data.dt) {
                 define.screenParam.floorData = [];
+                define.dataParam.FLOORID = 0;
+                define.searchParam.FLOORID = 0;
                 for (var i = 0; i < Data.dt.length; i++) {
                     define.screenParam.floorData.push({ value: Data.dt[i].ID, label: Data.dt[i].NAME })
                 }
                 define.dataParam.FLOORID = Data.dt[0].ID;
-                define.searchParam.FLOORID = define.dataParam.FLOORID;
+                define.searchParam.FLOORID = Data.dt[0].ID;
                 define.showlist();
             }
             else {
@@ -163,11 +173,13 @@ define.otherMethods = {
             }, function (Data) {
                 if (Data.dt) {
                     define.screenParam.floorData = [];
+                    define.dataParam.FLOORID = 0;
+                    define.searchParam.FLOORID = 0;
                     for (var i = 0; i < Data.dt.length; i++) {
                         define.screenParam.floorData.push({ value: Data.dt[i].ID, label: Data.dt[i].NAME })
                     }
                     define.dataParam.FLOORID = Data.dt[0].ID;
-                    define.searchParam.FLOORID = define.dataParam.FLOORID;
+                    define.searchParam.FLOORID = Data.dt[0].ID;
                     define.showlist();
                 }
                 else {
@@ -237,4 +249,46 @@ define.showone = function (data, callback) {
         }
         callback && callback();
     });
+}
+
+
+define.IsValidSave = function () {
+    if (define.dataParam.BRANCHID==0) {
+        iview.Message.info("请选择门店!");
+        return false;
+    };
+    if (define.dataParam.REGIONID==0) {
+        iview.Message.info("请选择区域!");
+        return false;
+    };
+    if (define.dataParam.FLOORID==0) {
+        iview.Message.info("请选择楼层!");
+        return false;
+    };
+    if (!define.dataParam.CODE) {
+        iview.Message.info("单元代码不能为空!");
+        return false;
+    };
+    if (!define.dataParam.NAME) {
+        iview.Message.info("单元名称不能为空!");
+        return false;
+    };
+    if (!define.dataParam.TYPE) {
+        iview.Message.info("请选择单元类型!");
+        return false;
+    };
+    if (!define.dataParam.ORGID) {
+        iview.Message.info("请选择管理机构!");
+        return false;
+    };
+    if (!define.dataParam.CATEGORYIDCASCADER) {
+        iview.Message.info("请选择业态!");
+        return false;
+    };
+    if (!define.dataParam.AREA_RENTABLE) {
+        iview.Message.info("租赁面积不能为空!");
+        return false;
+    };
+
+    return true;
 }

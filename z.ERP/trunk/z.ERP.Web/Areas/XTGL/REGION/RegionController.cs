@@ -4,6 +4,7 @@ using z.ERP.Entities;
 using z.Extensions;
 using System;
 using z.MVC5.Results;
+using z.ERP.Web.Areas.Layout.Define;
 
 namespace z.ERP.Web.Areas.XTGL.REGION
 {
@@ -12,7 +13,11 @@ namespace z.ERP.Web.Areas.XTGL.REGION
         public ActionResult Region()
         {
             ViewBag.Title = "区域信息";
-            return View();
+            return View(new DefineRender()
+            {
+                Permission_Add = "10101501",
+                Permission_Mod = "10101502"
+            });
         }
 
         public string Save(REGIONEntity DefineSave)

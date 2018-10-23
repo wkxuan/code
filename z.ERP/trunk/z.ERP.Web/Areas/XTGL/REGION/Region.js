@@ -28,6 +28,7 @@
                 define.screenParam.branchData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
             }
             define.searchParam.BRANCHID = data.dt[0].ID;
+            define.showlist();
         }
         else {
 
