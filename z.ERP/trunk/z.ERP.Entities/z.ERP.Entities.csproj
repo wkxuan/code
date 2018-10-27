@@ -51,6 +51,8 @@
     <Compile Include="Auto\SALEBILLEntity.cs" />
     <Compile Include="Auto\SALEBILLITEMEntity.cs" />
     <Compile Include="Auto\RCLEntity.cs" />
+    <Compile Include="Auto\VOUCHER_RECORD_PZKMEntity.cs" />
+    <Compile Include="Auto\VOUCHER_RECORD_ZYEntity.cs" />
     <Compile Include="Auto\WRITEDATAEntity.cs" />
     <Compile Include="Auto\PLATFORMEntity.cs" />
     <Compile Include="Auto\SYSUSEREntity.cs" />
