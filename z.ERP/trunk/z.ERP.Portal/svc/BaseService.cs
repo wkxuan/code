@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using z.ERP.Services;
-using z.Extensiont;
+using z.Extensions;
 using z.LogFactory;
 
 namespace z.ERP.Portal.svc

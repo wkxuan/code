@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using z.DbHelper.DbDomain;
 using z.Extensions;
-using z.Extensiont;
+using z.Extensions;
 
 namespace z.ERP.Model.Vue
 {

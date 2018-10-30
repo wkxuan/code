@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using z.Extensiont;
 
 namespace z.Extensions
 {
@@ -262,6 +261,38 @@ namespace z.Extensions
             }
         }
         #endregion
+        #region 字符串验证
+
+        /// <summary>
+        /// 判断是否是IP地址格式 0.0.0.0
+        /// </summary>
+        /// <param name="str1">待判断的IP地址</param>
+        /// <returns>true or false</returns>
+        public static bool IsIPAddress(this string str1)
+        {
+            if (str1 == null || str1 == string.Empty || str1.Length < 7 || str1.Length > 15)
+                return false;
+
+            string regformat = @"^\d{1,3}[\.]\d{1,3}[\.]\d{1,3}[\.]\d{1,3}$";
+
+            Regex regex = new Regex(regformat, RegexOptions.IgnoreCase);
+            return regex.IsMatch(str1);
+        }
+
+        /// <summary>
+        /// 判断是邮件地址
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="IgnoreEmpty">忽略空的,如果为true,那么当字符串为空时返回true</param>
+        /// <returns></returns>
+        public static bool IsEmail(this string str, bool IgnoreEmpty = false)
+        {
+            if (str.IsEmpty())
+                return IgnoreEmpty;
+            return Regex.IsMatch(str, @"^([/w-/.]+)@((/[[0-9]{1,3}/.[0-9]{1,3}/.[0-9]{1,3}/.)|(([/w-]+/.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(/]?)$");
+        }
+
+        #endregion
         #region 字符串处理
         /// <summary>
         /// 补齐字符串
@@ -322,22 +353,6 @@ namespace z.Extensions
                 return str.Substring(startIndex, length);
             else
                 return str.Substring(startIndex);
-        }
-
-        /// <summary>
-        /// 判断是否是IP地址格式 0.0.0.0
-        /// </summary>
-        /// <param name="str1">待判断的IP地址</param>
-        /// <returns>true or false</returns>
-        public static bool IsIPAddress(this string str1)
-        {
-            if (str1 == null || str1 == string.Empty || str1.Length < 7 || str1.Length > 15)
-                return false;
-
-            string regformat = @"^\d{1,3}[\.]\d{1,3}[\.]\d{1,3}[\.]\d{1,3}$";
-
-            Regex regex = new Regex(regformat, RegexOptions.IgnoreCase);
-            return regex.IsMatch(str1);
         }
 
         /// <summary>

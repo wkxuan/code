@@ -11,7 +11,7 @@ using z.DBHelper.Connection;
 using z.DBHelper.Info;
 using z.DbHelper.DbDomain;
 using z.Extensions;
-using z.Extensiont;
+using z.Extensions;
 using z.DBHelper.DbDomain;
 using System.Text.RegularExpressions;
 
@@ -131,22 +131,22 @@ namespace z.DBHelper.Helper
         #endregion
         #region 数据操作
         #region 查表
-        public DataTable ExecuteTable(string sql, DbParameter[] parameters)
+        public DataTable ExecuteTable(string sql, DbParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
         {
-            return ExecuteTable(sql, 0, 0, parameters);
+            return ExecuteTable(sql, 0, 0, parameters, Behavior);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, DbParameter[] parameters)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, DbParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
         {
-            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, parameters);
+            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, parameters, Behavior);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, DbParameter[] parameters)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, DbParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
         {
-            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount, parameters);
+            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount, parameters, Behavior);
         }
 
-        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, DbParameter[] parameters)
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, DbParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
         {
             DataTable dt = new DataTable();
             RunSql(_dbCommand =>
@@ -155,7 +155,7 @@ namespace z.DBHelper.Helper
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
                 lock (ObjectExtension.Locker)
                 {
-                    using (IDataReader reader = _dbCommand.ExecuteReader(CommandBehavior.Default))
+                    using (IDataReader reader = _dbCommand.ExecuteReader(Behavior))
                     {
                         dt = this.ReaderToTable(reader);
                     }
@@ -164,7 +164,7 @@ namespace z.DBHelper.Helper
             return dt;
         }
 
-        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount, DbParameter[] parameters)
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount, DbParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
         {
             int outall = 0;
             DataTable dt = ExecuteTable(sql, pageSize, pageIndex, parameters);
@@ -174,7 +174,7 @@ namespace z.DBHelper.Helper
                 _dbCommand.CommandText = GetCountSql(sql);
                 lock (ObjectExtension.Locker)
                 {
-                    using (IDataReader reader = _dbCommand.ExecuteReader())
+                    using (IDataReader reader = _dbCommand.ExecuteReader(Behavior))
                     {
                         DataTable dtcount = this.ReaderToTable(reader);
                         if (dtcount.IsOneLine())
@@ -192,39 +192,64 @@ namespace z.DBHelper.Helper
             return dt;
         }
 
-        public DataTable ExecuteTable(string sql, params zParameter[] parameters)
+        public DataTable ExecuteTable(string sql, zParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
         {
             string _sql = sql;
             DbParameter[] ps = RenderSql(ref _sql, parameters);
-            return ExecuteTable(_sql, ps);
+            return ExecuteTable(_sql, ps, Behavior);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, params zParameter[] parameters)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, zParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
         {
             string _sql = sql;
             DbParameter[] ps = RenderSql(ref _sql, parameters);
-            return ExecuteTable(_sql, pageinfo, ps);
+            return ExecuteTable(_sql, pageinfo, ps, Behavior);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, params zParameter[] parameters)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, zParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
         {
             string _sql = sql;
             DbParameter[] ps = RenderSql(ref _sql, parameters);
-            return ExecuteTable(_sql, pageinfo, out allCount, ps);
+            return ExecuteTable(_sql, pageinfo, out allCount, ps, Behavior);
         }
 
-        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, params zParameter[] parameters)
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, zParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
         {
             string _sql = sql;
             DbParameter[] ps = RenderSql(ref _sql, parameters);
-            return ExecuteTable(_sql, pageSize, pageIndex, ps);
+            return ExecuteTable(_sql, pageSize, pageIndex, ps, Behavior);
         }
 
-        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount, params zParameter[] parameters)
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount, zParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
         {
             string _sql = sql;
             DbParameter[] ps = RenderSql(ref _sql, parameters);
-            return ExecuteTable(_sql, pageSize, pageIndex, out allCount, ps);
+            return ExecuteTable(_sql, pageSize, pageIndex, out allCount, ps, Behavior);
+        }
+
+        public DataTable ExecuteTable(string sql, CommandBehavior Behavior = CommandBehavior.Default)
+        {
+            return ExecuteTable(sql, new DbParameter[] { }, Behavior);
+        }
+
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, CommandBehavior Behavior = CommandBehavior.Default)
+        {
+            return ExecuteTable(sql, pageinfo, new DbParameter[] { }, Behavior);
+        }
+
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount,CommandBehavior Behavior = CommandBehavior.Default)
+        {
+            return ExecuteTable(sql, pageinfo, out allCount, new DbParameter[] { }, Behavior);
+        }
+
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, CommandBehavior Behavior = CommandBehavior.Default)
+        {
+            return ExecuteTable(sql, pageSize, pageIndex, new DbParameter[] { }, Behavior);
+        }
+
+        public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, out int allCount, CommandBehavior Behavior = CommandBehavior.Default)
+        {
+            return ExecuteTable(sql, pageSize, pageIndex, out allCount, new DbParameter[] { }, Behavior);
         }
 
         #endregion

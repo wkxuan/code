@@ -8,7 +8,7 @@ using z.ERP.Entities.Enum;
 using z.Exceptions;
 using System.Linq;
 using z.ERP.Model.Vue;
-using z.Extensiont;
+using z.Extensions;
 
 namespace z.ERP.Services
 {

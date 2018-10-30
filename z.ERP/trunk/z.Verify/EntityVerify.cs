@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using z.DbHelper.DbDomain;
 using z.DBHelper.Helper;
 using z.Extensions;
-using z.Extensiont;
+using z.Extensions;
 using z.SuperLambda;
 
 namespace z.Verify

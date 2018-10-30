@@ -21,7 +21,10 @@ namespace z.LogFactory.utils
         /// <returns></returns>
         public static string FixLog(LogConfigBase config, string title, object[] obj)
         {
-            return title + ":\r\n" + obj.ToJson();
+            if (obj == null || obj.Count() == 0)
+                return title;
+            else
+                return title + "\r\n" + obj.ToJson();
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using z.Extensions;
-using z.Extensiont;
+using z.Extensions;
 
 namespace z.SuperLambda
 {

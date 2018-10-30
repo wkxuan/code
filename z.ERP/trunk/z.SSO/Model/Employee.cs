@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using z.Extensions;
-using z.Extensiont;
+using z.Extensions;
 
 namespace z.SSO.Model
 {

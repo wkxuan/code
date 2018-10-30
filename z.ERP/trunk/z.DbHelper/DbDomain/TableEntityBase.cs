@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using z;
 using z.Extensions;
-using z.Extensiont;
+using z.Extensions;
 
 namespace z.DbHelper.DbDomain
 {

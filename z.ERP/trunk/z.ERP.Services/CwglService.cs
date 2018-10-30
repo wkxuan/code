@@ -49,7 +49,7 @@ namespace z.ERP.Services
         {
             var iPZBH = string.Empty;
             string VOUCHERID, pFDBH, pDATE1, pDATE2, pCWNY;
-            item.HasKey("pDATE1", a => pDATE1 =$"{a}");
+            item.HasKey("pDATE1", a => pDATE1 = $"{a}");
             item.HasKey("pDATE2", a => pDATE2 = $"{a}");
             item.HasKey("VOUCHERID", a => VOUCHERID = $"{a}");
             item.HasKey("BRANCHID", a => pFDBH = $"{a}");
@@ -60,9 +60,9 @@ namespace z.ERP.Services
                            new OracleParameter("pDATE2",new DateTime (2018,10,1)) };
             DataTable dt = DbHelper.ExecuteTable("select sum(BILLID) SFJE from WORKITEM where PROC_TIME>=:pDATE1 and PROC_TIME<=:pDATE2", param);
             DataTable dt1 = DbHelper.ExecuteTable("select sum(BILLID) SFJE from WORKITEM where PROC_TIME>=:pDATE1 and PROC_TIME<=:pDATE2",
-                new zParameter("pDATE1", new DateTime(2018, 10, 1)),
+            new zParameter[] {  new zParameter("pDATE1", new DateTime(2018, 10, 1)),
                            new zParameter("pDATE2", new DateTime(2018, 10, 1))
-                           );
+                           });
 
 
 
@@ -99,7 +99,7 @@ namespace z.ERP.Services
                                     {
                                         string MERCHANTID = tr[wldwdat].ToString();
                                     }
-                                    
+
                                 }
                                 //DataTable dtflid = DbHelper.ExecuteTable(sqlflid, pzparme);
                             }

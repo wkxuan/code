@@ -6,7 +6,7 @@ using System.Web;
 using z.ERP.WebService.Controllers;
 using z.ERP.WebService.Model;
 using z.Extensions;
-using z.Extensiont;
+using z.Extensions;
 using z.SSO;
 
 namespace z.ERP.WebService

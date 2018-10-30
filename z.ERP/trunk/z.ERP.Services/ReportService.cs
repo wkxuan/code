@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using z.MVC5.Results;
-using z.Extensiont;
+using z.Extensions;
 namespace z.ERP.Services
 {
     public class ReportService : ServiceBase

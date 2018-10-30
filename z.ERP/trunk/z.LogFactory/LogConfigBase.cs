@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
+using z.Extensions;
 
 namespace z.LogFactory
 {
@@ -71,7 +72,39 @@ namespace z.LogFactory
             set { _utils = value; }
         }
 
+        /// <summary>
+        /// 进行处理,合并默认值
+        /// </summary>
+        /// <param name="conf"></param>
+        /// <returns></returns>
+        public static LogConfigBase Fix(LogConfigBase conf)
+        {
+            if (conf.FileName.IsEmpty())
+                conf.FileName = Default.FileName;
+            if (conf.FilePath.IsEmpty())
+                conf.FilePath = Default.FilePath;
+            if (conf.Pattern.IsEmpty())
+                conf.Pattern = Default.Pattern;
+            return conf;
+        }
 
+        /// <summary>
+        /// 默认值
+        /// </summary>
+        public static LogConfigBase Default
+        {
+            get
+            {
+                return new LogConfigBase()
+                {
+                    Utils = LogUtils.Log4Net,
+                    FilePath = "Logger",
+                    Pattern = "[%t] %p %d %m %n",
+                    FileName = "yyyy年MM月dd日.'log'",
+                    Loglevel = LogLevel.Debug
+                };
+            }
+        }
 
     }
 }

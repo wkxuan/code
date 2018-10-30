@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 
-namespace z.Extensiont
+namespace z.Extensions
 {
     public static class ArrayExtensiont
     {
@@ -178,6 +178,20 @@ namespace z.Extensiont
                 }
             });
             return outT;
+        }
+
+        /// <summary>
+        /// 确认元素在数组中
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public static bool Contains<T>(this IEnumerable<T> list, Func<T, bool> selector)
+        {
+            if (list.IsEmpty())
+                return false;
+            return list.FirstOrDefault(selector) != null;
         }
     }
 }

@@ -58,7 +58,7 @@ namespace z.LogFactory
                 {
                     case LogUtils.Log4Net:
                         {
-                            utils.Log4Net.Log(config, _logName, loglevel, title, obj);
+                            Log4Net.Log(config, _logName, loglevel, title, obj);
                             break;
                         }
                 }
@@ -110,24 +110,25 @@ namespace z.LogFactory
                     //没有ALL节点,加上默认
                     if (!ConfigDic.Keys.Contains("ALL"))
                     {
-                        ConfigDic.Add("ALL", Default);
+                        ConfigDic.Add("ALL", LogConfigBase.Default);
                     }
                 }
                 //不存在配置文件,加上默认
                 else
                 {
-                    ConfigDic.Add("ALL", Default);
+                    ConfigDic.Add("ALL", LogConfigBase.Default);
                 }
             }
 
             //从静态里取配置
             if (ConfigDic.Keys.Contains(Title))
             {
-                return ConfigDic[Title];
+                return LogConfigBase.Fix(ConfigDic[Title]);
+
             }
             else
             {
-                return ConfigDic["ALL"];
+                return LogConfigBase.Fix(ConfigDic["ALL"]);
             }
 
         }
@@ -145,25 +146,7 @@ namespace z.LogFactory
             }
             set { _ConfigDic = value; }
         }
-
-
-        /// <summary>
-        /// 默认配置
-        /// </summary>
-        static LogConfigBase Default
-        {
-            get
-            {
-                return new LogConfigBase()
-                {
-                    Utils = LogUtils.Log4Net,
-                    FilePath = "Logger",
-                    Pattern = "[%t] %p %d %n %m %n",
-                    FileName = "yyyy年MM月dd日.'log'",
-                    Loglevel = LogLevel.Debug
-                };
-            }
-        }
+        
         #endregion
     }
 }
