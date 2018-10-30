@@ -11,5 +11,10 @@ namespace z.ERP.Web.Areas.Report.SaleRecord
             ViewBag.Title = "实时销售查询";
             return View();
         }
+
+        public string Output(SearchItem item)
+        {
+            return service.ReportService.SaleRecordOutput(item);
+        }
     }
 }

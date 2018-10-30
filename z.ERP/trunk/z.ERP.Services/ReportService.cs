@@ -135,8 +135,8 @@ namespace z.ERP.Services
             if (count > 0)
             {
                 string sqlsum = $"SELECT sum(S.SALE_AMOUNT) SALE_AMOUNT";
-                sqlsum += " FROM SALE S, SYSUSER U ";
-                sqlsum += " WHERE S.CASHIERID = U.USERID ";
+                sqlsum += " FROM SALE S, SYSUSER U,STATION T  ";
+                sqlsum += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH  ";
                 item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
                 item.HasKey("MERCHANTID", a => sqlsum += $" and EXISTS(SELECT 1 FROM CONTRACT C,CONTRACT_SHOP P WHERE C.CONTRACTID=P.CONTRACTID AND P.SHOPID=T.SHOPID AND C.MERCHANTID='{a}')");
@@ -156,6 +156,29 @@ namespace z.ERP.Services
             }
             return new DataGridResult(dt, count);
 
+        }
+
+        public string SaleRecordOutput(SearchItem item)
+        {
+            string sql = $"SELECT S.POSNO,S.DEALID,S.SALE_TIME,trunc(S.ACCOUNT_DATE) ACCOUNT_DATE,U.USERNAME CASHIERNAME, U.USERCODE CASHIERCODE,";
+            sql += " S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
+            sql += " FROM SALE S, SYSUSER U,STATION T ";
+            sql += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
+            item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
+            item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
+            item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM CONTRACT C,CONTRACT_SHOP P WHERE C.CONTRACTID=P.CONTRACTID AND P.SHOPID=T.SHOPID AND C.MERCHANTID='{a}')");
+            item.HasKey("SHOPID", a => sql += $" and T.SHOPID={a}");
+            item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
+            item.HasDateKey("SALE_TIME_END", a => sql += $" and trunc(S.SALE_TIME) <= {a}");
+            item.HasDateKey("ACCOUNT_DATE_START", a => sql += $" and S.ACCOUNT_DATE >= {a}");
+            item.HasDateKey("ACCOUNT_DATE_END", a => sql += $" and S.ACCOUNT_DATE <= {a}");
+            item.HasKey("CASHIERID", a => sql += $" and S.CASHIERID = {a}");
+            sql += " ORDER BY  S.POSNO,S.DEALID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "SaleRecord";
+            return GetExport("POS销售导出", a =>
+            {  a.SetTable(dt);
+            });
         }
 
     }
