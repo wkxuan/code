@@ -26,7 +26,7 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT * FROM MERCHANT WHERE 1=1 ";
             item.HasKey("MERCHANTID", a => sql += $" and MERCHANTID LIKE '%{a}%'");
-            item.HasKey("NAME", a => sql += $" and NAME  LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and NAME  LIKE '%{a}%'");
             item.HasKey("SH", a => sql += $" and SH LIKE '%{a}%'");
             item.HasKey("BANK", a => sql += $" and BANK LIKE '%{a}%'");
             item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");

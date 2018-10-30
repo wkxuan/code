@@ -60,5 +60,16 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
         {
             return new UIResult(service.DataService.GetPay(Data));
         }
+
+        public UIResult SearchKind()
+        {
+            var res = service.SpglService.GetKindInit();
+            return new UIResult(
+                new
+                {
+                    treeorg = res.Item1
+                }
+            );
+        }
     }
 }

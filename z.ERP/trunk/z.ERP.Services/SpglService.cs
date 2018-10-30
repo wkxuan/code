@@ -244,9 +244,10 @@ namespace z.ERP.Services
                 " where L.BRANCHID = B.ID  and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID  ";
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and L.BRANCHID={a}");
-            item.HasKey("MERCHANTID", a => sql += $" and L.MERCHANTID={a}");
-            item.HasKey("ACCOUNT_DATE_START ", a => sql += $" and L.ACCOUNT_DATE>={a}");
-            item.HasKey("ACCOUNT_DATE_END", a => sql += $" and L.ACCOUNT_DATE<={a}");
+            item.HasKey("MERCHANTID", a => sql += $" and  exists(select 1 from CONTRACT_SHOP S,CONTRACT C where S.CONTRACTID=C.CONTRACTID and S.SHOPID=S2.SHOPID and C.MERCHANTID={a})");
+            item.HasKey("BRANDID", a => sql += $" and exists(select 1 from CONTRACT_BRAND R,CONTRACT_SHOP S where R.CONTRACTID=S.CONTRACTID and S.SHOPID=S2.SHOPID and R.BRANDID={a})");
+            item.HasDateKey("ACCOUNT_DATE_START", a => sql += $" and L.ACCOUNT_DATE>={a}");
+            item.HasDateKey("ACCOUNT_DATE_END", a => sql += $" and L.ACCOUNT_DATE<={a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
