@@ -260,10 +260,10 @@ namespace z.ERP.Services
             {
                 insertCount = DbHelper.ExecuteNonQuery(sqlarr);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 
-                throw new Exception("提交数据库时发生异常!");
+                throw new Exception("提交数据库时发生异常:"+e);
             }
            
             if(insertCount != 1+ goodsCount + payCount + clerkCount + goodsCount * payCount)
