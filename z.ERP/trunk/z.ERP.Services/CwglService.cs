@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using z.DbHelper.DbDomain;
 using z.DBHelper.DbDomain;
 using z.ERP.Entities;
+using z.ERP.Entities.Auto;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
 using z.Extensions;
@@ -47,13 +48,14 @@ namespace z.ERP.Services
             resultdt.Columns.Add("PZID", typeof(Int32));   //凭证ID
             resultdt.Columns.Add("YEAR", typeof(String));  //会计年
             resultdt.Columns.Add("KJQJ", typeof(String));  //会计期间
-            resultdt.Columns.Add("ZDRQ", typeof(DateTime));  //制单日期
+            resultdt.Columns.Add("ZDRQ", typeof(String));  //制单日期
             resultdt.Columns.Add("PZLB", typeof(String));  //凭证类别
             resultdt.Columns.Add("PZBH", typeof(Int32));  //凭证号
             resultdt.Columns.Add("ZDR", typeof(String));  //制单人
-            resultdt.Columns.Add("DJZS", typeof(Int32));  //所附单据数
+            resultdt.Columns.Add("DJZS", typeof(String));  //所附单据数
             resultdt.Columns.Add("KMBM", typeof(String));  //科目编码
             resultdt.Columns.Add("ZY", typeof(String));  //摘要
+            resultdt.Columns.Add("PJRQ", typeof(String));  //票据日期
             resultdt.Columns.Add("BZMC", typeof(String));  //币种名称
             resultdt.Columns.Add("YBJF", typeof(decimal));  //原币借方
             resultdt.Columns.Add("YBDF", typeof(decimal));  //原币贷方
@@ -99,20 +101,42 @@ namespace z.ERP.Services
                         {
                             //获取分录
                             List<VOUCHER_RECORDEntity> record = DbHelper.SelectList(new VOUCHER_RECORDEntity()).
-                                Where(a => a.VOUCHERID == "1").Where(a => a.SQLINX == sqltxt.SQLINX)
+                                Where(a => a.VOUCHERID == pVOUCHERID.ToString()).Where(a => a.SQLINX == sqltxt.SQLINX)
                                 .OrderBy(a => a.VOUCHERID).ToList();
                             foreach (var fldata in record)
                             {
                                 var fldat = fldata.SQLCOLTORECORD; //借方贷方金额
-                                var flfat = fldata.SQLCOLTORECORD; //贷方贷方金额
                                 var wldwdat = fldata.SQLCOLTOMERCHANT;    //商户
                                 var bmdat = fldata.SQLCOLTOORG;       //部门
                                 var rydat = fldata.SQLCOLTOUSER;        //人员
                                 DataTable dtflid = DbHelper.ExecuteTable(sqlflid, param);
                                 foreach (DataRow tr in dtflid.Rows)
-                                {                                    
-                                    string JFJE = tr[fldat].ToString();
-                                    string DFJE = tr[flfat].ToString();
+                                {
+                                    decimal JFJE = 0;
+                                    decimal DFJE = 0;
+                                    if (Convert.ToInt32(fldata.TYPE) == 0)
+                                    {
+                                        if (string.IsNullOrEmpty(tr[fldat].ToString()))
+                                        {
+                                            JFJE = 0;
+                                        }
+                                        else
+                                        {
+                                            JFJE = Convert.ToDecimal(tr[fldat].ToString());
+                                        }
+                                        
+                                    }
+                                    else
+                                    {
+                                        if (string.IsNullOrEmpty(tr[fldat].ToString()))
+                                        {
+                                            DFJE = 0;
+                                        }
+                                        else
+                                        {
+                                            DFJE = Convert.ToDecimal(tr[fldat].ToString());
+                                        }                                        
+                                    }                                                                        
                                     string MERCHANTID = string.Empty;
                                     string ORGDM = string.Empty;
                                     string RYDM = string.Empty;
@@ -128,20 +152,51 @@ namespace z.ERP.Services
                                     {
                                         RYDM = tr[rydat].ToString();
                                     }
+                                    List<VOUCHER_RECORD_PZKMEntity> pzkm = DbHelper.SelectList(new VOUCHER_RECORD_PZKMEntity()).
+                                        Where(e => e.VOUCHERID == pVOUCHERID.ToString()).Where(a => a.RECORDID == fldata.RECORDID).
+                                        OrderBy(b => b.INX).ToList();
+                                    string PZMK = "";
+                                    foreach (var kmata in pzkm)
+                                    {
+                                        if (Convert.ToInt32(kmata.SQLBJ) == 0)
+                                        {
+                                            PZMK += kmata.DESCRIPTION;
+                                        }
+                                        else
+                                        {
+                                            PZMK += tr[kmata.SQLCOLTORECORD].ToString();
+                                        }
+                                    }
+                                    List<VOUCHER_RECORD_ZYEntity> pzzy = DbHelper.SelectList(new VOUCHER_RECORD_ZYEntity()).
+                                        Where(e => e.VOUCHERID == pVOUCHERID.ToString()).Where(a => a.RECORDID == fldata.RECORDID).
+                                        OrderBy(b => b.INX).ToList();
+                                    string ZY = "";
+                                    foreach (var zydata in pzzy)
+                                    {
+                                        if (Convert.ToInt32(zydata.SQLBJ) == 0)
+                                        {
+                                            ZY += zydata.DESCRIPTION;
+                                        }
+                                        else
+                                        {
+                                            ZY += tr[zydata.SQLCOLTORECORD].ToString();
+                                        }
+                                    }
                                     DataRow rowNew = resultdt.NewRow();
-                                    rowNew["PZID"] = "";   //凭证ID
+                                    rowNew["PZID"] = iPZBH;   //凭证ID
                                     rowNew["YEAR"] = Year;  //会计年
                                     rowNew["KJQJ"] = MM;  //会计期间
-                                    rowNew["ZDRQ"] = DateTime.Now.Date;  //制单日期
+                                    rowNew["ZDRQ"] = DateTime.Now.Date.ToString();  //制单日期
                                     rowNew["PZLB"] = "记";  //凭证类别
                                     rowNew["PZBH"] = iPZBH;  //凭证号
                                     rowNew["ZDR"] = employee.Name;  //制单人
                                     rowNew["DJZS"] = "";  //所附单据数
-                                    rowNew["KMBM"] = "";  //rowNew[
-                                    rowNew["ZY"] = "";  //摘要
+                                    rowNew["KMBM"] = PZMK;  //rowNew[
+                                    rowNew["ZY"] = ZY;  //摘要
+                                    rowNew["PJRQ"] = DateTime.Now.Date.ToString();  //票据日期
                                     rowNew["BZMC"] = "人民币";  //币种名称
-                                    rowNew["YBJF"] = "";  //原币借方
-                                    rowNew["YBDF"] = "";  //原币贷方
+                                    rowNew["YBJF"] = 0;  //原币借方
+                                    rowNew["YBDF"] = 0;  //原币贷方
                                     rowNew["JFJE"] = JFJE;  //借方金额
                                     rowNew["DFJE"] = DFJE;  //贷方金额
                                     rowNew["BMBM"] = ORGDM;  //部门编码
@@ -178,6 +233,7 @@ namespace z.ERP.Services
             }
             if (resultdt.Rows.Count > 0)
             {
+                resultdt.TableName = "resultdt";
                 return GetExport("凭证导出", a =>
                 {
                     a.SetTable(resultdt);
