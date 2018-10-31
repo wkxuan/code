@@ -31,7 +31,7 @@
                 screenParamData: {
                     dataDef: []
                 },
-                arrPageSize:[10,20,50,100],
+                arrPageSize:[10,20,50,100,1000,10000],
                 pagedataCount: 0,
                 pageSize: 10
             },
@@ -69,22 +69,22 @@
                 },
                 //导出待完善
                 exp: function (event) {
-                    event.stopPropagation();
+                 /*   event.stopPropagation();
                     var _self = this;
                     _.Ajax('Output', {
                         item: _this.screenParam
                     }, function (data) {
                         window.open(__BaseUrl+data);
-                    });
+                    });  */
 
-                    /*   if (notExistsData()) {
+                       if (notExistsData()) {
                         this.$Message.error("没有要导出的数据!");
                     } else {
                         // this.$Message.error("尚未提供导出方法!");
                                this.$refs.selectData.exportCsv({
-                                filename: (new Date()).toString()
+                                   filename: (new Date()).toString()
                             });
-                    }  */
+                    }  
                 },
                 //打印待完善
                 print: function (event) {

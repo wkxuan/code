@@ -1,6 +1,8 @@
 ﻿using System.Data;
 using z.MVC5.Results;
 using z.Extensiont;
+using System;
+
 namespace z.ERP.Services
 {
     public class ReportService : ServiceBase
@@ -116,31 +118,62 @@ namespace z.ERP.Services
         {
             string sql = $"SELECT S.POSNO,S.DEALID,S.SALE_TIME,trunc(S.ACCOUNT_DATE) ACCOUNT_DATE,U.USERNAME CASHIERNAME, U.USERCODE CASHIERCODE,";
             sql += " S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
-            sql += " FROM SALE S, SYSUSER U,STATION T ";
-            sql += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
-            item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
+            sql += " FROM SALE S, SYSUSER U";
+            sql += " WHERE S.CASHIERID = U.USERID ";
+          //  item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
             item.HasKey("POSNO",a => sql += $" and S.POSNO='{a}'");
-            item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM CONTRACT C,CONTRACT_SHOP P WHERE C.CONTRACTID=P.CONTRACTID AND P.SHOPID=T.SHOPID AND C.MERCHANTID='{a}')");
-            item.HasKey("SHOPID", a => sql += $" and T.SHOPID={a}");
+            item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
+            item.HasKey("SHOPID", a => sql += $" and exists(select 1 from SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
             item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
             item.HasDateKey("SALE_TIME_END", a => sql += $" and trunc(S.SALE_TIME) <= {a}");
             item.HasDateKey("ACCOUNT_DATE_START", a => sql += $" and S.ACCOUNT_DATE >= {a}");
             item.HasDateKey("ACCOUNT_DATE_END", a => sql += $" and S.ACCOUNT_DATE <= {a}");
             item.HasKey("CASHIERID", a => sql += $" and S.CASHIERID = {a}");
 
-            sql += " ORDER BY  S.POSNO,S.DEALID ";
+            sql += " union all ";
+
+            sql += " SELECT S.POSNO,S.DEALID,S.SALE_TIME,trunc(S.ACCOUNT_DATE) ACCOUNT_DATE,U.USERNAME CASHIERNAME, U.USERCODE CASHIERCODE,";
+            sql += " S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
+            sql += " FROM HIS_SALE S, SYSUSER U";
+            sql += " WHERE S.CASHIERID = U.USERID ";
+          //  item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
+            item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
+            item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
+            item.HasKey("SHOPID", a => sql += $" and exists(select 1 from HIS_SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
+            item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
+            item.HasDateKey("SALE_TIME_END", a => sql += $" and trunc(S.SALE_TIME) <= {a}");
+            item.HasDateKey("ACCOUNT_DATE_START", a => sql += $" and S.ACCOUNT_DATE >= {a}");
+            item.HasDateKey("ACCOUNT_DATE_END", a => sql += $" and S.ACCOUNT_DATE <= {a}");
+            item.HasKey("CASHIERID", a => sql += $" and S.CASHIERID = {a}");
+
+            sql += " ORDER BY  1,2 ";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
 
             if (count > 0)
             {
-                string sqlsum = $"SELECT sum(S.SALE_AMOUNT) SALE_AMOUNT";
-                sqlsum += " FROM SALE S, SYSUSER U,STATION T  ";
-                sqlsum += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH  ";
-                item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
+                string sqlsum = $"SELECT nvl(sum(S.SALE_AMOUNT),0) SALE_AMOUNT";
+                sqlsum += " FROM SALE S, SYSUSER U";
+                sqlsum += " WHERE S.CASHIERID = U.USERID ";
+             //   item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
-                item.HasKey("MERCHANTID", a => sqlsum += $" and EXISTS(SELECT 1 FROM CONTRACT C,CONTRACT_SHOP P WHERE C.CONTRACTID=P.CONTRACTID AND P.SHOPID=T.SHOPID AND C.MERCHANTID='{a}')");
-                item.HasKey("SHOPID", a => sqlsum += $" and T.SHOPID={a}");
+                item.HasKey("MERCHANTID", a => sqlsum += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
+                item.HasKey("SHOPID", a => sqlsum += $" and exists(select 1 from HIS_SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
+                item.HasDateKey("SALE_TIME_START", a => sqlsum += $" and trunc(S.SALE_TIME) >= {a}");
+                item.HasDateKey("SALE_TIME_END", a => sqlsum += $" and trunc(S.SALE_TIME) <= {a}");
+                item.HasDateKey("ACCOUNT_DATE_START", a => sqlsum += $" and S.ACCOUNT_DATE >= {a}");
+                item.HasDateKey("ACCOUNT_DATE_END", a => sqlsum += $" and S.ACCOUNT_DATE <= {a}");
+                item.HasKey("CASHIERID", a => sqlsum += $" and S.CASHIERID = {a}");
+
+                sqlsum += " union all ";
+
+                sqlsum += " SELECT nvl(sum(S.SALE_AMOUNT),0) SALE_AMOUNT";
+                sqlsum += " FROM HIS_SALE S, SYSUSER U";
+                sqlsum += " WHERE S.CASHIERID = U.USERID ";
+             //   item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
+                item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
+                item.HasKey("MERCHANTID", a => sqlsum += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
+                item.HasKey("SHOPID", a => sqlsum += $" and exists(select 1 from HIS_SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
                 item.HasDateKey("SALE_TIME_START", a => sqlsum += $" and trunc(S.SALE_TIME) >= {a}");
                 item.HasDateKey("SALE_TIME_END", a => sqlsum += $" and trunc(S.SALE_TIME) <= {a}");
                 item.HasDateKey("ACCOUNT_DATE_START", a => sqlsum += $" and S.ACCOUNT_DATE >= {a}");
@@ -150,7 +183,7 @@ namespace z.ERP.Services
                 DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
                 DataRow dr = dt.NewRow();
                 dr["POSNO"] = "合计";
-                dr["SALE_AMOUNT"] = dtSum.Rows[0]["SALE_AMOUNT"].ToString();
+                dr["SALE_AMOUNT"] = (Convert.ToSingle(dtSum.Rows[0]["SALE_AMOUNT"])+ Convert.ToSingle(dtSum.Rows[1]["SALE_AMOUNT"])).ToString();
                 dt.Rows.Add(dr);
                 
             }
@@ -162,18 +195,35 @@ namespace z.ERP.Services
         {
             string sql = $"SELECT S.POSNO,S.DEALID,S.SALE_TIME,trunc(S.ACCOUNT_DATE) ACCOUNT_DATE,U.USERNAME CASHIERNAME, U.USERCODE CASHIERCODE,";
             sql += " S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
-            sql += " FROM SALE S, SYSUSER U,STATION T ";
-            sql += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
-            item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
+            sql += " FROM SALE S, SYSUSER U";
+            sql += " WHERE S.CASHIERID = U.USERID";
+          //  item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
             item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
-            item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM CONTRACT C,CONTRACT_SHOP P WHERE C.CONTRACTID=P.CONTRACTID AND P.SHOPID=T.SHOPID AND C.MERCHANTID='{a}')");
-            item.HasKey("SHOPID", a => sql += $" and T.SHOPID={a}");
+            item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
+            item.HasKey("SHOPID", a => sql += $" and exists(select 1 from SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a}");
             item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
             item.HasDateKey("SALE_TIME_END", a => sql += $" and trunc(S.SALE_TIME) <= {a}");
             item.HasDateKey("ACCOUNT_DATE_START", a => sql += $" and S.ACCOUNT_DATE >= {a}");
             item.HasDateKey("ACCOUNT_DATE_END", a => sql += $" and S.ACCOUNT_DATE <= {a}");
             item.HasKey("CASHIERID", a => sql += $" and S.CASHIERID = {a}");
-            sql += " ORDER BY  S.POSNO,S.DEALID ";
+
+            sql += " union all ";
+
+            sql += " SELECT S.POSNO,S.DEALID,S.SALE_TIME,trunc(S.ACCOUNT_DATE) ACCOUNT_DATE,U.USERNAME CASHIERNAME, U.USERCODE CASHIERCODE,";
+            sql += " S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
+            sql += " FROM HIS_SALE S, SYSUSER U";
+            sql += " WHERE S.CASHIERID = U.USERID ";
+        //    item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
+            item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
+            item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
+            item.HasKey("SHOPID", a => sql += $" and exists(select 1 from HIS_SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a}");
+            item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
+            item.HasDateKey("SALE_TIME_END", a => sql += $" and trunc(S.SALE_TIME) <= {a}");
+            item.HasDateKey("ACCOUNT_DATE_START", a => sql += $" and S.ACCOUNT_DATE >= {a}");
+            item.HasDateKey("ACCOUNT_DATE_END", a => sql += $" and S.ACCOUNT_DATE <= {a}");
+            item.HasKey("CASHIERID", a => sql += $" and S.CASHIERID = {a}");
+
+            sql += " ORDER BY  1,2 ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.TableName = "SaleRecord";
             return GetExport("POS销售导出", a =>
