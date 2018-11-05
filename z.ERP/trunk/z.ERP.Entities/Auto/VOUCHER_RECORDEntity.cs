@@ -36,6 +36,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 分录编号
         /// <summary>
+        [PrimaryKey]
         [Field("分录编号")]
         public string RECORDID
         {

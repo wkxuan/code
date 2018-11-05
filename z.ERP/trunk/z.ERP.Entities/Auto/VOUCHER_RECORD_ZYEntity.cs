@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using z.DbHelper.DbDomain;
 
-namespace z.ERP.Entities.Auto
+namespace z.ERP.Entities
 {
     [DbTable("VOUCHER_RECORD_ZY", "凭证分录摘要")]
     public partial class VOUCHER_RECORD_ZYEntity: TableEntityBase
@@ -33,6 +33,8 @@ namespace z.ERP.Entities.Auto
         /// <summary>
         /// 分录编号
         /// <summary>
+        /// 
+        [PrimaryKey]
         [Field("分录编号")]
         public string RECORDID
         {
@@ -41,6 +43,7 @@ namespace z.ERP.Entities.Auto
         /// <summary>
         /// 摘要级次
         /// </summary>
+        [PrimaryKey]
         [Field("摘要级次")]
         public string INX
         {

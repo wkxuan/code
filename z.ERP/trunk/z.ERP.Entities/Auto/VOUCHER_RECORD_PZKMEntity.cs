@@ -1,6 +1,6 @@
 ﻿using z.DbHelper.DbDomain;
 
-namespace z.ERP.Entities.Auto
+namespace z.ERP.Entities
 {
     [DbTable("VOUCHER_RECORD_PZKM", "凭证分录凭证科目")]
     public partial class VOUCHER_RECORD_PZKMEntity: TableEntityBase
@@ -28,6 +28,7 @@ namespace z.ERP.Entities.Auto
         /// <summary>
         /// 分录编号
         /// <summary>
+        [PrimaryKey]
         [Field("分录编号")]
         public string RECORDID
         {
@@ -36,6 +37,7 @@ namespace z.ERP.Entities.Auto
         /// <summary>
         /// 科目级次
         /// </summary>
+        [PrimaryKey]
         [Field("科目级次")]
         public string INX
         {
