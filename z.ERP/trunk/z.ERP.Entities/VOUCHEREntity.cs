@@ -39,4 +39,25 @@ namespace z.ERP.Entities
 
 
     }
+    public partial class VOUCHER_RECORDEntity
+    {
+        [ForeignKey(nameof(VOUCHERID), nameof(VOUCHER_RECORD_PZKMEntity.VOUCHERID))]
+        [ForeignKey(nameof(SQLINX), nameof(VOUCHER_RECORD_PZKMEntity.INX))]
+        public List<VOUCHER_RECORD_PZKMEntity> VOUCHER_RECORD_PZKM
+        {
+            get;
+            set;
+        }
+    }
+
+    public partial class VOUCHER_RECORDEntity
+    {
+        [ForeignKey(nameof(VOUCHERID), nameof(VOUCHER_RECORD_ZYEntity.VOUCHERID))]
+        [ForeignKey(nameof(SQLINX), nameof(VOUCHER_RECORD_ZYEntity.INX))]
+        public List<VOUCHER_RECORD_ZYEntity> VOUCHER_RECORD_ZY
+        {
+            get;
+            set;
+        }
+    }
 }

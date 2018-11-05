@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\VOUCHEREntity.cs" />
     <Compile Include="Auto\REGIONEntity.cs" />
     <Compile Include="Auto\VOUCHER_RECORDEntity.cs" />
     <Compile Include="Auto\VOUCHER_MAKESQLEntity.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Service\Pos\UserYYYResult.cs" />
     <Compile Include="STATIONEntity.cs" />
     <Compile Include="SYSUSEREntity.cs" />
+    <Compile Include="VOUCHEREntity.cs" />
     <Compile Include="VOUCHER_PARAMEntity.cs" />
   </ItemGroup>
   <ItemGroup>
