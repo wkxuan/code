@@ -16,11 +16,11 @@ namespace z.ERP.Web.Areas.JSGL.VOUCHER
             ViewBag.Title = "凭证模板";
             return View(new SearchRender()
             {
-                Permission_Browse = "108001",
+                Permission_Browse = "-1",
                 Permission_Add = "108001",
                 Permission_Del = "108001",
                 Permission_Edit = "108001",
-                Permission_Exec = "108001"
+                Permission_Exec = "-1"
             });
         }
         public ActionResult VoucherEdit(string Id)
@@ -32,8 +32,8 @@ namespace z.ERP.Web.Areas.JSGL.VOUCHER
         {
             ViewBag.Title = "凭证模板浏览";
             var entity = service.CwglService.GetVoucherElement(new VOUCHEREntity(Id));
-            ViewBag.billAdjust = entity.Item1;
-            ViewBag.billAdjustItem = entity.Item2;
+            ViewBag.voucher = entity.Item1;
+            ViewBag.voucherSql = entity.Item2;
             return View();  //entity
         }
 

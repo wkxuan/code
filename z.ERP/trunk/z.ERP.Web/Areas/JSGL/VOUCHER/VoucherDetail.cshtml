@@ -12,11 +12,11 @@
 }
 
 @{
-    var adjust = ViewBag.billAdjust;
+    var voucher = ViewBag.voucher;
 }
 @section btn{
     @{
-        if (@adjust.STATUS == "1")
+        if (@voucher.STATUS == "1")
         {
             RenderControl(new ButtonRender()
             {
@@ -31,11 +31,11 @@
     <row>
         <i-col span="2" class="RowTitle">单据号</i-col>
         <i-col span="4">
-            <i-input v-model="BILLID" readonly="true"></i-input>
+            <i-input v-model="VOUCHERID" readonly="true"></i-input>
         </i-col>
-        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="2" class="RowTitle">名称</i-col>
         <i-col span="4">
-            <i-input v-model="BRANCHNAME" readonly="true"></i-input>
+            <i-input v-model="VOUCHERNAME" readonly="true"></i-input>
         </i-col>
         <i-col span="2" class="RowTitle">状态</i-col>
         <i-col span="4">
@@ -43,26 +43,8 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle">权债发生月</i-col>
-        <i-col span="4">
-            <i-input v-model="NIANYUE" readonly="true"></i-input>
-        </i-col>
-        <i-col span="2" class="RowTitle">开始日期</i-col>
-        <i-col span="4">
-            <i-input v-model="START_DATE" readonly="true"></i-input>
-        </i-col>
-        <i-col span="2" class="RowTitle">结束日期</i-col>
-        <i-col span="4">
-            <i-input v-model="END_DATE" readonly="true"></i-input>
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">收付实现月</i-col>
-        <i-col span="4">
-            <i-input v-model="YEARMONTH" readonly="true"></i-input>
-        </i-col>
         <i-col span="2" class="RowTitle">备注</i-col>
-        <i-col span="10">
+        <i-col span="16">
             <i-input v-model="DESCRIPTION" readonly="true"></i-input>
         </i-col>
     </row>
@@ -80,14 +62,10 @@
             data: {
                 Mainpanel: 'condition',
                 disabled:true,
-                BILLID:"@adjust.BILLID",
-                BRANCHNAME:"@adjust.BRANCHNAME",
-                STATUSMC:"@adjust.STATUSMC",
-                NIANYUE:"@adjust.NIANYUE",
-                YEARMONTH:"@adjust.YEARMONTH",
-                START_DATE:"@adjust.START_DATE",
-                END_DATE:"@adjust.END_DATE",
-                DESCRIPTION:"@adjust.DESCRIPTION",
+                BILLID:"@voucher.VOUCHERID",
+                BRANCHNAME:"@voucher.VOUCHERNAME",
+                STATUSMC:"@voucher.STATUSMC",
+                DESCRIPTION:"@voucher.DESCRIPTION",
                 colDef : [
                 {title: "合同号", key: 'CONTRACTID', width: 150},
                 { title: '收费项目', key: 'TERMNAME', width: 200 },
@@ -98,7 +76,7 @@
             mounted:function(){
                 var _self = this;
                 _.Ajax('SearchBill_Adjust', {
-                    Data: { BILLID: @adjust.BILLID }
+                    Data: { BILLID: @voucher.BILLID }
                 }, function (data) {
                     _self.ADJUST_ITEM = data.billAdjustItem;
                 });
@@ -108,7 +86,7 @@
                     event.stopPropagation();
                     var _self = this;
                     _.Ajax('ExecData', {
-                        Data: {BILLID: @adjust.BILLID},
+                        Data: {BILLID: @voucher.BILLID},
                     }, function (data) {
                         _self.$Message.info("审核成功");
                         setTimeout(function () {
