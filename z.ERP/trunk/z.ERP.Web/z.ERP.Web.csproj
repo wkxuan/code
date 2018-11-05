@@ -167,6 +167,7 @@
     <Compile Include="Areas\HTGL\LYHT_BG\LyHt_BgController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT_BG\ZlHt_BgController.cs" />
+    <Compile Include="Areas\JSGL\VOUCHER\VoucherController.cs" />
     <Compile Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustController.cs" />
     <Compile Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeController.cs" />
     <Compile Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkController.cs" />
@@ -263,6 +264,8 @@
     <Content Include="Areas\HTGL\ZLHT\HtEdit.js" />
     <Content Include="Areas\HTGL\ZLHT\HtList.js" />
     <Content Include="Areas\HTGL\ZLHT_BG\ZlHt_BgEdit.js" />
+    <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.js" />
+    <Content Include="Areas\JSGL\VOUCHER\VoucherList.js" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustEdit.js" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustList.js" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeEdit.js" />
@@ -521,6 +524,9 @@
     <Content Include="Areas\CWGL\PZDC\Pzdc.cshtml" />
     <Content Include="Areas\XTGL\REGION\Region.cshtml" />
     <Content Include="File\Template\凭证导出.xlsx" />
+    <Content Include="Areas\JSGL\VOUCHER\VoucherDetail.cshtml" />
+    <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.cshtml" />
+    <Content Include="Areas\JSGL\VOUCHER\VoucherList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
