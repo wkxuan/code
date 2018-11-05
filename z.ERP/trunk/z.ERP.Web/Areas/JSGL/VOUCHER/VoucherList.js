@@ -17,7 +17,7 @@
 
 search.browseHref = function (row, index) {
     _.OpenPage({
-        id: -1,
+        id: -108001,
         title: '浏览凭证模板',
         url: "JSGL/VOUCHER/VoucherEdit/" + row.VOUCHERID
     });
