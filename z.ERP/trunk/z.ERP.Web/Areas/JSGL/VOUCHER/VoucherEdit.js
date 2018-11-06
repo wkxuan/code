@@ -44,17 +44,6 @@ editDetail.beforeVue = function () {
                     on: {
                         'on-change': function (event) {
                             editDetail.dataParam.VOUCHER_RECORD[params.index].EXESQLTYPE = event;
-                            //var len = 0;
-                            //for (var i = 0; i < editDetail.dataParam.VOUCHER_RECORD.length; i++) {
-                            //    var lenold = len;
-                            //    len += editDetail.dataParam.VOUCHER_RECORD[i].VOUCHER_RECORD.length;
-                            //    var colIndex = params.index + 1;
-
-                            //    if ((colIndex > lenold) && (colIndex <= len)) {
-                            //        editDetail.dataParam.VOUCHER_RECORD[i].VOUCHER_RECORD[params.index - lenold].TYPE = event;
-                            //        break;
-                            //    }
-                            //};
                         }
                     }
                 },
@@ -196,6 +185,36 @@ editDetail.beforeVue = function () {
                         })
                     },
                 },
+            {
+                title: "楼层", key: 'SQLCOLTOFLOOR', width: 100,
+                render: function (h, params) {
+                    return h('Input', {
+                        props: {
+                            value: params.row.SQLCOLTOFLOOR
+                        },
+                        on: {
+                            'on-blur': function (event) {
+                                editDetail.dataParam.VOUCHER_RECORD[params.index].SQLCOLTOFLOOR = event.target.value;
+                            }
+                        },
+                    })
+                },
+            },
+                    {
+                        title: "品类", key: 'SQLCOLTOCATEGORY', width: 100,
+                        render: function (h, params) {
+                            return h('Input', {
+                                props: {
+                                    value: params.row.SQLCOLTOCATEGORY
+                                },
+                                on: {
+                                    'on-blur': function (event) {
+                                        editDetail.dataParam.VOUCHER_RECORD[params.index].SQLCOLTOCATEGORY = event.target.value;
+                                    }
+                                },
+                            })
+                        },
+                    },
             {
                 title: "SQL序号", key: 'SQLINX', width: 100,
                 render: function (h, params) {
@@ -640,6 +659,8 @@ editDetail.clearKey = function () {
     editDetail.dataParam.VOUCHER_RECORD = [];
     editDetail.dataParam.VOUCHER_RECORD_PZKM = [];
     editDetail.dataParam.VOUCHER_RECORD_ZY = [];
+    RecordPzkm=[];
+    RecordZy=[];
 }
 
 editDetail.IsValidSave = function () {
@@ -653,10 +674,12 @@ editDetail.IsValidSave = function () {
         for (var i = 0; i < editDetail.dataParam.VOUCHER_MAKESQL.length; i++) {
             if (!editDetail.dataParam.VOUCHER_MAKESQL[i].SQLINX) {
                 iview.Message.info("请选输入SQL序号!");
+                editDetail.dataParam.MAKESQL = editDetail.dataParam.VOUCHER_MAKESQL[0].MAKESQL;
                 return false;
             };
             if (!editDetail.dataParam.VOUCHER_MAKESQL[i].EXESQLTYPE) {
                 iview.Message.info("请选选择SQL类型!");
+                editDetail.dataParam.MAKESQL = editDetail.dataParam.VOUCHER_MAKESQL[0].MAKESQL;
                 return false;
             };
         };
@@ -692,6 +715,16 @@ editDetail.IsValidSave = function () {
         return row.INX != "" && row.RECORDID != "";
     });
 
+    if (editDetail.dataParam.VOUCHER_RECORD_PZKM.length > 0) {
+        for (var i = 0; i < editDetail.dataParam.VOUCHER_RECORD_PZKM.length; i++) {
+            if (parseInt(editDetail.dataParam.VOUCHER_RECORD_PZKM[i].SQLBJ) == 1 && !editDetail.dataParam.VOUCHER_RECORD_PZKM[i].SQLCOLTORECORD) {
+                iview.Message.info("请选输入科目取值字段!");
+                editDetail.otherMethods.recordChange(editDetail.dataParam.VOUCHER_RECORD[0], undefined);
+                return false;
+            };
+        };
+    };
+
     //处理摘要
     RecordZy = RecordZy.filter(function (row) {
         return parseInt(row.RECORDID) != curRecordRow.RECORDID;
@@ -702,43 +735,14 @@ editDetail.IsValidSave = function () {
     editDetail.dataParam.VOUCHER_RECORD_ZY = RecordZy.filter(function (row) {
         return row.INX != "" && row.RECORDID != "";
     });
-
-    if (editDetail.dataParam.VOUCHER_RECORD_PZKM.length > 0) {
-        for (var i = 0; i < editDetail.dataParam.VOUCHER_RECORD_PZKM.length; i++) {
-            if (parseInt(editDetail.dataParam.VOUCHER_RECORD_PZKM[i].SQLBJ) > 0 && !editDetail.dataParam.VOUCHER_RECORD_PZKM[i].SQLCOLTORECORD) {
-                iview.Message.info("请选输入科目取值字段!");
-                return false;
-            };
-        };
-    };
     if (editDetail.dataParam.VOUCHER_RECORD_ZY.length > 0) {
         for (var i = 0; i < editDetail.dataParam.VOUCHER_RECORD_ZY.length; i++) {
-            if (parseInt(editDetail.dataParam.VOUCHER_RECORD_ZY[i].SQLBJ) > 0 && !editDetail.dataParam.VOUCHER_RECORD_ZY[i].SQLCOLTORECORD) {
+            if (parseInt(editDetail.dataParam.VOUCHER_RECORD_ZY[i].SQLBJ) == 1 && !editDetail.dataParam.VOUCHER_RECORD_ZY[i].SQLCOLTORECORD) {
                 iview.Message.info("请选输入摘要取值字段!");
+                editDetail.otherMethods.recordChange(editDetail.dataParam.VOUCHER_RECORD[0], undefined);
                 return false;
             };
         };
     };
-    return true;
-    //if (editDetail.dataParam.BILL_ADJUST_ITEM.length == 0) {
-    //    iview.Message.info("请录入费用信息!");
-    //    return false;
-    //} else {
-    //    for (var i = 0; i < editDetail.dataParam.BILL_ADJUST_ITEM.length; i++) {
-    //        if (!editDetail.dataParam.BILL_ADJUST_ITEM[i].CONTRACTID) {
-    //            iview.Message.info("请录入租约!");
-    //            return false;
-    //        };
-    //        if (!editDetail.dataParam.BILL_ADJUST_ITEM[i].TERMID) {
-    //            iview.Message.info("请选择收费项目!");
-    //            return false;
-    //        };
-    //        if (!editDetail.dataParam.BILL_ADJUST_ITEM[i].MUST_MONEY) {
-    //            iview.Message.info("请录入费用金额!");
-    //            return false;
-    //        };
-    //    };
-    //};
-
     return true;
 }

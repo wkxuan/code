@@ -96,6 +96,22 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
+        /// 商户关键字
+        /// </summary>
+        [Field("楼层关键字")]
+        public string SQLCOLTOFLOOR
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 商户关键字
+        /// </summary>
+        [Field("品类关键字")]
+        public string SQLCOLTOCATEGORY
+        {
+            get; set;
+        }
+        /// <summary>
         /// 
         /// </summary>
         [Field("ACCOUNTPROJECT")]
