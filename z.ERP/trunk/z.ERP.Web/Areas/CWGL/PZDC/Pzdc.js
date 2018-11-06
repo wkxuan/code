@@ -11,11 +11,14 @@ var pzdc = new Vue({
         CWNY: 201810,        
         RQ_START: "",
         RQ_END: "",
-        PZRQ:""
+        PZRQ: ""
     },
     mounted: function () {
+        var myDate = new Date();
         //this.PZRQ = Date;
         //this.CWNY = 201810;
+        this.PZRQ = myDate.Format('yyyy-MM-dd');
+        this.CWNY = myDate.getFullYear()*100 + myDate.getMonth();
         _.Search({
             Service: 'CwglService',
             Method: 'GetVoucher',
@@ -40,7 +43,10 @@ var pzdc = new Vue({
                 iview.Message.info("年月不能为空!");
                 return false;
             }
-            
+            if (!this.PZRQ) {
+                iview.Message.info("凭证日期不能为空!");
+                return false;
+            }
             _.Ajax('ExportPz', {
                 data: {
                     VOUCHERID: selectid, BRANCHID: this.BRANCHID, CWNY: this.CWNY, DATE1: this.RQ_START,
@@ -48,7 +54,13 @@ var pzdc = new Vue({
                     PZRQ: this.PZRQ
                 },
             }, function (data) {
-                window.open(__BaseUrl + data);
+                if (data == "未导出数据")
+                {
+                    iview.Message.info(data);
+                } else
+                {
+                    window.open(__BaseUrl + data);
+                }                                    
             });
             //_.Search({
             //    Service: 'CwglService',

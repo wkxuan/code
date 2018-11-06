@@ -97,7 +97,7 @@ namespace z.ERP.Services
                     var sqlflid = sqltxt.MAKESQL; //应该循环的SQL语句
                     if (sqlflid != "" && sqlflid != null)
                     {
-                        if (sqltxt.EXESQLTYPE == "S")
+                        if (sqltxt.EXESQLTYPE == "1")
                         {
                             //获取分录
                             List<VOUCHER_RECORDEntity> record = DbHelper.SelectList(new VOUCHER_RECORDEntity()).
@@ -222,7 +222,7 @@ namespace z.ERP.Services
                                 //DataTable dtflid = DbHelper.ExecuteTable(sqlflid, pzparme);
                             }
                         }
-                        else if (sqltxt.EXESQLTYPE == "U")
+                        else if (sqltxt.EXESQLTYPE == "2")
                         {
                             //DbHelper.ExecuteObject
                             // provider.ExecuteSql(sqlflid, pzparme);
