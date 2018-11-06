@@ -651,6 +651,6 @@ namespace z.ERP.Services
             DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
 
             return new Tuple<dynamic, DataTable>(billObtain.ToOneLine(), billObtainItem);
-        }
+        } 
     }
 }

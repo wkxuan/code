@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using z.DbHelper.DbDomain;
 using z.DBHelper.DbDomain;
 using z.ERP.Entities;
-using z.ERP.Entities.Auto;
 using z.ERP.Entities.Enum;
+using z.ERP.Entities.Procedures;
 using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
@@ -241,6 +241,141 @@ namespace z.ERP.Services
             }
             else
                 return "未导出数据";           
+        }
+        public DataGridResult GetVoucherList(SearchItem item)
+        {
+            string sql = $@"SELECT L.* " +
+                " FROM VOUCHER L" +
+                "  WHERE 1=1  ";
+            item.HasKey("VOUCHERID", a => sql += $" and L.VOUCHERID = {a}");
+            item.HasKey("VOUCHERNAME", a => sql += $" and L.VOUCHERNAME like '%{a}%'");
+            item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
+            item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
+            item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
+            item.HasDateKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
+            item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
+            item.HasDateKey("VERIFY_TIME_START", a => sql += $" and L.VERIFY_TIME>={a}");
+            item.HasDateKey("VERIFY_TIME_END", a => sql += $" and L.VERIFY_TIME<={a}");
+            sql += " ORDER BY  L.VOUCHERID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<账单类型>("VOUCHERTYPE", "VOUCHERTYPEMC");
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+        public void DeleteVoucher(List<VOUCHEREntity> DeleteData)
+        {
+            foreach (var item in DeleteData)
+            {
+                VOUCHEREntity Data = DbHelper.Select(item);
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString())
+                {
+                    throw new LogicException("已经审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    DbHelper.Delete(item);
+                }
+                Tran.Commit();
+            }
+        }
+
+        public string SaveVoucher(VOUCHEREntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.VOUCHERID.IsEmpty())
+                SaveData.VOUCHERID = NewINC("VOUCHER");
+            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            SaveData.VERIFY = employee.Id;
+            v.Require(a => a.VOUCHERID);
+            v.Require(a => a.VOUCHERNAME);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                SaveData.VOUCHER_MAKESQL?.ForEach(item =>
+                {
+                    GetVerify(item).Require(a => a.SQLINX);
+                });
+                DbHelper.Save(SaveData);
+
+                Tran.Commit();
+            }
+            return SaveData.VOUCHERID;
+        }
+
+        public Tuple<dynamic, DataTable, DataTable, DataTable, DataTable> GetVoucherElement(VOUCHEREntity Data)
+        {
+            string sql = $@"SELECT A.* "
+                        + "FROM VOUCHER A "
+                        + "WHERE 1=1 ";
+            if (!Data.VOUCHERID.IsEmpty())
+                sql += (" AND A.VOUCHERID= " + Data.VOUCHERID);
+            DataTable voucher = DbHelper.ExecuteTable(sql);
+            voucher.NewEnumColumns<账单类型>("VOUCHERTYPE", "VOUCHERTYPEMC");
+            voucher.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlvouchersql = $@"SELECT M.*" +
+                " FROM VOUCHER_MAKESQL M" +
+                " where  1=1";
+            if (!Data.VOUCHERID.IsEmpty())
+                sqlvouchersql += (" and M.VOUCHERID= " + Data.VOUCHERID);
+            DataTable vouchersql = DbHelper.ExecuteTable(sqlvouchersql);
+
+            string sqlvoucherrecord = $@"SELECT M.*" +
+                " FROM VOUCHER_RECORD M" +
+                " where  1=1";
+            if (!Data.VOUCHERID.IsEmpty())
+                sqlvoucherrecord += (" and M.VOUCHERID= " + Data.VOUCHERID);
+            DataTable voucherrecord = DbHelper.ExecuteTable(sqlvoucherrecord);
+
+            string sqlvoucherrecordpzkm = $@"SELECT M.*" +
+                " FROM VOUCHER_RECORD_PZKM M" +
+                " where  1=1";
+            if (!Data.VOUCHERID.IsEmpty())
+                sqlvoucherrecordpzkm += (" and M.VOUCHERID= " + Data.VOUCHERID);
+            DataTable voucherrecordpzkm = DbHelper.ExecuteTable(sqlvoucherrecordpzkm);
+
+            string sqlvoucherrecordzy = $@"SELECT M.*" +
+                " FROM VOUCHER_RECORD_ZY M" +
+                " where  1=1";
+            if (!Data.VOUCHERID.IsEmpty())
+                sqlvoucherrecordzy += (" and M.VOUCHERID= " + Data.VOUCHERID);
+            DataTable voucherrecordzy = DbHelper.ExecuteTable(sqlvoucherrecordzy);
+
+            return new Tuple<dynamic, DataTable, DataTable, DataTable, DataTable>(voucher.ToOneLine(), vouchersql, voucherrecord, voucherrecordpzkm,voucherrecordzy);
+        }
+
+        /// <summary>
+        /// 费用调整单审核
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public string ExecVoucher(VOUCHEREntity Data)
+        {
+            VOUCHEREntity voucher = DbHelper.Select(Data);
+            if (voucher.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.VOUCHERID + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                Exec_BILL_ADJUST exec_billadjust = new Exec_BILL_ADJUST()
+                {
+                    p_BILLID = Data.VOUCHERID,
+                    p_VERIFY = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_billadjust);
+                Tran.Commit();
+            }
+            return voucher.VOUCHERID;
         }
     }
 }

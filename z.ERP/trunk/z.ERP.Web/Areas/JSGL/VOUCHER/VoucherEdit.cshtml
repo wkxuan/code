@@ -1,0 +1,172 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Entities;
+@inherits EditDetailViewBase<string>
+@section baseParam{
+    <row>
+
+        <i-col span="2" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.VOUCHERNAME"
+                });
+            }
+        </i-col>
+        @*<i-col span="2" class="RowTitle">
+                类型
+            </i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new EnumDropDownListRender<账单类型>()
+                    {
+                        vModel = "dataParam.VOUCHERTYPE",
+                        Enable = true
+                    });
+                }
+            </i-col>*@
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            备注
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION"
+                });
+            }
+        </i-col>
+    </row>
+}
+@section detailParam{
+    <row>
+        <i-col span="12">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Text = "SQL"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "screenParam.addColSql",
+                    Text = "添加一行SQL",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="8">
+            <i-table size="small" border="true" height="200px" highlight-row
+                     :columns="screenParam.colDef_Sql" :data="dataParam.VOUCHER_MAKESQL"
+                     v-on:on-current-change="sqlfilter" v-on:on-row-click="makesqlrowclick"></i-table>
+        </i-col>
+        <i-col span="16">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MAKESQL",
+                    type = "textarea",
+                    rows = "9",
+                    Change = "screenParam.makeSql"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Text = "分录"
+            });
+        }
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "screenParam.addColRecord",
+                Text = "添加一行分录",
+                Enable = true,
+                Type = "primary",
+                Icon = "plus-circled"
+            });
+        }
+        <i-col span="32">
+            <i-table size="small" border="true" height="200px" highlight-row
+                     :columns="screenParam.colDef_Record" :data="dataParam.VOUCHER_RECORD"
+                     v-on:on-current-change="recordChange"></i-table>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="12">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Text = "科目"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "screenParam.addColRecordPzkm",
+                    Text = "添加一行科目",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+
+            <i-table size="small" border="true" height="200px"
+                     :columns="screenParam.colDef_Pzkm" :data="dataParam.VOUCHER_RECORD_PZKM"></i-table>
+        </i-col>
+
+        <i-col span="12">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Text = "摘要"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "screenParam.addColRecordZy",
+                    Text = "添加一行摘要",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+
+            <i-table size="small" border="true" height="200px"
+                     :columns="screenParam.colDef_Zy" :data="dataParam.VOUCHER_RECORD_ZY"></i-table>
+        </i-col>
+    </row>
+}
+
+
+
+
+
