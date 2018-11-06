@@ -122,11 +122,23 @@
                 },
                 Print :function (event) {
                     event.stopPropagation();
-                    _.OpenPage({
-                        id: 10700501,
-                        title: '打印',
-                        url: "JSGL/BILL_NOTICE/Bill_Notice_Print/" + @billNotice.BILLID,
-                    });
+
+                    if(@billNotice.TYPE == "2"){
+                        _.OpenPage({
+                            id: 10700501,
+                            title: '打印',
+                            url: "JSGL/BILL_NOTICE/Bill_Notice_Print/" + @billNotice.BILLID,
+                        })
+                    }
+                    else
+                    {
+                        _.OpenPage({
+                            id: 10700501,
+                            title: '打印',
+                            url: "JSGL/BILL_NOTICE/Bill_Notice_PrintOther/" + @billNotice.BILLID,
+                        })
+                    }
+;
                 }
             }
         });

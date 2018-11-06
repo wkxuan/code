@@ -76,5 +76,14 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
             ViewBag.CurrentDate = System.DateTime.Now;
             return View();
         }
+
+        public ActionResult Bill_Notice_PrintOther(string Id)
+        {
+            var entity = service.JsglService.GetBillNoticePrint(new BILL_NOTICEEntity(Id));
+            ViewBag.billNotice = entity.Item1;
+            ViewBag.billNoticeItem = entity.Item2;
+            ViewBag.CurrentDate = System.DateTime.Now;
+            return View();
+        }
     }
 }

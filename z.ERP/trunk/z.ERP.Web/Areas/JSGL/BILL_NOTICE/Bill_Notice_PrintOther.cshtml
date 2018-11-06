@@ -40,7 +40,7 @@
                             单据编号：@billNotice.BILLID
                         </td>
                         <td colspan="2" >
-                            出账月份：@billNotice.NIANYUE
+                            开具时间：@billNotice.VERIFY_TIME
                         </td>
                     </tr>
                     <tr style="line-height: 20px;">
@@ -52,16 +52,8 @@
                         <td >
                             缴费单位
                         </td>
-                        <td colspan="3">
+                        <td >
                             @billNotice.MERCHANTNAME
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            铺位号
-                        </td>
-                        <td>
-                            @billNotice.SHOPDM
                         </td>
                         <td>
                             品牌名称
@@ -72,31 +64,16 @@
                     </tr>
                     <tr>
                         <td>
+                            铺位号
+                        </td>
+                        <td>
+                            @billNotice.SHOPDM
+                        </td>
+                        <td>
                             租赁面积（平方米）
                         </td>
                         <td>
                             @billNotice.AREA_RENTABLE
-                        </td>
-                        <td>
-                            销售额（元）
-                        </td>
-                        <td>
-                            @billNotice.AMOUNT
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            固定租金（元）
-                        </td>
-                        <td>
-                            @billNotice.RENTS
-
-                        </td>
-                        <td>
-                            扣率租金（元）
-                        </td>
-                        <td>
-                            @billNotice.KLZJ
                         </td>
                     </tr>
                 </table>

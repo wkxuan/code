@@ -527,6 +527,7 @@
     <Content Include="Areas\JSGL\VOUCHER\VoucherDetail.cshtml" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.cshtml" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherList.cshtml" />
+    <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintOther.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
