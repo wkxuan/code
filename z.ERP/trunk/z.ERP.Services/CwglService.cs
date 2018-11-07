@@ -114,7 +114,7 @@ namespace z.ERP.Services
                                 {
                                     decimal JFJE = 0;
                                     decimal DFJE = 0;
-                                    if (Convert.ToInt32(fldata.TYPE) == 0)
+                                    if (Convert.ToInt32(fldata.TYPE) == 1)
                                     {
                                         if (string.IsNullOrEmpty(tr[fldat].ToString()))
                                         {
@@ -158,7 +158,7 @@ namespace z.ERP.Services
                                     string PZMK = "";
                                     foreach (var kmata in pzkm)
                                     {
-                                        if (Convert.ToInt32(kmata.SQLBJ) == 0)
+                                        if (Convert.ToInt32(kmata.SQLBJ) == 2)
                                         {
                                             PZMK += kmata.DESCRIPTION;
                                         }
@@ -173,7 +173,7 @@ namespace z.ERP.Services
                                     string ZY = "";
                                     foreach (var zydata in pzzy)
                                     {
-                                        if (Convert.ToInt32(zydata.SQLBJ) == 0)
+                                        if (Convert.ToInt32(zydata.SQLBJ) == 2)
                                         {
                                             ZY += zydata.DESCRIPTION;
                                         }
