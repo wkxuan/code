@@ -35,7 +35,7 @@ editDetail.beforeVue = function () {
         },
     },
         {
-            title: "SQL类型", key: 'EXESQLTYPE', width: 120,
+            title: "SQL类型", key: 'EXESQLTYPE', width: 100,
             render: function (h, params) {
                 return h('Select', {
                     props: {
@@ -92,7 +92,7 @@ editDetail.beforeVue = function () {
     },
 },
     {
-        title: "分录名称", key: 'RECORDNAME', width: 100,
+        title: "分录名称", key: 'RECORDNAME', width: 150,
         render: function (h, params) {
             return h('Input', {
                 props: {
@@ -107,7 +107,7 @@ editDetail.beforeVue = function () {
         },
     },
         {
-            title: "方向", key: 'TYPE', width: 120,
+            title: "方向", key: 'TYPE', width: 80,
             render: function (h, params) {
                 return h('Select', {
                     props: {
