@@ -109,6 +109,8 @@ namespace z.ERP.Services
                                 var wldwdat = fldata.SQLCOLTOMERCHANT;    //商户
                                 var bmdat = fldata.SQLCOLTOORG;       //部门
                                 var rydat = fldata.SQLCOLTOUSER;        //人员
+                                var lcdat = fldata.SQLCOLTOFLOOR;        //楼层
+                                var ytdat = fldata.SQLCOLTOCATEGORY;        //业态
                                 DataTable dtflid = DbHelper.ExecuteTable(sqlflid, param);
                                 foreach (DataRow tr in dtflid.Rows)
                                 {
@@ -140,6 +142,8 @@ namespace z.ERP.Services
                                     string MERCHANTID = string.Empty;
                                     string ORGDM = string.Empty;
                                     string RYDM = string.Empty;
+                                    string LCSJ = string.Empty;
+                                    string YTSJ = string.Empty;
                                     if (!string.IsNullOrEmpty(wldwdat))
                                     {
                                         MERCHANTID = tr[wldwdat].ToString();
@@ -151,6 +155,14 @@ namespace z.ERP.Services
                                     if (!string.IsNullOrEmpty(rydat))
                                     {
                                         RYDM = tr[rydat].ToString();
+                                    }
+                                    if (!string.IsNullOrEmpty(lcdat))
+                                    {
+                                        LCSJ = tr[lcdat].ToString();
+                                    }
+                                    if (!string.IsNullOrEmpty(ytdat))
+                                    {
+                                        YTSJ = tr[ytdat].ToString();
                                     }
                                     List<VOUCHER_RECORD_PZKMEntity> pzkm = DbHelper.SelectList(new VOUCHER_RECORD_PZKMEntity()).
                                         Where(e => e.VOUCHERID == pVOUCHERID.ToString()).Where(a => a.RECORDID == fldata.RECORDID).
@@ -204,9 +216,9 @@ namespace z.ERP.Services
                                     rowNew["KHBM"] = "";  //客户编码
                                     rowNew["GYSBM"] = MERCHANTID;  //供应商编码
                                     rowNew["XMDLBM"] = "";  //项目大类编码
-                                    rowNew["XMBM"] = "";  //项目编码
+                                    rowNew["XMBM"] = YTSJ;  //项目编码
                                     rowNew["YWY"] = "";  //业务员
-                                    rowNew["LC"] = "";  //楼层
+                                    rowNew["LC"] = LCSJ;  //楼层
                                     rowNew["ZDYX10"] = "";  //自定义项10
                                     rowNew["ZDYX11"] = "";  //自定义项11
                                     rowNew["ZDYX12"] = "";  //自定义项12
