@@ -80,7 +80,7 @@
     </row>
     <row>
         <i-col span="8">
-            <i-table size="small" border="true" height="200px" highlight-row
+            <i-table size="small" :border="true" height="200" highlight-row
                      :columns="screenParam.colDef_Sql" :data="dataParam.VOUCHER_MAKESQL"
                      v-on:on-current-change="sqlfilter" v-on:on-row-click="makesqlrowclick"></i-table>
         </i-col>
@@ -114,7 +114,7 @@
             });
         }
         <i-col span="32">
-            <i-table size="small" border="true" height="200px" highlight-row
+            <i-table size="small" :border="true" height="200" highlight-row
                      :columns="screenParam.colDef_Record" :data="dataParam.VOUCHER_RECORD"
                      v-on:on-current-change="recordChange"></i-table>
         </i-col>
@@ -138,7 +138,7 @@
                 });
             }
 
-            <i-table size="small" border="true" height="200px"
+            <i-table size="small" :border="true" height="200"
                      :columns="screenParam.colDef_Pzkm" :data="dataParam.VOUCHER_RECORD_PZKM"></i-table>
         </i-col>
 
@@ -160,7 +160,7 @@
                 });
             }
 
-            <i-table size="small" border="true" height="200px"
+            <i-table size="small" :border="true" height="200"
                      :columns="screenParam.colDef_Zy" :data="dataParam.VOUCHER_RECORD_ZY"></i-table>
         </i-col>
     </row>
