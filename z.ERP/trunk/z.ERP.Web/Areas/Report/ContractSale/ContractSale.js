@@ -9,7 +9,7 @@
             }
         },
         { title: '租约号', key: 'CONTRACTID', width: 95 },
-        { title: '商户编号', key: 'MERCHANTID', width: 90 },
+        { title: '商户编码', key: 'MERCHANTID', width: 90 },
         { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
         { title: '店铺编号', key: 'SHOPCODE', width: 120 },
         { title: '店铺名称', key: 'SHOPNAME', width: 120 },

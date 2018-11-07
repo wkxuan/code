@@ -12,7 +12,7 @@
         { title: '商品条码', key: 'BARCODE', width: 130 },
         { title: '商品名称', key: 'GOODSNAME', width: 120 },
         { title: '租约号', key: 'CONTRACTID', width: 95 },
-        { title: '商户编号', key: 'MERCHANTID', width: 90 },
+        { title: '商户编码', key: 'MERCHANTID', width: 90 },
         { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
         { title: '分类编码', key: 'KINDCODE', width: 100 },
         { title: '分类名称', key: 'KINDNAME', width: 100 },
@@ -25,7 +25,7 @@
     ];
     srch.screenParam.colDef = col;
     srch.service = "ReportService";
-    srch.method = "GOODSSale";
+    srch.method = "GoodsSale";
 
     srch.screenParam.showPopMerchant = false;
     srch.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
