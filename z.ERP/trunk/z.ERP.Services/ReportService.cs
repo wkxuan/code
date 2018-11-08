@@ -21,11 +21,11 @@ namespace z.ERP.Services
             item.HasDateKey("RQ_START", a => sql += $" and C.RQ >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and C.RQ <= {a}");
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME",a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b =>  b) }%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
+            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
             item.HasKey("BRANDID", a => sql += $" and C.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            
+
 
             sql += " ORDER BY  C.RQ,C.MERCHANTID,C.CONTRACTID ";
             int count;
@@ -34,31 +34,31 @@ namespace z.ERP.Services
             if (count > 0)
             {
 
- 
-            string sqlsum = $"SELECT SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT ";
-            sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K ";
-            sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
-            item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID = {a}");
-            item.HasKey("CONTRACTID", a => sqlsum += $" and C.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sqlsum += $" and C.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sqlsum += $" and C.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sqlsum += $" and C.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
-            item.HasKey("BRANDID", a => sqlsum += $" and C.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
+
+                string sqlsum = $"SELECT SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT ";
+                sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K ";
+                sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
+                item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID = {a}");
+                item.HasKey("CONTRACTID", a => sqlsum += $" and C.CONTRACTID = '{a}'");
+                item.HasDateKey("RQ_START", a => sqlsum += $" and C.RQ >= {a}");
+                item.HasDateKey("RQ_END", a => sqlsum += $" and C.RQ <= {a}");
+                item.HasKey("MERCHANTID", a => sqlsum += $" and C.MERCHANTID LIKE '%{a}%'");
+                item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
+                item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+                item.HasKey("BRANDID", a => sqlsum += $" and C.BRANDID = {a}");
+                item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
 
 
-            sql += " ORDER BY  C.RQ,C.MERCHANTID,C.CONTRACTID ";
+                sql += " ORDER BY  C.RQ,C.MERCHANTID,C.CONTRACTID ";
 
-            DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
-            DataRow dr = dt.NewRow();
-            dr["CONTRACTID"] = "合计";
-            dr["AMOUNT"] = dtSum.Rows[0]["AMOUNT"].ToString();
-            dr["COST"] = dtSum.Rows[0]["COST"].ToString();
-            dr["DIS_AMOUNT"] = dtSum.Rows[0]["DIS_AMOUNT"].ToString();
-            dr["PER_AMOUNT"] = dtSum.Rows[0]["PER_AMOUNT"].ToString();
-            dt.Rows.Add(dr);
+                DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
+                DataRow dr = dt.NewRow();
+                dr["CONTRACTID"] = "合计";
+                dr["AMOUNT"] = dtSum.Rows[0]["AMOUNT"].ToString();
+                dr["COST"] = dtSum.Rows[0]["COST"].ToString();
+                dr["DIS_AMOUNT"] = dtSum.Rows[0]["DIS_AMOUNT"].ToString();
+                dr["PER_AMOUNT"] = dtSum.Rows[0]["PER_AMOUNT"].ToString();
+                dt.Rows.Add(dr);
             }
             return new DataGridResult(dt, count);
         }
@@ -109,30 +109,30 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
 
-            if(count > 0)
+            if (count > 0)
             {
-            string sqlsum = $"SELECT SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT";
-            sqlsum += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
-            sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
-            sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
-            item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
-            item.HasKey("CONTRACTID", a => sqlsum += $" and G.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sqlsum += $" and D.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sqlsum += $" and G.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
-            item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
+                string sqlsum = $"SELECT SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT";
+                sqlsum += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
+                sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
+                sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+                item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
+                item.HasKey("CONTRACTID", a => sqlsum += $" and G.CONTRACTID = '{a}'");
+                item.HasDateKey("RQ_START", a => sqlsum += $" and D.RQ >= {a}");
+                item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
+                item.HasKey("MERCHANTID", a => sqlsum += $" and G.MERCHANTID LIKE '%{a}%'");
+                item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
+                item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+                item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
+                item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
 
-            DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
-            DataRow dr = dt.NewRow();
-            dr["GOODSDM"] = "合计";
-            dr["AMOUNT"] = dtSum.Rows[0]["AMOUNT"].ToString();
-            dr["COST"] = dtSum.Rows[0]["COST"].ToString();
-            dr["DIS_AMOUNT"] = dtSum.Rows[0]["DIS_AMOUNT"].ToString();
-            dr["PER_AMOUNT"] = dtSum.Rows[0]["PER_AMOUNT"].ToString();
-            dt.Rows.Add(dr);
+                DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
+                DataRow dr = dt.NewRow();
+                dr["GOODSDM"] = "合计";
+                dr["AMOUNT"] = dtSum.Rows[0]["AMOUNT"].ToString();
+                dr["COST"] = dtSum.Rows[0]["COST"].ToString();
+                dr["DIS_AMOUNT"] = dtSum.Rows[0]["DIS_AMOUNT"].ToString();
+                dr["PER_AMOUNT"] = dtSum.Rows[0]["PER_AMOUNT"].ToString();
+                dt.Rows.Add(dr);
             }
             return new DataGridResult(dt, count);
         }
@@ -169,7 +169,7 @@ namespace z.ERP.Services
             sql += " FROM SALE S,SYSUSER U,STATION T";
             sql += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH";
             item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
-            item.HasKey("POSNO",a => sql += $" and S.POSNO='{a}'");
+            item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
             item.HasKey("SHOPID", a => sql += $" and exists(select 1 from SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
             item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
@@ -231,9 +231,9 @@ namespace z.ERP.Services
                 DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
                 DataRow dr = dt.NewRow();
                 dr["POSNO"] = "合计";
-                dr["SALE_AMOUNT"] = (Convert.ToSingle(dtSum.Rows[0]["SALE_AMOUNT"])+ Convert.ToSingle(dtSum.Rows[1]["SALE_AMOUNT"])).ToString();
+                dr["SALE_AMOUNT"] = (Convert.ToSingle(dtSum.Rows[0]["SALE_AMOUNT"]) + Convert.ToSingle(dtSum.Rows[1]["SALE_AMOUNT"])).ToString();
                 dt.Rows.Add(dr);
-                
+
             }
             return new DataGridResult(dt, count);
 
@@ -277,7 +277,8 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.TableName = "SaleRecord";
             return GetExport("POS销售导出", a =>
-            {  a.SetTable(dt);
+            {
+                a.SetTable(dt);
             });
         }
 

@@ -93,6 +93,12 @@ namespace z.ERP.Entities.Enum
         停用 = 2,
     }
 
+    public enum 通知单生成方式
+    {
+        租金 = 1,
+        提成租金 = 2,
+    }
+
     public enum 支付方式类型
     {
         现金 = 1,
