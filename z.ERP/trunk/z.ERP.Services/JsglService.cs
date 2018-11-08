@@ -502,7 +502,7 @@ namespace z.ERP.Services
             DataTable billNotice = DbHelper.ExecuteTable(sql);
             billNotice.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT M.*,B.MUST_MONEY,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,C.NAME TERMMC " +
+            string sqlitem = $@"SELECT M.*,B.NIANYUE,B.MUST_MONEY,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,C.NAME TERMMC " +
                 " FROM BILL_NOTICE_ITEM M ,BILL B,FEESUBJECT C " +
                 " where M.FINAL_BILLID=B.BILLID(+) and B.TERMID=C.TRIMID(+) ";
             if (!Data.BILLID.IsEmpty())

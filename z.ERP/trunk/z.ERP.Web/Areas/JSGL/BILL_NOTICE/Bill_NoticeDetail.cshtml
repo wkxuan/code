@@ -70,7 +70,7 @@
 <row>
     <i-col span="18">
         <i-table size="small" border="true"
-                 :columns="colDef" :data="NOTICE_ITEM" height="200"></i-table>
+                 :columns="colDef" :data="NOTICE_ITEM" height="400"></i-table>
     </i-col>
 </row>
 }
@@ -91,8 +91,9 @@
                 MERCHANTNAME:"@billNotice.MERCHANTNAME",
                 DESCRIPTION:"@billNotice.DESCRIPTION",
                 colDef : [
-                {title: "账单号", key: 'FINAL_BILLID', width: 100},
-                { title: '收费项目', key: 'TERMMC', width: 100 },
+                { title: "账单号", key: 'FINAL_BILLID', width: 100},
+                { title: '债权发生月', key: 'NIANYUE', width: 100 },
+                { title: '收费项目', key: 'TERMMC', width: 200 },
                 { title: '应收金额', key: 'MUST_MONEY', width: 100 },
                 { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
                 { title: '通知金额', key: 'NOTICE_MONEY', width: 100 }

@@ -18,7 +18,7 @@
     { title: '账单号', key: 'FINAL_BILLID', width: 100 },
     { title: '权债年月', key: 'YEARMONTH', width: 100 },
     { title: '租约号', key: 'CONTRACTID', width: 100 },
-    { title: '收费项目', key: 'TERMMC', width: 150 },
+    { title: '收费项目', key: 'TERMMC', width: 200 },
     { title: '应收金额', key: 'MUST_MONEY', width: 100 },
     { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
     {
@@ -175,7 +175,7 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请选择商户!");
         return false;
     };
-    if (!editDetail.dataParam.PAYID) {
+    if (!editDetail.dataParam.FKFSID) {
         iview.Message.info("请选择付款方式!");
         return false;
     };
@@ -204,7 +204,7 @@ editDetail.IsValidSave = function () {
                 iview.Message.info("单号[" + editDetail.dataParam.BILL_OBTAIN_ITEM[i].FINAL_BILLID + "]当为负数金额时，付款金额不能小于未付款金额!");
                 return false;
             }
-            fkje += editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY;
+            fkje += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
         };
         if (!editDetail.dataParam.ALL_MONEY)
         {
@@ -216,14 +216,14 @@ editDetail.IsValidSave = function () {
         if (!editDetail.dataParam.MERCHANT_MONEY) {
             editDetail.dataParam.MERCHANT_MONEY = 0;
         }
-        if (editDetail.dataParam.ADVANCE_MONEY > editDetail.dataParam.MERCHANT_MONEY)
+        if (parseFloat(editDetail.dataParam.ADVANCE_MONEY) > parseFloat(editDetail.dataParam.MERCHANT_MONEY))
         {
-            iview.Message.info("冲销预收款金额不能大于商户余额");
+            iview.Message.info("冲销预付款金额不能大于商户余额");
             return false;
         }
         if (fkje != parseFloat(editDetail.dataParam.ALL_MONEY) + parseFloat(editDetail.dataParam.ADVANCE_MONEY))
         {
-            iview.Message.info("收款金额 + 冲销预收款金额 不等于 明细付款金额之和!");
+            iview.Message.info("付款金额" + editDetail.dataParam.ALL_MONEY + " + 冲销预付款金额" + editDetail.dataParam.ADVANCE_MONEY + " 不等于 明细付款金额之和" + fkje + "!");
             return false;
         }
     };
