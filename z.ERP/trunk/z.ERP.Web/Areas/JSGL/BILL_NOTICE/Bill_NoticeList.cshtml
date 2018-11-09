@@ -83,14 +83,13 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            备注
+            类型
         </i-col>
         <i-col span="6">
-
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new EnumDropDownListRender<通知单类型>()
                 {
-                    vModel = "searchParam.DESCRIPTION"
+                    vModel = "searchParam.TYPE",
                 });
             }
         </i-col>
@@ -116,9 +115,9 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            登记时间_起
+            登记时间
         </i-col>
-        <i-col span="6">
+        <i-col span="3">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -126,14 +125,23 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            登记时间_止
-        </i-col>
-        <i-col span="6">
+        <i-col span="3">
             @{
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "searchParam.REPORTER_TIME_END"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            年月
+        </i-col>
+        <i-col span="6">
+
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.NIANYUE"
                 });
             }
         </i-col>
@@ -159,9 +167,9 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            审核时间_起
+            审核时间
         </i-col>
-        <i-col span="6">
+        <i-col span="3">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -169,14 +177,23 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            审核时间_止
-        </i-col>
-        <i-col span="6">
+        <i-col span="3">
             @{
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "searchParam.VERIFY_TIME_END"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            备注
+        </i-col>
+        <i-col span="6">
+
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.DESCRIPTION"
                 });
             }
         </i-col>

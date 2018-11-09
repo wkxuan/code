@@ -40,7 +40,8 @@
                             单据编号：@billNotice.BILLID
                         </td>
                         <td colspan="2" >
-                            开具时间：@billNotice.VERIFY_TIME
+                            开具时间：@ViewBag.CurrentDate  
+                            @*@billNotice.VERIFY_TIME *@
                         </td>
                     </tr>
                     <tr style="line-height: 20px;">
@@ -109,8 +110,12 @@
                                     <td>@dr["BILLTYPE"].ToString()</td>
                                     <td>@dr["TERMMC"].ToString()</td>
                                     <td>@dr["FYQJ"].ToString()</td>
-                                    <td>@dr["MUST_MONEY"].ToString()</td>
-                                    <td>@dr["NOTICE_MONEY"].ToString()</td>
+                                    <td>
+                                        @float.Parse(@dr["MUST_MONEY"].ToString()).ToString("N")                                      
+                                    </td>
+                                    <td>
+                                        @float.Parse(@dr["NOTICE_MONEY"].ToString()).ToString("N")
+                                    </td>
                                 </tr>
                             }
                         }
@@ -121,10 +126,14 @@
                                 合计人民币
                             </td>
                             <td style="text-align: center">
-                                <span>@billNotice.MUST_MONEY</span>
+                                <span>
+                                    @billNotice.MUST_MONEY.ToString("N")
+                                </span>
                             </td>
                             <td style="text-align: center">
-                                <span>@billNotice.NOTICE_MONEY</span>
+                                <span>
+                                    @billNotice.NOTICE_MONEY.ToString("N")
+                                </span>
                             </td>
                         </tr>
                         <tr>

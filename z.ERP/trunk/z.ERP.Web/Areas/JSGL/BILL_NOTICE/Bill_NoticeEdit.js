@@ -11,6 +11,9 @@
     editDetail.screenParam.popParam = {};
     editDetail.dataParam.BILL_NOTICE_ITEM = [];
 
+    editDetail.dataParam.NIANYUE = (new Date()).getFullYear() + ('0' + ((new Date()).getMonth() + 1)).substr(-2); //默认当前年月
+    editDetail.dataParam.TYPE = 1;
+
     editDetail.screenParam.colDef = [
     //{
     //    title: "账单号", key: 'FINAL_BILLID', width: 160,
@@ -86,6 +89,12 @@
         editDetail.dataParam.BILL_NOTICE_ITEM = temp;
     }
 }
+
+editDetail.newRecord = function () {
+    editDetail.dataParam.NIANYUE = (new Date()).getFullYear() + ('0'+((new Date()).getMonth() + 1)).substr(-2); //默认当前年月
+    editDetail.dataParam.TYPE = 1;
+}
+
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchBill_Notice', {
         Data: { BILLID: data }

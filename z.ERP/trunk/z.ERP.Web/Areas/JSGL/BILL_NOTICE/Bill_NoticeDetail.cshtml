@@ -24,14 +24,30 @@
                 Click = "exec",
             });
         }
-        else
+
+
+        RenderControl(new ButtonRender()
         {
-            RenderControl(new ButtonRender()
-            {
-                Text = "打印",
-                Click = "Print",
-            });
-        }
+            Text = "打印",
+            Click = "Print",
+        });
+
+      @*  if (@billNotice.STATUS == "1")
+    {
+        RenderControl(new ButtonRender()
+        {
+            Text = "审核",
+            Click = "exec",
+        });
+    }
+    else
+    {
+        RenderControl(new ButtonRender()
+        {
+            Text = "打印",
+            Click = "Print",
+        });
+    } *@
     }
 }
 
@@ -44,6 +60,10 @@
     <i-col span="2" class="RowTitle">门店名称</i-col>
     <i-col span="4">
         <i-input v-model="BRANCHNAME" readonly="true"></i-input>
+    </i-col>
+    <i-col span="2" class="RowTitle">类型</i-col>
+    <i-col span="4">
+        <i-input v-model="TYPEMC" readonly="true"></i-input>
     </i-col>
     <i-col span="2" class="RowTitle">状态</i-col>
     <i-col span="4">
@@ -58,6 +78,10 @@
     <i-col span="2" class="RowTitle">商户名称</i-col>
     <i-col span="4">
         <i-input v-model="MERCHANTNAME" readonly="true"></i-input>
+    </i-col>
+    <i-col span="2" class="RowTitle">年月</i-col>
+    <i-col span="4">
+        <i-input v-model="NIANYUE" readonly="true"></i-input>
     </i-col>
 </row>
 <row>
@@ -87,6 +111,7 @@
                 BRANCHNAME:"@billNotice.BRANCHNAME",
                 STATUSMC:"@billNotice.STATUSMC",
                 NIANYUE:"@billNotice.NIANYUE",
+                TYPEMC:"@billNotice.TYPEMC",
                 CONTRACTID:"@billNotice.CONTRACTID",
                 MERCHANTNAME:"@billNotice.MERCHANTNAME",
                 DESCRIPTION:"@billNotice.DESCRIPTION",
