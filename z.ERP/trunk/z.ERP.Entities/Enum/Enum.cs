@@ -205,6 +205,13 @@ namespace z.ERP.Entities.Enum
         全部付款 = 4
     }
 
+    public enum 通知单类型
+    {
+        其它 = 1,
+        月末 = 2
+    }
+
+
     public enum 周期方式
     {
         合同起始日期 = 1,
