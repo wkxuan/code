@@ -532,13 +532,14 @@ namespace z.ERP.Services
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billNotice = DbHelper.ExecuteTable(sql);
             billNotice.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
-
-            string sqlitem = $@"SELECT M.*,(case B.TYPE when 0 then '收费单' else '' end ) BILLTYPE,B.MUST_MONEY,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,C.NAME TERMMC " +
-                ",TO_CHAR(B.START_DATE,'YYYY-MM-DD')||'至'||to_char(B.END_DATE,'YYYY-MM-DD')   FYQJ "+
+            //  (case B.TYPE when 0 then '收费单' else '' end ) BILLTYPE,
+            string sqlitem = $@"SELECT C.NAME TERMMC,TO_CHAR(B.START_DATE,'YYYY-MM-DD')||'至'||to_char(B.END_DATE,'YYYY-MM-DD') FYQJ,"+
+                " SUM(B.MUST_MONEY) MUST_MONEY,SUM(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,SUM(M.NOTICE_MONEY) NOTICE_MONEY" +
                 " FROM BILL_NOTICE_ITEM M ,BILL B,FEESUBJECT C " +
                 " where M.FINAL_BILLID=B.BILLID(+) and B.TERMID=C.TRIMID(+) ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
+            sqlitem += " GROUP BY C.NAME,TO_CHAR(B.START_DATE,'YYYY-MM-DD')||'至'||to_char(B.END_DATE,'YYYY-MM-DD')";
             DataTable billNoticeItem = DbHelper.ExecuteTable(sqlitem);
 
             return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);

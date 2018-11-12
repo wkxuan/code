@@ -86,7 +86,7 @@
                     <thead>
                         <tr>
                             <th style="width: 15%">
-                                类型
+                                
                             </th>
                             <th style="width: 15%">
                                 项目
@@ -104,19 +104,27 @@
                     </thead>
                     <tbody>
                         @{
+                            int i = 0;
                             foreach (DataRow dr in billNoticeItem.Rows)
                             {
                                 <tr>
-                                    <td>@dr["BILLTYPE"].ToString()</td>
+                                    @if (i == 0)
+                                    {
+                                        <td rowspan="@billNoticeItem.Rows.Count">
+                                            缴费明细
+                                        </td>
+                                    }
+                                @*    <td>@dr["BILLTYPE"].ToString()</td> *@
                                     <td>@dr["TERMMC"].ToString()</td>
                                     <td>@dr["FYQJ"].ToString()</td>
                                     <td>
-                                        @float.Parse(@dr["MUST_MONEY"].ToString()).ToString("N")                                      
+                                        @float.Parse(@dr["MUST_MONEY"].ToString()).ToString("N")
                                     </td>
                                     <td>
                                         @float.Parse(@dr["NOTICE_MONEY"].ToString()).ToString("N")
                                     </td>
                                 </tr>
+                                i++;
                             }
                         }
                     </tbody>
