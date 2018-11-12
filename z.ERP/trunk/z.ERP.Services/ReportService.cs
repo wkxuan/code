@@ -95,6 +95,8 @@ namespace z.ERP.Services
             sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
             sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
             item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
+            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
             item.HasDateKey("RQ_START", a => sql += $" and D.RQ >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
@@ -116,6 +118,8 @@ namespace z.ERP.Services
                 sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
                 sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
                 item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
+                item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+                item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
                 item.HasKey("CONTRACTID", a => sqlsum += $" and G.CONTRACTID = '{a}'");
                 item.HasDateKey("RQ_START", a => sqlsum += $" and D.RQ >= {a}");
                 item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
@@ -146,6 +150,8 @@ namespace z.ERP.Services
             sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
             sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
             item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
+            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
             item.HasDateKey("RQ_START", a => sql += $" and D.RQ >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");

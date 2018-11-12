@@ -15,40 +15,77 @@
                 });
             }
         </i-col>
-        
         <i-col span="2" class="RowTitle">
+            商品分类
+        </i-col>
+        <i-col span="6" class="RowTitle">
             @{
-                RenderControl(new ButtonRender()
+                RenderControl(new CascaderRender()
                 {
-                    Click = "SelMerchant",
-                    Text = "商户",
-                    Enable = true,
-                    Type = "primary"
+                    vModel = "searchParam.KINDID",
+                    Data = "screenParam.dataKind",
+                    Change = "changeKind",
+                    Not_level_last = true
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTID",
-                    Enable = true
-                });
-            }
-        </i-col>
-        <i-col span="4" class="RowTitle">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTNAME",
-                    Enable = true
-                });
-            }
-        </i-col>
- 
-
     </row>
-        <row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            商品编码
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.GOODSDM"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            商品名称
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.GOODSNAME"
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+            <i-col span="2" class="RowTitle">
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "SelMerchant",
+                        Text = "商户",
+                        Enable = true,
+                        Type = "primary"
+                    });
+                }
+            </i-col>
+            <i-col span="2" class="RowTitle">
+                @{
+                    RenderControl(new TextBoxRender()
+                    {
+                        vModel = "searchParam.MERCHANTID",
+                        Enable = true
+                    });
+                }
+            </i-col>
+            <i-col span="4" class="RowTitle">
+                @{
+                    RenderControl(new TextBoxRender()
+                    {
+                        vModel = "searchParam.MERCHANTNAME",
+                        Enable = true
+                    });
+                }
+            </i-col>
         <i-col span="2" class="RowTitle">
             @{
                 RenderControl(new ButtonRender()
@@ -79,20 +116,7 @@
                 });
             }
         </i-col>
-            <i-col span="2" class="RowTitle">
-                商品分类
-            </i-col>
-            <i-col span="6" class="RowTitle">
-                @{
-                    RenderControl(new CascaderRender()
-                    {
-                        vModel = "searchParam.KINDID",
-                        Data = "screenParam.dataKind",
-                        Change = "changeKind",
-                        Not_level_last = true
-                    });
-                }
-            </i-col>
+
 
 
     </row>
