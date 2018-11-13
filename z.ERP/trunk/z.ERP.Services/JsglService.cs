@@ -522,7 +522,7 @@ namespace z.ERP.Services
                  + " (select min(BR.NAME) from CONTRACT_BRAND R,BRAND BR where R.BRANDID=BR.ID and R.CONTRACTID=C.CONTRACTID) BRANDNAME,"
                  + " (select sum(AREA_RENTABLE) from CONTRACT_SHOP S where S.CONTRACTID=C.CONTRACTID) AREA_RENTABLE,"
                  + " (select sum(Y.AMOUNT) from CONTRACT_SUMMARY Y where Y.CONTRACTID=C.CONTRACTID and Y.YEARMONTH=A.NIANYUE) AMOUNT,"
-                 + " (select RENTS from CONTRACT_RENTITEM CR where CR.CONTRACTID=C.CONTRACTID and CR.YEARMONTH=A.NIANYUE) RENTS,"
+                 + " (select sum(RENTS) from CONTRACT_RENTITEM CR where CR.CONTRACTID=C.CONTRACTID and CR.YEARMONTH=A.NIANYUE) RENTS,"
                  + " (select SUM(Y.TCZJ) from CONTRACT_TCZJ Y where Y.CONTRACTID=C.CONTRACTID and Y.YEARMONTH=A.NIANYUE) KLZJ,"
                  + " (select sum(L.MUST_MONEY) from BILL_NOTICE_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) MUST_MONEY,"
                  + " (select sum(M.NOTICE_MONEY) from BILL_NOTICE_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) NOTICE_MONEY "
