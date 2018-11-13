@@ -57,10 +57,10 @@ namespace z.ERP.Services
             resultdt.Columns.Add("ZY", typeof(String));  //摘要
             resultdt.Columns.Add("PJRQ", typeof(String));  //票据日期
             resultdt.Columns.Add("BZMC", typeof(String));  //币种名称
-            resultdt.Columns.Add("YBJF", typeof(decimal));  //原币借方
-            resultdt.Columns.Add("YBDF", typeof(decimal));  //原币贷方
-            resultdt.Columns.Add("JFJE", typeof(decimal));  //借方金额
-            resultdt.Columns.Add("DFJE", typeof(decimal));  //贷方金额
+            resultdt.Columns.Add("YBJF", typeof(String));  //原币借方
+            resultdt.Columns.Add("YBDF", typeof(String));  //原币贷方
+            resultdt.Columns.Add("JFJE", typeof(String));  //借方金额
+            resultdt.Columns.Add("DFJE", typeof(String));  //贷方金额
             resultdt.Columns.Add("BMBM", typeof(String));  //部门编码
             resultdt.Columns.Add("ZYBM", typeof(String));  //职员编码
             resultdt.Columns.Add("KHBM", typeof(String));  //客户编码
@@ -68,7 +68,7 @@ namespace z.ERP.Services
             resultdt.Columns.Add("XMDLBM", typeof(String));  //项目大类编码
             resultdt.Columns.Add("XMBM", typeof(String));  //项目编码
             resultdt.Columns.Add("YWY", typeof(String));  //业务员
-            resultdt.Columns.Add("LC", typeof(String));  //楼层
+            resultdt.Columns.Add("ZDYX9", typeof(String));  //自定义项9
             resultdt.Columns.Add("ZDYX10", typeof(String));  //自定义项10
             resultdt.Columns.Add("ZDYX11", typeof(String));  //自定义项11
             resultdt.Columns.Add("ZDYX12", typeof(String));  //自定义项12
@@ -198,19 +198,19 @@ namespace z.ERP.Services
                                     rowNew["PZID"] = iPZBH;   //凭证ID
                                     rowNew["YEAR"] = Year;  //会计年
                                     rowNew["KJQJ"] = MM;  //会计期间
-                                    rowNew["ZDRQ"] = DateTime.Now.Date.ToString();  //制单日期
+                                    rowNew["ZDRQ"] = DateTime.Now.Date.ToString("yyyy-MM-dd");  //制单日期
                                     rowNew["PZLB"] = "记";  //凭证类别
                                     rowNew["PZBH"] = iPZBH;  //凭证号
                                     rowNew["ZDR"] = employee.Name;  //制单人
                                     rowNew["DJZS"] = "";  //所附单据数
                                     rowNew["KMBM"] = PZMK;  //rowNew[
                                     rowNew["ZY"] = ZY;  //摘要
-                                    rowNew["PJRQ"] = DateTime.Now.Date.ToString();  //票据日期
+                                    rowNew["PJRQ"] = DateTime.Now.Date.ToString("yyyy-MM-dd");  //票据日期
                                     rowNew["BZMC"] = "人民币";  //币种名称
-                                    rowNew["YBJF"] = 0;  //原币借方
-                                    rowNew["YBDF"] = 0;  //原币贷方
-                                    rowNew["JFJE"] = JFJE;  //借方金额
-                                    rowNew["DFJE"] = DFJE;  //贷方金额
+                                    rowNew["YBJF"] = "";  //原币借方
+                                    rowNew["YBDF"] = "";  //原币贷方
+                                    rowNew["JFJE"] = (JFJE == 0 ? "" : JFJE.ToString());  //借方金额
+                                    rowNew["DFJE"] = (DFJE == 0 ? "" : DFJE.ToString());  //贷方金额
                                     rowNew["BMBM"] = ORGDM;  //部门编码
                                     rowNew["ZYBM"] = RYDM;  //职员编码
                                     rowNew["KHBM"] = "";  //客户编码
@@ -218,7 +218,7 @@ namespace z.ERP.Services
                                     rowNew["XMDLBM"] = "";  //项目大类编码
                                     rowNew["XMBM"] = YTSJ;  //项目编码
                                     rowNew["YWY"] = "";  //业务员
-                                    rowNew["LC"] = LCSJ;  //楼层
+                                    rowNew["ZDYX9"] = LCSJ;  //自定义项9
                                     rowNew["ZDYX10"] = "";  //自定义项10
                                     rowNew["ZDYX11"] = "";  //自定义项11
                                     rowNew["ZDYX12"] = "";  //自定义项12
