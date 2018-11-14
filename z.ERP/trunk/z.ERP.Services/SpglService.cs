@@ -69,6 +69,10 @@ namespace z.ERP.Services
             if (SaveData.GOODSID.IsEmpty())
             {
                 SaveData.GOODSID = CommonService.NewINC("GOODSID");
+            }
+
+            if (SaveData.GOODSDM.IsEmpty())
+            {
                 SaveData.GOODSDM = CommonService.NewINC("GOODSDM").PadLeft(spbmcd, '0');
             }
             if (SaveData.BARCODE.IsEmpty())
