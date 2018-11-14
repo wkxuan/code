@@ -338,6 +338,7 @@ namespace z.ERP.Services
 
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and G.STATUS IN ({a})");
             item.HasKey("NAME", a => sql += $" and G.NAME like '%{a}%'");
             item.HasKey("YYY", a => sql += $" and exists(select 1 from SYSUSER S where P.SHOPID = S.SHOPID and S.USERID = '{a}')");
             

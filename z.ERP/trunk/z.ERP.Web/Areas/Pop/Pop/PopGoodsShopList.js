@@ -20,5 +20,6 @@ search.popInitParam = function (data) {
     if (data) {
         search.searchParam.CONTRACTID = data.CONTRACTID;        
         search.searchParam.YYY = data.YYY;
+        search.searchParam.STATUS = data.STATUS;
     }
 }

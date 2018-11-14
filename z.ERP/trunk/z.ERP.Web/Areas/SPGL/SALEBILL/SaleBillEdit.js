@@ -123,7 +123,7 @@ editDetail.otherMethods = {
             exit;
         }
         editDetail.screenParam.showPopGoods = true;
-        editDetail.screenParam.popParam = { YYY: editDetail.dataParam.CLERKID };
+        editDetail.screenParam.popParam = { YYY: editDetail.dataParam.CLERKID, STATUS:"2"};
     },
     delColGoods: function () {
         var selectton = this.$refs.selectBrand.getSelection();

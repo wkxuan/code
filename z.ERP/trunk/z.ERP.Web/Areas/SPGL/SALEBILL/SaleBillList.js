@@ -73,12 +73,16 @@ search.browseHref = function (row, index) {
 }
 
 search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 105004,
-        title: '编辑销售补录单',
-        url: "SPGL/SALEBILL/SaleBillEdit/" + row.BILLID
-    })
-
+    if (row.STATUS == 1){
+        _.OpenPage({
+            id: 105004,
+            title: '编辑销售补录单',
+            url: "SPGL/SALEBILL/SaleBillEdit/" + row.BILLID
+        })
+    }else{
+        iview.Message.info('当前销售补录单已审核,不能编辑!');
+        return;
+    }
 }
 
 search.addHref = function (row) {
