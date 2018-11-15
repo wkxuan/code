@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\COMPLAINDEPTEntity.cs" />
+    <Compile Include="Auto\COMPLAINTYPEEntity.cs" />
     <Compile Include="Auto\VOUCHEREntity.cs" />
     <Compile Include="Auto\REGIONEntity.cs" />
     <Compile Include="Auto\VOUCHER_RECORDEntity.cs" />

@@ -220,6 +220,8 @@
     <Compile Include="Areas\PPGL\BRAND\BrandController.cs" />
     <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\SPGL\SALEBILL\SaleBillController.cs" />
+    <Compile Include="Areas\WYGL\COMPLAINDEPT\ComplainDeptController.cs" />
+    <Compile Include="Areas\WYGL\COMPLAINTYPE\ComplainTypeController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFilesController.cs" />
@@ -315,6 +317,8 @@
     <Content Include="Areas\SPGL\GOODS\GoodsList.js" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillEdit.js" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillList.js" />
+    <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.js" />
+    <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
@@ -528,6 +532,8 @@
     <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.cshtml" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherList.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintOther.cshtml" />
+    <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.cshtml" />
+    <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

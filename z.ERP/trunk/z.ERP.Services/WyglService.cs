@@ -181,5 +181,25 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtitem);
         }
+
+        public DataGridResult GetComplainDept(SearchItem item)
+        {
+            string sql = $@"select ID,NAME from COMPLAINDEPT where 1=1";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            sql += "order by ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetComplainType(SearchItem item)
+        {
+            string sql = $@"select ID,NAME from COMPLAINTYPE where 1=1";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            sql += "order by ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 }
