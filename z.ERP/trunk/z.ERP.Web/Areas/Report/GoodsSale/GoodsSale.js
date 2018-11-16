@@ -1,29 +1,48 @@
-﻿srch.beforeVue = function () {
-    var col = [
-        {
-            title: '日期', key: 'RQ', width: 100,
-            render: function (h, params) {
-                return h('div',
-                    this.row.RQ.substr(0, 10));
-               //   new Date(this.row.RQ).Format('yyyy-MM-dd'));
-            }
-        },
-        { title: '商品编码', key: 'GOODSDM', width: 95 },
-        { title: '商品条码', key: 'BARCODE', width: 130 },
-        { title: '商品名称', key: 'GOODSNAME', width: 120 },
-        { title: '租约号', key: 'CONTRACTID', width: 95 },
-        { title: '商户编码', key: 'MERCHANTID', width: 90 },
-        { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
-        { title: '分类编码', key: 'KINDCODE', width: 100 },
-        { title: '分类名称', key: 'KINDNAME', width: 100 },
-        { title: '品牌',key:'BRANDNAME',width: 100},
-        { title: '销售金额', key: 'AMOUNT', width: 120, align: "right" },
-        { title: '销售成本', key: 'COST', width: 100, align: "right" },
-        { title: '折扣金额', key: 'DIS_AMOUNT', width: 100, align: "right" },
-        { title: '优惠金额', key: 'PER_AMOUNT', width: 100, align: "right" },
+﻿var colR = [
+    {
+        title: '日期', key: 'RQ', width: 100,
+        render: function (h, params) {
+            return h('div',
+                this.row.RQ.substr(0, 10));
+            //   new Date(this.row.RQ).Format('yyyy-MM-dd'));
+        }
+    },
+    { title: '商品编码', key: 'GOODSDM', width: 95 },
+    { title: '商品条码', key: 'BARCODE', width: 130 },
+    { title: '商品名称', key: 'GOODSNAME', width: 120 },
+    { title: '租约号', key: 'CONTRACTID', width: 95 },
+    { title: '商户编码', key: 'MERCHANTID', width: 90 },
+    { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
+    { title: '分类编码', key: 'KINDCODE', width: 100 },
+    { title: '分类名称', key: 'KINDNAME', width: 100 },
+    { title: '品牌', key: 'BRANDNAME', width: 100 },
+    { title: '销售金额', key: 'AMOUNT', width: 120, align: "right" },
+    { title: '销售成本', key: 'COST', width: 120, align: "right" },
+    { title: '折扣金额', key: 'DIS_AMOUNT', width: 100, align: "right" },
+    { title: '优惠金额', key: 'PER_AMOUNT', width: 100, align: "right" },
 
-    ];
-    srch.screenParam.colDef = col;
+];
+
+var colM = [
+    { title: '年月', key: 'YEARMONTH', width: 100 },
+    { title: '商品编码', key: 'GOODSDM', width: 95 },
+    { title: '商品条码', key: 'BARCODE', width: 130 },
+    { title: '商品名称', key: 'GOODSNAME', width: 120 },
+    { title: '租约号', key: 'CONTRACTID', width: 95 },
+    { title: '商户编码', key: 'MERCHANTID', width: 90 },
+    { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
+    { title: '分类编码', key: 'KINDCODE', width: 100 },
+    { title: '分类名称', key: 'KINDNAME', width: 100 },
+    { title: '品牌', key: 'BRANDNAME', width: 100 },
+    { title: '销售金额', key: 'AMOUNT', width: 120, align: "right" },
+    { title: '销售成本', key: 'COST', width: 120, align: "right" },
+    { title: '折扣金额', key: 'DIS_AMOUNT', width: 100, align: "right" },
+    { title: '优惠金额', key: 'PER_AMOUNT', width: 100, align: "right" },
+
+];
+
+srch.beforeVue = function () {
+    srch.screenParam.colDef = colR;
     srch.service = "ReportService";
     srch.method = "GoodsSale";
 
@@ -59,6 +78,15 @@ srch.otherMethods = {
     changeKind: function (value, selectedData) {
         srch.screenParam.KINDID = value[value.length - 1];
     },
+    changeSrchType: function (value) {
+        if (value == 1) {
+            Vue.set(srch.screenParam, "colDef", colR);
+            Vue.set(srch, "method", "GoodsSale");
+        } else {
+            Vue.set(srch.screenParam, "colDef", colM);
+            Vue.set(srch, "method", "GoodsSaleM");
+        }
+    }
 }
 
 srch.popCallBack = function (data) {

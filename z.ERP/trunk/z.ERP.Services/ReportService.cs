@@ -89,7 +89,7 @@ namespace z.ERP.Services
 
         public DataGridResult GoodsSale(SearchItem item)
         {
-            string sql = $"SELECT D.*,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
+            string sql = $"SELECT D.RQ,D.AMOUNT,D.COST,D.DIS_AMOUNT,D.PER_AMOUNT,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
             sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
             sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
             sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
@@ -107,7 +107,64 @@ namespace z.ERP.Services
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
 
 
-            sql += " ORDER BY  D.RQ,G.MERCHANTID,G.CONTRACTID,D.GOODSID ";
+            sql += " ORDER BY  D.RQ,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+
+            if (count > 0)
+            {
+                string sqlsum = $"SELECT SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT";
+                sqlsum += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
+                sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
+                sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+                item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
+                item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+                item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
+                item.HasKey("CONTRACTID", a => sqlsum += $" and G.CONTRACTID = '{a}'");
+                item.HasDateKey("RQ_START", a => sqlsum += $" and D.RQ >= {a}");
+                item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
+                item.HasKey("MERCHANTID", a => sqlsum += $" and G.MERCHANTID LIKE '%{a}%'");
+                item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
+                item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+                item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
+                item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
+
+                DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
+                DataRow dr = dt.NewRow();
+                dr["GOODSDM"] = "合计";
+                dr["AMOUNT"] = dtSum.Rows[0]["AMOUNT"].ToString();
+                dr["COST"] = dtSum.Rows[0]["COST"].ToString();
+                dr["DIS_AMOUNT"] = dtSum.Rows[0]["DIS_AMOUNT"].ToString();
+                dr["PER_AMOUNT"] = dtSum.Rows[0]["PER_AMOUNT"].ToString();
+                dt.Rows.Add(dr);
+            }
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GoodsSaleM(SearchItem item)
+        {
+            string sql = $"SELECT D.YEARMONTH,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
+            sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME,";
+            sql += " sum(D.AMOUNT) AMOUNT,sum(D.COST) COST,sum(D.DIS_AMOUNT) DIS_AMOUNT,sum(D.PER_AMOUNT) PER_AMOUNT";
+            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
+            sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
+            sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+            item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
+            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
+            item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
+            item.HasDateKey("RQ_START", a => sql += $" and D.RQ >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
+            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
+
+            sql += " GROUP BY D.YEARMONTH,M.NAME,G.CONTRACTID,G.MERCHANTID,";
+            sql += " B.NAME,K.CODE,K.NAME,G.GOODSDM,G.BARCODE,G.NAME";
+
+            sql += " ORDER BY D.YEARMONTH,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
 

@@ -265,6 +265,12 @@ namespace z.ERP.Entities.Enum
         终止 = 3,
     }
 
+    public enum 查询类型
+    {
+        日数据 = 1,
+        月数据 = 2
+    }
+
     public enum 日处理步骤
     {
         成功 = 0,
