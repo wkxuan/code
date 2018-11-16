@@ -106,7 +106,8 @@ namespace z.ERP.Entities.Enum
         优惠券 = 3,
         银行卡 = 4,
         支付宝 = 5,
-        微信 = 6
+        微信 = 6,
+        扫码支付 = 7
     }
     public enum 单元类型
     {
