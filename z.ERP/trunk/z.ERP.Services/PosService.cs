@@ -147,7 +147,7 @@ namespace z.ERP.Services
                 cashierid = saleDt.Rows[0][4].ToString().ToInt(),
                 sale_amount = saleDt.Rows[0][5].ToString().ToDecimal(),
                 change_amount = saleDt.Rows[0][6].ToString().ToDecimal(),
-                member_cardid = saleDt.Rows[0][7].ToString().ToInt(),
+                member_cardid = saleDt.Rows[0][7].ToString(),
                 crm_recordid = saleDt.Rows[0][8].ToString().ToInt(),
                 posno_old = saleDt.Rows[0][9].ToString(),
                 dealid_old = saleDt.Rows[0][10].ToString().ToInt(),
