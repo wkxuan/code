@@ -19,15 +19,16 @@ namespace z.ERP.WebService.Wcf.Tests
                 RequestDTO dto = new RequestDTO()
                 {
                     SecretKey = "fjRVf+gZB+h1a+wXW2wOANRfaqn95kr0A9zPTpkW+D8ADbj421cRkF0+vYUCTzpEeZZuRqu5K9s50TgqbiJyaezcsU/z5E1lc2XnIyHOiBASwsMka93Mkwljk91bL20Vvh/jU5jGFf6wKorBjvjL7jTG7Cbo0CtWZ95Ip5Q0dAE=",
-                    ServiceName = "a",
-                    Context = new SaleRequest()
+                    ServiceName = "GetVipCard",
+                    Context = new GetVipCardRequest()
                     {
-                        // account_date="2018-"
+                        condType = 1,
+                        condValue = "123123"
                     }.ToJson()
                 };
                 ServiceTransfer st = new ServiceTransfer();
                 ResponseDTO res = st.Do(dto);
-                var ress = res.Context.ToObj<List<FindGoodsResult>>();
+                var ress = res.Context.ToObj<VipCard>();
             }
             catch (Exception ex)
             {

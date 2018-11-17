@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using z.ERP.API.PosServiceAPI;
 using z.ERP.Entities.Service.Pos;
 using z.ERP.WebService.Model;
 
@@ -65,6 +66,12 @@ namespace z.ERP.WebService.Controllers
         public SaleSummaryResult GetSaleSummary(SaleSummaryFilter filter)
         {
             return service.PosService.GetSaleSummary(filter);
+        }
+
+        [ServiceAble("GetVipCard")]
+        public VipCard GetVipCard(GetVipCardRequest Request)
+        {
+            return service.PosService.GetVipCard(Request);
         }
     }
 }

@@ -111,6 +111,10 @@
     <Compile Include="Model\RequestDTO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\z.ERP.API\z.ERP.API.csproj">
+      <Project>{91882EE9-BF22-4B43-85A4-AA9CECB65C48}</Project>
+      <Name>z.ERP.API</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.ERP.Entities\z.ERP.Entities.csproj">
       <Project>{4115fe85-9e35-45e1-bfe9-c19f62bab612}</Project>
       <Name>z.ERP.Entities</Name>
