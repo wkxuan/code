@@ -172,7 +172,7 @@ namespace z.ERP.Services
                 return ioc.Create<CwglService>();
             }
         }
-        
+
         #endregion
 
         #region 通用方法
@@ -346,6 +346,24 @@ namespace z.ERP.Services
             }
         }
 
+
+        #endregion
+
+        #region 配置
+
+        /// <summary>
+        /// 获取配置信息
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public string GetConfig(string ID)
+        {
+            CONFIGEntity e = DbHelper.Select(new CONFIGEntity(ID));
+            if (e == null)
+                throw new Exception($"找不到配置{ID}");
+            return e.CUR_VAL;
+        }
 
         #endregion
     }

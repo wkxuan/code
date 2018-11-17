@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.ERP.WebServiceTests", "z.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.ERP.Console", "z.ERP.Console\z.ERP.Console.csproj", "{C0B4FD6D-EAC2-480F-ADB2-798A1106B835}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.ERP.API", "z.ERP.API\z.ERP.API.csproj", "{91882EE9-BF22-4B43-85A4-AA9CECB65C48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,10 @@ Global
 		{C0B4FD6D-EAC2-480F-ADB2-798A1106B835}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0B4FD6D-EAC2-480F-ADB2-798A1106B835}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0B4FD6D-EAC2-480F-ADB2-798A1106B835}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91882EE9-BF22-4B43-85A4-AA9CECB65C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91882EE9-BF22-4B43-85A4-AA9CECB65C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91882EE9-BF22-4B43-85A4-AA9CECB65C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91882EE9-BF22-4B43-85A4-AA9CECB65C48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

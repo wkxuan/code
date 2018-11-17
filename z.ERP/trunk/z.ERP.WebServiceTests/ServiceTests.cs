@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using z.ERP.API.PosServiceAPI;
 using z.ERP.Entities.Service.Pos;
 using z.ERP.Services;
 using z.Extensions;
@@ -40,6 +41,22 @@ namespace z.ERP.WebService.Wcf.Tests
             {
                 ServiceBase service = new ServiceBase();
                 service.CommonService.a();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        [TestMethod()]
+        public void bbbbbbbbb()
+        {
+            try
+            {
+                ServiceBase service = new ServiceBase();
+                var a = service.PosService.GetVipCard(new GetVipCardRequest()
+                {
+                    condType = 1,
+                    condValue = "123123"
+                });
             }
             catch (Exception ex)
             {

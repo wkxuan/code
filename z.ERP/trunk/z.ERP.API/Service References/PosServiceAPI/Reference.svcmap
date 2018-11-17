@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="da523a45-b703-4575-aafb-ecf59861e1b7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://139.129.134.65:7019/ABCWcfService.svc/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="d75f6c42-4fac-4d48-8236-dc652fa92965" SourceId="1" SourceUrl="http://139.129.134.65:7019/ABCWcfService.svc/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="a94ffa39-4af8-40ce-a219-c81e9a023a77" SourceId="1" SourceUrl="http://139.129.134.65:7019/ABCWcfService.svc/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="2ada8e13-5007-4845-a0bc-3afbdf9f1049" SourceId="1" SourceUrl="http://139.129.134.65:7019/ABCWcfService.svc/mex" />
+    <MetadataFile FileName="ChangYi.Crm.Server.Wcf.xsd" MetadataType="Schema" ID="082b0aad-bf8c-4a9c-a9cd-5fe3dcbb9d10" SourceId="1" SourceUrl="http://139.129.134.65:7019/ABCWcfService.svc/mex" />
+    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="21b8e3ed-4e5c-4145-9462-c6bfaf381b71" SourceId="1" SourceUrl="http://139.129.134.65:7019/ABCWcfService.svc/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

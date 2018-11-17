@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -73,6 +74,10 @@
     <ProjectReference Include="..\z.DbHelper\z.DbHelper.csproj">
       <Project>{DA64E4E3-1857-4B57-A6D9-ABBDB092E7E4}</Project>
       <Name>z.DbHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\z.ERP.API\z.ERP.API.csproj">
+      <Project>{91882ee9-bf22-4b43-85a4-aa9cecb65c48}</Project>
+      <Name>z.ERP.API</Name>
     </ProjectReference>
     <ProjectReference Include="..\z.ERP.Entities\z.ERP.Entities.csproj">
       <Project>{4115fe85-9e35-45e1-bfe9-c19f62bab612}</Project>

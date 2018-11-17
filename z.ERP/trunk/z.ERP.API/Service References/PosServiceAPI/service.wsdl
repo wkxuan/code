@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="POSService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IPOSService_GetVipCard_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVipCard" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetVipCard_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVipCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_UpdateVipInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateVipInfo" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_UpdateVipInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateVipInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_UpdateVipCent_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateVipCent" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_UpdateVipCent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateVipCentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetArticleVipDisc_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetArticleVipDisc" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetArticleVipDisc_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetArticleVipDiscResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetCashCard_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCashCard" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetCashCard_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCashCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetVipCoupon_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVipCoupon" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetVipCoupon_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVipCouponResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetVipCouponToPay_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVipCouponToPay" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetVipCouponToPay_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVipCouponToPayResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetVipCouponPayLimit_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVipCouponPayLimit" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_GetVipCouponPayLimit_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVipCouponPayLimitResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_PrepareTransCashCardPayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:PrepareTransCashCardPayment" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_PrepareTransCashCardPayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PrepareTransCashCardPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_PrepareTransCashCardPayment2_InputMessage">
+    <wsdl:part name="parameters" element="tns:PrepareTransCashCardPayment2" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_PrepareTransCashCardPayment2_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PrepareTransCashCardPayment2Response" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_ConfirmTransCashCardPayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmTransCashCardPayment" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_ConfirmTransCashCardPayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmTransCashCardPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_CancelTransCashCardPayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:CancelTransCashCardPayment" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_CancelTransCashCardPayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CancelTransCashCardPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_PrepareTransCouponPayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:PrepareTransCouponPayment" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_PrepareTransCouponPayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PrepareTransCouponPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_PrepareTransCouponPayment2_InputMessage">
+    <wsdl:part name="parameters" element="tns:PrepareTransCouponPayment2" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_PrepareTransCouponPayment2_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PrepareTransCouponPayment2Response" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_ConfirmTransCouponPayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmTransCouponPayment" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_ConfirmTransCouponPayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConfirmTransCouponPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_CancelTransCouponPayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:CancelTransCouponPayment" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_CancelTransCouponPayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CancelTransCouponPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_SaveRSaleBillArticles_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveRSaleBillArticles" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_SaveRSaleBillArticles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveRSaleBillArticlesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_SaveRSaleBackBillArticles_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveRSaleBackBillArticles" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_SaveRSaleBackBillArticles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveRSaleBackBillArticlesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_CalcRSaleBillDecMoney_InputMessage">
+    <wsdl:part name="parameters" element="tns:CalcRSaleBillDecMoney" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_CalcRSaleBillDecMoney_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CalcRSaleBillDecMoneyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_PrepareCheckOutRSaleBill_InputMessage">
+    <wsdl:part name="parameters" element="tns:PrepareCheckOutRSaleBill" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_PrepareCheckOutRSaleBill_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PrepareCheckOutRSaleBillResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_CheckOutRSaleBill_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckOutRSaleBill" />
+  </wsdl:message>
+  <wsdl:message name="IPOSService_CheckOutRSaleBill_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckOutRSaleBillResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IPOSService">
+    <wsdl:operation name="GetVipCard">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/GetVipCard" message="tns:IPOSService_GetVipCard_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/GetVipCardResponse" message="tns:IPOSService_GetVipCard_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVipInfo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/UpdateVipInfo" message="tns:IPOSService_UpdateVipInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/UpdateVipInfoResponse" message="tns:IPOSService_UpdateVipInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVipCent">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/UpdateVipCent" message="tns:IPOSService_UpdateVipCent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/UpdateVipCentResponse" message="tns:IPOSService_UpdateVipCent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetArticleVipDisc">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/GetArticleVipDisc" message="tns:IPOSService_GetArticleVipDisc_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/GetArticleVipDiscResponse" message="tns:IPOSService_GetArticleVipDisc_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCashCard">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/GetCashCard" message="tns:IPOSService_GetCashCard_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/GetCashCardResponse" message="tns:IPOSService_GetCashCard_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCoupon">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/GetVipCoupon" message="tns:IPOSService_GetVipCoupon_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/GetVipCouponResponse" message="tns:IPOSService_GetVipCoupon_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCouponToPay">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/GetVipCouponToPay" message="tns:IPOSService_GetVipCouponToPay_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/GetVipCouponToPayResponse" message="tns:IPOSService_GetVipCouponToPay_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCouponPayLimit">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/GetVipCouponPayLimit" message="tns:IPOSService_GetVipCouponPayLimit_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/GetVipCouponPayLimitResponse" message="tns:IPOSService_GetVipCouponPayLimit_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCashCardPayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/PrepareTransCashCardPayment" message="tns:IPOSService_PrepareTransCashCardPayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/PrepareTransCashCardPaymentResponse" message="tns:IPOSService_PrepareTransCashCardPayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCashCardPayment2">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/PrepareTransCashCardPayment2" message="tns:IPOSService_PrepareTransCashCardPayment2_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/PrepareTransCashCardPayment2Response" message="tns:IPOSService_PrepareTransCashCardPayment2_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmTransCashCardPayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/ConfirmTransCashCardPayment" message="tns:IPOSService_ConfirmTransCashCardPayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/ConfirmTransCashCardPaymentResponse" message="tns:IPOSService_ConfirmTransCashCardPayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelTransCashCardPayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/CancelTransCashCardPayment" message="tns:IPOSService_CancelTransCashCardPayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/CancelTransCashCardPaymentResponse" message="tns:IPOSService_CancelTransCashCardPayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCouponPayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/PrepareTransCouponPayment" message="tns:IPOSService_PrepareTransCouponPayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/PrepareTransCouponPaymentResponse" message="tns:IPOSService_PrepareTransCouponPayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCouponPayment2">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/PrepareTransCouponPayment2" message="tns:IPOSService_PrepareTransCouponPayment2_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/PrepareTransCouponPayment2Response" message="tns:IPOSService_PrepareTransCouponPayment2_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmTransCouponPayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/ConfirmTransCouponPayment" message="tns:IPOSService_ConfirmTransCouponPayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/ConfirmTransCouponPaymentResponse" message="tns:IPOSService_ConfirmTransCouponPayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelTransCouponPayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/CancelTransCouponPayment" message="tns:IPOSService_CancelTransCouponPayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/CancelTransCouponPaymentResponse" message="tns:IPOSService_CancelTransCouponPayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveRSaleBillArticles">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/SaveRSaleBillArticles" message="tns:IPOSService_SaveRSaleBillArticles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/SaveRSaleBillArticlesResponse" message="tns:IPOSService_SaveRSaleBillArticles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveRSaleBackBillArticles">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/SaveRSaleBackBillArticles" message="tns:IPOSService_SaveRSaleBackBillArticles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/SaveRSaleBackBillArticlesResponse" message="tns:IPOSService_SaveRSaleBackBillArticles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CalcRSaleBillDecMoney">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/CalcRSaleBillDecMoney" message="tns:IPOSService_CalcRSaleBillDecMoney_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/CalcRSaleBillDecMoneyResponse" message="tns:IPOSService_CalcRSaleBillDecMoney_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareCheckOutRSaleBill">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/PrepareCheckOutRSaleBill" message="tns:IPOSService_PrepareCheckOutRSaleBill_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/PrepareCheckOutRSaleBillResponse" message="tns:IPOSService_PrepareCheckOutRSaleBill_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckOutRSaleBill">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPOSService/CheckOutRSaleBill" message="tns:IPOSService_CheckOutRSaleBill_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPOSService/CheckOutRSaleBillResponse" message="tns:IPOSService_CheckOutRSaleBill_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IPOSService" type="tns:IPOSService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetVipCard">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/GetVipCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVipInfo">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/UpdateVipInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVipCent">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/UpdateVipCent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetArticleVipDisc">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/GetArticleVipDisc" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCashCard">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/GetCashCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCoupon">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/GetVipCoupon" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCouponToPay">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/GetVipCouponToPay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCouponPayLimit">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/GetVipCouponPayLimit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCashCardPayment">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/PrepareTransCashCardPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCashCardPayment2">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/PrepareTransCashCardPayment2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmTransCashCardPayment">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/ConfirmTransCashCardPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelTransCashCardPayment">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/CancelTransCashCardPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCouponPayment">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/PrepareTransCouponPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCouponPayment2">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/PrepareTransCouponPayment2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmTransCouponPayment">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/ConfirmTransCouponPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelTransCouponPayment">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/CancelTransCouponPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveRSaleBillArticles">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/SaveRSaleBillArticles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveRSaleBackBillArticles">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/SaveRSaleBackBillArticles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalcRSaleBillDecMoney">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/CalcRSaleBillDecMoney" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareCheckOutRSaleBill">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/PrepareCheckOutRSaleBill" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckOutRSaleBill">
+      <soap:operation soapAction="http://tempuri.org/IPOSService/CheckOutRSaleBill" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="POSService">
+    <wsdl:port name="BasicHttpBinding_IPOSService" binding="tns:BasicHttpBinding_IPOSService">
+      <soap:address location="http://iz28688f5stz:7019/ABCWcfService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
