@@ -34,7 +34,7 @@ namespace z.ERP.Entities.Service.Pos
         {
             get; set;
         }
-        public int member_cardid
+        public string member_cardid
         {
             get; set;
         }

@@ -93,6 +93,12 @@ namespace z.ERP.Entities.Enum
         停用 = 2,
     }
 
+    public enum 通知单生成方式
+    {
+        租金 = 1,
+        提成租金 = 2,
+    }
+
     public enum 支付方式类型
     {
         现金 = 1,
@@ -100,7 +106,8 @@ namespace z.ERP.Entities.Enum
         优惠券 = 3,
         银行卡 = 4,
         支付宝 = 5,
-        微信 = 6
+        微信 = 6,
+        扫码支付 = 7
     }
     public enum 单元类型
     {
@@ -199,6 +206,13 @@ namespace z.ERP.Entities.Enum
         全部付款 = 4
     }
 
+    public enum 通知单类型
+    {
+        其它 = 1,
+        月末 = 2
+    }
+
+
     public enum 周期方式
     {
         合同起始日期 = 1,
@@ -249,6 +263,12 @@ namespace z.ERP.Entities.Enum
         未审核 = 1,
         审核 = 2,
         终止 = 3,
+    }
+
+    public enum 查询类型
+    {
+        日数据 = 1,
+        月数据 = 2
     }
 
     public enum 日处理步骤

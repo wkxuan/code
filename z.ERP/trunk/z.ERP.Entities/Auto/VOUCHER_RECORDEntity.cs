@@ -36,6 +36,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 分录编号
         /// <summary>
+        [PrimaryKey]
         [Field("分录编号")]
         public string RECORDID
         {
@@ -91,6 +92,22 @@ namespace z.ERP.Entities
         /// </summary>
         [Field("部门关键字")]
         public string SQLCOLTOORG
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 商户关键字
+        /// </summary>
+        [Field("楼层关键字")]
+        public string SQLCOLTOFLOOR
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 商户关键字
+        /// </summary>
+        [Field("品类关键字")]
+        public string SQLCOLTOCATEGORY
         {
             get; set;
         }

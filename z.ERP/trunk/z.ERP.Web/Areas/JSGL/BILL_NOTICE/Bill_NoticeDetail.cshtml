@@ -24,14 +24,30 @@
                 Click = "exec",
             });
         }
-        else
+
+
+        RenderControl(new ButtonRender()
         {
-            RenderControl(new ButtonRender()
-            {
-                Text = "打印",
-                Click = "Print",
-            });
-        }
+            Text = "打印",
+            Click = "Print",
+        });
+
+      @*  if (@billNotice.STATUS == "1")
+    {
+        RenderControl(new ButtonRender()
+        {
+            Text = "审核",
+            Click = "exec",
+        });
+    }
+    else
+    {
+        RenderControl(new ButtonRender()
+        {
+            Text = "打印",
+            Click = "Print",
+        });
+    } *@
     }
 }
 
@@ -44,6 +60,10 @@
     <i-col span="2" class="RowTitle">门店名称</i-col>
     <i-col span="4">
         <i-input v-model="BRANCHNAME" readonly="true"></i-input>
+    </i-col>
+    <i-col span="2" class="RowTitle">类型</i-col>
+    <i-col span="4">
+        <i-input v-model="TYPEMC" readonly="true"></i-input>
     </i-col>
     <i-col span="2" class="RowTitle">状态</i-col>
     <i-col span="4">
@@ -59,6 +79,10 @@
     <i-col span="4">
         <i-input v-model="MERCHANTNAME" readonly="true"></i-input>
     </i-col>
+    <i-col span="2" class="RowTitle">年月</i-col>
+    <i-col span="4">
+        <i-input v-model="NIANYUE" readonly="true"></i-input>
+    </i-col>
 </row>
 <row>
     <i-col span="2" class="RowTitle">备注</i-col>
@@ -70,7 +94,7 @@
 <row>
     <i-col span="18">
         <i-table size="small" border="true"
-                 :columns="colDef" :data="NOTICE_ITEM" height="200"></i-table>
+                 :columns="colDef" :data="NOTICE_ITEM" height="400"></i-table>
     </i-col>
 </row>
 }
@@ -87,12 +111,14 @@
                 BRANCHNAME:"@billNotice.BRANCHNAME",
                 STATUSMC:"@billNotice.STATUSMC",
                 NIANYUE:"@billNotice.NIANYUE",
+                TYPEMC:"@billNotice.TYPEMC",
                 CONTRACTID:"@billNotice.CONTRACTID",
                 MERCHANTNAME:"@billNotice.MERCHANTNAME",
                 DESCRIPTION:"@billNotice.DESCRIPTION",
                 colDef : [
-                {title: "账单号", key: 'FINAL_BILLID', width: 100},
-                { title: '收费项目', key: 'TERMMC', width: 100 },
+                { title: "账单号", key: 'FINAL_BILLID', width: 100},
+                { title: '债权发生月', key: 'NIANYUE', width: 100 },
+                { title: '收费项目', key: 'TERMMC', width: 200 },
                 { title: '应收金额', key: 'MUST_MONEY', width: 100 },
                 { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
                 { title: '通知金额', key: 'NOTICE_MONEY', width: 100 }
@@ -122,11 +148,23 @@
                 },
                 Print :function (event) {
                     event.stopPropagation();
-                    _.OpenPage({
-                        id: 10700501,
-                        title: '打印',
-                        url: "JSGL/BILL_NOTICE/Bill_Notice_Print/" + @billNotice.BILLID,
-                    });
+
+                    if(@billNotice.TYPE == "2"){
+                        _.OpenPage({
+                            id: 10700501,
+                            title: '打印',
+                            url: "JSGL/BILL_NOTICE/Bill_Notice_Print/" + @billNotice.BILLID,
+                        })
+                    }
+                    else
+                    {
+                        _.OpenPage({
+                            id: 10700501,
+                            title: '打印',
+                            url: "JSGL/BILL_NOTICE/Bill_Notice_PrintOther/" + @billNotice.BILLID,
+                        })
+                    }
+;
                 }
             }
         });

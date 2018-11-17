@@ -11,6 +11,9 @@
     editDetail.screenParam.popParam = {};
     editDetail.dataParam.BILL_NOTICE_ITEM = [];
 
+    editDetail.dataParam.NIANYUE = (new Date()).getFullYear() + ('0' + ((new Date()).getMonth() + 1)).substr(-2); //默认当前年月
+    editDetail.dataParam.TYPE = 1;
+
     editDetail.screenParam.colDef = [
     //{
     //    title: "账单号", key: 'FINAL_BILLID', width: 160,
@@ -32,7 +35,8 @@
     //    },
     //},
     { title: '账单号', key: 'FINAL_BILLID', width: 100 },
-    { title: '收费项目', key: 'TERMMC', width: 100 },
+    { title: '债权发生月', key: 'NIANYUE', width: 100 },
+    { title: '收费项目', key: 'TERMMC', width: 200 },
     { title: "应收金额", key: 'MUST_MONEY', width: 100 },
     { title: "未付金额", key: 'UNPAID_MONEY', width: 100 },
     {
@@ -85,6 +89,12 @@
         editDetail.dataParam.BILL_NOTICE_ITEM = temp;
     }
 }
+
+editDetail.newRecord = function () {
+    editDetail.dataParam.NIANYUE = (new Date()).getFullYear() + ('0'+((new Date()).getMonth() + 1)).substr(-2); //默认当前年月
+    editDetail.dataParam.TYPE = 1;
+}
+
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchBill_Notice', {
         Data: { BILLID: data }
@@ -117,7 +127,8 @@ editDetail.otherMethods = {
         editDetail.screenParam.showPopBill = true;
         editDetail.screenParam.popParam = {
             BRANCHID: editDetail.dataParam.BRANCHID,
-            CONTRACTID: editDetail.dataParam.CONTRACTID
+            CONTRACTID: editDetail.dataParam.CONTRACTID,
+            WFDJ: 1
         };
     }
 }
@@ -149,6 +160,7 @@ editDetail.popCallBack = function (data) {
                 return parseInt(item.FINAL_BILLID) === data.sj[i].BILLID; }).length === 0))
                 editDetail.dataParam.BILL_NOTICE_ITEM.push({
                     FINAL_BILLID: data.sj[i].BILLID,
+                    NIANYUE: data.sj[i].NIANYUE,
                     TERMMC: data.sj[i].TERMMC,
                     MUST_MONEY: data.sj[i].MUST_MONEY,
                     UNPAID_MONEY: data.sj[i].UNPAID_MONEY,

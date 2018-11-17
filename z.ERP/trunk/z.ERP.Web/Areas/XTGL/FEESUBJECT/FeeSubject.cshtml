@@ -22,7 +22,7 @@
             名称
         </i-col>
         <i-col span="6">
-            @{ 
+            @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.NAME",
@@ -35,11 +35,11 @@
     <row>
         <i-col span="3" class="RowTitle">拼音码</i-col>
         <i-col span="6">
-            @{ 
+            @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.PYM",
-                    Enable=false
+                    Enable = false
                 });
             }
         </i-col>
@@ -48,29 +48,29 @@
             项目类型
         </i-col>
         <i-col span="6">
-            @{ 
+            @{
                 RenderControl(new EnumDropDownListRender<收费项目类型>()
                 {
-                    vModel= "dataParam.TYPE",
-                    Enable=false,
+                    vModel = "dataParam.TYPE",
+                    Enable = false,
                 });
             }
         </i-col>
     </row>
     <row>
         @*<i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>
-            成本费用
-        </i-col>
-        <i-col span="6">
-            @{ 
-                RenderControl(new EnumDropDownListRender<收费项目成本费用>()
-                {
-                    vModel= "dataParam.ACCOUNT",
-                    Enable=false
-                });
-            }
-        </i-col>*@
+                <span class="mustElement">*</span>
+                成本费用
+            </i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new EnumDropDownListRender<收费项目成本费用>()
+                    {
+                        vModel= "dataParam.ACCOUNT",
+                        Enable=false
+                    });
+                }
+            </i-col>*@
 
 
 
@@ -108,6 +108,17 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.SUBJECT_CODE",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">通知单生成方式</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<通知单生成方式>()
+                {
+                    vModel = "dataParam.SCFS_TZD",
                     Enable = false
                 });
             }

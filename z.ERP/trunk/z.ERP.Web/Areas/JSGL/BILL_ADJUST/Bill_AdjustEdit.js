@@ -136,7 +136,13 @@ editDetail.beforeVue = function () {
     ///添加一行
     editDetail.screenParam.addCol = function () {
         var temp = editDetail.dataParam.BILL_ADJUST_ITEM || [];
-        temp.push({});
+        temp.push({
+            CONTRACTID: "",
+            MERCHANTNAME: "",
+            TERMID: "",
+            TERMNAME: "",
+            MUST_MONEY: "",
+        });
         editDetail.dataParam.BILL_ADJUST_ITEM = temp;
     }
     ///选择收费项目
@@ -180,6 +186,17 @@ editDetail.popCallBack = function (data) {
     else if (editDetail.screenParam.showPopFeeSubject) {
         editDetail.screenParam.showPopFeeSubject = false;
         for (var i = 0; i < data.sj.length; i++) {
+            //for (var i = 0; i < data.sj.length; i++) {
+            //    if ((editDetail.dataParam.BILL_ADJUST_ITEM.length === 0)
+            //        || (editDetail.dataParam.BILL_ADJUST_ITEM.length > 0
+            //        && editDetail.dataParam.BILL_ADJUST_ITEM.filter(function (item) {
+            //        return parseInt(item.TERMID) === data.sj[i].TERMID;
+            //    }).length === 0))
+            //        editDetail.dataParam.ASSETCHANGEITEM.push({
+            //            CONTRACTID: data.sj[i].CONTRACTID,
+            //            MERCHANTNAME: data.sj[i].MERCHANTNAME
+            //        });
+            //}
             editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMID = data.sj[i].TERMID;
             editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMNAME = data.sj[i].NAME;
         }

@@ -22,5 +22,10 @@ namespace z.ERP.Web.Areas.Report.ContractSale
                 }
             );
         }
+
+        public string Output(SearchItem item)
+        {
+            return service.ReportService.ContractSaleOutput(item);
+        }
     }
 }

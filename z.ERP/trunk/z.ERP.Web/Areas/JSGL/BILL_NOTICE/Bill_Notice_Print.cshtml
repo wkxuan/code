@@ -14,65 +14,106 @@
 
 @section content{
     <table border="0" cellpadding="0" cellspacing="0" class="noborder">
-        <caption>
-            <h1>
-                商户缴费通知单
-            </h1>
-        </caption>
         <tr>
-            <td colspan="4" style="text-align:right">
-                <span id="BOX"></span>
-                <br />
+            <td>
+                <table style="width: 90%;" border="0">
+                    <tr>
+                        <td>
+                            <img align="left" src="~/File/PrintLogo/leftlogo.png" />
+                        </td>
+                        <td>
+                            <h1 align="center">商户缴费通知单</h1>
+                        </td>
+                        <td>
+                            <img align="right" src="~/File/PrintLogo/rightlogo.png" />
+                        </td>
+                    </tr>
+                </table>
             </td>
-        </tr>
-        <tr>
+       </tr>
 
-            <td colspan="4" style="padding-left: 5px;">
-                <table style="width: 90%;">
+        <tr>
+            <td colspan="3">
+                <table style="width: 90%;" border="1">
                     <tr style="line-height: 20px;">
-                        <td  class="leftRow">
-                            单据编号：
+                        <td colspan="2">
+                            单据编号：@billNotice.BILLID
                         </td>
-                        <td  class="rightRow">
-                            @billNotice.BILLID
-                        </td>
-                        <td  class="leftRow">
-                            出账月份：
-                        </td>
-                        <td  class="rightRow">
-                            @billNotice.CZNY
+                        <td colspan="2" >
+                            出账月份：@billNotice.NIANYUE
                         </td>
                     </tr>
                     <tr style="line-height: 20px;">
-                        <td class="leftRow">
-                            商户：
+                        <td colspan="4">
+                            开具单位：@billNotice.PRINTNAME
                         </td>
-                        <td class="rightRow">
+                    </tr>
+                    <tr style="line-height: 20px;">
+                        <td >
+                            缴费单位
+                        </td>
+                        <td colspan="3">
                             @billNotice.MERCHANTNAME
                         </td>
-                        <td class="leftRow">
-                            租约：
+                    </tr>
+                    <tr>
+                        <td>
+                            铺位号
                         </td>
-                        <td class="rightRow">
-                            @billNotice.CONTRACTID
-                        </td>
-                        <td class="leftRow">
-                            商铺：
-                        </td>
-                        <td class="rightRow">
+                        <td>
                             @billNotice.SHOPDM
+                        </td>
+                        <td>
+                            品牌名称
+                        </td>
+                        <td>
+                            @billNotice.BRANDNAME
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            租赁面积（平方米）
+                        </td>
+                        <td>
+                            @billNotice.AREA_RENTABLE
+                        </td>
+                        <td>
+                            销售额（元）
+                        </td>
+                        <td>
+                          @{ 
+                              @billNotice.AMOUNT.ToString("N")
+                           }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            固定租金（元）
+                        </td>
+                        <td>
+                          @{ 
+                               @billNotice.RENTS.ToString("N")
+                            }
+                        </td>
+                        <td>
+                            扣率租金（元）
+                        </td>
+                        <td>
+                          @{  
+                              @billNotice.KLZJ.ToString("N")
+                            }
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td id="datatable" colspan="4">
+            <td id="datatable" colspan="3">
                 <table class="table" border="1" cellpadding="1" cellspacing="1" style="width: 90%;">
                     <thead>
                         <tr>
-                            <th style="width: 15%">
-                                类型
+                            <th style="width: 15%" >
+                                 
                             </th>
                             <th style="width: 15%">
                                 项目
@@ -80,7 +121,7 @@
                             <th style="width: 15%">
                                 所属期间
                             </th>
-                            <th style="width: 20%">
+                            <th style="width: 20%" >
                                 账单金额
                             </th>
                             <th style="width: 20%">
@@ -90,28 +131,77 @@
                     </thead>
                     <tbody>
                         @{
+                            int i = 0;
                             foreach (DataRow dr in billNoticeItem.Rows)
                             {
                                 <tr>
-                                    <td>@dr["BILLTYPE"].ToString()</td>
+                                    @if (i == 0)
+                                    {
+                                        <td rowspan="@billNoticeItem.Rows.Count">
+                                            缴费明细
+                                        </td>
+                                    }
+
+                               @*     <td>@dr["BILLTYPE"].ToString()</td> *@
                                     <td>@dr["TERMMC"].ToString()</td>
                                     <td>@dr["FYQJ"].ToString()</td>
-                                    <td>@dr["MUST_MONEY"].ToString()</td>
-                                    <td>@dr["NOTICE_MONEY"].ToString()</td>
+                                    <td>
+                                        @float.Parse(@dr["MUST_MONEY"].ToString()).ToString("N")                                    
+                                    </td>
+                                    <td>
+                                        @float.Parse(@dr["NOTICE_MONEY"].ToString()).ToString("N")
+                                    </td>
                                 </tr>
+                                i++;
                             }
                         }
                     </tbody>
                     <tfoot>
                         <tr>
                             <td style="text-align: center" colspan="3">
-                                合&nbsp;&nbsp;计
+                                合计人民币
                             </td>
                             <td style="text-align: center">
-                                <span>@billNotice.MUST_MONEY</span>
+                                <span>
+                                    @{
+                                        @billNotice.MUST_MONEY.ToString("N")
+                                    }
+                                </span>
                             </td>
                             <td style="text-align: center">
-                                <span>@billNotice.NOTICE_MONEY</span>
+                                <span>
+                                    @{
+                                        @billNotice.NOTICE_MONEY.ToString("N")
+                                    }
+                                
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">
+                                付款信息
+                            </td>
+                            <td>
+                                单位名称
+                            </td>
+                            <td  colspan="3">
+                                @billNotice.PRINTNAME
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                开户银行
+                            </td>
+                            <td colspan="3">
+                                @billNotice.BANK
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                银行账号
+                            </td>
+                            <td  colspan="3">
+                                @billNotice.ACCOUNT
                             </td>
                         </tr>
                     </tfoot>
@@ -119,24 +209,26 @@
             </td>
         </tr>
         <tfoot>
+
+     <tr>
+        <td colspan="4">
+            <table style="width: 90%;">
+                <tr>
+                    <td style="text-align: left; width: 60%; padding-right: 10px; font-size: 11px">
+                        中国 西安市 雁塔区 小寨西路232号 MOMOPARK购物中心
+                        <br>
+                        Momopark Shopping Center,No.232,Xiaozhai West Road,Yanta District,Xi’an,China<br>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
             <tr>
                 <td colspan="4">
                     <table style="width: 90%;">
                         <tr>
-                            <td style="text-align: right; width: 60%; padding-right: 10px;">
+                            <td style="text-align: right; width: 60%; padding-right: 10px;" font-size: 9px">
                                 打印时间：<span>@ViewBag.CurrentDate</span>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <table style="width: 90%;">
-                        <tr>
-                            <td style="text-align: left; width: 60%; padding-right: 10px;">
-                                备注：<br>
-                                1.请于 YYYY-MM-DD 之前缴付上述款项，请注明缴费项目和期间：<br>            
                             </td>
                         </tr>
                     </table>

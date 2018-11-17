@@ -36,6 +36,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// SQLINX
         /// <summary>
+        [PrimaryKey]
         [Field("SQLINX")]
         public string SQLINX
         {

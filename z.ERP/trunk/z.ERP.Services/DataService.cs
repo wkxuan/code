@@ -247,6 +247,21 @@ namespace z.ERP.Services
             string sql = $@"SELECT A.ID,A.NAME FROM BRANCH A WHERE 1=1";
             if (!Data.ID.IsEmpty())
                 sql += (" and A.ID= " + Data.ID);
+            sql += " and STATUS = 1";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt
+            };
+        }
+
+        public object GetRegion(REGIONEntity Data)
+        {
+            string sql = $@"SELECT A.REGIONID,A.CODE,A.NAME FROM REGION A WHERE 1=1";
+            if (!Data.BRANCHID.IsEmpty())
+                sql += (" and A.BRANCHID= " + Data.BRANCHID);
+            sql += " AND A.STATUS = 1 ORDER BY A.CODE";
+            
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new
             {
@@ -258,6 +273,9 @@ namespace z.ERP.Services
             string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
+            if (!Data.REGIONID.IsEmpty())
+                sql += (" and A.REGIONID= " + Data.REGIONID);
+            sql += " and STATUS = 1 ORDER BY A.CODE";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new
             {
@@ -320,6 +338,7 @@ namespace z.ERP.Services
 
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and G.STATUS IN ({a})");
             item.HasKey("NAME", a => sql += $" and G.NAME like '%{a}%'");
             item.HasKey("YYY", a => sql += $" and exists(select 1 from SYSUSER S where P.SHOPID = S.SHOPID and S.USERID = '{a}')");
             

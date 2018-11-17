@@ -22,11 +22,22 @@ namespace z.ERP.Services
 
         public void CanRcl(WRITEDATAEntity WRITEDATA, RichTextBox LogData)
         {
+
+            int h = DateTime.Now.Hour;      //获取当前时间的小时部分
+
+            int m = DateTime.Now.Minute;    //获取当前时间的分钟部分
+
+            if (((h * 100 + m) < 2230) && (WRITEDATA.RQ.ToDateTime() == DateTime.Now.ToShortDateString().ToDateTime()))
+            {
+                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "请于22点30分后在做日结!");
+                return;
+            }
             if (employee.Id.ToInt() < 0)
             {
                 LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "请用操作员登陆做日处理!");
                 return;
             }
+
             //1:判断表里面有记录就提示不让在做日处理          
             var sql = " SELECT 1 FROM RCL_HOST";
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -36,7 +47,16 @@ namespace z.ERP.Services
                 return;
             }
 
-
+            var sqlMax = " SELECT MAX(RQ+1) FROM WRITEDATA WHERE STATUS=0";
+            DataTable dtMax = DbHelper.ExecuteTable(sqlMax);
+            if (dtMax.Rows.Count != 0)
+            {
+                if (WRITEDATA.RQ.ToDateTime() != dtMax.Rows[0][0].ToString().ToDateTime().ToShortDateString().ToDateTime())
+                {
+                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "当前日处理日期应该是" + dtMax.Rows[0][0].ToString());
+                    return;
+                }
+            };
 
             List<BRANCHEntity> fdListrcl = DbHelper.SelectList(new BRANCHEntity() { STATUS = "1" });
             var boll = false;
@@ -104,7 +124,7 @@ namespace z.ERP.Services
                         switch (data.STATUS.ToInt())
                         {
                             case 1:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "更新交易商品税率");
+                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]更新交易商品税率");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -133,7 +153,7 @@ namespace z.ERP.Services
                                 }
                                 break;
                             case 2:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "汇总商品销售表");
+                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]汇总商品销售表");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -162,7 +182,7 @@ namespace z.ERP.Services
                                 }
                                 break;
                             case 3:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "汇总统计维度表");
+                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]汇总统计维度表");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -192,7 +212,7 @@ namespace z.ERP.Services
 
                                 break;
                             case 4:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "汇总手续费表");
+                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]汇总手续费表");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -222,7 +242,7 @@ namespace z.ERP.Services
 
                                 break;
                             case 5:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "转移交易数据");
+                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]转移交易数据");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -251,7 +271,7 @@ namespace z.ERP.Services
 
                                 break;
                             case 6:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "生成租金每月收费项目账单");
+                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]生成租金每月收费项目账单");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -281,7 +301,7 @@ namespace z.ERP.Services
 
                                 break;
                             case 7:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "生成销售相关账单");
+                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]生成销售相关账单");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -311,7 +331,7 @@ namespace z.ERP.Services
 
                                 break;
                             case 8:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "租约变更启动 ");
+                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]租约变更启动 ");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -341,7 +361,7 @@ namespace z.ERP.Services
 
                                 break;
                             case 9:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "生成缴费通知单");
+                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]生成缴费通知单");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -356,10 +376,10 @@ namespace z.ERP.Services
                                         WRITEDATAEntity writedata = new WRITEDATAEntity();
                                         writedata.RQ = WRITEDATA.RQ;
                                         writedata.BRANCHID = fd.ID;
-                                        writedata.STATUS = "10";
+                                        writedata.STATUS = "0";
                                         UpdateSatus(writedata);
                                         Tran.Commit();
-                                        data.STATUS = writedata.STATUS;
+                                        data.STATUS = "10";
                                     }
                                 }
                                 catch (Exception e)
@@ -391,7 +411,7 @@ namespace z.ERP.Services
                         UpdateSatus(writedata);
                         Tran.Commit();
                     }
-                    LogData.AppendText(DateTime.Now.ToString("\r\n" + "yyyy-MM-dd HH:mm:ss") + ":分店" + fd.ID + "成功结束!");
+                    LogData.AppendText(DateTime.Now.ToString("\r\n" + "yyyy-MM-dd HH:mm:ss") + ":分店[" + WRITEDATA.RQ + "]" + fd.ID + "成功结束!");
                 }
 
             }
@@ -401,6 +421,17 @@ namespace z.ERP.Services
 
         public void CanHyRcl(RCLEntity RCLDATA, RichTextBox LogData)
         {
+
+            int h = DateTime.Now.Hour;      //获取当前时间的小时部分
+
+            int m = DateTime.Now.Minute;    //获取当前时间的分钟部分
+
+            if (((h * 100 + m) < 2230) && (RCLDATA.RQ.ToDateTime() == DateTime.Now.ToShortDateString().ToDateTime()))
+            {
+                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "请于22点30分后在做日结!");
+                return;
+            }
+
             if (employee.Id.ToInt() < 0)
             {
                 LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "请用操作员登陆做日处理!");
@@ -414,6 +445,17 @@ namespace z.ERP.Services
                 LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "日处理正在进行中!");
                 return;
             }
+
+            var sqlMax = " SELECT MAX(RQ+1) FROM RCL WHERE STATUS=0";
+            DataTable dtMax = DbHelper.ExecuteTable(sqlMax);
+            if (dtMax.Rows.Count != 0)
+            {
+                if (RCLDATA.RQ.ToDateTime() != dtMax.Rows[0][0].ToString().ToDateTime().ToShortDateString().ToDateTime())
+                {
+                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "当前日处理日期应该是" + dtMax.Rows[0][0].ToString());
+                    return;
+                }
+            };
 
 
             var boll = false;
@@ -431,7 +473,7 @@ namespace z.ERP.Services
             }
             if (!boll)
             {
-                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "当前日期的日处理已经完成!");
+                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":日期为[" + RCLDATA.RQ + "]日处理已经完成!");
                 return;
             }
 
@@ -442,16 +484,19 @@ namespace z.ERP.Services
 
             RCLEntity data = new RCLEntity();
             RCLEntity data1 = DbHelper.Select(new RCLEntity() { RQ = RCLDATA.RQ });
+
+            RCLEntity rcldata = new RCLEntity();
+            rcldata.RQ = RCLDATA.RQ;
             if (data1 != null)
             {
                 data.STATUS = data1.STATUS;
+                rcldata.PROC_KSSJ = data1.PROC_KSSJ;
+                rcldata.OPERATOR_ID = data1.OPERATOR_ID;
             }
 
             if (data.STATUS.IsEmpty())
             {
                 data.STATUS = "1";
-                RCLEntity rcldata = new RCLEntity();
-                rcldata.RQ = RCLDATA.RQ;
                 rcldata.STATUS = "1";
                 rcldata.PROC_KSSJ = DateTime.Now.ToString();
                 rcldata.OPERATOR_ID = employee.Id;
@@ -465,14 +510,14 @@ namespace z.ERP.Services
             else
             {
 
-                while (data.STATUS.ToInt() <= 32)
+                while (data.STATUS.ToInt() <= 30)
                 {
                     #region
 
                     switch (data.STATUS.ToInt())
                     {
                         case 1:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "启动促销单据");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]启动促销单据");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -483,7 +528,7 @@ namespace z.ERP.Services
                                         pZXR = employee.Id
                                     };
                                     DbHelper.ExecuteProcedure(proc1);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "2";
                                     UpdateSatusvip(rcldata);
@@ -500,7 +545,7 @@ namespace z.ERP.Services
                             }
                             break;
                         case 2:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "启动优惠券促销活动单据");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]启动优惠券促销活动单据");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -511,7 +556,7 @@ namespace z.ERP.Services
                                         pZXR = employee.Id
                                     };
                                     DbHelper.ExecuteProcedure(proc2);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "3";
                                     UpdateSatusvip(rcldata);
@@ -528,7 +573,7 @@ namespace z.ERP.Services
                             }
                             break;
                         case 3:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "更新记账日期");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]更新记账日期");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -538,7 +583,7 @@ namespace z.ERP.Services
                                         pRCLRQ = RCLDATA.RQ.ToDateTime(),
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "4";
                                     UpdateSatusvip(rcldata);
@@ -556,7 +601,7 @@ namespace z.ERP.Services
 
                             break;
                         case 4:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "金额账日报表");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]金额账日报表");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -567,7 +612,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "5";
                                     UpdateSatusvip(rcldata);
@@ -585,7 +630,7 @@ namespace z.ERP.Services
 
                             break;
                         case 5:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "库存卡保管帐");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]库存卡保管帐");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -596,7 +641,7 @@ namespace z.ERP.Services
                                         pNY = (RCLDATA.RQ.ToDateTime().Year * 100 + RCLDATA.RQ.ToDateTime().Month).ToString()
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "6";
                                     UpdateSatusvip(rcldata);
@@ -613,7 +658,7 @@ namespace z.ERP.Services
 
                             break;
                         case 6:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "金额帐消费日报表");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]金额帐消费日报表");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -624,7 +669,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "7";
                                     UpdateSatusvip(rcldata);
@@ -641,7 +686,7 @@ namespace z.ERP.Services
 
                             break;
                         case 7:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "优惠券帐消费日报表");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]优惠券帐消费日报表");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -652,7 +697,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "8";
                                     UpdateSatusvip(rcldata);
@@ -669,7 +714,7 @@ namespace z.ERP.Services
 
                             break;
                         case 8:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "会员卡转为睡眠状态 ");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]会员卡转为睡眠状态 ");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -680,7 +725,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "9";
                                     UpdateSatusvip(rcldata);
@@ -697,7 +742,7 @@ namespace z.ERP.Services
 
                             break;
                         case 9:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "会员卡警告等级变动");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]会员卡警告等级变动");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -708,7 +753,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "10";
                                     UpdateSatusvip(rcldata);
@@ -725,7 +770,7 @@ namespace z.ERP.Services
 
                             break;
                         case 10:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "会员卡有效期延长规则");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]会员卡有效期延长规则");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -736,7 +781,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "11";
                                     UpdateSatusvip(rcldata);
@@ -753,7 +798,7 @@ namespace z.ERP.Services
 
                             break;
                         case 11:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "会员卡状态变动处理");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]会员卡状态变动处理");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -764,7 +809,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "12";
                                     UpdateSatusvip(rcldata);
@@ -781,7 +826,7 @@ namespace z.ERP.Services
 
                             break;
                         case 12:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "有效期到期冻结");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]有效期到期冻结");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -792,7 +837,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "13";
                                     UpdateSatusvip(rcldata);
@@ -809,7 +854,7 @@ namespace z.ERP.Services
 
                             break;
                         case 13:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "积分处理");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]积分处理");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -820,7 +865,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "14";
                                     UpdateSatusvip(rcldata);
@@ -837,7 +882,7 @@ namespace z.ERP.Services
 
                             break;
                         case 14:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "优惠券帐日报表");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]优惠券帐日报表");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -848,7 +893,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "15";
                                     UpdateSatusvip(rcldata);
@@ -865,7 +910,7 @@ namespace z.ERP.Services
 
                             break;
                         case 15:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "积分返还礼品进销存报表");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]积分返还礼品进销存报表");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -876,7 +921,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "16";
                                     UpdateSatusvip(rcldata);
@@ -893,7 +938,7 @@ namespace z.ERP.Services
 
                             break;
                         case 16:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "汇总储值卡消费明细");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]汇总储值卡消费明细");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -904,7 +949,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "17";
                                     UpdateSatusvip(rcldata);
@@ -921,7 +966,7 @@ namespace z.ERP.Services
 
                             break;
                         case 17:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "移动后台不刷卡历史记录到消费记录");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]移动后台不刷卡历史记录到消费记录");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -932,7 +977,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "18";
                                     UpdateSatusvip(rcldata);
@@ -949,7 +994,7 @@ namespace z.ERP.Services
 
                             break;
                         case 18:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "汇总会员卡消费明细");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]汇总会员卡消费明细");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -960,7 +1005,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "19";
                                     UpdateSatusvip(rcldata);
@@ -977,7 +1022,7 @@ namespace z.ERP.Services
 
                             break;
                         case 19:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "会员卡积分日报表");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]会员卡积分日报表");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -988,7 +1033,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "20";
                                     UpdateSatusvip(rcldata);
@@ -1005,7 +1050,7 @@ namespace z.ERP.Services
 
                             break;
                         case 20:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "会员卡等级升迁");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]会员卡等级升迁");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1016,7 +1061,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "21";
                                     UpdateSatusvip(rcldata);
@@ -1033,7 +1078,7 @@ namespace z.ERP.Services
 
                             break;
                         case 21:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "汇总柜组消费积分");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]汇总柜组消费积分");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1044,7 +1089,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "22";
                                     UpdateSatusvip(rcldata);
@@ -1061,7 +1106,7 @@ namespace z.ERP.Services
 
                             break;
                         case 22:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "储值卡日报表");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]储值卡日报表");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1072,7 +1117,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "23";
                                     UpdateSatusvip(rcldata);
@@ -1089,7 +1134,7 @@ namespace z.ERP.Services
 
                             break;
                         case 23:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "库存储值卡保管帐");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]库存储值卡保管帐");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1100,7 +1145,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "24";
                                     UpdateSatusvip(rcldata);
@@ -1117,7 +1162,7 @@ namespace z.ERP.Services
 
                             break;
                         case 24:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "储值卡消费日报表");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]储值卡消费日报表");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1128,7 +1173,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "25";
                                     UpdateSatusvip(rcldata);
@@ -1145,7 +1190,7 @@ namespace z.ERP.Services
 
                             break;
                         case 25:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "按商品汇总促销优惠券金额");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]按商品汇总促销优惠券金额");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1156,7 +1201,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "26";
                                     UpdateSatusvip(rcldata);
@@ -1175,7 +1220,7 @@ namespace z.ERP.Services
 
 
                         case 26:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "按部门汇总促销优惠券金额");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]按部门汇总促销优惠券金额");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1186,7 +1231,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "27";
                                     UpdateSatusvip(rcldata);
@@ -1202,7 +1247,7 @@ namespace z.ERP.Services
                             }
                             break;
                         case 27:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "按合同汇总促销优惠券金额");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]按合同汇总促销优惠券金额");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1213,7 +1258,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "28";
                                     UpdateSatusvip(rcldata);
@@ -1229,7 +1274,7 @@ namespace z.ERP.Services
                             }
                             break;
                         case 28:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "汇总满百减折数据");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]汇总满百减折数据");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1240,7 +1285,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "29";
                                     UpdateSatusvip(rcldata);
@@ -1256,7 +1301,7 @@ namespace z.ERP.Services
                             }
                             break;
                         case 29:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "将消费数据移动到会员消费纪录中");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]将消费数据移动到会员消费纪录中");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1267,7 +1312,7 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "30";
                                     UpdateSatusvip(rcldata);
@@ -1283,7 +1328,7 @@ namespace z.ERP.Services
                             }
                             break;
                         case 30:
-                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "将消费数据删除");
+                            LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]将消费数据删除");
                             try
                             {
                                 using (var Tran = DbHelper.BeginTransaction())
@@ -1294,13 +1339,13 @@ namespace z.ERP.Services
 
                                     };
                                     DbHelper.ExecuteProcedure(proc);
-                                    RCLEntity rcldata = new RCLEntity();
+
                                     rcldata.RQ = RCLDATA.RQ;
                                     rcldata.STATUS = "0";
                                     rcldata.PROC_JSSJ = DateTime.Now.ToString();
                                     UpdateSatusvip(rcldata);
                                     Tran.Commit();
-                                    data.STATUS = rcldata.STATUS;
+                                    data.STATUS = "31";
                                 }
                             }
                             catch (Exception e)
@@ -1324,7 +1369,7 @@ namespace z.ERP.Services
             DbHelper.Delete(host);
             if (!errorProc)
             {
-                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "vip日结成功结束!");
+                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + RCLDATA.RQ + "]vip日结成功结束!");
             }
 
         }

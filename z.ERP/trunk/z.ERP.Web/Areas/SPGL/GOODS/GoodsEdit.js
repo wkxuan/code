@@ -184,6 +184,12 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请确认类型!");
         return false;
     };
+
+    if (!editDetail.dataParam.GOODSDM) {
+        iview.Message.info("请输入商品代码!");
+        return false;
+    };
+
     if (!editDetail.dataParam.NAME) {
         iview.Message.info("请确认商品名称!");
         return false;

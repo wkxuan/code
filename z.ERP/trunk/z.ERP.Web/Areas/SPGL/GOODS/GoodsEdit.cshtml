@@ -12,17 +12,17 @@
 
 @section baseParam{
     <row>
-        @*<i-col span="2" class="RowTitle">
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
             商品代码
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.GOODDM",
+                    vModel = "dataParam.GOODSDM",
                 });
             }
-        </i-col>*@
+        </i-col>
         <i-col span="2" class="RowTitle">
             商品条码
         </i-col>

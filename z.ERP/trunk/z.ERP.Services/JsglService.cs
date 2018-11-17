@@ -295,11 +295,12 @@ namespace z.ERP.Services
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-                billAdjust.VERIFY = employee.Id;
-                billAdjust.VERIFY_NAME = employee.Name;
-                billAdjust.VERIFY_TIME = DateTime.Now.ToString();
-                billAdjust.STATUS = ((int)普通单据状态.审核).ToString();
-                DbHelper.Save(billAdjust);
+                Exec_BILL_ADJUST exec_billadjust = new Exec_BILL_ADJUST()
+                {
+                    p_BILLID = Data.BILLID,
+                    p_VERIFY = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_billadjust);
                 Tran.Commit();
             }
             return billAdjust.BILLID;
@@ -429,6 +430,8 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID= {a}");
             item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID = {a}");
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
+            item.HasKey("TYPE", a => sql += $" and L.TYPE={a}");
+            item.HasKey("NIANYUE", a => sql += $" and L.NIANYUE={a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
@@ -440,6 +443,7 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<通知单类型>("TYPE", "TYPEMC");
             return new DataGridResult(dt, count);
         }
 
@@ -500,8 +504,9 @@ namespace z.ERP.Services
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billNotice = DbHelper.ExecuteTable(sql);
             billNotice.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            billNotice.NewEnumColumns<通知单类型>("TYPE", "TYPEMC");
 
-            string sqlitem = $@"SELECT M.*,B.MUST_MONEY,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,C.NAME TERMMC " +
+            string sqlitem = $@"SELECT M.*,B.NIANYUE,B.MUST_MONEY,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,C.NAME TERMMC " +
                 " FROM BILL_NOTICE_ITEM M ,BILL B,FEESUBJECT C " +
                 " where M.FINAL_BILLID=B.BILLID(+) and B.TERMID=C.TRIMID(+) ";
             if (!Data.BILLID.IsEmpty())
@@ -512,22 +517,29 @@ namespace z.ERP.Services
         }
         public Tuple<dynamic, DataTable> GetBillNoticePrint(BILL_NOTICEEntity Data)
         {
-            string sql = $@"SELECT A.*,TO_CHAR(A.VERIFY_TIME,'YYYYMM') CZNY,B.NAME BRANCHNAME,'('||D.MERCHANTID||')'||D.NAME MERCHANTNAME,F.SHOPDM "
-                 + ",(select sum(L.MUST_MONEY) from BILL_NOTICE_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) MUST_MONEY "
-                 + ",(select sum(M.NOTICE_MONEY) from BILL_NOTICE_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) NOTICE_MONEY "
-                + "FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D,CONTRACT_SHOPXX F "
-                        + "WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+) and A.CONTRACTID=F.CONTRACTID(+)";
+            string sql = $@"SELECT A.*,TO_CHAR(A.VERIFY_TIME,'YYYYMM') CZNY,B.NAME BRANCHNAME,'('||D.MERCHANTID||')'||D.NAME MERCHANTNAME,B.PRINTNAME,B.BANK,B.ACCOUNT, "
+                 + " (select min(S.SHOPDM) from CONTRACT_SHOPXX S where S.CONTRACTID=C.CONTRACTID) SHOPDM,"
+                 + " (select min(BR.NAME) from CONTRACT_BRAND R,BRAND BR where R.BRANDID=BR.ID and R.CONTRACTID=C.CONTRACTID) BRANDNAME,"
+                 + " (select sum(AREA_RENTABLE) from CONTRACT_SHOP S where S.CONTRACTID=C.CONTRACTID) AREA_RENTABLE,"
+                 + " (select sum(Y.AMOUNT) from CONTRACT_SUMMARY Y where Y.CONTRACTID=C.CONTRACTID and Y.YEARMONTH=A.NIANYUE) AMOUNT,"
+                 + " (select sum(RENTS) from CONTRACT_RENTITEM CR where CR.CONTRACTID=C.CONTRACTID and CR.YEARMONTH=A.NIANYUE) RENTS,"
+                 + " (select SUM(Y.TCZJ) from CONTRACT_TCZJ Y where Y.CONTRACTID=C.CONTRACTID and Y.YEARMONTH=A.NIANYUE) KLZJ,"
+                 + " (select sum(L.MUST_MONEY) from BILL_NOTICE_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) MUST_MONEY,"
+                 + " (select sum(M.NOTICE_MONEY) from BILL_NOTICE_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) NOTICE_MONEY "
+                 + " FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D "
+                 + " WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)";
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billNotice = DbHelper.ExecuteTable(sql);
             billNotice.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
-
-            string sqlitem = $@"SELECT M.*,(case B.TYPE when 0 then '收费单' else '' end ) BILLTYPE,B.MUST_MONEY,(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,C.NAME TERMMC " +
-                ",TO_CHAR(B.START_DATE,'YYYY-MM-DD')||'至'||to_char(B.END_DATE,'YYYY-MM-DD')   FYQJ "+
+            //  (case B.TYPE when 0 then '收费单' else '' end ) BILLTYPE,
+            string sqlitem = $@"SELECT C.NAME TERMMC,TO_CHAR(B.START_DATE,'YYYY-MM-DD')||'至'||to_char(B.END_DATE,'YYYY-MM-DD') FYQJ,"+
+                " SUM(B.MUST_MONEY) MUST_MONEY,SUM(B.MUST_MONEY-B.RECEIVE_MONEY) UNPAID_MONEY,SUM(M.NOTICE_MONEY) NOTICE_MONEY" +
                 " FROM BILL_NOTICE_ITEM M ,BILL B,FEESUBJECT C " +
                 " where M.FINAL_BILLID=B.BILLID(+) and B.TERMID=C.TRIMID(+) ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
+            sqlitem += " GROUP BY C.NAME,TO_CHAR(B.START_DATE,'YYYY-MM-DD')||'至'||to_char(B.END_DATE,'YYYY-MM-DD')";
             DataTable billNoticeItem = DbHelper.ExecuteTable(sqlitem);
 
             return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);
@@ -644,6 +656,6 @@ namespace z.ERP.Services
             DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
 
             return new Tuple<dynamic, DataTable>(billObtain.ToOneLine(), billObtainItem);
-        }
+        } 
     }
 }

@@ -21,13 +21,13 @@ namespace z.ERP.Services
 
         public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
         {
-            string sql = "select a.goodsid,a.name,a.type,nvl(a.price,0) price,nvl(a.member_price,0) member_price,b.shopid";
+            string sql = "select a.goodsid,a.goodsdm goodscode,a.name,a.type,nvl(a.price,0) price,nvl(a.member_price,0) member_price,b.shopid";
             sql += "        from GOODS a,GOODS_SHOP b where a.goodsid=b.goodsid";
 
             if (filter.shopid.HasValue)
                 sql += $"  and b.shopid = {filter.shopid}";
-            if (filter.goodsdm.IsNotEmpty())
-                sql += $"  and (goodsdm = '{filter.goodsdm}' or barcode = '{filter.goodsdm}')";
+            if (filter.goodscode.IsNotEmpty())
+                sql += $"  and (goodsdm = '{filter.goodscode}' or barcode = '{filter.goodscode}')";
 
             List<FindGoodsResult>  goodsList = DbHelper.ExecuteObject<FindGoodsResult>(sql);
 
@@ -147,7 +147,7 @@ namespace z.ERP.Services
                 cashierid = saleDt.Rows[0][4].ToString().ToInt(),
                 sale_amount = saleDt.Rows[0][5].ToString().ToDecimal(),
                 change_amount = saleDt.Rows[0][6].ToString().ToDecimal(),
-                member_cardid = saleDt.Rows[0][7].ToString().ToInt(),
+                member_cardid = saleDt.Rows[0][7].ToString(),
                 crm_recordid = saleDt.Rows[0][8].ToString().ToInt(),
                 posno_old = saleDt.Rows[0][9].ToString(),
                 dealid_old = saleDt.Rows[0][10].ToString().ToInt(),
@@ -165,7 +165,7 @@ namespace z.ERP.Services
 
             if (sumGoodsAmount != sumPayAmount)
             {
-                throw new Exception("商品列表中销售金额合计与支付列表中的销售金额合计不相等!");
+                throw new Exception("商品列表中金额合计与支付列表中的金额合计不相等!");
             }
 
             int goodsCount = request.goodslist.Count;
@@ -233,9 +233,11 @@ namespace z.ERP.Services
             decimal goodsPayAmount = 0;
             decimal payAmount = 0;
             j = 1 + goodsCount + payCount + clerkCount;
+            int inx = 0;
             for(int m=0;m<request.paylist.Count();m++)
             {
                 payAmount = request.paylist[m].amount;
+                inx = 0;
                 for(int n=0;n<request.goodslist.Count();n++)
                 {
                     goodsPayAmount = Math.Round(request.paylist[m].amount * request.goodslist[n].sale_amount / sumGoodsAmount,2);
@@ -245,9 +247,10 @@ namespace z.ERP.Services
                         goodsPayAmount = goodsPayAmount + payAmount;
 
                     
-                    sqlarr[j] = "insert into sale_goods_pay(posno,dealid,goodsid,payid,amount)";
-                    sqlarr[j] += $"values('{posNo}',{request.dealid},{request.goodslist[n].goodsid},{request.paylist[m].payid},{goodsPayAmount})";
+                    sqlarr[j] = "insert into sale_goods_pay(posno,dealid,goodsid,payid,amount,inx)";
+                    sqlarr[j] += $"values('{posNo}',{request.dealid},{request.goodslist[n].goodsid},{request.paylist[m].payid},{goodsPayAmount},{inx})";
                     j++;
+                    inx++;
                 }
             } 
 
@@ -257,16 +260,146 @@ namespace z.ERP.Services
             {
                 insertCount = DbHelper.ExecuteNonQuery(sqlarr);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 
-                throw new Exception("提交数据库时发生异常!");
+                throw new Exception("提交数据库时发生异常:"+e);
             }
            
             if(insertCount != 1+ goodsCount + payCount + clerkCount + goodsCount * payCount)
             {
                 throw new Exception("写入数据不完整!");
             }
+        }
+
+        public SaleSummaryResult GetSaleSummary(SaleSummaryFilter filter)
+        {
+            string sql = $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+                   + "       s.sale_time,p.payid,y.name payname, p.amount"
+                   + "  from sale s, sale_pay p,pay y"
+                   + " where s.posno = p.posno"
+                   + "   and s.dealid = p.dealid"
+                   + "   and p.payid = y.payid";
+            if (filter.posno.IsEmpty())
+                sql += $" and s.posno = '{employee.PlatformId}'";
+            else
+                sql += $" and s.posno = '{filter.posno}'";
+
+            if (!filter.saledate_begin.HasValue && !filter.saledate_end.HasValue)
+                sql += $" and trunc(s.sale_time) = trunc(sysdate)";
+            else
+            {
+                if (filter.saledate_begin.HasValue)
+                    sql += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') >= to_date('{filter.saledate_begin}','yyyy-mm-dd')";
+                else
+                    sql += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') >= to_date(trunc(sysdate),'yyyy-mm-dd')";
+                if (filter.saledate_end.HasValue)
+                    sql += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') <= to_date('{filter.saledate_end}','yyyy-mm-dd')";
+                else
+                    sql += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') <= to_date(trunc(sysdate),'yyyy-mm-dd')";
+            }
+
+            sql += " union all ";
+
+             sql += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+                   + "       s.sale_time,p.payid,y.name payname, p.amount"
+                   + "  from his_sale s, his_sale_pay p,pay y"
+                   + " where s.posno = p.posno"
+                   + "   and s.dealid = p.dealid"
+                   + "   and p.payid = y.payid";
+            if (filter.posno.IsEmpty())
+                sql += $" and s.posno = '{employee.PlatformId}'";
+            else
+                sql += $" and s.posno = '{filter.posno}'";
+
+            if (!filter.saledate_begin.HasValue && !filter.saledate_end.HasValue)
+                sql += $" and trunc(s.sale_time) = trunc(sysdate)";
+            else
+            {
+                if (filter.saledate_begin.HasValue)
+                    sql += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') >= to_date('{filter.saledate_begin}','yyyy-mm-dd')";
+                else
+                    sql += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') >= to_date(trunc(sysdate),'yyyy-mm-dd')";
+                if (filter.saledate_end.HasValue)
+                    sql += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') <= to_date('{filter.saledate_end}','yyyy-mm-dd')";
+                else
+                    sql += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') <= to_date(trunc(sysdate),'yyyy-mm-dd')";
+            }
+
+            List<PayDetailResult> detaillist = DbHelper.ExecuteObject<PayDetailResult>(sql);
+
+            if (detaillist.Count <= 0)
+                throw new Exception("无销售记录");
+
+            string sqlsum = "select payid,payname,sum(returnflag * amount) amountreturn,sum(amount) amountsum from(";
+                
+                
+                
+                sqlsum += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+                              + "       p.payid,y.name payname, p.amount"
+                              + "  from sale s, sale_pay p,pay y"
+                              + " where s.posno = p.posno"
+                              + "   and s.dealid = p.dealid"
+                              + "   and p.payid = y.payid";
+            if (filter.posno.IsEmpty())
+                sqlsum += $" and s.posno = '{employee.PlatformId}'";
+            else
+                sqlsum += $" and s.posno = '{filter.posno}'";
+
+            if (!filter.saledate_begin.HasValue && !filter.saledate_end.HasValue)
+                sqlsum += $" and trunc(s.sale_time) = trunc(sysdate)";
+            else
+            {
+                if (filter.saledate_begin.HasValue)
+                    sqlsum += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') >= to_date('{filter.saledate_begin}','yyyy-mm-dd')";
+                else
+                    sqlsum += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') >= to_date(trunc(sysdate),'yyyy-mm-dd')";
+                if (filter.saledate_end.HasValue)
+                    sqlsum += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') <= to_date('{filter.saledate_end}','yyyy-mm-dd')";
+                else
+                    sqlsum += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') <= to_date(trunc(sysdate),'yyyy-mm-dd')";
+            }
+
+            sqlsum += " union all ";
+
+            sqlsum += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+                  + "       p.payid,y.name payname, p.amount"
+                  + "  from his_sale s, his_sale_pay p,pay y"
+                  + " where s.posno = p.posno"
+                  + "   and s.dealid = p.dealid"
+                  + "   and p.payid = y.payid";
+            if (filter.posno.IsEmpty())
+                sqlsum += $" and s.posno = '{employee.PlatformId}'";
+            else
+                sqlsum += $" and s.posno = '{filter.posno}'";
+
+            if (!filter.saledate_begin.HasValue && !filter.saledate_end.HasValue)
+                sqlsum += $" and trunc(s.sale_time) = trunc(sysdate)";
+            else
+            {
+                if (filter.saledate_begin.HasValue)
+                    sqlsum += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') >= to_date('{filter.saledate_begin}','yyyy-mm-dd')";
+                else
+                    sqlsum += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') >= to_date(trunc(sysdate),'yyyy-mm-dd')";
+                if (filter.saledate_end.HasValue)
+                    sqlsum += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') <= to_date('{filter.saledate_end}','yyyy-mm-dd')";
+                else
+                    sqlsum += $" and to_date(trunc(s.sale_time),'yyyy-mm-dd') <= to_date(trunc(sysdate),'yyyy-mm-dd')";
+            }
+
+            sqlsum += ") group by payid,payname";
+
+            List<PaySumResult> sumlist = DbHelper.ExecuteObject<PaySumResult>(sqlsum);
+            decimal salesum = detaillist.Sum(a => a.amount);
+            decimal salereturn = sumlist.Sum(a => a.amountreturn);
+
+            return new SaleSummaryResult()
+            {
+                saleamountsum = salesum,
+                saleamountreturn = salereturn,
+                paysumlist = sumlist,
+                paydetaillist = detaillist
+            };
         }
     }
 }

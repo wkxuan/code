@@ -1,0 +1,100 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Detail;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits DetailLayout<dynamic>
+
+@section Title{
+    @Html.Raw("详情");
+}
+
+@{
+    var voucher = ViewBag.voucher;
+}
+@section btn{
+    @{
+        if (@voucher.STATUS == "1")
+        {
+            RenderControl(new ButtonRender()
+            {
+                Text = "审核",
+                Click = "exec",
+            });
+        }
+    }
+}
+
+@section content{
+    <row>
+        <i-col span="2" class="RowTitle">单据号</i-col>
+        <i-col span="4">
+            <i-input v-model="VOUCHERID" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">名称</i-col>
+        <i-col span="4">
+            <i-input v-model="VOUCHERNAME" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="4">
+            <i-input v-model="STATUSMC" readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">备注</i-col>
+        <i-col span="16">
+            <i-input v-model="DESCRIPTION" readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="18">
+            <i-table size="small" border="true"
+                     :columns="colDef" :data="ADJUST_ITEM" height="200"></i-table>
+        </i-col>
+    </row>
+}
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true,
+                BILLID:"@voucher.VOUCHERID",
+                BRANCHNAME:"@voucher.VOUCHERNAME",
+                STATUSMC:"@voucher.STATUSMC",
+                DESCRIPTION:"@voucher.DESCRIPTION",
+                colDef : [
+                {title: "合同号", key: 'CONTRACTID', width: 150},
+                { title: '收费项目', key: 'TERMNAME', width: 200 },
+                { title: '调整金额', key: 'MUST_MONEY', width: 150 }
+                ],
+                ADJUST_ITEM:[]
+            },
+            mounted:function(){
+                var _self = this;
+                _.Ajax('SearchBill_Adjust', {
+                    Data: { BILLID: @voucher.BILLID }
+                }, function (data) {
+                    _self.ADJUST_ITEM = data.billAdjustItem;
+                });
+            },
+            methods: {
+                exec: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: {BILLID: @voucher.BILLID},
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                }
+            }
+        });
+    </script>
+}

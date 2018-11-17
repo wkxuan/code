@@ -28,8 +28,8 @@ namespace z.ERP.Console
                 RCLEntity rcldata = new RCLEntity();
                 rcldata.RQ = this.WriteRq.Value.ToShortDateString();
 
-                service.WriteDataService.CanHyRcl(rcldata, LogText);
-                //service.WriteDataService.CanRcl(WRITEDATA, LogText);
+                // service.WriteDataService.CanHyRcl(rcldata, LogText);
+                service.WriteDataService.CanRcl(WRITEDATA, LogText);
             });
         }
 

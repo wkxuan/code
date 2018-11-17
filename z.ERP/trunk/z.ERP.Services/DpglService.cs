@@ -15,6 +15,35 @@ namespace z.ERP.Services
         internal DpglService()
         {
         }
+
+        public DataGridResult SearchRegion(SearchItem item)
+        {
+            string sql = $@"SELECT A.REGIONID,A.CODE,A.NAME FROM REGION A WHERE 1=1";
+            item.HasKey("REGIONID,", a => sql += $" and A.REGIONID = {a}");
+            item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
+            item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
+            sql += " ORDER BY  A.REGIONID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public Tuple<dynamic, DataTable> GetRegion(REGIONEntity Data)
+        {
+            string sql = "select A.*,B.ORGIDCASCADER from REGION A,ORG B where A.ORGID=B.ORGID(+)";
+            if (!Data.BRANCHID.IsEmpty())
+                sql += (" AND A.BRANCHID = " + Data.BRANCHID);
+            if (!Data.REGIONID.IsEmpty())
+                sql += (" AND A.REGIONID= " + Data.REGIONID);
+            if (!Data.CODE.IsEmpty())
+                sql += (" AND A.CODE= " + Data.CODE);
+            if (!Data.NAME.IsEmpty())
+                sql += (" AND A.NAME like %" + Data.NAME + "%");
+            DataTable region = DbHelper.ExecuteTable(sql);
+            return new Tuple<dynamic, DataTable>(region.ToOneLine(), region);
+        }
+
         public DataGridResult SearchFloor(SearchItem item)
         {
             string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
@@ -22,11 +51,14 @@ namespace z.ERP.Services
             item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
             item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
+            item.HasKey("REGIONID", a => sql += $" and A.REGIONID= {a}");
             sql += " ORDER BY  A.ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+
+
         /// <summary>
         /// 可返回一行楼层记录或符合条件的所有记录
         /// </summary>
@@ -54,6 +86,7 @@ namespace z.ERP.Services
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             item.HasKey("FLOORID", a => sql += $" and A.FLOORID = '{a}'");
+            item.HasKey("REGIONID", a => sql += $" and A.REGIONID = {a}");
             sql += " ORDER BY  A.CODE";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

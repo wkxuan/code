@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\COMPLAINDEPTEntity.cs" />
+    <Compile Include="Auto\COMPLAINTYPEEntity.cs" />
+    <Compile Include="Auto\VOUCHEREntity.cs" />
+    <Compile Include="Auto\REGIONEntity.cs" />
     <Compile Include="Auto\VOUCHER_RECORDEntity.cs" />
     <Compile Include="Auto\VOUCHER_MAKESQLEntity.cs" />
     <Compile Include="Auto\FREESHOPEntity.cs" />
@@ -50,6 +54,8 @@
     <Compile Include="Auto\SALEBILLEntity.cs" />
     <Compile Include="Auto\SALEBILLITEMEntity.cs" />
     <Compile Include="Auto\RCLEntity.cs" />
+    <Compile Include="Auto\VOUCHER_RECORD_PZKMEntity.cs" />
+    <Compile Include="Auto\VOUCHER_RECORD_ZYEntity.cs" />
     <Compile Include="Auto\WRITEDATAEntity.cs" />
     <Compile Include="Auto\PLATFORMEntity.cs" />
     <Compile Include="Auto\SYSUSEREntity.cs" />
@@ -91,6 +97,7 @@
     <Compile Include="MENUTREEModule.cs" />
     <Compile Include="Procedures\EXEC_ASSET_SPILT.cs" />
     <Compile Include="Procedures\EXEC_ASSET_CHANGE.cs" />
+    <Compile Include="Procedures\Exec_BILL_ADJUST.cs" />
     <Compile Include="Procedures\Exec_BILL_OBTAIN.cs" />
     <Compile Include="Procedures\EXEC_SALEBILL.cs" />
     <Compile Include="Procedures\WRITE_BILL_NOTICE.cs" />
@@ -186,14 +193,20 @@
     <Compile Include="Service\Pos\DealResult.cs" />
     <Compile Include="Service\Pos\ClerkResultt.cs" />
     <Compile Include="Service\Pos\GoodsResult.cs" />
+    <Compile Include="Service\Pos\PayDetailResult.cs" />
     <Compile Include="Service\Pos\PayResult.cs" />
     <Compile Include="Service\Pos\FindGoodsFilter.cs" />
     <Compile Include="Service\Pos\FindGoodsResult.cs" />
     <Compile Include="Service\Pos\FKFSResult.cs" />
+    <Compile Include="Service\Pos\PaySumResult.cs" />
     <Compile Include="Service\Pos\SaleRequest.cs" />
+    <Compile Include="Service\Pos\SaleSummaryFilter.cs" />
+    <Compile Include="Service\Pos\SaleSummaryResult.cs" />
     <Compile Include="Service\Pos\UserYYYResult.cs" />
     <Compile Include="STATIONEntity.cs" />
     <Compile Include="SYSUSEREntity.cs" />
+    <Compile Include="VOUCHEREntity.cs" />
+    <Compile Include="VOUCHER_PARAMEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\z.DbHelper\z.DbHelper.csproj">

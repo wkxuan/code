@@ -6,6 +6,12 @@
         {
             get; set;
         }
+
+        public string goodscode
+        {
+            get;
+            set;
+        }
         public string name
         {
             get; set;

@@ -69,8 +69,6 @@
         <i-col span="4">
             <i-input v-model="ORGNAME" :readonly="true"></i-input>
         </i-col>
-
-
         <i-col span="2" class="RowTitle">租用面积</i-col>
         <i-col span="4">
             <i-input v-model="AREAR" :readonly="true"></i-input>
@@ -90,7 +88,6 @@
         <i-col span="4">
             <i-input v-model="OPERATERULENAME" :readonly="true"></i-input>
         </i-col>
-
         <i-col span="2" class="RowTitle">进项税率</i-col>
         <i-col span="4">
             <i-input v-model="JXSL" :readonly="true"></i-input>
@@ -138,7 +135,7 @@
      <row>
         <i-col span="2" class="RowText">其他条款</i-col>
         <i-col span="22">
-            <i-input v-model="DESCRIPTION" :readonly="true"  type="textarea" :rows="5"></i-input>
+            <i-input v-model="DESCRIPTION" :readonly="true" type="textarea" :rows="5"></i-input>
         </i-col>
     </row>
     <row>
@@ -175,13 +172,14 @@
         </i-col>
     </row>
 
-      <row>
-       <i-col span="24">
-           <i-table height="200" size="small" :border="true"
-                    :columns="colDefCOST" :data="CONTRACT_COST"></i-table>
-       </i-col>
+    <row>
+        <i-col span="24">
+            <i-table height="200" size="small" :border="true"
+                     :columns="colDefCOST" :data="CONTRACT_COST"></i-table>
+        </i-col>
     </row>
-     <row>
+
+    <row>
        <i-col span="24">
            <i-table height="200" size="small" :border="true"
                     :columns="colDefPAY" :data="CONTRACT_PAY"></i-table>
@@ -217,7 +215,6 @@
                 CONTRACTID_PAPER:"@contract.CONTRACTID_PAPER",
                 SIGNER_NAME:"@contract.SIGNER_NAME",
                 CONTRACT_OLD:"@contract.CONTRACT_OLD",
-
                 DESCRIPTION:" ",
 
                 FEERULE:[],
@@ -273,7 +270,6 @@
                    { title: "扣点", key: 'JSKL', width: 80 },
                 ],
                 CONTJSKL:[],
-
                 colDefRENTITEM:[
                     { title: '时间段', key: 'INX', width: 80 },
                     { title: '开始日期', key: 'STARTDATE', width: 150},
@@ -309,7 +305,6 @@
                     }
                 ],
                 CONTRACT_RENTITEM:[],
-
 
                 colDefCOST:[
                   { title: '序号', key: 'INX', width: 70 },

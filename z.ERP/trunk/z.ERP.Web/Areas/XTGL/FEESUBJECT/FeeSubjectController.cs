@@ -8,9 +8,10 @@ using z.Exceptions;
 
 namespace z.ERP.Web.Areas.XTGL.FEESUBJECT
 {
-    public class FeeSubjectController: BaseController
+    public class FeeSubjectController : BaseController
     {
-        public ActionResult FeeSubject() {
+        public ActionResult FeeSubject()
+        {
             ViewBag.Title = "收费项目信息";
             return View(new DefineRender()
             {
@@ -30,6 +31,7 @@ namespace z.ERP.Web.Areas.XTGL.FEESUBJECT
             v.Require(a => a.NAME);
             v.IsUnique(a => a.NAME);
             v.Require(a => a.PYM);
+            v.Require(a => a.SCFS_TZD);
             v.Require(a => a.TYPE);
             v.Require(a => a.ACCOUNT);
             v.Require(a => a.DEDUCTION);
@@ -40,7 +42,8 @@ namespace z.ERP.Web.Areas.XTGL.FEESUBJECT
 
         public void Delete(FEESUBJECTEntity DefineDelete)
         {
-            if (DefineDelete.TRIMID.ToInt() >= 2000) {
+            if (DefineDelete.TRIMID.ToInt() >= 1000)
+            {
                 throw new LogicException($"预定义的收费项目不能删除!");
             }
             var v = GetVerify(DefineDelete);

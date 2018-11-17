@@ -167,6 +167,7 @@
     <Compile Include="Areas\HTGL\LYHT_BG\LyHt_BgController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT_BG\ZlHt_BgController.cs" />
+    <Compile Include="Areas\JSGL\VOUCHER\VoucherController.cs" />
     <Compile Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustController.cs" />
     <Compile Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeController.cs" />
     <Compile Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkController.cs" />
@@ -219,6 +220,8 @@
     <Compile Include="Areas\PPGL\BRAND\BrandController.cs" />
     <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\SPGL\SALEBILL\SaleBillController.cs" />
+    <Compile Include="Areas\WYGL\COMPLAINDEPT\ComplainDeptController.cs" />
+    <Compile Include="Areas\WYGL\COMPLAINTYPE\ComplainTypeController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFilesController.cs" />
@@ -231,6 +234,7 @@
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfgController.cs" />
     <Compile Include="Areas\XTGL\RCL\RCLController.cs" />
+    <Compile Include="Areas\XTGL\REGION\RegionController.cs" />
     <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
     <Compile Include="Areas\XTGL\ORG\OrgController.cs" />
     <Compile Include="Areas\XTGL\LATEFEERULE\LateFeeRuleController.cs" />
@@ -262,6 +266,8 @@
     <Content Include="Areas\HTGL\ZLHT\HtEdit.js" />
     <Content Include="Areas\HTGL\ZLHT\HtList.js" />
     <Content Include="Areas\HTGL\ZLHT_BG\ZlHt_BgEdit.js" />
+    <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.js" />
+    <Content Include="Areas\JSGL\VOUCHER\VoucherList.js" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustEdit.js" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustList.js" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeEdit.js" />
@@ -311,6 +317,8 @@
     <Content Include="Areas\SPGL\GOODS\GoodsList.js" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillEdit.js" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillList.js" />
+    <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.js" />
+    <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
@@ -321,6 +329,7 @@
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.js" />
     <Content Include="Areas\XTGL\RCL\RCL.js" />
+    <Content Include="Areas\XTGL\REGION\Region.js" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.js" />
     <Content Include="Areas\XTGL\ROLE\RoleList.js" />
     <Content Include="Areas\XTGL\SrchORG\SrchORG.js" />
@@ -517,6 +526,14 @@
     <Content Include="Areas\Report\SaleRecord\SaleRecord.cshtml" />
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.cshtml" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.cshtml" />
+    <Content Include="Areas\XTGL\REGION\Region.cshtml" />
+    <Content Include="File\Template\凭证导出.xlsx" />
+    <Content Include="Areas\JSGL\VOUCHER\VoucherDetail.cshtml" />
+    <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.cshtml" />
+    <Content Include="Areas\JSGL\VOUCHER\VoucherList.cshtml" />
+    <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintOther.cshtml" />
+    <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.cshtml" />
+    <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

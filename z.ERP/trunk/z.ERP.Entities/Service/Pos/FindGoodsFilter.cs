@@ -8,7 +8,7 @@ namespace z.ERP.Entities.Service.Pos
 {
     public class FindGoodsFilter
     {
-        public string goodsdm
+        public string goodscode
         {
             get;
             set;

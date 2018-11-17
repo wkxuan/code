@@ -216,7 +216,7 @@
                                     style: { marginRight: '1px' },
                                     on: { click: function (event) { _this.browseHref(params.row, params.index) } },
                                 }, '浏览'),
-                           (CanEdit) &&  h('Button',
+                         (params.row.STATUS == 1) && (CanEdit) && h('Button',
                                   {
                                       props: { type: 'primary', size: 'small', disabled: false },
                                       style: { marginRight: '1px' },
