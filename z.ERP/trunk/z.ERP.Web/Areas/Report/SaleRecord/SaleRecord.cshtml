@@ -88,15 +88,22 @@
                 });
             }
         </i-col>
-        <i-col span="6" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.SHOPCODE",
-                    Readonly = "true"
+                    vModel = "searchParam.SHOPCODE"
                 });
             }
-        </i-col>              
+        </i-col>    
+        <i-col span="4" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.SHOPNAME"
+                });
+            }
+        </i-col>                    
     </row>
     <row>
         <i-col span="2" class="RowTitle">

@@ -63,6 +63,7 @@ srch.popCallBack = function (data) {
         for (var i = 0; i < data.sj.length; i++) {
             srch.searchParam.SHOPID = data.sj[i].SHOPID;
             srch.searchParam.SHOPCODE = data.sj[i].SHOPCODE;
+            srch.searchParam.SHOPNAME = data.sj[i].NAME;
         }
     }
 } 

@@ -1,8 +1,22 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Web.Areas.Layout.Srch;
+@using z.ERP.Entities.Enum;
 @inherits SrchViewBase
 @section conditionParam{
     <row>
+        <i-col span="2" class="RowTitle">
+            查询类型
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new EnumDropDownListRender<查询类型>()
+                {
+                    vModel = "searchParam.SrchTYPE",
+                    Change = "changeSrchType",
+                    EmptyText = "日数据"
+                });
+            }
+        </i-col>
         <i-col span="2" class="RowTitle">
             门店
         </i-col>
@@ -15,7 +29,22 @@
                 });
             }
         </i-col>
-        
+        <i-col span="2" class="RowTitle">
+            商品分类
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new CascaderRender()
+                {
+                    vModel = "searchParam.KINDID",
+                    Data = "screenParam.dataKind",
+                    Change = "changeKind",
+                    Not_level_last = true
+                });
+            }
+        </i-col>
+    </row>
+    <row>
         <i-col span="2" class="RowTitle">
             @{
                 RenderControl(new ButtonRender()
@@ -45,10 +74,26 @@
                 });
             }
         </i-col>
- 
-
-    </row>
-        <row>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelContract",
+                    Text = "租约",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.CONTRACTID",
+                    Enable = true
+                });
+            }
+        </i-col>
         <i-col span="2" class="RowTitle">
             @{
                 RenderControl(new ButtonRender()
@@ -79,45 +124,8 @@
                 });
             }
         </i-col>
-            <i-col span="2" class="RowTitle">
-                商品分类
-            </i-col>
-            <i-col span="6" class="RowTitle">
-                @{
-                    RenderControl(new CascaderRender()
-                    {
-                        vModel = "searchParam.KINDID",
-                        Data = "screenParam.dataKind",
-                        Change = "changeKind",
-                        Not_level_last = true
-                    });
-                }
-            </i-col>
-
-
     </row>
     <row>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelContract",
-                    Text = "租约",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
-        </i-col>
-        <i-col span="6" class="RowTitle">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.CONTRACTID",
-                    Enable = true
-                });
-            }
-        </i-col>
-
         <i-col span="2" class="RowTitle">
             销售日期
         </i-col>
@@ -134,6 +142,25 @@
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "searchParam.RQ_END"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            销售年月
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new YearMonthBoxRender()
+                {
+                    vModel = "searchParam.YEARMONTH_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new YearMonthBoxRender()
+                {
+                    vModel = "searchParam.YEARMONTH_END"
                 });
             }
         </i-col>

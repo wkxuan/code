@@ -1,4 +1,4 @@
-﻿var colR = [
+﻿var colD = [
     {
         title: '日期', key: 'RQ', width: 100,
         render: function (h, params) {
@@ -42,7 +42,7 @@ var colM = [
 ];
 
 srch.beforeVue = function () {
-    srch.screenParam.colDef = colR;
+    srch.screenParam.colDef = colD;
     srch.service = "ReportService";
     srch.method = "GoodsSale";
 
@@ -81,7 +81,7 @@ srch.otherMethods = {
     },
     changeSrchType: function (value) {
         if (value == 1) {
-            Vue.set(srch.screenParam, "colDef", colR);
+            Vue.set(srch.screenParam, "colDef", colD);
             Vue.set(srch, "method", "GoodsSale");
         } else {
             Vue.set(srch.screenParam, "colDef", colM);

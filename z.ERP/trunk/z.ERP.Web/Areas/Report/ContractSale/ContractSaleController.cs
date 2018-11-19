@@ -25,7 +25,10 @@ namespace z.ERP.Web.Areas.Report.ContractSale
 
         public string Output(SearchItem item)
         {
-            return service.ReportService.ContractSaleOutput(item);
+            if (item.Values["SrchTYPE"] == "2")
+                return service.ReportService.ContractSaleMOutput(item);
+            else
+                return service.ReportService.ContractSaleOutput(item);
         }
     }
 }
