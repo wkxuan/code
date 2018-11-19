@@ -13,13 +13,11 @@
                 {
                     vModel = "searchParam.SrchTYPE",
                     Change = "changeSrchType",
-                    EmptyText = "按日查询"                                  
-                });
+                    EmptyText = "日数据",
+                  //  Value = "1"
+            });
             }
         </i-col>
-
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
             门店
         </i-col>
@@ -49,6 +47,36 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelMerchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTID",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="4" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTNAME",
+                    Enable = true
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
             商品编码
         </i-col>
         <i-col span="6" class="RowTitle">
@@ -74,35 +102,26 @@
     </row>
 
     <row>
-            <i-col span="2" class="RowTitle">
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "SelMerchant",
-                        Text = "商户",
-                        Enable = true,
-                        Type = "primary"
-                    });
-                }
-            </i-col>
-            <i-col span="2" class="RowTitle">
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "searchParam.MERCHANTID",
-                        Enable = true
-                    });
-                }
-            </i-col>
-            <i-col span="4" class="RowTitle">
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "searchParam.MERCHANTNAME",
-                        Enable = true
-                    });
-                }
-            </i-col>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelContract",
+                    Text = "租约",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.CONTRACTID",
+                    Enable = true
+                });
+            }
+        </i-col>
         <i-col span="2" class="RowTitle">
             @{
                 RenderControl(new ButtonRender()
@@ -133,32 +152,8 @@
                 });
             }
         </i-col>
-
-
-
     </row>
     <row>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelContract",
-                    Text = "租约",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
-        </i-col>
-        <i-col span="6" class="RowTitle">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.CONTRACTID",
-                    Enable = true
-                });
-            }
-        </i-col>
-
         <i-col span="2" class="RowTitle">
             销售日期
         </i-col>
@@ -166,7 +161,8 @@
             @{
                 RenderControl(new DateBoxRender()
                 {
-                    vModel = "searchParam.RQ_START"
+                    vModel = "searchParam.RQ_START",
+                    Enable = true
                 });
             }
         </i-col>
@@ -174,7 +170,27 @@
             @{
                 RenderControl(new DateBoxRender()
                 {
-                    vModel = "searchParam.RQ_END"
+                    vModel = "searchParam.RQ_END",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            销售年月
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new YearMonthBoxRender()
+                {
+                    vModel = "searchParam.YEARMONTH_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new YearMonthBoxRender()
+                {
+                    vModel = "searchParam.YEARMONTH_END"
                 });
             }
         </i-col>

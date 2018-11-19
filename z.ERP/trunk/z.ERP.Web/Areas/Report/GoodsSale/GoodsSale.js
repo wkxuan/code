@@ -55,6 +55,7 @@ srch.beforeVue = function () {
 
     srch.screenParam.popParam = {};
     srch.screenParam.KINDID = [];
+    srch.searchParam.SrchTYPE = 1;
 };
 
 srch.mountedInit = function () {
@@ -114,3 +115,12 @@ srch.popCallBack = function (data) {
         }
     }
 };
+
+srch.IsValidSrch = function () {
+    if (!srch.searchParam.SrchTYPE) {
+        iview.Message.info("请选择查询类型!");
+        return false;
+    }
+
+    return true;
+}

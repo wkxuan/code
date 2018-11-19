@@ -105,6 +105,8 @@ namespace z.ERP.Services
             item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
 
 
             sql += " ORDER BY  D.RQ,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
@@ -128,6 +130,8 @@ namespace z.ERP.Services
                 item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
                 item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
                 item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
+                item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
+                item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
 
                 DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
                 DataRow dr = dt.NewRow();
@@ -160,6 +164,8 @@ namespace z.ERP.Services
             item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
 
             sql += " GROUP BY D.YEARMONTH,M.NAME,G.CONTRACTID,G.MERCHANTID,";
             sql += " B.NAME,K.CODE,K.NAME,G.GOODSDM,G.BARCODE,G.NAME";
@@ -185,6 +191,8 @@ namespace z.ERP.Services
                 item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
                 item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
                 item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
+                item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
+                item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
 
                 DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
                 DataRow dr = dt.NewRow();
@@ -217,6 +225,9 @@ namespace z.ERP.Services
             item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
+
             sql += " ORDER BY  D.RQ,G.MERCHANTID,G.CONTRACTID,D.GOODSID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.TableName = "GoodsSale";
@@ -225,6 +236,39 @@ namespace z.ERP.Services
                 a.SetTable(dt);
             });
         }
+        public string GoodsSaleMOutput(SearchItem item)
+        {
+            string sql = $"SELECT D.YEARMONTH RQ,SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT,";
+            sql += " M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
+            sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
+            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
+            sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
+            sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+            item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
+            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
+            item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
+            item.HasDateKey("RQ_START", a => sql += $" and D.RQ >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
+            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
+
+            sql += " GROUP BY D.YEARMONTH,M.NAME,G.CONTRACTID,G.MERCHANTID,B.NAME,K.CODE,K.NAME,G.GOODSDM,G.BARCODE,G.NAME";
+            sql += " ORDER BY D.YEARMONTH,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "GoodsSale";
+            return GetExport("商品销售导出", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+
+
         public DataGridResult SaleRecord(SearchItem item)
         {
             string sql = $"SELECT S.POSNO,S.DEALID,S.SALE_TIME,trunc(S.ACCOUNT_DATE) ACCOUNT_DATE,U.USERNAME CASHIERNAME, U.USERCODE CASHIERCODE,";

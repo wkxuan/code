@@ -24,7 +24,10 @@ namespace z.ERP.Web.Areas.Report.GoodsSale
         }
         public string Output(SearchItem item)
         {
-            return service.ReportService.GoodsSaleOutput(item);
+           if( item.Values["SrchTYPE"]=="2")
+             return service.ReportService.GoodsSaleMOutput(item);
+           else
+             return service.ReportService.GoodsSaleOutput(item);
         }
     }
 }
