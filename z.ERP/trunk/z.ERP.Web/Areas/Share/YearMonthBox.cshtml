@@ -2,7 +2,7 @@
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<YearMonthBoxRender>
 
 <date-picker type="month" format="yyyyMM" v-on:on-change="@Model.vModel=$event"
-             value="@Model.vModel"></date-picker>
+             value="@Model.vModel" v-model="@Model.vModel"></date-picker>
 
 @*             disabled="@(Model.Enable?"!disabled":"disabled")"
     readonly="@(Model.Enable?"false":"true")"*@
