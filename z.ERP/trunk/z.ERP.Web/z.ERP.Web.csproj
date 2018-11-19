@@ -201,6 +201,7 @@
     <Compile Include="Areas\Share\Render\PopsRender.cs" />
     <Compile Include="Areas\Share\Render\ViewDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\ViewEnumDropDownListRender.cs" />
+    <Compile Include="Areas\Share\Render\YearMonthBoxRender.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
@@ -534,6 +535,7 @@
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintOther.cshtml" />
     <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.cshtml" />
     <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.cshtml" />
+    <Content Include="Areas\Share\YearMonthBox.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

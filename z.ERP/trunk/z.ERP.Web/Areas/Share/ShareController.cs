@@ -66,6 +66,10 @@ namespace z.ERP.Web.Areas.Share
         {
             return View(render);
         }
+        public ActionResult YearMonthBox(YearMonthBoxRender render)
+        {
+            return View(render);
+        }
         public ActionResult BaseDropDownList(DropDownListRender render)
         {
             return View(render);
