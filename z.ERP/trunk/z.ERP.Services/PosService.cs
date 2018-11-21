@@ -184,7 +184,15 @@ namespace z.ERP.Services
             else
                 sqlarr[0] += $"to_date('{request.account_date.Date}','yyyy-mm-dd HH24:MI:SS'),";
             sqlarr[0] += $"{request.cashierid},{sumGoodsAmount},{request.change_amount},";
-            sqlarr[0] += $"{request.member_cardid},{request.crm_recordid},";
+
+            if (request.member_cardid.IsEmpty())
+                sqlarr[0] += $"-1,";
+            else
+                sqlarr[0] += $"{request.member_cardid},";
+            if (request.crm_recordid.ToString().IsEmpty())
+                sqlarr[0] += $"-1,";
+            else
+                sqlarr[0] += $"{ request.crm_recordid},";
 
             if (request.posno.IsNotEmpty() || request.posno == "")
                 sqlarr[0] += $"'{request.posno_old}',";
