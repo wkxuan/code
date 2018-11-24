@@ -1,0 +1,150 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Edit;
+@using z.ERP.Entities;
+@using z.ERP.Model;
+@using z.Extensions;
+@inherits EditViewBase<string>
+@section head{
+
+}
+
+@section baseParam{
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            名称
+        </i-col>
+        <i-col span="14">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.NAME"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            税号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.SH"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            银行名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.BANK_NAME"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            银行账号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.BANK"
+                });
+            }
+        </i-col>
+    </row>
+
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            地址
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ADRESS"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            联系人
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTACTPERSON"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            电话
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PHONE"
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            邮编
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PIZ"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            微信
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.WEIXIN"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            QQ
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.QQ"
+                });
+            }
+        </i-col>
+    </row>
+}

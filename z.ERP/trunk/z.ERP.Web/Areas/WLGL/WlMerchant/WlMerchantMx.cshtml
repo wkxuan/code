@@ -23,26 +23,16 @@
                 Click = "exec",
             });
         }
-        RenderControl(new ButtonRender()
-        {
-            Text = "导出",
-            Click = "Output",
-        });
-        RenderControl(new ButtonRender()
-        {
-            Text = "打印",
-            Click = "Print",
-        });
     }
 }
 
 @section content{
     <row>
-        <i-col span="2" class="RowText">商户代码</i-col>
+        <i-col span="2" class="RowText">供货商代码</i-col>
         <i-col span="4">
             <i-input v-model="MERCHANTID" readonly="true"></i-input>
         </i-col>
-        <i-col span="2" class="RowTitle">商户名称</i-col>
+        <i-col span="2" class="RowTitle">供货商名称</i-col>
         <i-col span="4">
             <i-input v-model="NAME" readonly="true"></i-input>
         </i-col>
@@ -81,11 +71,6 @@
         </i-col>
     </row>
 
-
-    <row>
-        <i-table size="small" border="true"
-                 columns="colDef" data="BrandData"></i-table>
-    </row>
 }
 
 @section foot{
@@ -94,61 +79,30 @@
             el: '#detail_Main',
             data: {
                 Mainpanel: 'condition',
-                disabled:true,
-                MERCHANTID:"@merchant.MERCHANTID",
-                NAME:"@merchant.NAME",
-                STATUSMC:"@merchant.STATUSMC",
+                disabled: true,
+                MERCHANTID: "@merchant.MERCHANTID",
+                NAME: "@merchant.NAME",
+                STATUSMC: "@merchant.STATUSMC",
 
-                SH:"@merchant.SH",
-                BANK_NAME:"@merchant.BANK_NAME",
-                BANK:"@merchant.BANK",
+                SH: "@merchant.SH",
+                BANK_NAME: "@merchant.BANK_NAME",
+                BANK: "@merchant.BANK",
 
-                ADRESS:"@merchant.ADRESS",
-                CONTACTPERSON:"@merchant.CONTACTPERSON",
-                PHONE:"@merchant.PHONE",
-                colDef : [
-                    { title: '品牌名称', key: 'NAME', width: 200 },
-                    { title: '业态代码', key: 'CATEGORYCODE', width: 200 },
-                    { title: '业态名称', key: 'CATEGORYNAME', width: 200 },
-                ],
-                BrandData:[]
-            },
-            mounted:function(){
-                var _self = this;
-                _.Ajax('SearchMerchant', {
-                    Data: { MERCHANTID: "@merchant.MERCHANTID" }
-                }, function (data) {
-                    _self.BrandData = data.merchantBrand;
-                });
+                ADRESS: "@merchant.ADRESS",
+                CONTACTPERSON: "@merchant.CONTACTPERSON",
+                PHONE: "@merchant.PHONE"
             },
             methods: {
                 exec: function (event) {
                     event.stopPropagation();
                     var _self = this;
                     _.Ajax('ExecData', {
-                        Data: {MERCHANTID: "@merchant.MERCHANTID"},
+                        Data: { MERCHANTID: "@merchant.MERCHANTID" },
                     }, function (data) {
                         _self.$Message.info("审核成功");
                         setTimeout(function () {
                             window.location.reload();
                         }, 100);
-                    });
-                },
-                Output :function (event) {
-                    event.stopPropagation();
-                    var _self = this;
-                    _.Ajax('Output', {
-                        Id: "@merchant.MERCHANTID",
-                    }, function (data) {
-                        window.open(__BaseUrl+data);
-                    });
-                },
-                Print :function (event) {
-                    event.stopPropagation();
-                    _.OpenPage({
-                        id: 10200101,
-                        title: '打印',
-                        url: "SHGL/MERCHANT/Print/" + @merchant.MERCHANTID,
                     });
                 }
             }

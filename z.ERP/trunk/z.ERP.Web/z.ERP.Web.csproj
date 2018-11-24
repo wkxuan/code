@@ -221,6 +221,7 @@
     <Compile Include="Areas\PPGL\BRAND\BrandController.cs" />
     <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\SPGL\SALEBILL\SaleBillController.cs" />
+    <Compile Include="Areas\WLGL\WlMerchant\WlMerchantController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINDEPT\ComplainDeptController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINTYPE\ComplainTypeController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
@@ -318,6 +319,8 @@
     <Content Include="Areas\SPGL\GOODS\GoodsList.js" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillEdit.js" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillList.js" />
+    <Content Include="Areas\WLGL\WlMerchant\WlMerchantEdit.js" />
+    <Content Include="Areas\WLGL\WlMerchant\WlMerchantList.js" />
     <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.js" />
     <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
@@ -536,6 +539,9 @@
     <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.cshtml" />
     <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.cshtml" />
     <Content Include="Areas\Share\YearMonthBox.cshtml" />
+    <Content Include="Areas\WLGL\WlMerchant\WlMerchantMx.cshtml" />
+    <Content Include="Areas\WLGL\WlMerchant\WlMerchantEdit.cshtml" />
+    <Content Include="Areas\WLGL\WlMerchant\WlMerchantList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

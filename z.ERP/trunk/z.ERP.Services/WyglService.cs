@@ -201,5 +201,112 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+
+
+
+
+
+
+        public DataGridResult GetWlMerchant(SearchItem item)
+        {
+            string sql = $@"SELECT * FROM WL_MERCHANT WHERE 1=1 ";
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and NAME  LIKE '%{a}%'");
+            item.HasKey("SH", a => sql += $" and SH LIKE '%{a}%'");
+            item.HasKey("BANK", a => sql += $" and BANK LIKE '%{a}%'");
+            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            sql += " ORDER BY  MERCHANTID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+
+        public void WLDeleteMerchant(List<WL_MERCHANTEntity> DeleteData)
+        {
+            foreach (var mer in DeleteData)
+            {
+                WL_MERCHANTEntity Data = DbHelper.Select(mer);
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString())
+                {
+                    throw new LogicException("物料供应商(" + Data.NAME + ")已经审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var mer in DeleteData)
+                {
+                    DbHelper.Delete(mer);
+                }
+                Tran.Commit();
+            }
+        }
+
+
+        public string SaveWlMerchant(WL_MERCHANTEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.MERCHANTID.IsEmpty())
+            {
+                SaveData.MERCHANTID = NewINC("WL_MERCHANT").PadLeft(4, '0');  //暂定6位
+                SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            }
+            else
+            {
+                WL_MERCHANTEntity mer = DbHelper.Select(SaveData);
+                SaveData.VERIFY = mer.VERIFY;
+                SaveData.VERIFY_NAME = mer.VERIFY_NAME;
+                SaveData.VERIFY_TIME = mer.VERIFY_TIME;
+            }
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            v.Require(a => a.MERCHANTID);
+            v.Require(a => a.NAME);
+            v.IsUnique(a => a.MERCHANTID);
+            v.IsUnique(a => a.NAME);
+            v.Verify();
+            DbHelper.Save(SaveData);
+            return SaveData.MERCHANTID;
+        }
+
+
+
+        public Tuple<dynamic> GetWlMerchantElement(WL_MERCHANTEntity Data)
+        {
+            if (Data.MERCHANTID.IsEmpty())
+            {
+                throw new LogicException("请确认商户编号!");
+            }
+            string sql = $@"SELECT * FROM WL_MERCHANT WHERE 1=1 ";
+            if (!Data.MERCHANTID.IsEmpty())
+                sql += (" AND MERCHANTID= " + Data.MERCHANTID);
+            DataTable merchant = DbHelper.ExecuteTable(sql);
+
+            merchant.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+
+            return new Tuple<dynamic>(merchant.ToOneLine());
+        }
+
+        public string ExecWLMerchantData(WL_MERCHANTEntity Data)
+        {
+            WL_MERCHANTEntity mer = DbHelper.Select(Data);
+            if (mer.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("物料供应商(" + Data.NAME + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                mer.VERIFY = employee.Id;
+                mer.VERIFY_NAME = employee.Name;
+                mer.VERIFY_TIME = DateTime.Now.ToString();
+                mer.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(mer);
+                Tran.Commit();
+            }
+            return mer.MERCHANTID;
+        }
     }
 }
