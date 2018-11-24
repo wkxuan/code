@@ -221,6 +221,7 @@
     <Compile Include="Areas\PPGL\BRAND\BrandController.cs" />
     <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\SPGL\SALEBILL\SaleBillController.cs" />
+    <Compile Include="Areas\WLGL\WlGoods\WlGoodsController.cs" />
     <Compile Include="Areas\WLGL\WlMerchant\WlMerchantController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINDEPT\ComplainDeptController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINTYPE\ComplainTypeController.cs" />
@@ -319,6 +320,8 @@
     <Content Include="Areas\SPGL\GOODS\GoodsList.js" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillEdit.js" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillList.js" />
+    <Content Include="Areas\WLGL\WlGoods\WlGoodsEdit.js" />
+    <Content Include="Areas\WLGL\WlGoods\WlGoodsList.js" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantEdit.js" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantList.js" />
     <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.js" />
@@ -542,6 +545,9 @@
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantMx.cshtml" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantEdit.cshtml" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantList.cshtml" />
+    <Content Include="Areas\WLGL\WlGoods\WlGoodsEdit.cshtml" />
+    <Content Include="Areas\WLGL\WlGoods\WlGoodsList.cshtml" />
+    <Content Include="Areas\WLGL\WlGoods\WlGoodsMx.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
