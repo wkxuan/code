@@ -34,8 +34,8 @@ namespace z.ERP.Web.Areas.WLGL.WlGoods
         public ActionResult WlGoodsMx(string Id)
         {
             ViewBag.Title = "物料信息浏览";
-            var entity = service.WyglService.GetWlMerchantElement(new WL_MERCHANTEntity(Id));
-            ViewBag.merchant = entity.Item1;
+            var entity = service.WyglService.GetWlGoodsElement(new WL_GOODSEntity(Id));
+            ViewBag.goods = entity.Item1;
             return View();
         }
 
@@ -49,30 +49,30 @@ namespace z.ERP.Web.Areas.WLGL.WlGoods
         }
 
         [Permission("10900201")]
-        public void Delete(List<WL_MERCHANTEntity> DeleteData)
+        public void Delete(List<WL_GOODSEntity> DeleteData)
         {
-            service.WyglService.WLDeleteMerchant(DeleteData);
+            service.WyglService.WLDeleteGoods(DeleteData);
         }
 
         [Permission("10900201")]
-        public string Save(WL_MERCHANTEntity SaveData)
+        public string Save(WL_GOODSEntity SaveData)
         {
-            return service.WyglService.SaveWlMerchant(SaveData);
+            return service.WyglService.SaveWlGoods(SaveData);
         }
-        public UIResult SearchWlMerchant(WL_MERCHANTEntity Data)
+        public UIResult SearchWlGoods(WL_GOODSEntity Data)
         {
-            var res = service.WyglService.GetWlMerchantElement(Data);
+            var res = service.WyglService.GetWlGoodsElement(Data);
             return new UIResult(
                 new
                 {
-                    merchant = res.Item1
+                    goods = res.Item1
                 }
             );
         }
         [Permission("10900202")]
-        public void ExecData(WL_MERCHANTEntity Data)
+        public void ExecData(WL_GOODSEntity Data)
         {
-            service.WyglService.ExecWLMerchantData(Data);
+            service.WyglService.ExecWLGoodsData(Data);
         }
     }
 }

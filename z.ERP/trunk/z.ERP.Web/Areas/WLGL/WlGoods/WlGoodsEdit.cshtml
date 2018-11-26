@@ -41,35 +41,35 @@
 
     <row>
         <i-col span="2" class="RowTitle">
-            税号
+            拼音码
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.SH"
+                    vModel = "dataParam.PYM"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            银行名称
+            供应商代码
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.BANK_NAME"
+                    vModel = "dataParam.MERCHANTID"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            银行账号
+            进项税率
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.BANK"
+                    vModel = "dataParam.JXSL"
                 });
             }
         </i-col>
@@ -78,35 +78,35 @@
 
     <row>
         <i-col span="2" class="RowTitle">
-            地址
+            含税单价
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.ADRESS"
+                    vModel = "dataParam.TAXINPRICE"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            联系人
+            不含税单价
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.CONTACTPERSON"
+                    vModel = "dataParam.NOTAXINPRICE"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            电话
+            使用价
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.PHONE"
+                    vModel = "dataParam.USEPRICE"
                 });
             }
         </i-col>
@@ -114,35 +114,13 @@
 
     <row>
         <i-col span="2" class="RowTitle">
-            邮编
+            描述
         </i-col>
-        <i-col span="6">
+        <i-col span="22">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.PIZ"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            微信
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.WEIXIN"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            QQ
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.QQ"
+                    vModel = "dataParam.DESCRIPTION"
                 });
             }
         </i-col>
