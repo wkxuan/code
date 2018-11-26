@@ -224,8 +224,8 @@ namespace z.ERP.Services
             for (int i = 1 + goodsCount; i <= goodsCount + payCount; i++)
             {
 
-                sqlarr[i] = "insert into sale_pay(posno,dealid,payid,amount)";
-                sqlarr[i] += $"values('{posNo}',{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount})";
+                sqlarr[i] = "insert into sale_pay(posno,dealid,payid,amount,remarks)";
+                sqlarr[i] += $"values('{posNo}',{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount},{request.paylist[j].remarks})";
                 j++;
             }
 

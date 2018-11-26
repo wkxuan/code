@@ -19,5 +19,11 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
+        public string remarks
+        {
+            get;
+            set;
+        }
+
     }
 }
