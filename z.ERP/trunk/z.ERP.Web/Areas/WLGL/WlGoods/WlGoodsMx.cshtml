@@ -11,11 +11,11 @@
     @Html.Raw("详情");
 }
 @{
-    var merchant = ViewBag.merchant;
+    var goods = ViewBag.goods;
 }
 @section btn{
     @{
-        if (@merchant.STATUS == "1")
+        if (@goods.STATUS == "1")
         {
             RenderControl(new ButtonRender()
             {
@@ -28,11 +28,11 @@
 
 @section content{
     <row>
-        <i-col span="2" class="RowText">供货商代码</i-col>
+        <i-col span="2" class="RowText">物料代码</i-col>
         <i-col span="4">
-            <i-input v-model="MERCHANTID" readonly="true"></i-input>
+            <i-input v-model="GOODSDM" readonly="true"></i-input>
         </i-col>
-        <i-col span="2" class="RowTitle">供货商名称</i-col>
+        <i-col span="2" class="RowTitle">物料名称</i-col>
         <i-col span="4">
             <i-input v-model="NAME" readonly="true"></i-input>
         </i-col>
@@ -42,32 +42,24 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowText">税号</i-col>
+        <i-col span="2" class="RowText">含税单价</i-col>
         <i-col span="4">
-            <i-input v-model="SH" readonly="true"></i-input>
+            <i-input v-model="TAXINPRICE" readonly="true"></i-input>
         </i-col>
-        <i-col span="2" class="RowTitle">银行名称</i-col>
+        <i-col span="2" class="RowTitle">不含税单价</i-col>
         <i-col span="4">
-            <i-input v-model="BANK_NAME" readonly="true"></i-input>
+            <i-input v-model="NOTAXINPRICE" readonly="true"></i-input>
         </i-col>
-        <i-col span="2" class="RowTitle">账号</i-col>
+        <i-col span="2" class="RowTitle">使用价</i-col>
         <i-col span="4">
-            <i-input v-model="BANK" readonly="true"></i-input>
+            <i-input v-model="USEPRICE" readonly="true"></i-input>
         </i-col>
     </row>
 
     <row>
-        <i-col span="2" class="RowText">地址</i-col>
+        <i-col span="2" class="RowText">供应商代码</i-col>
         <i-col span="4">
-            <i-input v-model="ADRESS" readonly="true"></i-input>
-        </i-col>
-        <i-col span="2" class="RowTitle">联系人</i-col>
-        <i-col span="4">
-            <i-input v-model="CONTACTPERSON" readonly="true"></i-input>
-        </i-col>
-        <i-col span="2" class="RowTitle">电话</i-col>
-        <i-col span="4">
-            <i-input v-model="PHONE" readonly="true"></i-input>
+            <i-input v-model="MERCHANTID" readonly="true"></i-input>
         </i-col>
     </row>
 
@@ -80,24 +72,23 @@
             data: {
                 Mainpanel: 'condition',
                 disabled: true,
-                MERCHANTID: "@merchant.MERCHANTID",
-                NAME: "@merchant.NAME",
-                STATUSMC: "@merchant.STATUSMC",
+                GOODSDM: "@goods.GOODSDM",
+                NAME: "@goods.NAME",
+                STATUSMC: "@goods.STATUSMC",
 
-                SH: "@merchant.SH",
-                BANK_NAME: "@merchant.BANK_NAME",
-                BANK: "@merchant.BANK",
+                TAXINPRICE: "@goods.TAXINPRICE",
+                NOTAXINPRICE: "@goods.NOTAXINPRICE",
+                USEPRICE: "@goods.USEPRICE",
 
-                ADRESS: "@merchant.ADRESS",
-                CONTACTPERSON: "@merchant.CONTACTPERSON",
-                PHONE: "@merchant.PHONE"
+                MERCHANTID: "@goods.MERCHANTID",
+                DESCRIPTION: "@goods.DESCRIPTION"
             },
             methods: {
                 exec: function (event) {
                     event.stopPropagation();
                     var _self = this;
                     _.Ajax('ExecData', {
-                        Data: { MERCHANTID: "@merchant.MERCHANTID" },
+                        Data: { GOODSID: "@goods.GOODSID" },
                     }, function (data) {
                         _self.$Message.info("审核成功");
                         setTimeout(function () {

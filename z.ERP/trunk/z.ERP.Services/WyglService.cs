@@ -308,5 +308,111 @@ namespace z.ERP.Services
             }
             return mer.MERCHANTID;
         }
+
+
+
+
+        public DataGridResult GetWlGoods(SearchItem item)
+        {
+            string sql = $@"SELECT B.*,A.NAME GHSNAME";
+            sql += @" FROM WL_MERCHANT A,WL_GOODS B WHERE B.MERCHANTID=B.MERCHANTID ";
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("GOODSDM", a => sql += $" and A.GOODSDM LIKE '%{a}%'");
+            sql += " ORDER BY  GOODSDM DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+        public Tuple<dynamic> GetWlGoodsElement(WL_GOODSEntity Data)
+        {
+            if (Data.GOODSDM.IsEmpty() && (Data.GOODSID.IsEmpty()))
+            {
+                throw new LogicException("请确认物料编号!");
+            }
+            string sql = $@"SELECT * FROM WL_GOODS WHERE 1=1 ";
+            if (!Data.GOODSDM.IsEmpty())
+                sql += (" AND GOODSDM= " + Data.GOODSDM);
+            if (!Data.GOODSID.IsEmpty())
+                sql += (" AND GOODSID= " + Data.GOODSID);
+            DataTable goods = DbHelper.ExecuteTable(sql);
+
+            goods.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+
+            return new Tuple<dynamic>(goods.ToOneLine());
+        }
+
+
+        public void WLDeleteGoods(List<WL_GOODSEntity> DeleteData)
+        {
+            foreach (var mer in DeleteData)
+            {
+                WL_GOODSEntity Data = DbHelper.Select(mer);
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString())
+                {
+                    throw new LogicException("物料(" + Data.NAME + ")已经审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var mer in DeleteData)
+                {
+                    DbHelper.Delete(mer);
+                }
+                Tran.Commit();
+            }
+        }
+
+
+        public string SaveWlGoods(WL_GOODSEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.GOODSDM.IsEmpty())
+            {
+                var id = NewINC("WL_GOODS");
+                SaveData.GOODSID = id;
+                SaveData.GOODSDM = id.PadLeft(4, '0');
+                SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            }
+            else
+            {
+                WL_GOODSEntity mer = DbHelper.Select(SaveData);
+                SaveData.VERIFY = mer.VERIFY;
+                SaveData.VERIFY_NAME = mer.VERIFY_NAME;
+                SaveData.VERIFY_TIME = mer.VERIFY_TIME;
+            }
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            v.Require(a => a.GOODSDM);
+            v.Require(a => a.NAME);
+            v.IsUnique(a => a.GOODSDM);
+            v.IsUnique(a => a.NAME);
+            v.Verify();
+            DbHelper.Save(SaveData);
+            return SaveData.GOODSDM;
+        }
+
+
+        public string ExecWLGoodsData(WL_GOODSEntity Data)
+        {
+            WL_GOODSEntity mer = DbHelper.Select(Data);
+            if (mer.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("物料(" + Data.NAME + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                mer.VERIFY = employee.Id;
+                mer.VERIFY_NAME = employee.Name;
+                mer.VERIFY_TIME = DateTime.Now.ToString();
+                mer.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(mer);
+                Tran.Commit();
+            }
+            return mer.GOODSDM;
+        }
     }
 }
