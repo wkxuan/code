@@ -124,7 +124,7 @@ namespace z.ERP.Services
             sqlGoods += $" sale_amount,discount_amount,coupon_amount from {strTable}sale_goods";
             sqlGoods += $" where posno='{filter.posno}' and dealid={filter.dealid}";
 
-            string sqlPay = $"select payid,amount from {strTable}sale_pay";
+            string sqlPay = $"select payid,amount,remarks from {strTable}sale_pay";
             sqlPay += $" where posno='{filter.posno}' and dealid={filter.dealid}";
 
             string sqlClerk = $"select sheetid,clerkid from {strTable}sale_clerk";
