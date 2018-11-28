@@ -23,6 +23,17 @@ namespace z.ERP.Web.Areas.Report.ContractSale
             );
         }
 
+        public UIResult SearchCate()
+        {
+            var res = service.DataService.GetTreeCategory();
+            return new UIResult(
+                new
+                {
+                    treeOrg = res.Item1
+                }
+            );
+        }
+
         public string Output(SearchItem item)
         {
             if (item.Values["SrchTYPE"] == "2")

@@ -30,15 +30,15 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            商品分类
+            业态
         </i-col>
         <i-col span="6" class="RowTitle">
             @{
                 RenderControl(new CascaderRender()
                 {
-                    vModel = "searchParam.KINDID",
-                    Data = "screenParam.dataKind",
-                    Change = "changeKind",
+                    vModel = "screenParam.CATEGORY",
+                    Data = "screenParam.CATEData",
+                    Change = "changeCate",
                     Not_level_last = true
                 });
             }
@@ -161,6 +161,18 @@
                 RenderControl(new YearMonthBoxRender()
                 {
                     vModel = "searchParam.YEARMONTH_END"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            楼层
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.FLOORID",
+                    ServiceMothod = m => m.floor(),
                 });
             }
         </i-col>

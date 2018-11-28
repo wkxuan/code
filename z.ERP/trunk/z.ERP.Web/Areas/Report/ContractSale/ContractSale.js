@@ -12,8 +12,10 @@
     { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
     { title: '店铺编号', key: 'SHOPCODE', width: 120 },
     { title: '店铺名称', key: 'SHOPNAME', width: 120 },
-    { title: '分类编码', key: 'KINDCODE', width: 100 },
-    { title: '分类名称', key: 'KINDNAME', width: 100 },
+   // { title: '分类编码', key: 'KINDCODE', width: 100 },
+   // { title: '分类名称', key: 'KINDNAME', width: 100 },
+    { title: '业态', key: 'CATEGORYNAME', width: 100 },
+    { title: '楼层', key: 'FLOORCODE', width: 60 },
     { title: '品牌', key: 'BRANDNAME', width: 100 },
     { title: '销售金额', key: 'AMOUNT', width: 120, align: "right" },
     { title: '销售成本', key: 'COST', width: 120, align: "right" },
@@ -29,8 +31,10 @@ var colM = [
     { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
     { title: '店铺编号', key: 'SHOPCODE', width: 120 },
     { title: '店铺名称', key: 'SHOPNAME', width: 120 },
-    { title: '分类编码', key: 'KINDCODE', width: 100 },
-    { title: '分类名称', key: 'KINDNAME', width: 100 },
+   // { title: '分类编码', key: 'KINDCODE', width: 100 },
+   // { title: '分类名称', key: 'KINDNAME', width: 100 },
+    { title: '业态', key: 'CATEGORYNAME', width: 100 },
+    { title: '楼层', key: 'FLOORCODE', width: 60 },
     { title: '品牌', key: 'BRANDNAME', width: 100 },
     { title: '销售金额', key: 'AMOUNT', width: 120, align: "right" },
     { title: '销售成本', key: 'COST', width: 120, align: "right" },
@@ -52,15 +56,17 @@ srch.beforeVue = function () {
     srch.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
 
     srch.screenParam.popParam = {};
-    srch.screenParam.KINDID = [];
     srch.searchParam.SrchTYPE = 1;
+
+    srch.searchParam.CATEGORYCODE = "";
+    srch.screenParam.CATEGORY = [];
 };
 
 srch.mountedInit = function () {
-    _.Ajax('SearchKind', {
+    _.Ajax('SearchCate', {
         Data: {}
     }, function (data) {
-        Vue.set(srch.screenParam, "dataKind", data.treeorg.Obj);
+        Vue.set(srch.screenParam, "CATEData", data.treeOrg.Obj);
     });
 }
 
@@ -74,8 +80,8 @@ srch.otherMethods = {
     SelBrand: function(){
         srch.screenParam.showPopBrand = true;
     },
-    changeKind: function (value, selectedData) {
-        srch.screenParam.KINDID = value[value.length - 1];
+    changeCate: function (value, selectedData) {
+        srch.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
     },
     changeSrchType: function (value) {
         if (value == 1) {

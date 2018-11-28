@@ -13,9 +13,12 @@ namespace z.ERP.Services
 
         public DataGridResult ContractSale(SearchItem item)
         {
-            string sql = $"SELECT C.*,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
-            sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K ";
+            string sql = $"SELECT C.*,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
+            sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
+            sql += "  and B.CATEGORYID=G.CATEGORYID and S.FLOORID=F.ID";
+            item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
             item.HasDateKey("RQ_START", a => sql += $" and C.RQ >= {a}");
@@ -35,8 +38,11 @@ namespace z.ERP.Services
             if (count > 0)
             {
                 string sqlsum = $"SELECT SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT ";
-                sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K ";
+                sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
                 sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
+                sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+                item.HasKey("CATEGORYCODE", a => sqlsum += $" and G.CATEGORYCODE LIKE '{a}%'");
+                item.HasKey("FLOORID", a => sqlsum += $" and F.ID = {a}");
                 item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID = {a}");
                 item.HasKey("CONTRACTID", a => sqlsum += $" and C.CONTRACTID = '{a}'");
                 item.HasDateKey("RQ_START", a => sqlsum += $" and C.RQ >= {a}");
@@ -64,9 +70,13 @@ namespace z.ERP.Services
         public DataGridResult ContractSaleM(SearchItem item)
         {
             string sql = $"SELECT C.YEARMONTH,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
-            sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
-            sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K ";
+            sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,";
+            sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
+            sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
+            sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+            item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
             item.HasDateKey("RQ_START", a => sql += $" and C.RQ >= {a}");
@@ -79,7 +89,7 @@ namespace z.ERP.Services
             item.HasKey("YEARMONTH_START", a => sql += $" and C.YEARMONTH >= {a}");
             item.HasKey("YEARMONTH_END", a => sql += $" and C.YEARMONTH <= {a}");
 
-            sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,K.CODE,K.NAME";
+            sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,K.CODE,K.NAME,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE";
             sql += " ORDER BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID ";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -87,8 +97,11 @@ namespace z.ERP.Services
             if (count > 0)
             {
                 string sqlsum = $"SELECT SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT ";
-                sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K ";
+                sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F ";
                 sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
+                sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+                item.HasKey("CATEGORYCODE", a => sqlsum += $" and G.CATEGORYCODE LIKE '{a}%'");
+                item.HasKey("FLOORID", a => sqlsum += $" and F.ID = {a}");
                 item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID = {a}");
                 item.HasKey("CONTRACTID", a => sqlsum += $" and C.CONTRACTID = '{a}'");
                 item.HasDateKey("RQ_START", a => sqlsum += $" and C.RQ >= {a}");
@@ -115,9 +128,13 @@ namespace z.ERP.Services
         public string ContractSaleOutput(SearchItem item)
         {
             string sql = $"SELECT  to_char(C.RQ,'yyyy-mm-dd') RQ,C.AMOUNT,C.COST,C.DIS_AMOUNT,C.PER_AMOUNT,C.MERCHANTID,C.CONTRACTID,";
-            sql += "  M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
-            sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K ";
+            sql += "  M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME, ";
+            sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
+            sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F  ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
+            sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+            item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
             item.HasDateKey("RQ_START", a => sql += $" and C.RQ >= {a}");
@@ -143,9 +160,13 @@ namespace z.ERP.Services
         public string ContractSaleMOutput(SearchItem item)
         {
             string sql = $"SELECT C.YEARMONTH RQ,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
-            sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
-            sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K ";
+            sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME, ";
+            sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
+            sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F  ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
+            sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+            item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
             item.HasDateKey("RQ_START", a => sql += $" and C.RQ >= {a}");
@@ -158,7 +179,7 @@ namespace z.ERP.Services
             item.HasKey("YEARMONTH_START", a => sql += $" and C.YEARMONTH >= {a}");
             item.HasKey("YEARMONTH_END", a => sql += $" and C.YEARMONTH <= {a}");
 
-            sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,K.CODE,K.NAME";
+            sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,K.CODE,K.NAME,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE";
             sql += " ORDER BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID ";
 
             DataTable dt = DbHelper.ExecuteTable(sql);
