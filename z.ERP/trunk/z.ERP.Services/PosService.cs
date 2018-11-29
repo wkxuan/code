@@ -225,7 +225,11 @@ namespace z.ERP.Services
             {
 
                 sqlarr[i] = "insert into sale_pay(posno,dealid,payid,amount,remarks)";
-                sqlarr[i] += $"values('{posNo}',{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount},{request.paylist[j].remarks})";
+                sqlarr[i] += $"values('{posNo}',{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount},";
+                if (request.paylist[j].remarks.IsEmpty())
+                    sqlarr[i] += "null)";
+                else
+                    sqlarr[i] += $"'{request.paylist[j].remarks}')";
                 j++;
             }
 
