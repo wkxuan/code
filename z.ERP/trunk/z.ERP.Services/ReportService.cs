@@ -223,8 +223,8 @@ namespace z.ERP.Services
                 sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
                 sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
                 item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
-                item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
-                item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
+                item.HasKey("GOODSDM", a => sqlsum += $" and G.GOODSDM = '{a}'");
+                item.HasKey("GOODSNAME", a => sqlsum += $" and G.NAME LIKE '%{a}%'");
                 item.HasKey("CONTRACTID", a => sqlsum += $" and G.CONTRACTID = '{a}'");
                 item.HasDateKey("RQ_START", a => sqlsum += $" and D.RQ >= {a}");
                 item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
@@ -284,8 +284,8 @@ namespace z.ERP.Services
                 sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
                 sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
                 item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
-                item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
-                item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
+                item.HasKey("GOODSDM", a => sqlsum += $" and G.GOODSDM = '{a}'");
+                item.HasKey("GOODSNAME", a => sqlsum += $" and G.NAME LIKE '%{a}%'");
                 item.HasKey("CONTRACTID", a => sqlsum += $" and G.CONTRACTID = '{a}'");
                 item.HasDateKey("RQ_START", a => sqlsum += $" and D.RQ >= {a}");
                 item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
@@ -419,7 +419,7 @@ namespace z.ERP.Services
                 string sqlsum = $"SELECT nvl(sum(S.SALE_AMOUNT),0) SALE_AMOUNT";
                 sqlsum += " FROM SALE S, SYSUSER U,STATION T";
                 sqlsum += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
-                item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
+                item.HasKey("BRANCHID", a => sqlsum += $" and T.BRANCHID={a}");
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
                 item.HasKey("MERCHANTID", a => sqlsum += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
                 // item.HasKey("SHOPID", a => sqlsum += $" and exists(select 1 from SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
