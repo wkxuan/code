@@ -72,7 +72,7 @@ define.showone = function (data, callback) {
         Data: { ID: data }
     }, function (data) {
         $.extend(define.dataParam, data.regionelement);
-        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.split(",");
+        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.toString().split(",");
         callback && callback();
     });
 }

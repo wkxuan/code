@@ -235,9 +235,9 @@ define.showone = function (data, callback) {
     }, function (data) {
         $.extend(define.dataParam, data.shopelement);
         if (define.dataParam.ORGIDCASCADER != null)
-            define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.split(",");
+            define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.toString().split(",");
         if (define.dataParam.CATEGORYIDCASCADER != null)
-            define.dataParam.CATEGORYIDCASCADER = define.dataParam.CATEGORYIDCASCADER.split(",");
+            define.dataParam.CATEGORYIDCASCADER = define.dataParam.CATEGORYIDCASCADER.toString().split(",");
         if (define.dataParam.STATUS == 2) {
             define.myve.topbtnModVisible = define.isvisible(false);
             define.myve.topbtnChkVisible = define.isvisible(false);

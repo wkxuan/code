@@ -150,7 +150,7 @@ define.showone = function (data, callback) {
         Data: { ID: data }
     }, function (data) {
         $.extend(define.dataParam, data.floorelement);
-        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.split(",");
+        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.toString().split(",");
         callback && callback();
     });
 }

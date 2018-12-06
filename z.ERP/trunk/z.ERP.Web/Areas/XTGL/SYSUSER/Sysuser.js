@@ -70,7 +70,7 @@ define.showone = function (data, callback) {
         Data: { USERID: data }
     }, function (data) {
         $.extend(define.dataParam, data.user);
-        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.split(",");
+        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.toString().split(",");
         define.dataParam.USER_ROLE = data.userrole;
         callback && callback();
     });
