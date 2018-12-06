@@ -382,7 +382,7 @@ namespace z.ERP.Services
             item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
           //  item.HasKey("SHOPID", a => sql += $" and exists(select 1 from SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
             item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
-            item.HasKey("MERCHANTNAME", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.MERCHANTNAME LIKE '%{a}%')");
+            item.HasKey("MERCHANTNAME", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.NAME LIKE '%{a}%')");
             item.HasKey("SHOPCODE", a => sql += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.CODE LIKE '%{a}%')");
             item.HasKey("SHOPNAME", a => sql += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.NAME LIKE '%{a}%')");
             item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
@@ -401,9 +401,9 @@ namespace z.ERP.Services
             item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
             //   item.HasKey("SHOPID", a => sql += $" and exists(select 1 from HIS_SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
-            item.HasKey("MERCHANTNAME", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.MERCHANTNAME LIKE '%{a}%')");
-            item.HasKey("SHOPCODE", a => sql += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.CODE LIKE '%{a}%')");
-            item.HasKey("SHOPNAME", a => sql += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.NAME LIKE '%{a}%')");
+            item.HasKey("MERCHANTNAME", a => sql += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.NAME LIKE '%{a}%')");
+            item.HasKey("SHOPCODE", a => sql += $" and exists(select 1 from HIS_SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.CODE LIKE '%{a}%')");
+            item.HasKey("SHOPNAME", a => sql += $" and exists(select 1 from HIS_SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.NAME LIKE '%{a}%')");
             item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
             item.HasDateKey("SALE_TIME_END", a => sql += $" and trunc(S.SALE_TIME) <= {a}");
             item.HasDateKey("ACCOUNT_DATE_START", a => sql += $" and S.ACCOUNT_DATE >= {a}");
@@ -423,7 +423,7 @@ namespace z.ERP.Services
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
                 item.HasKey("MERCHANTID", a => sqlsum += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
                 // item.HasKey("SHOPID", a => sqlsum += $" and exists(select 1 from SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
-                item.HasKey("MERCHANTNAME", a => sqlsum += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.MERCHANTNAME LIKE '%{a}%')");
+                item.HasKey("MERCHANTNAME", a => sqlsum += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.NAME LIKE '%{a}%')");
                 item.HasKey("SHOPCODE", a => sqlsum += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.CODE LIKE '%{a}%')");
                 item.HasKey("SHOPNAME", a => sqlsum += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.NAME LIKE '%{a}%')");
                 item.HasDateKey("SALE_TIME_START", a => sqlsum += $" and trunc(S.SALE_TIME) >= {a}");
@@ -441,9 +441,9 @@ namespace z.ERP.Services
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
                 item.HasKey("MERCHANTID", a => sqlsum += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
                 //item.HasKey("SHOPID", a => sqlsum += $" and exists(select 1 from HIS_SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
-                item.HasKey("MERCHANTNAME", a => sqlsum += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.MERCHANTNAME LIKE '%{a}%')");
-                item.HasKey("SHOPCODE", a => sqlsum += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.CODE LIKE '%{a}%')");
-                item.HasKey("SHOPNAME", a => sqlsum += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.NAME LIKE '%{a}%')");
+                item.HasKey("MERCHANTNAME", a => sqlsum += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.NAME LIKE '%{a}%')");
+                item.HasKey("SHOPCODE", a => sqlsum += $" and exists(select 1 from HIS_SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.CODE LIKE '%{a}%')");
+                item.HasKey("SHOPNAME", a => sqlsum += $" and exists(select 1 from HIS_SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.NAME LIKE '%{a}%')");
                 item.HasDateKey("SALE_TIME_START", a => sqlsum += $" and trunc(S.SALE_TIME) >= {a}");
                 item.HasDateKey("SALE_TIME_END", a => sqlsum += $" and trunc(S.SALE_TIME) <= {a}");
                 item.HasDateKey("ACCOUNT_DATE_START", a => sqlsum += $" and S.ACCOUNT_DATE >= {a}");
@@ -472,7 +472,7 @@ namespace z.ERP.Services
             item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
             //item.HasKey("SHOPID", a => sql += $" and exists(select 1 from SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a}");
-            item.HasKey("MERCHANTNAME", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.MERCHANTNAME LIKE '%{a}%')");
+            item.HasKey("MERCHANTNAME", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.NAME LIKE '%{a}%')");
             item.HasKey("SHOPCODE", a => sql += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.CODE LIKE '%{a}%')");
             item.HasKey("SHOPNAME", a => sql += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.NAME LIKE '%{a}%')");
             item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
@@ -492,9 +492,9 @@ namespace z.ERP.Services
             item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
             //item.HasKey("SHOPID", a => sql += $" and exists(select 1 from HIS_SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a}");
-            item.HasKey("MERCHANTNAME", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.MERCHANTNAME LIKE '%{a}%')");
-            item.HasKey("SHOPCODE", a => sql += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.CODE LIKE '%{a}%')");
-            item.HasKey("SHOPNAME", a => sql += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.NAME LIKE '%{a}%')");
+            item.HasKey("MERCHANTNAME", a => sql += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.NAME LIKE '%{a}%')");
+            item.HasKey("SHOPCODE", a => sql += $" and exists(select 1 from HIS_SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.CODE LIKE '%{a}%')");
+            item.HasKey("SHOPNAME", a => sql += $" and exists(select 1 from HIS_SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.NAME LIKE '%{a}%')");
             item.HasDateKey("SALE_TIME_START", a => sql += $" and trunc(S.SALE_TIME) >= {a}");
             item.HasDateKey("SALE_TIME_END", a => sql += $" and trunc(S.SALE_TIME) <= {a}");
             item.HasDateKey("ACCOUNT_DATE_START", a => sql += $" and S.ACCOUNT_DATE >= {a}");
