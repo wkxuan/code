@@ -63,7 +63,7 @@ namespace z.ERP.Web.Areas.XTGL.REGION
             return new UIResult(
                 new
                 {
-                    regionlement = res.Item1
+                    regionelement = res.Item1
                 }
                 );
         }

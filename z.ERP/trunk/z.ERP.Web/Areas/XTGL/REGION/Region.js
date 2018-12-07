@@ -69,7 +69,7 @@ define.mountedInit = function () {
 
 define.showone = function (data, callback) {
     _.Ajax('GetRegion', {
-        Data: { ID: data }
+        Data: { REGIONID: data }
     }, function (data) {
         $.extend(define.dataParam, data.regionelement);
         define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.toString().split(",");
