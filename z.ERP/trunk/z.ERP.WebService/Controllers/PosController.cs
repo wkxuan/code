@@ -73,5 +73,25 @@ namespace z.ERP.WebService.Controllers
         {
             return service.PosService.GetVipCard(Request);
         }
+
+        [ServiceAble("GetArticleVipDisc")]
+        public ArticleVipDisc[] GetArticleVipDisc(GetArticleVipDiscRequest request)
+        {
+            return service.PosService.GetArticleVipDisc(request);
+        }
+
+        [ServiceAble("GetCashCard")]
+        public CashCard GetCashCard(GetCashCardRequest Request)
+        {
+            return service.PosService.GetCashCard(Request);
+        }
+
+        [ServiceAble("PrepareTransCashCardPayment")]
+        public int PrepareTransCashCardPayment(PrepareTransCashCardPaymentRequest Request)
+        {
+            return service.PosService.PrepareTransCashCardPayment(Request);
+        }
+
+
     }
 }

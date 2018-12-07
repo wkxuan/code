@@ -447,6 +447,48 @@ namespace z.ERP.Services
             }
         }
 
+        public ArticleVipDisc[] GetArticleVipDisc(GetArticleVipDiscRequest request)
+        {
+            GetArticleVipDiscResponse res = PosAPI.GetArticleVipDisc(request);
+            if (res.GetArticleVipDiscResult)
+            {
+                return res.discs;
+            }
+            else
+            {
+                throw new Exception(res.msg);
+            }
+        }
+
+
+        public CashCard GetCashCard(GetCashCardRequest Request)
+        {
+            GetCashCardResponse res = PosAPI.GetCashCard(Request);
+            if(res.GetCashCardResult)
+            {
+                return res.cashCard;
+            }
+            else
+            {
+                throw new Exception(res.msg);
+            }
+        }
+
+        public int PrepareTransCashCardPayment(PrepareTransCashCardPaymentRequest Request)
+        {
+            PrepareTransCashCardPaymentResponse res = PosAPI.PrepareTransCashCardPayment(Request);
+
+            if (res.PrepareTransCashCardPaymentResult)
+            {
+                return res.transID;
+            }
+            else
+            {
+                throw new Exception(res.msg);
+            }
+        }
+
+
         #endregion
     }
 }
