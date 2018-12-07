@@ -273,7 +273,7 @@ namespace z.ERP.Services
 
             string sqlitem = $@"SELECT M.*,D.NAME MERCHANTNAME,F.NAME TERMNAME " +
                 " FROM BILL_ADJUST_ITEM M ,CONTRACT C,MERCHANT D,FEESUBJECT F" +
-                " where  M.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID = D.MERCHANTID(+) and M.TERMID=F.TRIMID(+)";
+                " where  M.CONTRACTID=C.CONTRACTID and C.MERCHANTID = D.MERCHANTID and M.TERMID=F.TRIMID";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             DataTable billAdjustitem = DbHelper.ExecuteTable(sqlitem);
@@ -656,6 +656,21 @@ namespace z.ERP.Services
             DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
 
             return new Tuple<dynamic, DataTable>(billObtain.ToOneLine(), billObtainItem);
-        } 
-    }
+        }
+
+        public object GetContract(CONTRACTEntity Data)
+        {
+            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.JXSL*100 JXSL,T.XXSL*100 XXSL from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
+            if (!Data.CONTRACTID.IsEmpty())
+                sql += (" and T.CONTRACTID= " + Data.CONTRACTID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
+            var result = new
+            {
+                contract = dt
+            };
+
+            return result;
+        }
+        }
 }

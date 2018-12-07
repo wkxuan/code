@@ -51,8 +51,22 @@ editDetail.beforeVue = function () {
                                 value: params.row.CONTRACTID
                             },
                             on: {
-                                'on-blur': function (event) {
-                                    editDetail.dataParam.BILL_ADJUST_ITEM[params.index].CONTRACTID = event.target.value;
+                                //'on-blur': function (event) {
+                                //    editDetail.dataParam.BILL_ADJUST_ITEM[params.index].CONTRACTID = event.target.value;
+                                //}
+                                'on-enter': function (event) {
+                                    _self = this;
+                                    editDetail.dataParam.BILL_ADJUST_ITEM[params.index].CONTRACTID = event.target.value.replace(/\s+/g, "");
+                                    _.Ajax('GetContract', {
+                                        Data: { CONTRACTID: event.target.value.replace(/\s+/g, "") }
+                                    }, function (data) {
+                                        if (data.contract)
+                                        {
+                                            Vue.set(editDetail.dataParam.BILL_ADJUST_ITEM[params.index], 'MERCHANTNAME', data.contract[0].SHMC)
+                                        } else {
+                                            iview.Message.info('当前合同不存在!');
+                                        }
+                                    });
                                 }
                             },
                         })
@@ -187,18 +201,28 @@ editDetail.popCallBack = function (data) {
         editDetail.screenParam.showPopFeeSubject = false;
         for (var i = 0; i < data.sj.length; i++) {
             //for (var i = 0; i < data.sj.length; i++) {
-            //    if ((editDetail.dataParam.BILL_ADJUST_ITEM.length === 0)
-            //        || (editDetail.dataParam.BILL_ADJUST_ITEM.length > 0
-            //        && editDetail.dataParam.BILL_ADJUST_ITEM.filter(function (item) {
-            //        return parseInt(item.TERMID) === data.sj[i].TERMID;
-            //    }).length === 0))
-            //        editDetail.dataParam.ASSETCHANGEITEM.push({
-            //            CONTRACTID: data.sj[i].CONTRACTID,
-            //            MERCHANTNAME: data.sj[i].MERCHANTNAME
-            //        });
+                if ((editDetail.dataParam.BILL_ADJUST_ITEM.length == 0)
+                    || (editDetail.dataParam.BILL_ADJUST_ITEM.length > 0
+                    && editDetail.dataParam.BILL_ADJUST_ITEM.filter(function (item) {
+                    return parseInt(item.TERMID) == data.sj[i].TERMID
+                    && item.CONTRACTID == editDetail.dataParam.BILL_ADJUST_ITEM[index].CONTRACTID;
+                }).length == 0))
+                    if (i == 0)
+                    {
+                        editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMID = data.sj[i].TERMID;
+                        editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMNAME = data.sj[i].NAME;
+                    }
+                    else {                   
+                    editDetail.dataParam.BILL_ADJUST_ITEM.push({
+                        CONTRACTID: editDetail.dataParam.BILL_ADJUST_ITEM[index].CONTRACTID,
+                        MERCHANTNAME: editDetail.dataParam.BILL_ADJUST_ITEM[index].MERCHANTNAME,
+                        TERMID :data.sj[i].TERMID,
+                        TERMNAME : data.sj[i].NAME
+                    });
+                    }
             //}
-            editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMID = data.sj[i].TERMID;
-            editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMNAME = data.sj[i].NAME;
+            //editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMID = data.sj[i].TERMID;
+            //editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMNAME = data.sj[i].NAME;
         }
     }
     else if (editDetail.screenParam.showPopContract) {
