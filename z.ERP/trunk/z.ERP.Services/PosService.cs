@@ -460,6 +460,85 @@ namespace z.ERP.Services
             }
         }
 
+        public Coupon[] GetVipCoupon(GetVipCouponRequest request)
+        {
+            GetVipCouponResponse res = PosAPI.GetVipCoupon(request);
+            if (res.GetVipCouponResult)
+            {
+                return res.coupons;
+            }
+            else
+            {
+                throw new Exception(res.msg);
+            }
+            
+        }
+
+        public bool GetVipCouponToPay(GetVipCouponToPayRequest request)
+        {
+            GetVipCouponToPayResponse res = PosAPI.GetVipCouponToPay(request);
+            if(res.GetVipCouponToPayResult)
+            {
+                return res.GetVipCouponToPayResult;
+            }
+            else
+            {
+                throw new Exception(res.msg);
+            }
+        }
+
+        public int PrepareTransCouponPayment(PrepareTransCouponPaymentRequest request)
+        {
+            PrepareTransCouponPaymentResponse res = PosAPI.PrepareTransCouponPayment(request);
+            if (res.PrepareTransCouponPaymentResult)
+            {
+                return res.transID;
+            }
+            else
+            {
+                throw new Exception(res.msg);
+            }
+        }
+
+        public int PrepareTransCouponPayment2(PrepareTransCouponPayment2Request request)
+        {
+            PrepareTransCouponPayment2Response res = PosAPI.PrepareTransCouponPayment2(request);
+            if (res.PrepareTransCouponPayment2Result)
+            {
+                return res.transID;
+            }
+            else
+            {
+                throw new Exception(res.msg);
+            }
+        }
+
+        public bool ConfirmTransCouponPayment(ConfirmTransCouponPaymentRequest request)
+        {
+            ConfirmTransCouponPaymentResponse res = PosAPI.ConfirmTransCouponPayment(request);
+            if (res.ConfirmTransCouponPaymentResult)
+            {
+                return res.ConfirmTransCouponPaymentResult;
+            }
+            else
+            {
+                throw new Exception(res.msg);
+            }
+        }
+
+        public bool CancelTransCouponPayment(CancelTransCouponPaymentRequest request)
+        {
+            CancelTransCouponPaymentResponse res = PosAPI.CancelTransCouponPayment(request);
+            if (res.CancelTransCouponPaymentResult)
+            {
+                return res.CancelTransCouponPaymentResult;
+            }
+            else
+            {
+                throw new Exception(res.msg);
+            }
+        }
+
 
         public CashCard GetCashCard(GetCashCardRequest Request)
         {

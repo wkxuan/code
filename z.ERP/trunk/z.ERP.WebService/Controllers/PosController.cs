@@ -80,6 +80,42 @@ namespace z.ERP.WebService.Controllers
             return service.PosService.GetArticleVipDisc(request);
         }
 
+        [ServiceAble("GetVipCoupon")]
+        public Coupon[] GetVipCoupon(GetVipCouponRequest request)
+        {
+            return service.PosService.GetVipCoupon(request);
+        }
+
+        [ServiceAble("GetVipCouponToPay")]
+        public bool GetVipCouponToPay(GetVipCouponToPayRequest request)
+        {
+            return service.PosService.GetVipCouponToPay(request);
+        }
+
+        [ServiceAble("PrepareTransCouponPayment")]
+        public int PrepareTransCouponPayment(PrepareTransCouponPaymentRequest request)
+        {
+            return service.PosService.PrepareTransCouponPayment(request);
+        }
+
+        [ServiceAble("PrepareTransCouponPayment2")]
+        public int PrepareTransCouponPayment2(PrepareTransCouponPayment2Request request)
+        {
+            return service.PosService.PrepareTransCouponPayment2(request);
+        }
+
+        [ServiceAble("ConfirmTransCouponPayment")]
+        public bool ConfirmTransCouponPayment(ConfirmTransCouponPaymentRequest request)
+        {
+            return service.PosService.ConfirmTransCouponPayment(request);
+        }
+
+        [ServiceAble("CancelTransCouponPayment")]
+        public bool CancelTransCouponPayment(CancelTransCouponPaymentRequest request)
+        {
+            return service.PosService.CancelTransCouponPayment(request);
+        }
+
         [ServiceAble("GetCashCard")]
         public CashCard GetCashCard(GetCashCardRequest Request)
         {
