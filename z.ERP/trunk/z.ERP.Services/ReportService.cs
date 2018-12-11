@@ -510,5 +510,91 @@ namespace z.ERP.Services
             });
         }
 
+        public DataGridResult MerchantRent(SearchItem item)
+        {
+            string sql = "select Z.*,(Z.TCRENTS-RENTS) CE,(case when (Z.TCRENTS-RENTS)>0 then (Z.TCRENTS-RENTS) else 0  end) YJT from ("
+                            + "select Y.YEARMONTH,R.CODE FLOORCODE,P.CODE SHOPCODE,D.NAME BRANDNAME,Y.CONTRACTID,"
+                            + "       C.CATEGORYCODE,C.CATEGORYNAME,Y.MERCHANTID,M.NAME MERCHANTNAME,Y.AMOUNT,"
+                            + "       (select sum(AREA_RENTABLE) from CONTRACT_SHOP S where S.CONTRACTID = Y.CONTRACTID) AREA,"
+                            + "       (select sum(CR.PRICE) from CONTRACT_RENT CR,CONTRACT_RENTITEM CRM"
+                            + "         where CR.CONTRACTID = CRM.CONTRACTID and CR.INX = CRM.INX"
+                            + "           and CR.CONTRACTID = Y.CONTRACTID and CRM.YEARMONTH = Y.YEARMONTH) RENTPRICE,"
+                            + "       (select sum(RENTS) from CONTRACT_RENTITEM CRM"
+                            + "         where CRM.CONTRACTID = Y.CONTRACTID and CRM.YEARMONTH = Y.YEARMONTH) RENTS,"
+                            + "       (select sum(CT.TCZJ) from CONTRACT_TCZJ CT"
+                            + "         where CT.CONTRACTID = Y.CONTRACTID and CT.YEARMONTH = Y.YEARMONTH) TCRENTS,"
+                            + "       (select sum(CC.PRICE) from CONTRACT_COST CC,CONTRACT_COSTMX CCM"
+                            + "         where CC.CONTRACTID = CCM.CONTRACTID and CC.TERMID = CCM.TERMID and CC.INX = CCM.INX"
+                            + "           and CC.CONTRACTID = Y.CONTRACTID and CC.TERMID = 1 and CCM.YEARMONTH = Y.YEARMONTH) WYPRICE,"
+                            + "       (select sum(CCM.SFJE) from CONTRACT_COSTMX CCM"
+                            + "         where CCM.CONTRACTID = Y.CONTRACTID and CCM.TERMID = 1 and CCM.YEARMONTH = Y.YEARMONTH) WYJE"
+                            + "  from CONTRACT_SUMMARY_YM Y, SHOP P,FLOOR R, BRAND D,CATEGORY C, MERCHANT M"
+                            + " where Y.SHOPID = P.SHOPID and P.FLOORID = R.ID"
+                            + "   and Y.BRANDID = D.ID and D.CATEGORYID = C.CATEGORYID"
+                            + "   and Y.MERCHANTID = M.MERCHANTID";
+
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("FLOORID", a => sql += $" and R.ID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and Y.BRANCHID = {a}");
+            item.HasKey("CONTRACTID", a => sql += $" and Y.CONTRACTID = '{a}'");
+            item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and D.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and D.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and Y.YEARMONTH >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and Y.YEARMONTH <= {a}");
+
+
+            sql += ") Z order by Z.YEARMONTH,Z.FLOORCODE,Z.SHOPCODE,Z.MERCHANTID";
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public string MerchantRentOutput(SearchItem item)
+        {
+            string sql = "select Z.*,(Z.TCRENTS-RENTS) CE,(case when (Z.TCRENTS-RENTS)>0 then (Z.TCRENTS-RENTS) else 0  end) YJT from ("
+                            + "select Y.YEARMONTH,R.CODE FLOORCODE,P.CODE SHOPCODE,D.NAME BRANDNAME,Y.CONTRACTID,"
+                            + "       C.CATEGORYCODE,C.CATEGORYNAME,Y.MERCHANTID,M.NAME MERCHANTNAME,Y.AMOUNT,"
+                            + "       (select sum(AREA_RENTABLE) from CONTRACT_SHOP S where S.CONTRACTID = Y.CONTRACTID) AREA,"
+                            + "       (select sum(CR.PRICE) from CONTRACT_RENT CR,CONTRACT_RENTITEM CRM"
+                            + "         where CR.CONTRACTID = CRM.CONTRACTID and CR.INX = CRM.INX"
+                            + "           and CR.CONTRACTID = Y.CONTRACTID and CRM.YEARMONTH = Y.YEARMONTH) RENTPRICE,"
+                            + "       (select sum(RENTS) from CONTRACT_RENTITEM CRM"
+                            + "         where CRM.CONTRACTID = Y.CONTRACTID and CRM.YEARMONTH = Y.YEARMONTH) RENTS,"
+                            + "       (select sum(CT.TCZJ) from CONTRACT_TCZJ CT"
+                            + "         where CT.CONTRACTID = Y.CONTRACTID and CT.YEARMONTH = Y.YEARMONTH) TCRENTS,"
+                            + "       (select sum(CC.PRICE) from CONTRACT_COST CC,CONTRACT_COSTMX CCM"
+                            + "         where CC.CONTRACTID = CCM.CONTRACTID and CC.TERMID = CCM.TERMID and CC.INX = CCM.INX"
+                            + "           and CC.CONTRACTID = Y.CONTRACTID and CC.TERMID = 1 and CCM.YEARMONTH = Y.YEARMONTH) WYPRICE,"
+                            + "       (select sum(CCM.SFJE) from CONTRACT_COSTMX CCM"
+                            + "         where CCM.CONTRACTID = Y.CONTRACTID and CCM.TERMID = 1 and CCM.YEARMONTH = Y.YEARMONTH) WYJE"
+                            + "  from CONTRACT_SUMMARY_YM Y, SHOP P,FLOOR R, BRAND D,CATEGORY C, MERCHANT M"
+                            + " where Y.SHOPID = P.SHOPID and P.FLOORID = R.ID"
+                            + "   and Y.BRANDID = D.ID and D.CATEGORYID = C.CATEGORYID"
+                            + "   and Y.MERCHANTID = M.MERCHANTID";
+
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("FLOORID", a => sql += $" and R.ID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and Y.BRANCHID = {a}");
+            item.HasKey("CONTRACTID", a => sql += $" and Y.CONTRACTID = '{a}'");
+            item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and D.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and D.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and Y.YEARMONTH >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and Y.YEARMONTH <= {a}");
+
+
+            sql += ") Z order by Z.YEARMONTH,Z.FLOORCODE,Z.SHOPCODE,Z.MERCHANTID";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "MerchantRent";
+            return GetExport("商户租金计提表", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
     }
 }

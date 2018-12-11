@@ -193,6 +193,7 @@
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
     <Compile Include="Areas\Report\ContractSale\ContractSaleController.cs" />
     <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
+    <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
     <Compile Include="Areas\Report\SaleRecord\SaleRecordController.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
@@ -312,6 +313,7 @@
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\Report\ContractSale\ContractSale.js" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.js" />
+    <Content Include="Areas\Report\MerchantRent\MerchantRent.js" />
     <Content Include="Areas\Report\SaleRecord\SaleRecord.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
@@ -548,6 +550,7 @@
     <Content Include="Areas\WLGL\WlGoods\WlGoodsEdit.cshtml" />
     <Content Include="Areas\WLGL\WlGoods\WlGoodsList.cshtml" />
     <Content Include="Areas\WLGL\WlGoods\WlGoodsMx.cshtml" />
+    <Content Include="Areas\Report\MerchantRent\MerchantRent.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
