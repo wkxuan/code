@@ -191,6 +191,7 @@
     <Compile Include="Areas\Layout\Srch\SrchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
+    <Compile Include="Areas\Report\ContractInfo\ContractInfoController.cs" />
     <Compile Include="Areas\Report\ContractSale\ContractSaleController.cs" />
     <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
@@ -311,6 +312,7 @@
     <Content Include="Areas\Pop\Pop\PopShopList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopShopList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
+    <Content Include="Areas\Report\ContractInfo\ContractInfo.js" />
     <Content Include="Areas\Report\ContractSale\ContractSale.js" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.js" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.js" />
@@ -551,6 +553,7 @@
     <Content Include="Areas\WLGL\WlGoods\WlGoodsList.cshtml" />
     <Content Include="Areas\WLGL\WlGoods\WlGoodsMx.cshtml" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.cshtml" />
+    <Content Include="Areas\Report\ContractInfo\ContractInfo.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
