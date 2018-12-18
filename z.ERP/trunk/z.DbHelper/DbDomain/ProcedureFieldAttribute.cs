@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace z.DbHelper.DbDomain
+namespace z.DBHelper.DBDomain
 {
     /// <summary>
     /// 存储过程字段的描述

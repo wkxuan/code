@@ -6,16 +6,13 @@ using System.Text;
 namespace z.DBHelper.DBDomain
 {
     /// <summary>
-    /// 字段的描述
+    /// 插入时忽略的键
+    /// 一般用于数据库允许的自增序列
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field,
         Inherited = true, AllowMultiple = false)]
-    public class FieldAttribute : Attribute
+    public class InsertIgnoreAttribute : Attribute
     {
-        public string Fieldname;
-        public FieldAttribute(string fieldname)
-        {
-            Fieldname = fieldname;
-        }
+
     }
 }

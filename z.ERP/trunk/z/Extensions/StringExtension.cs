@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -260,6 +261,7 @@ namespace z.Extensions
                 return System.DateTime.MinValue;
             }
         }
+
         #endregion
         #region 字符串验证
 
@@ -289,9 +291,32 @@ namespace z.Extensions
         {
             if (str.IsEmpty())
                 return IgnoreEmpty;
-            return Regex.IsMatch(str, @"^([/w-/.]+)@((/[[0-9]{1,3}/.[0-9]{1,3}/.[0-9]{1,3}/.)|(([/w-]+/.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(/]?)$");
+            return Regex.IsMatch(str, "^\\s*([A-Za-z0-9_-]+(\\.\\w+)*@(\\w+\\.)+\\w{2,5})\\s*$");
         }
 
+        /// <summary>
+        /// 确认字符串在数组中
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="strs"></param>
+        /// <returns></returns>
+        public static bool In(this string str, params string[] strs)
+        {
+            if (strs == null || strs.Count() == 0)
+                return false;
+            return strs.Contains(str);
+        }
+
+        /// <summary>
+        /// 确认字符串不在数组中
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="strs"></param>
+        /// <returns></returns>
+        public static bool NotIn(this string str, params string[] strs)
+        {
+            return !str.In(strs);
+        }
         #endregion
         #region 字符串处理
         /// <summary>
@@ -507,6 +532,18 @@ namespace z.Extensions
                 return new string(sArr.Take(idx).Concat(rArr).Concat(sArr.Skip(idx + mArr.Length)).ToArray());
             }
         }
+
+        /// <summary>
+        /// 倒序排列
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string ToReverse(this string str)
+        {
+            char[] charArray = str.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
         #endregion
         #region 反射
 
@@ -524,6 +561,207 @@ namespace z.Extensions
                 return type;
             }
             return null;
+        }
+
+        #endregion
+        #region 系统信息
+
+        /// <summary>
+        /// 获取CPU序列号代码 
+        /// </summary>
+        /// <returns></returns>
+        public static string GetCpuID()
+        {
+            try
+            {
+                string cpuInfo = "";
+                ManagementClass mc = new ManagementClass("Win32_Processor");
+                ManagementObjectCollection moc = mc.GetInstances();
+                foreach (ManagementObject mo in moc)
+                {
+                    cpuInfo = mo.Properties["ProcessorId"].Value.ToString();
+                }
+                moc = null;
+                mc = null;
+                return cpuInfo;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+            }
+
+        }
+
+        /// <summary>
+        /// mac
+        /// </summary>
+        /// <returns></returns>
+        public static string GetMacAddress()
+        {
+            try
+            {
+                //获取网卡硬件地址 
+                string mac = "";
+                ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+                ManagementObjectCollection moc = mc.GetInstances();
+                foreach (ManagementObject mo in moc)
+                {
+                    if ((bool)mo["IPEnabled"] == true)
+                    {
+                        mac = mo["MacAddress"].ToString();
+                        break;
+                    }
+                }
+                moc = null;
+                mc = null;
+                return mac;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+            }
+
+        }
+
+        /// <summary>
+        /// 获取硬盘ID
+        /// </summary>
+        /// <returns></returns>
+        public static string GetDiskID()
+        {
+            try
+            {
+                String HDid = "";
+                ManagementClass mc = new ManagementClass("Win32_DiskDrive");
+                ManagementObjectCollection moc = mc.GetInstances();
+                foreach (ManagementObject mo in moc)
+                {
+                    HDid = (string)mo.Properties["Model"].Value;
+                }
+                moc = null;
+                mc = null;
+                return HDid;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+            }
+
+        }
+
+        /// <summary> 
+        /// 操作系统的登录用户名 
+        /// </summary> 
+        /// <returns></returns> 
+        public static string GetUserName()
+        {
+            try
+            {
+                string st = "";
+                ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
+                ManagementObjectCollection moc = mc.GetInstances();
+                foreach (ManagementObject mo in moc)
+                {
+                    st = mo["UserName"].ToString();
+                }
+                moc = null;
+                mc = null;
+                return st;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+            }
+
+        }
+
+        /// <summary> 
+        /// PC类型 
+        /// </summary> 
+        /// <returns></returns> 
+        public static string GetSystemType()
+        {
+            try
+            {
+                string st = "";
+                ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
+                ManagementObjectCollection moc = mc.GetInstances();
+                foreach (ManagementObject mo in moc)
+                {
+                    st = mo["SystemType"].ToString();
+                }
+                moc = null;
+                mc = null;
+                return st;
+            }
+            catch
+            {
+                return "";
+            }
+            finally
+            {
+            }
+
+        }
+
+        /// <summary> 
+        /// 物理内存 
+        /// </summary> 
+        /// <returns></returns> 
+        public static string GetTotalPhysicalMemory()
+        {
+            try
+            {
+
+                string st = "";
+                ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
+                ManagementObjectCollection moc = mc.GetInstances();
+                foreach (ManagementObject mo in moc)
+                {
+                    st = mo["TotalPhysicalMemory"].ToString();
+                }
+                moc = null;
+                mc = null;
+                return st;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+            }
+        }
+
+        /// <summary> 
+        /// 计算机名
+        /// </summary> 
+        /// <returns></returns> 
+        public static string GetComputerName()
+        {
+            try
+            {
+                return Environment.GetEnvironmentVariable("ComputerName");
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+            }
         }
 
         #endregion

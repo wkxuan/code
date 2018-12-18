@@ -4,7 +4,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 
-namespace z.DBHelper.DbDomain
+namespace z.DBHelper.DBDomain
 {
     public class zDbTransaction : IDisposable
     {

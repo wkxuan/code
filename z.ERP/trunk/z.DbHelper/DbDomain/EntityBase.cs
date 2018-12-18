@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace z.DbHelper.DbDomain
+namespace z.DBHelper.DBDomain
 {
     public class EntityBase
     {

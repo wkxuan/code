@@ -104,8 +104,7 @@ namespace z.Extensions
 
             return result;
         }
-
-
+        
         /// <summary>
         /// 获取当前网站的虚拟根目录
         /// </summary>

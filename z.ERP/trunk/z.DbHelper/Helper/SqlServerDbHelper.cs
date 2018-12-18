@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using z.DbHelper.DbDomain;
+using z.DBHelper.DBDomain;
 using z.DBHelper.Connection;
 using z.DBHelper.Info;
 using z.Exceptions;
@@ -186,8 +186,16 @@ namespace z.DBHelper.Helper
             SqlParameter resp;
             if (!Type.HasValue)
             {
-                resp = new SqlParameter(name, SqlDbType.VarChar);
-                resp.Value = value;
+                if (value.GetType().IsEnum)
+                {
+                    resp = new SqlParameter(name, SqlDbType.Int);
+                    resp.Value = (int)value;
+                }
+                else
+                {
+                    resp = new SqlParameter(name, SqlDbType.VarChar);
+                    resp.Value = value;
+                }
             }
             else
             {

@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using z.LogFactory.utils;
 using NewtonsoftCode.Json;
+using z.Extensions;
 
 namespace z.LogFactory
 {
@@ -49,18 +50,21 @@ namespace z.LogFactory
             }
             try
             {
-                LogConfigBase config = GetConfig(_logName);
-                if (config.Loglevel > loglevel)
+                lock (ObjectExtension.Locker)
                 {
-                    return;   //判断日志级别,不正确的级别就不记日志了
-                }
-                switch (config.Utils)
-                {
-                    case LogUtils.Log4Net:
-                        {
-                            Log4Net.Log(config, _logName, loglevel, title, obj);
-                            break;
-                        }
+                    LogConfigBase config = GetConfig(_logName);
+                    if (config.Loglevel > loglevel)
+                    {
+                        return;   //判断日志级别,不正确的级别就不记日志了
+                    }
+                    switch (config.Utils)
+                    {
+                        case LogUtils.Log4Net:
+                            {
+                                Log4Net.Log(config, _logName, loglevel, title, obj);
+                                break;
+                            }
+                    }
                 }
             }
             catch (DllNotFoundException ex)
@@ -146,7 +150,7 @@ namespace z.LogFactory
             }
             set { _ConfigDic = value; }
         }
-        
+
         #endregion
     }
 }

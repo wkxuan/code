@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text;
 using z;
 using z.Extensions;
-using z.Extensions;
 
-namespace z.DbHelper.DbDomain
+
+namespace z.DBHelper.DBDomain
 {
     /// <summary>
     /// 所有数据操作类的基类
@@ -93,7 +93,21 @@ namespace z.DbHelper.DbDomain
         /// <returns></returns>
         public PropertyInfo[] GetAllField()
         {
-            return GetType().GetProperties().Where(a => a.PropertyType == typeof(string)).ToArray();
+            return GetType()
+                .GetProperties()
+                .Where(a => !a.IsArray())
+                .ToArray();
+        }
+
+        /// <summary>
+        /// 获取插入字段
+        /// </summary>
+        /// <returns></returns>
+        public PropertyInfo[] GetInserrtField()
+        {
+            return GetAllField()
+               .Where(a => a.GetAttribute<InsertIgnoreAttribute>() == null)
+               .ToArray();
         }
 
         /// <summary>
@@ -114,7 +128,7 @@ namespace z.DbHelper.DbDomain
         public PropertyInfo[] GetForeignKey()
         {
             return GetType().GetProperties()
-                .Where(a => a.PropertyType != typeof(string))
+                .Where(a => a.IsArray())
                 .Where(a => a.GetAttribute<ForeignKeyAttribute>() != null)
                 .ToArray();
         }

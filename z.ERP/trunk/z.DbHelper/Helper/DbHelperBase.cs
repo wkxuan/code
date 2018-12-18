@@ -9,10 +9,10 @@ using z;
 using z.Exceptions;
 using z.DBHelper.Connection;
 using z.DBHelper.Info;
-using z.DbHelper.DbDomain;
+using z.DBHelper.DBDomain;
 using z.Extensions;
-using z.Extensions;
-using z.DBHelper.DbDomain;
+
+using z.DBHelper.DBDomain;
 using System.Text.RegularExpressions;
 
 namespace z.DBHelper.Helper
@@ -237,7 +237,7 @@ namespace z.DBHelper.Helper
             return ExecuteTable(sql, pageinfo, new DbParameter[] { }, Behavior);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount,CommandBehavior Behavior = CommandBehavior.Default)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, CommandBehavior Behavior = CommandBehavior.Default)
         {
             return ExecuteTable(sql, pageinfo, out allCount, new DbParameter[] { }, Behavior);
         }
@@ -320,13 +320,15 @@ namespace z.DBHelper.Helper
         }
         #endregion
         #region 增删改
+
         /// <summary>
         /// 增删改
         /// </summary>
-        /// <param name="sql">sql</param>
-        /// <param name="fun">大量sql时每执行一条sql的回调(当前行索引,当前行发生的数据变更,总数据变更)</param>
+        /// <param name="sql"></param>
+        /// <param name="fun"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        public virtual int ExecuteNonQuery(List<string> sql, Action<int, int, int> fun = null)
+        public virtual int ExecuteNonQuery(List<string> sql, Action<int, int, int> fun, DbParameter[] parameters)
         {
             if (sql == null)
                 return 0;
@@ -337,6 +339,8 @@ namespace z.DBHelper.Helper
                 for (int i = 0; i < sql.Count; i++)
                 {
                     tmpStr = sql[i];
+                    if (!parameters.IsEmpty())
+                        _dbCommand.Parameters.AddRange(parameters);
                     _dbCommand.CommandText = tmpStr;
                     int cntnow = _dbCommand.ExecuteNonQuery();
                     influenceRowCount += cntnow;
@@ -347,6 +351,52 @@ namespace z.DBHelper.Helper
                 }
             });
             return influenceRowCount;
+        }
+
+        /// <summary>
+        /// 增删改
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public virtual int ExecuteNonQuery(List<string> sql, DbParameter[] parameters)
+        {
+            return ExecuteNonQuery(sql, null, parameters);
+        }
+
+        /// <summary>
+        /// 增删改
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public virtual int ExecuteNonQuery(string sql, DbParameter[] parameters)
+        {
+            return ExecuteNonQuery(new List<string>() { sql }, null, parameters);
+        }
+
+        /// <summary>
+        /// 增删改
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public virtual int ExecuteNonQuery(string sql, zParameter[] parameters)
+        {
+            string _sql = sql;
+            DbParameter[] ps = RenderSql(ref _sql, parameters);
+            return ExecuteNonQuery(new List<string>() { _sql }, null, ps);
+        }
+
+        /// <summary>
+        /// 增删改
+        /// </summary>
+        /// <param name="sql">sql</param>
+        /// <param name="fun">大量sql时每执行一条sql的回调(当前行索引,当前行发生的数据变更,总数据变更)</param>
+        /// <returns></returns>
+        public virtual int ExecuteNonQuery(List<string> sql, Action<int, int, int> fun = null)
+        {
+            return ExecuteNonQuery(sql, fun, null);
         }
 
         /// <summary>
@@ -370,7 +420,6 @@ namespace z.DBHelper.Helper
         {
             return ExecuteNonQuery(new List<string>() { sql });
         }
-
 
         /// <summary>
         /// 批量插入表
@@ -424,7 +473,7 @@ namespace z.DBHelper.Helper
         public int Insert(TableEntityBase info)
         {
             int res = 0;
-            IDbDataParameter[] dbprams = info.GetAllField().Select(a =>
+            IDbDataParameter[] dbprams = info.GetInserrtField().Select(a =>
             {
                 IDbDataParameter p = GetDbDataParameter(a, info);
                 return p;
@@ -611,9 +660,25 @@ namespace z.DBHelper.Helper
         /// <typeparam name="T"></typeparam>
         /// <param name="info"></param>
         /// <returns></returns>
-        public List<T> SelectList<T>(T info) where T : TableEntityBase, new()
+        public List<T> SelectList<T>(T info)
+            where T : TableEntityBase, new()
         {
-            List<T> res = new List<T>();
+            return SelectList<T, T>(info);
+        }
+
+        /// <summary>
+        /// 查询,按照所有不为空的条件查询
+        /// </summary>
+        /// <typeparam name="TInfo">返回类型</typeparam>
+        /// <typeparam name="TFilter">查询类型</typeparam>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public List<TInfo> SelectList<TInfo, TFilter>(TFilter info)
+            where TInfo : TableEntityBase, new()
+            where TFilter : TableEntityBase
+        {
+            TInfo tempt = new TInfo();
+            List<TInfo> res = new List<TInfo>();
             PropertyInfo[] Allprop = info.GetAllField().Where(a =>
             {
                 return a.GetValue(info, null) != null;
@@ -627,12 +692,12 @@ namespace z.DBHelper.Helper
             {
                 _dbCommand.Parameters.Clear();
                 _dbCommand.Parameters.AddRange(dbprams);
-                string tablename = info.GetTableName();
-                string select = string.Join(",", info.GetAllField().Select(a => GetFieldName(a.Name)));
+                string tablename = tempt.GetTableName();
+                string select = string.Join(",", tempt.GetAllField().Select(a => GetFieldName(a.Name)));
                 string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
                 _dbCommand.CommandText = string.Format(_select, select, tablename, where.IsEmpty(" 1=1 "));
                 IDataReader reader = _dbCommand.ExecuteReader();
-                res = this.ReaderToEntity(info.GetType(), reader).Select(a => a as T).ToList();
+                res = this.ReaderToEntity(typeof(TInfo), reader).Select(a => a as TInfo).ToList();
             });
             res.ForEach(a => a = _SelectChildren(a));
             return res;
@@ -855,7 +920,7 @@ namespace z.DBHelper.Helper
                                           null);
                 for (int i = 0; i < fieldCount; i++)
                 {
-                    entity.SetPropertyValue(reader.GetName(i), reader.GetValue(i).ToString());
+                    entity.SetPropertyValue(reader.GetName(i), reader.GetValue(i));
                 }
                 res.Add(entity);
             }
