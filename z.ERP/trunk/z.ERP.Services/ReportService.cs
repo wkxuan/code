@@ -596,5 +596,94 @@ namespace z.ERP.Services
                 a.SetTable(dt);
             });
         }
+
+        public DataGridResult ContractInfo(SearchItem item)
+        {
+            string sql = " SELECT C.CONTRACTID,F.CODE FLOORCODE,S.CODE SHOPCODE,D.NAME BRANDNAME,"
+                       + " M.MERCHANTID,M.NAME MERCHANTNAME, C.AREAR,to_char(C.CONT_START,'YYYY-MM-DD') CONT_START,"
+                       + " to_char(C.CONT_END,'YYYY-MM-DD') CONT_END,O.NAME RENTWAY, CR.RENTPRICE,FR.NAME RENTRULE,"
+                       + " (SELECT MAX(FW.NAME)  FROM CONTRACT_COST CC, FEERULE FW"
+                       + "   WHERE CC.CONTRACTID = C.CONTRACTID"
+                       + "     AND CC.FEERULEID = FW.ID AND CC.TERMID = 1) WYFRULE,"
+                       + " (SELECT MAX(CC.PRICE)  FROM CONTRACT_COST CC"
+                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 1) WYFPRICE,"
+                       + " (SELECT MAX(CC.COST)  FROM CONTRACT_COST CC"
+                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 2) LYBZJ,"
+                       + " (SELECT MAX(CC.COST)  FROM CONTRACT_COST CC"
+                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 3) ZXBZJ,"
+                       + " (SELECT MAX(CC.COST)  FROM CONTRACT_COST CC"
+                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 4) POSYJ"
+                       + "  FROM CONTRACT C, MERCHANT M,CONTRACT_SHOP CS, CONTRACT_RENTPRICE CR,"
+                       + "       SHOP S, FLOOR F,CONTRACT_BRAND CB, OPERATIONRULE O,FEERULE FR,"
+                       + "       BRAND D,CATEGORY Y"
+                       + " WHERE C.MERCHANTID = M.MERCHANTID AND C.CONTRACTID = CS.CONTRACTID"
+                       + "   AND C.CONTRACTID = CR.CONTRACTID AND CS.SHOPID = S.SHOPID"
+                       + "   AND S.FLOORID = F.ID AND C.CONTRACTID = CB.CONTRACTID"
+                       + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
+                       + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
+                       + "   AND C.HTLX=1 AND C.STATUS !=5";
+
+            item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
+            item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
+            item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and D.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and D.NAME LIKE '%{a}%'");
+
+            sql += " ORDER BY F.CODE,C.CONTRACTID";
+
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public string ContractInfoOutput(SearchItem item)
+        {
+            string sql = " SELECT C.CONTRACTID,F.CODE FLOORCODE,S.CODE SHOPCODE,D.NAME BRANDNAME,"
+                       + " M.MERCHANTID,M.NAME MERCHANTNAME, C.AREAR,to_char(C.CONT_START,'YYYY-MM-DD') CONT_START,"
+                       + " to_char(C.CONT_END,'YYYY-MM-DD') CONT_END,O.NAME RENTWAY, CR.RENTPRICE,FR.NAME RENTRULE,"
+                       + " (SELECT MAX(FW.NAME)  FROM CONTRACT_COST CC, FEERULE FW"
+                       + "   WHERE CC.CONTRACTID = C.CONTRACTID"
+                       + "     AND CC.FEERULEID = FW.ID AND CC.TERMID = 1) WYFRULE,"
+                       + " (SELECT MAX(CC.PRICE)  FROM CONTRACT_COST CC"
+                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 1) WYFPRICE,"
+                       + " (SELECT MAX(CC.COST)  FROM CONTRACT_COST CC"
+                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 2) LYBZJ,"
+                       + " (SELECT MAX(CC.COST)  FROM CONTRACT_COST CC"
+                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 3) ZXBZJ,"
+                       + " (SELECT MAX(CC.COST)  FROM CONTRACT_COST CC"
+                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 4) POSYJ"
+                       + "  FROM CONTRACT C, MERCHANT M,CONTRACT_SHOP CS, CONTRACT_RENTPRICE CR,"
+                       + "       SHOP S, FLOOR F,CONTRACT_BRAND CB, OPERATIONRULE O,FEERULE FR,"
+                       + "       BRAND D,CATEGORY Y"
+                       + " WHERE C.MERCHANTID = M.MERCHANTID AND C.CONTRACTID = CS.CONTRACTID"
+                       + "   AND C.CONTRACTID = CR.CONTRACTID AND CS.SHOPID = S.SHOPID"
+                       + "   AND S.FLOORID = F.ID AND C.CONTRACTID = CB.CONTRACTID"
+                       + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
+                       + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
+                       + "   AND C.HTLX=1 AND C.STATUS !=5";
+
+            item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
+            item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
+            item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and D.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and D.NAME LIKE '%{a}%'");
+
+            sql += " ORDER BY F.CODE,C.CONTRACTID";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "ContractInfo";
+            return GetExport("合同信息表", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+
     }
 }
