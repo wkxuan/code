@@ -63,6 +63,7 @@
     <Compile Include="DbDomain\DbTableAttribute.cs" />
     <Compile Include="DbDomain\DbTypeAttribute.cs" />
     <Compile Include="DbDomain\EntityBase.cs" />
+    <Compile Include="DbDomain\InsertIgnoreAttribute.cs" />
     <Compile Include="DbDomain\ProcedureEntityBase.cs" />
     <Compile Include="DbDomain\SqlParameter.cs" />
     <Compile Include="DbDomain\TableEntityBase.cs" />

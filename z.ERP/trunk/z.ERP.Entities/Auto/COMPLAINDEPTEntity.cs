@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using z.DbHelper.DbDomain;
+using z.DBHelper.DBDomain;
 
 namespace z.ERP.Entities.Auto
 {

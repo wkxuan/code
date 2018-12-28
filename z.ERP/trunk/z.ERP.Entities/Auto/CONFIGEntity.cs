@@ -4,10 +4,11 @@
  * 生成人：书房
  * 代码生成器版本号：1.2.6655.1027
  *
- */ 
+ */
 
 using System.Data;
-using z.DbHelper.DbDomain;
+using z.DBHelper.DBDomain;
+using z.DBHelper.DBDomain;
 
 namespace z.ERP.Entities
 {

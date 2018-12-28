@@ -52,12 +52,12 @@ namespace z.ERP.WebService.Wcf.Tests
         {
             try
             {
-                ServiceBase service = new ServiceBase();
-                var a = service.PosService.GetVipCard(new GetVipCardRequest()
-                {
-                    condType = 1,
-                    condValue = "123123"
-                });
+                //ServiceBase service = new ServiceBase();
+                //var a = service.PosService.GetVipCoupon(new GetVipCardRequest()
+                //{
+                //    condType = 1,
+                //    condValue = "123123"
+                //});
             }
             catch (Exception ex)
             {
