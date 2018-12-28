@@ -1,7 +1,7 @@
 ﻿search.beforeVue = function () {
     search.searchParam.MERCHANTID = "";
     var col = [
-        { title: '合同号', key: 'CONTRACTID', width: 95, sortable: true },
+        { title: '租约号', key: 'CONTRACTID', width: 95, sortable: true },
         { title: '状态', key: 'STATUSMC', width: 80 },
         { title: '资产代码', key: 'SHOPDM', width: 110, sortable: true },
         { title: '品牌名称', key: 'BRANDNAME', width: 110, ellipsis: true },

@@ -69,11 +69,19 @@
                 //导出待完善
                 exp: function (event) {
                     event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('Output', {
+                        Values: _this.searchParam
+                    }, function (data) {
+                        window.open(__BaseUrl + data);
+                    });
+
+                    /*
                     if (notExistsData()) {
                         this.$Message.error("没有要导出的数据!");
                     } else {
                         this.$Message.error("尚未提供导出方法!");
-                    }
+                    } */
 
                 },
                 //打印待完善

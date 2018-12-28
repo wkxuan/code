@@ -107,5 +107,10 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             return service.XtglService.GetLateFeeRule(item);
         }
 
+        public string Output(SearchItem item)
+        {
+            return service.HtglService.GetContractOutput(item);
+        }
+
     }
 }

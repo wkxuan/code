@@ -44,6 +44,36 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
+        public string GetContractOutput(SearchItem item)
+        {
+            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,D.SHOPDM,E.BRANDNAME FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_SHOPXX D,CONTRACT_BRANDXX E " +
+                         " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=D.CONTRACTID AND A.CONTRACTID=E.CONTRACTID ";
+
+            item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
+            item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
+            item.HasKey("STYLE", a => sql += $" and A.STYLE = '{a}'");
+            // item.HasArrayKey("HTLX", a => sql += $" and A.HTLX in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("HTLX", a => sql += $" and A.HTLX = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS = {a}");
+            item.HasKey("SIGNER", a => sql += $" and A.SIGNER = {a}");
+            item.HasKey("REPORTER", a => sql += $" and A.SIGNER = {a}");
+            item.HasKey("VERIFY", a => sql += $" and A.SIGNER = {a}");
+            item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=A.CONTRACTID and UPPER(U.CODE) LIKE '{a.ToUpper()}%')");
+            item.HasKey("BRANDNAME", a => sql += $" and exists(select 1 from CONTRACT_BRAND P,BRAND U where  P.BRANDID=U.ID and P.CONTRACTID=A.CONTRACTID and UPPER(U.NAME) LIKE '{a.ToUpper()}%')");
+            sql += " ORDER BY  D.SHOPDM";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
+            dt.TableName = "ContractList";
+            return GetExport("租约列表导出", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+
         public string SaveContract(CONTRACTEntity SaveData)
         {
             var v = GetVerify(SaveData);
