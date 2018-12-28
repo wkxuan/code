@@ -6,6 +6,9 @@
     editDetail.method = "GetWlGoods";
     editDetail.Key = 'GOODSID';
     editDetail.dataParam.STATUS = "1";
+
+    editDetail.screenParam.showPopWLMerchant = false;
+    editDetail.screenParam.srcPopWLMerchant = __BaseUrl + "/" + "Pop/Pop/PopWLMerchantList/";
 };
 
 editDetail.showOne = function (data, callback) {
@@ -40,4 +43,23 @@ editDetail.IsValidSave = function () {
         return false;
     };
     return true;
-}
+};
+
+editDetail.otherMethods = {
+    SelMerchant: function () {
+        editDetail.screenParam.showPopWLMerchant = true;
+    },
+    Getpym: function () {
+        editDetail.dataParam.PYM = editDetail.dataParam.NAME.toPYM().substr(0, 6);
+    }
+};
+
+editDetail.popCallBack = function (data) {
+    if (editDetail.screenParam.showPopWLMerchant) {
+        editDetail.screenParam.showPopWLMerchant = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
+            editDetail.dataParam.MERCHANTNAME = data.sj[i].NAME;
+        }
+    };
+};

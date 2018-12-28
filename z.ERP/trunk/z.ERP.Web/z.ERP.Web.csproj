@@ -303,6 +303,7 @@
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.js" />
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
+    <Content Include="Areas\Pop\Pop\PopWLMerchantList.js" />
     <Content Include="Areas\Pop\Pop\PopMerchantList.js" />
     <Content Include="Areas\Pop\Pop\PopContractList.js" />
     <Content Include="Areas\Pop\Pop\PopBillList.js" />
@@ -554,6 +555,7 @@
     <Content Include="Areas\WLGL\WlGoods\WlGoodsMx.cshtml" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.cshtml" />
     <Content Include="Areas\Report\ContractInfo\ContractInfo.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopWLMerchantList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
