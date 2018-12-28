@@ -6,42 +6,39 @@ using System.Threading.Tasks;
 
 namespace z.ERP.Entities.Service.Pos
 {
-    public class UserYYYResult
+    public class LoginConfigInfo
     {
-        public string clerkId
+        public string branchid
         {
             get;
             set;
         }
 
-        public string clerkName
+        public string shopid
         {
             get;
             set;
         }
 
-        public string shopId
+        public string shopcode
         {
             get;
             set;
         }
 
-        public string shopCode
+        public string shopname
         {
             get;
             set;
         }
 
-        public string shopName
+        public string pid
         {
             get;
             set;
         }
-    }
 
-    public class PersonInfo
-    {
-       public string usercode
+        public string key
         {
             get;
             set;

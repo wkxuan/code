@@ -32,5 +32,11 @@
             set;
         }
 
+        public string ConfigInfo
+        {
+            get;
+            set;
+        }
+
     }
 }

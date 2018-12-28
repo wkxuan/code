@@ -40,6 +40,12 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
+        public string paytype
+        {
+            get;
+            set;
+        }
+
         public decimal amount
         {
             get;
