@@ -7,7 +7,7 @@ using System.Text;
 using z;
 using z.Extensions;
 
-namespace z.DbHelper.DbDomain
+namespace z.DBHelper.DBDomain
 {
     /// <summary>
     /// 所有数据操作类的基类

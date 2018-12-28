@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -112,6 +113,18 @@ namespace z.Extensions
         }
 
         /// <summary>
+        /// 转化为另外一个类
+        /// </summary>
+        /// <typeparam name="Ts"></typeparam>
+        /// <typeparam name="Tt"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static Tt ToOtherObj<Ts, Tt>(this Ts obj) where Ts : class where Tt : class
+        {
+            return obj.ToJson().ToObj<Tt>();
+        }
+
+        /// <summary>
         /// 深度拷贝
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -203,10 +216,37 @@ namespace z.Extensions
             foreach (PropertyInfo p in props)
             {
                 string typename = p.Name;
-                T value = p.GetValue(obj, null) == null ? default(T) : p.GetValue(obj, null) as T;
+                object o = p.GetValue(obj, null);
+                T value = o == null ? default(T) : o as T;
                 dic.Add(typename, value);
             }
             return dic;
+        }
+
+        public static DataTable ToDataTable<T>(this IEnumerable<T> infos) where T : class
+        {
+            DataTable dt = new DataTable();
+            if (infos == null)
+                return null;
+            T t = default(T);
+            PropertyInfo[] props = t.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (PropertyInfo p in props)
+            {
+                dt.Columns.Add(p.Name, p.PropertyType);
+            }
+            infos.ForEach(info =>
+            {
+                DataRow dr = dt.NewRow();
+                foreach (PropertyInfo p in props)
+                {
+                    string typename = p.Name;
+                    object o = p.GetValue(info, null);
+                    T value = o == null ? default(T) : o as T;
+                    dr[p.Name] = value;
+                }
+                dt.Rows.Add(dr);
+            });
+            return dt;
         }
         #endregion
         #region 继承
@@ -286,7 +326,17 @@ namespace z.Extensions
             {
                 throw new Exception($"类型{t.GetType().Name}没有名为{name}的属性");
             }
-            p.SetValue(t, Convert.ChangeType(value, p.PropertyType), null);
+            if (p.PropertyType.IsEnum)
+            {
+                if (value == DBNull.Value)
+                    p.SetValue(t, default(T), null);
+                else
+                    p.SetValue(t, value, null);
+            }
+            else
+            {
+                p.SetValue(t, Convert.ChangeType(value, p.PropertyType), null);
+            }
             return;
             //下面的报错
             var param_obj = Expression.Parameter(type);
@@ -318,7 +368,7 @@ namespace z.Extensions
             {
                 object arr = new object();
                 arr = prop.PropertyType.InvokeMember("Set", BindingFlags.CreateInstance, null, arr, new object[] { data.Count() });
-                data.ForEach((inx, obj) =>
+                data.ForEach2((inx, obj) =>
                 {
                     prop.PropertyType.GetMethod("SetValue", new Type[2] { typeof(object), typeof(int) }).Invoke(arr, new object[] { obj, inx });
                 });
@@ -328,7 +378,7 @@ namespace z.Extensions
             {
                 object arr = new object();
                 arr = prop.PropertyType.InvokeMember("Set", BindingFlags.CreateInstance, null, arr, new object[] { data.Count() });
-                data.ForEach((inx, obj) =>
+                data.ForEach2((inx, obj) =>
                 {
                     prop.PropertyType.GetMethod("Add", new Type[] { prop.GetChildren() }).Invoke(arr, new object[] { obj });
                 });
