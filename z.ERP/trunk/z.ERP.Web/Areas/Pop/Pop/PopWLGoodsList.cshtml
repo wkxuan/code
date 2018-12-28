@@ -22,42 +22,31 @@
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.MERCHANTNAME"
+                    vModel = "searchParam.NAME"
                 });
             }
         </i-col>
     </row>
     <row>
         <i-col span="3" class="RowTitle">
-            登记人
+            物料编号
         </i-col>
         <i-col span="5">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.REPORTER"
+                    vModel = "searchParam.GOODSDM"
                 });
             }
         </i-col>
         <i-col span="3" class="RowTitle">
-            登记时间
+            物料名称
         </i-col>
         <i-col span="5">
             @{
-                RenderControl(new DateBoxRender()
+                RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.REPORTER_TIME_START"
-                });
-            }
-        </i-col>
-        <i-col span="3" class="RowTitle">
-            登记时间
-        </i-col>
-        <i-col span="5">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.REPORTER_TIME_END"
+                    vModel = "searchParam.GOODSNAME"
                 });
             }
         </i-col>

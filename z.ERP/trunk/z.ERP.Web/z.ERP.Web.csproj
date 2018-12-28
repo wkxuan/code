@@ -224,6 +224,7 @@
     <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\SPGL\SALEBILL\SaleBillController.cs" />
     <Compile Include="Areas\WLGL\WlGoods\WlGoodsController.cs" />
+    <Compile Include="Areas\WLGL\WLInStock\WLInStockController.cs" />
     <Compile Include="Areas\WLGL\WlMerchant\WlMerchantController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINDEPT\ComplainDeptController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINTYPE\ComplainTypeController.cs" />
@@ -303,6 +304,7 @@
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.js" />
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
+    <Content Include="Areas\Pop\Pop\PopWLGoodsList.js" />
     <Content Include="Areas\Pop\Pop\PopWLMerchantList.js" />
     <Content Include="Areas\Pop\Pop\PopMerchantList.js" />
     <Content Include="Areas\Pop\Pop\PopContractList.js" />
@@ -327,6 +329,8 @@
     <Content Include="Areas\SPGL\SALEBILL\SaleBillList.js" />
     <Content Include="Areas\WLGL\WlGoods\WlGoodsEdit.js" />
     <Content Include="Areas\WLGL\WlGoods\WlGoodsList.js" />
+    <Content Include="Areas\WLGL\WLInStock\WLInStockEdit.js" />
+    <Content Include="Areas\WLGL\WLInStock\WLInStockList.js" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantEdit.js" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantList.js" />
     <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.js" />
@@ -556,6 +560,10 @@
     <Content Include="Areas\Report\MerchantRent\MerchantRent.cshtml" />
     <Content Include="Areas\Report\ContractInfo\ContractInfo.cshtml" />
     <Content Include="Areas\Pop\Pop\PopWLMerchantList.cshtml" />
+    <Content Include="Areas\WLGL\WLInStock\WLInStockEdit.cshtml" />
+    <Content Include="Areas\WLGL\WLInStock\WLInStockList.cshtml" />
+    <Content Include="Areas\WLGL\WLInStock\WLInStockMx.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopWLGoodsList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

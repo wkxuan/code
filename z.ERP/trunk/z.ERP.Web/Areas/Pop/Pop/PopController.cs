@@ -66,6 +66,12 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "物料供应商";
             return View();
         }
+
+        public ActionResult PopWLGoodsList()
+        {
+            ViewBag.Title = "物料信息";
+            return View();
+        }
     }
 
 }
