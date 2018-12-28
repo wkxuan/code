@@ -40,8 +40,8 @@ namespace z.ERP.Services
         }
         public Tuple<dynamic, DataTable> GetUserElement(SYSUSEREntity Data)
         {
-            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME,A.USER_TYPE,A.ORGID,A.USER_FLAG,A.VOID_FLAG,";
-             sql += " B.ORGIDCASCADER from SYSUSER A,ORG B where A.ORGID=B.ORGID(+)  ";
+            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME,A.USER_TYPE,A.ORGID,to_char(A.USER_FLAG) USER_FLAG,";
+             sql += " to_char(A.VOID_FLAG) VOID_FLAG,B.ORGIDCASCADER from SYSUSER A,ORG B where A.ORGID=B.ORGID(+)  ";
             if (!Data.USERID.IsEmpty())
             {
                 sql += " and A.USERID = " + Data.USERID;
