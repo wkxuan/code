@@ -25,7 +25,7 @@ namespace z.ERP.WebService.Wcf
             {
                 LoginConfigInfo lgi = new PosController().GetConfig();
 
-                if(lgi==null)
+                if (lgi == null)
                 {
                     res.UserId = null;
                     res.UserName = null;
@@ -34,11 +34,11 @@ namespace z.ERP.WebService.Wcf
                     res.ErrorMsg = "终端未定义";
                 }
                 else
-                  res.ConfigInfo = lgi.ToJson<LoginConfigInfo>();
+                    res.ConfigInfo = lgi.ToJson<LoginConfigInfo>();
             }
             return res;
 
-          //  return new CommonController().Login(dto);
+            //  return new CommonController().Login(dto);
         }
 
     }

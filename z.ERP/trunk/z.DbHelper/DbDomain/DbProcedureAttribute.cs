@@ -21,6 +21,15 @@ namespace z.DBHelper.DBDomain
         }
 
         /// <summary>
+        /// 存储过程
+        /// 名称同类名
+        /// </summary>
+        public DbProcedureAttribute()
+        {
+
+        }
+
+        /// <summary>
         /// 存储过程名字
         /// </summary>
         public string ProcedureName

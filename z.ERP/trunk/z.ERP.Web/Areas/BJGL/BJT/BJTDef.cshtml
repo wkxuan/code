@@ -1,0 +1,19 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Empty
+@inherits EmptyViewBase
+@section head{
+
+    @InitFiles(new string[] {
+    "/Content/Maps/contextMenu.css",
+    "/Content/Maps/contextMenu.min.js",
+    "/Content/Maps/zMapPoint.css",
+    "/Content/Maps/zMapPoint.js"
+})
+}
+@section content{
+    <div id="div_map">
+    </div>
+    <input type="button" onclick="add()" value="添加" />
+    <input type="button" onclick="save()" value="保存" />
+}

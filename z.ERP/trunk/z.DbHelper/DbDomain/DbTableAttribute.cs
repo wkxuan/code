@@ -37,5 +37,14 @@ namespace z.DBHelper.DBDomain
             Tablename = tablename;
             Tabcomments = comments ?? tablename;
         }
+
+        /// <summary>
+        /// 是一张表
+        /// 名称同类名
+        /// </summary>
+        public DbTableAttribute()
+        {
+
+        }
     }
 }

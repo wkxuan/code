@@ -124,7 +124,7 @@ namespace z.ERP.Services
             DbHelper.Delete(info);
         }
 
-        public T Select<T>(T t) where T : TableEntityBase
+        public T Select<T>(T t) where T : TableEntityBase, new()
         {
             return DbHelper.Select(t);
         }

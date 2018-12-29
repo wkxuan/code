@@ -10,7 +10,7 @@ using z.Extensions;
 namespace z.DBHelper.DBDomain
 {
     /// <summary>
-    /// 所有数据操作类的基类
+    /// 存储过程类的基类
     /// </summary>
     public class ProcedureEntityBase : EntityBase
     {
@@ -24,7 +24,7 @@ namespace z.DBHelper.DBDomain
         /// <returns></returns>
         public string GetProcedureName()
         {
-            return this.GetAttribute<DbProcedureAttribute>()?.ProcedureName;
+            return this.GetAttribute<DbProcedureAttribute>()?.ProcedureName ?? this.GetType().Name;
         }
 
         /// <summary>
