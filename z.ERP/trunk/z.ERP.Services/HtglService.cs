@@ -46,8 +46,9 @@ namespace z.ERP.Services
 
         public string GetContractOutput(SearchItem item)
         {
-            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,D.SHOPDM,E.BRANDNAME FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_SHOPXX D,CONTRACT_BRANDXX E " +
-                         " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=D.CONTRACTID AND A.CONTRACTID=E.CONTRACTID ";
+            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,D.SHOPDM,E.BRANDNAME,to_char(A.REPORTER_TIME,'yyyy-mm-dd') DJRQ,to_char(A.VERIFY_TIME,'yyyy-mm-dd') SHRQ"
+                         + " FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_SHOPXX D,CONTRACT_BRANDXX E "
+                         + " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=D.CONTRACTID AND A.CONTRACTID=E.CONTRACTID ";
 
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
