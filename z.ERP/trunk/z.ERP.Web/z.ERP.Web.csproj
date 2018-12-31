@@ -227,6 +227,8 @@
     <Compile Include="Areas\WLGL\WlGoods\WlGoodsController.cs" />
     <Compile Include="Areas\WLGL\WLInStock\WLInStockController.cs" />
     <Compile Include="Areas\WLGL\WlMerchant\WlMerchantController.cs" />
+    <Compile Include="Areas\WLGL\WLUse\WLUseController.cs" />
+    <Compile Include="Areas\WLGL\WLOutStock\WLOutStockController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINDEPT\ComplainDeptController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINTYPE\ComplainTypeController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
@@ -306,6 +308,7 @@
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.js" />
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
+    <Content Include="Areas\Pop\Pop\PopWLGoodsStockList.js" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsList.js" />
     <Content Include="Areas\Pop\Pop\PopWLMerchantList.js" />
     <Content Include="Areas\Pop\Pop\PopMerchantList.js" />
@@ -335,6 +338,10 @@
     <Content Include="Areas\WLGL\WLInStock\WLInStockList.js" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantEdit.js" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantList.js" />
+    <Content Include="Areas\WLGL\WLUse\WLUseEdit.js" />
+    <Content Include="Areas\WLGL\WLUse\WLUseList.js" />
+    <Content Include="Areas\WLGL\WLOutStock\WLOutStockEdit.js" />
+    <Content Include="Areas\WLGL\WLOutStock\WLOutStockList.js" />
     <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.js" />
     <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
@@ -572,6 +579,13 @@
     <Content Include="Areas\WLGL\WLInStock\WLInStockMx.cshtml" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsList.cshtml" />
     <Content Include="Areas\BJGL\BJT\BJTDef.cshtml" />
+    <Content Include="Areas\WLGL\WLOutStock\WLOutStockEdit.cshtml" />
+    <Content Include="Areas\WLGL\WLOutStock\WLOutStockList.cshtml" />
+    <Content Include="Areas\WLGL\WLOutStock\WLOutStockMx.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopWLGoodsStockList.cshtml" />
+    <Content Include="Areas\WLGL\WLUse\WLUseEdit.cshtml" />
+    <Content Include="Areas\WLGL\WLUse\WLUseList.cshtml" />
+    <Content Include="Areas\WLGL\WLUse\WLUseMx.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

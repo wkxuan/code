@@ -3,20 +3,20 @@ using z.DBHelper.DBDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("WLINSTOCK", "物料购进单WLINSTOCK")]
-    public partial class WLINSTOCKEntity : TableEntityBase
+    [DbTable("WLUSES", "物料领用单WLUSES")]
+    public partial class WLUSESEntity : TableEntityBase
     {
-        public WLINSTOCKEntity()
+        public WLUSESEntity()
         {
         }
 
-        public WLINSTOCKEntity(string billid)
+        public WLUSESEntity(string billid)
         {
             BILLID = billid;
         }
 
         [PrimaryKey]
-        [Field("购进单单号ID")]
+        [Field("物料领用单单号ID")]
         public string BILLID
         {
             get; set;

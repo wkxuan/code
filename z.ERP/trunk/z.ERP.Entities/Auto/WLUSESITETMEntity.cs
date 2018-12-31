@@ -3,14 +3,14 @@ using z.DBHelper.DBDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("WLINSTOCKITETM", "物料购进单子表WLINSTOCKITETM")]
-    public partial class WLINSTOCKITETMEntity : TableEntityBase
+    [DbTable("WLUSESITETM", "物料领用单子表WLUSESITETM")]
+    public partial class WLUSESITETMEntity : TableEntityBase
     {
-        public WLINSTOCKITETMEntity()
+        public WLUSESITETMEntity()
         {
         }
 
-        public WLINSTOCKITETMEntity(string billid, string goodsid)
+        public WLUSESITETMEntity(string billid, string goodsid)
         {
             BILLID = billid;
             GOODSID = goodsid;
@@ -31,6 +31,10 @@ namespace z.ERP.Entities
 
 
         public string QUANTITY
+        {
+            get; set;
+        }
+        public string CANQTY
         {
             get; set;
         }

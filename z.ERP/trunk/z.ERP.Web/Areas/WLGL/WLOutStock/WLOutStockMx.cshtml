@@ -45,7 +45,7 @@
     <row>
         <i-col span="24">
             <i-table height="200" size="small" :border="true"
-                     :columns="colDef" :data="WLINSTOCKITETM"></i-table>
+                     :columns="colDef" :data="WLOUTSTOCKITETM"></i-table>
         </i-col>
     </row>
 }
@@ -60,21 +60,22 @@
                 MERCHANTID: "@data.MERCHANTID",
                 NAME: "@data.NAME",
                 STATUSMC: "@data.STATUSMC",
-                WLINSTOCKITETM:[],
+                WLOUTSTOCKITETM:[],
                 colDef: [
                    { title: "物料代码", key: 'GOODSDM', width: 100 },
                    { title: '物料名称', key: 'NAME', width: 200 },
                    { title: '含税采购价', key: 'TAXINPRICE', width: 100 },
                    { title: '使用价', key: 'USEPRICE', width: 100 },
-                   { title: "采购数量", key: 'QUANTITY', width: 120 }
+                   { title: '可冲红数量', key: 'CANQTY', width: 100 },
+                   { title: '冲红数量', key: 'QUANTITY', width: 100 }
                 ],
             },
             mounted:function(){
                 var _self = this;
-                _.Ajax('SearchWLINSTOCK', {
+                _.Ajax('SearchWLOUTSTOCK', {
                     Data: { BILLID: @data.BILLID }
                 }, function (data) {
-                    _self.WLINSTOCKITETM = data.STOCKITEM;
+                    _self.WLOUTSTOCKITETM = data.OUTSTOCKITEM;
                 });
             },
             methods: {

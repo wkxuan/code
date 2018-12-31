@@ -42,6 +42,16 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请输入物料名称!");
         return false;
     };
+    if (!editDetail.dataParam.TAXINPRICE) {
+        iview.Message.info("请输入含税采购价!");
+        return false;
+    };
+    if (!editDetail.dataParam.JXSL) {
+        iview.Message.info("请输入税率!");
+        return false;
+    };
+
+    editDetail.dataParam.NOTAXINPRICE = (editDetail.dataParam.TAXINPRICE / (1 + editDetail.dataParam.JXSL)).toFixed(4);
     return true;
 };
 
