@@ -920,5 +920,171 @@ namespace z.ERP.Services
                 item
             );
         }
+
+
+        public Tuple<dynamic, DataTable> GetWlCheckElement(WLCHECKEntity Data)
+        {
+            if (Data.BILLID.IsEmpty())
+            {
+                throw new LogicException("请确认单号!");
+            }
+            string sql = $@"SELECT B.*,A.NAME";
+            sql += " FROM WL_MERCHANT A,WLCHECK B WHERE B.MERCHANTID=B.MERCHANTID ";
+            sql += (" AND B.BILLID= " + Data.BILLID);
+            DataTable main = DbHelper.ExecuteTable(sql);
+            if (!main.IsNotNull())
+            {
+                throw new LogicException("找不到损溢单!");
+            }
+
+            main.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT A.*,B.GOODSDM,B.NAME,B.USEPRICE " +
+                             " FROM  WLCHECKITEM A,WL_GOODS B  " +
+                             " where A.GOODSID = B.GOODSID  ";
+            sqlitem += (" and A.BILLID= " + Data.BILLID);
+            DataTable item = DbHelper.ExecuteTable(sqlitem);
+
+
+            return new Tuple<dynamic, DataTable>(
+                main.ToOneLine(),
+                item
+            );
+        }
+
+
+
+        public void WLDeleteWLCheck(List<WLCHECKEntity> DeleteData)
+        {
+            foreach (var mer in DeleteData)
+            {
+                WLCHECKEntity Data = DbHelper.Select(mer);
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString())
+                {
+                    throw new LogicException("物料损溢单单号(" + Data.BILLID + ")已经审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var mer in DeleteData)
+                {
+                    DbHelper.Delete(mer);
+                }
+                Tran.Commit();
+            }
+        }
+
+
+        public string SaveWLCheck(WLCHECKEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.BILLID.IsEmpty())
+            {
+                SaveData.BILLID = NewINC("WLCHECK");
+                SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            }
+            else
+            {
+                WLCHECKEntity mer = DbHelper.Select(SaveData);
+                SaveData.VERIFY = mer.VERIFY;
+                SaveData.VERIFY_NAME = mer.VERIFY_NAME;
+                SaveData.VERIFY_TIME = mer.VERIFY_TIME;
+            }
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            v.Require(a => a.MERCHANTID);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(SaveData);
+
+                Tran.Commit();
+            }
+            return SaveData.BILLID;
+        }
+
+
+
+        public string ExecWLCheck(WLCHECKEntity Data)
+        {
+            WLCHECKEntity mer = DbHelper.Select(Data);
+            if (mer.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("物料损溢单(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                mer.VERIFY = employee.Id;
+                mer.VERIFY_NAME = employee.Name;
+                mer.VERIFY_TIME = DateTime.Now.ToString();
+                mer.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(mer);
+
+                WLCHECKITEMEntity outitem = new WLCHECKITEMEntity();
+                outitem.BILLID = Data.BILLID;
+
+                List<WLCHECKITEMEntity> itemStock = DbHelper.SelectList(outitem);
+
+                foreach (var items in itemStock)
+                {
+                    WL_GOODSSTOCKEntity goodsstock = new WL_GOODSSTOCKEntity();
+
+                    goodsstock.GOODSID = items.GOODSID;
+
+                    WL_GOODSSTOCKEntity goodsstockdata = DbHelper.Select(goodsstock);
+                    if (goodsstockdata != null)
+                    {
+                        if (goodsstockdata.QTY.ToDouble() < items.QUANTITY.ToDouble())
+                        {
+                            throw new LogicException("报损数量不能大于账面数量!");
+                        }
+                        goodsstockdata.QTY = (goodsstockdata.QTY.ToDouble() - items.QUANTITY.ToDouble()).ToString();
+                        goodsstockdata.TAXAMOUNT = (Math.Round(goodsstockdata.TAXAMOUNT.ToDouble()
+                            - (items.QUANTITY.ToDouble() * goodsstockdata.TAXINPRICE.ToDouble()),
+                            2, MidpointRounding.AwayFromZero)).ToString();
+                        goodsstockdata.TAXINPRICE = (Math.Round(
+                            goodsstockdata.TAXAMOUNT.ToDouble() / goodsstockdata.QTY.ToDouble(),
+                            2, MidpointRounding.AwayFromZero)).ToString();
+                        DbHelper.Save(goodsstockdata);
+                    }
+                }
+
+                Tran.Commit();
+            }
+            return mer.BILLID;
+        }
+
+
+        public DataGridResult GetWlCheck(SearchItem item)
+        {
+            string sql = $@"SELECT B.*,A.NAME ";
+            sql += @" FROM WL_MERCHANT A,WLCHECK B WHERE B.MERCHANTID=B.MERCHANTID ";
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("NAME", a => sql += $" and A.NAME LIKE '%{a}%'");
+            item.HasKey("REPORTER_NAME", a => sql += $" and A.REPORTER_NAME LIKE '%{a}%'");
+            item.HasKey("VERIFY_NAME", a => sql += $" and A.VERIFY_NAME LIKE '%{a}%'");
+            sql += " ORDER BY  B.BILLID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult WLSrchStock(SearchItem item)
+        {
+            string sql = $@"SELECT A.MERCHANTID,A.NAME,C.GOODSDM,C.NAME GOODSNAME, ";
+            sql += @" B.QTY,B.TAXAMOUNT";
+            sql += @" FROM WL_MERCHANT A,WL_GOODSSTOCK B,WL_GOODS C";
+            sql += @" WHERE A.MERCHANTID = C.MERCHANTID AND B.GOODSID=C.GOODSID ";
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '{a}%'");
+            item.HasKey("NAME", a => sql += $" and A.NAME LIKE '{a}%'");
+            item.HasKey("GOODSDM", a => sql += $" and C.GOODSDM LIKE '{a}%'");
+            item.HasKey("GOODSNAME", a => sql += $" and C.NAME LIKE '{a}%'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 }

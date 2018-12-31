@@ -40,8 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\WLCHECKEntity.cs" />
     <Compile Include="Auto\WLUSESEntity.cs" />
     <Compile Include="Auto\WLOUTSTOCKEntity.cs" />
+    <Compile Include="Auto\WLCHECKITEMEntity.cs" />
     <Compile Include="Auto\WLUSESITETMEntity.cs" />
     <Compile Include="Auto\WLOUTSTOCKITETMEntity.cs" />
     <Compile Include="Auto\WL_GOODSSTOCKEntity.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="BILL_ADJUSTEntity .cs" />
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="FREESHOPEntity.cs" />
+    <Compile Include="WLCHECKEntity.cs" />
     <Compile Include="WLUSESEntity.cs" />
     <Compile Include="WLOUTSTOCKEntity.cs" />
     <Compile Include="WLINSTOCKEntity.cs" />
