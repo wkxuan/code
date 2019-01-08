@@ -80,67 +80,17 @@ namespace z.ERP.WebService.Controllers
             return service.PosService.GetCardPayable(reqMth);
         }
 
-        /**  [ServiceAble("GetVipCard")]
-          public VipCard GetVipCard(GetVipCardRequest Request)
-          {
-              return service.PosService.GetVipCard(Request);
-          }
+        [ServiceAble("CalcAccountsPayable")]
+        public CalcAccountsPayableResult CalcAccountsPayable(ReqGetGoods reqMth)
+        {
+            return service.PosService.CalcAccountsPayable(reqMth);
+        }
 
-          [ServiceAble("GetArticleVipDisc")]
-          public ArticleVipDisc[] GetArticleVipDisc(GetArticleVipDiscRequest request)
-          {
-              return service.PosService.GetArticleVipDisc(request);
-          }
-
-          [ServiceAble("GetVipCoupon")]
-          public Coupon[] GetVipCoupon(GetVipCouponRequest request)
-          {
-              return service.PosService.GetVipCoupon(request);
-          }
-
-          [ServiceAble("GetVipCouponToPay")]
-          public bool GetVipCouponToPay(GetVipCouponToPayRequest request)
-          {
-              return service.PosService.GetVipCouponToPay(request);
-          }
-
-          [ServiceAble("PrepareTransCouponPayment")]
-          public int PrepareTransCouponPayment(PrepareTransCouponPaymentRequest request)
-          {
-              return service.PosService.PrepareTransCouponPayment(request);
-          }
-
-          [ServiceAble("PrepareTransCouponPayment2")]
-          public int PrepareTransCouponPayment2(PrepareTransCouponPayment2Request request)
-          {
-              return service.PosService.PrepareTransCouponPayment2(request);
-          }
-
-          [ServiceAble("ConfirmTransCouponPayment")]
-          public bool ConfirmTransCouponPayment(ConfirmTransCouponPaymentRequest request)
-          {
-              return service.PosService.ConfirmTransCouponPayment(request);
-          }
-
-          [ServiceAble("CancelTransCouponPayment")]
-          public bool CancelTransCouponPayment(CancelTransCouponPaymentRequest request)
-          {
-              return service.PosService.CancelTransCouponPayment(request);
-          }
-
-          [ServiceAble("GetCashCard")]
-          public CashCard GetCashCard(GetCashCardRequest Request)
-          {
-              return service.PosService.GetCashCard(Request);
-          }
-
-          [ServiceAble("PrepareTransCashCardPayment")]
-          public int PrepareTransCashCardPayment(PrepareTransCashCardPaymentRequest Request)
-          {
-              return service.PosService.PrepareTransCashCardPayment(Request);
-          }
-
-          **/
+        [ServiceAble("ConfirmDeal")]
+        public ConfirmDealResult ConfirmDeal(ReqConfirmDeal ReqConfirm)
+        {
+            return service.PosService.ConfirmDeal(ReqConfirm);
+        }
 
     }
 }

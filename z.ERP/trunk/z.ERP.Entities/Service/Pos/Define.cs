@@ -3966,16 +3966,6 @@ namespace z.ERP.Entities.Service.Pos
 
     public struct TPayableCoupon
     {
-        /*public int CardId;
-        public int CouponId;
-        public int CouponType;
-        public string CouponName;
-        public int Balance;
-        public int AccountsPayable;
-        public string PayID;
-        public string PayName;
-        public string Validity;*/
-
         public int cardId;
         public int couponId;
         public int couponType;
@@ -4747,7 +4737,6 @@ namespace z.ERP.Entities.Service.Pos
         public List<TTranCoupon> couponsList;
         public List<CashCardDetails> cashCashList;
         public List<CreditDetail> creditDetailList; //银行付款明细
-        //List<CreditDetail> dataList
     }
 
     public class TTicketBaseInfo
