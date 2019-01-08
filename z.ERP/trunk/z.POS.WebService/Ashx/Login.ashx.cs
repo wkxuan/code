@@ -1,10 +1,9 @@
 ﻿using System.Web;
-using z.ERP.WebService.Controllers;
 using z.Extensions;
-using z.ERP.Entities.Service.Pos;
 using z.WebServiceBase.Model;
+using z.POS.WebService.Controllers;
 
-namespace z.ERP.WebService.Ashx
+namespace z.POS.WebService.Ashx
 {
     /// <summary>
     /// Login 的摘要说明

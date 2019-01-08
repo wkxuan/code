@@ -1,4 +1,4 @@
-﻿namespace z.ERP.WebService
+﻿namespace z.WebServiceBase.Model
 {
     public class RequestDTO
     {

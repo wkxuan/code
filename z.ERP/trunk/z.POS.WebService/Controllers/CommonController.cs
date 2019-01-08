@@ -1,17 +1,14 @@
 ﻿using System;
-using z.ERP.Entities.Service.Pos;
 using z.Extensions;
 using z.SSO;
 using z.SSO.Model;
 using z.WebServiceBase;
-using z.WebServiceBase.Controllers;
 using z.WebServiceBase.Model;
 
-namespace z.ERP.WebService.Controllers
+namespace z.POS.WebService.Controllers
 {
     public class CommonController : BaseController
     {
-
         LoginResponseDTO _login(LoginRequestDTO dto)
         {
             var user = service.HomeService.GetUserByCode(dto.UserCode, dto.UserPassword);
@@ -81,20 +78,6 @@ namespace z.ERP.WebService.Controllers
                         ErrorMsg = ex.Message
                     };
                 }
-            }
-            if (res.Success)
-            {
-                LoginConfigInfo lgi = new PosController().GetConfig();
-                if (lgi == null)
-                {
-                    res.UserId = null;
-                    res.UserName = null;
-                    res.SecretKey = null;
-                    res.Success = false;
-                    res.ErrorMsg = "终端未定义";
-                }
-                else
-                    res.ConfigInfo = lgi.ToJson();
             }
             Log.Info($"Login", dto, res);
             return res;

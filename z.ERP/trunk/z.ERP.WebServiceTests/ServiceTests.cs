@@ -1,34 +1,40 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using z.ERP.API.PosServiceAPI;
 using z.ERP.Entities.Service.Pos;
-using z.ERP.Services;
 using z.Extensions;
+using z.WebServiceBase;
+using z.WebServiceBase.Model;
 
 namespace z.ERP.WebService.Wcf.Tests
 {
     [TestClass()]
     public class ServiceTests
     {
+        WebServiceTests.posservice.ServiceClient pos
+        {
+            get
+            {
+                return new WebServiceTests.posservice.ServiceClient();
+            }
+        }
+        WebServiceTests.erpservice.ServiceClient erp
+        {
+            get
+            {
+                return new WebServiceTests.erpservice.ServiceClient();
+            }
+        }
+
         [TestMethod()]
         public void DoTest()
         {
             try
             {
-                RequestDTO dto = new RequestDTO()
+                var a = pos.Do(new RequestDTO()
                 {
-                    SecretKey = "fjRVf+gZB+h1a+wXW2wOANRfaqn95kr0A9zPTpkW+D8ADbj421cRkF0+vYUCTzpEeZZuRqu5K9s50TgqbiJyaezcsU/z5E1lc2XnIyHOiBASwsMka93Mkwljk91bL20Vvh/jU5jGFf6wKorBjvjL7jTG7Cbo0CtWZ95Ip5Q0dAE=",
-                    ServiceName = "GetVipCard",
-                    Context = new GetVipCardRequest()
-                    {
-                        condType = 1,
-                        condValue = "123123"
-                    }.ToJson()
-                };
-                ServiceTransfer st = new ServiceTransfer();
-                ResponseDTO res = st.Do(dto);
-                var ress = res.Context.ToObj<VipCard>();
+                    ServiceName = "GetLastDealid"
+                });
             }
             catch (Exception ex)
             {
@@ -41,19 +47,16 @@ namespace z.ERP.WebService.Wcf.Tests
         {
             try
             {
-                RequestDTO dto = new RequestDTO()
+                var ress = erp.Do(new RequestDTO()
                 {
                     SecretKey = "TfzHzL9AJGeYLwWM0NECZYfDbbPPb+mDO7I8YnbXwmFuzEpZdmwVYItWCg6/7nUn88rpDGzjPBhepR7Vwu/G5lwN40hIjKkVKkdUoj/U7LK7QbYooVj5NeZE/lRPP0P1DddX1XXgtujLAyoUB5pjPYxRxirWZKsIPO9VFOLU55s=",
                     ServiceName = "CalcAccountsPayable",
                     Context = "{contractID:0,vipIsDiscount:1,validType:2,ValidID:'30000000',deptID:1,deptCode:'01',goodsList:[{id:11,code:'00010001',price:100,frontendOffAmount:0,count:2,deptid:0,deptCode:''}]}"
-                };
-                ServiceTransfer st = new ServiceTransfer();
-                ResponseDTO res = st.Do(dto);
-                var ress = res.Context.ToObj<CalcAccountsPayableResult>();
+                });
             }
             catch (Exception ex)
             {
-                
+
             }
         }
 
@@ -127,9 +130,8 @@ namespace z.ERP.WebService.Wcf.Tests
 
                     }.ToJson()
                 };
-                ServiceTransfer st = new ServiceTransfer();
-                ResponseDTO res = st.Do(dto);
-                var ress = res.Context.ToObj<ConfirmDealResult>();
+                var res = erp.Do(dto);
+                var aa = res.Context.ToObj<ConfirmDealResult>();
             }
             catch (Exception ex)
             {

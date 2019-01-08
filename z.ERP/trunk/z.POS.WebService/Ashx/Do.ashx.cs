@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using z.ERP.WebService.Controllers;
 using z.Extensions;
+using z.POS.WebService.Controllers;
 using z.WebServiceBase.Model;
 
-namespace z.ERP.WebService.Ashx
+namespace z.POS.WebService.Ashx
 {
     /// <summary>
     /// Service 的摘要说明

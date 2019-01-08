@@ -9,12 +9,12 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{92FBA900-7903-471F-805B-DAD6E157C894}</ProjectGuid>
+    <ProjectGuid>{9922C9E2-B697-41CF-B6DF-B2E9F9D3F37F}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>z.ERP.WebService</RootNamespace>
-    <AssemblyName>z.ERP.WebService</AssemblyName>
+    <RootNamespace>z.POS.WebService</RootNamespace>
+    <AssemblyName>z.POS.WebService</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -24,7 +24,6 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,11 +48,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -76,7 +70,6 @@
     <Content Include="packages.config" />
     <Content Include="Ashx\Do.ashx" />
     <Content Include="Ashx\Login.ashx" />
-    <None Include="Properties\PublishProfiles\zgy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -105,36 +98,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\z.ERP.API\z.ERP.API.csproj">
-      <Project>{91882EE9-BF22-4B43-85A4-AA9CECB65C48}</Project>
-      <Name>z.ERP.API</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\z.ERP.Entities\z.ERP.Entities.csproj">
-      <Project>{4115fe85-9e35-45e1-bfe9-c19f62bab612}</Project>
-      <Name>z.ERP.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\z.ERP.Model\z.ERP.Model.csproj">
-      <Project>{4ed4509f-7960-4f05-9661-62b6abdeb532}</Project>
-      <Name>z.ERP.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\z.ERP.Services\z.ERP.Services.csproj">
-      <Project>{4f92be72-d196-4ee6-903c-10a1d7b0fadf}</Project>
-      <Name>z.ERP.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\z.IOC\z.IOC.csproj">
-      <Project>{34b3dd30-91d0-4e47-ab99-9ebd4bb51747}</Project>
-      <Name>z.IOC</Name>
-    </ProjectReference>
     <ProjectReference Include="..\z.LogFactory\z.LogFactory.csproj">
       <Project>{31E4C7DC-E998-4068-AEC8-0AFAC6BBE68D}</Project>
       <Name>z.LogFactory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.POS.Services\z.POS.Services.csproj">
+      <Project>{D375452D-2E8C-4A8F-88F4-3F05F9E22B4F}</Project>
+      <Name>z.POS.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.SSO\z.SSO.csproj">
-      <Project>{df833680-d044-4c57-96f9-217a1812c0b3}</Project>
+      <Project>{DF833680-D044-4C57-96F9-217A1812C0B3}</Project>
       <Name>z.SSO</Name>
     </ProjectReference>
     <ProjectReference Include="..\z.WebServiceBase\z.WebServiceBase.csproj">
-      <Project>{4a1b17ae-5456-4f4e-9124-7f71cdea6b7b}</Project>
+      <Project>{4A1B17AE-5456-4F4E-9124-7F71CDEA6B7B}</Project>
       <Name>z.WebServiceBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\z\z.csproj">
@@ -155,9 +132,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>56251</DevelopmentServerPort>
+          <DevelopmentServerPort>60796</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56251/</IISUrl>
+          <IISUrl>http://localhost:60796/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

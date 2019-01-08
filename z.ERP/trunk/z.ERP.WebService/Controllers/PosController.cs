@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using z.ERP.API.PosServiceAPI;
 using z.ERP.Entities.Service.Pos;
-using z.ERP.WebService.Model;
+using z.ERP.Services;
+using z.WebServiceBase.Controllers;
+using z.WebServiceBase.Model;
 
 namespace z.ERP.WebService.Controllers
 {
@@ -9,8 +11,10 @@ namespace z.ERP.WebService.Controllers
     {
         internal PosController() : base()
         {
-
+          
         }
+
+
 
         /// <summary>
         /// 商品-单价

@@ -1,4 +1,4 @@
-﻿namespace z.ERP.WebService.Model
+﻿namespace z.WebServiceBase.Model
 {
     public class LoginResponseDTO
     {
@@ -14,6 +14,9 @@
             set;
         }
 
+        /// <summary>
+        /// 密钥
+        /// </summary>
         public string SecretKey
         {
             get;
@@ -32,6 +35,10 @@
             set;
         }
 
+        /// <summary>
+        /// 其他配置信息
+        /// 每个系统可能不同
+        /// </summary>
         public string ConfigInfo
         {
             get;

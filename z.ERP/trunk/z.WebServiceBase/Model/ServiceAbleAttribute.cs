@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace z.ERP.WebService.Model
+namespace z.WebServiceBase.Model
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public class ServiceAbleAttribute : Attribute

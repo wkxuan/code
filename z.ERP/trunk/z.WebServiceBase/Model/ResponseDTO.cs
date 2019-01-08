@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace z.ERP.WebService.Model
+namespace z.WebServiceBase.Model
 {
-    public class LoginRequestDTO
+    public class ResponseDTO
     {
-        public string UserCode
+        public bool Success
         {
             get;
             set;
         }
 
-        public string UserPassword
+        public string ErrorMsg
         {
             get;
             set;
         }
 
-        public string PlatformId
+        public string Context
         {
             get;
             set;
         }
+
     }
 }
