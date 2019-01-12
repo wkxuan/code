@@ -95,6 +95,7 @@
     <Compile Include="Results\SearchItem.cs" />
     <Compile Include="Results\SelectResult.cs" />
     <Compile Include="Results\UIResult.cs" />
+    <Compile Include="Results\UIResultType.cs" />
     <Compile Include="Views\ViewBase.cs" />
   </ItemGroup>
   <ItemGroup>
