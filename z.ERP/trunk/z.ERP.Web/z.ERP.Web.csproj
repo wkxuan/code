@@ -228,6 +228,7 @@
     <Compile Include="Areas\WLGL\WlGoods\WlGoodsController.cs" />
     <Compile Include="Areas\WLGL\WLInStock\WLInStockController.cs" />
     <Compile Include="Areas\WLGL\WlMerchant\WlMerchantController.cs" />
+    <Compile Include="Areas\WLGL\WLSETTLE\WLSETTLEController.cs" />
     <Compile Include="Areas\WLGL\WLSrchStock\WLSrchStockController.cs" />
     <Compile Include="Areas\WLGL\WLUse\WLUseController.cs" />
     <Compile Include="Areas\WLGL\WLOutStock\WLOutStockController.cs" />
@@ -310,6 +311,7 @@
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.js" />
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
+    <Content Include="Areas\Pop\Pop\PopWLGoodsDjxxList.js" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsStockList.js" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsList.js" />
     <Content Include="Areas\Pop\Pop\PopWLMerchantList.js" />
@@ -342,6 +344,8 @@
     <Content Include="Areas\WLGL\WLInStock\WLInStockList.js" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantEdit.js" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantList.js" />
+    <Content Include="Areas\WLGL\WLSETTLE\WLSETTLEEdit.js" />
+    <Content Include="Areas\WLGL\WLSETTLE\WLSETTLEList.js" />
     <Content Include="Areas\WLGL\WLSrchStock\WLSrchStock.js" />
     <Content Include="Areas\WLGL\WLUse\WLUseEdit.js" />
     <Content Include="Areas\WLGL\WLUse\WLUseList.js" />
@@ -595,6 +599,10 @@
     <Content Include="Areas\WLGL\WLCheck\WLCheckList.cshtml" />
     <Content Include="Areas\WLGL\WLCheck\WLCheckMx.cshtml" />
     <Content Include="Areas\WLGL\WLSrchStock\WLSrchStock.cshtml" />
+    <Content Include="Areas\WLGL\WLSETTLE\WLSETTLEEdit.cshtml" />
+    <Content Include="Areas\WLGL\WLSETTLE\WLSETTLEList.cshtml" />
+    <Content Include="Areas\WLGL\WLSETTLE\WLSETTLEMx.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopWLGoodsDjxxList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

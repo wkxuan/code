@@ -139,6 +139,12 @@ namespace z.ERP.Entities.Enum
         审核 = 2,
     }
 
+    public enum 业务类型单据
+    {
+        物料购进单 = 0,
+        物料购进单冲红 = 1,
+    }
+
     public enum 合同状态
     {
         未审核 = 1,

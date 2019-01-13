@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto\WLCHECKEntity.cs" />
+    <Compile Include="Auto\WLSETTLEEntity.cs" />
+    <Compile Include="Auto\WLSETTLEITEMEntity.cs" />
     <Compile Include="Auto\WLUSESEntity.cs" />
     <Compile Include="Auto\WLOUTSTOCKEntity.cs" />
     <Compile Include="Auto\WLCHECKITEMEntity.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="FREESHOPEntity.cs" />
     <Compile Include="WLCHECKEntity.cs" />
+    <Compile Include="WLSETTLEEntity.cs" />
     <Compile Include="WLUSESEntity.cs" />
     <Compile Include="WLOUTSTOCKEntity.cs" />
     <Compile Include="WLINSTOCKEntity.cs" />

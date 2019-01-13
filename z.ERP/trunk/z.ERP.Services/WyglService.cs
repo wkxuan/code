@@ -497,7 +497,7 @@ namespace z.ERP.Services
 
             InStock.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT A.*,B.GOODSDM,B.NAME,B.TAXINPRICE,B.USEPRICE " +
+            string sqlitem = $@"SELECT A.*,B.GOODSDM,B.NAME,A.TAXINPRICE,B.USEPRICE " +
                              " FROM  WLINSTOCKITETM A,WL_GOODS B  " +
                              " where A.GOODSID = B.GOODSID  ";
             sqlitem += (" and A.BILLID= " + Data.BILLID);
@@ -669,12 +669,14 @@ namespace z.ERP.Services
                     //更新库存表 先求总金额,再求总数量,计算新的含税采购价
                     WL_GOODSSTOCKEntity goodsstock = new WL_GOODSSTOCKEntity();
 
-                    WL_GOODSEntity wlgoods = new WL_GOODSEntity();
+                    //WL_GOODSEntity wlgoods = new WL_GOODSEntity();
 
                     goodsstock.GOODSID = items.GOODSID;
-                    wlgoods.GOODSID = items.GOODSID;
 
-                    WL_GOODSEntity goods = DbHelper.Select(wlgoods);
+
+                    // wlgoods.GOODSID = items.GOODSID;
+
+                    // WL_GOODSEntity goods = DbHelper.Select(wlgoods);
 
                     WL_GOODSSTOCKEntity goodsstockdata = DbHelper.Select(goodsstock);
                     if (goodsstockdata != null)
@@ -683,7 +685,7 @@ namespace z.ERP.Services
                             + items.QUANTITY.ToDouble()).ToString();
 
                         goodsstock.TAXAMOUNT = (goodsstockdata.TAXAMOUNT.ToDouble()
-                            + Math.Round(goods.TAXINPRICE.ToDouble() * items.QUANTITY.ToDouble(),
+                            + Math.Round(items.TAXINPRICE.ToDouble() * items.QUANTITY.ToDouble(),
                             2, MidpointRounding.AwayFromZero)).ToString();
 
                         goodsstock.TAXINPRICE =
@@ -693,9 +695,9 @@ namespace z.ERP.Services
                     else
                     {
                         goodsstock.QTY = items.QUANTITY;
-                        goodsstock.TAXINPRICE = goods.TAXINPRICE;
+                        goodsstock.TAXINPRICE = items.TAXINPRICE;
                         goodsstock.TAXAMOUNT =
-                            Math.Round(goods.TAXINPRICE.ToDouble() * items.QUANTITY.ToDouble(),
+                            Math.Round(items.TAXINPRICE.ToDouble() * items.QUANTITY.ToDouble(),
                             2, MidpointRounding.AwayFromZero).ToString();
 
                     }
@@ -1085,6 +1087,138 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
+        }
+
+
+
+        public DataGridResult GetWLSETTLE(SearchItem item)
+        {
+            string sql = $@"SELECT B.*,A.NAME ";
+            sql += @" FROM WL_MERCHANT A,WLSETTLE B WHERE B.MERCHANTID=B.MERCHANTID ";
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("NAME", a => sql += $" and A.NAME LIKE '%{a}%'");
+            item.HasKey("REPORTER_NAME", a => sql += $" and A.REPORTER_NAME LIKE '%{a}%'");
+            item.HasKey("VERIFY_NAME", a => sql += $" and A.VERIFY_NAME LIKE '%{a}%'");
+            sql += " ORDER BY  B.BILLID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+
+
+        public DataGridResult GetWlGoodsDjxx(SearchItem item)
+        {
+            string sql = $@"SELECT B.GOODSID,B.GOODSDM,B.NAME,B.STATUS,C.TAXINPRICE,C.DH,C.LX,C.QUANTITY,";
+            sql += @" A.NAME GHSNAME,A.MERCHANTID";
+            sql += @" FROM WL_MERCHANT A,WL_GOODS B,WLSTOCK_DJXX C";
+            sql += @" WHERE B.MERCHANTID=B.MERCHANTID AND B.GOODSID=C.GOODSID ";
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("GOODSDM", a => sql += $" and A.GOODSDM LIKE '%{a}%'");
+            sql += @" and not exists(SELECT 1 FROM WLSETTLEITEM M where M.DH=C.DH and M.LX=C.LX and M.GOODSID=C.GOODSID)";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<业务类型单据>("LX", "LXMC");
+            return new DataGridResult(dt, count);
+        }
+
+        public Tuple<dynamic, DataTable> GetWLSETTLEElement(WLSETTLEEntity Data)
+        {
+            if (Data.BILLID.IsEmpty())
+            {
+                throw new LogicException("请确认单号!");
+            }
+            string sql = $@"SELECT B.*,A.NAME";
+            sql += " FROM WL_MERCHANT A,WLSETTLE B WHERE B.MERCHANTID=B.MERCHANTID ";
+            sql += (" AND B.BILLID= " + Data.BILLID);
+            DataTable mian = DbHelper.ExecuteTable(sql);
+            if (!mian.IsNotNull())
+            {
+                throw new LogicException("找不到物料结算单!");
+            }
+
+            mian.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT A.*,B.GOODSDM,B.NAME " +
+                             " FROM  WLSETTLEITEM A,WL_GOODS B  " +
+                             " where A.GOODSID = B.GOODSID  ";
+            sqlitem += (" and A.BILLID= " + Data.BILLID);
+            DataTable item = DbHelper.ExecuteTable(sqlitem);
+            item.NewEnumColumns<业务类型单据>("LX", "LXMC");
+            return new Tuple<dynamic, DataTable>(
+                mian.ToOneLine(),
+                item
+            );
+        }
+
+
+        public void WLDeleteWLSETTLE(List<WLSETTLEEntity> DeleteData)
+        {
+            foreach (var mer in DeleteData)
+            {
+                WLSETTLEEntity Data = DbHelper.Select(mer);
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString())
+                {
+                    throw new LogicException("物料结算单单号(" + Data.BILLID + ")已经审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var mer in DeleteData)
+                {
+                    DbHelper.Delete(mer);
+                }
+                Tran.Commit();
+            }
+        }
+
+
+        public string SaveWLSETTLE(WLSETTLEEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.BILLID.IsEmpty())
+            {
+                SaveData.BILLID = NewINC("WLSETTLE");
+                SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            }
+            else
+            {
+                WLSETTLEEntity mer = DbHelper.Select(SaveData);
+                SaveData.VERIFY = mer.VERIFY;
+                SaveData.VERIFY_NAME = mer.VERIFY_NAME;
+                SaveData.VERIFY_TIME = mer.VERIFY_TIME;
+            }
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            v.Require(a => a.MERCHANTID);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(SaveData);
+
+                Tran.Commit();
+            }
+            return SaveData.BILLID;
+        }
+
+
+        public string ExecWLSETTLE(WLSETTLEEntity Data)
+        {
+            WLSETTLEEntity mer = DbHelper.Select(Data);
+            if (mer.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("物料结算单(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+            mer.VERIFY = employee.Id;
+            mer.VERIFY_NAME = employee.Name;
+            mer.VERIFY_TIME = DateTime.Now.ToString();
+            mer.STATUS = ((int)普通单据状态.审核).ToString();
+            DbHelper.Save(mer);
+            return mer.BILLID;
         }
     }
 }
