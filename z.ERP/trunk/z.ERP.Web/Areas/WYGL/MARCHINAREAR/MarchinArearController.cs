@@ -59,5 +59,13 @@ namespace z.ERP.Web.Areas.WYGL.MARCHINAREAR
         {
             return new UIResult(service.WyglService.GetMarchInArearElement(Data));
         }
+        public UIResult GetContract(CONTRACTEntity Data)
+        {
+            return new UIResult(service.WyglService.GetContract(Data));
+        }
+        public UIResult ShowOneMarchinArearEdit(MARCHINAREAREntity Data)
+        {
+            return new UIResult(service.WyglService.GetMarchInArearElement(Data));
+        }
     }
 }

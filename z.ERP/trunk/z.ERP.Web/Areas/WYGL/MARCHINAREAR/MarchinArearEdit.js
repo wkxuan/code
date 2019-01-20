@@ -15,8 +15,20 @@
     editDetail.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
 
     editDetail.IsValidSave = function () {
-        var d = new Date(editDetail.dataParam.MARCHINDATE);
-        editDetail.dataParam.MARCHINDATE = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+        if (!editDetail.dataParam.CONTRACTID) {
+            iview.Message.info("请确认租约!");
+            return false;
+        };
+        if (!editDetail.dataParam.MERCHANTID) {
+            iview.Message.info("请确认商户!");
+            return false;
+        };
+        if (!editDetail.dataParam.MARCHINDATE) {
+            iview.Message.info("请确认退场日期!");
+            return false;
+        };
+        //var d = new Date(editDetail.dataParam.MARCHINDATE);
+        //editDetail.dataParam.MARCHINDATE = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
         return true;
     }
 }
@@ -54,13 +66,16 @@ editDetail.popCallBack = function (data) {
             Data: { CONTRACTID: editDetail.dataParam.CONTRACTID }
         }, function (data) {
             if (data.contract.length > 0) {
-                editDetail.dataParam.MERCHANTID = data.contract[0].MERCHANTID;                
+                editDetail.dataParam.MERCHANTID = data.contract[0].MERCHANTID;
+                editDetail.dataParam.BRANCHID = data.contract[0].BRANCHID;
                 editDetail.dataParam.SHMC = data.contract[0].SHMC;
-                editDetail.dataParam.GOODS_SHOP = data.shop;
+                editDetail.dataParam.MARCHINAREARITEM = data.shop;
             }
             else {
                 editDetail.dataParam.MERCHANTID = null;
+                editDetail.dataParam.BRANCHID = null;
                 editDetail.dataParam.SHMC = null;
+                editDetail.dataParam.MARCHINAREARITEM = [];
             }
         })
     }

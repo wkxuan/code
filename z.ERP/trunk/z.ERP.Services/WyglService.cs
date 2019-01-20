@@ -1007,8 +1007,6 @@ namespace z.ERP.Services
             return SaveData.BILLID;
         }
 
-
-
         public string ExecWLCheck(WLCHECKEntity Data)
         {
             WLCHECKEntity mer = DbHelper.Select(Data);
@@ -1314,12 +1312,12 @@ namespace z.ERP.Services
 
         public object GetMarchInArearElement(MARCHINAREAREntity Data)
         {
-            string sql = $@"select * from MARCHINAREAR where 1=1 ";
+            string sql = $@"select R.*,'('||M.MERCHANTID||')'||M.NAME SHMC from MARCHINAREAR R,CONTRACT T,MERCHANT M where R.CONTRACTID =T.CONTRACTID and T.MERCHANTID=M.MERCHANTID ";
             if (!Data.BILLID.IsEmpty())
                 sql += (" and BILLID= " + Data.BILLID);
             DataTable dt = DbHelper.ExecuteTable(sql);
 
-            string sqlitem = $@"SELECT M.*,P.CODE,P.NAME " +
+            string sqlitem = $@"SELECT M.*,P.CODE,P.NAME,P.AREA_BUILD " +
                 " FROM MARCHINAREARITEM M,SHOP P " +
                 " where M.SHOPID = P.SHOPID";
             if (!Data.BILLID.IsEmpty())
@@ -1332,6 +1330,45 @@ namespace z.ERP.Services
                 item = new dynamic[] {
                    dtitem
                 }
+            };
+            return result;
+        }
+
+        public DataGridResult GetMarchinArear(SearchItem item)
+        {
+            string sql = $@"select * from MARCHINAREAR where 1=1 ";
+            item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
+            item.HasKey("REPORTER", a => sql += $" and REPORTER = '{a}'");
+            item.HasKey("VERIFY", a => sql += $" and VERIFY = '{a}'");
+            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("MARCHINDATE_START", a => sql += $" and MARCHINDATE>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
+            item.HasKey("MARCHINDATE_END", a => sql += $" and MARCHINDATE<= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
+            sql += " order by BILLID desc";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+        public object GetContract(CONTRACTEntity Data)
+        {
+            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.BRANCHID,T.STYLE,T.JXSL*100 JXSL,T.XXSL*100 XXSL from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
+            if (!Data.CONTRACTID.IsEmpty())
+                sql += (" and T.CONTRACTID= " + Data.CONTRACTID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
+
+            string sql_shop = $@"SELECT P.SHOPID,S.CODE,S.NAME,S.AREA_BUILD"
+                + " FROM CONTRACT_SHOP P,SHOP S "
+                + " WHERE  P.SHOPID = S.SHOPID ";
+            if (!Data.CONTRACTID.IsEmpty())
+                sql_shop += (" and P.CONTRACTID= " + Data.CONTRACTID);
+            sql_shop += " order by S.CODE";
+            DataTable shop = DbHelper.ExecuteTable(sql_shop);
+            var result = new
+            {
+                contract = dt,
+                shop = shop
             };
             return result;
         }
