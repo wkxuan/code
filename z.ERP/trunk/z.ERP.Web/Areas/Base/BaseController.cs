@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using z.Context;
-using z.DbHelper.DbDomain;
+using z.DBHelper.DBDomain;
 using z.DBHelper.Helper;
 using z.ERP.Services;
 using z.Extensions;
@@ -62,7 +62,7 @@ namespace z.ERP.Web.Areas.Base
             service.CommonService.CommenDelete(info);
         }
 
-        public T Select<T>(T t) where T : TableEntityBase
+        public T Select<T>(T t) where T : TableEntityBase, new()
         {
             return service.CommonService.Select(t);
         }

@@ -517,7 +517,8 @@ namespace z.ERP.Services
         }
         public Tuple<dynamic, DataTable> GetBillNoticePrint(BILL_NOTICEEntity Data)
         {
-            string sql = $@"SELECT A.*,TO_CHAR(A.VERIFY_TIME,'YYYYMM') CZNY,B.NAME BRANCHNAME,'('||D.MERCHANTID||')'||D.NAME MERCHANTNAME,B.PRINTNAME,B.BANK,B.ACCOUNT, "
+            string sql = $@"SELECT A.*,TO_CHAR(A.VERIFY_TIME,'YYYYMM') CZNY,B.NAME BRANCHNAME,'('||D.MERCHANTID||')'||D.NAME MERCHANTNAME,B.PRINTNAME,B.BANK,B.ACCOUNT,"
+                 + " substr(B.ADDRESS,1,instr(B.ADDRESS,';',-1)-1) ADDRESS1,substr(B.ADDRESS,instr(B.ADDRESS,';',-1)+1) ADDRESS2,"
                  + " (select min(S.SHOPDM) from CONTRACT_SHOPXX S where S.CONTRACTID=C.CONTRACTID) SHOPDM,"
                  + " (select min(BR.NAME) from CONTRACT_BRAND R,BRAND BR where R.BRANDID=BR.ID and R.CONTRACTID=C.CONTRACTID) BRANDNAME,"
                  + " (select sum(AREA_RENTABLE) from CONTRACT_SHOP S where S.CONTRACTID=C.CONTRACTID) AREA_RENTABLE,"

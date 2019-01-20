@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using z.ERP.WebService.Controllers;
 using z.Extensions;
+using z.WebServiceBase.Model;
 
 namespace z.ERP.WebService.Ashx
 {

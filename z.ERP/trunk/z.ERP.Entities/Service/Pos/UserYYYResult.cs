@@ -38,4 +38,13 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
     }
+
+    public class PersonInfo
+    {
+       public string usercode
+        {
+            get;
+            set;
+        }
+    }
 }

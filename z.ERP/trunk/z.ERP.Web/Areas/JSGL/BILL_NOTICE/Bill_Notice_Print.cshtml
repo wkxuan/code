@@ -215,25 +215,25 @@
             <table style="width: 90%;">
                 <tr>
                     <td style="text-align: left; width: 60%; padding-right: 10px; font-size: 11px">
-                        中国 西安市 雁塔区 小寨西路232号 MOMOPARK购物中心
-                        <br>
-                        Momopark Shopping Center,No.232,Xiaozhai West Road,Yanta District,Xi’an,China<br>
+                        @billNotice.ADDRESS1
+                        <br />
+                        @billNotice.ADDRESS2
                     </td>
                 </tr>
             </table>
         </td>
     </tr>
-            <tr>
-                <td colspan="4">
-                    <table style="width: 90%;">
-                        <tr>
-                            <td style="text-align: right; width: 60%; padding-right: 10px;" font-size: 9px">
-                                打印时间：<span>@ViewBag.CurrentDate</span>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
+    <tr>
+        <td colspan="4">
+            <table style="width: 90%;">
+                <tr>
+                    <td style="text-align: right; width: 60%; padding-right: 10px;" font-size: 9px">
+                        打印时间：<span>@ViewBag.CurrentDate</span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
         </tfoot>
     </table>
 }

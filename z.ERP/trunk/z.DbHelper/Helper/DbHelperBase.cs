@@ -35,9 +35,7 @@ namespace z.DBHelper.Helper
         /// 数据库链接
         /// </summary>
         protected DbConnection _dbConnection;
-
-        [ThreadStatic]
-        int TransactionCount = 0;
+        
         /// <summary>
         /// 事务对象
         /// </summary>
@@ -47,7 +45,6 @@ namespace z.DBHelper.Helper
         string _insert = "INSERT INTO {0}({1}) VALUES({2})";
         string _update = "UPDATE {0} SET {1} WHERE {2}";
         string _delete = "DELETE {0} WHERE {1}";
-
         string _selectcount = "SELECT COUNT(1) from {0} WHERE {1}";
         #endregion
         #region 抽象
@@ -677,27 +674,50 @@ namespace z.DBHelper.Helper
             where TInfo : TableEntityBase, new()
             where TFilter : TableEntityBase
         {
-            TInfo tempt = new TInfo();
-            List<TInfo> res = new List<TInfo>();
-            PropertyInfo[] Allprop = info.GetAllField().Where(a =>
+            return SelectList(info, typeof(TInfo), typeof(TFilter)).Select(a => (TInfo)a).ToList();
+        }
+
+        /// <summary>
+        /// 查询,按照所有不为空的条件查询
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="T">指定查询类型</param>
+        /// <returns></returns>
+        public List<TableEntityBase> SelectList(TableEntityBase info, Type T)
+        {
+            return SelectList(info, T, T);
+        }
+
+        /// <summary>
+        /// 查询,按照所有不为空的条件查询
+        /// </summary>
+        /// <param name="Filter">查询类</param>
+        /// <param name="TInfo">返回类型</param>
+        /// <param name="TFilter">查询类型</param>
+        /// <returns></returns>
+        public List<TableEntityBase> SelectList(TableEntityBase Filter, Type TInfo, Type TFilter)
+        {
+            List<TableEntityBase> res = new List<TableEntityBase>();
+            TableEntityBase refinfo = TableEntityBase.Create(TInfo);
+            PropertyInfo[] Allprop = Filter.GetAllField().Where(a =>
             {
-                return a.GetValue(info, null) != null;
+                return a.GetValue(Filter, null) != null;
             }).ToArray();
             IDbDataParameter[] dbprams = Allprop.Select(a =>
             {
-                IDbDataParameter p = GetDbDataParameter(a, info);
+                IDbDataParameter p = GetDbDataParameter(a, Filter);
                 return p;
             }).ToArray();
             RunSql(_dbCommand =>
             {
                 _dbCommand.Parameters.Clear();
                 _dbCommand.Parameters.AddRange(dbprams);
-                string tablename = tempt.GetTableName();
-                string select = string.Join(",", tempt.GetAllField().Select(a => GetFieldName(a.Name)));
+                string tablename = refinfo.GetTableName();
+                string select = string.Join(",", refinfo.GetAllField().Select(a => GetFieldName(a.Name)));
                 string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
                 _dbCommand.CommandText = string.Format(_select, select, tablename, where.IsEmpty(" 1=1 "));
                 IDataReader reader = _dbCommand.ExecuteReader();
-                res = this.ReaderToEntity(typeof(TInfo), reader).Select(a => a as TInfo).ToList();
+                res = this.ReaderToEntity(TInfo, reader).ToList();
             });
             res.ForEach(a => a = _SelectChildren(a));
             return res;
@@ -912,12 +932,7 @@ namespace z.DBHelper.Helper
             int fieldCount = reader.FieldCount;
             while (reader.Read())
             {
-                TableEntityBase entity = (TableEntityBase)Activator.CreateInstance(
-                                          t,
-                                          BindingFlags.Instance | BindingFlags.Public,
-                                          null,
-                                          new object[] { },
-                                          null);
+                TableEntityBase entity = TableEntityBase.Create(t);
                 for (int i = 0; i < fieldCount; i++)
                 {
                     entity.SetPropertyValue(reader.GetName(i), reader.GetValue(i));
@@ -1016,7 +1031,7 @@ namespace z.DBHelper.Helper
                     if (key.IsArray() && key.GetChildren().BaseOn<TableEntityBase>())
                     {
                         List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
-                        TableEntityBase edel = Activator.CreateInstance(key.GetChildren()) as TableEntityBase;
+                        TableEntityBase edel = TableEntityBase.Create(key.GetChildren());
                         attrs.ForEach(attr =>
                         {
                             edel.GetType().GetProperty(attr.ChildrenKey).SetValue(edel, info.GetPropertyValue(attr.ParentKey), null);
@@ -1071,18 +1086,13 @@ namespace z.DBHelper.Helper
                     if (key.IsArray() && key.GetChildren().BaseOn<TableEntityBase>())
                     {
                         Type t = key.GetChildren();
-                        var item = (TableEntityBase)Activator.CreateInstance(
-                                          t,
-                                          BindingFlags.Instance | BindingFlags.Public,
-                                          null,
-                                          new object[] { },
-                                          null);
+                        TableEntityBase item = TableEntityBase.Create(t);
                         List<ForeignKeyAttribute> attrs = key.GetAttributes<ForeignKeyAttribute>();
                         attrs.ForEach(a =>
                         {
                             item.SetPropertyValue(a.ChildrenKey, info.GetPropertyValue(a.ParentKey));
                         });
-                        List<TableEntityBase> res = SelectList(item);
+                        List<TableEntityBase> res = SelectList(item, t);
                         key.SetArrValue(info, res);
                     }
                     else

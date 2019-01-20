@@ -60,6 +60,29 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "商品";
             return View();
         }
+
+        public ActionResult PopWLMerchantList()
+        {
+            ViewBag.Title = "物料供应商";
+            return View();
+        }
+
+        public ActionResult PopWLGoodsList()
+        {
+            ViewBag.Title = "物料信息";
+            return View();
+        }
+
+        public ActionResult PopWLGoodsStockList()
+        {
+            ViewBag.Title = "物料库存";
+            return View();
+        }
+        public ActionResult PopWLGoodsDjxxList()
+        {
+            ViewBag.Title = "物料业务数据";
+            return View();
+        }
     }
 
 }

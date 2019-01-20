@@ -7,8 +7,8 @@
 }
 
 define.newRecord = function () {
-    define.dataParam.VOID_FLAG = "1";
-    define.dataParam.LEVEL_LAST = "1";
+    define.dataParam.VOID_FLAG = 1;
+    define.dataParam.LEVEL_LAST = 1;
 }
 
 define.IsValidXj = function () {

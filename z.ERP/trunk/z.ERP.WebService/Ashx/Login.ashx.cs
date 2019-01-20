@@ -1,7 +1,8 @@
 ﻿using System.Web;
 using z.ERP.WebService.Controllers;
-using z.ERP.WebService.Model;
 using z.Extensions;
+using z.ERP.Entities.Service.Pos;
+using z.WebServiceBase.Model;
 
 namespace z.ERP.WebService.Ashx
 {
@@ -29,7 +30,10 @@ namespace z.ERP.WebService.Ashx
                 };
             }
             else
+            {
                 res = new CommonController().Login(dto);
+            }
+                
             context.Response.ContentType = "text/plain";
             context.Response.Write(res.ToJson());
         }

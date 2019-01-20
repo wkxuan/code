@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using z.DbHelper.DbDomain;
+using z.DBHelper.DBDomain;
 
 namespace z.ERP.Entities
 {

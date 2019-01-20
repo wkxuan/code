@@ -1,8 +1,11 @@
 ﻿using System;
-using z.ERP.WebService.Model;
+using z.ERP.Entities.Service.Pos;
 using z.Extensions;
 using z.SSO;
 using z.SSO.Model;
+using z.WebServiceBase;
+using z.WebServiceBase.Controllers;
+using z.WebServiceBase.Model;
 
 namespace z.ERP.WebService.Controllers
 {
@@ -78,6 +81,20 @@ namespace z.ERP.WebService.Controllers
                         ErrorMsg = ex.Message
                     };
                 }
+            }
+            if (res.Success)
+            {
+                LoginConfigInfo lgi = new PosController().GetConfig();
+                if (lgi == null)
+                {
+                    res.UserId = null;
+                    res.UserName = null;
+                    res.SecretKey = null;
+                    res.Success = false;
+                    res.ErrorMsg = "终端未定义";
+                }
+                else
+                    res.ConfigInfo = lgi.ToJson();
             }
             Log.Info($"Login", dto, res);
             return res;

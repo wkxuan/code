@@ -17,6 +17,12 @@ namespace z.SSO.Model
             set;
         }
 
+        public string Code
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// 操作人名称
         /// </summary>

@@ -10,12 +10,12 @@ namespace z.ERP.Entities.Service.Pos
             get;
             set;
         }
-        public DateTime? saledate_begin
+        public string saledate_begin
         {
             get;
             set;
         }
-        public DateTime? saledate_end
+        public string saledate_end
         {
             get;
             set;

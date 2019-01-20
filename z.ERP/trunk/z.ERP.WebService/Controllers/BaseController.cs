@@ -7,47 +7,21 @@ using z.IOC.Simple;
 using z.LogFactory;
 using z.SSO;
 using z.SSO.Model;
+using z.WebServiceBase.Controllers;
 
 namespace z.ERP.WebService.Controllers
 {
-    public class BaseController
+    public class BaseController : ServiceBaseController
     {
-        SimpleIOC ioc;
-        public BaseController()
+        internal BaseController() : base()
         {
-            List<Type> mrs = new List<Type>();
-            ioc = new SimpleIOC(mrs);
             service = new ServiceBase();
-        }
-
-        public object Create(Type t)
-        {
-            return ioc.Create(t);
-        }
-
-        /// <summary>
-        /// 当前登录对象
-        /// </summary>
-        protected Employee employee
-        {
-            get
-            {
-                return UserApplication.GetUser<ServiceUser>();
-            }
         }
 
         protected ServiceBase service
         {
             get;
             set;
-        }
-
-        protected LogWriter Log
-        {
-            get
-            {
-                return new LogWriter("Pos");
-            }
         }
 
     }

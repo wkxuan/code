@@ -25,7 +25,7 @@ namespace z.DBHelper.DBDomain
         /// <returns></returns>
         public string GetTableName()
         {
-            return this.GetAttribute<DbTableAttribute>()?.Tablename;
+            return this.GetAttribute<DbTableAttribute>()?.Tablename ?? this.GetType().Name;
         }
 
         /// <summary>
@@ -170,6 +170,21 @@ namespace z.DBHelper.DBDomain
                    equal = false;
            });
             return equal;
+        }
+
+        /// <summary>
+        /// 获取一个类的实例
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static TableEntityBase Create(Type t)
+        {
+            return (TableEntityBase)Activator.CreateInstance(
+                                              t,
+                                              BindingFlags.Instance | BindingFlags.Public,
+                                              null,
+                                              new object[] { },
+                                              null);
         }
     }
 

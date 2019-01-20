@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -68,6 +69,7 @@
     <Compile Include="Encryption\RSAEncryption.cs" />
     <Compile Include="Exceptions\FailException.cs" />
     <Compile Include="Exceptions\zExceptionBase.cs" />
+    <Compile Include="Extensions\ArrayExtension.cs" />
     <Compile Include="Extensions\ConfigExtension.cs" />
     <Compile Include="Exceptions\DataBaseException.cs" />
     <Compile Include="Exceptions\LogicException.cs" />
@@ -79,7 +81,6 @@
     <Compile Include="Extensions\DateTimeExtension.cs" />
     <Compile Include="Extensions\AttributeExtension.cs" />
     <Compile Include="Extensions\EnumExtension.cs" />
-    <Compile Include="Extensions\ArrayExtensiont.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
     <Compile Include="Extensions\ObjectExtension.cs" />
     <Compile Include="Extensions\HttpExtension.cs" />

@@ -1,14 +1,8 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Edit;
+@using z.ERP.Web.Areas.Layout.EditDetail;
 @using z.ERP.Entities;
-@using z.ERP.Model;
-@using z.Extensions;
-@inherits EditViewBase<string>
-@section head{
-
-}
-
+@inherits EditDetailViewBase<string>
 @section baseParam{
 
     <row>
@@ -20,7 +14,8 @@
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.NAME"
+                    vModel = "dataParam.NAME",
+                    Change = "Getpym"
                 });
             }
         </i-col>
@@ -41,6 +36,7 @@
 
     <row>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             拼音码
         </i-col>
         <i-col span="6">
@@ -52,17 +48,28 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            供应商代码
+            <span class="mustElement">*</span>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelMerchant",
+                    Text = "供应商",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.MERCHANTID"
+                    vModel = "dataParam.MERCHANTNAME",
+                    Readonly = "true"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             进项税率
         </i-col>
         <i-col span="6">
@@ -78,7 +85,8 @@
 
     <row>
         <i-col span="2" class="RowTitle">
-            含税单价
+            <span class="mustElement">*</span>
+            采购单价
         </i-col>
         <i-col span="6">
             @{
@@ -88,17 +96,17 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            不含税单价
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NOTAXINPRICE"
-                });
-            }
-        </i-col>
+        @*<i-col span="2" class="RowTitle">
+                不含税单价
+            </i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new TextBoxRender()
+                    {
+                        vModel = "dataParam.NOTAXINPRICE"
+                    });
+                }
+            </i-col>*@
         <i-col span="2" class="RowTitle">
             使用价
         </i-col>
@@ -121,6 +129,23 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.DESCRIPTION"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopWLMerchant",
+                    Caption = "选择供应商",
+                    Width = "700",
+                    Src = "screenParam.srcPopWLMerchant"
                 });
             }
         </i-col>

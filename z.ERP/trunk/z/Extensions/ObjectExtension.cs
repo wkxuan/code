@@ -368,7 +368,7 @@ namespace z.Extensions
             {
                 object arr = new object();
                 arr = prop.PropertyType.InvokeMember("Set", BindingFlags.CreateInstance, null, arr, new object[] { data.Count() });
-                data.ForEach2((inx, obj) =>
+                data.ForEach2((obj, inx) =>
                 {
                     prop.PropertyType.GetMethod("SetValue", new Type[2] { typeof(object), typeof(int) }).Invoke(arr, new object[] { obj, inx });
                 });
@@ -378,7 +378,7 @@ namespace z.Extensions
             {
                 object arr = new object();
                 arr = prop.PropertyType.InvokeMember("Set", BindingFlags.CreateInstance, null, arr, new object[] { data.Count() });
-                data.ForEach2((inx, obj) =>
+                data.ForEach2((obj, inx) =>
                 {
                     prop.PropertyType.GetMethod("Add", new Type[] { prop.GetChildren() }).Invoke(arr, new object[] { obj });
                 });

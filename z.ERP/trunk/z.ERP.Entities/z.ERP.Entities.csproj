@@ -32,14 +32,25 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\WLCHECKEntity.cs" />
+    <Compile Include="Auto\WLSETTLEEntity.cs" />
+    <Compile Include="Auto\WLSETTLEITEMEntity.cs" />
+    <Compile Include="Auto\WLUSESEntity.cs" />
+    <Compile Include="Auto\WLOUTSTOCKEntity.cs" />
+    <Compile Include="Auto\WLCHECKITEMEntity.cs" />
+    <Compile Include="Auto\WLUSESITETMEntity.cs" />
+    <Compile Include="Auto\WLOUTSTOCKITETMEntity.cs" />
+    <Compile Include="Auto\WL_GOODSSTOCKEntity.cs" />
+    <Compile Include="Auto\WLINSTOCKITETMEntity.cs" />
+    <Compile Include="Auto\WLINSTOCKEntity.cs" />
     <Compile Include="Auto\COMPLAINDEPTEntity.cs" />
     <Compile Include="Auto\COMPLAINTYPEEntity.cs" />
     <Compile Include="Auto\MARCHINAREAREntity.cs" />
@@ -68,6 +79,11 @@
     <Compile Include="BILL_ADJUSTEntity .cs" />
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="FREESHOPEntity.cs" />
+    <Compile Include="WLCHECKEntity.cs" />
+    <Compile Include="WLSETTLEEntity.cs" />
+    <Compile Include="WLUSESEntity.cs" />
+    <Compile Include="WLOUTSTOCKEntity.cs" />
+    <Compile Include="WLINSTOCKEntity.cs" />
     <Compile Include="HyRclProcedure\HYK_PROC_MZK_KCCZKBGZ.cs" />
     <Compile Include="HyRclProcedure\HYK_PROC_MZK_CZK_RBB.cs" />
     <Compile Include="HyRclProcedure\WRITE_HYK_GZXFJFR.cs" />
@@ -194,6 +210,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MERCHANTEntity.cs" />
     <Compile Include="SALEBILLEntity.cs" />
+    <Compile Include="Service\Pos\LoginConfigInfo.cs" />
+    <Compile Include="Service\Pos\Define.cs" />
     <Compile Include="Service\Pos\GetDealFilter.cs" />
     <Compile Include="Service\Pos\DealResult.cs" />
     <Compile Include="Service\Pos\ClerkResultt.cs" />
@@ -217,6 +235,10 @@
     <ProjectReference Include="..\z.DbHelper\z.DbHelper.csproj">
       <Project>{DA64E4E3-1857-4B57-A6D9-ABBDB092E7E4}</Project>
       <Name>z.DbHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\z.ERP.API\z.ERP.API.csproj">
+      <Project>{91882EE9-BF22-4B43-85A4-AA9CECB65C48}</Project>
+      <Name>z.ERP.API</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

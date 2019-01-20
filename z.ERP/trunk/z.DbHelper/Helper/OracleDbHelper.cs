@@ -7,7 +7,7 @@ using System.Data.Common;
 using System.Reflection;
 using System.Text;
 using z;
-using z.DbHelper.DbDomain;
+using z.DBHelper.DBDomain;
 using z.DBHelper.Connection;
 using z.DBHelper.Info;
 using z.Exceptions;

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using z.ERP.API.PosServiceAPI;
 using z.ERP.Entities.Service.Pos;
-using z.ERP.WebService.Model;
+using z.ERP.Services;
+using z.WebServiceBase.Controllers;
+using z.WebServiceBase.Model;
 
 namespace z.ERP.WebService.Controllers
 {
@@ -9,8 +11,10 @@ namespace z.ERP.WebService.Controllers
     {
         internal PosController() : base()
         {
-
+          
         }
+
+
 
         /// <summary>
         /// 商品-单价
@@ -38,10 +42,16 @@ namespace z.ERP.WebService.Controllers
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        [ServiceAble("GetClerkShop")]
-        public UserYYYResult GetClerkShop(string usercode)
+        /// 
+        public LoginConfigInfo GetConfig()
         {
-            return service.PosService.GetClerkShop(usercode);
+            return service.PosService.GetConfig();
+        }
+
+        [ServiceAble("GetClerkShop")]
+        public UserYYYResult GetClerkShop(PersonInfo req)
+        {
+            return service.PosService.GetClerkShop(req);
         }
 
         [ServiceAble("GetPayList")]
@@ -68,66 +78,23 @@ namespace z.ERP.WebService.Controllers
             return service.PosService.GetSaleSummary(filter);
         }
 
-        [ServiceAble("GetVipCard")]
-        public VipCard GetVipCard(GetVipCardRequest Request)
+        [ServiceAble("GetCardPayable")]
+        public GetCardPayableResult GetCardPayable(ReqGetCardPayable reqMth)
         {
-            return service.PosService.GetVipCard(Request);
+            return service.PosService.GetCardPayable(reqMth);
         }
 
-        [ServiceAble("GetArticleVipDisc")]
-        public ArticleVipDisc[] GetArticleVipDisc(GetArticleVipDiscRequest request)
+        [ServiceAble("CalcAccountsPayable")]
+        public CalcAccountsPayableResult CalcAccountsPayable(ReqGetGoods reqMth)
         {
-            return service.PosService.GetArticleVipDisc(request);
+            return service.PosService.CalcAccountsPayable(reqMth);
         }
 
-        [ServiceAble("GetVipCoupon")]
-        public Coupon[] GetVipCoupon(GetVipCouponRequest request)
+        [ServiceAble("ConfirmDeal")]
+        public ConfirmDealResult ConfirmDeal(ReqConfirmDeal ReqConfirm)
         {
-            return service.PosService.GetVipCoupon(request);
+            return service.PosService.ConfirmDeal(ReqConfirm);
         }
-
-        [ServiceAble("GetVipCouponToPay")]
-        public bool GetVipCouponToPay(GetVipCouponToPayRequest request)
-        {
-            return service.PosService.GetVipCouponToPay(request);
-        }
-
-        [ServiceAble("PrepareTransCouponPayment")]
-        public int PrepareTransCouponPayment(PrepareTransCouponPaymentRequest request)
-        {
-            return service.PosService.PrepareTransCouponPayment(request);
-        }
-
-        [ServiceAble("PrepareTransCouponPayment2")]
-        public int PrepareTransCouponPayment2(PrepareTransCouponPayment2Request request)
-        {
-            return service.PosService.PrepareTransCouponPayment2(request);
-        }
-
-        [ServiceAble("ConfirmTransCouponPayment")]
-        public bool ConfirmTransCouponPayment(ConfirmTransCouponPaymentRequest request)
-        {
-            return service.PosService.ConfirmTransCouponPayment(request);
-        }
-
-        [ServiceAble("CancelTransCouponPayment")]
-        public bool CancelTransCouponPayment(CancelTransCouponPaymentRequest request)
-        {
-            return service.PosService.CancelTransCouponPayment(request);
-        }
-
-        [ServiceAble("GetCashCard")]
-        public CashCard GetCashCard(GetCashCardRequest Request)
-        {
-            return service.PosService.GetCashCard(Request);
-        }
-
-        [ServiceAble("PrepareTransCashCardPayment")]
-        public int PrepareTransCashCardPayment(PrepareTransCashCardPaymentRequest Request)
-        {
-            return service.PosService.PrepareTransCashCardPayment(Request);
-        }
-
 
     }
 }

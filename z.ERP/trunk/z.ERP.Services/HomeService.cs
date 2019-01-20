@@ -163,7 +163,7 @@ namespace z.ERP.Services
                 throw new Exception($"用户{code}不存在或已停用");
             if (salt(e.USERID, password) == e.PASSWORD)
             {
-                return e.ToObj(a => new User() { Id = e.USERID, Name = e.USERNAME });
+                return e.ToObj(a => new User() { Id = e.USERID,Code=e.USERCODE, Name = e.USERNAME });
             }
             else
             {

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/z.WebServiceBase.Model" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/z.WebServiceBase.Model" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="RequestDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Context" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SecretKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServiceName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestDTO" nillable="true" type="tns:RequestDTO" />
+  <xs:complexType name="ResponseDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Context" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMsg" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResponseDTO" nillable="true" type="tns:ResponseDTO" />
+  <xs:complexType name="LoginRequestDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PlatformId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserPassword" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LoginRequestDTO" nillable="true" type="tns:LoginRequestDTO" />
+  <xs:complexType name="LoginResponseDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ConfigInfo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMsg" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SecretKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
+      <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LoginResponseDTO" nillable="true" type="tns:LoginResponseDTO" />
+</xs:schema>

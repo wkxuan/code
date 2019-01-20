@@ -135,7 +135,7 @@ namespace z.SuperLambda
                     }
 
                     // 解析参数
-                    ResolveParameters(bracketContent).ForEach((i, p) =>
+                    ResolveParameters(bracketContent).ForEach2((p, i) =>
                     {
                         if (p.ExistType)
                             expParams.Add(Expression.Parameter(typeParser.GetType(p.Type), p.Variable));

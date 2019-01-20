@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using z.ERP.WebService.Model;
+using z.WebServiceBase.Model;
 
 namespace z.ERP.WebService.Wcf
 {

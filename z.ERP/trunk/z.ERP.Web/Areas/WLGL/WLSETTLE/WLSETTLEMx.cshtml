@@ -1,0 +1,97 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Detail;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits DetailLayout<dynamic>
+
+@section Title{
+    @Html.Raw("详情");
+}
+@{
+    var data = ViewBag.data;
+}
+@section btn{
+    @{
+        if (@data.STATUS == "1")
+        {
+            RenderControl(new ButtonRender()
+            {
+                Text = "审核",
+                Click = "exec",
+            });
+        }
+    }
+}
+
+@section content{
+    <row>
+        <i-col span="2" class="RowText">供货商代码</i-col>
+        <i-col span="4">
+            <i-input v-model="MERCHANTID" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">供货商名称</i-col>
+        <i-col span="4">
+            <i-input v-model="NAME" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="4">
+            <i-input v-model="STATUSMC" readonly="true"></i-input>
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="24">
+            <i-table height="200" size="small" :border="true"
+                     :columns="colDef" :data="WLSETTLEITEM"></i-table>
+        </i-col>
+    </row>
+}
+
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled: true,
+                MERCHANTID: "@data.MERCHANTID",
+                NAME: "@data.NAME",
+                STATUSMC: "@data.STATUSMC",
+                WLSETTLEITEM:[],
+                colDef: [
+                    { title: "业务单单号", key: "DH", width: 100 },
+                    { title: "业务类型", key: "LXMC", width: 100 },
+                    { title: "物料编号", key: "GOODSDM", width: 100 },
+                    { title: "物料名称", key: "NAME", width: 200 },
+                    { title: "含税采购价", key: "TAXINPRICE", width: 100 },
+                    { title: "数量", key: "QUANTITY", width: 100 }
+                ],
+            },
+            mounted:function(){
+                var _self = this;
+                _.Ajax('SearchWLSETTLE', {
+                    Data: { BILLID: @data.BILLID }
+                }, function (data) {
+                    _self.WLSETTLEITEM = data.ITEM;
+                });
+            },
+            methods: {
+                exec: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: { BILLID: "@data.BILLID" },
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                }
+            }
+        });
+    </script>
+}
