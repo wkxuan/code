@@ -64,7 +64,7 @@ namespace z.ERP.Web.Areas.WYGL.ENERGYREGISTER
         }
         public void ExecData(ENERGY_REGISTEREntity Data)
         {
-            service.WyglService.ExecData(Data);
+            service.WyglService.ExecMarchInArearData(Data);
         }
     }
 }

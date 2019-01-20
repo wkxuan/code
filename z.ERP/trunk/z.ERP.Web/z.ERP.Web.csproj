@@ -228,6 +228,7 @@
     <Compile Include="Areas\WYGL\COMPLAINDEPT\ComplainDeptController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINTYPE\ComplainTypeController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
+    <Compile Include="Areas\WYGL\MARCHINAREAR\MarchinArearController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFilesController.cs" />
     <Compile Include="Areas\XTGL\FLOOR\FloorController.cs" />
@@ -332,6 +333,8 @@
     <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.js" />
+    <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearEdit.js" />
+    <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearList.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\GOODS_KIND\Goods_Kind.js" />
     <Content Include="Areas\XTGL\CATEGORY\Category.js" />
@@ -554,6 +557,9 @@
     <Content Include="Areas\WLGL\WlGoods\WlGoodsMx.cshtml" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.cshtml" />
     <Content Include="Areas\Report\ContractInfo\ContractInfo.cshtml" />
+    <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearList.cshtml" />
+    <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearEdit.cshtml" />
+    <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearDetail.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

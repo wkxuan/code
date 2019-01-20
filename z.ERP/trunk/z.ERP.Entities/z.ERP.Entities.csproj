@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Auto\COMPLAINDEPTEntity.cs" />
     <Compile Include="Auto\COMPLAINTYPEEntity.cs" />
+    <Compile Include="Auto\MARCHINAREAREntity.cs" />
+    <Compile Include="Auto\MARCHINAREARITEMEntity.cs" />
     <Compile Include="Auto\WL_GOODSEntity.cs" />
     <Compile Include="Auto\WL_MERCHANTEntity.cs" />
     <Compile Include="Auto\VOUCHEREntity.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="HyRclProcedure\HYK_PROC_UPDATECRMJZRQ.cs" />
     <Compile Include="HyRclProcedure\HYK_YHQ_QD_CXDJ.cs" />
     <Compile Include="HyRclProcedure\HYXF_QD_HYCXDJ.cs" />
+    <Compile Include="MARCHINAREAREntity.cs" />
     <Compile Include="MENUTREEModule.cs" />
     <Compile Include="Procedures\EXEC_ASSET_SPILT.cs" />
     <Compile Include="Procedures\EXEC_ASSET_CHANGE.cs" />

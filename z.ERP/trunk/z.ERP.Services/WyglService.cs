@@ -414,5 +414,121 @@ namespace z.ERP.Services
             }
             return mer.GOODSDM;
         }
+
+        public Tuple<dynamic, DataTable> GetMarchinArearDetail(MARCHINAREAREntity Data)
+        {
+            if (Data.BILLID.IsEmpty())
+            {
+                throw new LogicException("请确认记录编号!");
+            }
+            string sql = $@"select * from MARCHINAREAR where 1=1 ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT M.*,P.CODE,P.NAME,P.AREA_BUILD " +
+                " FROM MARCHINAREARITEM M,SHOP P " +
+                " where  M.SHOPID = P.SHOPID";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and BILLID= " + Data.BILLID);
+            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
+
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtitem);
+        }
+        public string SaveMarchInArear(MARCHINAREAREntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+
+            SaveData.MARCHINDATE.ToDateTime();
+            if (SaveData.BILLID.IsEmpty())
+            {
+                SaveData.BILLID = NewINC("MARCHINAREAR");
+            }
+
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.CONTRACTID);
+            v.Require(a => a.MARCHINDATE);            
+
+            using (var tran = DbHelper.BeginTransaction())
+            {
+                SaveData.MARCHINAREARITEM.ForEach(sdb =>
+                {                    
+                    GetVerify(sdb).Require(a => a.SHOPID);
+                });
+                v.Verify();
+                DbHelper.Save(SaveData);
+
+                tran.Commit();
+            }
+            return SaveData.BILLID;
+        }
+
+        public void DeleteMarchInArear(List<MARCHINAREAREntity> DeleteData)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var mer in DeleteData)
+                {
+                    var v = GetVerify(mer);
+                    //校验
+                    DbHelper.Delete(mer);
+                }
+                Tran.Commit();
+            }
+        }
+
+        public string ExecMarchInArearData(MARCHINAREAREntity Data)
+        {
+            MARCHINAREAREntity brand = DbHelper.Select(Data);
+            if (brand.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                brand.VERIFY = employee.Id;
+                brand.VERIFY_NAME = employee.Name;
+                brand.VERIFY_TIME = DateTime.Now.ToString();
+                brand.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(brand);
+                Notes(nameof(MARCHINAREAREntity), brand.BILLID, $"已审核");
+                Tran.Commit();
+            }
+            return brand.BILLID;
+        }
+
+        public object GetMarchInArearElement(MARCHINAREAREntity Data)
+        {
+            string sql = $@"select * from MARCHINAREAR where 1=1 ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            string sqlitem = $@"SELECT M.*,P.CODE,P.NAME " +
+                " FROM MARCHINAREARITEM M,SHOP P " +
+                " where M.SHOPID = P.SHOPID";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and BILLID= " + Data.BILLID);
+            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
+
+            var result = new
+            {
+                main = dt,
+                item = new dynamic[] {
+                   dtitem
+                }
+            };
+            return result;
+        }
+
     }
 }
