@@ -50,12 +50,12 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle">进场日期</i-col>
+        <i-col span="2" class="RowTitle">开业日期</i-col>
         <i-col span="4">
-            <i-input v-model="MARCHINDATE" :readonly="true"></i-input>
+            <i-input v-model="OPENDATE" :readonly="true"></i-input>
         </i-col>
         <i-col span="2" class="RowTitle">描述</i-col>
-        <i-col span="14">
+        <i-col span="10">
             <i-input v-model="DESCRIPTION" :readonly="true"></i-input>
         </i-col>
     </row>
@@ -100,7 +100,7 @@
                 disabled:true,
                 BILLID:"@regist.BILLID",
                 CONTRACTID:"@regist.CONTRACTID",
-                MARCHINDATE:"@regist.MARCHINDATE",
+                OPENDATE:"@regist.OPENDATE",
                 SHMC:"("+"@regist.MERCHANTID"+")"+"@regist.NAME",
                 DESCRIPTION:"@regist.DESCRIPTION",
                 REPORTER_NAME:"@regist.REPORTER_NAME",
@@ -117,7 +117,7 @@
             },
             mounted:function(){
                 var _self = this;
-                _.Ajax('ShowOneMarchinArearEdit', {
+                _.Ajax('ShowOneOpenBusinessEdit', {
                     Data: { BILLID: @regist.BILLID }
                 }, function (data) {
                     _self.MARCHINAREARITEM = data.item[0];

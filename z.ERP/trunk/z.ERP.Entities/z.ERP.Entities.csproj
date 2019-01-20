@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\OPENBUSINESSEntity.cs" />
+    <Compile Include="Auto\OPENBUSINESSITEMEntity.cs" />
     <Compile Include="Auto\WLCHECKEntity.cs" />
     <Compile Include="Auto\WLSETTLEEntity.cs" />
     <Compile Include="Auto\WLSETTLEITEMEntity.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="BILL_ADJUSTEntity .cs" />
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="FREESHOPEntity.cs" />
+    <Compile Include="OPENBUSINESSEntity.cs" />
     <Compile Include="WLCHECKEntity.cs" />
     <Compile Include="WLSETTLEEntity.cs" />
     <Compile Include="WLUSESEntity.cs" />
