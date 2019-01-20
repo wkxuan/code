@@ -8,6 +8,7 @@ using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Attributes;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.WYGL.MARCHINAREAR
 {
