@@ -3,28 +3,41 @@ using z.DBHelper.DBDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("WLINSTOCKITETM", "物料购进单子表WLINSTOCKITETM")]
-    public partial class WLINSTOCKITETMEntity : TableEntityBase
+    [DbTable("WLSETTLEITEM", "物料结算单子表WLSETTLEITEM")]
+    public partial class WLSETTLEITEMEntity : TableEntityBase
     {
-        public WLINSTOCKITETMEntity()
+        public WLSETTLEITEMEntity()
         {
         }
 
-        public WLINSTOCKITETMEntity(string billid, string goodsid)
+        public WLSETTLEITEMEntity(string billid, string goodsid, string dh, string lx)
         {
             BILLID = billid;
             GOODSID = goodsid;
+            DH = dh;
+            LX = lx;
         }
         [PrimaryKey]
         public string BILLID
         {
             get; set;
         }
-        /// <summary>
-        /// 收款方式
-        /// <summary>
+
         [PrimaryKey]
         public string GOODSID
+        {
+            get; set;
+        }
+
+
+        [PrimaryKey]
+        public string DH
+        {
+            get; set;
+        }
+
+        [PrimaryKey]
+        public string LX
         {
             get; set;
         }

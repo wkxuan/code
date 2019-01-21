@@ -1,0 +1,108 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Entities;
+@using z.ERP.Model;
+@using z.Extensions;
+@inherits EditDetailViewBase<string>
+
+
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelContract",
+                    Text = "租约",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACTID",
+                    Enter = "htChange"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            商户
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERCHANTID",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.SHMC",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
+            开业日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.OPENDATE",
+                    Id = "ckdate",
+                });
+
+            }
+        </i-col>        
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            描述
+        </i-col>
+        <i-col span="14">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION",
+                    Id = "tdbz",
+                });
+            }
+        </i-col>
+    </row>
+
+}
+
+@section detailParam{
+    <row>
+        <i-table size="small" :border="true"
+                 :columns="screenParam.colDef" :data="dataParam.OPENBUSINESSITEM"></i-table>
+    </row>
+}
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopContract",
+                    Caption = "选择租约",
+                    Width = "900",
+                    Src = "screenParam.srcPopContract"
+                });
+            }
+        </i-col>
+    </row>
+}
