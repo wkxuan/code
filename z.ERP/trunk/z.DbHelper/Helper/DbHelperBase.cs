@@ -35,7 +35,7 @@ namespace z.DBHelper.Helper
         /// 数据库链接
         /// </summary>
         protected DbConnection _dbConnection;
-        
+
         /// <summary>
         /// 事务对象
         /// </summary>
@@ -883,12 +883,19 @@ namespace z.DBHelper.Helper
             List<T> res = new List<T>();
             while (reader.Read())
             {
-                T t = new T();
-                reader.FieldCount.ForEach(i =>
+                if (typeof(T).IsValueType || typeof(T).BaseOn<string>())
                 {
-                    t.SetPropertyValue(reader.GetName(i), reader.GetValue(i));
-                });
-                res.Add(t);
+                    res.Add((T)reader.GetValue(0));
+                }
+                else
+                {
+                    T t = new T();
+                    reader.FieldCount.ForEach(i =>
+                    {
+                        t.SetPropertyValue(reader.GetName(i), reader.GetValue(i));
+                    });
+                    res.Add(t);
+                }
             }
             reader.Close();
             return res;

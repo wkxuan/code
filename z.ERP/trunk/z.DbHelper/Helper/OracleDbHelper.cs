@@ -138,6 +138,10 @@ namespace z.DBHelper.Helper
 
         protected override DbParameter GetParameter(string name, object value, DbType? Type = null)
         {
+            if (value != null && value.GetType().IsEnum)
+            {
+                value = value.GetHashCode();
+            }
             OracleParameter resp;
             if (!Type.HasValue)
             {
