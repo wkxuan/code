@@ -87,7 +87,7 @@
     closeTab = function () {
         $('.menuTabs').find('.menuTab i').click();
     }
-    
+
     $(window).load(function () {
         window.setTimeout(function () {
             $('#ajax-loader').fadeOut();
@@ -107,8 +107,8 @@ function GetLoadNav(systemid) {
             var _html = "";
             $.each(menus.MENU, function (i, row) {
                 _html += '<li data-type="m">';
-                _html += '<a data-id="' + row.ID + '" href="#" class="dropdown-toggle"><i class="' + row.ICON + '"></i>';
-                _html += '<span>' + row.NAME + '</span><i class="fa fa-angle-right drop-icon"></i></a>'; 
+                _html += '<a data-id="' + row.ID + '" href="#" class="dropdown-toggle" style="height:34px"><i class="' + row.ICON + '"></i>';
+                _html += '<span>' + row.NAME + '</span><i class="fa fa-angle-right drop-icon"></i></a>';
                 var childMenus = row.MENUList;
                 if (childMenus && childMenus.length > 0) {
                     _html += '<ul class="submenu">';
