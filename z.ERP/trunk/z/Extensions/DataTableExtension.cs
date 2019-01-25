@@ -84,7 +84,7 @@ namespace z.Extensions
                 }
             }
         }
-        
+
         /// <summary>
         /// 转化表格为对象数组
         /// </summary>
@@ -108,7 +108,7 @@ namespace z.Extensions
         /// <param name="ValueKey"></param>
         /// <param name="IsSelect"></param>
         /// <returns></returns>
-        public static List<SelectItem> ToSelectItem(this DataTable dt, string IdKey, string ValueKey, Func<DataRow, bool> IsSelect = null)
+        public static List<SelectItem> ToSelectItem(this DataTable dt, string IdKey, string ValueKey, Func<DataRow, bool> IsSelect = null, Func<DataRow, string> MoreObj = null)
         {
             if (!dt.Columns.Contains(IdKey))
             {
@@ -126,11 +126,17 @@ namespace z.Extensions
                 {
                     isselect = IsSelect(dr);
                 }
+                string obj = null;
+                if (MoreObj != null)
+                {
+                    obj = MoreObj(dr);
+                }
                 res.Add(new SelectItem()
                 {
                     IsSelected = isselect,
                     Key = dr[IdKey].ToString(),
-                    Value = dr[ValueKey].ToString()
+                    Value = dr[ValueKey].ToString(),
+                    Obj = obj
                 });
             }
             return res;

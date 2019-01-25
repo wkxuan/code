@@ -29,6 +29,12 @@ namespace z.Results
             set;
         }
 
+        public string Obj
+        {
+            get;
+            set;
+        }
+
         public bool IsSelected
         {
             get;

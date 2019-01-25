@@ -1007,8 +1007,6 @@ namespace z.ERP.Services
             return SaveData.BILLID;
         }
 
-
-
         public string ExecWLCheck(WLCHECKEntity Data)
         {
             WLCHECKEntity mer = DbHelper.Select(Data);
@@ -1219,6 +1217,290 @@ namespace z.ERP.Services
             mer.STATUS = ((int)普通单据状态.审核).ToString();
             DbHelper.Save(mer);
             return mer.BILLID;
+        }
+
+        public Tuple<dynamic, DataTable> GetMarchinArearDetail(MARCHINAREAREntity Data)
+        {
+            if (Data.BILLID.IsEmpty())
+            {
+                throw new LogicException("请确认记录编号!");
+            }
+            string sql = $@"select R.*,M.MERCHANTID,M.NAME from MARCHINAREAR R,CONTRACT T,MERCHANT M where R.CONTRACTID =T.CONTRACTID and T.MERCHANTID=M.MERCHANTID";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT M.*,P.CODE,P.NAME,P.AREA_BUILD " +
+                " FROM MARCHINAREARITEM M,SHOP P " +
+                " where  M.SHOPID = P.SHOPID";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and BILLID= " + Data.BILLID);
+            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
+
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtitem);
+        }
+        public string SaveMarchInArear(MARCHINAREAREntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+
+            SaveData.MARCHINDATE.ToDateTime();
+            if (SaveData.BILLID.IsEmpty())
+            {
+                SaveData.BILLID = NewINC("MARCHINAREAR");
+            }
+
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.CONTRACTID);
+            v.Require(a => a.MARCHINDATE);            
+
+            using (var tran = DbHelper.BeginTransaction())
+            {
+                SaveData.MARCHINAREARITEM.ForEach(sdb =>
+                {                    
+                    GetVerify(sdb).Require(a => a.SHOPID);
+                });
+                v.Verify();
+                DbHelper.Save(SaveData);
+
+                tran.Commit();
+            }
+            return SaveData.BILLID;
+        }
+
+        public void DeleteMarchInArear(List<MARCHINAREAREntity> DeleteData)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var mer in DeleteData)
+                {
+                    var v = GetVerify(mer);
+                    //校验
+                    DbHelper.Delete(mer);
+                }
+                Tran.Commit();
+            }
+        }
+
+        public string ExecMarchInArearData(MARCHINAREAREntity Data)
+        {
+            MARCHINAREAREntity brand = DbHelper.Select(Data);
+            if (brand.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                brand.VERIFY = employee.Id;
+                brand.VERIFY_NAME = employee.Name;
+                brand.VERIFY_TIME = DateTime.Now.ToString();
+                brand.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(brand);
+                Notes(nameof(MARCHINAREAREntity), brand.BILLID, $"已审核");
+                Tran.Commit();
+            }
+            return brand.BILLID;
+        }
+
+        public object GetMarchInArearElement(MARCHINAREAREntity Data)
+        {
+            string sql = $@"select R.*,M.MERCHANTID,M.NAME from MARCHINAREAR R,CONTRACT T,MERCHANT M where R.CONTRACTID =T.CONTRACTID and T.MERCHANTID=M.MERCHANTID ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            string sqlitem = $@"SELECT M.*,P.CODE,P.NAME,P.AREA_BUILD " +
+                " FROM MARCHINAREARITEM M,SHOP P " +
+                " where M.SHOPID = P.SHOPID";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and BILLID= " + Data.BILLID);
+            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
+
+            var result = new
+            {
+                main = dt,
+                item = new dynamic[] {
+                   dtitem
+                }
+            };
+            return result;
+        }
+
+        public DataGridResult GetMarchinArear(SearchItem item)
+        {
+            string sql = $@"select * from MARCHINAREAR where 1=1 ";
+            item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
+            item.HasKey("REPORTER", a => sql += $" and REPORTER = '{a}'");
+            item.HasKey("VERIFY", a => sql += $" and VERIFY = '{a}'");
+            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("MARCHINDATE_START", a => sql += $" and MARCHINDATE>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
+            item.HasKey("MARCHINDATE_END", a => sql += $" and MARCHINDATE<= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
+            sql += " order by BILLID desc";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+        public object GetContract(CONTRACTEntity Data)
+        {
+            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.BRANCHID,T.STYLE,T.JXSL*100 JXSL,T.XXSL*100 XXSL from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
+            if (!Data.CONTRACTID.IsEmpty())
+                sql += (" and T.CONTRACTID= " + Data.CONTRACTID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
+
+            string sql_shop = $@"SELECT P.SHOPID,S.CODE,S.NAME,S.AREA_BUILD"
+                + " FROM CONTRACT_SHOP P,SHOP S "
+                + " WHERE  P.SHOPID = S.SHOPID ";
+            if (!Data.CONTRACTID.IsEmpty())
+                sql_shop += (" and P.CONTRACTID= " + Data.CONTRACTID);
+            sql_shop += " order by S.CODE";
+            DataTable shop = DbHelper.ExecuteTable(sql_shop);
+            var result = new
+            {
+                contract = dt,
+                shop = shop
+            };
+            return result;
+        }
+
+        public Tuple<dynamic, DataTable> GetOpenBusinessDetail(OPENBUSINESSEntity Data)
+        {
+            if (Data.BILLID.IsEmpty())
+            {
+                throw new LogicException("请确认记录编号!");
+            }
+            string sql = $@"select R.*,M.MERCHANTID,M.NAME from OPENBUSINESS R,CONTRACT T,MERCHANT M where R.CONTRACTID =T.CONTRACTID and T.MERCHANTID=M.MERCHANTID  ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT M.*,P.CODE,P.NAME,P.AREA_BUILD " +
+                " FROM OPENBUSINESSITEM M,SHOP P " +
+                " where  M.SHOPID = P.SHOPID";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and BILLID= " + Data.BILLID);
+            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
+
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtitem);
+        }
+        public string SaveOpenBusiness(OPENBUSINESSEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+
+            SaveData.OPENDATE.ToDateTime();
+            if (SaveData.BILLID.IsEmpty())
+            {
+                SaveData.BILLID = NewINC("OPENBUSINESS");
+            }
+
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.CONTRACTID);
+            v.Require(a => a.OPENDATE);
+
+            using (var tran = DbHelper.BeginTransaction())
+            {
+                SaveData.OPENBUSINESSITEM.ForEach(sdb =>
+                {
+                    GetVerify(sdb).Require(a => a.SHOPID);
+                });
+                v.Verify();
+                DbHelper.Save(SaveData);
+                tran.Commit();
+            }
+            return SaveData.BILLID;
+        }
+
+        public void DeleteOpenBusiness(List<OPENBUSINESSEntity> DeleteData)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var mer in DeleteData)
+                {
+                    var v = GetVerify(mer);
+                    //校验
+                    DbHelper.Delete(mer);
+                }
+                Tran.Commit();
+            }
+        }
+
+        public string ExecOpenBusinessData(OPENBUSINESSEntity Data)
+        {
+            OPENBUSINESSEntity brand = DbHelper.Select(Data);
+            if (brand.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                brand.VERIFY = employee.Id;
+                brand.VERIFY_NAME = employee.Name;
+                brand.VERIFY_TIME = DateTime.Now.ToString();
+                brand.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(brand);
+                Notes(nameof(OPENBUSINESSEntity), brand.BILLID, $"已审核");
+                Tran.Commit();
+            }
+            return brand.BILLID;
+        }
+
+        public object GetOpenBusinessElement(OPENBUSINESSEntity Data)
+        {
+            string sql = $@"select R.*,M.MERCHANTID,M.NAME SHMC from OPENBUSINESS R,CONTRACT T,MERCHANT M where R.CONTRACTID =T.CONTRACTID and T.MERCHANTID=M.MERCHANTID ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            string sqlitem = $@"SELECT M.*,P.CODE,P.NAME,P.AREA_BUILD " +
+                " FROM OPENBUSINESSITEM M,SHOP P " +
+                " where M.SHOPID = P.SHOPID";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and BILLID= " + Data.BILLID);
+            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
+
+            var result = new
+            {
+                main = dt,
+                item = new dynamic[] {
+                   dtitem
+                }
+            };
+            return result;
+        }
+
+        public DataGridResult GetOpenBusiness(SearchItem item)
+        {
+            string sql = $@"select * from OPENBUSINESS where 1=1 ";
+            item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
+            item.HasKey("REPORTER", a => sql += $" and REPORTER = '{a}'");
+            item.HasKey("VERIFY", a => sql += $" and VERIFY = '{a}'");
+            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("OPENDATE_START", a => sql += $" and OPENDATE>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
+            item.HasKey("OPENDATE_END", a => sql += $" and OPENDATE<= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
+            sql += " order by BILLID desc";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
         }
     }
 }

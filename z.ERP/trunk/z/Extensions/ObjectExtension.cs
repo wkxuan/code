@@ -331,11 +331,11 @@ namespace z.Extensions
                 if (value == DBNull.Value)
                     p.SetValue(t, default(T), null);
                 else
-                    p.SetValue(t, value, null);
+                    p.SetValue(t, value.ToString().ToInt(), null);
             }
             else
             {
-                p.SetValue(t, Convert.ChangeType(value, p.PropertyType), null);
+                p.SetValue(t, value.ChangeType(p.PropertyType), null);
             }
             return;
             //下面的报错
@@ -398,6 +398,26 @@ namespace z.Extensions
         public static bool IsArray(this PropertyInfo pinfo)
         {
             return pinfo.PropertyType.IsGenericType || pinfo.PropertyType.IsArray;
+        }
+
+        /// <summary>
+        /// 检测一个类是空的
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static bool IsNullValue(this object obj)
+        {
+            return obj == null || obj == DBNull.Value;
+        }
+
+        /// <summary>
+        /// 获取一个类的默认值
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static object GetDefaultValue(this Type type)
+        {
+            return type.IsValueType ? Activator.CreateInstance(type) : null;
         }
 
         /// <summary>
@@ -480,6 +500,18 @@ namespace z.Extensions
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
+        /// <summary>
+        /// 改变类型
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static object ChangeType(this object obj, Type type)
+        {
+            if (obj.IsNullValue())
+                return type.GetDefaultValue();
+            return Convert.ChangeType(obj, type);
+        }
         #endregion
         #region 程序集
         /// <summary>
