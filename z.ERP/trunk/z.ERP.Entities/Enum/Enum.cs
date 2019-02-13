@@ -45,7 +45,8 @@ namespace z.ERP.Entities.Enum
     public enum 核算方式
     {
         租赁合同 = 1,
-        联营合同 = 2
+        联营合同 = 2,
+        多经点位 = 3
     }
 
     public enum 合同类型

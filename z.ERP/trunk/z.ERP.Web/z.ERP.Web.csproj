@@ -163,6 +163,7 @@
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
+    <Compile Include="Areas\HTGL\DJDW\DjdwController.cs" />
     <Compile Include="Areas\HTGL\FREESHOP\FreeShopController.cs" />
     <Compile Include="Areas\HTGL\LYHT\LYHTController.cs" />
     <Compile Include="Areas\HTGL\LYHT_BG\LyHt_BgController.cs" />
@@ -273,6 +274,8 @@
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.js" />
+    <Content Include="Areas\HTGL\DJDW\DjdwEdit.js" />
+    <Content Include="Areas\HTGL\DJDW\DjdwList.js" />
     <Content Include="Areas\HTGL\FREESHOP\FreeShopEdit.js" />
     <Content Include="Areas\HTGL\FREESHOP\FreeShopList.js" />
     <Content Include="Areas\HTGL\LYHT\HtEdit.js" />
@@ -615,6 +618,9 @@
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessList.cshtml" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessEdit.cshtml" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessDetail.cshtml" />
+    <Content Include="Areas\HTGL\DJDW\DjdwDetail.cshtml" />
+    <Content Include="Areas\HTGL\DJDW\DjdwEdit.cshtml" />
+    <Content Include="Areas\HTGL\DJDW\DjdwList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

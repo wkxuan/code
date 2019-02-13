@@ -1,0 +1,223 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Edit;
+@using z.ERP.Entities;
+@using z.ERP.Model;
+@using z.Extensions;
+@inherits EditViewBase<string>
+@section head{
+    @InitFiles(new string[] {
+    "/Areas/Pop/PopMerchant.js",
+    "/Areas/Pop/PopShop.js",
+    "/Areas/Pop/PopFeeSubject.js",
+});
+}
+
+@section baseParam{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopMerchant",
+                    Caption = "商户查询",
+                    Width = "760",
+                    PopLx = "Merchant",
+                    CallBack = "MerchantBack",
+                    ParentObj = "screenParam.ParentMerchant"
+                });
+            }
+        </i-col>
+
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopShop",
+                    Caption = "商铺查询",
+                    Width = "760",
+                    PopLx = "Shop",
+                    CallBack = "ShopBack",
+                    ParentObj = "screenParam.ParentShop"
+                });
+            }
+        </i-col>
+
+        <i-col>
+            @{
+                RenderControl(new PopRender()
+                {
+                    vModel = "screenParam.PopFeeSubject",
+                    Caption = "费用项目查询",
+                    Width = "760",
+                    PopLx = "FeeSubject",
+                    CallBack = "FeeSubjectBack",
+                    ParentObj = "screenParam.ParentFeeSubject"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "Merchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERCHANTID"
+                });
+            }
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERNAME",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new EnumDropDownListRender<合同状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            开始日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.CONT_START",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            结束日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.CONT_END",
+                });
+            }
+        </i-col>
+
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            其他条款
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION",
+                    type = "textarea",
+                    rows = "3"
+                });
+            }
+        </i-col>
+    </row>
+}
+@section detailParam{
+    <row>
+        <i-col span="12">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchColSHOP",
+                    Text = "选择资产",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addColSHOP",
+                    Text = "添加一行资产",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delColSHOP",
+                    Text = "删除资产",
+                    Enable = true,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }
+            <i-table height="300" size="small" :border="true"
+                     :columns="screenParam.colDefSHOP" :data="dataParam.CONTRACT_SHOP" ref="selectShop"></i-table>
+        </i-col>
+
+        <i-col span="12">
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchCost",
+                    Text = "选择费用项目",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addColCost",
+                    Text = "添加一行",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delColCost",
+                    Text = "删除",
+                    Enable = true,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }
+
+            <i-table height="300" size="small" :border="true"
+                     :columns="screenParam.colDefCOST" :data="dataParam.CONTRACT_COST_DJDW" ref="selectCost"></i-table>
+        </i-col>
+    </row>
+}
