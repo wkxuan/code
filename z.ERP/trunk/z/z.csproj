@@ -23,7 +23,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
@@ -64,6 +65,7 @@
     <Compile Include="Context\WcfApplicationContext.cs" />
     <Compile Include="Context\HttpApplicationContext.cs" />
     <Compile Include="Context\SingleInstance.cs" />
+    <Compile Include="Encryption\ConfusionEncryption.cs" />
     <Compile Include="Encryption\MD5Encryption.cs" />
     <Compile Include="Encryption\Base64Encryption.cs" />
     <Compile Include="Encryption\RSAEncryption.cs" />

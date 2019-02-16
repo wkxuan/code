@@ -5,15 +5,14 @@ using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using z;
-using z.Exceptions;
-using z.DBHelper.Connection;
-using z.DBHelper.Info;
-using z.DBHelper.DBDomain;
-using z.Extensions;
-
-using z.DBHelper.DBDomain;
 using System.Text.RegularExpressions;
+using z;
+using z.DBHelper.Connection;
+using z.DBHelper.DBDomain;
+using z.DBHelper.DBDomain;
+using z.DBHelper.Info;
+using z.Exceptions;
+using z.Extensions;
 
 namespace z.DBHelper.Helper
 {
@@ -128,19 +127,19 @@ namespace z.DBHelper.Helper
         #endregion
         #region 数据操作
         #region 查表
-        public DataTable ExecuteTable(string sql, DbParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
+        public DataTable ExecuteTable(string sql, DbParameter[] parameters)
         {
-            return ExecuteTable(sql, 0, 0, parameters, Behavior);
+            return ExecuteTable(sql, 0, 0, parameters);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, DbParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, DbParameter[] parameters)
         {
-            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, parameters, Behavior);
+            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, parameters);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, DbParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, DbParameter[] parameters)
         {
-            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount, parameters, Behavior);
+            return ExecuteTable(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount, parameters);
         }
 
         public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, DbParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
@@ -189,25 +188,25 @@ namespace z.DBHelper.Helper
             return dt;
         }
 
-        public DataTable ExecuteTable(string sql, zParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
+        public DataTable ExecuteTable(string sql, zParameter[] parameters)
         {
             string _sql = sql;
             DbParameter[] ps = RenderSql(ref _sql, parameters);
-            return ExecuteTable(_sql, ps, Behavior);
+            return ExecuteTable(_sql, ps);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, zParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, zParameter[] parameters)
         {
             string _sql = sql;
             DbParameter[] ps = RenderSql(ref _sql, parameters);
-            return ExecuteTable(_sql, pageinfo, ps, Behavior);
+            return ExecuteTable(_sql, pageinfo, ps);
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, zParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, zParameter[] parameters)
         {
             string _sql = sql;
             DbParameter[] ps = RenderSql(ref _sql, parameters);
-            return ExecuteTable(_sql, pageinfo, out allCount, ps, Behavior);
+            return ExecuteTable(_sql, pageinfo, out allCount, ps);
         }
 
         public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, zParameter[] parameters, CommandBehavior Behavior = CommandBehavior.Default)
@@ -224,19 +223,19 @@ namespace z.DBHelper.Helper
             return ExecuteTable(_sql, pageSize, pageIndex, out allCount, ps, Behavior);
         }
 
-        public DataTable ExecuteTable(string sql, CommandBehavior Behavior = CommandBehavior.Default)
+        public DataTable ExecuteTable(string sql)
         {
-            return ExecuteTable(sql, new DbParameter[] { }, Behavior);
+            return ExecuteTable(sql, new DbParameter[] { });
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, CommandBehavior Behavior = CommandBehavior.Default)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo)
         {
-            return ExecuteTable(sql, pageinfo, new DbParameter[] { }, Behavior);
+            return ExecuteTable(sql, pageinfo, new DbParameter[] { });
         }
 
-        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount, CommandBehavior Behavior = CommandBehavior.Default)
+        public DataTable ExecuteTable(string sql, PageInfo pageinfo, out int allCount)
         {
-            return ExecuteTable(sql, pageinfo, out allCount, new DbParameter[] { }, Behavior);
+            return ExecuteTable(sql, pageinfo, out allCount, new DbParameter[] { });
         }
 
         public DataTable ExecuteTable(string sql, int pageSize, int pageIndex, CommandBehavior Behavior = CommandBehavior.Default)
@@ -251,27 +250,45 @@ namespace z.DBHelper.Helper
 
         #endregion
         #region 查对象
-        public T ExecuteOneObject<T>(string sql, params DbParameter[] parameters) where T : new()
+
+        public T ExecuteOneObject<T>(string sql, params zParameter[] parameters)
         {
-            return ExecuteObject<T>(sql, 0, 0, parameters).FirstOrDefault();
+            string _sql = sql;
+            DbParameter[] ps = RenderSql(ref _sql, parameters);
+            return ExecuteObject<T>(_sql, 0, 0, ps).FirstOrDefault();
         }
 
-        public List<T> ExecuteObject<T>(string sql, params DbParameter[] parameters) where T : new()
+        public List<T> ExecuteObject<T>(string sql, params zParameter[] parameters)
         {
             return ExecuteObject<T>(sql, 0, 0, parameters);
         }
 
-        public List<T> ExecuteObject<T>(string sql, PageInfo pageinfo, params DbParameter[] parameters) where T : new()
+        public List<T> ExecuteObject<T>(string sql, PageInfo pageinfo, params zParameter[] parameters)
         {
             return ExecuteObject<T>(sql, pageinfo.PageSize, pageinfo.PageIndex, parameters);
         }
 
-        public List<T> ExecuteObject<T>(string sql, PageInfo pageinfo, out int allCount, params DbParameter[] parameters) where T : new()
+        public List<T> ExecuteObject<T>(string sql, PageInfo pageinfo, out int allCount, params zParameter[] parameters)
         {
             return ExecuteObject<T>(sql, pageinfo.PageSize, pageinfo.PageIndex, out allCount, parameters);
         }
 
-        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, params DbParameter[] parameters) where T : new()
+        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, params zParameter[] parameters)
+        {
+            string _sql = sql;
+            DbParameter[] ps = RenderSql(ref _sql, parameters);
+            return ExecuteObject<T>(sql, pageSize, pageIndex, ps);
+        }
+
+
+        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, out int allCount, params zParameter[] parameters)
+        {
+            string _sql = sql;
+            DbParameter[] ps = RenderSql(ref _sql, parameters);
+            return ExecuteObject<T>(sql, pageSize, pageIndex, out allCount, ps);
+        }
+
+        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, DbParameter[] parameters)
         {
             List<T> list = new List<T>();
             RunSql(_dbCommand =>
@@ -289,7 +306,7 @@ namespace z.DBHelper.Helper
             return list;
         }
 
-        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, out int allCount, params DbParameter[] parameters) where T : new()
+        public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, out int allCount, DbParameter[] parameters)
         {
             int resall = 0;
             List<T> list = ExecuteObject<T>(sql, pageSize, pageIndex, parameters);
@@ -303,7 +320,7 @@ namespace z.DBHelper.Helper
                         DataTable dtcount = this.ReaderToTable(reader);
                         if (dtcount.IsOneLine())
                         {
-                            int.TryParse(dtcount.Rows[0][0].ToString(), out resall);
+                            resall = dtcount.Rows[0][0].ToString().ToInt();
                         }
                         else
                         {
@@ -452,9 +469,11 @@ namespace z.DBHelper.Helper
                 string tablename = info.GetTableName();
                 string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
                 _dbCommand.CommandText = string.Format(_selectcount, tablename, where);
-                IDataReader reader = _dbCommand.ExecuteReader();
-                if (reader.Read())
-                    i = reader.GetValue(0).ToString().ToInt();
+                using (IDataReader reader = _dbCommand.ExecuteReader())
+                {
+                    if (reader.Read())
+                        i = reader.GetValue(0).ToString().ToInt();
+                }
             });
             if (i == 0)
                 return Insert(info);
@@ -644,8 +663,10 @@ namespace z.DBHelper.Helper
                 string select = string.Join(",", info.GetAllField().Select(a => GetFieldName(a.Name)));
                 string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
                 _dbCommand.CommandText = string.Format(_select, select, tablename, where);
-                IDataReader reader = _dbCommand.ExecuteReader();
-                res = this.ReaderToEntity(info.GetType(), reader).FirstOrDefault() as T;
+                using (IDataReader reader = _dbCommand.ExecuteReader())
+                {
+                    res = this.ReaderToEntity(info.GetType(), reader).FirstOrDefault() as T;
+                }
             });
             res = _SelectChildren(res);
             return res;
@@ -716,8 +737,10 @@ namespace z.DBHelper.Helper
                 string select = string.Join(",", refinfo.GetAllField().Select(a => GetFieldName(a.Name)));
                 string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
                 _dbCommand.CommandText = string.Format(_select, select, tablename, where.IsEmpty(" 1=1 "));
-                IDataReader reader = _dbCommand.ExecuteReader();
-                res = this.ReaderToEntity(TInfo, reader).ToList();
+                using (IDataReader reader = _dbCommand.ExecuteReader())
+                {
+                    res = this.ReaderToEntity(TInfo, reader).ToList();
+                }
             });
             res.ForEach(a => a = _SelectChildren(a));
             return res;
@@ -878,18 +901,18 @@ namespace z.DBHelper.Helper
 
         #endregion
         #region 辅助方法
-        private List<T> ReaderToObject<T>(IDataReader reader) where T : new()
+        private List<T> ReaderToObject<T>(IDataReader reader)
         {
             List<T> res = new List<T>();
             while (reader.Read())
             {
                 if (typeof(T).IsValueType || typeof(T).BaseOn<string>())
                 {
-                    res.Add((T)reader.GetValue(0));
+                    res.Add(reader.GetValue(0).ChangeType<T>());
                 }
                 else
                 {
-                    T t = new T();
+                    T t = Activator.CreateInstance<T>();
                     reader.FieldCount.ForEach(i =>
                     {
                         t.SetPropertyValue(reader.GetName(i), reader.GetValue(i));

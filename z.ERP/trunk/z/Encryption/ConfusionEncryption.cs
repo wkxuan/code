@@ -44,7 +44,7 @@ namespace z.Encryption
         /// <param name="num">待加密数字</param>
         /// <param name="length">结果位数</param>
         /// <returns></returns>
-        public static string Encrypt(Int64 num, int length)
+        public static string Encrypt(long num, int length)
         {
             if (num.ToString().Length > length)
                 throw new Exception($"待加密数字{num}大于位数{length}");
@@ -66,7 +66,7 @@ namespace z.Encryption
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static Int64 Decrypt(string str)
+        public static long Decrypt(string str)
         {
             if (str.Length < 2)
                 throw new Exception("最小支持2位数");

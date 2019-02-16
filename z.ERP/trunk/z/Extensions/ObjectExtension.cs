@@ -512,6 +512,17 @@ namespace z.Extensions
                 return type.GetDefaultValue();
             return Convert.ChangeType(obj, type);
         }
+
+        /// <summary>
+        /// 改变类型
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static T ChangeType<T>(this object obj)
+        {
+            return (T)obj.ChangeType(typeof(T));
+        }
+
         #endregion
         #region 程序集
         /// <summary>

@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
+using System.Drawing;
 
 namespace z.Extensions
 {
@@ -36,7 +37,6 @@ namespace z.Extensions
         {
             return System.AppDomain.CurrentDomain.BaseDirectory;
         }
-
 
         /// <summary>
         /// 组成文件目录(不创建)
@@ -157,6 +157,29 @@ namespace z.Extensions
             }
             return s;
         }
+
+        /// <summary>
+        /// 检查文件路径是否存在
+        /// </summary>
+        /// <param name="filepath">文件路径</param>
+        /// <param name="MakeDir">如果不存在,是否创建路径</param>
+        /// <returns></returns>
+        public static bool CheckPath(string filepath, bool MakeDir = false)
+        {
+            string path = Path.GetDirectoryName(filepath);
+            if (Directory.Exists(path))
+            {
+                return true;
+            }
+            else
+            {
+                if (MakeDir)
+                {
+                    Directory.CreateDirectory(path);
+                }
+                return false;
+            }
+        }
         #endregion
         #region 文件方法
         /// <summary>
@@ -192,6 +215,59 @@ namespace z.Extensions
             StreamWriter sw = new StreamWriter(fs, encoding == null ? Encoding.Default : encoding);
             sw.Write(text);
             sw.Close();
+        }
+
+        /// <summary>  
+        /// 将 Stream 写入文件  
+        /// </summary>  
+        public static void WriteFile(Stream stream, string fileName)
+        {
+            MemoryStream ms = new MemoryStream(stream.ToBytes());
+            //定义实际文件对象，保存上传的文件。
+            FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate);
+            //把内存里的数据写入物理文件
+            ms.WriteTo(fs);
+            ms.Close();
+            fs.Close();
+            fs = null;
+            ms = null;
+        }
+
+        /// <summary>
+        /// 转化为数组
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(this Stream stream)
+        {
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                if (stream.CanSeek)
+                    stream.Seek(0, SeekOrigin.Begin);
+                byte[] bs = new byte[stream.Length];
+                stream.Read(bs, 0, bs.Length);
+                return bs;
+            }
+        }
+
+        /// <summary>
+        /// 转化为流
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static Stream BytesToStream(this byte[] bytes)
+        {
+            return new MemoryStream(bytes);
+        }
+
+        /// <summary>
+        /// 读文件
+        /// </summary>
+        /// <param name="Path"></param>
+        /// <returns></returns>
+        public static Stream ReadFile(string Path)
+        {
+            return new FileStream(Path, FileMode.Open, FileAccess.Read);
         }
 
         /// <summary>
@@ -302,6 +378,89 @@ namespace z.Extensions
             }
             //否则直接返回strPath2
             return strPath2;
+        }
+
+        /// <summary>
+        /// 压缩图片到指定大小
+        /// </summary>
+        /// <param name="imgbyte"></param>
+        /// <param name="width">压缩到的宽度px</param>
+        /// <param name="height">压缩到的高度px</param>
+        /// <returns></returns>
+        public static byte[] CompressPictures(byte[] imgbyte, int width, int height)
+        {
+            Stream res = new MemoryStream();
+            Image originalImage = Image.FromStream(new MemoryStream(imgbyte));
+            //尺寸
+            int towidth = width;
+            int toheight = height;
+            int ow = originalImage.Width;
+            int oh = originalImage.Height;
+
+
+            int bg_x = 0;
+            int bg_y = 0;
+            int bg_w = towidth;
+            int bg_h = toheight;
+
+            double multiple = 0;
+
+            if (originalImage.Width >= originalImage.Height) multiple = (double)originalImage.Width / (double)width;
+            else multiple = (double)originalImage.Height / (double)height;
+
+            if (ow <= width && oh <= height)
+            {
+
+                bg_w = originalImage.Width;
+                bg_h = originalImage.Height;
+
+                bg_x = Convert.ToInt32(((double)towidth - (double)ow) / 2);
+                bg_y = Convert.ToInt32(((double)toheight - (double)oh) / 2);
+            }
+            else
+            {
+
+                bg_w = Convert.ToInt32((double)originalImage.Width / multiple);
+                bg_h = Convert.ToInt32((double)originalImage.Height / multiple);
+
+                bg_y = Convert.ToInt32(((double)height - (double)bg_h) / 2);
+                bg_x = Convert.ToInt32(((double)width - (double)bg_w) / 2);
+            }
+
+            Image thumbnailImage = originalImage.GetThumbnailImage(towidth, toheight, null, IntPtr.Zero);
+            Bitmap bitmap = new Bitmap(thumbnailImage);
+
+            Graphics g = Graphics.FromImage(bitmap);
+
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+            System.Drawing.Imaging.EncoderParameters encoderParams = new System.Drawing.Imaging.EncoderParameters();
+            long[] quality = new long[1];
+            quality[0] = 100;
+            System.Drawing.Imaging.EncoderParameter encoderParam = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+            encoderParams.Param[0] = encoderParam;
+
+            System.Drawing.Imaging.ImageCodecInfo[] arrayICI = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders();
+            System.Drawing.Imaging.ImageCodecInfo jpegICI = null;
+
+            for (int xx = 0; xx < arrayICI.Length; xx++)
+            {
+                if (arrayICI[xx].MimeType == "image/jpeg")
+                {
+                    jpegICI = arrayICI[xx];
+                    break;
+                }
+            }
+            bitmap.Save(res, jpegICI, encoderParams);
+            originalImage.Dispose();
+            bitmap.Dispose();
+            g.Dispose();
+            byte[] bs = res.ToBytes();
+            res.Dispose();
+            return bs;
         }
         #endregion
     }

@@ -1,5 +1,7 @@
 ﻿using NewtonsoftCode.Json;
 using System;
+using System.IO;
+using System.Net;
 using System.Web;
 
 namespace z.Extensions
@@ -104,7 +106,7 @@ namespace z.Extensions
 
             return result;
         }
-        
+
         /// <summary>
         /// 获取当前网站的虚拟根目录
         /// </summary>
@@ -113,5 +115,28 @@ namespace z.Extensions
         {
             return IOExtension.MakeUri("http://", HttpContext.Current.Request.Url.Authority, HttpContext.Current.Request.ApplicationPath);
         }
+
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static byte[] DownLoad(string url)
+        {
+            WebClient mywebclient = new WebClient();
+            return mywebclient.DownloadData(url);
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            //request.Method = "Post";
+            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36";
+            request.ContentType = "application/x-www-form-urlencoded;charset=utf-8";
+            request.ContentLength = 0;
+            using (Stream st = request.GetResponse().GetResponseStream())
+            {
+                return st.ToBytes();
+            }
+        }
+
     }
 }

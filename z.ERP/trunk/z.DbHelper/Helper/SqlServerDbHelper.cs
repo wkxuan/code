@@ -182,7 +182,7 @@ namespace z.DBHelper.Helper
         }
 
         protected override DbParameter GetParameter(string name, object value, DbType? Type = null)
-        {       
+        {
             if (value != null && value.GetType().IsEnum)
             {
                 value = value.GetHashCode();
@@ -190,16 +190,8 @@ namespace z.DBHelper.Helper
             SqlParameter resp;
             if (!Type.HasValue)
             {
-                if (value.GetType().IsEnum)
-                {
-                    resp = new SqlParameter(name, SqlDbType.Int);
-                    resp.Value = (int)value;
-                }
-                else
-                {
-                    resp = new SqlParameter(name, SqlDbType.VarChar);
-                    resp.Value = value;
-                }
+                resp = new SqlParameter(name, SqlDbType.VarChar);
+                resp.Value = value ?? DBNull.Value;
             }
             else
             {
@@ -231,14 +223,14 @@ namespace z.DBHelper.Helper
                     case DbType.Byte:
                         {
                             resp = new SqlParameter(name, SqlDbType.Int);
-                            resp.Value = value;
+                            resp.Value = value ?? DBNull.Value;
                             break;
                         }
                     case DbType.Decimal:
                     case DbType.Double:
                         {
                             resp = new SqlParameter(name, SqlDbType.Decimal);
-                            resp.Value = value;
+                            resp.Value = value ?? DBNull.Value;
                             break;
                         }
                     case DbType.String:
@@ -248,7 +240,7 @@ namespace z.DBHelper.Helper
                     case DbType.AnsiStringFixedLength:
                         {
                             resp = new SqlParameter(name, SqlDbType.NVarChar);
-                            resp.Value = value;
+                            resp.Value = value ?? DBNull.Value;
                             break;
                         }
                     default:
