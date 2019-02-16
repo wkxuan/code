@@ -20,8 +20,10 @@ namespace z.ERP.Services
         }
         public DataGridResult GetContract(SearchItem item)
         {
-            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,D.SHOPDM,E.BRANDNAME FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_SHOPXX D,CONTRACT_BRANDXX E " +
-                         " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=D.CONTRACTID AND A.CONTRACTID=E.CONTRACTID ";
+            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,D.SHOPDM,E.BRANDNAME" +
+                " FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_SHOPXX D,CONTRACT_BRANDXX E " +
+                " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=D.CONTRACTID" +
+                " AND A.CONTRACTID=E.CONTRACTID(+) ";
 
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
@@ -78,20 +80,28 @@ namespace z.ERP.Services
         public string SaveContract(CONTRACTEntity SaveData)
         {
             var v = GetVerify(SaveData);
-            ORGEntity org = DbHelper.Select(new ORGEntity() { ORGID = SaveData.ORGID });
-            if (org.BRANCHID != SaveData.BRANCHID) {
-                throw new LogicException($"请核对招商部门与分店之间的关系!");
-            };
-            //选择是扣点的时候,不应该有保底数据
-            if ((SaveData.OPERATERULE.ToInt() == (int)联营合同合作方式.扣点)
-                && (SaveData.STYLE.ToInt()==(int)核算方式.联营合同)) {
-                foreach (var rent in SaveData.CONTRACT_RENT) {
-                    if (rent.RENTS.ToDecimal() != 0) {
-                        throw new LogicException($"扣点形式的合同不应该有保底值!");
-                    }
-                    if (rent.RENTS_JSKL.ToDecimal() != 0)
+
+            if (SaveData.STYLE.ToInt() != (int)核算方式.多经点位)
+            {
+                ORGEntity org = DbHelper.Select(new ORGEntity() { ORGID = SaveData.ORGID });
+                if (org.BRANCHID != SaveData.BRANCHID)
+                {
+                    throw new LogicException($"请核对招商部门与分店之间的关系!");
+                };
+                //选择是扣点的时候,不应该有保底数据
+                if ((SaveData.OPERATERULE.ToInt() == (int)联营合同合作方式.扣点)
+                    && (SaveData.STYLE.ToInt() == (int)核算方式.联营合同))
+                {
+                    foreach (var rent in SaveData.CONTRACT_RENT)
                     {
-                        throw new LogicException($"扣点形式的合同不应该有保底扣率!");
+                        if (rent.RENTS.ToDecimal() != 0)
+                        {
+                            throw new LogicException($"扣点形式的合同不应该有保底值!");
+                        }
+                        if (rent.RENTS_JSKL.ToDecimal() != 0)
+                        {
+                            throw new LogicException($"扣点形式的合同不应该有保底扣率!");
+                        }
                     }
                 }
             }
@@ -109,14 +119,14 @@ namespace z.ERP.Services
                 string tblname;
                 int leadCode;
                 if (SaveData.HTLX == "1")
-                    leadCode =  (SaveData.STYLE + SaveData.BRANCHID.PadLeft(2, '0')).ToInt() ;
+                    leadCode = (SaveData.STYLE + SaveData.BRANCHID.PadLeft(2, '0')).ToInt();
                 else
                     leadCode = ("9" + SaveData.BRANCHID.PadLeft(2, '0')).ToInt();
 
                 tblname = "CONTRACT_" + leadCode.ToString();
 
 
-                SaveData.CONTRACTID = (NewINC(tblname).ToInt()+ leadCode * 100000).ToString();
+                SaveData.CONTRACTID = (NewINC(tblname).ToInt() + leadCode * 100000).ToString();
                 SaveData.STATUS = ((int)合同状态.未审核).ToString();
             }
             else
@@ -236,6 +246,49 @@ namespace z.ERP.Services
                 );
         }
 
+
+        public Tuple<dynamic, DataTable, DataTable> GetContractDjdwElement(CONTRACTEntity Data)
+        {
+            if (Data.CONTRACTID.IsEmpty())
+            {
+                throw new LogicException("请确认租约编号!");
+            }
+            string sql = $@"SELECT A.*,B.NAME MERNAME,C.NAME FDNAME,D.ORGNAME,E.CONTRACTID_OLD,E.JHRQ,";
+            sql += " (select NAME from FEERULE L where L.ID=A.FEERULE_RENT) FEERULE_RENTNAME,";
+            sql += " (select NAME from LATEFEERULE LA where LA.ID=A.ZNID_RENT) LATEFEERULENAME,";
+            sql += " F.NAME AS OPERATERULENAME  FROM CONTRACT A,MERCHANT B,";
+            sql += "   BRANCH C, ORG D,CONTRACT_UPDATE E,OPERATIONRULE F WHERE A.MERCHANTID=B.MERCHANTID AND A.CONTRACTID=E.CONTRACTID(+) ";
+            sql += " AND A.BRANCHID=C.ID AND A.ORGID=D.ORGID(+) AND A.OPERATERULE=F.ID(+) ";
+            sql += (" AND A.CONTRACTID= " + Data.CONTRACTID);
+            DataTable contract = DbHelper.ExecuteTable(sql);
+            if (!contract.IsNotNull())
+            {
+                throw new LogicException("找不到租约!");
+            }
+
+            contract.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
+
+            string sqlshop = $@"SELECT B.SHOPID,C.CODE,D.CATEGORYCODE,D.CATEGORYID," +
+                           " D.CATEGORYNAME,B.AREA,B.AREA_RENTABLE" +
+                           " FROM CONTRACT A,CONTRACT_SHOP B,SHOP C,CATEGORY D" +
+                           " WHERE A.CONTRACTID=B.CONTRACTID AND B.SHOPID=C.SHOPID AND B.CATEGORYID=D.CATEGORYID";
+            sqlshop += (" and A.CONTRACTID= " + Data.CONTRACTID);
+            DataTable contract_shop = DbHelper.ExecuteTable(sqlshop);
+
+            string sqlCost = $@"SELECT A.*,B.NAME";
+            sqlCost += "    FROM CONTRACT_COST_DJDW A,FEESUBJECT B";
+            sqlCost += " WHERE A.TREMID=B.TRIMID  ";
+            sqlCost += (" AND CONTRACTID= " + Data.CONTRACTID);
+            sqlCost += " ORDER BY TREMID";
+            DataTable contract_cost = DbHelper.ExecuteTable(sqlCost);
+
+            return new Tuple<dynamic, DataTable, DataTable>(
+                contract.ToOneLine(),
+                contract_shop,
+                contract_cost
+                );
+        }
+
         public List<CONTRACT_RENTITEMEntity> LyYdfj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
         {
 
@@ -300,13 +353,15 @@ namespace z.ERP.Services
             //先计算出来每个年月对应的生成日期
             DateTime dt = ContractData.CONT_START.ToDateTime();
             var ym = dt.Year * 100 + dt.Month;
-            switch (feeRule.PAY_CYCLE.ToInt()) {
+            switch (feeRule.PAY_CYCLE.ToInt())
+            {
                 case 3:
-                    switch (dt.Month) {
+                    switch (dt.Month)
+                    {
                         case 1:
                         case 2:
                         case 3:
-                            ym = dt.Year * 100 +1;
+                            ym = dt.Year * 100 + 1;
                             break;
                         case 4:
                         case 5:
@@ -409,12 +464,14 @@ namespace z.ERP.Services
 
 
                 zjfj.YEARMONTH = per.YEARMONTH;
-                if (feeRule.FEE_DAY.ToInt() == -1){
+                if (feeRule.FEE_DAY.ToInt() == -1)
+                {
                     PERIODEntity PerioYm = new PERIODEntity();
-                    PerioYm = DbHelper.Select(new PERIODEntity() { YEARMONTH = (scn*100+ scy).ToString() });
+                    PerioYm = DbHelper.Select(new PERIODEntity() { YEARMONTH = (scn * 100 + scy).ToString() });
                     zjfj.CREATEDATE = PerioYm.DATE_END;
                 }
-                else {
+                else
+                {
                     zjfj.CREATEDATE = (new DateTime(scn, scy, feeRule.FEE_DAY.ToInt())).ToString().ToDateTime().ToString();
                 }
                 zjfjListGd.Add(zjfj);
@@ -446,7 +503,7 @@ namespace z.ERP.Services
 
                 foreach (var per in Period)
                 {
-                    double zts= Math.Abs((per.DATE_END.ToDateTime() - per.DATE_START.ToDateTime()).Days) + 1;
+                    double zts = Math.Abs((per.DATE_END.ToDateTime() - per.DATE_START.ToDateTime()).Days) + 1;
 
                     CONTRACT_RENTITEMEntity zjfj = new CONTRACT_RENTITEMEntity();
                     if ((per.DATE_START.ToDateTime() < ContractData.CONT_START.ToDateTime())
@@ -479,10 +536,11 @@ namespace z.ERP.Services
                                 //30后期增加系统参数去处理
                                 zjfj.RENTS = (Math.Round(je / 30 * zjfjTs, 0, MidpointRounding.AwayFromZero)).ToString();
                             }
-                            else {
+                            else
+                            {
                                 zjfj.RENTS = je.ToString();
                             }
-                           
+
                             break;
                     };
                     foreach (var scrq in zjfjListGd)
@@ -542,7 +600,7 @@ namespace z.ERP.Services
                 DbHelper.ExecuteProcedure(exec_contract);
                 Tran.Commit();
             }
-          
+
             return con.CONTRACTID;
         }
 
@@ -639,7 +697,7 @@ namespace z.ERP.Services
                 sql_shop += (" and P.CONTRACTID= " + Data.CONTRACTID);
             sql_shop += " order by S.CODE";
             DataTable shop = DbHelper.ExecuteTable(sql_shop);
-                        
+
             var result = new
             {
                 contract = dt,
@@ -655,7 +713,7 @@ namespace z.ERP.Services
             sql += "  where L.CONTRACTID=C.CONTRACTID and C.MERCHANTID=M.MERCHANTID ";
             if (!Data.BILLID.IsEmpty())
                 sql += (" and L.BILLID= " + Data.BILLID);
-            DataTable dt = DbHelper.ExecuteTable(sql);            
+            DataTable dt = DbHelper.ExecuteTable(sql);
 
             string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
                 "  FROM FREESHOPITEM G,SHOP S,CATEGORY Y  " +
@@ -673,7 +731,7 @@ namespace z.ERP.Services
             };
             return result;
         }
-        
+
         public Tuple<dynamic, DataTable> GetFreeShopDetail(FREESHOPEntity Data)
         {
             string sql = $@" SELECT L.*,M.MERCHANTID,M.NAME SHMC,B.NAME BRANCHNAME " +

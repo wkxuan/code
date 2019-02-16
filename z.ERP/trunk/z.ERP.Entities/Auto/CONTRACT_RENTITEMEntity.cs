@@ -4,7 +4,7 @@
  * 生成人：书房
  * 代码生成器版本号：1.2.6655.1027
  *
- */ 
+ */
 
 using System.Data;
 using z.DBHelper.DBDomain;
@@ -81,6 +81,14 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
+        /// 减免金额
+        /// </summary>
+        [Field("减免金额")]
+        public string JMJE
+        {
+            get; set;
+        }
+        /// <summary>
         /// 生成日期
         /// <summary>
         [Field("生成日期")]
@@ -115,6 +123,6 @@ namespace z.ERP.Entities
             get; set;
         }
 
-        
+
     }
 }

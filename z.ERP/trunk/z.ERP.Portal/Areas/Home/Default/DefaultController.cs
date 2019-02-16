@@ -12,7 +12,6 @@ namespace z.ERP.Web.Areas.Home.Default
 {
     public class DefaultController : BaseController
     {
-        // GET: Home/Index
         public ActionResult Default()
         {
             return View();
