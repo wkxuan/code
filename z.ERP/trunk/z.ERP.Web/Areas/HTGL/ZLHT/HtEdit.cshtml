@@ -298,6 +298,56 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            装修期起
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FIT_BEGIN",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            装修期至
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FIT_END",
+                });
+            }
+        </i-col>
+
+
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            免租期起
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FREE_BEGIN",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            免租期至
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FREE_END",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
             租金收费规则
         </i-col>
         <i-col span="6">

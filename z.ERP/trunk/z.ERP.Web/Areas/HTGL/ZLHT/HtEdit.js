@@ -1398,7 +1398,8 @@ editDetail.IsValidSave = function () {
                     };
                 };
 
-                if (editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[j].JMJE > editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[j].RENTS) {
+                if (editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[j].JMJE
+                    > editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[j].RENTS) {
                     iview.Message.info("租金月度分解中减免金额不能大于租金金额!");
                     return false;
                 };
