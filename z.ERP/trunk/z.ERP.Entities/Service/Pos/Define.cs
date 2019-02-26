@@ -1210,10 +1210,10 @@ namespace z.ERP.Entities.Service.Pos
             set { changeType = value; }
         }
 
-        int payedMoney;//
+        float payedMoney;//
 
 
-        public int PayedMoney
+        public float PayedMoney
         {
             get { return payedMoney; }
             set { payedMoney = value; }
@@ -1246,9 +1246,10 @@ namespace z.ERP.Entities.Service.Pos
             get { return bj_jf; }
             set { bj_jf = value; }
         }
-        int morePayedMoney;//
 
-        public int MorePayedMoney
+        float morePayedMoney;//
+
+        public float MorePayedMoney
         {
             get { return morePayedMoney; }
             set { morePayedMoney = value; }
@@ -1256,9 +1257,9 @@ namespace z.ERP.Entities.Service.Pos
 
 
 
-        int realUsedMoney;
+        float realUsedMoney;
 
-        public int RealUsedMoney
+        public float RealUsedMoney
         {
             get { return realUsedMoney; }
             set { realUsedMoney = value; }
