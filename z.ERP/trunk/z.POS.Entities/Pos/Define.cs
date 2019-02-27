@@ -6,7 +6,7 @@ using System.Text;
 
 namespace z.POS.Entities.Pos
 {
-    public class TableInfo
+ /*   public class TableInfo
     {
         string tblName;
 
@@ -5534,6 +5534,6 @@ namespace z.POS.Entities.Pos
         }
 
         public List<OrderInfo> data;
-    }
+    } */
 
 }
