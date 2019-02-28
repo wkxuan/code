@@ -19,6 +19,22 @@ namespace z.POS.Services
 
         }
 
+        public LoginConfigInfo GetConfig()
+        {
+            /* string sql = " select S.BRANCHID,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,G.PID,G.KEY"
+                        + " from STATION S, POSO2OWFTCFG G, SHOP P"
+                        + " where S.STATIONBH = G.POSNO(+)"
+                        + " AND S.SHOPID = P.SHOPID(+)"
+                        + $" AND S.STATIONBH = '{employee.PlatformId}'";  */
+
+            string sql = "select b.fdbh BRANCHID,a.shopid,'' shopcode,'' shopname,'' pid,'' key  from RYXX a,SKT b"
+                       + $" where person_id={employee.Id} and b.sktno='{employee.PlatformId}'";
+
+            LoginConfigInfo lgi = DbHelper.ExecuteOneObject<LoginConfigInfo>(sql);
+            return lgi;  
+
+        }
+
         /// <summary>
         /// 最大交易号
         /// </summary>
@@ -37,13 +53,13 @@ namespace z.POS.Services
 
        public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
         {
-            string sql = "select a.goodsid,a.goodsdm goodscode,a.name,a.type,nvl(a.price,0) price,nvl(a.member_price,0) member_price,b.shopid";
-            sql += "        from GOODS a,GOODS_SHOP b where a.goodsid=b.goodsid";
+            string sql = "select a.sp_id goodsid,a.spcode goodscode,a.name,0 type,nvl(a.lsdj,0) price,nvl(a.hylsdj,0) member_price,b.deptid shopid";
+            sql += "        from SPXX a,GTSP b where a.sp_id=b.sp_id";
 
             if (filter.shopid.HasValue)
-                sql += $"  and b.shopid = {filter.shopid}";
+                sql += $"  and a.shopid = {filter.shopid}";
             if (filter.goodscode.IsNotEmpty())
-                sql += $"  and (goodsdm = '{filter.goodscode}' or barcode = '{filter.goodscode}')";
+                sql += $"  and (a.spcode = '{filter.goodscode}' or a.barcode = '{filter.goodscode}')";
 
             List<FindGoodsResult> goodsList = DbHelper.ExecuteObject<FindGoodsResult>(sql);
 
@@ -53,7 +69,7 @@ namespace z.POS.Services
             return goodsList;
         }  
 
-        public UserYYYResult GetClerkShop(PersonInfo req)
+        public UserYYYResult GetClerkShop(PersonInfo req)    //暂不使用
         {
             string sql = "select a.userid,a.username,a.user_type,a.void_flag,a.shopid,b.code shopcode,b.name shopname";
             sql += $" from sysuser a,shop b where a.shopid=b.shopid(+) and a.usercode='{req.usercode}'";
@@ -87,9 +103,9 @@ namespace z.POS.Services
 
         public List<FKFSResult> GetPayList()
         {
-            string sql = $"select b.skfs payid,b.name,b.type,2 fk,b.bj_jf jf,b.zlclfs zlfs,b.xssx ";
+            string sql = $"select b.code payid,b.name,decode(b.type,0,1,7,4,20,6,21,5,0) type,2 fk,b.bj_jf jf,b.zlclfs zlfs,b.xssx flag";
             sql += $"        from skt_skfs a,skfs b";
-            sql += $"       where a.skfsid = b.skfs";
+            sql += $"       where a.skfsid = b.code";
             sql += $"         and a.sktno = '{employee.PlatformId}'";
             sql += $"       order by b.xssx";
 
@@ -123,7 +139,7 @@ namespace z.POS.Services
             sqlSale += $" sktno_old posno_old,nvl(jlbh_old,-1) dealid_old from {strTable}xsjl";
             sqlSale += $" where sktno='{posNo}' and jlbh={filter.dealid}";
 
-            string sqlGoods = "select tckt_inx sheetid,inx,shopid,sp_id goodsid,barcode goodscode,lsdj price,xssl quantity,";
+            string sqlGoods = "select tckt_inx sheetid,inx,deptid shopid,sp_id goodsid,barcode goodscode,lsdj price,xssl quantity,";
             sqlGoods += $" xsje sale_amount,zkje discount_amount,yhje coupon_amount from {strTable}xsjlc";
             sqlGoods += $" where sktno='{posNo}' and jlbh={filter.dealid}";
 
@@ -203,7 +219,7 @@ namespace z.POS.Services
                 int payCount = request.paylist.Count;
                 int clerkCount = request.clerklist.Count;
 
-                string[] sqlarr = new string[1 + goodsCount + payCount + clerkCount + goodsCount * payCount];
+                string[] sqlarr = new string[1 + goodsCount + payCount + clerkCount];  // + goodsCount * payCount
 
                 sqlarr[0] = "insert into xsjl(sktno,jlbh,jysj,jzrq,sky,xsje,";
                 sqlarr[0] += "zlje,vipid,xfjlid,sktno_old,jlbh_old)";
@@ -309,7 +325,7 @@ namespace z.POS.Services
                 catch (Exception e)
                 {
 
-                    throw new Exception("提交数据库时发生异常:" + e);
+                    throw new Exception("提交数据库时发生异常:" + e +":"+ String.Join(";", sqlarr));
                 }
 
             }
@@ -323,7 +339,7 @@ namespace z.POS.Services
         public SaleSummaryResult GetSaleSummary(SaleSummaryFilter filter)
         {
             string sql = $"select s.sktno posno,s.jlbh dealid,decode(sign(s.xsje),0,0,1,0,-1,1) returnflag,"
-                   + "       to_char(s.jysj,'yyyy-mm-dd HH24:MI:SS') sale_time,p.skfs payid,y.name payname,y.type paytype, p.skje amount"
+                   + "       to_char(s.jysj,'yyyy-mm-dd HH24:MI:SS') sale_time,p.skfs payid,y.name payname,decode(y.type,0,1,7,4,20,6,21,5,0) paytype, p.skje amount"
                    + "  from xsjl s, xsjlm p,skfs y"
                    + " where s.sktno = p.sktno"
                    + "   and s.jlbh = p.jlbh"
@@ -350,7 +366,7 @@ namespace z.POS.Services
             sql += " union all ";
 
             sql += $"select s.sktno posno,s.jlbh dealid,decode(sign(s.xsje),0,0,1,0,-1,1) returnflag,"
-                  + "       to_char(s.jysj,'yyyy-mm-dd HH24:MI:SS') sale_time,p.skfs payid,y.name payname,y.type paytype, p.skje amount"
+                  + "       to_char(s.jysj,'yyyy-mm-dd HH24:MI:SS') sale_time,p.skfs payid,y.name payname,decode(y.type,0,1,7,4,20,6,21,5,0) paytype, p.skje amount"
                   + "  from sktxsjl s, sktxsjlm p,skfs y"
                   + " where s.sktno = p.sktno"
                   + "   and s.jlbh = p.jlbh"

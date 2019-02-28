@@ -12,6 +12,11 @@ namespace z.POS.WebService.Controllers
           
         }
 
+        public LoginConfigInfo GetConfig()
+        {
+            return service.PosService.GetConfig();
+        }
+
         /// <summary>
         /// 最大交易号,测试方法,开始做就要删除
         /// </summary>

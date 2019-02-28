@@ -19,9 +19,9 @@ namespace z.POS.Services
         {
             return new User()
             {
-                Code = "01",
-                Id = "1",
-                Name = "测试"
+                Code = "000012",
+                Id = "13",
+                Name = "杨梦云"
             };
         }
     }
