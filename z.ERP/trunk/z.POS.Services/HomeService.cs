@@ -22,11 +22,11 @@ namespace z.POS.Services
 
         public User GetUserByCode(string code, string password)
         {
-            string sql = "select a.person_id,a.person_name,a.rydm,b.login_password from BFPUB8.RYXX a join XTCZY b  on a.person_id=b.person_id where a.person_name={{code}}";
+            string sql = "select a.person_id,a.person_name,a.rydm,b.login_password from RYXX a join XTCZY b  on a.person_id=b.person_id where a.rydm={{code}}";
             DataTable dt = DbHelper.ExecuteTable(sql, new zParameter("code", code));
             if (dt.Rows.Count == 1)
             {
-                string psw = dt.Rows[0]["login_password"].ToString();
+                byte[] psw = dt.Rows[0]["login_password"] as byte[];
                 if (Decrypt(psw) == password)
                 {
                     return new User()
@@ -101,6 +101,6 @@ namespace z.POS.Services
             }
             return Decrypt(l.ToArray());
         }
-        
+
     }
 }
