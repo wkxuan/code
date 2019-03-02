@@ -70,6 +70,7 @@
     <Content Include="packages.config" />
     <Content Include="Ashx\Do.ashx" />
     <Content Include="Ashx\Login.ashx" />
+    <None Include="Properties\PublishProfiles\wangkx.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -101,6 +102,10 @@
     <ProjectReference Include="..\z.LogFactory\z.LogFactory.csproj">
       <Project>{31E4C7DC-E998-4068-AEC8-0AFAC6BBE68D}</Project>
       <Name>z.LogFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\z.POS.Entities\z.POS.Entities.csproj">
+      <Project>{FA2B7441-F9A9-4FF1-A236-AF605A1E3AC8}</Project>
+      <Name>z.POS.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\z.POS.Services\z.POS.Services.csproj">
       <Project>{D375452D-2E8C-4A8F-88F4-3F05F9E22B4F}</Project>
