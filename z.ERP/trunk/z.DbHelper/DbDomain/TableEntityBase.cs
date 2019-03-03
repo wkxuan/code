@@ -95,6 +95,7 @@ namespace z.DBHelper.DBDomain
         {
             return GetType()
                 .GetProperties()
+                .Where(a => a.GetAttribute<IgnoreAttribute>() == null)
                 .Where(a => !a.IsArray())
                 .ToArray();
         }
@@ -129,6 +130,7 @@ namespace z.DBHelper.DBDomain
         {
             return GetType().GetProperties()
                 .Where(a => a.IsArray())
+                .Where(a => a.GetAttribute<InsertIgnoreAttribute>() == null)
                 .Where(a => a.GetAttribute<ForeignKeyAttribute>() != null)
                 .ToArray();
         }
@@ -165,10 +167,10 @@ namespace z.DBHelper.DBDomain
                 return false;
             bool equal = true;
             p1.ForEach(p =>
-           {
-               if (!p.GetValue(this, null).Equals(p.GetValue(t, null)))
-                   equal = false;
-           });
+            {
+                if (!p.GetValue(this, null).Equals(p.GetValue(t, null)))
+                    equal = false;
+            });
             return equal;
         }
 

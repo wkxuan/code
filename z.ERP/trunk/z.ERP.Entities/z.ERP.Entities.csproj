@@ -40,11 +40,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\CONTRACT_COST_DJDWEntity.cs" />
+    <Compile Include="Auto\OPENBUSINESSEntity.cs" />
+    <Compile Include="Auto\OPENBUSINESSITEMEntity.cs" />
+    <Compile Include="Auto\WLCHECKEntity.cs" />
+    <Compile Include="Auto\WLSETTLEEntity.cs" />
+    <Compile Include="Auto\WLSETTLEITEMEntity.cs" />
+    <Compile Include="Auto\WLUSESEntity.cs" />
+    <Compile Include="Auto\WLOUTSTOCKEntity.cs" />
+    <Compile Include="Auto\WLCHECKITEMEntity.cs" />
+    <Compile Include="Auto\WLUSESITETMEntity.cs" />
+    <Compile Include="Auto\WLOUTSTOCKITETMEntity.cs" />
     <Compile Include="Auto\WL_GOODSSTOCKEntity.cs" />
     <Compile Include="Auto\WLINSTOCKITETMEntity.cs" />
     <Compile Include="Auto\WLINSTOCKEntity.cs" />
     <Compile Include="Auto\COMPLAINDEPTEntity.cs" />
     <Compile Include="Auto\COMPLAINTYPEEntity.cs" />
+    <Compile Include="Auto\MARCHINAREAREntity.cs" />
+    <Compile Include="Auto\MARCHINAREARITEMEntity.cs" />
     <Compile Include="Auto\WL_GOODSEntity.cs" />
     <Compile Include="Auto\WL_MERCHANTEntity.cs" />
     <Compile Include="Auto\VOUCHEREntity.cs" />
@@ -69,6 +82,11 @@
     <Compile Include="BILL_ADJUSTEntity .cs" />
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="FREESHOPEntity.cs" />
+    <Compile Include="OPENBUSINESSEntity.cs" />
+    <Compile Include="WLCHECKEntity.cs" />
+    <Compile Include="WLSETTLEEntity.cs" />
+    <Compile Include="WLUSESEntity.cs" />
+    <Compile Include="WLOUTSTOCKEntity.cs" />
     <Compile Include="WLINSTOCKEntity.cs" />
     <Compile Include="HyRclProcedure\HYK_PROC_MZK_KCCZKBGZ.cs" />
     <Compile Include="HyRclProcedure\HYK_PROC_MZK_CZK_RBB.cs" />
@@ -100,6 +118,7 @@
     <Compile Include="HyRclProcedure\HYK_PROC_UPDATECRMJZRQ.cs" />
     <Compile Include="HyRclProcedure\HYK_YHQ_QD_CXDJ.cs" />
     <Compile Include="HyRclProcedure\HYXF_QD_HYCXDJ.cs" />
+    <Compile Include="MARCHINAREAREntity.cs" />
     <Compile Include="MENUTREEModule.cs" />
     <Compile Include="Procedures\EXEC_ASSET_SPILT.cs" />
     <Compile Include="Procedures\EXEC_ASSET_CHANGE.cs" />

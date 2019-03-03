@@ -60,5 +60,27 @@ namespace z.Extensions
                 return obj.GetType().GetCustomAttributes(typeof(T), true)?.Select(a => a as T).ToList();
             }
         }
+
+        /// <summary>
+        /// 取一个类的一个自定义特性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static T GetAttribute<T>(this Type obj) where T : Attribute
+        {
+            return obj.GetAttributes<T>()?.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 取一个类的一个自定义特性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static List<T> GetAttributes<T>(this Type obj) where T : Attribute
+        {
+            return obj.GetCustomAttributes(typeof(T), true)?.Select(a => a as T).ToList();
+        }
     }
 }

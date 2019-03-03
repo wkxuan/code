@@ -52,7 +52,7 @@ search.popCallBack = function (data) {
 
 search.browseHref = function (row, index) {
     _.OpenPage({
-        id: 10900103,
+        id: 10900303,
         title: '浏览物料购进单信息',
         url: "WLGL/WLInStock/WLInStockMx/" + row.BILLID
     });
@@ -60,14 +60,14 @@ search.browseHref = function (row, index) {
 search.addHref = function (row) {
 
     _.OpenPage({
-        id: 10900101,
+        id: 10900301,
         title: '新增物料购进单',
         url: "WLGL/WLInStock/WLInStockEdit/"
     });
 };
 search.modHref = function (row, index) {
     _.OpenPage({
-        id: 10900101,
+        id: 10900302,
         title: '编辑物料购进单',
         url: "WLGL/WLInStock/WLInStockEdit/" + row.BILLID
     });

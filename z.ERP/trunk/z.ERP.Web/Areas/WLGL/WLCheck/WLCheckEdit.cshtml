@@ -1,0 +1,134 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Entities;
+@inherits EditDetailViewBase<string>
+@section head{
+
+}
+
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "Merchant",
+                    Text = "供应商",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERCHANTID"
+                });
+            }
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.NAME",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            描述
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section detailParam{
+    <row>
+        <i-col>
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchWlxx",
+                    Text = "选择物料",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delColWlxx",
+                    Text = "删除",
+                    Enable = true,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }
+        </i-col>
+        <i-col span="24">
+            <i-table height="300" size="small" :border="true"
+                     :columns="screenParam.colDefWL" :data="dataParam.WLCHECKITEM" ref="selectWLxx"></i-table>
+        </i-col>
+    </row>
+}
+
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopWLMerchant",
+                    Caption = "选择供应商",
+                    Width = "700",
+                    Src = "screenParam.srcPopWLMerchant"
+                });
+            }
+        </i-col>
+    </row>
+
+
+
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopWLGoods",
+                    Caption = "选择物料信息",
+                    Width = "700",
+                    Src = "screenParam.srcPopWLGoods"
+                });
+            }
+        </i-col>
+    </row>
+
+}

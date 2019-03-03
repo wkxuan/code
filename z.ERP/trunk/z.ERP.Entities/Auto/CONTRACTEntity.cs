@@ -4,7 +4,7 @@
  * 生成人：书房
  * 代码生成器版本号：1.2.6655.1027
  *
- */ 
+ */
 
 using System.Data;
 using z.DBHelper.DBDomain;
@@ -358,12 +358,51 @@ namespace z.ERP.Entities
         [Field("合同员id")]
         public string SIGNER
         {
-            get;set;
+            get; set;
         }
         [Field("合同员名称")]
         public string SIGNER_NAME
         {
-            get;set;
+            get; set;
+        }
+
+
+        /// <summary>
+        /// 装修期起
+        /// <summary>
+        [Field("装修期起")]
+        [DbType(DbType.DateTime)]
+        public string FIT_BEGIN
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 装修期至
+        /// <summary>
+        [Field("装修期至")]
+        [DbType(DbType.DateTime)]
+        public string FIT_END
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 免租期起始
+        /// <summary>
+        [Field("免租期起始")]
+        [DbType(DbType.DateTime)]
+        public string FREE_BEGIN
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 免租期结束
+        /// <summary>
+        [Field("免租期结束")]
+        [DbType(DbType.DateTime)]
+        public string FREE_END
+        {
+            get; set;
         }
 
 

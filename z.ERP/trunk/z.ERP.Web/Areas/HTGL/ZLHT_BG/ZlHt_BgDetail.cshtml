@@ -94,6 +94,26 @@
         </i-col>
     </row>
 
+    
+    <row>
+        <i-col span="2" class="RowText">装修期起</i-col>
+        <i-col span="4">
+            <i-input v-model="FIT_BEGIN" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">装修期至</i-col>
+        <i-col span="4">
+            <i-input v-model="FIT_END" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">免租期起</i-col>
+        <i-col span="4">
+            <i-input v-model="FREE_BEGIN" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">免租期至</i-col>
+        <i-col span="4">
+            <i-input v-model="FREE_END" :readonly="true"></i-input>
+        </i-col>
+    </row>
+
     <row>
         <i-col span="2" class="RowTitle">租金收费规则</i-col>
         <i-col span="4">
@@ -204,6 +224,12 @@
                 CONT_END:"@contract.CONT_END",
                 OPERATERULENAME:"@contract.OPERATERULENAME",
 
+                FIT_BEGIN:"@contract.FIT_BEGIN",
+                FIT_END:"@contract.FIT_END",
+
+                FREE_BEGIN:"@contract.FREE_BEGIN",
+                FREE_END:"@contract.FREE_END",
+                
                 AREA_BUILD:"@contract.AREA_BUILD",
                 AREAR:"@contract.AREAR",
                 JXSL:"@contract.JXSL",

@@ -228,6 +228,32 @@
                 });
             }
         </i-col>
+
+        <i-col span="2" class="RowTitle">
+            建筑面积
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.AREA_BUILD",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            租用面积
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.AREAR",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
     </row>
 
     <row>
@@ -256,62 +282,6 @@
                 });
             }
         </i-col>
-
-
-
-        <i-col span="2" class="RowTitle">
-            建筑面积
-        </i-col>
-        <i-col span="2">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREA_BUILD",
-                    Readonly = "true"
-                });
-            }
-        </i-col>
-
-        <i-col span="2" class="RowTitle">
-            租用面积
-        </i-col>
-        <i-col span="2">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREAR",
-                    Readonly = "true"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            租金收费规则
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.FEERULE_RENT",
-                    ServiceMothod = m => m.feeRule()
-                });
-            }
-        </i-col>
-
-
-        <i-col span="2" class="RowTitle">
-            周期方式
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumDropDownListRender<周期方式>()
-                {
-                    vModel = "dataParam.STANDARD"
-                });
-            }
-        </i-col>
-
         <i-col span="2" class="RowTitle">
             进项税率
         </i-col>
@@ -336,6 +306,96 @@
             }
         </i-col>
     </row>
+      <row>
+        <i-col span="2" class="RowTitle">
+            装修期起
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FIT_BEGIN",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            装修期至
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FIT_END",
+                });
+            }
+        </i-col>
+
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            免租期起
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FREE_BEGIN",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            免租期至
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FREE_END",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            租金收费规则
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.FEERULE_RENT",
+                    ServiceMothod = m => m.feeRule()
+                });
+            }
+        </i-col>
+
+
+        <!-- <i-col span="2" class="RowTitle">
+            周期方式
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<周期方式>()
+                {
+                    vModel = "dataParam.STANDARD"
+                });
+            }
+        </i-col> -->
+
+        <i-col span="2" class="RowTitle">
+            销售额标记
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<销售额标记>()
+                {
+                    vModel = "dataParam.TAB_FLAG"
+                });
+            }
+        </i-col>
+
+ 
+    </row>
 
     <row>
         <i-col span="2" class="RowTitle">
@@ -350,17 +410,6 @@
             }
         </i-col>
 
-        <i-col span="2" class="RowTitle">
-            销售额标记
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumDropDownListRender<销售额标记>()
-                {
-                    vModel = "dataParam.TAB_FLAG"
-                });
-            }
-        </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">

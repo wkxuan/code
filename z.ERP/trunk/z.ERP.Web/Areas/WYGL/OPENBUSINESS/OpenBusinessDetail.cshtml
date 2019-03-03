@@ -1,0 +1,143 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Detail
+@using z.ERP.Entities
+@using z.ERP.Entities.Enum
+@using z.Extensions;
+@using System.Data
+
+@inherits DetailLayout<dynamic>
+
+@section Title{
+    @Html.Raw("详情")
+}
+
+@{
+    var regist = ViewBag.regist;
+    var item = ViewBag.item as DataTable;
+}
+
+@section btn{
+    @{
+        if (regist.STATUS == "1")
+        {
+
+            RenderControl(new ButtonRender()
+            {
+                Click = "exec",
+                Text = "审核",
+            });
+        }
+        else
+        {
+
+        }
+    }
+}
+
+@section content{
+    <row>
+        <i-col span="2" class="RowTitle">单据号</i-col>
+        <i-col span="4">
+            <i-input v-model="BILLID" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">合同号</i-col>
+        <i-col span="4">
+            <i-input v-model="CONTRACTID" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">商户</i-col>
+        <i-col span="4">
+            <i-input v-model="SHMC" :readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">开业日期</i-col>
+        <i-col span="4">
+            <i-input v-model="OPENDATE" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">描述</i-col>
+        <i-col span="10">
+            <i-input v-model="DESCRIPTION" :readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">登记人</i-col>
+        <i-col span="4">
+            <i-input v-model="REPORTER_NAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">登记时间</i-col>
+        <i-col span="4">
+            <i-input v-model="REPORTER_TIME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="4">
+            <i-input v-model="STATUSMC" :readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">审核人</i-col>
+        <i-col span="4">
+            <i-input v-model="VERIFY_NAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">审核时间</i-col>
+        <i-col span="4">
+            <i-input v-model="VERIFY_TIME" :readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="24">
+            <i-table height="200" size="small" :border="true"
+                     :columns="colDef" :data="MARCHINAREARITEM"></i-table>
+        </i-col>
+    </row>
+}
+
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true,
+                BILLID:"@regist.BILLID",
+                CONTRACTID:"@regist.CONTRACTID",
+                OPENDATE:"@regist.OPENDATE",
+                SHMC:"("+"@regist.MERCHANTID"+")"+"@regist.NAME",
+                DESCRIPTION:"@regist.DESCRIPTION",
+                REPORTER_NAME:"@regist.REPORTER_NAME",
+                REPORTER_TIME:"@regist.REPORTER_TIME",
+                STATUSMC:"@regist.STATUSMC",
+                VERIFY_NAME:"@regist.VERIFY_NAME",
+                VERIFY_TIME:"@regist.VERIFY_TIME",
+                MARCHINAREARITEM:[],
+                colDef: [
+                    { title: "商铺代码", key: "CODE", width: 100, },
+                    { title: "商铺名称", key: "NAME", width: 100, },
+                    { title: "建筑面积", key: "AREA_BUILD", width: 100, }
+                ],
+            },
+            mounted:function(){
+                var _self = this;
+                _.Ajax('ShowOneOpenBusinessEdit', {
+                    Data: { BILLID: @regist.BILLID }
+                }, function (data) {
+                    _self.MARCHINAREARITEM = data.item[0];
+                });
+            },
+            methods: {
+
+                exec: function () {
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: {BILLID:@regist.BILLID},
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                }
+            }
+
+        });
+    </script>
+}

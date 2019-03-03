@@ -85,7 +85,8 @@
 
     <row>
         <i-col span="2" class="RowTitle">
-            含税单价
+            <span class="mustElement">*</span>
+            采购单价
         </i-col>
         <i-col span="6">
             @{
@@ -95,17 +96,17 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            不含税单价
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NOTAXINPRICE"
-                });
-            }
-        </i-col>
+        @*<i-col span="2" class="RowTitle">
+                不含税单价
+            </i-col>
+            <i-col span="6">
+                @{
+                    RenderControl(new TextBoxRender()
+                    {
+                        vModel = "dataParam.NOTAXINPRICE"
+                    });
+                }
+            </i-col>*@
         <i-col span="2" class="RowTitle">
             使用价
         </i-col>

@@ -1,0 +1,147 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch()
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelMerchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="1">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTID"
+                });
+            }
+        </i-col>
+        <i-col span="3">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTNAME"
+                });
+            }
+        </i-col>
+
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">合同号</i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.CONTRACTID"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">资产代码</i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.SHOPDM"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new EnumDropDownListRender<合同状态>()
+                {
+                    vModel = "searchParam.STATUS"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelReporter",
+                    Text = "登记人",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_NAME"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelVerify",
+                    Text = "审核人",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.VERIFY_NAME"
+                });
+            }
+        </i-col>
+    </row>
+}
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopMerchant",
+                    Caption = "选择商户",
+                    Width = "900",
+                    Src = "screenParam.srcPopMerchant"
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopSysuser",
+                    Src = "screenParam.srcPopSysuser",
+                    Caption = "选择人员",
+                    Width = "800"
+                });
+            }
+        </i-col>
+    </row>
+}

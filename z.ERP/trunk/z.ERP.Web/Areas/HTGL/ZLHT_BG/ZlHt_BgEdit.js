@@ -301,7 +301,7 @@
                             Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'RENTS', (event.target.value * editDetail.dataParam.AREAR).toFixed(2));
                             Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'CONTRACT_RENTITEM', []);
                             Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'SUMRENTS', 0);
-                            
+
                         }
                     },
                 })
@@ -347,6 +347,31 @@
         },
         { title: '年月', key: 'YEARMONTH', width: 100 },
         { title: '租金', key: 'RENTS', width: 200 },
+        {
+            title: '减免金额', key: 'JMJE', width: 100,
+            render: function (h, params) {
+                return h('Input', {
+                    props: {
+                        value: params.row.JMJE
+                    },
+                    on: {
+                        'on-blur': function (event) {
+                            var len = 0;
+                            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                                var lenold = len;
+                                len += editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM.length;
+                                var colIndex = params.index + 1;
+
+                                if ((colIndex > lenold) && (colIndex <= len)) {
+                                    editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[params.index - lenold].JMJE = event.target.value;;
+                                    break;
+                                }
+                            };
+                        }
+                    },
+                })
+            },
+        },
         {
             //title: '生成日期', key: 'CREATEDATE', width: 170,
             //render: function (h, params) {
@@ -629,7 +654,7 @@
     //收款方式手续费
     editDetail.screenParam.colDefPAY = [
         { type: 'selection', width: 60, align: 'center', },
-        {title: "收款方式", key: 'PAYID', width: 120},
+        { title: "收款方式", key: 'PAYID', width: 120 },
         { title: "收款方式名称", key: 'NAME', width: 120 },
         {
             title: "费用项目", key: 'TERMID', width: 120,
@@ -916,10 +941,10 @@ editDetail.otherMethods = {
             }
         }
         if (editDetail.dataParam.CONTRACT_RENT.length == 0) {
-            temp.push({ INX: maxINX, STARTDATE: (editDetail.dataParam.CONT_START), RENTS:0 });
+            temp.push({ INX: maxINX, STARTDATE: (editDetail.dataParam.CONT_START), RENTS: 0 });
         }
         else {
-            temp.push({ INX: maxINX, STARTDATE: (addDate(maxSTARTDATE)), RENTS:0 });
+            temp.push({ INX: maxINX, STARTDATE: (addDate(maxSTARTDATE)), RENTS: 0 });
         }
 
         editDetail.dataParam.CONTRACT_RENT = temp;
@@ -980,6 +1005,25 @@ editDetail.otherMethods = {
         var rentData = null;
         var beginHtq = editDetail.dataParam.CONT_START;
 
+        var inx = 0;
+        if (editDetail.dataParam.FREE_END) {
+            rentData = {
+                INX: inx + 1,
+                STARTDATE: beginHtq,
+                ENDDATE: editDetail.dataParam.FREE_END,
+                DJLX: '2',  //默认月金额
+                PRICE: 0,
+                RENTS: 0,
+                RENTS_JSKL: 0,
+                SUMRENTS: 0
+            }
+            editDetail.dataParam.CONTRACT_RENT.push(rentData);
+            inx = 1;
+
+            yearsValue = getYears(new Date(addDate(editDetail.dataParam.FREE_END, 1)), new Date(editDetail.dataParam.CONT_END));
+            beginHtq = addDate(editDetail.dataParam.FREE_END, 1);
+        };
+
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
             var copyHtQsr = (beginHtq);
@@ -989,6 +1033,7 @@ editDetail.otherMethods = {
                     INX: i + 1,
                     STARTDATE: copyHtQsr,
                     ENDDATE: nestYear,
+                    PRICE: 0,
                     RENTS: 0,
                     RENTS_JSKL: 0,
                     SUMRENTS: 0
@@ -1000,6 +1045,7 @@ editDetail.otherMethods = {
                     INX: i + 1,
                     STARTDATE: copyHtQsr,
                     ENDDATE: (editDetail.dataParam.CONT_END),
+                    PRICE: 0,
                     RENTS: 0,
                     RENTS_JSKL: 0,
                     SUMRENTS: 0
@@ -1132,8 +1178,8 @@ editDetail.otherMethods = {
         var localData = [];
         for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
             for (j = 0; j < editDetail.dataParam.CONTRACT_GROUP.length; j++) {
-                
-               
+
+
                 localData.push({
                     GROUPNO: editDetail.dataParam.CONTRACT_GROUP[j].GROUPNO,
                     INX: editDetail.dataParam.CONTRACT_RENT[i].INX,
@@ -1141,7 +1187,7 @@ editDetail.otherMethods = {
                     ENDDATE: (editDetail.dataParam.CONTRACT_RENT[i].ENDDATE),
                     JSKL: editDetail.dataParam.CONTRACT_GROUP[j].JSKL,
                     SALES_START: 0,
-                    SALES_END:999999999
+                    SALES_END: 999999999
                 });
             }
         }
@@ -1248,6 +1294,36 @@ editDetail.IsValidSave = function () {
         return false;
     };
 
+
+    if ((editDetail.dataParam.FIT_BEGIN) && ((new Date(editDetail.dataParam.FIT_BEGIN).Format('yyyy-MM-dd')
+    < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'))) || ((new Date(editDetail.dataParam.FIT_BEGIN).Format('yyyy-MM-dd')
+    > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
+        iview.Message.info("装修开始日期需在租约有效期内!");
+        return false;
+    };
+
+    if ((editDetail.dataParam.FIT_END) && ((new Date(editDetail.dataParam.FIT_END).Format('yyyy-MM-dd')
+    < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'))) || ((new Date(editDetail.dataParam.FIT_END).Format('yyyy-MM-dd')
+    > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
+        iview.Message.info("装修结束日期需在租约有效期内!");
+        return false;
+    };
+
+
+    if ((editDetail.dataParam.FREE_BEGIN) && ((new Date(editDetail.dataParam.FREE_BEGIN).Format('yyyy-MM-dd')
+    < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'))) || ((new Date(editDetail.dataParam.FREE_BEGIN).Format('yyyy-MM-dd')
+    > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
+        iview.Message.info("免租开始日期需在租约有效期内!");
+        return false;
+    };
+
+    if ((editDetail.dataParam.FREE_END) && ((new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd')
+    < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'))) || ((new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd')
+    > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
+        iview.Message.info("免租结束日期需在租约有效期内!");
+        return false;
+    };
+
     if (!editDetail.dataParam.CONT_START) {
         iview.Message.info("请维护开始日期!");
         return false;
@@ -1315,7 +1391,18 @@ editDetail.IsValidSave = function () {
                         iview.Message.info("请生成月度分解生成日期不能为空!");
                         return false;
                     };
+
+                    if (!editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[j].JMJE) {
+                        editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[j].JMJE = 0;
+                    };
+
+                    if (editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[j].JMJE
+                        > editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[j].RENTS) {
+                        iview.Message.info("租金月度分解中减免金额不能大于租金金额!");
+                        return false;
+                    };
                 };
+
             };
         };
     };

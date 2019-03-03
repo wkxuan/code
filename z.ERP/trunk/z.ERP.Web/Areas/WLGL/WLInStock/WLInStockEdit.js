@@ -16,9 +16,11 @@
     //品牌表格
     editDetail.screenParam.colDefWL = [
         { type: 'selection', width: 60, align: 'center' },
+        { title: "购进单单号", key: 'BILLID', width: 100 },
         { title: "物料代码", key: 'GOODSDM', width: 100 },
         { title: '物料名称', key: 'NAME', width: 200 },
-        { title: '含税进价', key: 'TAXINPRICE', width: 100 },
+        { title: '含税采购价', key: 'TAXINPRICE', width: 100 },
+
         { title: '使用价', key: 'USEPRICE', width: 100 },
         {
             title: "采购数量", key: 'QUANTITY', width: 120,

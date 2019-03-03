@@ -36,6 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -51,24 +54,26 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\erpservice\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\posservice\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="ServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\z.ERP.API\z.ERP.API.csproj">
-      <Project>{91882EE9-BF22-4B43-85A4-AA9CECB65C48}</Project>
-      <Name>z.ERP.API</Name>
-    </ProjectReference>
     <ProjectReference Include="..\z.ERP.Entities\z.ERP.Entities.csproj">
       <Project>{4115FE85-9E35-45E1-BFE9-C19F62BAB612}</Project>
       <Name>z.ERP.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\z.ERP.Services\z.ERP.Services.csproj">
-      <Project>{4F92BE72-D196-4EE6-903C-10A1D7B0FADF}</Project>
-      <Name>z.ERP.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\z.ERP.WebService\z.ERP.WebService.csproj">
-      <Project>{92FBA900-7903-471F-805B-DAD6E157C894}</Project>
-      <Name>z.ERP.WebService</Name>
+    <ProjectReference Include="..\z.WebServiceBase\z.WebServiceBase.csproj">
+      <Project>{4A1B17AE-5456-4F4E-9124-7F71CDEA6B7B}</Project>
+      <Name>z.WebServiceBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\z\z.csproj">
       <Project>{68597FEB-8FF8-486E-B603-CE7E8DE57F5B}</Project>
@@ -77,6 +82,65 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Properties\DataSources\z.WebServiceBase.Model.LoginResponseDTO.datasource" />
+    <None Include="Properties\DataSources\z.WebServiceBase.Model.ResponseDTO.datasource" />
+    <None Include="Service References\erpservice\Service.wsdl" />
+    <None Include="Service References\erpservice\Service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\erpservice\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\erpservice\Service2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\posservice\Service.wsdl" />
+    <None Include="Service References\posservice\Service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\posservice\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\posservice\Service2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\erpservice\" />
+    <WCFMetadataStorage Include="Service References\posservice\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\posservice\Service.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\posservice\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\posservice\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\posservice\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\erpservice\Service.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\erpservice\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\erpservice\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\erpservice\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

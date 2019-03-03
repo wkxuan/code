@@ -1,8 +1,8 @@
 ﻿using System.Web;
 using z.ERP.WebService.Controllers;
-using z.ERP.WebService.Model;
 using z.Extensions;
 using z.ERP.Entities.Service.Pos;
+using z.WebServiceBase.Model;
 
 namespace z.ERP.WebService.Ashx
 {
@@ -32,24 +32,6 @@ namespace z.ERP.WebService.Ashx
             else
             {
                 res = new CommonController().Login(dto);
-
-                res.ConfigInfo = null;
-
-                if (res.Success)
-                {
-                    LoginConfigInfo lgi = new PosController().GetConfig();
-
-                    if (lgi == null)
-                    {
-                        res.UserId = null;
-                        res.UserName = null;
-                        res.SecretKey = null;
-                        res.Success = false;
-                        res.ErrorMsg = "终端未定义";
-                    }
-                    else
-                        res.ConfigInfo = lgi.ToJson<LoginConfigInfo>();
-                }
             }
                 
             context.Response.ContentType = "text/plain";

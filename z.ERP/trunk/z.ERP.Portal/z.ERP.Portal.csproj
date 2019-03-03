@@ -161,6 +161,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Home\ChangePassword\ChangePassword.js" />
+    <Content Include="Areas\Home\Default\Default.css" />
+    <Content Include="Areas\Home\Default\Default.js" />
     <Content Include="Areas\Home\Index\Index.js" />
     <Content Include="Areas\Home\Login\Login.js" />
     <Content Include="Content\AjaxHelper.js" />
@@ -230,6 +232,8 @@
     <Content Include="Content\DWZ\default\images\tree\tree.png" />
     <Content Include="Content\DWZ\default\style.css" />
     <Content Include="Content\DWZ\dwz.js" />
+    <Content Include="Content\echarts-wordcloud.js" />
+    <Content Include="Content\echarts.js" />
     <Content Include="Content\jquery.min.js" />
     <Content Include="Content\JsHelper.js" />
     <Content Include="Content\Login\img\backgrounds\1.jpg" />

@@ -33,5 +33,14 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        public string TAXINPRICE
+        {
+            get; set;
+        }
+
+        public string TAXAMOUNT
+        {
+            get; set;
+        }
     }
 }

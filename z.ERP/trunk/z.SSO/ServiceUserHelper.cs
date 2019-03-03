@@ -54,7 +54,13 @@ namespace z.SSO
         public override void Login(string username, string password)
         {
             if (username.IsEmpty())
+            {
+                if (ConfigExtension.TestModel)//测试模式
+                {
+                    return;
+                }
                 throw new NoLoginException();
+            }
             //------------这里接入验证登陆和权限配置
             if (GetUserByKey<ServiceUser>(username) != null)
                 ApplicationContextBase.GetContext().principal = new GenericPrincipal(new GenericIdentity(username), null);

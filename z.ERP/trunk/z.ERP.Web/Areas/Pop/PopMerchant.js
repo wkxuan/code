@@ -11,7 +11,7 @@
                            '商户名称' +
                         '</i-col>' +
                         '<i-col span="4">' +
-                           '<i-input v-model="NAME"></i-input>' +
+                           '<i-input v-model="MERCHANTNAME"></i-input>' +
                         '</i-col>' +
                     '</row>' +
                     '<row>' +
@@ -63,7 +63,7 @@
                 Method: "GetMerchant",
                 Data: {
                     MERCHANTID: _self.MERCHANTID,
-                    NAME: _self.NAME
+                    MERCHANTNAME: _self.MERCHANTNAME
                 },
                 Success: function (data) {
                     if (data.rows.length != 0) {

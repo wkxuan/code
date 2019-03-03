@@ -54,8 +54,8 @@
                         </ul>
                     </div>
 
-                    <div class="nav-no-collapse navbar-left pull-left hidden-sm hidden-xs">
-                        <ul class="nav navbar-nav pull-left">
+                    <div class="nav-no-collapse navbar-left pull-right hidden-sm hidden-xs">
+                        <ul class="nav navbar-nav pull-left" style="color:aqua">
                             <li>
                                 <a class="btn" id="make-small-nav_mallerp" onclick="GetLoadNav(1)">业务系统<i class="hidden-xs"></i></a>
                             </li>
@@ -68,16 +68,19 @@
                         </ul>
                     </div>
 
-                    <div class="nav-no-collapse pull-right" id="header-nav">
+                    <div class="nav-no-collapse pull-left" id="header-nav">
                         <ul class="nav navbar-nav pull-right">
                             <li style="padding-top:7px;padding-right:5px;display:none" id="liSelShop">
                                 <select id="selShop" class="form-control" style="width:300px"></select>
                             </li>
                             <li class="dropdown profile-dropdown">
-                                <a href="#" class="dropdown" data-toggle="dropdown">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                    <span class="hidden-xs">欢迎登录!</span>
+                                <a>
+                                    <span>您好!@employee.Name</span>
                                 </a>
+                                @*<a href="#" class="dropdown" data-toggle="dropdown">*@
+                                @*<i class="fa fa-ellipsis-h"></i>*@
+                                @*<span class="hidden-xs">欢迎登录!</span>*@
+                                @*</a>*@
                                 <ul class="dropdown-menu pull-right">
                                     <li><a class="menuItem" href="@ViewBag.BaseUrl/HOME/ChangePassword/ChangePassword"><i class="fa fa-cog"></i>修改密码</a></li>
                                     <li class="divider"></li>

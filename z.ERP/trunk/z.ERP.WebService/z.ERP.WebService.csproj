@@ -95,20 +95,14 @@
     <Compile Include="Ashx\Login.ashx.cs">
       <DependentUpon>Login.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\PosController.cs" />
-    <Compile Include="Model\LoginResponseDTO.cs" />
-    <Compile Include="Model\LoginRequestDTO.cs" />
-    <Compile Include="Model\ServiceAbleAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceTransfer.cs" />
     <Compile Include="Wcf\IService.cs" />
-    <Compile Include="Model\ResponseDTO.cs" />
     <Compile Include="Wcf\Service.svc.cs">
       <DependentUpon>Service.svc</DependentUpon>
     </Compile>
-    <Compile Include="Model\RequestDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\z.ERP.API\z.ERP.API.csproj">
@@ -138,6 +132,10 @@
     <ProjectReference Include="..\z.SSO\z.SSO.csproj">
       <Project>{df833680-d044-4c57-96f9-217a1812c0b3}</Project>
       <Name>z.SSO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\z.WebServiceBase\z.WebServiceBase.csproj">
+      <Project>{4a1b17ae-5456-4f4e-9124-7f71cdea6b7b}</Project>
+      <Name>z.WebServiceBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\z\z.csproj">
       <Project>{68597feb-8ff8-486e-b603-ce7e8de57f5b}</Project>

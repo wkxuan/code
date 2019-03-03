@@ -11,6 +11,7 @@
     this.enabled = function (val) { return val; }
 
     this.clearKey = function () { }
+    this.newRecord = function () { }
 
     this.vue = function VueOperate() {
         var options = {
@@ -28,6 +29,7 @@
                 add: function (event) {
                     _this.dataParam.BILLID = null;
                     _this.clearKey();
+                    _this.newRecord();
                     ve.dataParam = _this.dataParam;
                     this.$set(ve.dataParam, _this.dataParam);
 

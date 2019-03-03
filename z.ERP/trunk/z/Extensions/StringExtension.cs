@@ -208,7 +208,7 @@ namespace z.Extensions
         /// <returns></returns>
         public static DateTime ToDateTime(this string str, bool ThrowError = false)
         {
-            str = str.Replace('/', '-');
+            str = str.Trim().Replace('/', '-');
             DateTime dt;
             Func<string, bool> GMT2Local = (gmt) =>
             {
@@ -381,6 +381,42 @@ namespace z.Extensions
         }
 
         /// <summary>
+        /// 获取一个随机种子
+        /// </summary>
+        /// <returns></returns>
+        public static Random GetOneRandom()
+        {
+            byte[] b = new byte[4];
+            new System.Security.Cryptography.RNGCryptoServiceProvider().GetBytes(b);
+            return new Random(BitConverter.ToInt32(b, 0));
+        }
+
+        /// <summary>
+        /// 在一堆字符串中随机挑一个
+        /// </summary>
+        /// <param name="strs"></param>
+        /// <returns></returns>
+        public static string Random(params string[] strs)
+        {
+            if (strs.IsEmpty())
+                return null;
+            Random r = GetOneRandom();
+            return strs[r.Next(strs.Length)];
+        }
+
+        /// <summary>
+        /// 取一个随机数
+        /// </summary>
+        /// <param name="min">最小</param>
+        /// <param name="max">最大</param>
+        /// <returns></returns>
+        public static double Random(double min, double max)
+        {
+            Random r = GetOneRandom();
+            return r.NextDouble() * (max - min) + min;
+        }
+
+        /// <summary>
         /// 获取随机字符串
         /// </summary>
         /// <param name="length">总长度</param>
@@ -394,9 +430,7 @@ namespace z.Extensions
         public static string Random(int length, bool useNum = true, bool useLow = false, bool useUpp = false, bool useSpe = false, string custom = "", bool nature = false)
         {
             string NoNatureStr = "oOLl9gqVvUuI1\"',./:;<>\\^_`|~";//没人性的字符
-            byte[] b = new byte[4];
-            new System.Security.Cryptography.RNGCryptoServiceProvider().GetBytes(b);
-            Random r = new Random(BitConverter.ToInt32(b, 0));
+            Random r = GetOneRandom();
             string s = null, str = custom;
             if (useNum == true)
             {
