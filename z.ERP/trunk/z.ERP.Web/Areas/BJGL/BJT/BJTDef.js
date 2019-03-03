@@ -2,8 +2,8 @@
 $(function () {
     var options = {
         Url: '/Content/Maps/fashion.jpg',  //底图
-        width: 1600,   //这个尺寸是显示的尺寸,多大都行,不影响底下的坐标
-        height: 1046,
+        width: 1000,   //这个尺寸是显示的尺寸,多大都行,不影响底下的坐标
+        height: 600,
         canEdit: true,   //是否可以编辑,如果不可以编辑,就不能拖动,删除,新增,不能编辑状态是用来展示用的
         //假设一些数据,这些是要从后台取到的
         data: [    //这里的数据,不能删,但是可以任意的加,不要占用这4个属性就行了,方便显示的时候通过GetHtml渲染数据
@@ -33,8 +33,8 @@ function add() {
     map.Add({
         name: newname,
         html: GetHtml,
-        x: 0,
-        y: 0
+        x: 300,
+        y: 300
     });
 }
 

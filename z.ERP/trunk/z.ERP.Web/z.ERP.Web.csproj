@@ -160,6 +160,7 @@
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\BJGL\BJT\BJTController.cs" />
+    <Compile Include="Areas\BJGL\BJDEF\BjdefController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
@@ -261,6 +262,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\BJGL\BJT\BJTDef.js" />
+    <Content Include="Areas\BJGL\BJDEF\BjdefEdit.js" />
+    <Content Include="Areas\BJGL\BJDEF\BjdefList.js" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.js" />
@@ -365,6 +368,7 @@
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Areas\XTGL\TreeTest\List.js" />
     <Content Include="Content\jquery-1.7.2.min.js" />
+    <Content Include="Content\Maps\1.jpg" />
     <Content Include="Content\Maps\contextMenu.min.js" />
     <Content Include="Content\Maps\contextMenu.css" />
     <Content Include="Content\Maps\fashion.jpg" />
@@ -572,6 +576,10 @@
     <Content Include="Areas\WLGL\WLInStock\WLInStockMx.cshtml" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsList.cshtml" />
     <Content Include="Areas\BJGL\BJT\BJTDef.cshtml" />
+    <Content Include="Areas\BJGL\BJDEF\BjdefDetail.cshtml" />
+    <Content Include="Areas\BJGL\BJDEF\BjdefEdit.cshtml" />
+    <Content Include="Areas\BJGL\BJDEF\BjdefList.cshtml" />
+    <Content Include="Areas\BJGL\BJDEF\Print.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
