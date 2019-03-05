@@ -14,24 +14,6 @@ namespace z.ERP.Services
 
     public class PosService : ServiceBase
     {
-        public const int UniCode_Json = 0;
-        public const int UniCode_XML = 1;
-
-        private const int Member_CondType_CDNR = 0;
-        private const int Member_CondType_HYID = 1;
-        private const int Member_CondType_HYK_NO = 2;
-        private const int Member_CondType_SJHM = 3;
-        private const int Member_CondType_SFZBH = 4;
-        private const int Member_CondType_qrcode = 5;
-        //private const int Member_CondType_PHONE = 5;
-
-        private const string Member_CondTypeName_Track = "CardTrack";
-        private const string Member_CondTypeName_SFZ = "IDCard";
-        private const string Member_CondTypeName_HZ = "Passport";
-        private const string Member_CondTypeName_CardNo = "CardNo";
-        private const string Member_CondTypeName_HYID = "MemberID";//mobilPhone
-        private const string Member_CondTypeName_Phone = "mobilePhone";//mobilPhone  qrcode
-        private const string Member_CondTypeName_qrcode = "qrcode";
 
         internal PosService()
         {
@@ -83,17 +65,26 @@ namespace z.ERP.Services
         /// <returns></returns>
         public long GetLastDealid()
         {
+            /*   string sql = $"select nvl(max(dealid),0) from sale where posno = '{employee.PlatformId}'";
+
+               long lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
+
+               if (lastDealid == 0)
+               {
+                   sql = $"select nvl(max(dealid),0) from his_sale where posno = '{employee.PlatformId}'";
+                   lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
+               }
+
+               return lastDealid;   */
+
             string sql = $"select nvl(max(dealid),0) from sale where posno = '{employee.PlatformId}'";
 
             long lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
 
-            if (lastDealid == 0)
-            {
-                sql = $"select nvl(max(dealid),0) from his_sale where posno = '{employee.PlatformId}'";
-                lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
-            }
+            sql = $"select nvl(max(dealid),0) from his_sale where posno = '{employee.PlatformId}'";
+            long lastDealid_his = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
 
-            return lastDealid;
+            return (lastDealid > lastDealid_his) ? lastDealid : lastDealid_his;
         }
 
         public UserYYYResult GetClerkShop(PersonInfo req)
@@ -212,6 +203,9 @@ namespace z.ERP.Services
             else
                 posNo = request.posno;
 
+            int dealId = request.dealid;
+
+
             decimal sumGoodsAmount = request.goodslist.Sum(a => a.sale_amount);
             decimal sumPayAmount = request.paylist.Sum(a => a.amount);
 
@@ -220,127 +214,148 @@ namespace z.ERP.Services
                 throw new Exception("商品列表中金额合计与支付列表中的金额合计不相等!");
             }
 
-            int goodsCount = request.goodslist.Count;
-            int payCount = request.paylist.Count;
-            int clerkCount = request.clerklist.Count;
+            string sql = $"select sale_amount from SALE where POSNO='{posNo}' and DEALID={dealId} ";
 
-            string[] sqlarr = new string[1 + goodsCount + payCount + clerkCount + goodsCount * payCount];
-
-            sqlarr[0] = "insert into sale(posno,dealid,sale_time,account_date,cashierid,sale_amount,";
-            sqlarr[0] += "change_amount,member_cardid,crm_recordid,posno_old,dealid_old)";
-            sqlarr[0] += $"values('{posNo}',{request.dealid},to_date('{request.sale_time}','yyyy-mm-dd HH24:MI:SS'),";
-            if (request.account_date.ToString().IsEmpty())
-                sqlarr[0] += $"to_date('{request.sale_time.Date}','yyyy-mm-dd HH24:MI:SS'),";
-            else
-                sqlarr[0] += $"to_date('{request.account_date.Date}','yyyy-mm-dd HH24:MI:SS'),";
-            sqlarr[0] += $"{request.cashierid},{sumGoodsAmount},{request.change_amount},";
-
-            if (request.member_cardid.IsEmpty())
-                sqlarr[0] += $"-1,";
-            else
-                sqlarr[0] += $"{request.member_cardid},";
-            if (request.crm_recordid.ToString().IsEmpty())
-                sqlarr[0] += $"-1,";
-            else
-                sqlarr[0] += $"{ request.crm_recordid},";
-
-            if (!String.IsNullOrEmpty(request.posno_old))
-                sqlarr[0] += $"'{request.posno_old}',";
-            else
-                sqlarr[0] += "null,";
-
-            if (request.dealid_old.HasValue && request.dealid_old > 0)
-                sqlarr[0] += $"{request.dealid_old})";
-            else
-                sqlarr[0] += "null)";
+            DataTable Dt = DbHelper.ExecuteTable(sql);
 
 
-            int j = 0;
-
-            for (int i = 1; i <= goodsCount; i++)
+            if (Dt.IsNotNull())
             {
-                sqlarr[i] = "insert into sale_goods(posno,dealid,sheetid,inx,shopid,goodsid,goodscode,";
-                sqlarr[i] += "price,quantity,sale_amount,discount_amount,coupon_amount)";
-                sqlarr[i] += $"values('{posNo}',{request.dealid},{request.goodslist[j].sheetid},";
-                sqlarr[i] += $"{request.goodslist[j].inx},{request.goodslist[j].shopid},{request.goodslist[j].goodsid},";
-                sqlarr[i] += $"'{request.goodslist[j].goodscode}',{request.goodslist[j].price},{request.goodslist[j].quantity},";
-                sqlarr[i] += $"{request.goodslist[j].sale_amount},{request.goodslist[j].discount_amount},";
-                sqlarr[i] += $"{request.goodslist[j].coupon_amount})";
-                j++;
+                decimal saleAmount = Dt.Rows[0][0].ToString().ToDecimal();
+
+                if (Math.Abs(saleAmount - sumGoodsAmount)>=0.01m)
+                {
+                    throw new Exception("小票号"+ dealId.ToString()+"已存在!");
+                }
+
+
             }
-
-            j = 0;
-
-            for (int i = 1 + goodsCount; i <= goodsCount + payCount; i++)
+            else
             {
+                int goodsCount = request.goodslist.Count;
+                int payCount = request.paylist.Count;
+                int clerkCount = request.clerklist.Count;
 
-                sqlarr[i] = "insert into sale_pay(posno,dealid,payid,amount,remarks)";
-                sqlarr[i] += $"values('{posNo}',{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount},";
-                if (request.paylist[j].remarks.IsEmpty())
-                    sqlarr[i] += "null)";
+                string[] sqlarr = new string[1 + goodsCount + payCount + clerkCount + goodsCount * payCount];
+
+                sqlarr[0] = "insert into sale(posno,dealid,sale_time,account_date,cashierid,sale_amount,";
+                sqlarr[0] += "change_amount,member_cardid,crm_recordid,posno_old,dealid_old)";
+                sqlarr[0] += $"values('{posNo}',{request.dealid},"; //to_date('{request.sale_time}','yyyy-mm-dd HH24:MI:SS'),";
+                sqlarr[0] += "sysdate,trunc(sysdate),";
+                //    if (request.account_date.ToString().IsEmpty())
+                //        sqlarr[0] += $"to_date('{request.sale_time.Date}','yyyy-mm-dd'),";
+                //    else
+                //        sqlarr[0] += $"to_date('{request.account_date.Date}','yyyy-mm-dd'),";
+                sqlarr[0] += $"{request.cashierid},{sumGoodsAmount},{request.change_amount},";
+
+                if (request.member_cardid.IsEmpty())
+                    sqlarr[0] += $"-1,";
                 else
-                    sqlarr[i] += $"'{request.paylist[j].remarks}')";
-                j++;
-            }
+                    sqlarr[0] += $"{request.member_cardid},";
+                if (request.crm_recordid.ToString().IsEmpty())
+                    sqlarr[0] += $"-1,";
+                else
+                    sqlarr[0] += $"{ request.crm_recordid},";
 
-            j = 0;
-            for (int i = 1 + goodsCount + payCount; i <= goodsCount + payCount + clerkCount; i++)
-            {
-                sqlarr[i] = "insert into sale_clerk(posno,dealid,sheetid,clerkid)";
-                sqlarr[i] += $"values('{posNo}',{request.dealid},{request.clerklist[j].sheetid},{request.clerklist[j].clerkid})";
-                j++;
-            }
+                if (!String.IsNullOrEmpty(request.posno_old))
+                    sqlarr[0] += $"'{request.posno_old}',";
+                else
+                    sqlarr[0] += "null,";
 
-            decimal goodsPayAmount = 0;
-            decimal payAmount = 0;
-            j = 1 + goodsCount + payCount + clerkCount;
-            int inx = 0;
-            for (int m = 0; m < request.paylist.Count(); m++)
-            {
-                payAmount = request.paylist[m].amount;
-                inx = 0;
-                for (int n = 0; n < request.goodslist.Count(); n++)
+                if (request.dealid_old.HasValue && request.dealid_old > 0)
+                    sqlarr[0] += $"{request.dealid_old})";
+                else
+                    sqlarr[0] += "null)";
+
+
+                int j = 0;
+
+                for (int i = 1; i <= goodsCount; i++)
                 {
-                    goodsPayAmount = Math.Round(request.paylist[m].amount * request.goodslist[n].sale_amount / sumGoodsAmount, 2);
-                    payAmount = payAmount - goodsPayAmount;
-
-                    if (n == request.paylist.Count() - 1 && payAmount != 0)  //尾差放到最后一行
-                        goodsPayAmount = goodsPayAmount + payAmount;
-
-
-                    sqlarr[j] = "insert into sale_goods_pay(posno,dealid,goodsid,payid,amount,inx)";
-                    sqlarr[j] += $"values('{posNo}',{request.dealid},{request.goodslist[n].goodsid},{request.paylist[m].payid},{goodsPayAmount},{inx})";
+                    sqlarr[i] = "insert into sale_goods(posno,dealid,sheetid,inx,shopid,goodsid,goodscode,";
+                    sqlarr[i] += "price,quantity,sale_amount,discount_amount,coupon_amount)";
+                    sqlarr[i] += $"values('{posNo}',{request.dealid},{request.goodslist[j].sheetid},";
+                    sqlarr[i] += $"{request.goodslist[j].inx},{request.goodslist[j].shopid},{request.goodslist[j].goodsid},";
+                    sqlarr[i] += $"'{request.goodslist[j].goodscode}',{request.goodslist[j].price},{request.goodslist[j].quantity},";
+                    sqlarr[i] += $"{request.goodslist[j].sale_amount},{request.goodslist[j].discount_amount},";
+                    sqlarr[i] += $"{request.goodslist[j].coupon_amount})";
                     j++;
-                    inx++;
                 }
-            }
 
+                j = 0;
 
-            int insertCount = 0;
-            try
-            {
-                using (var Tran = DbHelper.BeginTransaction())
+                for (int i = 1 + goodsCount; i <= goodsCount + payCount; i++)
                 {
-                    insertCount = DbHelper.ExecuteNonQuery(sqlarr);
-                    Tran.Commit();
+
+                    sqlarr[i] = "insert into sale_pay(posno,dealid,payid,amount,remarks)";
+                    sqlarr[i] += $"values('{posNo}',{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount},";
+                    if (request.paylist[j].remarks.IsEmpty())
+                        sqlarr[i] += "null)";
+                    else
+                        sqlarr[i] += $"'{request.paylist[j].remarks}')";
+                    j++;
                 }
-            }
-            catch (Exception e)
-            {
 
-                throw new Exception("提交数据库时发生异常:" + e);
+                j = 0;
+                for (int i = 1 + goodsCount + payCount; i <= goodsCount + payCount + clerkCount; i++)
+                {
+                    sqlarr[i] = "insert into sale_clerk(posno,dealid,sheetid,clerkid)";
+                    sqlarr[i] += $"values('{posNo}',{request.dealid},{request.clerklist[j].sheetid},{request.clerklist[j].clerkid})";
+                    j++;
+                }
+
+                decimal goodsPayAmount = 0;
+                decimal payAmount = 0;
+                j = 1 + goodsCount + payCount + clerkCount;
+                int inx = 0;
+                for (int m = 0; m < request.paylist.Count(); m++)
+                {
+                    payAmount = request.paylist[m].amount;
+                    inx = 0;
+                    for (int n = 0; n < request.goodslist.Count(); n++)
+                    {
+                        goodsPayAmount = Math.Round(request.paylist[m].amount * request.goodslist[n].sale_amount / sumGoodsAmount, 2);
+                        payAmount = payAmount - goodsPayAmount;
+
+                        if (n == request.paylist.Count() - 1 && payAmount != 0)  //尾差放到最后一行
+                            goodsPayAmount = goodsPayAmount + payAmount;
+
+
+                        sqlarr[j] = "insert into sale_goods_pay(posno,dealid,goodsid,payid,amount,inx)";
+                        sqlarr[j] += $"values('{posNo}',{request.dealid},{request.goodslist[n].goodsid},{request.paylist[m].payid},{goodsPayAmount},{inx})";
+                        j++;
+                        inx++;
+                    }
+                }
+
+
+                int insertCount = 0;
+                try
+                {
+                    using (var Tran = DbHelper.BeginTransaction())
+                    {
+                        insertCount = DbHelper.ExecuteNonQuery(sqlarr);
+                        Tran.Commit();
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    throw new Exception("提交数据库时发生异常:" + e);
+                }
+
             }
 
-         /*   if (insertCount != 1 + goodsCount + payCount + clerkCount + goodsCount * payCount)
-            {
-                throw new Exception("写入数据不完整!");
-            } */
+            /*   if (insertCount != 1 + goodsCount + payCount + clerkCount + goodsCount * payCount)
+               {
+                   throw new Exception("写入数据不完整!");
+               } */
         }
 
         public SaleSummaryResult GetSaleSummary(SaleSummaryFilter filter)
         {
             string sql = $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
-                   + "       s.sale_time,p.payid,y.name payname,y.type paytype, p.amount"
+                   + "       to_char(s.sale_time,'yyyy-mm-dd HH24:MI:SS') sale_time,p.payid,y.name payname,y.type paytype, p.amount"
                    + "  from sale s, sale_pay p,pay y"
                    + " where s.posno = p.posno"
                    + "   and s.dealid = p.dealid"
@@ -367,7 +382,7 @@ namespace z.ERP.Services
             sql += " union all ";
 
             sql += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
-                  + "       s.sale_time,p.payid,y.name payname,y.type paytype, p.amount"
+                  + "       to_char(s.sale_time,'yyyy-mm-dd HH24:MI:SS') sale_time,p.payid,y.name payname,y.type paytype, p.amount"
                   + "  from his_sale s, his_sale_pay p,pay y"
                   + " where s.posno = p.posno"
                   + "   and s.dealid = p.dealid"
@@ -491,7 +506,7 @@ namespace z.ERP.Services
         {
             if (reqMth == null)
             {
-                throw new Exception("参数为空");
+                throw new Exception("请求参数为空");
             }
 
             CalcAccountsPayableResult payableResult = new CalcAccountsPayableResult();
@@ -1740,7 +1755,7 @@ namespace z.ERP.Services
                 sOut = "", posNo = "", userCode = "";
 
          //   ErrorMessage errorMessage;
-            int iDataType = UniCode_Json;
+         //   int iDataType = UniCode_Json;
             ConfirmDealResult confirmResult = new ConfirmDealResult();
 
             bool bValue = false;
@@ -2297,7 +2312,6 @@ namespace z.ERP.Services
                             member.TypeLevel = 0;
                         else
                             member.TypeLevel = vipcard.typeLevel;
-                        //2017.10.08:
                         if (vipcard.openId.IsEmpty())
                             member.WxOpenId = "";
                         else
@@ -2379,7 +2393,8 @@ namespace z.ERP.Services
                     msg = "保存销售:失败：" + msg;
                     confirmResult.code = result;
                     confirmResult.text = msg;
-                  //  return result;
+
+                    throw new Exception(msg);
                 }
 
 
@@ -2972,17 +2987,12 @@ namespace z.ERP.Services
 
             try
             {
-               // ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
-              //  crmSoapHeader.UserId = CRMUSer; // "AAA";
-              //  crmSoapHeader.Password = CRMPwd; // "123";
-              //  PosWebServiceSoapClient client = client = new PosWebServiceSoapClient();
-
                 RSaleBillPayment[] pays = new RSaleBillPayment[payList.Count];
 
                 for (i = 0; i < payList.Count; i++)
                 {
                     pays[i] = new RSaleBillPayment();
-                    pays[i].PayMoney = MoneyToDouble(payList[i].PayedMoney);
+                    pays[i].PayMoney = payList[i].PayedMoney;
                     pays[i].PayTypeCode = Convert.ToString(payList[i].Id);
                 }
 
@@ -3004,6 +3014,7 @@ namespace z.ERP.Services
 
                 req.serverBillID = CrmBillId;
                 req.payments = pays;
+            //    req.payBackCouponVipId = 0;
                 req.couponPaid = CouponPaid;
 
                 PrepareCheckOutRSaleBillResponse res = PosAPI.PrepareCheckOutRSaleBill(req);
@@ -3116,13 +3127,8 @@ namespace z.ERP.Services
             catch (Exception e)
             {
                 msg = e.Message.ToString();
-
-              //  CommonUtils.WriteSKTLog(1, posNo, "<0104_ERP保存销售> <3.1>错误:" + msg);
-
                 return false;
             }
-
-           // CommonUtils.WriteSKTLog(1, posNo, "<0104_ERP保存销售> 操作完成:");
             return true;
         }
 

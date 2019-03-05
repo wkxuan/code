@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using z.ERP.API.PosServiceAPI;
+//using z.ERP.API.PosServiceAPI;
 using System.Text;
 
-namespace z.ERP.Entities.Service.Pos
+namespace z.POS.Entities.Pos
 {
-    public class TableInfo
+ /*   public class TableInfo
     {
         string tblName;
 
@@ -5534,6 +5534,6 @@ namespace z.ERP.Entities.Service.Pos
         }
 
         public List<OrderInfo> data;
-    }
+    } */
 
 }

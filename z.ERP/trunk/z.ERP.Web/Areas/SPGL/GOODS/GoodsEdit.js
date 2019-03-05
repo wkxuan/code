@@ -48,6 +48,32 @@
     
 }
 
+editDetail.clearKey = function () {
+    editDetail.dataParam.GOODSID = null;
+    editDetail.dataParam.NAME = null;
+    editDetail.dataParam.GOODSDM = null;
+    editDetail.dataParam.BARCODE = null;
+    editDetail.dataParam.TYPE = null;
+    editDetail.dataParam.PYM = null;
+    editDetail.dataParam.STYLE = null;
+    editDetail.dataParam.STYLEMC = null;
+    editDetail.dataParam.CONTRACTID = null;
+    editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.JXSL = null;
+    editDetail.dataParam.SHMC = null;
+    editDetail.dataParam.BRANDID = null;
+    editDetail.dataParam.BRANDMC = null;
+    editDetail.dataParam.PKIND_ID = null;
+    editDetail.dataParam.XXSL = null;
+    editDetail.dataParam.JSKL_GROUP = null;
+    editDetail.dataParam.PRICE = null;
+    editDetail.dataParam.MEMBER_PRICE = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.REGION = null;
+    editDetail.dataParam.GOODS_GROUP = [];
+    editDetail.dataParam.GOODS_SHOP = [];
+}
+
 editDetail.showOne = function (data, callback) {
     _.Ajax('ShowOneEdit', {
         Data: { GOODSID: data }

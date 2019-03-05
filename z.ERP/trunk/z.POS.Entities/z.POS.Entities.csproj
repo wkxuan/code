@@ -40,6 +40,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pos\ClerkResultt.cs" />
+    <Compile Include="Pos\DealResult.cs" />
+    <Compile Include="Pos\Define.cs" />
+    <Compile Include="Pos\FindGoodsFilter.cs" />
+    <Compile Include="Pos\FindGoodsResult.cs" />
+    <Compile Include="Pos\FKFSResult.cs" />
+    <Compile Include="Pos\GetDealFilter.cs" />
+    <Compile Include="Pos\GoodsResult.cs" />
+    <Compile Include="Pos\LoginConfigInfo.cs" />
+    <Compile Include="Pos\PayDetailResult.cs" />
+    <Compile Include="Pos\PayResult.cs" />
+    <Compile Include="Pos\PaySumResult.cs" />
+    <Compile Include="Pos\SaleRequest.cs" />
+    <Compile Include="Pos\SaleSummaryFilter.cs" />
+    <Compile Include="Pos\SaleSummaryResult.cs" />
+    <Compile Include="Pos\UserYYYResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
