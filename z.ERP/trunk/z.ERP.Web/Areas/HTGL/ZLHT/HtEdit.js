@@ -1087,6 +1087,13 @@ editDetail.otherMethods = {
         };
 
 
+
+
+
+
+
+
+
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
             var copyHtQsr = (beginHtq);
