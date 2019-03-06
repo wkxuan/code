@@ -21,6 +21,7 @@
 
 <row>
     <i-col span="4" class="RowTitle">
+        <span class="mustElement">*</span>
         终端号
     </i-col>
     <i-col span="5" class="RowTitle">
@@ -37,7 +38,8 @@
 
 <row>
     <i-col span="4" class="RowTitle">
-        前置机地址
+        <span class="mustElement">*</span>
+        服务地址
     </i-col>
     <i-col span="15" class="RowTitle">
         @{
@@ -52,7 +54,8 @@
 
 <row>
     <i-col span="4" class="RowTitle">
-        PID
+        <span class="mustElement">*</span>
+        商户号
     </i-col>
     <i-col span="15" class="RowTitle">
         @{
@@ -66,14 +69,46 @@
 </row>
 
 <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            加密方式
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<加密方式>()
+                {
+                    vModel = "dataParam.ENCRYPTION",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+</row>
+
+<row>
     <i-col span="4" class="RowTitle">
-        秘钥Key
+        密钥Key
     </i-col>
     <i-col span="15" class="RowTitle">
         @{
             RenderControl(new TextBoxRender()
             {
                 vModel = "dataParam.KEY",
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="4" class="RowTitle">
+        公钥Key
+    </i-col>
+    <i-col span="15" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.KEY_PUB",
                 Enable = false
             });
         }

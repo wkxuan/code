@@ -328,6 +328,12 @@ namespace z.ERP.Entities.Enum
 
     }
 
+    public enum 加密方式     //第三方支付加密方式
+    {
+        MD5 = 1,
+        RSA = 2
+    }
+
 
 
 }

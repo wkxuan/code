@@ -23,6 +23,8 @@ namespace z.ERP.Web.Areas.XTGL.POSO2OWFTCFG
 
             v.IsUnique(a => a.POSNO);
             v.Require(a => a.URL);
+            v.Require(a => a.PID);
+            v.Require(a => a.ENCRYPTION);
             v.Verify();
             return CommonSave(DefineSave);
         }
