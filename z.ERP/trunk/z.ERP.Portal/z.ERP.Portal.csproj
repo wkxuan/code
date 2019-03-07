@@ -236,9 +236,8 @@
     <Content Include="Content\echarts.js" />
     <Content Include="Content\jquery.min.js" />
     <Content Include="Content\JsHelper.js" />
-    <Content Include="Content\Login\img\backgrounds\1.jpg" />
-    <Content Include="Content\Login\img\backgrounds\2.jpg" />
-    <Content Include="Content\Login\img\backgrounds\3.jpg" />
+    <Content Include="Content\Login\font-awesome.min.css" />
+    <Content Include="Content\Login\img\backgrounds\loginimg.jpg" />
     <Content Include="Content\Login\img\progress.gif" />
     <Content Include="Content\Login\reset.css" />
     <Content Include="Content\Login\style.css" />
