@@ -28,7 +28,7 @@ namespace z.ERP.Services
 
         public LoginConfigInfo GetConfig()
         {
-            string sql = " select S.BRANCHID,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,G.PID,G.KEY"
+            string sql = " select S.BRANCHID,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,G.PID,G.ENCRYPTION,G.KEY,G.KEY_PUB"
                        + " from STATION S, POSO2OWFTCFG G, SHOP P"
                        + " where S.STATIONBH = G.POSNO(+)"
                        + " AND S.SHOPID = P.SHOPID(+)"
