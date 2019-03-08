@@ -38,8 +38,8 @@ form input{font-size: 14px;outline: 0;border: 1px solid rgba(255, 255, 255, 0.4)
 form .row{position: relative;overflow:hidden;}
 form i{color: #cbcbcb;top: 13px;right: 6px;z-index: 99;position: absolute;display: block;width: 30px;height: 30px;text-align: center;font-size: 18px !important;}
 form .row .authcode{position: absolute;left:105px;top: 10px;}
-form button{outline: 0;background-color: #1ABC9C;border: 0;padding: 10px 15px;color: #fff;border-radius: 5px;width: 300px;cursor: pointer;font: 16px/1.5 Lucida Grande,Lucida Sans Unicode,Helvetica Neue,Hiragino Sans GB,Microsoft Yahei,sans-serif;}
-form button:hover{opacity: 0.9;} 
+form button{outline: 0;background-color: #3399CC;border: 0;padding: 10px 15px;color: #fff;border-radius: 5px;width: 300px;cursor: pointer;font: 16px/1.5 Lucida Grande,Lucida Sans Unicode,Helvetica Neue,Hiragino Sans GB,Microsoft Yahei,sans-serif;}
+form button:hover{opacity: 0.9;}   
 
 
 form {
