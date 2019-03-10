@@ -31,7 +31,7 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public string ExportPz(VOUCHER_PARAMEntity Data)
+        private string ExportPzU8(VOUCHER_PARAMEntity Data)
         {
             var iPZBH = string.Empty;
             Int32 pFDBH = Data.BRANCHID;
@@ -253,6 +253,260 @@ namespace z.ERP.Services
             }
             else
                 return "未导出数据";           
+        }
+        private string ExportPzK3(VOUCHER_PARAMEntity Data)
+        {
+            var iPZBH = string.Empty;
+            Int32 pFDBH = Data.BRANCHID;
+            Int32 pCWNY = Data.CWNY;
+            Int32 pVOUCHERID = Data.VOUCHERID;
+            DateTime pDATE1 = Data.DATE1;
+            DateTime pDATE2 = Data.DATE2;
+            DateTime pPZRQ = Data.PZRQ;
+            Int32 Year = Data.PZRQ.Year;
+            Int32 MM = Data.PZRQ.Month;
+
+
+            DataTable resultdt = new DataTable();
+            resultdt.Columns.Add("PZRQ", typeof(String));   //凭证日期
+            resultdt.Columns.Add("YEAR", typeof(Int32));  //会计年
+            resultdt.Columns.Add("KJQJ", typeof(Int32));  //会计期间
+            resultdt.Columns.Add("PZLB", typeof(String));  //凭证类别
+            resultdt.Columns.Add("PZBH", typeof(Int32));  //凭证号
+            resultdt.Columns.Add("KMBM", typeof(String));  //科目编码
+            resultdt.Columns.Add("KMMC", typeof(String));  //科目名称
+            resultdt.Columns.Add("BZDM", typeof(String));  //币种代码
+            resultdt.Columns.Add("BZMC", typeof(String));  //币种名称
+            resultdt.Columns.Add("YBJE", typeof(Double));  //原币金额
+            resultdt.Columns.Add("JFJE", typeof(Double));  //借方金额
+            resultdt.Columns.Add("DFJE", typeof(Double));  //贷方金额
+            resultdt.Columns.Add("ZDR", typeof(String));  //制单人
+            resultdt.Columns.Add("SHR", typeof(String));  //审核人
+            resultdt.Columns.Add("HZR", typeof(String));  //核准人
+            resultdt.Columns.Add("CNR", typeof(String));  //出纳
+
+            resultdt.Columns.Add("JSFF", typeof(String));  //结算方法
+            resultdt.Columns.Add("JSH", typeof(String));  //结算号
+            resultdt.Columns.Add("ZY", typeof(String));  //摘要
+            resultdt.Columns.Add("SL", typeof(Int32));  //数量
+            resultdt.Columns.Add("SLDW", typeof(String));  //数量单位
+            resultdt.Columns.Add("PRICE", typeof(Double));  //单价
+            resultdt.Columns.Add("CKXX", typeof(String));  //参考信息
+            resultdt.Columns.Add("YWRQ", typeof(String));  //业务日期
+            resultdt.Columns.Add("WLYWBH", typeof(String));  //往来业务编号
+            resultdt.Columns.Add("DJZS", typeof(String));   //附件数
+            resultdt.Columns.Add("XH", typeof(String));  //序号
+            resultdt.Columns.Add("XTMK", typeof(String));  //系统模块
+            resultdt.Columns.Add("YWMS", typeof(String));  //业务描述
+            resultdt.Columns.Add("HLLX", typeof(String));  //汇率类型
+            resultdt.Columns.Add("HL", typeof(String));  //汇率
+            resultdt.Columns.Add("FLXH", typeof(String));  //分录序号
+            resultdt.Columns.Add("HSXM", typeof(String));  //核算项目
+            resultdt.Columns.Add("GZ", typeof(Int32));  //过账
+            resultdt.Columns.Add("JZPZ", typeof(String));  //机制凭证
+            resultdt.Columns.Add("XJLLJFJE", typeof(String));  //现金流量借方金额
+
+
+            zParameter[] param = new zParameter[4] {
+                           new zParameter("pDATE1",new DateTime (pDATE1.Year,pDATE1.Month,pDATE1.Day),DbType.Date),
+                           new zParameter("pDATE2",new DateTime (pDATE2.Year,pDATE2.Month,pDATE2.Day),DbType.Date),
+                           new zParameter("pCWNY",pCWNY,DbType.Int32),
+                           new zParameter("pFDBH",pFDBH,DbType.Int32)};
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                iPZBH = CommonService.NewINC("PZBH");
+                //获取sql         
+                List<VOUCHER_MAKESQLEntity> p = DbHelper.SelectList(new VOUCHER_MAKESQLEntity()).Where(a => a.VOUCHERID == pVOUCHERID.ToString())
+                    .OrderBy(a => a.VOUCHERID).ToList();
+                foreach (var sqltxt in p)
+                {
+                    var sqlflid = sqltxt.MAKESQL; //应该循环的SQL语句
+                    if (sqlflid != "" && sqlflid != null)
+                    {
+                        if (sqltxt.EXESQLTYPE == "1")
+                        {
+                            //获取分录
+                            List<VOUCHER_RECORDEntity> record = DbHelper.SelectList(new VOUCHER_RECORDEntity()).
+                                Where(a => a.VOUCHERID == pVOUCHERID.ToString()).Where(a => a.SQLINX == sqltxt.SQLINX)
+                                .OrderBy(a => a.VOUCHERID).ToList();
+                            foreach (var fldata in record)
+                            {
+                                var fldat = fldata.SQLCOLTORECORD; //借方贷方金额
+                                var wldwdat = fldata.SQLCOLTOMERCHANT;    //商户
+                                var bmdat = fldata.SQLCOLTOORG;       //部门
+                                var rydat = fldata.SQLCOLTOUSER;        //人员
+                                var lcdat = fldata.SQLCOLTOFLOOR;        //楼层
+                                var ytdat = fldata.SQLCOLTOCATEGORY;        //业态
+                                DataTable dtflid = DbHelper.ExecuteTable(sqlflid, param);
+                                foreach (DataRow tr in dtflid.Rows)
+                                {
+                                    decimal JFJE = 0;
+                                    decimal DFJE = 0;
+                                    decimal YBJE = 0;
+                                    if (Convert.ToInt32(fldata.TYPE) == 1)
+                                    {
+                                        if (string.IsNullOrEmpty(tr[fldat].ToString()))
+                                        {
+                                            JFJE = 0;
+                                        }
+                                        else
+                                        {
+                                            JFJE = Convert.ToDecimal(tr[fldat].ToString());
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        if (string.IsNullOrEmpty(tr[fldat].ToString()))
+                                        {
+                                            DFJE = 0;
+                                        }
+                                        else
+                                        {
+                                            DFJE = Convert.ToDecimal(tr[fldat].ToString());
+                                        }
+                                    }
+                                    YBJE = JFJE + DFJE;
+                                    string MERCHANTID = string.Empty;
+                                    string ORGDM = string.Empty;
+                                    string RYDM = string.Empty;
+                                    string LCSJ = string.Empty;
+                                    string YTSJ = string.Empty;
+                                    string HSXM = string.Empty;
+                                    if (!string.IsNullOrEmpty(wldwdat))
+                                    {
+                                        MERCHANTID = tr[wldwdat].ToString();
+                                        HSXM = tr[wldwdat].ToString();
+                                    }
+                                    if (!string.IsNullOrEmpty(bmdat))
+                                    {
+                                        ORGDM = tr[bmdat].ToString();
+                                    }
+                                    if (!string.IsNullOrEmpty(rydat))
+                                    {
+                                        RYDM = tr[rydat].ToString();
+                                    }
+                                    if (!string.IsNullOrEmpty(lcdat))
+                                    {
+                                        LCSJ = tr[lcdat].ToString();
+                                    }
+                                    if (!string.IsNullOrEmpty(ytdat))
+                                    {
+                                        YTSJ = tr[ytdat].ToString();
+                                    }
+                                    List<VOUCHER_RECORD_PZKMEntity> pzkm = DbHelper.SelectList(new VOUCHER_RECORD_PZKMEntity()).
+                                        Where(e => e.VOUCHERID == pVOUCHERID.ToString()).Where(a => a.RECORDID == fldata.RECORDID).
+                                        OrderBy(b => b.INX).ToList();
+                                    string PZMK = "";
+                                    foreach (var kmata in pzkm)
+                                    {
+                                        if (Convert.ToInt32(kmata.SQLBJ) == 2)
+                                        {
+                                            PZMK += kmata.DESCRIPTION;
+                                        }
+                                        else
+                                        {
+                                            PZMK += tr[kmata.SQLCOLTORECORD].ToString();
+                                        }
+                                    }
+                                    List<VOUCHER_RECORD_ZYEntity> pzzy = DbHelper.SelectList(new VOUCHER_RECORD_ZYEntity()).
+                                        Where(e => e.VOUCHERID == pVOUCHERID.ToString()).Where(a => a.RECORDID == fldata.RECORDID).
+                                        OrderBy(b => b.INX).ToList();
+                                    string ZY = "";
+                                    foreach (var zydata in pzzy)
+                                    {
+                                        if (Convert.ToInt32(zydata.SQLBJ) == 2)
+                                        {
+                                            ZY += zydata.DESCRIPTION;
+                                        }
+                                        else
+                                        {
+                                            ZY += tr[zydata.SQLCOLTORECORD].ToString();
+                                        }
+                                    }
+                                    DataRow rowNew = resultdt.NewRow();
+                                    rowNew["PZRQ"] = pPZRQ.ToString("yyyy-MM-dd");   //凭证日期
+                                    rowNew["YEAR"] = Year;  //会计年
+                                    rowNew["KJQJ"] = MM;  //会计期间                                    
+                                    rowNew["PZLB"] = "记";  //凭证类别
+                                    rowNew["PZBH"] = iPZBH;  //凭证号
+                                    
+                                    rowNew["KMBM"] = PZMK;  //科目编码
+                                    rowNew["KMMC"] = PZMK;  //科目名称
+                                    
+                                    rowNew["BZDM"] = "RMB";  //币种代码
+                                    rowNew["BZMC"] = "人民币";  //币种名称
+                                    rowNew["YBJE"] = (YBJE == 0 ? "0" : YBJE.ToString());  //原币金额
+                                    rowNew["JFJE"] = (JFJE == 0 ? "0" : JFJE.ToString());  //借方金额
+                                    rowNew["DFJE"] = (DFJE == 0 ? "0" : DFJE.ToString());  //贷方金额
+                                    rowNew["ZDR"] = employee.Name;  //制单人
+                                    rowNew["SHR"] = employee.Name;  //审核人
+                                    rowNew["HZR"] = employee.Name;  //核准人
+                                    rowNew["CNR"] = employee.Name;  //出纳
+
+                                    rowNew["JSFF"] = "*";  //结算方法
+                                    rowNew["JSH"] = "";  //结算号
+                                    rowNew["ZY"] = ZY;  //摘要
+                                    rowNew["SL"] = 0;  //数量
+                                    rowNew["SLDW"] = "*";  //数量单位
+                                    rowNew["PRICE"] =0;  //单价
+                                    rowNew["CKXX"] = "";  //参考信息
+                                    rowNew["YWRQ"] = DateTime.Now.Date.ToString("yyyy-MM-dd");  //业务日期
+                                    rowNew["WLYWBH"] = "";  //往来业务编号
+                                    rowNew["DJZS"] = "";  //所附单据数
+                                    rowNew["XH"] = "";  //序号
+                                    rowNew["XTMK"] = "";  //系统模块
+                                    rowNew["YWMS"] = "";  //业务描述
+                                    rowNew["HLLX"] = "公司汇率";  //汇率类型
+                                    rowNew["HL"] = 1;  //汇率
+                                    rowNew["FLXH"] = "";  //分录序号
+                                    rowNew["HSXM"] = HSXM;  //核算项目
+                                    rowNew["GZ"] = "0";  //过账
+                                    rowNew["JZPZ"] = "";  //机制凭证
+                                    rowNew["XJLLJFJE"] = "";  //现金流量借方金额                                      
+                                                                                                    
+                                    resultdt.Rows.Add(rowNew);
+                                }
+                                //DataTable dtflid = DbHelper.ExecuteTable(sqlflid, pzparme);
+                            }
+                        }
+                        else if (sqltxt.EXESQLTYPE == "2")
+                        {
+                            //DbHelper.ExecuteObject
+                            // provider.ExecuteSql(sqlflid, pzparme);
+                        }
+                    }
+                }
+                Tran.Commit();
+            }
+            if (resultdt.Rows.Count > 0)
+            {
+                resultdt.TableName = "resultdt";
+                return GetExport("K3凭证", a =>
+                {
+                    a.SetTable(resultdt);
+                });
+            }
+            else
+                return "未导出数据";
+        }
+        public string ExportPz(VOUCHER_PARAMEntity Data)
+        {
+            string sql = $@"select ID,NAME  from VOUCHERTYPE order by ID";            
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            if (dt.Rows.Count==0 || Convert.ToInt32(dt.Rows[0][0].ToString())==1)
+            {
+                return ExportPzU8(Data);
+            }
+            else if (Convert.ToInt32(dt.Rows[0][0].ToString()) == 2)
+            {
+                return ExportPzK3(Data);
+            }
+            else
+            {
+                return null;
+            }
         }
         public DataGridResult GetVoucherList(SearchItem item)
         {
