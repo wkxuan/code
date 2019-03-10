@@ -346,6 +346,11 @@ namespace z.ERP.Services
             FEERULEEntity feeRule = new FEERULEEntity();
             feeRule = DbHelper.Select(new FEERULEEntity() { ID = ContractData.FEERULE_RENT });
 
+
+
+            CONFIGEntity config = new CONFIGEntity();
+            config = DbHelper.Select(new CONFIGEntity() { ID = "1003" });
+
             //PAY_CYCLE缴费周期
             //ADVANCE_CYCLE 提前周期
             //FEE_DAY 出单日
@@ -534,7 +539,7 @@ namespace z.ERP.Services
                             if (zjfjTs != zts)
                             {
                                 //30后期增加系统参数去处理
-                                zjfj.RENTS = (Math.Round(je / 30 * zjfjTs, 0, MidpointRounding.AwayFromZero)).ToString();
+                                zjfj.RENTS = (Math.Round(je / (config.CUR_VAL).ToDouble() * zjfjTs, 0, MidpointRounding.AwayFromZero)).ToString();
                             }
                             else
                             {

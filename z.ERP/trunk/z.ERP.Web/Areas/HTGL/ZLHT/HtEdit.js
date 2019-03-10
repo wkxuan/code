@@ -1062,10 +1062,12 @@ editDetail.otherMethods = {
         editDetail.dataParam.CONTRACT_RENT = [];
 
 
-        var yearsValue = getYears(new Date(editDetail.dataParam.CONT_START), new Date(editDetail.dataParam.CONT_END));
+        var yearsValue = getYears(new Date(editDetail.dataParam.CONT_START),
+            new Date(editDetail.dataParam.CONT_END));
         var nestYear = null;
         var rentData = null;
         var beginHtq = editDetail.dataParam.CONT_START;
+        var beginMzqHtq = editDetail.dataParam.CONT_START;
 
         var inx = 0;
         if (editDetail.dataParam.FREE_END) {
@@ -1082,21 +1084,15 @@ editDetail.otherMethods = {
             editDetail.dataParam.CONTRACT_RENT.push(rentData);
             inx = 1;
 
-            yearsValue = getYears(new Date(addDate(editDetail.dataParam.FREE_END, 1)), new Date(editDetail.dataParam.CONT_END));
-            beginHtq = addDate(editDetail.dataParam.FREE_END, 1);
+            beginMzqHtq = addDate(editDetail.dataParam.FREE_END, 1);
         };
 
-
-
-
-
-
-
-
-
+        var copyHtQsr = (beginMzqHtq);
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
-            var copyHtQsr = (beginHtq);
+            if (i != 0) {
+                beginHtq = copyHtQsr;
+            }
             nestYear = getNextYears(beginHtq);
             if (nestYear < (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd'))) {
                 rentData = {
@@ -1110,7 +1106,7 @@ editDetail.otherMethods = {
                     SUMRENTS: 0
                 }
                 editDetail.dataParam.CONTRACT_RENT.push(rentData);
-                beginHtq = addDate(nestYear);
+                copyHtQsr = addDate(nestYear);
             } else {
                 rentData = {
                     INX: i + 1 + inx,
