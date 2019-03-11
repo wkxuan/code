@@ -9,12 +9,12 @@
         { title: "商户代码", key: 'MERCHANTID', width: 105, sortable: true },
         { title: '商户名称', key: 'MERNAME', width: 200, ellipsis: true },
         { title: '合同员', key: 'SIGNER_NAME', width: 90 },
-        { title: '登记人', key :'REPORTER_NAME',width:90},
+        { title: '登记人', key: 'REPORTER_NAME', width: 90 },
         { title: '登记时间', key: 'REPORTER_TIME', width: 150, sortable: true },
         { title: '审核人', key: 'VERIFY_NAME', width: 90, },
         { title: '审核时间', key: 'VERIFY_TIME', width: 150, sortable: true },
         { title: "分店代码", key: 'BRANCHID', width: 90 },
-        { title: '分店名称', key: 'NAME', width: 150},
+        { title: '分店名称', key: 'NAME', width: 150 },
       /*  {
             title: '变更', key: 'action', width: 70,
             align: 'center', fixed: 'right',
@@ -43,8 +43,8 @@
         } */
 
     ];
-    search.searchParam.STYLE = "1";
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul); 
+    search.searchParam.STYLE = "1";  //只查询租赁合同
+    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "HtglService";
     search.method = "GetContract";
 
@@ -180,7 +180,3 @@ search.bgHref = function (row, index) {
         };
     };
 };
-
-
-
-
