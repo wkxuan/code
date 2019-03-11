@@ -132,6 +132,18 @@
                 });
             }
         </i-col>
+
+        <i-col span="2" class="RowTitle">
+            起始日清算
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<起始日清算>()
+                {
+                    vModel = "dataParam.QS_START"
+                });
+            }
+        </i-col>
     </row>
 
     <row>
@@ -330,6 +342,19 @@
             }
         </i-col>
 
+        <i-col span="2" class="RowTitle">
+            租金收费规则
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.FEERULE_RENT",
+                    ServiceMothod = m => m.feeRule()
+                });
+            }
+        </i-col>
+
     </row>
     <row>
         <i-col span="2" class="RowTitle">
@@ -354,33 +379,6 @@
                 });
             }
         </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            租金收费规则
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.FEERULE_RENT",
-                    ServiceMothod = m => m.feeRule()
-                });
-            }
-        </i-col>
-
-
-        <!-- <i-col span="2" class="RowTitle">
-            周期方式
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumDropDownListRender<周期方式>()
-                {
-                    vModel = "dataParam.STANDARD"
-                });
-            }
-        </i-col> -->
 
         <i-col span="2" class="RowTitle">
             销售额标记
@@ -393,24 +391,8 @@
                 });
             }
         </i-col>
-
- 
     </row>
 
-    <row>
-        <i-col span="2" class="RowTitle">
-            起始日清算
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumDropDownListRender<起始日清算>()
-                {
-                    vModel = "dataParam.QS_START"
-                });
-            }
-        </i-col>
-
-    </row>
     <row>
         <i-col span="2" class="RowTitle">
             其他条款
