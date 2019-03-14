@@ -38,10 +38,23 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
+        public string encryption
+        {
+            get;
+            set;
+        }
+
         public string key
         {
             get;
             set;
         }
+
+        public string key_pub
+        {
+            get;
+            set;
+        }
+
     }
 }

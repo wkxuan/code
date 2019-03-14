@@ -16,14 +16,31 @@ body {
 }
 
 .page-container {
-    margin: 120px auto 0 auto;
-}
+    margin: 150px auto 0 auto;
+} 
+
+/*
+.container{max-width: 400px;margin: 0 auto;text-align: center;position: relative;margin:}
+.container .logo{overflow:hidden;padding-bottom:30px;padding-left:30px;}
+.container .logo i{font-size: 35px;color:#fff;float:left;text-shadow: 4px 3px 0 #1d9d74,80px 80px 0 rgba(0,0,0,0.15);}
+.container .logo h1{padding-top:2px;padding-left:15px;float:left;font-size: 22px;font-weight: bold;color:#fff;text-shadow: 4px 3px 0 #1ABC9C,90px 80px 0 rgba(0,0,0,0.15);}
+.container .logo span{font-size: 30px;font-weight: bold;}
+*/
 
 h1 {
-    font-size: 30px;
+    font-size: 35px;
     font-weight: 700;
     text-shadow: 0 1px 4px rgba(0,0,0,.2);
 }
+
+form{position: relative;z-index: 2;text-align:left;background-color:#ebeff0;padding: 50px;border-radius: 5px;box-shadow: 0 0 10px rgba(0,0,0,.1);}
+form input{font-size: 14px;outline: 0;border: 1px solid rgba(255, 255, 255, 0.4);background-color: #fff;width: 300px;border-radius: 5px;padding: 12px 15px;margin-bottom:20px;display: block;text-align: left;color: #929191;-webkit-transition-duration: 0.25s;transition-duration: 0.25s;font-weight: 300;}
+form .row{position: relative;overflow:hidden;}
+form i{color: #cbcbcb;top: 13px;right: 6px;z-index: 99;position: absolute;display: block;width: 30px;height: 30px;text-align: center;font-size: 18px !important;}
+form .row .authcode{position: absolute;left:105px;top: 10px;}
+form button{outline: 0;background-color: #3399CC;border: 0;padding: 10px 15px;color: #fff;border-radius: 5px;width: 300px;cursor: pointer;font: 16px/1.5 Lucida Grande,Lucida Sans Unicode,Helvetica Neue,Hiragino Sans GB,Microsoft Yahei,sans-serif;}
+form button:hover{opacity: 0.9;}   
+
 
 form {
     position: relative;
@@ -32,17 +49,18 @@ form {
     text-align: center;
 }
 
+/*
 input {
     width: 270px;
     height: 42px;
     margin-top: 25px;
     padding: 0 15px;
-    background: #2d2d2d; /* browsers that don't support rgba */
+    background: #2d2d2d; 
     background: rgba(45,45,45,.15);
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
     border-radius: 6px;
-    border: 1px solid #3d3d3d; /* browsers that don't support rgba */
+    border: 1px solid #3d3d3d; 
     border: 1px solid rgba(255,255,255,.15);
     -moz-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
     -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
@@ -130,7 +148,7 @@ button:active {
 
     border: 0px solid #ef4300;
 }
-
+    */
 .error {
     display: none;
     position: absolute;

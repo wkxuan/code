@@ -32,9 +32,22 @@ namespace z.ERP.Entities
             get;set;
         }
 
+        [Field("加密方式")]
+        public string ENCRYPTION
+        {
+            get;set;
+        }
+
+        [Field("密钥")]
         public string KEY
         {
             get;set;
+        }
+
+        [Field("公钥")]
+        public string KEY_PUB
+        {
+            get; set;
         }
 
         [Field("日志路径")]

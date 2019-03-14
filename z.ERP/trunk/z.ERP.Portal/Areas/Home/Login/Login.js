@@ -48,7 +48,7 @@ $(function () {
         // Components
         slide_links: 'blank',    // Individual links for each slide (Options: false, 'num', 'name', 'blank')
         slides: [    // Slideshow Images
-                                 { image: __PortalBaseUrl + "/Content/Login/img/backgrounds/1.jpg" },
+                                 { image: __PortalBaseUrl + "/Content/Login/img/backgrounds/loginimg.jpg" },
                                  //{ image: _.buildUrl("Themes/default/Login/img/backgrounds/2.jpg") },
                                  //{ image: _.buildUrl("Themes/default/Login/img/backgrounds/3.jpg") },
                                  //{ image: _.buildUrl("Themes/default/Login/img/backgrounds/4.jpg") }

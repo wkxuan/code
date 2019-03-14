@@ -629,6 +629,7 @@
     <Content Include="Areas\HTGL\DJDW\DjdwDetail.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwEdit.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwList.cshtml" />
+    <Content Include="File\Template\K3凭证.xlsx" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

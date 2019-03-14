@@ -16,11 +16,11 @@ namespace z.ERP.Web.Areas.HTGL.DJDW
             ViewBag.Title = "多经点位租约列表信息";
             return View(new SearchRender()
             {
-                Permission_Browse = "10600403",
-                Permission_Add = "10600401",
-                Permission_Edit = "10600401",
-                Permission_Del = "10600401",
-                Permission_Exec = "10600402"
+                Permission_Browse = "10600503",
+                Permission_Add = "10600501",
+                Permission_Edit = "10600501",
+                Permission_Del = "10600501",
+                Permission_Exec = "10600502"
             });
         }
 
@@ -29,7 +29,7 @@ namespace z.ERP.Web.Areas.HTGL.DJDW
             ViewBag.Title = "多经点位租约信息编辑";
             return View("DjdwEdit", model: (EditRender)Id);
         }
-        [Permission("10600401")]
+        [Permission("10600501")]
         public string Save(CONTRACTEntity SaveData)
         {
             return service.HtglService.SaveContract(SaveData);
@@ -70,7 +70,7 @@ namespace z.ERP.Web.Areas.HTGL.DJDW
         {
             service.HtglService.DeleteContract(DeleteData);
         }
-        [Permission("10600402")]
+        [Permission("10600502")]
         public void ExecData(CONTRACTEntity Data)
         {
             service.HtglService.ExecData(Data);

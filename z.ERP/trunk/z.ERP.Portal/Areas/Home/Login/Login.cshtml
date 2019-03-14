@@ -8,6 +8,7 @@
               @"Content/Login/reset.css",
               @"Content/Login/style.css",
               @"Content/Login/supersized.css",
+              @"Content/Login/font-awesome.min.css",
                      "Content/jquery.min.js",
                     "Content/zBase.js",
                     "Content/AjaxHelper.js",
@@ -21,7 +22,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head >
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="shortcut icon" type="image/x-icon" href="\Themes\default\DWZ\default\images\newlogo.ico" media="screen" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>登录</title>
     <script type="text/javascript">
         __ControllerUrl = '@ViewBag.ControllerUrl';
@@ -33,14 +34,20 @@
 </head>
 <body>
 
-    <div class="page-container">
-        @*<h1>ERP</h1>*@
-        <form>
-            <input type="text" name="username" class="username" placeholder="用户名" />
-            <input type="password" name="password" class="password" placeholder="密码" />
-            <button id="btn_login" type="submit">登录</button>
-            <div class="error"><span>+</span></div>
-        </form>
+    <div class="page-container">  
+        <h1>云商商业综合体智能中枢</h1>
+            <form class="form">
+                <div class="row">
+                    <i class="fa fa-user"></i>
+                    <input type="text" name="username" class="username" placeholder="账号" />
+                </div>
+                <div class="row">
+                    <i class="fa fa-key"></i>
+                    <input type="password" name="password" class="password" placeholder="密码" />
+                </div>
+                <button id="btn_login" type="submit">登录</button>
+                <div class="error"><span>+</span></div>
+            </form>
         @*<div class="connect">
             <p>测试库</p>
         </div>*@
