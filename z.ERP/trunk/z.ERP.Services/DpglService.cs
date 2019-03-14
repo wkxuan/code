@@ -76,6 +76,21 @@ namespace z.ERP.Services
             DataTable floor = DbHelper.ExecuteTable(sql);
             return new Tuple<dynamic,DataTable>(floor.ToOneLine(),floor);
         }
+
+        public DataGridResult GetFloorMap(SearchItem item)
+        {
+            string sql = $@"select A.*,D.NAME||C.NAME||B.NAME as FLOORNAME from FLOORMAP A,FLOOR B,REGION C,BRANCH D where A.FLOORID=B.FLOORID AND B.REGIONID=C.REGIONID "
+                +" AND C.BRANCHID=D.ID ";
+            item.HasKey("MAPID", a => sql += $" and A.MAPID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
+            sql += " ORDER BY  MAPID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
         public DataGridResult SearchShop(SearchItem item)
         {
             string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME " +

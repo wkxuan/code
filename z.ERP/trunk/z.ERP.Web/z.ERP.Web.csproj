@@ -601,12 +601,10 @@
     <Content Include="Areas\WLGL\WLInStock\WLInStockMx.cshtml" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsList.cshtml" />
     <Content Include="Areas\BJGL\BJT\BJTDef.cshtml" />
-<<<<<<< HEAD
     <Content Include="Areas\BJGL\BJDEF\BjdefDetail.cshtml" />
     <Content Include="Areas\BJGL\BJDEF\BjdefEdit.cshtml" />
     <Content Include="Areas\BJGL\BJDEF\BjdefList.cshtml" />
     <Content Include="Areas\BJGL\BJDEF\Print.cshtml" />
-=======
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockEdit.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockList.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockMx.cshtml" />
@@ -631,7 +629,6 @@
     <Content Include="Areas\HTGL\DJDW\DjdwDetail.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwEdit.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwList.cshtml" />
->>>>>>> 4cfa74aefdb630e718277434698e20f865a42617
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

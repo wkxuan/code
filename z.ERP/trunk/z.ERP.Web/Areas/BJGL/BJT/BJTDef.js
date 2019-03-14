@@ -33,8 +33,8 @@ function add() {
     map.Add({
         name: newname,
         html: GetHtml,
-        x: 300,
-        y: 300
+        x: 0.2,
+        y: 0.2
     });
 }
 
