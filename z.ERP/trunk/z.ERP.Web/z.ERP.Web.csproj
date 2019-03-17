@@ -235,6 +235,7 @@
     <Compile Include="Areas\WLGL\WLOutStock\WLOutStockController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINDEPT\ComplainDeptController.cs" />
     <Compile Include="Areas\WYGL\COMPLAINTYPE\ComplainTypeController.cs" />
+    <Compile Include="Areas\WYGL\COMPLAIN\ComPlainController.cs" />
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\WYGL\MARCHINAREAR\MarchinArearController.cs" />
     <Compile Include="Areas\WYGL\OPENBUSINESS\OpenBusinessController.cs" />
@@ -358,6 +359,8 @@
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockList.js" />
     <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.js" />
     <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.js" />
+    <Content Include="Areas\WYGL\COMPLAIN\ComPlainEdit.js" />
+    <Content Include="Areas\WYGL\COMPLAIN\ComPlainList.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.js" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.js" />
     <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearEdit.js" />
@@ -622,6 +625,9 @@
     <Content Include="Areas\HTGL\DJDW\DjdwEdit.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwList.cshtml" />
     <Content Include="File\Template\K3凭证.xlsx" />
+    <Content Include="Areas\WYGL\COMPLAIN\ComPlainList.cshtml" />
+    <Content Include="Areas\WYGL\COMPLAIN\ComPlainEdit.cshtml" />
+    <Content Include="Areas\WYGL\COMPLAIN\ComPlainDetail.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

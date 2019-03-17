@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using z.ERP.Entities;
+using z.ERP.Entities.Auto;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
 using z.Extensions;
@@ -1501,6 +1502,118 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
+        }
+
+        public string SaveComPlain(COMPLAINEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.BILLID.IsEmpty())
+                SaveData.BILLID = CommonService.NewINC("COMPLAIN");
+
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.CPLAINDEPT);
+            v.Require(a => a.CPLAINTYPE);
+            v.Require(a => a.CPLAINDATE);
+
+            v.Verify();
+            DbHelper.Save(SaveData);
+            return SaveData.BILLID;
+        }
+
+        public string ExecComPlainData(COMPLAINEntity Data)
+        {
+            COMPLAINEntity complain = DbHelper.Select(Data);
+            if (complain.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                complain.VERIFY = employee.Id;
+                complain.VERIFY_NAME = employee.Name;
+                complain.VERIFY_TIME = DateTime.Now.ToString();
+                complain.STATUS = ((int)普通单据状态.审核).ToString();
+                DbHelper.Save(complain);
+                Notes(nameof(COMPLAINEntity), complain.BILLID, $"已审核");
+                Tran.Commit();
+            }
+            return complain.BILLID;
+        }
+
+        public object GetComPlainElement(COMPLAINEntity Data)
+        {
+            string sql = $@" SELECT B.NAME BRANCHMC,C.*,'('||P.CODE||')'||P.NAME SHOPDM,R.NAME BRANDMC, " +
+                "O.ORGNAME DEPT_NAME,T.NAME CPLAINDEPT_NAME,Y.NAME CPLAINTYPEMC,P.CODE,P.NAME,R.NAME BRANDNAME " +
+                " FROM COMPLAIN C,BRANCH B,SHOP P,BRAND R,ORG O,COMPLAINDEPT T,COMPLAINTYPE Y " +
+                " WHERE C.BRANCHID=B.ID and C.SHOPID = P.SHOPID(+) and C.BRANDID =R.ID(+) " +
+                " and C.DEPTID=O.ORGID(+) and  C.CPLAINDEPT = T.ID(+) and C.CPLAINTYPE = Y.ID(+) ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            var result = new
+            {
+                main = dt,
+            };
+            return result;
+        }
+
+        public Tuple<dynamic> GetComPlainDetail(COMPLAINEntity Data)
+        {
+            string sql = $@" SELECT B.NAME BRANCHMC,C.*,'('||P.CODE||')'||P.NAME SHOPDM,R.NAME BRANDMC, " +
+                "O.ORGNAME DEPT_NAME,T.NAME CPLAINDEPT_NAME,Y.NAME CPLAINTYPEMC " +
+                " FROM COMPLAIN C,BRANCH B,SHOP P,BRAND R,ORG O,COMPLAINDEPT T,COMPLAINTYPE Y " +
+                " WHERE C.BRANCHID=B.ID and C.SHOPID = P.SHOPID(+) and C.BRANDID =R.ID(+) " +
+                " and C.DEPTID=O.ORGID(+) and  C.CPLAINDEPT = T.ID(+) and C.CPLAINTYPE = Y.ID(+) ";
+            if (!Data.BILLID.IsEmpty())
+                sql += (" and BILLID= " + Data.BILLID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            return new Tuple<dynamic>(dt.ToOneLine());
+        }
+        public DataGridResult GetComPlain(SearchItem item)
+        {
+            string sql = $@"select C.*,B.NAME BRANCHMC from COMPLAIN C,BRANCH B where C.BRANCHID = B.ID ";
+            item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
+            item.HasKey("REPORTER", a => sql += $" and REPORTER = '{a}'");
+            item.HasKey("VERIFY", a => sql += $" and VERIFY = '{a}'");
+            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");            
+            sql += " order by BILLID desc";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+        public void DeleteComPlain(List<COMPLAINEntity> DeleteData)
+        {
+            foreach (var con in DeleteData)
+            {
+                COMPLAINEntity Data = DbHelper.Select(con);
+                if (Data.STATUS != ((int)普通单据状态.未审核).ToString())
+                {
+                    throw new LogicException($"投诉单({Data.BILLID})已经不是未审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var mer in DeleteData)
+                {
+                    var v = GetVerify(mer);
+                    //校验
+                    DbHelper.Delete(mer);
+                }
+                Tran.Commit();
+            }
         }
     }
 }
