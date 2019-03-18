@@ -102,8 +102,10 @@ namespace z.POS.Services
         }
 
         public List<FKFSResult> GetPayList()
-        {
-            string sql = $"select b.code payid,b.name,decode(b.type,0,1,7,4,20,6,21,5,0) type,2 fk,b.bj_jf jf,b.zlclfs zlfs,b.xssx flag";
+        {   //decode(b.type,0,1,7,4,20,6,21,5,0)  -- 8.0
+            //decode(b.type,0,1,7,4,13,6,14,5,0)  -- 10.0
+            //decode(b.type,0,1,7,4,13,6,14,5,20,6,21,5,1)  --8.0 10.0
+            string sql = $"select b.code payid,b.name,decode(b.type,0,1,7,4,13,6,14,5,20,6,21,5,1) type,2 fk,b.bj_jf jf,b.zlclfs zlfs,b.xssx flag";
             sql += $"        from skt_skfs a,skfs b";
             sql += $"       where a.skfsid = b.code";
             sql += $"         and a.sktno = '{employee.PlatformId}'";
@@ -339,7 +341,7 @@ namespace z.POS.Services
         public SaleSummaryResult GetSaleSummary(SaleSummaryFilter filter)
         {
             string sql = $"select s.sktno posno,s.jlbh dealid,decode(sign(s.xsje),0,0,1,0,-1,1) returnflag,"
-                   + "       to_char(s.jysj,'yyyy-mm-dd HH24:MI:SS') sale_time,p.skfs payid,y.name payname,decode(y.type,0,1,7,4,20,6,21,5,0) paytype, p.skje amount"
+                   + "       to_char(s.jysj,'yyyy-mm-dd HH24:MI:SS') sale_time,p.skfs payid,y.name payname,decode(y.type,0,1,7,4,13,6,14,5,20,6,21,5,1) paytype, p.skje amount"
                    + "  from xsjl s, xsjlm p,skfs y"
                    + " where s.sktno = p.sktno"
                    + "   and s.jlbh = p.jlbh"
@@ -366,7 +368,7 @@ namespace z.POS.Services
             sql += " union all ";
 
             sql += $"select s.sktno posno,s.jlbh dealid,decode(sign(s.xsje),0,0,1,0,-1,1) returnflag,"
-                  + "       to_char(s.jysj,'yyyy-mm-dd HH24:MI:SS') sale_time,p.skfs payid,y.name payname,decode(y.type,0,1,7,4,20,6,21,5,0) paytype, p.skje amount"
+                  + "       to_char(s.jysj,'yyyy-mm-dd HH24:MI:SS') sale_time,p.skfs payid,y.name payname,decode(y.type,0,1,7,4,13,6,14,5,20,6,21,5,1) paytype, p.skje amount"
                   + "  from sktxsjl s, sktxsjlm p,skfs y"
                   + " where s.sktno = p.sktno"
                   + "   and s.jlbh = p.jlbh"

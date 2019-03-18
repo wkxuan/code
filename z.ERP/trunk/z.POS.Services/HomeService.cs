@@ -24,7 +24,7 @@ namespace z.POS.Services
         {
             string sql = "select a.person_id,a.person_name,a.rydm,b.login_password from RYXX a join XTCZY b  on a.person_id=b.person_id where a.rydm={{code}}";
             DataTable dt = DbHelper.ExecuteTable(sql, new zParameter("code", code));
-            if (dt.Rows.Count == 1)
+            if (dt.Rows.Count >= 1)  //==
             {
                 byte[] psw = dt.Rows[0]["login_password"] as byte[];
                 if (Decrypt(psw) == password)
@@ -41,13 +41,13 @@ namespace z.POS.Services
                     throw new Exception("密码错误");
                 }
             }
-            else if (dt.Rows.Count > 1)
+           /* else if (dt.Rows.Count > 1)   //存在一收款员多款台权限时报错，去掉判断
             {
                 throw new Exception("用户重复");
-            }
+            }  */
             else
             {
-                throw new Exception("用户不存在");
+                throw new Exception("用户不存在或没有权限");
             }
         }
 
