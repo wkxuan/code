@@ -252,10 +252,10 @@ namespace z.ERP.Entities.Service.Pos
             set { deptCode = value; }
         }
 
-        int price;
+        double price;
 
 
-        public int Price
+        public double Price
         {
             get { return price; }
             set { price = value; }
@@ -3590,7 +3590,7 @@ namespace z.ERP.Entities.Service.Pos
         public int id;
         public string code;
         public string name;
-        public int price;
+        public double price;
         public double count;
         public int totalOffAmount;
         public int accountsPayable;
@@ -3688,8 +3688,8 @@ namespace z.ERP.Entities.Service.Pos
             set { DeptCode = value; }
         }
 
-        int Price;
-        public int price
+        double Price;
+        public double price
         {
             get { return Price; }
             set { Price = value; }
@@ -4113,9 +4113,9 @@ namespace z.ERP.Entities.Service.Pos
     {
         public int id;
         public string code;
-        public int price;
+        public double price;  //int
         public int frontendOffAmount;
-        public string count;
+        public double count;
         //2017.07.11:新加,主要用于计算商品的售价格
         public int deptID;
         public string deptCode;
@@ -4167,8 +4167,8 @@ namespace z.ERP.Entities.Service.Pos
         }
 
 
-        int Price;
-        public int price
+        double Price;
+        public double price
         {
             get { return Price; }
             set { Price = value; }
