@@ -9,2111 +9,2029 @@
 //------------------------------------------------------------------------------
 
 namespace z.ERP.API.PosServiceAPI {
-    using System.Runtime.Serialization;
-    using System;
     
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="VipCard", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class VipCard : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private bool CanCentField;
-        
-        private bool CanDiscField;
-        
-        private bool CanOwnCouponField;
-        
-        private bool CanReturnField;
-        
-        private string CardCodeField;
-        
-        private int CardIdField;
-        
-        private int CardTypeIdField;
-        
-        private string CardTypeNameField;
-        
-        private string HelloField;
-        
-        private double StageCentField;
-        
-        private double ValidCentField;
-        
-        private string VipNameField;
-        
-        private double YearCentField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public bool CanCent {
-            get {
-                return this.CanCentField;
-            }
-            set {
-                if ((this.CanCentField.Equals(value) != true)) {
-                    this.CanCentField = value;
-                    this.RaisePropertyChanged("CanCent");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public bool CanDisc {
-            get {
-                return this.CanDiscField;
-            }
-            set {
-                if ((this.CanDiscField.Equals(value) != true)) {
-                    this.CanDiscField = value;
-                    this.RaisePropertyChanged("CanDisc");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public bool CanOwnCoupon {
-            get {
-                return this.CanOwnCouponField;
-            }
-            set {
-                if ((this.CanOwnCouponField.Equals(value) != true)) {
-                    this.CanOwnCouponField = value;
-                    this.RaisePropertyChanged("CanOwnCoupon");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public bool CanReturn {
-            get {
-                return this.CanReturnField;
-            }
-            set {
-                if ((this.CanReturnField.Equals(value) != true)) {
-                    this.CanReturnField = value;
-                    this.RaisePropertyChanged("CanReturn");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string CardCode {
-            get {
-                return this.CardCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CardCodeField, value) != true)) {
-                    this.CardCodeField = value;
-                    this.RaisePropertyChanged("CardCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CardId {
-            get {
-                return this.CardIdField;
-            }
-            set {
-                if ((this.CardIdField.Equals(value) != true)) {
-                    this.CardIdField = value;
-                    this.RaisePropertyChanged("CardId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CardTypeId {
-            get {
-                return this.CardTypeIdField;
-            }
-            set {
-                if ((this.CardTypeIdField.Equals(value) != true)) {
-                    this.CardTypeIdField = value;
-                    this.RaisePropertyChanged("CardTypeId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string CardTypeName {
-            get {
-                return this.CardTypeNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CardTypeNameField, value) != true)) {
-                    this.CardTypeNameField = value;
-                    this.RaisePropertyChanged("CardTypeName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string Hello {
-            get {
-                return this.HelloField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.HelloField, value) != true)) {
-                    this.HelloField = value;
-                    this.RaisePropertyChanged("Hello");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double StageCent {
-            get {
-                return this.StageCentField;
-            }
-            set {
-                if ((this.StageCentField.Equals(value) != true)) {
-                    this.StageCentField = value;
-                    this.RaisePropertyChanged("StageCent");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double ValidCent {
-            get {
-                return this.ValidCentField;
-            }
-            set {
-                if ((this.ValidCentField.Equals(value) != true)) {
-                    this.ValidCentField = value;
-                    this.RaisePropertyChanged("ValidCent");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string VipName {
-            get {
-                return this.VipNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VipNameField, value) != true)) {
-                    this.VipNameField = value;
-                    this.RaisePropertyChanged("VipName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double YearCent {
-            get {
-                return this.YearCentField;
-            }
-            set {
-                if ((this.YearCentField.Equals(value) != true)) {
-                    this.YearCentField = value;
-                    this.RaisePropertyChanged("YearCent");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="VipInfoUpdated", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class VipInfoUpdated : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private string AddressField;
-        
-        private int CardIdField;
-        
-        private string EMailField;
-        
-        private string MobileField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string Address {
-            get {
-                return this.AddressField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AddressField, value) != true)) {
-                    this.AddressField = value;
-                    this.RaisePropertyChanged("Address");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CardId {
-            get {
-                return this.CardIdField;
-            }
-            set {
-                if ((this.CardIdField.Equals(value) != true)) {
-                    this.CardIdField = value;
-                    this.RaisePropertyChanged("CardId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string EMail {
-            get {
-                return this.EMailField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EMailField, value) != true)) {
-                    this.EMailField = value;
-                    this.RaisePropertyChanged("EMail");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string Mobile {
-            get {
-                return this.MobileField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MobileField, value) != true)) {
-                    this.MobileField = value;
-                    this.RaisePropertyChanged("Mobile");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="DeptArticleCode", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class DeptArticleCode : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private string ArticleCodeField;
-        
-        private string DeptCodeField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string ArticleCode {
-            get {
-                return this.ArticleCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ArticleCodeField, value) != true)) {
-                    this.ArticleCodeField = value;
-                    this.RaisePropertyChanged("ArticleCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string DeptCode {
-            get {
-                return this.DeptCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DeptCodeField, value) != true)) {
-                    this.DeptCodeField = value;
-                    this.RaisePropertyChanged("DeptCode");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ArticleVipDisc", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class ArticleVipDisc : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private int DiscBillIdField;
-        
-        private int DiscCombinationTypeField;
-        
-        private double DiscRateField;
-        
-        private double MultiDiscRateField;
-        
-        private int PrecisionTypeField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int DiscBillId {
-            get {
-                return this.DiscBillIdField;
-            }
-            set {
-                if ((this.DiscBillIdField.Equals(value) != true)) {
-                    this.DiscBillIdField = value;
-                    this.RaisePropertyChanged("DiscBillId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int DiscCombinationType {
-            get {
-                return this.DiscCombinationTypeField;
-            }
-            set {
-                if ((this.DiscCombinationTypeField.Equals(value) != true)) {
-                    this.DiscCombinationTypeField = value;
-                    this.RaisePropertyChanged("DiscCombinationType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double DiscRate {
-            get {
-                return this.DiscRateField;
-            }
-            set {
-                if ((this.DiscRateField.Equals(value) != true)) {
-                    this.DiscRateField = value;
-                    this.RaisePropertyChanged("DiscRate");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double MultiDiscRate {
-            get {
-                return this.MultiDiscRateField;
-            }
-            set {
-                if ((this.MultiDiscRateField.Equals(value) != true)) {
-                    this.MultiDiscRateField = value;
-                    this.RaisePropertyChanged("MultiDiscRate");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int PrecisionType {
-            get {
-                return this.PrecisionTypeField;
-            }
-            set {
-                if ((this.PrecisionTypeField.Equals(value) != true)) {
-                    this.PrecisionTypeField = value;
-                    this.RaisePropertyChanged("PrecisionType");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CashCard", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class CashCard : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private double BalanceField;
-        
-        private string CardCodeField;
-        
-        private int CardIdField;
-        
-        private int CardTypeIdField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double Balance {
-            get {
-                return this.BalanceField;
-            }
-            set {
-                if ((this.BalanceField.Equals(value) != true)) {
-                    this.BalanceField = value;
-                    this.RaisePropertyChanged("Balance");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string CardCode {
-            get {
-                return this.CardCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CardCodeField, value) != true)) {
-                    this.CardCodeField = value;
-                    this.RaisePropertyChanged("CardCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CardId {
-            get {
-                return this.CardIdField;
-            }
-            set {
-                if ((this.CardIdField.Equals(value) != true)) {
-                    this.CardIdField = value;
-                    this.RaisePropertyChanged("CardId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CardTypeId {
-            get {
-                return this.CardTypeIdField;
-            }
-            set {
-                if ((this.CardTypeIdField.Equals(value) != true)) {
-                    this.CardTypeIdField = value;
-                    this.RaisePropertyChanged("CardTypeId");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Coupon", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class Coupon : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private double BalanceField;
-        
-        private int CouponTypeField;
-        
-        private string CouponTypeNameField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double Balance {
-            get {
-                return this.BalanceField;
-            }
-            set {
-                if ((this.BalanceField.Equals(value) != true)) {
-                    this.BalanceField = value;
-                    this.RaisePropertyChanged("Balance");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CouponType {
-            get {
-                return this.CouponTypeField;
-            }
-            set {
-                if ((this.CouponTypeField.Equals(value) != true)) {
-                    this.CouponTypeField = value;
-                    this.RaisePropertyChanged("CouponType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string CouponTypeName {
-            get {
-                return this.CouponTypeNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CouponTypeNameField, value) != true)) {
-                    this.CouponTypeNameField = value;
-                    this.RaisePropertyChanged("CouponTypeName");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CouponPayLimit", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class CouponPayLimit : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private int CouponTypeField;
-        
-        private double LimitMoneyField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CouponType {
-            get {
-                return this.CouponTypeField;
-            }
-            set {
-                if ((this.CouponTypeField.Equals(value) != true)) {
-                    this.CouponTypeField = value;
-                    this.RaisePropertyChanged("CouponType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double LimitMoney {
-            get {
-                return this.LimitMoneyField;
-            }
-            set {
-                if ((this.LimitMoneyField.Equals(value) != true)) {
-                    this.LimitMoneyField = value;
-                    this.RaisePropertyChanged("LimitMoney");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CashCardPayment", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class CashCardPayment : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private int CardIdField;
-        
-        private double PayMoneyField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CardId {
-            get {
-                return this.CardIdField;
-            }
-            set {
-                if ((this.CardIdField.Equals(value) != true)) {
-                    this.CardIdField = value;
-                    this.RaisePropertyChanged("CardId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double PayMoney {
-            get {
-                return this.PayMoneyField;
-            }
-            set {
-                if ((this.PayMoneyField.Equals(value) != true)) {
-                    this.PayMoneyField = value;
-                    this.RaisePropertyChanged("PayMoney");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CouponPayment", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class CouponPayment : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private int CouponTypeField;
-        
-        private double PayMoneyField;
-        
-        private int VipIdField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CouponType {
-            get {
-                return this.CouponTypeField;
-            }
-            set {
-                if ((this.CouponTypeField.Equals(value) != true)) {
-                    this.CouponTypeField = value;
-                    this.RaisePropertyChanged("CouponType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double PayMoney {
-            get {
-                return this.PayMoneyField;
-            }
-            set {
-                if ((this.PayMoneyField.Equals(value) != true)) {
-                    this.PayMoneyField = value;
-                    this.RaisePropertyChanged("PayMoney");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int VipId {
-            get {
-                return this.VipIdField;
-            }
-            set {
-                if ((this.VipIdField.Equals(value) != true)) {
-                    this.VipIdField = value;
-                    this.RaisePropertyChanged("VipId");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="RSaleBillHead", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class RSaleBillHead : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private string AccountDateField;
-        
-        private int BillIdField;
-        
-        private int BillTypeField;
-        
-        private string CashierField;
-        
-        private int OriginalBillIdField;
-        
-        private string OriginalPosIdField;
-        
-        private string PosIdField;
-        
-        private string SaleTimeField;
-        
-        private string StoreCodeField;
-        
-        private int VipIdField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string AccountDate {
-            get {
-                return this.AccountDateField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AccountDateField, value) != true)) {
-                    this.AccountDateField = value;
-                    this.RaisePropertyChanged("AccountDate");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int BillId {
-            get {
-                return this.BillIdField;
-            }
-            set {
-                if ((this.BillIdField.Equals(value) != true)) {
-                    this.BillIdField = value;
-                    this.RaisePropertyChanged("BillId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int BillType {
-            get {
-                return this.BillTypeField;
-            }
-            set {
-                if ((this.BillTypeField.Equals(value) != true)) {
-                    this.BillTypeField = value;
-                    this.RaisePropertyChanged("BillType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string Cashier {
-            get {
-                return this.CashierField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CashierField, value) != true)) {
-                    this.CashierField = value;
-                    this.RaisePropertyChanged("Cashier");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int OriginalBillId {
-            get {
-                return this.OriginalBillIdField;
-            }
-            set {
-                if ((this.OriginalBillIdField.Equals(value) != true)) {
-                    this.OriginalBillIdField = value;
-                    this.RaisePropertyChanged("OriginalBillId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string OriginalPosId {
-            get {
-                return this.OriginalPosIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.OriginalPosIdField, value) != true)) {
-                    this.OriginalPosIdField = value;
-                    this.RaisePropertyChanged("OriginalPosId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string PosId {
-            get {
-                return this.PosIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PosIdField, value) != true)) {
-                    this.PosIdField = value;
-                    this.RaisePropertyChanged("PosId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string SaleTime {
-            get {
-                return this.SaleTimeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SaleTimeField, value) != true)) {
-                    this.SaleTimeField = value;
-                    this.RaisePropertyChanged("SaleTime");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string StoreCode {
-            get {
-                return this.StoreCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.StoreCodeField, value) != true)) {
-                    this.StoreCodeField = value;
-                    this.RaisePropertyChanged("StoreCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int VipId {
-            get {
-                return this.VipIdField;
-            }
-            set {
-                if ((this.VipIdField.Equals(value) != true)) {
-                    this.VipIdField = value;
-                    this.RaisePropertyChanged("VipId");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="RSaleBillArticle", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class RSaleBillArticle : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private string ArticleCodeField;
-        
-        private string DeptCodeField;
-        
-        private double DiscMoneyField;
-        
-        private int InxField;
-        
-        private bool IsNoCentField;
-        
-        private bool IsNoPromField;
-        
-        private double SaleMoneyField;
-        
-        private double SaleNumField;
-        
-        private int VipDiscBillIdField;
-        
-        private double VipDiscMoneyField;
-        
-        private double VipDiscRateField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string ArticleCode {
-            get {
-                return this.ArticleCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ArticleCodeField, value) != true)) {
-                    this.ArticleCodeField = value;
-                    this.RaisePropertyChanged("ArticleCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string DeptCode {
-            get {
-                return this.DeptCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DeptCodeField, value) != true)) {
-                    this.DeptCodeField = value;
-                    this.RaisePropertyChanged("DeptCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double DiscMoney {
-            get {
-                return this.DiscMoneyField;
-            }
-            set {
-                if ((this.DiscMoneyField.Equals(value) != true)) {
-                    this.DiscMoneyField = value;
-                    this.RaisePropertyChanged("DiscMoney");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int Inx {
-            get {
-                return this.InxField;
-            }
-            set {
-                if ((this.InxField.Equals(value) != true)) {
-                    this.InxField = value;
-                    this.RaisePropertyChanged("Inx");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public bool IsNoCent {
-            get {
-                return this.IsNoCentField;
-            }
-            set {
-                if ((this.IsNoCentField.Equals(value) != true)) {
-                    this.IsNoCentField = value;
-                    this.RaisePropertyChanged("IsNoCent");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public bool IsNoProm {
-            get {
-                return this.IsNoPromField;
-            }
-            set {
-                if ((this.IsNoPromField.Equals(value) != true)) {
-                    this.IsNoPromField = value;
-                    this.RaisePropertyChanged("IsNoProm");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double SaleMoney {
-            get {
-                return this.SaleMoneyField;
-            }
-            set {
-                if ((this.SaleMoneyField.Equals(value) != true)) {
-                    this.SaleMoneyField = value;
-                    this.RaisePropertyChanged("SaleMoney");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double SaleNum {
-            get {
-                return this.SaleNumField;
-            }
-            set {
-                if ((this.SaleNumField.Equals(value) != true)) {
-                    this.SaleNumField = value;
-                    this.RaisePropertyChanged("SaleNum");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int VipDiscBillId {
-            get {
-                return this.VipDiscBillIdField;
-            }
-            set {
-                if ((this.VipDiscBillIdField.Equals(value) != true)) {
-                    this.VipDiscBillIdField = value;
-                    this.RaisePropertyChanged("VipDiscBillId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double VipDiscMoney {
-            get {
-                return this.VipDiscMoneyField;
-            }
-            set {
-                if ((this.VipDiscMoneyField.Equals(value) != true)) {
-                    this.VipDiscMoneyField = value;
-                    this.RaisePropertyChanged("VipDiscMoney");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double VipDiscRate {
-            get {
-                return this.VipDiscRateField;
-            }
-            set {
-                if ((this.VipDiscRateField.Equals(value) != true)) {
-                    this.VipDiscRateField = value;
-                    this.RaisePropertyChanged("VipDiscRate");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="RSaleBillArticleDecMoney", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class RSaleBillArticleDecMoney : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private int ArticleInxField;
-        
-        private double DecMoneyField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int ArticleInx {
-            get {
-                return this.ArticleInxField;
-            }
-            set {
-                if ((this.ArticleInxField.Equals(value) != true)) {
-                    this.ArticleInxField = value;
-                    this.RaisePropertyChanged("ArticleInx");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double DecMoney {
-            get {
-                return this.DecMoneyField;
-            }
-            set {
-                if ((this.DecMoneyField.Equals(value) != true)) {
-                    this.DecMoneyField = value;
-                    this.RaisePropertyChanged("DecMoney");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="RSaleBillArticlePromFlag", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class RSaleBillArticlePromFlag : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private int ArticleInxField;
-        
-        private bool JoinDecMoneyField;
-        
-        private bool JoinOfferCouponField;
-        
-        private bool JoinPromCentField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int ArticleInx {
-            get {
-                return this.ArticleInxField;
-            }
-            set {
-                if ((this.ArticleInxField.Equals(value) != true)) {
-                    this.ArticleInxField = value;
-                    this.RaisePropertyChanged("ArticleInx");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public bool JoinDecMoney {
-            get {
-                return this.JoinDecMoneyField;
-            }
-            set {
-                if ((this.JoinDecMoneyField.Equals(value) != true)) {
-                    this.JoinDecMoneyField = value;
-                    this.RaisePropertyChanged("JoinDecMoney");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public bool JoinOfferCoupon {
-            get {
-                return this.JoinOfferCouponField;
-            }
-            set {
-                if ((this.JoinOfferCouponField.Equals(value) != true)) {
-                    this.JoinOfferCouponField = value;
-                    this.RaisePropertyChanged("JoinOfferCoupon");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public bool JoinPromCent {
-            get {
-                return this.JoinPromCentField;
-            }
-            set {
-                if ((this.JoinPromCentField.Equals(value) != true)) {
-                    this.JoinPromCentField = value;
-                    this.RaisePropertyChanged("JoinPromCent");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="OfferBackCoupon", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class OfferBackCoupon : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private double BalanceField;
-        
-        private int CouponTypeField;
-        
-        private string CouponTypeNameField;
-        
-        private double DifferenceField;
-        
-        private double OfferMoneyField;
-        
-        private string ValidDateField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double Balance {
-            get {
-                return this.BalanceField;
-            }
-            set {
-                if ((this.BalanceField.Equals(value) != true)) {
-                    this.BalanceField = value;
-                    this.RaisePropertyChanged("Balance");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CouponType {
-            get {
-                return this.CouponTypeField;
-            }
-            set {
-                if ((this.CouponTypeField.Equals(value) != true)) {
-                    this.CouponTypeField = value;
-                    this.RaisePropertyChanged("CouponType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string CouponTypeName {
-            get {
-                return this.CouponTypeNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CouponTypeNameField, value) != true)) {
-                    this.CouponTypeNameField = value;
-                    this.RaisePropertyChanged("CouponTypeName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double Difference {
-            get {
-                return this.DifferenceField;
-            }
-            set {
-                if ((this.DifferenceField.Equals(value) != true)) {
-                    this.DifferenceField = value;
-                    this.RaisePropertyChanged("Difference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double OfferMoney {
-            get {
-                return this.OfferMoneyField;
-            }
-            set {
-                if ((this.OfferMoneyField.Equals(value) != true)) {
-                    this.OfferMoneyField = value;
-                    this.RaisePropertyChanged("OfferMoney");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string ValidDate {
-            get {
-                return this.ValidDateField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ValidDateField, value) != true)) {
-                    this.ValidDateField = value;
-                    this.RaisePropertyChanged("ValidDate");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CouponPayback", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class CouponPayback : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private int CouponTypeField;
-        
-        private string CouponTypeNameField;
-        
-        private double PayMoneyField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CouponType {
-            get {
-                return this.CouponTypeField;
-            }
-            set {
-                if ((this.CouponTypeField.Equals(value) != true)) {
-                    this.CouponTypeField = value;
-                    this.RaisePropertyChanged("CouponType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string CouponTypeName {
-            get {
-                return this.CouponTypeNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CouponTypeNameField, value) != true)) {
-                    this.CouponTypeNameField = value;
-                    this.RaisePropertyChanged("CouponTypeName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double PayMoney {
-            get {
-                return this.PayMoneyField;
-            }
-            set {
-                if ((this.PayMoneyField.Equals(value) != true)) {
-                    this.PayMoneyField = value;
-                    this.RaisePropertyChanged("PayMoney");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="RSaleBillPayment", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class RSaleBillPayment : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private double PayMoneyField;
-        
-        private string PayTypeCodeField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double PayMoney {
-            get {
-                return this.PayMoneyField;
-            }
-            set {
-                if ((this.PayMoneyField.Equals(value) != true)) {
-                    this.PayMoneyField = value;
-                    this.RaisePropertyChanged("PayMoney");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string PayTypeCode {
-            get {
-                return this.PayTypeCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PayTypeCodeField, value) != true)) {
-                    this.PayTypeCodeField = value;
-                    this.RaisePropertyChanged("PayTypeCode");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="RSaleBillArticleCent", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class RSaleBillArticleCent : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private int ArticleInxField;
-        
-        private double CentField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int ArticleInx {
-            get {
-                return this.ArticleInxField;
-            }
-            set {
-                if ((this.ArticleInxField.Equals(value) != true)) {
-                    this.ArticleInxField = value;
-                    this.RaisePropertyChanged("ArticleInx");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double Cent {
-            get {
-                return this.CentField;
-            }
-            set {
-                if ((this.CentField.Equals(value) != true)) {
-                    this.CentField = value;
-                    this.RaisePropertyChanged("Cent");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="RSaleBillArticleCoupon", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class RSaleBillArticleCoupon : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private int ArticleInxField;
-        
-        private int CouponTypeField;
-        
-        private double SharedMoneyField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int ArticleInx {
-            get {
-                return this.ArticleInxField;
-            }
-            set {
-                if ((this.ArticleInxField.Equals(value) != true)) {
-                    this.ArticleInxField = value;
-                    this.RaisePropertyChanged("ArticleInx");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CouponType {
-            get {
-                return this.CouponTypeField;
-            }
-            set {
-                if ((this.CouponTypeField.Equals(value) != true)) {
-                    this.CouponTypeField = value;
-                    this.RaisePropertyChanged("CouponType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double SharedMoney {
-            get {
-                return this.SharedMoneyField;
-            }
-            set {
-                if ((this.SharedMoneyField.Equals(value) != true)) {
-                    this.SharedMoneyField = value;
-                    this.RaisePropertyChanged("SharedMoney");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="OfferCoupon", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class OfferCoupon : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private double BalanceField;
-        
-        private int CouponTypeField;
-        
-        private string CouponTypeNameField;
-        
-        private double OfferMoneyField;
-        
-        private string ValidDateField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double Balance {
-            get {
-                return this.BalanceField;
-            }
-            set {
-                if ((this.BalanceField.Equals(value) != true)) {
-                    this.BalanceField = value;
-                    this.RaisePropertyChanged("Balance");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int CouponType {
-            get {
-                return this.CouponTypeField;
-            }
-            set {
-                if ((this.CouponTypeField.Equals(value) != true)) {
-                    this.CouponTypeField = value;
-                    this.RaisePropertyChanged("CouponType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string CouponTypeName {
-            get {
-                return this.CouponTypeNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CouponTypeNameField, value) != true)) {
-                    this.CouponTypeNameField = value;
-                    this.RaisePropertyChanged("CouponTypeName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double OfferMoney {
-            get {
-                return this.OfferMoneyField;
-            }
-            set {
-                if ((this.OfferMoneyField.Equals(value) != true)) {
-                    this.OfferMoneyField = value;
-                    this.RaisePropertyChanged("OfferMoney");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string ValidDate {
-            get {
-                return this.ValidDateField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ValidDateField, value) != true)) {
-                    this.ValidDateField = value;
-                    this.RaisePropertyChanged("ValidDate");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SaleMoneyLeftWhenPromCalc", Namespace="http://schemas.datacontract.org/2004/07/ChangYi.Crm.Server.Wcf")]
-    [System.SerializableAttribute()]
-    public partial class SaleMoneyLeftWhenPromCalc : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        private string AddupTypeDescField;
-        
-        private string CouponTypeNameField;
-        
-        private string PromotionNameField;
-        
-        private string RuleNameField;
-        
-        private double SaleMoneyField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string AddupTypeDesc {
-            get {
-                return this.AddupTypeDescField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AddupTypeDescField, value) != true)) {
-                    this.AddupTypeDescField = value;
-                    this.RaisePropertyChanged("AddupTypeDesc");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string CouponTypeName {
-            get {
-                return this.CouponTypeNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CouponTypeNameField, value) != true)) {
-                    this.CouponTypeNameField = value;
-                    this.RaisePropertyChanged("CouponTypeName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string PromotionName {
-            get {
-                return this.PromotionNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PromotionNameField, value) != true)) {
-                    this.PromotionNameField = value;
-                    this.RaisePropertyChanged("PromotionName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public string RuleName {
-            get {
-                return this.RuleNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RuleNameField, value) != true)) {
-                    this.RuleNameField = value;
-                    this.RaisePropertyChanged("RuleName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public double SaleMoney {
-            get {
-                return this.SaleMoneyField;
-            }
-            set {
-                if ((this.SaleMoneyField.Equals(value) != true)) {
-                    this.SaleMoneyField = value;
-                    this.RaisePropertyChanged("SaleMoney");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="PosServiceAPI.IPOSService")]
-    public interface IPOSService {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="PosServiceAPI.PosWebServiceSoap")]
+    public interface PosWebServiceSoap {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetVipCard", ReplyAction="http://tempuri.org/IPOSService/GetVipCardResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetVipCard", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.GetVipCardResponse GetVipCard(z.ERP.API.PosServiceAPI.GetVipCardRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetVipCard", ReplyAction="http://tempuri.org/IPOSService/GetVipCardResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetVipCard", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.GetVipCardResponse> GetVipCardAsync(z.ERP.API.PosServiceAPI.GetVipCardRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/UpdateVipInfo", ReplyAction="http://tempuri.org/IPOSService/UpdateVipInfoResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetVipCardToOfferCoupon", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponResponse GetVipCardToOfferCoupon(z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponRequest request);
+        
+        // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetVipCardToOfferCoupon", ReplyAction="*")]
+        System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponResponse> GetVipCardToOfferCouponAsync(z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/UpdateVipInfo", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.UpdateVipInfoResponse UpdateVipInfo(z.ERP.API.PosServiceAPI.UpdateVipInfoRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/UpdateVipInfo", ReplyAction="http://tempuri.org/IPOSService/UpdateVipInfoResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/UpdateVipInfo", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.UpdateVipInfoResponse> UpdateVipInfoAsync(z.ERP.API.PosServiceAPI.UpdateVipInfoRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/UpdateVipCent", ReplyAction="http://tempuri.org/IPOSService/UpdateVipCentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/UpdateVipCent", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.UpdateVipCentResponse UpdateVipCent(z.ERP.API.PosServiceAPI.UpdateVipCentRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/UpdateVipCent", ReplyAction="http://tempuri.org/IPOSService/UpdateVipCentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/UpdateVipCent", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.UpdateVipCentResponse> UpdateVipCentAsync(z.ERP.API.PosServiceAPI.UpdateVipCentRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetArticleVipDisc", ReplyAction="http://tempuri.org/IPOSService/GetArticleVipDiscResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetArticleVipDisc", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.GetArticleVipDiscResponse GetArticleVipDisc(z.ERP.API.PosServiceAPI.GetArticleVipDiscRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetArticleVipDisc", ReplyAction="http://tempuri.org/IPOSService/GetArticleVipDiscResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetArticleVipDisc", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.GetArticleVipDiscResponse> GetArticleVipDiscAsync(z.ERP.API.PosServiceAPI.GetArticleVipDiscRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetCashCard", ReplyAction="http://tempuri.org/IPOSService/GetCashCardResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetCashCard", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.GetCashCardResponse GetCashCard(z.ERP.API.PosServiceAPI.GetCashCardRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetCashCard", ReplyAction="http://tempuri.org/IPOSService/GetCashCardResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetCashCard", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.GetCashCardResponse> GetCashCardAsync(z.ERP.API.PosServiceAPI.GetCashCardRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetVipCoupon", ReplyAction="http://tempuri.org/IPOSService/GetVipCouponResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetVipCoupon", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.GetVipCouponResponse GetVipCoupon(z.ERP.API.PosServiceAPI.GetVipCouponRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetVipCoupon", ReplyAction="http://tempuri.org/IPOSService/GetVipCouponResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetVipCoupon", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.GetVipCouponResponse> GetVipCouponAsync(z.ERP.API.PosServiceAPI.GetVipCouponRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetVipCouponToPay", ReplyAction="http://tempuri.org/IPOSService/GetVipCouponToPayResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetVipCouponToPay", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.GetVipCouponToPayResponse GetVipCouponToPay(z.ERP.API.PosServiceAPI.GetVipCouponToPayRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetVipCouponToPay", ReplyAction="http://tempuri.org/IPOSService/GetVipCouponToPayResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetVipCouponToPay", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.GetVipCouponToPayResponse> GetVipCouponToPayAsync(z.ERP.API.PosServiceAPI.GetVipCouponToPayRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetVipCouponPayLimit", ReplyAction="http://tempuri.org/IPOSService/GetVipCouponPayLimitResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetVipCouponPayLimit", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.GetVipCouponPayLimitResponse GetVipCouponPayLimit(z.ERP.API.PosServiceAPI.GetVipCouponPayLimitRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/GetVipCouponPayLimit", ReplyAction="http://tempuri.org/IPOSService/GetVipCouponPayLimitResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetVipCouponPayLimit", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.GetVipCouponPayLimitResponse> GetVipCouponPayLimitAsync(z.ERP.API.PosServiceAPI.GetVipCouponPayLimitRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/PrepareTransCashCardPayment", ReplyAction="http://tempuri.org/IPOSService/PrepareTransCashCardPaymentResponse")]
-        z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentResponse PrepareTransCashCardPayment(z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentRequest request);
-        
-        // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/PrepareTransCashCardPayment", ReplyAction="http://tempuri.org/IPOSService/PrepareTransCashCardPaymentResponse")]
-        System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentResponse> PrepareTransCashCardPaymentAsync(z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/PrepareTransCashCardPayment2", ReplyAction="http://tempuri.org/IPOSService/PrepareTransCashCardPayment2Response")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/PrepareTransCashCardPayment2", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Response PrepareTransCashCardPayment2(z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Request request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/PrepareTransCashCardPayment2", ReplyAction="http://tempuri.org/IPOSService/PrepareTransCashCardPayment2Response")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/PrepareTransCashCardPayment2", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Response> PrepareTransCashCardPayment2Async(z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Request request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/ConfirmTransCashCardPayment", ReplyAction="http://tempuri.org/IPOSService/ConfirmTransCashCardPaymentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ConfirmTransCashCardPayment", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentResponse ConfirmTransCashCardPayment(z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/ConfirmTransCashCardPayment", ReplyAction="http://tempuri.org/IPOSService/ConfirmTransCashCardPaymentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ConfirmTransCashCardPayment", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentResponse> ConfirmTransCashCardPaymentAsync(z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/CancelTransCashCardPayment", ReplyAction="http://tempuri.org/IPOSService/CancelTransCashCardPaymentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CancelTransCashCardPayment", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentResponse CancelTransCashCardPayment(z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/CancelTransCashCardPayment", ReplyAction="http://tempuri.org/IPOSService/CancelTransCashCardPaymentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CancelTransCashCardPayment", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentResponse> CancelTransCashCardPaymentAsync(z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/PrepareTransCouponPayment", ReplyAction="http://tempuri.org/IPOSService/PrepareTransCouponPaymentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/PrepareTransCouponPayment", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentResponse PrepareTransCouponPayment(z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/PrepareTransCouponPayment", ReplyAction="http://tempuri.org/IPOSService/PrepareTransCouponPaymentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/PrepareTransCouponPayment", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentResponse> PrepareTransCouponPaymentAsync(z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/PrepareTransCouponPayment2", ReplyAction="http://tempuri.org/IPOSService/PrepareTransCouponPayment2Response")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/PrepareTransCouponPayment2", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Response PrepareTransCouponPayment2(z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Request request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/PrepareTransCouponPayment2", ReplyAction="http://tempuri.org/IPOSService/PrepareTransCouponPayment2Response")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/PrepareTransCouponPayment2", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Response> PrepareTransCouponPayment2Async(z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Request request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/ConfirmTransCouponPayment", ReplyAction="http://tempuri.org/IPOSService/ConfirmTransCouponPaymentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ConfirmTransCouponPayment", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentResponse ConfirmTransCouponPayment(z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/ConfirmTransCouponPayment", ReplyAction="http://tempuri.org/IPOSService/ConfirmTransCouponPaymentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ConfirmTransCouponPayment", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentResponse> ConfirmTransCouponPaymentAsync(z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/CancelTransCouponPayment", ReplyAction="http://tempuri.org/IPOSService/CancelTransCouponPaymentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CancelTransCouponPayment", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.CancelTransCouponPaymentResponse CancelTransCouponPayment(z.ERP.API.PosServiceAPI.CancelTransCouponPaymentRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/CancelTransCouponPayment", ReplyAction="http://tempuri.org/IPOSService/CancelTransCouponPaymentResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CancelTransCouponPayment", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.CancelTransCouponPaymentResponse> CancelTransCouponPaymentAsync(z.ERP.API.PosServiceAPI.CancelTransCouponPaymentRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/SaveRSaleBillArticles", ReplyAction="http://tempuri.org/IPOSService/SaveRSaleBillArticlesResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SaveRSaleBillArticles", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesResponse SaveRSaleBillArticles(z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/SaveRSaleBillArticles", ReplyAction="http://tempuri.org/IPOSService/SaveRSaleBillArticlesResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SaveRSaleBillArticles", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesResponse> SaveRSaleBillArticlesAsync(z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/SaveRSaleBackBillArticles", ReplyAction="http://tempuri.org/IPOSService/SaveRSaleBackBillArticlesResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SaveRSaleBackBillArticles", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesResponse SaveRSaleBackBillArticles(z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/SaveRSaleBackBillArticles", ReplyAction="http://tempuri.org/IPOSService/SaveRSaleBackBillArticlesResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SaveRSaleBackBillArticles", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesResponse> SaveRSaleBackBillArticlesAsync(z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/CalcRSaleBillDecMoney", ReplyAction="http://tempuri.org/IPOSService/CalcRSaleBillDecMoneyResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CalcRSaleBillDecMoney", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyResponse CalcRSaleBillDecMoney(z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/CalcRSaleBillDecMoney", ReplyAction="http://tempuri.org/IPOSService/CalcRSaleBillDecMoneyResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CalcRSaleBillDecMoney", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyResponse> CalcRSaleBillDecMoneyAsync(z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/PrepareCheckOutRSaleBill", ReplyAction="http://tempuri.org/IPOSService/PrepareCheckOutRSaleBillResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/PrepareCheckOutRSaleBill", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillResponse PrepareCheckOutRSaleBill(z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/PrepareCheckOutRSaleBill", ReplyAction="http://tempuri.org/IPOSService/PrepareCheckOutRSaleBillResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/PrepareCheckOutRSaleBill", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillResponse> PrepareCheckOutRSaleBillAsync(z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/CheckOutRSaleBill", ReplyAction="http://tempuri.org/IPOSService/CheckOutRSaleBillResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CheckOutRSaleBill", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         z.ERP.API.PosServiceAPI.CheckOutRSaleBillResponse CheckOutRSaleBill(z.ERP.API.PosServiceAPI.CheckOutRSaleBillRequest request);
         
         // CODEGEN: 正在生成消息协定，应为该操作具有多个返回值。
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPOSService/CheckOutRSaleBill", ReplyAction="http://tempuri.org/IPOSService/CheckOutRSaleBillResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CheckOutRSaleBill", ReplyAction="*")]
         System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.CheckOutRSaleBillResponse> CheckOutRSaleBillAsync(z.ERP.API.PosServiceAPI.CheckOutRSaleBillRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetShoppingDay", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        string GetShoppingDay(string s);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetShoppingDay", ReplyAction="*")]
+        System.Threading.Tasks.Task<string> GetShoppingDayAsync(string s);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DESEncrypt", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        string DESEncrypt(string s, string key);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DESEncrypt", ReplyAction="*")]
+        System.Threading.Tasks.Task<string> DESEncryptAsync(string s, string key);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DESEncrypt2", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        string DESEncrypt2(string s, string key);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DESEncrypt2", ReplyAction="*")]
+        System.Threading.Tasks.Task<string> DESEncrypt2Async(string s, string key);
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class ABCSoapHeader : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string userIdField;
+        
+        private string passwordField;
+        
+        private System.Xml.XmlAttribute[] anyAttrField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string UserId {
+            get {
+                return this.userIdField;
+            }
+            set {
+                this.userIdField = value;
+                this.RaisePropertyChanged("UserId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Password {
+            get {
+                return this.passwordField;
+            }
+            set {
+                this.passwordField = value;
+                this.RaisePropertyChanged("Password");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAnyAttributeAttribute()]
+        public System.Xml.XmlAttribute[] AnyAttr {
+            get {
+                return this.anyAttrField;
+            }
+            set {
+                this.anyAttrField = value;
+                this.RaisePropertyChanged("AnyAttr");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class SaleMoneyLeftWhenPromCalc : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string addupTypeDescField;
+        
+        private string promotionNameField;
+        
+        private string couponTypeNameField;
+        
+        private string ruleNameField;
+        
+        private double saleMoneyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string AddupTypeDesc {
+            get {
+                return this.addupTypeDescField;
+            }
+            set {
+                this.addupTypeDescField = value;
+                this.RaisePropertyChanged("AddupTypeDesc");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string PromotionName {
+            get {
+                return this.promotionNameField;
+            }
+            set {
+                this.promotionNameField = value;
+                this.RaisePropertyChanged("PromotionName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string CouponTypeName {
+            get {
+                return this.couponTypeNameField;
+            }
+            set {
+                this.couponTypeNameField = value;
+                this.RaisePropertyChanged("CouponTypeName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string RuleName {
+            get {
+                return this.ruleNameField;
+            }
+            set {
+                this.ruleNameField = value;
+                this.RaisePropertyChanged("RuleName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public double SaleMoney {
+            get {
+                return this.saleMoneyField;
+            }
+            set {
+                this.saleMoneyField = value;
+                this.RaisePropertyChanged("SaleMoney");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class OfferCoupon : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int couponTypeField;
+        
+        private string couponTypeNameField;
+        
+        private string validDateField;
+        
+        private double offerMoneyField;
+        
+        private double balanceField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int CouponType {
+            get {
+                return this.couponTypeField;
+            }
+            set {
+                this.couponTypeField = value;
+                this.RaisePropertyChanged("CouponType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string CouponTypeName {
+            get {
+                return this.couponTypeNameField;
+            }
+            set {
+                this.couponTypeNameField = value;
+                this.RaisePropertyChanged("CouponTypeName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string ValidDate {
+            get {
+                return this.validDateField;
+            }
+            set {
+                this.validDateField = value;
+                this.RaisePropertyChanged("ValidDate");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public double OfferMoney {
+            get {
+                return this.offerMoneyField;
+            }
+            set {
+                this.offerMoneyField = value;
+                this.RaisePropertyChanged("OfferMoney");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public double Balance {
+            get {
+                return this.balanceField;
+            }
+            set {
+                this.balanceField = value;
+                this.RaisePropertyChanged("Balance");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class RSaleBillArticleCoupon : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int couponTypeField;
+        
+        private int articleInxField;
+        
+        private double sharedMoneyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int CouponType {
+            get {
+                return this.couponTypeField;
+            }
+            set {
+                this.couponTypeField = value;
+                this.RaisePropertyChanged("CouponType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public int ArticleInx {
+            get {
+                return this.articleInxField;
+            }
+            set {
+                this.articleInxField = value;
+                this.RaisePropertyChanged("ArticleInx");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public double SharedMoney {
+            get {
+                return this.sharedMoneyField;
+            }
+            set {
+                this.sharedMoneyField = value;
+                this.RaisePropertyChanged("SharedMoney");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class RSaleBillArticleCent : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int articleInxField;
+        
+        private double centField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int ArticleInx {
+            get {
+                return this.articleInxField;
+            }
+            set {
+                this.articleInxField = value;
+                this.RaisePropertyChanged("ArticleInx");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public double Cent {
+            get {
+                return this.centField;
+            }
+            set {
+                this.centField = value;
+                this.RaisePropertyChanged("Cent");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class RSaleBillPayment : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string payTypeCodeField;
+        
+        private double payMoneyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string PayTypeCode {
+            get {
+                return this.payTypeCodeField;
+            }
+            set {
+                this.payTypeCodeField = value;
+                this.RaisePropertyChanged("PayTypeCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public double PayMoney {
+            get {
+                return this.payMoneyField;
+            }
+            set {
+                this.payMoneyField = value;
+                this.RaisePropertyChanged("PayMoney");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class CouponPayback : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int couponTypeField;
+        
+        private string couponTypeNameField;
+        
+        private double payMoneyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int CouponType {
+            get {
+                return this.couponTypeField;
+            }
+            set {
+                this.couponTypeField = value;
+                this.RaisePropertyChanged("CouponType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string CouponTypeName {
+            get {
+                return this.couponTypeNameField;
+            }
+            set {
+                this.couponTypeNameField = value;
+                this.RaisePropertyChanged("CouponTypeName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public double PayMoney {
+            get {
+                return this.payMoneyField;
+            }
+            set {
+                this.payMoneyField = value;
+                this.RaisePropertyChanged("PayMoney");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class OfferBackCoupon : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int couponTypeField;
+        
+        private string couponTypeNameField;
+        
+        private string validDateField;
+        
+        private double offerMoneyField;
+        
+        private double balanceField;
+        
+        private double differenceField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int CouponType {
+            get {
+                return this.couponTypeField;
+            }
+            set {
+                this.couponTypeField = value;
+                this.RaisePropertyChanged("CouponType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string CouponTypeName {
+            get {
+                return this.couponTypeNameField;
+            }
+            set {
+                this.couponTypeNameField = value;
+                this.RaisePropertyChanged("CouponTypeName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string ValidDate {
+            get {
+                return this.validDateField;
+            }
+            set {
+                this.validDateField = value;
+                this.RaisePropertyChanged("ValidDate");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public double OfferMoney {
+            get {
+                return this.offerMoneyField;
+            }
+            set {
+                this.offerMoneyField = value;
+                this.RaisePropertyChanged("OfferMoney");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public double Balance {
+            get {
+                return this.balanceField;
+            }
+            set {
+                this.balanceField = value;
+                this.RaisePropertyChanged("Balance");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public double Difference {
+            get {
+                return this.differenceField;
+            }
+            set {
+                this.differenceField = value;
+                this.RaisePropertyChanged("Difference");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class RSaleBillArticlePromFlag : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int articleInxField;
+        
+        private bool joinPromCentField;
+        
+        private bool joinOfferCouponField;
+        
+        private bool joinDecMoneyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int ArticleInx {
+            get {
+                return this.articleInxField;
+            }
+            set {
+                this.articleInxField = value;
+                this.RaisePropertyChanged("ArticleInx");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public bool JoinPromCent {
+            get {
+                return this.joinPromCentField;
+            }
+            set {
+                this.joinPromCentField = value;
+                this.RaisePropertyChanged("JoinPromCent");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public bool JoinOfferCoupon {
+            get {
+                return this.joinOfferCouponField;
+            }
+            set {
+                this.joinOfferCouponField = value;
+                this.RaisePropertyChanged("JoinOfferCoupon");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public bool JoinDecMoney {
+            get {
+                return this.joinDecMoneyField;
+            }
+            set {
+                this.joinDecMoneyField = value;
+                this.RaisePropertyChanged("JoinDecMoney");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class RSaleBillArticleDecMoney : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int articleInxField;
+        
+        private double decMoneyField;
+        
+        private bool decMoneyIsExpenseField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int ArticleInx {
+            get {
+                return this.articleInxField;
+            }
+            set {
+                this.articleInxField = value;
+                this.RaisePropertyChanged("ArticleInx");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public double DecMoney {
+            get {
+                return this.decMoneyField;
+            }
+            set {
+                this.decMoneyField = value;
+                this.RaisePropertyChanged("DecMoney");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public bool DecMoneyIsExpense {
+            get {
+                return this.decMoneyIsExpenseField;
+            }
+            set {
+                this.decMoneyIsExpenseField = value;
+                this.RaisePropertyChanged("DecMoneyIsExpense");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class RSaleBillArticle : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int inxField;
+        
+        private string deptCodeField;
+        
+        private string articleCodeField;
+        
+        private int articleIdField;
+        
+        private double saleNumField;
+        
+        private double saleMoneyField;
+        
+        private double discMoneyField;
+        
+        private double vipDiscMoneyField;
+        
+        private double vipDiscRateField;
+        
+        private int vipDiscBillIdField;
+        
+        private bool isNoCentField;
+        
+        private bool isNoPromField;
+        
+        private int inx_oldField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int Inx {
+            get {
+                return this.inxField;
+            }
+            set {
+                this.inxField = value;
+                this.RaisePropertyChanged("Inx");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string DeptCode {
+            get {
+                return this.deptCodeField;
+            }
+            set {
+                this.deptCodeField = value;
+                this.RaisePropertyChanged("DeptCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string ArticleCode {
+            get {
+                return this.articleCodeField;
+            }
+            set {
+                this.articleCodeField = value;
+                this.RaisePropertyChanged("ArticleCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public int ArticleId {
+            get {
+                return this.articleIdField;
+            }
+            set {
+                this.articleIdField = value;
+                this.RaisePropertyChanged("ArticleId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public double SaleNum {
+            get {
+                return this.saleNumField;
+            }
+            set {
+                this.saleNumField = value;
+                this.RaisePropertyChanged("SaleNum");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public double SaleMoney {
+            get {
+                return this.saleMoneyField;
+            }
+            set {
+                this.saleMoneyField = value;
+                this.RaisePropertyChanged("SaleMoney");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public double DiscMoney {
+            get {
+                return this.discMoneyField;
+            }
+            set {
+                this.discMoneyField = value;
+                this.RaisePropertyChanged("DiscMoney");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public double VipDiscMoney {
+            get {
+                return this.vipDiscMoneyField;
+            }
+            set {
+                this.vipDiscMoneyField = value;
+                this.RaisePropertyChanged("VipDiscMoney");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public double VipDiscRate {
+            get {
+                return this.vipDiscRateField;
+            }
+            set {
+                this.vipDiscRateField = value;
+                this.RaisePropertyChanged("VipDiscRate");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        public int VipDiscBillId {
+            get {
+                return this.vipDiscBillIdField;
+            }
+            set {
+                this.vipDiscBillIdField = value;
+                this.RaisePropertyChanged("VipDiscBillId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        public bool IsNoCent {
+            get {
+                return this.isNoCentField;
+            }
+            set {
+                this.isNoCentField = value;
+                this.RaisePropertyChanged("IsNoCent");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        public bool IsNoProm {
+            get {
+                return this.isNoPromField;
+            }
+            set {
+                this.isNoPromField = value;
+                this.RaisePropertyChanged("IsNoProm");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        public int Inx_old {
+            get {
+                return this.inx_oldField;
+            }
+            set {
+                this.inx_oldField = value;
+                this.RaisePropertyChanged("Inx_old");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class RSaleBillHead : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string storeCodeField;
+        
+        private string posIdField;
+        
+        private int billIdField;
+        
+        private int billTypeField;
+        
+        private int vipIdField;
+        
+        private string saleTimeField;
+        
+        private string accountDateField;
+        
+        private string cashierField;
+        
+        private string originalPosIdField;
+        
+        private int originalBillIdField;
+        
+        private string saleUserCodeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string StoreCode {
+            get {
+                return this.storeCodeField;
+            }
+            set {
+                this.storeCodeField = value;
+                this.RaisePropertyChanged("StoreCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string PosId {
+            get {
+                return this.posIdField;
+            }
+            set {
+                this.posIdField = value;
+                this.RaisePropertyChanged("PosId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public int BillId {
+            get {
+                return this.billIdField;
+            }
+            set {
+                this.billIdField = value;
+                this.RaisePropertyChanged("BillId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public int BillType {
+            get {
+                return this.billTypeField;
+            }
+            set {
+                this.billTypeField = value;
+                this.RaisePropertyChanged("BillType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public int VipId {
+            get {
+                return this.vipIdField;
+            }
+            set {
+                this.vipIdField = value;
+                this.RaisePropertyChanged("VipId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public string SaleTime {
+            get {
+                return this.saleTimeField;
+            }
+            set {
+                this.saleTimeField = value;
+                this.RaisePropertyChanged("SaleTime");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public string AccountDate {
+            get {
+                return this.accountDateField;
+            }
+            set {
+                this.accountDateField = value;
+                this.RaisePropertyChanged("AccountDate");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public string Cashier {
+            get {
+                return this.cashierField;
+            }
+            set {
+                this.cashierField = value;
+                this.RaisePropertyChanged("Cashier");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public string OriginalPosId {
+            get {
+                return this.originalPosIdField;
+            }
+            set {
+                this.originalPosIdField = value;
+                this.RaisePropertyChanged("OriginalPosId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        public int OriginalBillId {
+            get {
+                return this.originalBillIdField;
+            }
+            set {
+                this.originalBillIdField = value;
+                this.RaisePropertyChanged("OriginalBillId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        public string SaleUserCode {
+            get {
+                return this.saleUserCodeField;
+            }
+            set {
+                this.saleUserCodeField = value;
+                this.RaisePropertyChanged("SaleUserCode");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class CouponPayment : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int vipIdField;
+        
+        private int couponTypeField;
+        
+        private double payMoneyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int VipId {
+            get {
+                return this.vipIdField;
+            }
+            set {
+                this.vipIdField = value;
+                this.RaisePropertyChanged("VipId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public int CouponType {
+            get {
+                return this.couponTypeField;
+            }
+            set {
+                this.couponTypeField = value;
+                this.RaisePropertyChanged("CouponType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public double PayMoney {
+            get {
+                return this.payMoneyField;
+            }
+            set {
+                this.payMoneyField = value;
+                this.RaisePropertyChanged("PayMoney");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class CashCardPayment : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int cardIdField;
+        
+        private double payMoneyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int CardId {
+            get {
+                return this.cardIdField;
+            }
+            set {
+                this.cardIdField = value;
+                this.RaisePropertyChanged("CardId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public double PayMoney {
+            get {
+                return this.payMoneyField;
+            }
+            set {
+                this.payMoneyField = value;
+                this.RaisePropertyChanged("PayMoney");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class CouponPayLimit : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int couponTypeField;
+        
+        private double limitMoneyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int CouponType {
+            get {
+                return this.couponTypeField;
+            }
+            set {
+                this.couponTypeField = value;
+                this.RaisePropertyChanged("CouponType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public double LimitMoney {
+            get {
+                return this.limitMoneyField;
+            }
+            set {
+                this.limitMoneyField = value;
+                this.RaisePropertyChanged("LimitMoney");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class Coupon : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int couponTypeField;
+        
+        private string couponTypeNameField;
+        
+        private double balanceField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int CouponType {
+            get {
+                return this.couponTypeField;
+            }
+            set {
+                this.couponTypeField = value;
+                this.RaisePropertyChanged("CouponType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string CouponTypeName {
+            get {
+                return this.couponTypeNameField;
+            }
+            set {
+                this.couponTypeNameField = value;
+                this.RaisePropertyChanged("CouponTypeName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public double Balance {
+            get {
+                return this.balanceField;
+            }
+            set {
+                this.balanceField = value;
+                this.RaisePropertyChanged("Balance");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class CashCard : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int cardIdField;
+        
+        private string cardCodeField;
+        
+        private int cardTypeIdField;
+        
+        private double balanceField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int CardId {
+            get {
+                return this.cardIdField;
+            }
+            set {
+                this.cardIdField = value;
+                this.RaisePropertyChanged("CardId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string CardCode {
+            get {
+                return this.cardCodeField;
+            }
+            set {
+                this.cardCodeField = value;
+                this.RaisePropertyChanged("CardCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public int CardTypeId {
+            get {
+                return this.cardTypeIdField;
+            }
+            set {
+                this.cardTypeIdField = value;
+                this.RaisePropertyChanged("CardTypeId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public double Balance {
+            get {
+                return this.balanceField;
+            }
+            set {
+                this.balanceField = value;
+                this.RaisePropertyChanged("Balance");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class ArticleVipDisc : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private double discRateField;
+        
+        private double multiDiscRateField;
+        
+        private int precisionTypeField;
+        
+        private int discCombinationTypeField;
+        
+        private int discBillIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public double DiscRate {
+            get {
+                return this.discRateField;
+            }
+            set {
+                this.discRateField = value;
+                this.RaisePropertyChanged("DiscRate");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public double MultiDiscRate {
+            get {
+                return this.multiDiscRateField;
+            }
+            set {
+                this.multiDiscRateField = value;
+                this.RaisePropertyChanged("MultiDiscRate");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public int PrecisionType {
+            get {
+                return this.precisionTypeField;
+            }
+            set {
+                this.precisionTypeField = value;
+                this.RaisePropertyChanged("PrecisionType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public int DiscCombinationType {
+            get {
+                return this.discCombinationTypeField;
+            }
+            set {
+                this.discCombinationTypeField = value;
+                this.RaisePropertyChanged("DiscCombinationType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public int DiscBillId {
+            get {
+                return this.discBillIdField;
+            }
+            set {
+                this.discBillIdField = value;
+                this.RaisePropertyChanged("DiscBillId");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class DeptArticleCode : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string deptCodeField;
+        
+        private string articleCodeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string DeptCode {
+            get {
+                return this.deptCodeField;
+            }
+            set {
+                this.deptCodeField = value;
+                this.RaisePropertyChanged("DeptCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string ArticleCode {
+            get {
+                return this.articleCodeField;
+            }
+            set {
+                this.articleCodeField = value;
+                this.RaisePropertyChanged("ArticleCode");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class VipInfoUpdated : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int cardIdField;
+        
+        private string mobileField;
+        
+        private string addressField;
+        
+        private string eMailField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int CardId {
+            get {
+                return this.cardIdField;
+            }
+            set {
+                this.cardIdField = value;
+                this.RaisePropertyChanged("CardId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Mobile {
+            get {
+                return this.mobileField;
+            }
+            set {
+                this.mobileField = value;
+                this.RaisePropertyChanged("Mobile");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string Address {
+            get {
+                return this.addressField;
+            }
+            set {
+                this.addressField = value;
+                this.RaisePropertyChanged("Address");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string EMail {
+            get {
+                return this.eMailField;
+            }
+            set {
+                this.eMailField = value;
+                this.RaisePropertyChanged("EMail");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class VipCard : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int cardIdField;
+        
+        private string cardCodeField;
+        
+        private string vipNameField;
+        
+        private int cardTypeIdField;
+        
+        private string cardTypeNameField;
+        
+        private bool canCentField;
+        
+        private bool canOwnCouponField;
+        
+        private bool canDiscField;
+        
+        private double validCentField;
+        
+        private double yearCentField;
+        
+        private double stageCentField;
+        
+        private string helloField;
+        
+        private string idCardCodeField;
+        
+        private string birthdayField;
+        
+        private int sexTypeField;
+        
+        private string mobileField;
+        
+        private string addressField;
+        
+        private string eMailField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int CardId {
+            get {
+                return this.cardIdField;
+            }
+            set {
+                this.cardIdField = value;
+                this.RaisePropertyChanged("CardId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string CardCode {
+            get {
+                return this.cardCodeField;
+            }
+            set {
+                this.cardCodeField = value;
+                this.RaisePropertyChanged("CardCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string VipName {
+            get {
+                return this.vipNameField;
+            }
+            set {
+                this.vipNameField = value;
+                this.RaisePropertyChanged("VipName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public int CardTypeId {
+            get {
+                return this.cardTypeIdField;
+            }
+            set {
+                this.cardTypeIdField = value;
+                this.RaisePropertyChanged("CardTypeId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string CardTypeName {
+            get {
+                return this.cardTypeNameField;
+            }
+            set {
+                this.cardTypeNameField = value;
+                this.RaisePropertyChanged("CardTypeName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public bool CanCent {
+            get {
+                return this.canCentField;
+            }
+            set {
+                this.canCentField = value;
+                this.RaisePropertyChanged("CanCent");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public bool CanOwnCoupon {
+            get {
+                return this.canOwnCouponField;
+            }
+            set {
+                this.canOwnCouponField = value;
+                this.RaisePropertyChanged("CanOwnCoupon");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public bool CanDisc {
+            get {
+                return this.canDiscField;
+            }
+            set {
+                this.canDiscField = value;
+                this.RaisePropertyChanged("CanDisc");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public double ValidCent {
+            get {
+                return this.validCentField;
+            }
+            set {
+                this.validCentField = value;
+                this.RaisePropertyChanged("ValidCent");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        public double YearCent {
+            get {
+                return this.yearCentField;
+            }
+            set {
+                this.yearCentField = value;
+                this.RaisePropertyChanged("YearCent");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        public double StageCent {
+            get {
+                return this.stageCentField;
+            }
+            set {
+                this.stageCentField = value;
+                this.RaisePropertyChanged("StageCent");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        public string Hello {
+            get {
+                return this.helloField;
+            }
+            set {
+                this.helloField = value;
+                this.RaisePropertyChanged("Hello");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        public string IdCardCode {
+            get {
+                return this.idCardCodeField;
+            }
+            set {
+                this.idCardCodeField = value;
+                this.RaisePropertyChanged("IdCardCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        public string Birthday {
+            get {
+                return this.birthdayField;
+            }
+            set {
+                this.birthdayField = value;
+                this.RaisePropertyChanged("Birthday");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        public int SexType {
+            get {
+                return this.sexTypeField;
+            }
+            set {
+                this.sexTypeField = value;
+                this.RaisePropertyChanged("SexType");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
+        public string Mobile {
+            get {
+                return this.mobileField;
+            }
+            set {
+                this.mobileField = value;
+                this.RaisePropertyChanged("Mobile");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=16)]
+        public string Address {
+            get {
+                return this.addressField;
+            }
+            set {
+                this.addressField = value;
+                this.RaisePropertyChanged("Address");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=17)]
+        public string EMail {
+            get {
+                return this.eMailField;
+            }
+            set {
+                this.eMailField = value;
+                this.RaisePropertyChanged("EMail");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVipCard", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetVipCardRequest {
+        
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public int condType;
@@ -2125,16 +2043,17 @@ namespace z.ERP.API.PosServiceAPI {
         public string cardCodeToCheck;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
-        public string cardVerifyToCheck;
+        public string verifyCode;
         
         public GetVipCardRequest() {
         }
         
-        public GetVipCardRequest(int condType, string condValue, string cardCodeToCheck, string cardVerifyToCheck) {
+        public GetVipCardRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int condType, string condValue, string cardCodeToCheck, string verifyCode) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.condType = condType;
             this.condValue = condValue;
             this.cardCodeToCheck = cardCodeToCheck;
-            this.cardVerifyToCheck = cardVerifyToCheck;
+            this.verifyCode = verifyCode;
         }
     }
     
@@ -2164,8 +2083,71 @@ namespace z.ERP.API.PosServiceAPI {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetVipCardToOfferCoupon", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class GetVipCardToOfferCouponRequest {
+        
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        public int serverBillId;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        public int condType;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
+        public string condValue;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
+        public string cardCodeToCheck;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=4)]
+        public string verifyCode;
+        
+        public GetVipCardToOfferCouponRequest() {
+        }
+        
+        public GetVipCardToOfferCouponRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int serverBillId, int condType, string condValue, string cardCodeToCheck, string verifyCode) {
+            this.ABCSoapHeader = ABCSoapHeader;
+            this.serverBillId = serverBillId;
+            this.condType = condType;
+            this.condValue = condValue;
+            this.cardCodeToCheck = cardCodeToCheck;
+            this.verifyCode = verifyCode;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetVipCardToOfferCouponResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class GetVipCardToOfferCouponResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        public bool GetVipCardToOfferCouponResult;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        public string msg;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
+        public z.ERP.API.PosServiceAPI.VipCard vipCard;
+        
+        public GetVipCardToOfferCouponResponse() {
+        }
+        
+        public GetVipCardToOfferCouponResponse(bool GetVipCardToOfferCouponResult, string msg, z.ERP.API.PosServiceAPI.VipCard vipCard) {
+            this.GetVipCardToOfferCouponResult = GetVipCardToOfferCouponResult;
+            this.msg = msg;
+            this.vipCard = vipCard;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateVipInfo", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class UpdateVipInfoRequest {
+        
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public z.ERP.API.PosServiceAPI.VipInfoUpdated vipInfo;
@@ -2173,7 +2155,8 @@ namespace z.ERP.API.PosServiceAPI {
         public UpdateVipInfoRequest() {
         }
         
-        public UpdateVipInfoRequest(z.ERP.API.PosServiceAPI.VipInfoUpdated vipInfo) {
+        public UpdateVipInfoRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, z.ERP.API.PosServiceAPI.VipInfoUpdated vipInfo) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.vipInfo = vipInfo;
         }
     }
@@ -2203,6 +2186,9 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateVipCent", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class UpdateVipCentRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public int vipId;
         
@@ -2224,7 +2210,8 @@ namespace z.ERP.API.PosServiceAPI {
         public UpdateVipCentRequest() {
         }
         
-        public UpdateVipCentRequest(int vipId, double updateCent, int updateType, string storeCode, string posId, int billId) {
+        public UpdateVipCentRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int vipId, double updateCent, int updateType, string storeCode, string posId, int billId) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.vipId = vipId;
             this.updateCent = updateCent;
             this.updateType = updateType;
@@ -2259,8 +2246,11 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetArticleVipDisc", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetArticleVipDiscRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public int vipID;
+        public int vipId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public int vipType;
@@ -2274,8 +2264,9 @@ namespace z.ERP.API.PosServiceAPI {
         public GetArticleVipDiscRequest() {
         }
         
-        public GetArticleVipDiscRequest(int vipID, int vipType, string storeCode, z.ERP.API.PosServiceAPI.DeptArticleCode[] articles) {
-            this.vipID = vipID;
+        public GetArticleVipDiscRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int vipId, int vipType, string storeCode, z.ERP.API.PosServiceAPI.DeptArticleCode[] articles) {
+            this.ABCSoapHeader = ABCSoapHeader;
+            this.vipId = vipId;
             this.vipType = vipType;
             this.storeCode = storeCode;
             this.articles = articles;
@@ -2311,6 +2302,9 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetCashCard", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetCashCardRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public int condType;
         
@@ -2332,7 +2326,8 @@ namespace z.ERP.API.PosServiceAPI {
         public GetCashCardRequest() {
         }
         
-        public GetCashCardRequest(int condType, string condValue, string cardCodeToCheck, string verifyCode, string password, string storeCode) {
+        public GetCashCardRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int condType, string condValue, string cardCodeToCheck, string verifyCode, string password, string storeCode) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.condType = condType;
             this.condValue = condValue;
             this.cardCodeToCheck = cardCodeToCheck;
@@ -2371,6 +2366,9 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVipCoupon", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetVipCouponRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public int condType;
         
@@ -2392,7 +2390,8 @@ namespace z.ERP.API.PosServiceAPI {
         public GetVipCouponRequest() {
         }
         
-        public GetVipCouponRequest(int condType, string condValue, string cardCodeToCheck, string verifyCode, string storeCode, bool requireValidDate) {
+        public GetVipCouponRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int condType, string condValue, string cardCodeToCheck, string verifyCode, string storeCode, bool requireValidDate) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.condType = condType;
             this.condValue = condValue;
             this.cardCodeToCheck = cardCodeToCheck;
@@ -2414,7 +2413,7 @@ namespace z.ERP.API.PosServiceAPI {
         public string msg;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int vipID;
+        public int vipId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
         public string vipCode;
@@ -2425,10 +2424,10 @@ namespace z.ERP.API.PosServiceAPI {
         public GetVipCouponResponse() {
         }
         
-        public GetVipCouponResponse(bool GetVipCouponResult, string msg, int vipID, string vipCode, z.ERP.API.PosServiceAPI.Coupon[] coupons) {
+        public GetVipCouponResponse(bool GetVipCouponResult, string msg, int vipId, string vipCode, z.ERP.API.PosServiceAPI.Coupon[] coupons) {
             this.GetVipCouponResult = GetVipCouponResult;
             this.msg = msg;
-            this.vipID = vipID;
+            this.vipId = vipId;
             this.vipCode = vipCode;
             this.coupons = coupons;
         }
@@ -2438,6 +2437,9 @@ namespace z.ERP.API.PosServiceAPI {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVipCouponToPay", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetVipCouponToPayRequest {
+        
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public int condType;
@@ -2455,18 +2457,19 @@ namespace z.ERP.API.PosServiceAPI {
         public string storeCode;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=5)]
-        public int serverBillID;
+        public int serverBillId;
         
         public GetVipCouponToPayRequest() {
         }
         
-        public GetVipCouponToPayRequest(int condType, string condValue, string cardCodeToCheck, string verifyCode, string storeCode, int serverBillID) {
+        public GetVipCouponToPayRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int condType, string condValue, string cardCodeToCheck, string verifyCode, string storeCode, int serverBillId) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.condType = condType;
             this.condValue = condValue;
             this.cardCodeToCheck = cardCodeToCheck;
             this.verifyCode = verifyCode;
             this.storeCode = storeCode;
-            this.serverBillID = serverBillID;
+            this.serverBillId = serverBillId;
         }
     }
     
@@ -2482,7 +2485,7 @@ namespace z.ERP.API.PosServiceAPI {
         public string msg;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int vipID;
+        public int vipId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
         public string vipCode;
@@ -2496,10 +2499,10 @@ namespace z.ERP.API.PosServiceAPI {
         public GetVipCouponToPayResponse() {
         }
         
-        public GetVipCouponToPayResponse(bool GetVipCouponToPayResult, string msg, int vipID, string vipCode, z.ERP.API.PosServiceAPI.Coupon[] coupons, z.ERP.API.PosServiceAPI.CouponPayLimit[] payLimits) {
+        public GetVipCouponToPayResponse(bool GetVipCouponToPayResult, string msg, int vipId, string vipCode, z.ERP.API.PosServiceAPI.Coupon[] coupons, z.ERP.API.PosServiceAPI.CouponPayLimit[] payLimits) {
             this.GetVipCouponToPayResult = GetVipCouponToPayResult;
             this.msg = msg;
-            this.vipID = vipID;
+            this.vipId = vipId;
             this.vipCode = vipCode;
             this.coupons = coupons;
             this.payLimits = payLimits;
@@ -2511,11 +2514,14 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVipCouponPayLimit", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class GetVipCouponPayLimitRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public int vipType;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public int serverBillID;
+        public int serverBillId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
         public int[] couponTypes;
@@ -2523,9 +2529,10 @@ namespace z.ERP.API.PosServiceAPI {
         public GetVipCouponPayLimitRequest() {
         }
         
-        public GetVipCouponPayLimitRequest(int vipType, int serverBillID, int[] couponTypes) {
+        public GetVipCouponPayLimitRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int vipType, int serverBillId, int[] couponTypes) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.vipType = vipType;
-            this.serverBillID = serverBillID;
+            this.serverBillId = serverBillId;
             this.couponTypes = couponTypes;
         }
     }
@@ -2556,61 +2563,20 @@ namespace z.ERP.API.PosServiceAPI {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="PrepareTransCashCardPayment", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class PrepareTransCashCardPaymentRequest {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public int serverBillID;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public z.ERP.API.PosServiceAPI.CashCardPayment[] payments;
-        
-        public PrepareTransCashCardPaymentRequest() {
-        }
-        
-        public PrepareTransCashCardPaymentRequest(int serverBillID, z.ERP.API.PosServiceAPI.CashCardPayment[] payments) {
-            this.serverBillID = serverBillID;
-            this.payments = payments;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="PrepareTransCashCardPaymentResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class PrepareTransCashCardPaymentResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public bool PrepareTransCashCardPaymentResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public string msg;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int transID;
-        
-        public PrepareTransCashCardPaymentResponse() {
-        }
-        
-        public PrepareTransCashCardPaymentResponse(bool PrepareTransCashCardPaymentResult, string msg, int transID) {
-            this.PrepareTransCashCardPaymentResult = PrepareTransCashCardPaymentResult;
-            this.msg = msg;
-            this.transID = transID;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="PrepareTransCashCardPayment2", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class PrepareTransCashCardPayment2Request {
+        
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public string storeCode;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public string posID;
+        public string posId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int billID;
+        public int billId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
         public string cashier;
@@ -2624,10 +2590,11 @@ namespace z.ERP.API.PosServiceAPI {
         public PrepareTransCashCardPayment2Request() {
         }
         
-        public PrepareTransCashCardPayment2Request(string storeCode, string posID, int billID, string cashier, System.DateTime accountDate, z.ERP.API.PosServiceAPI.CashCardPayment[] payments) {
+        public PrepareTransCashCardPayment2Request(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, string storeCode, string posId, int billId, string cashier, System.DateTime accountDate, z.ERP.API.PosServiceAPI.CashCardPayment[] payments) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.storeCode = storeCode;
-            this.posID = posID;
-            this.billID = billID;
+            this.posId = posId;
+            this.billId = billId;
             this.cashier = cashier;
             this.accountDate = accountDate;
             this.payments = payments;
@@ -2646,15 +2613,15 @@ namespace z.ERP.API.PosServiceAPI {
         public string msg;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int transID;
+        public int transId;
         
         public PrepareTransCashCardPayment2Response() {
         }
         
-        public PrepareTransCashCardPayment2Response(bool PrepareTransCashCardPayment2Result, string msg, int transID) {
+        public PrepareTransCashCardPayment2Response(bool PrepareTransCashCardPayment2Result, string msg, int transId) {
             this.PrepareTransCashCardPayment2Result = PrepareTransCashCardPayment2Result;
             this.msg = msg;
-            this.transID = transID;
+            this.transId = transId;
         }
     }
     
@@ -2663,11 +2630,14 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="ConfirmTransCashCardPayment", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ConfirmTransCashCardPaymentRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public int transID;
+        public int transId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public int serverBillID;
+        public int serverBillId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
         public double transMoney;
@@ -2675,9 +2645,10 @@ namespace z.ERP.API.PosServiceAPI {
         public ConfirmTransCashCardPaymentRequest() {
         }
         
-        public ConfirmTransCashCardPaymentRequest(int transID, int serverBillID, double transMoney) {
-            this.transID = transID;
-            this.serverBillID = serverBillID;
+        public ConfirmTransCashCardPaymentRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int transId, int serverBillId, double transMoney) {
+            this.ABCSoapHeader = ABCSoapHeader;
+            this.transId = transId;
+            this.serverBillId = serverBillId;
             this.transMoney = transMoney;
         }
     }
@@ -2707,11 +2678,14 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="CancelTransCashCardPayment", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class CancelTransCashCardPaymentRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public int transID;
+        public int transId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public int serverBillID;
+        public int serverBillId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
         public double transMoney;
@@ -2719,9 +2693,10 @@ namespace z.ERP.API.PosServiceAPI {
         public CancelTransCashCardPaymentRequest() {
         }
         
-        public CancelTransCashCardPaymentRequest(int transID, int serverBillID, double transMoney) {
-            this.transID = transID;
-            this.serverBillID = serverBillID;
+        public CancelTransCashCardPaymentRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int transId, int serverBillId, double transMoney) {
+            this.ABCSoapHeader = ABCSoapHeader;
+            this.transId = transId;
+            this.serverBillId = serverBillId;
             this.transMoney = transMoney;
         }
     }
@@ -2751,8 +2726,11 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="PrepareTransCouponPayment", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class PrepareTransCouponPaymentRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public int serverBillID;
+        public int serverBillId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public z.ERP.API.PosServiceAPI.CouponPayment[] payments;
@@ -2760,8 +2738,9 @@ namespace z.ERP.API.PosServiceAPI {
         public PrepareTransCouponPaymentRequest() {
         }
         
-        public PrepareTransCouponPaymentRequest(int serverBillID, z.ERP.API.PosServiceAPI.CouponPayment[] payments) {
-            this.serverBillID = serverBillID;
+        public PrepareTransCouponPaymentRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int serverBillId, z.ERP.API.PosServiceAPI.CouponPayment[] payments) {
+            this.ABCSoapHeader = ABCSoapHeader;
+            this.serverBillId = serverBillId;
             this.payments = payments;
         }
     }
@@ -2778,15 +2757,15 @@ namespace z.ERP.API.PosServiceAPI {
         public string msg;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int transID;
+        public int transId;
         
         public PrepareTransCouponPaymentResponse() {
         }
         
-        public PrepareTransCouponPaymentResponse(bool PrepareTransCouponPaymentResult, string msg, int transID) {
+        public PrepareTransCouponPaymentResponse(bool PrepareTransCouponPaymentResult, string msg, int transId) {
             this.PrepareTransCouponPaymentResult = PrepareTransCouponPaymentResult;
             this.msg = msg;
-            this.transID = transID;
+            this.transId = transId;
         }
     }
     
@@ -2795,14 +2774,17 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="PrepareTransCouponPayment2", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class PrepareTransCouponPayment2Request {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public string storeCode;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public string posID;
+        public string posId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int billID;
+        public int billId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
         public string cashier;
@@ -2816,10 +2798,11 @@ namespace z.ERP.API.PosServiceAPI {
         public PrepareTransCouponPayment2Request() {
         }
         
-        public PrepareTransCouponPayment2Request(string storeCode, string posID, int billID, string cashier, System.DateTime accountDate, z.ERP.API.PosServiceAPI.CouponPayment[] payments) {
+        public PrepareTransCouponPayment2Request(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, string storeCode, string posId, int billId, string cashier, System.DateTime accountDate, z.ERP.API.PosServiceAPI.CouponPayment[] payments) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.storeCode = storeCode;
-            this.posID = posID;
-            this.billID = billID;
+            this.posId = posId;
+            this.billId = billId;
             this.cashier = cashier;
             this.accountDate = accountDate;
             this.payments = payments;
@@ -2838,15 +2821,15 @@ namespace z.ERP.API.PosServiceAPI {
         public string msg;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int transID;
+        public int transId;
         
         public PrepareTransCouponPayment2Response() {
         }
         
-        public PrepareTransCouponPayment2Response(bool PrepareTransCouponPayment2Result, string msg, int transID) {
+        public PrepareTransCouponPayment2Response(bool PrepareTransCouponPayment2Result, string msg, int transId) {
             this.PrepareTransCouponPayment2Result = PrepareTransCouponPayment2Result;
             this.msg = msg;
-            this.transID = transID;
+            this.transId = transId;
         }
     }
     
@@ -2855,11 +2838,14 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="ConfirmTransCouponPayment", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class ConfirmTransCouponPaymentRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public int transID;
+        public int transId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public int serverBillID;
+        public int serverBillId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
         public double transMoney;
@@ -2867,9 +2853,10 @@ namespace z.ERP.API.PosServiceAPI {
         public ConfirmTransCouponPaymentRequest() {
         }
         
-        public ConfirmTransCouponPaymentRequest(int transID, int serverBillID, double transMoney) {
-            this.transID = transID;
-            this.serverBillID = serverBillID;
+        public ConfirmTransCouponPaymentRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int transId, int serverBillId, double transMoney) {
+            this.ABCSoapHeader = ABCSoapHeader;
+            this.transId = transId;
+            this.serverBillId = serverBillId;
             this.transMoney = transMoney;
         }
     }
@@ -2899,11 +2886,14 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="CancelTransCouponPayment", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class CancelTransCouponPaymentRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public int transID;
+        public int transId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public int serverBillID;
+        public int serverBillId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
         public double transMoney;
@@ -2911,9 +2901,10 @@ namespace z.ERP.API.PosServiceAPI {
         public CancelTransCouponPaymentRequest() {
         }
         
-        public CancelTransCouponPaymentRequest(int transID, int serverBillID, double transMoney) {
-            this.transID = transID;
-            this.serverBillID = serverBillID;
+        public CancelTransCouponPaymentRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int transId, int serverBillId, double transMoney) {
+            this.ABCSoapHeader = ABCSoapHeader;
+            this.transId = transId;
+            this.serverBillId = serverBillId;
             this.transMoney = transMoney;
         }
     }
@@ -2943,6 +2934,9 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="SaveRSaleBillArticles", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class SaveRSaleBillArticlesRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public z.ERP.API.PosServiceAPI.RSaleBillHead billHead;
         
@@ -2952,7 +2946,8 @@ namespace z.ERP.API.PosServiceAPI {
         public SaveRSaleBillArticlesRequest() {
         }
         
-        public SaveRSaleBillArticlesRequest(z.ERP.API.PosServiceAPI.RSaleBillHead billHead, z.ERP.API.PosServiceAPI.RSaleBillArticle[] billArticles) {
+        public SaveRSaleBillArticlesRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, z.ERP.API.PosServiceAPI.RSaleBillHead billHead, z.ERP.API.PosServiceAPI.RSaleBillArticle[] billArticles) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.billHead = billHead;
             this.billArticles = billArticles;
         }
@@ -2970,7 +2965,7 @@ namespace z.ERP.API.PosServiceAPI {
         public string msg;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int serverBillID;
+        public int serverBillId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
         public double decMoney;
@@ -2984,10 +2979,10 @@ namespace z.ERP.API.PosServiceAPI {
         public SaveRSaleBillArticlesResponse() {
         }
         
-        public SaveRSaleBillArticlesResponse(bool SaveRSaleBillArticlesResult, string msg, int serverBillID, double decMoney, z.ERP.API.PosServiceAPI.RSaleBillArticleDecMoney[] articleDecMoneys, z.ERP.API.PosServiceAPI.RSaleBillArticlePromFlag[] articlePromFlags) {
+        public SaveRSaleBillArticlesResponse(bool SaveRSaleBillArticlesResult, string msg, int serverBillId, double decMoney, z.ERP.API.PosServiceAPI.RSaleBillArticleDecMoney[] articleDecMoneys, z.ERP.API.PosServiceAPI.RSaleBillArticlePromFlag[] articlePromFlags) {
             this.SaveRSaleBillArticlesResult = SaveRSaleBillArticlesResult;
             this.msg = msg;
-            this.serverBillID = serverBillID;
+            this.serverBillId = serverBillId;
             this.decMoney = decMoney;
             this.articleDecMoneys = articleDecMoneys;
             this.articlePromFlags = articlePromFlags;
@@ -2999,6 +2994,9 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="SaveRSaleBackBillArticles", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class SaveRSaleBackBillArticlesRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public z.ERP.API.PosServiceAPI.RSaleBillHead billHead;
         
@@ -3008,7 +3006,8 @@ namespace z.ERP.API.PosServiceAPI {
         public SaveRSaleBackBillArticlesRequest() {
         }
         
-        public SaveRSaleBackBillArticlesRequest(z.ERP.API.PosServiceAPI.RSaleBillHead billHead, z.ERP.API.PosServiceAPI.RSaleBillArticle[] billArticles) {
+        public SaveRSaleBackBillArticlesRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, z.ERP.API.PosServiceAPI.RSaleBillHead billHead, z.ERP.API.PosServiceAPI.RSaleBillArticle[] billArticles) {
+            this.ABCSoapHeader = ABCSoapHeader;
             this.billHead = billHead;
             this.billArticles = billArticles;
         }
@@ -3026,7 +3025,7 @@ namespace z.ERP.API.PosServiceAPI {
         public string msg;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
-        public int serverBillID;
+        public int serverBillId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
         public z.ERP.API.PosServiceAPI.OfferBackCoupon[] offerBackCoupons;
@@ -3037,10 +3036,10 @@ namespace z.ERP.API.PosServiceAPI {
         public SaveRSaleBackBillArticlesResponse() {
         }
         
-        public SaveRSaleBackBillArticlesResponse(bool SaveRSaleBackBillArticlesResult, string msg, int serverBillID, z.ERP.API.PosServiceAPI.OfferBackCoupon[] offerBackCoupons, z.ERP.API.PosServiceAPI.CouponPayback[] paybackCoupons) {
+        public SaveRSaleBackBillArticlesResponse(bool SaveRSaleBackBillArticlesResult, string msg, int serverBillId, z.ERP.API.PosServiceAPI.OfferBackCoupon[] offerBackCoupons, z.ERP.API.PosServiceAPI.CouponPayback[] paybackCoupons) {
             this.SaveRSaleBackBillArticlesResult = SaveRSaleBackBillArticlesResult;
             this.msg = msg;
-            this.serverBillID = serverBillID;
+            this.serverBillId = serverBillId;
             this.offerBackCoupons = offerBackCoupons;
             this.paybackCoupons = paybackCoupons;
         }
@@ -3051,8 +3050,11 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="CalcRSaleBillDecMoney", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class CalcRSaleBillDecMoneyRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public int serverBillID;
+        public int serverBillId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public z.ERP.API.PosServiceAPI.RSaleBillPayment[] payments;
@@ -3060,8 +3062,9 @@ namespace z.ERP.API.PosServiceAPI {
         public CalcRSaleBillDecMoneyRequest() {
         }
         
-        public CalcRSaleBillDecMoneyRequest(int serverBillID, z.ERP.API.PosServiceAPI.RSaleBillPayment[] payments) {
-            this.serverBillID = serverBillID;
+        public CalcRSaleBillDecMoneyRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int serverBillId, z.ERP.API.PosServiceAPI.RSaleBillPayment[] payments) {
+            this.ABCSoapHeader = ABCSoapHeader;
+            this.serverBillId = serverBillId;
             this.payments = payments;
         }
     }
@@ -3099,21 +3102,29 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="PrepareCheckOutRSaleBill", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class PrepareCheckOutRSaleBillRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public int serverBillID;
+        public int serverBillId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public z.ERP.API.PosServiceAPI.RSaleBillPayment[] payments;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
+        public int payBackCouponVipId;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
         public bool couponPaid;
         
         public PrepareCheckOutRSaleBillRequest() {
         }
         
-        public PrepareCheckOutRSaleBillRequest(int serverBillID, z.ERP.API.PosServiceAPI.RSaleBillPayment[] payments, bool couponPaid) {
-            this.serverBillID = serverBillID;
+        public PrepareCheckOutRSaleBillRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int serverBillId, z.ERP.API.PosServiceAPI.RSaleBillPayment[] payments, int payBackCouponVipId, bool couponPaid) {
+            this.ABCSoapHeader = ABCSoapHeader;
+            this.serverBillId = serverBillId;
             this.payments = payments;
+            this.payBackCouponVipId = payBackCouponVipId;
             this.couponPaid = couponPaid;
         }
     }
@@ -3133,20 +3144,40 @@ namespace z.ERP.API.PosServiceAPI {
         public double billCent;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
-        public z.ERP.API.PosServiceAPI.RSaleBillArticleCent[] articleCents;
+        public bool needVipToOfferCoupon;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=4)]
+        public bool needBuyCent;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=5)]
+        public string offerCouponVipCode;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=6)]
+        public z.ERP.API.PosServiceAPI.RSaleBillArticleCent[] articleCents;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=7)]
         public z.ERP.API.PosServiceAPI.RSaleBillArticleCoupon[] articleCoupons;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=8)]
+        public z.ERP.API.PosServiceAPI.OfferBackCoupon[] offerBackCoupons;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=9)]
+        public z.ERP.API.PosServiceAPI.CouponPayback[] paybackCoupons;
         
         public PrepareCheckOutRSaleBillResponse() {
         }
         
-        public PrepareCheckOutRSaleBillResponse(bool PrepareCheckOutRSaleBillResult, string msg, double billCent, z.ERP.API.PosServiceAPI.RSaleBillArticleCent[] articleCents, z.ERP.API.PosServiceAPI.RSaleBillArticleCoupon[] articleCoupons) {
+        public PrepareCheckOutRSaleBillResponse(bool PrepareCheckOutRSaleBillResult, string msg, double billCent, bool needVipToOfferCoupon, bool needBuyCent, string offerCouponVipCode, z.ERP.API.PosServiceAPI.RSaleBillArticleCent[] articleCents, z.ERP.API.PosServiceAPI.RSaleBillArticleCoupon[] articleCoupons, z.ERP.API.PosServiceAPI.OfferBackCoupon[] offerBackCoupons, z.ERP.API.PosServiceAPI.CouponPayback[] paybackCoupons) {
             this.PrepareCheckOutRSaleBillResult = PrepareCheckOutRSaleBillResult;
             this.msg = msg;
             this.billCent = billCent;
+            this.needVipToOfferCoupon = needVipToOfferCoupon;
+            this.needBuyCent = needBuyCent;
+            this.offerCouponVipCode = offerCouponVipCode;
             this.articleCents = articleCents;
             this.articleCoupons = articleCoupons;
+            this.offerBackCoupons = offerBackCoupons;
+            this.paybackCoupons = paybackCoupons;
         }
     }
     
@@ -3155,14 +3186,18 @@ namespace z.ERP.API.PosServiceAPI {
     [System.ServiceModel.MessageContractAttribute(WrapperName="CheckOutRSaleBill", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
     public partial class CheckOutRSaleBillRequest {
         
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader;
+        
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public int serverBillID;
+        public int serverBillId;
         
         public CheckOutRSaleBillRequest() {
         }
         
-        public CheckOutRSaleBillRequest(int serverBillID) {
-            this.serverBillID = serverBillID;
+        public CheckOutRSaleBillRequest(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int serverBillId) {
+            this.ABCSoapHeader = ABCSoapHeader;
+            this.serverBillId = serverBillId;
         }
     }
     
@@ -3184,63 +3219,68 @@ namespace z.ERP.API.PosServiceAPI {
         public double vipCent;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=4)]
-        public z.ERP.API.PosServiceAPI.OfferCoupon[] offerCoupons;
+        public string offerCouponVipCode;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=5)]
+        public z.ERP.API.PosServiceAPI.OfferCoupon[] offerCoupons;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=6)]
         public z.ERP.API.PosServiceAPI.SaleMoneyLeftWhenPromCalc[] leftSaleMoneys;
         
         public CheckOutRSaleBillResponse() {
         }
         
-        public CheckOutRSaleBillResponse(bool CheckOutRSaleBillResult, string msg, double billCent, double vipCent, z.ERP.API.PosServiceAPI.OfferCoupon[] offerCoupons, z.ERP.API.PosServiceAPI.SaleMoneyLeftWhenPromCalc[] leftSaleMoneys) {
+        public CheckOutRSaleBillResponse(bool CheckOutRSaleBillResult, string msg, double billCent, double vipCent, string offerCouponVipCode, z.ERP.API.PosServiceAPI.OfferCoupon[] offerCoupons, z.ERP.API.PosServiceAPI.SaleMoneyLeftWhenPromCalc[] leftSaleMoneys) {
             this.CheckOutRSaleBillResult = CheckOutRSaleBillResult;
             this.msg = msg;
             this.billCent = billCent;
             this.vipCent = vipCent;
+            this.offerCouponVipCode = offerCouponVipCode;
             this.offerCoupons = offerCoupons;
             this.leftSaleMoneys = leftSaleMoneys;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IPOSServiceChannel : z.ERP.API.PosServiceAPI.IPOSService, System.ServiceModel.IClientChannel {
+    public interface PosWebServiceSoapChannel : z.ERP.API.PosServiceAPI.PosWebServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class POSServiceClient : System.ServiceModel.ClientBase<z.ERP.API.PosServiceAPI.IPOSService>, z.ERP.API.PosServiceAPI.IPOSService {
+    public partial class PosWebServiceSoapClient : System.ServiceModel.ClientBase<z.ERP.API.PosServiceAPI.PosWebServiceSoap>, z.ERP.API.PosServiceAPI.PosWebServiceSoap {
         
-        public POSServiceClient() {
+        public PosWebServiceSoapClient() {
         }
         
-        public POSServiceClient(string endpointConfigurationName) : 
+        public PosWebServiceSoapClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public POSServiceClient(string endpointConfigurationName, string remoteAddress) : 
+        public PosWebServiceSoapClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public POSServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public PosWebServiceSoapClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public POSServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public PosWebServiceSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.GetVipCardResponse z.ERP.API.PosServiceAPI.IPOSService.GetVipCard(z.ERP.API.PosServiceAPI.GetVipCardRequest request) {
+        z.ERP.API.PosServiceAPI.GetVipCardResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.GetVipCard(z.ERP.API.PosServiceAPI.GetVipCardRequest request) {
             return base.Channel.GetVipCard(request);
         }
         
-        public bool GetVipCard(int condType, string condValue, string cardCodeToCheck, string cardVerifyToCheck, out string msg, out z.ERP.API.PosServiceAPI.VipCard vipCard) {
+        public bool GetVipCard(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int condType, string condValue, string cardCodeToCheck, string verifyCode, out string msg, out z.ERP.API.PosServiceAPI.VipCard vipCard) {
             z.ERP.API.PosServiceAPI.GetVipCardRequest inValue = new z.ERP.API.PosServiceAPI.GetVipCardRequest();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.condType = condType;
             inValue.condValue = condValue;
             inValue.cardCodeToCheck = cardCodeToCheck;
-            inValue.cardVerifyToCheck = cardVerifyToCheck;
-            z.ERP.API.PosServiceAPI.GetVipCardResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).GetVipCard(inValue);
+            inValue.verifyCode = verifyCode;
+            z.ERP.API.PosServiceAPI.GetVipCardResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).GetVipCard(inValue);
             msg = retVal.msg;
             vipCard = retVal.vipCard;
             return retVal.GetVipCardResult;
@@ -3251,14 +3291,38 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.UpdateVipInfoResponse z.ERP.API.PosServiceAPI.IPOSService.UpdateVipInfo(z.ERP.API.PosServiceAPI.UpdateVipInfoRequest request) {
+        z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.GetVipCardToOfferCoupon(z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponRequest request) {
+            return base.Channel.GetVipCardToOfferCoupon(request);
+        }
+        
+        public bool GetVipCardToOfferCoupon(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int serverBillId, int condType, string condValue, string cardCodeToCheck, string verifyCode, out string msg, out z.ERP.API.PosServiceAPI.VipCard vipCard) {
+            z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponRequest inValue = new z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponRequest();
+            inValue.ABCSoapHeader = ABCSoapHeader;
+            inValue.serverBillId = serverBillId;
+            inValue.condType = condType;
+            inValue.condValue = condValue;
+            inValue.cardCodeToCheck = cardCodeToCheck;
+            inValue.verifyCode = verifyCode;
+            z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).GetVipCardToOfferCoupon(inValue);
+            msg = retVal.msg;
+            vipCard = retVal.vipCard;
+            return retVal.GetVipCardToOfferCouponResult;
+        }
+        
+        public System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponResponse> GetVipCardToOfferCouponAsync(z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponRequest request) {
+            return base.Channel.GetVipCardToOfferCouponAsync(request);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        z.ERP.API.PosServiceAPI.UpdateVipInfoResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.UpdateVipInfo(z.ERP.API.PosServiceAPI.UpdateVipInfoRequest request) {
             return base.Channel.UpdateVipInfo(request);
         }
         
-        public bool UpdateVipInfo(z.ERP.API.PosServiceAPI.VipInfoUpdated vipInfo, out string msg) {
+        public bool UpdateVipInfo(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, z.ERP.API.PosServiceAPI.VipInfoUpdated vipInfo, out string msg) {
             z.ERP.API.PosServiceAPI.UpdateVipInfoRequest inValue = new z.ERP.API.PosServiceAPI.UpdateVipInfoRequest();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.vipInfo = vipInfo;
-            z.ERP.API.PosServiceAPI.UpdateVipInfoResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).UpdateVipInfo(inValue);
+            z.ERP.API.PosServiceAPI.UpdateVipInfoResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).UpdateVipInfo(inValue);
             msg = retVal.msg;
             return retVal.UpdateVipInfoResult;
         }
@@ -3268,19 +3332,20 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.UpdateVipCentResponse z.ERP.API.PosServiceAPI.IPOSService.UpdateVipCent(z.ERP.API.PosServiceAPI.UpdateVipCentRequest request) {
+        z.ERP.API.PosServiceAPI.UpdateVipCentResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.UpdateVipCent(z.ERP.API.PosServiceAPI.UpdateVipCentRequest request) {
             return base.Channel.UpdateVipCent(request);
         }
         
-        public bool UpdateVipCent(int vipId, double updateCent, int updateType, string storeCode, string posId, int billId, out string msg) {
+        public bool UpdateVipCent(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int vipId, double updateCent, int updateType, string storeCode, string posId, int billId, out string msg) {
             z.ERP.API.PosServiceAPI.UpdateVipCentRequest inValue = new z.ERP.API.PosServiceAPI.UpdateVipCentRequest();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.vipId = vipId;
             inValue.updateCent = updateCent;
             inValue.updateType = updateType;
             inValue.storeCode = storeCode;
             inValue.posId = posId;
             inValue.billId = billId;
-            z.ERP.API.PosServiceAPI.UpdateVipCentResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).UpdateVipCent(inValue);
+            z.ERP.API.PosServiceAPI.UpdateVipCentResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).UpdateVipCent(inValue);
             msg = retVal.msg;
             return retVal.UpdateVipCentResult;
         }
@@ -3290,17 +3355,18 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.GetArticleVipDiscResponse z.ERP.API.PosServiceAPI.IPOSService.GetArticleVipDisc(z.ERP.API.PosServiceAPI.GetArticleVipDiscRequest request) {
+        z.ERP.API.PosServiceAPI.GetArticleVipDiscResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.GetArticleVipDisc(z.ERP.API.PosServiceAPI.GetArticleVipDiscRequest request) {
             return base.Channel.GetArticleVipDisc(request);
         }
         
-        public bool GetArticleVipDisc(int vipID, int vipType, string storeCode, z.ERP.API.PosServiceAPI.DeptArticleCode[] articles, out string msg, out z.ERP.API.PosServiceAPI.ArticleVipDisc[] discs) {
+        public bool GetArticleVipDisc(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int vipId, int vipType, string storeCode, z.ERP.API.PosServiceAPI.DeptArticleCode[] articles, out string msg, out z.ERP.API.PosServiceAPI.ArticleVipDisc[] discs) {
             z.ERP.API.PosServiceAPI.GetArticleVipDiscRequest inValue = new z.ERP.API.PosServiceAPI.GetArticleVipDiscRequest();
-            inValue.vipID = vipID;
+            inValue.ABCSoapHeader = ABCSoapHeader;
+            inValue.vipId = vipId;
             inValue.vipType = vipType;
             inValue.storeCode = storeCode;
             inValue.articles = articles;
-            z.ERP.API.PosServiceAPI.GetArticleVipDiscResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).GetArticleVipDisc(inValue);
+            z.ERP.API.PosServiceAPI.GetArticleVipDiscResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).GetArticleVipDisc(inValue);
             msg = retVal.msg;
             discs = retVal.discs;
             return retVal.GetArticleVipDiscResult;
@@ -3311,19 +3377,20 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.GetCashCardResponse z.ERP.API.PosServiceAPI.IPOSService.GetCashCard(z.ERP.API.PosServiceAPI.GetCashCardRequest request) {
+        z.ERP.API.PosServiceAPI.GetCashCardResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.GetCashCard(z.ERP.API.PosServiceAPI.GetCashCardRequest request) {
             return base.Channel.GetCashCard(request);
         }
         
-        public bool GetCashCard(int condType, string condValue, string cardCodeToCheck, string verifyCode, string password, string storeCode, out string msg, out z.ERP.API.PosServiceAPI.CashCard cashCard) {
+        public bool GetCashCard(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int condType, string condValue, string cardCodeToCheck, string verifyCode, string password, string storeCode, out string msg, out z.ERP.API.PosServiceAPI.CashCard cashCard) {
             z.ERP.API.PosServiceAPI.GetCashCardRequest inValue = new z.ERP.API.PosServiceAPI.GetCashCardRequest();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.condType = condType;
             inValue.condValue = condValue;
             inValue.cardCodeToCheck = cardCodeToCheck;
             inValue.verifyCode = verifyCode;
             inValue.password = password;
             inValue.storeCode = storeCode;
-            z.ERP.API.PosServiceAPI.GetCashCardResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).GetCashCard(inValue);
+            z.ERP.API.PosServiceAPI.GetCashCardResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).GetCashCard(inValue);
             msg = retVal.msg;
             cashCard = retVal.cashCard;
             return retVal.GetCashCardResult;
@@ -3334,21 +3401,22 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.GetVipCouponResponse z.ERP.API.PosServiceAPI.IPOSService.GetVipCoupon(z.ERP.API.PosServiceAPI.GetVipCouponRequest request) {
+        z.ERP.API.PosServiceAPI.GetVipCouponResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.GetVipCoupon(z.ERP.API.PosServiceAPI.GetVipCouponRequest request) {
             return base.Channel.GetVipCoupon(request);
         }
         
-        public bool GetVipCoupon(int condType, string condValue, string cardCodeToCheck, string verifyCode, string storeCode, bool requireValidDate, out string msg, out int vipID, out string vipCode, out z.ERP.API.PosServiceAPI.Coupon[] coupons) {
+        public bool GetVipCoupon(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int condType, string condValue, string cardCodeToCheck, string verifyCode, string storeCode, bool requireValidDate, out string msg, out int vipId, out string vipCode, out z.ERP.API.PosServiceAPI.Coupon[] coupons) {
             z.ERP.API.PosServiceAPI.GetVipCouponRequest inValue = new z.ERP.API.PosServiceAPI.GetVipCouponRequest();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.condType = condType;
             inValue.condValue = condValue;
             inValue.cardCodeToCheck = cardCodeToCheck;
             inValue.verifyCode = verifyCode;
             inValue.storeCode = storeCode;
             inValue.requireValidDate = requireValidDate;
-            z.ERP.API.PosServiceAPI.GetVipCouponResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).GetVipCoupon(inValue);
+            z.ERP.API.PosServiceAPI.GetVipCouponResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).GetVipCoupon(inValue);
             msg = retVal.msg;
-            vipID = retVal.vipID;
+            vipId = retVal.vipId;
             vipCode = retVal.vipCode;
             coupons = retVal.coupons;
             return retVal.GetVipCouponResult;
@@ -3359,21 +3427,22 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.GetVipCouponToPayResponse z.ERP.API.PosServiceAPI.IPOSService.GetVipCouponToPay(z.ERP.API.PosServiceAPI.GetVipCouponToPayRequest request) {
+        z.ERP.API.PosServiceAPI.GetVipCouponToPayResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.GetVipCouponToPay(z.ERP.API.PosServiceAPI.GetVipCouponToPayRequest request) {
             return base.Channel.GetVipCouponToPay(request);
         }
         
-        public bool GetVipCouponToPay(int condType, string condValue, string cardCodeToCheck, string verifyCode, string storeCode, int serverBillID, out string msg, out int vipID, out string vipCode, out z.ERP.API.PosServiceAPI.Coupon[] coupons, out z.ERP.API.PosServiceAPI.CouponPayLimit[] payLimits) {
+        public bool GetVipCouponToPay(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int condType, string condValue, string cardCodeToCheck, string verifyCode, string storeCode, int serverBillId, out string msg, out int vipId, out string vipCode, out z.ERP.API.PosServiceAPI.Coupon[] coupons, out z.ERP.API.PosServiceAPI.CouponPayLimit[] payLimits) {
             z.ERP.API.PosServiceAPI.GetVipCouponToPayRequest inValue = new z.ERP.API.PosServiceAPI.GetVipCouponToPayRequest();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.condType = condType;
             inValue.condValue = condValue;
             inValue.cardCodeToCheck = cardCodeToCheck;
             inValue.verifyCode = verifyCode;
             inValue.storeCode = storeCode;
-            inValue.serverBillID = serverBillID;
-            z.ERP.API.PosServiceAPI.GetVipCouponToPayResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).GetVipCouponToPay(inValue);
+            inValue.serverBillId = serverBillId;
+            z.ERP.API.PosServiceAPI.GetVipCouponToPayResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).GetVipCouponToPay(inValue);
             msg = retVal.msg;
-            vipID = retVal.vipID;
+            vipId = retVal.vipId;
             vipCode = retVal.vipCode;
             coupons = retVal.coupons;
             payLimits = retVal.payLimits;
@@ -3385,16 +3454,17 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.GetVipCouponPayLimitResponse z.ERP.API.PosServiceAPI.IPOSService.GetVipCouponPayLimit(z.ERP.API.PosServiceAPI.GetVipCouponPayLimitRequest request) {
+        z.ERP.API.PosServiceAPI.GetVipCouponPayLimitResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.GetVipCouponPayLimit(z.ERP.API.PosServiceAPI.GetVipCouponPayLimitRequest request) {
             return base.Channel.GetVipCouponPayLimit(request);
         }
         
-        public bool GetVipCouponPayLimit(int vipType, int serverBillID, int[] couponTypes, out string msg, out z.ERP.API.PosServiceAPI.CouponPayLimit[] payLimits) {
+        public bool GetVipCouponPayLimit(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int vipType, int serverBillId, int[] couponTypes, out string msg, out z.ERP.API.PosServiceAPI.CouponPayLimit[] payLimits) {
             z.ERP.API.PosServiceAPI.GetVipCouponPayLimitRequest inValue = new z.ERP.API.PosServiceAPI.GetVipCouponPayLimitRequest();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.vipType = vipType;
-            inValue.serverBillID = serverBillID;
+            inValue.serverBillId = serverBillId;
             inValue.couponTypes = couponTypes;
-            z.ERP.API.PosServiceAPI.GetVipCouponPayLimitResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).GetVipCouponPayLimit(inValue);
+            z.ERP.API.PosServiceAPI.GetVipCouponPayLimitResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).GetVipCouponPayLimit(inValue);
             msg = retVal.msg;
             payLimits = retVal.payLimits;
             return retVal.GetVipCouponPayLimitResult;
@@ -3405,40 +3475,22 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentResponse z.ERP.API.PosServiceAPI.IPOSService.PrepareTransCashCardPayment(z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentRequest request) {
-            return base.Channel.PrepareTransCashCardPayment(request);
-        }
-        
-        public bool PrepareTransCashCardPayment(int serverBillID, z.ERP.API.PosServiceAPI.CashCardPayment[] payments, out string msg, out int transID) {
-            z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentRequest inValue = new z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentRequest();
-            inValue.serverBillID = serverBillID;
-            inValue.payments = payments;
-            z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).PrepareTransCashCardPayment(inValue);
-            msg = retVal.msg;
-            transID = retVal.transID;
-            return retVal.PrepareTransCashCardPaymentResult;
-        }
-        
-        public System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentResponse> PrepareTransCashCardPaymentAsync(z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentRequest request) {
-            return base.Channel.PrepareTransCashCardPaymentAsync(request);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Response z.ERP.API.PosServiceAPI.IPOSService.PrepareTransCashCardPayment2(z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Request request) {
+        z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Response z.ERP.API.PosServiceAPI.PosWebServiceSoap.PrepareTransCashCardPayment2(z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Request request) {
             return base.Channel.PrepareTransCashCardPayment2(request);
         }
         
-        public bool PrepareTransCashCardPayment2(string storeCode, string posID, int billID, string cashier, System.DateTime accountDate, z.ERP.API.PosServiceAPI.CashCardPayment[] payments, out string msg, out int transID) {
+        public bool PrepareTransCashCardPayment2(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, string storeCode, string posId, int billId, string cashier, System.DateTime accountDate, z.ERP.API.PosServiceAPI.CashCardPayment[] payments, out string msg, out int transId) {
             z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Request inValue = new z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Request();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.storeCode = storeCode;
-            inValue.posID = posID;
-            inValue.billID = billID;
+            inValue.posId = posId;
+            inValue.billId = billId;
             inValue.cashier = cashier;
             inValue.accountDate = accountDate;
             inValue.payments = payments;
-            z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Response retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).PrepareTransCashCardPayment2(inValue);
+            z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Response retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).PrepareTransCashCardPayment2(inValue);
             msg = retVal.msg;
-            transID = retVal.transID;
+            transId = retVal.transId;
             return retVal.PrepareTransCashCardPayment2Result;
         }
         
@@ -3447,16 +3499,17 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentResponse z.ERP.API.PosServiceAPI.IPOSService.ConfirmTransCashCardPayment(z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentRequest request) {
+        z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.ConfirmTransCashCardPayment(z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentRequest request) {
             return base.Channel.ConfirmTransCashCardPayment(request);
         }
         
-        public bool ConfirmTransCashCardPayment(int transID, int serverBillID, double transMoney, out string msg) {
+        public bool ConfirmTransCashCardPayment(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int transId, int serverBillId, double transMoney, out string msg) {
             z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentRequest inValue = new z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentRequest();
-            inValue.transID = transID;
-            inValue.serverBillID = serverBillID;
+            inValue.ABCSoapHeader = ABCSoapHeader;
+            inValue.transId = transId;
+            inValue.serverBillId = serverBillId;
             inValue.transMoney = transMoney;
-            z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).ConfirmTransCashCardPayment(inValue);
+            z.ERP.API.PosServiceAPI.ConfirmTransCashCardPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).ConfirmTransCashCardPayment(inValue);
             msg = retVal.msg;
             return retVal.ConfirmTransCashCardPaymentResult;
         }
@@ -3466,16 +3519,17 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentResponse z.ERP.API.PosServiceAPI.IPOSService.CancelTransCashCardPayment(z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentRequest request) {
+        z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.CancelTransCashCardPayment(z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentRequest request) {
             return base.Channel.CancelTransCashCardPayment(request);
         }
         
-        public bool CancelTransCashCardPayment(int transID, int serverBillID, double transMoney, out string msg) {
+        public bool CancelTransCashCardPayment(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int transId, int serverBillId, double transMoney, out string msg) {
             z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentRequest inValue = new z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentRequest();
-            inValue.transID = transID;
-            inValue.serverBillID = serverBillID;
+            inValue.ABCSoapHeader = ABCSoapHeader;
+            inValue.transId = transId;
+            inValue.serverBillId = serverBillId;
             inValue.transMoney = transMoney;
-            z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).CancelTransCashCardPayment(inValue);
+            z.ERP.API.PosServiceAPI.CancelTransCashCardPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).CancelTransCashCardPayment(inValue);
             msg = retVal.msg;
             return retVal.CancelTransCashCardPaymentResult;
         }
@@ -3485,17 +3539,18 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentResponse z.ERP.API.PosServiceAPI.IPOSService.PrepareTransCouponPayment(z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentRequest request) {
+        z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.PrepareTransCouponPayment(z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentRequest request) {
             return base.Channel.PrepareTransCouponPayment(request);
         }
         
-        public bool PrepareTransCouponPayment(int serverBillID, z.ERP.API.PosServiceAPI.CouponPayment[] payments, out string msg, out int transID) {
+        public bool PrepareTransCouponPayment(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int serverBillId, z.ERP.API.PosServiceAPI.CouponPayment[] payments, out string msg, out int transId) {
             z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentRequest inValue = new z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentRequest();
-            inValue.serverBillID = serverBillID;
+            inValue.ABCSoapHeader = ABCSoapHeader;
+            inValue.serverBillId = serverBillId;
             inValue.payments = payments;
-            z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).PrepareTransCouponPayment(inValue);
+            z.ERP.API.PosServiceAPI.PrepareTransCouponPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).PrepareTransCouponPayment(inValue);
             msg = retVal.msg;
-            transID = retVal.transID;
+            transId = retVal.transId;
             return retVal.PrepareTransCouponPaymentResult;
         }
         
@@ -3504,21 +3559,22 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Response z.ERP.API.PosServiceAPI.IPOSService.PrepareTransCouponPayment2(z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Request request) {
+        z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Response z.ERP.API.PosServiceAPI.PosWebServiceSoap.PrepareTransCouponPayment2(z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Request request) {
             return base.Channel.PrepareTransCouponPayment2(request);
         }
         
-        public bool PrepareTransCouponPayment2(string storeCode, string posID, int billID, string cashier, System.DateTime accountDate, z.ERP.API.PosServiceAPI.CouponPayment[] payments, out string msg, out int transID) {
+        public bool PrepareTransCouponPayment2(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, string storeCode, string posId, int billId, string cashier, System.DateTime accountDate, z.ERP.API.PosServiceAPI.CouponPayment[] payments, out string msg, out int transId) {
             z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Request inValue = new z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Request();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.storeCode = storeCode;
-            inValue.posID = posID;
-            inValue.billID = billID;
+            inValue.posId = posId;
+            inValue.billId = billId;
             inValue.cashier = cashier;
             inValue.accountDate = accountDate;
             inValue.payments = payments;
-            z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Response retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).PrepareTransCouponPayment2(inValue);
+            z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Response retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).PrepareTransCouponPayment2(inValue);
             msg = retVal.msg;
-            transID = retVal.transID;
+            transId = retVal.transId;
             return retVal.PrepareTransCouponPayment2Result;
         }
         
@@ -3527,16 +3583,17 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentResponse z.ERP.API.PosServiceAPI.IPOSService.ConfirmTransCouponPayment(z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentRequest request) {
+        z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.ConfirmTransCouponPayment(z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentRequest request) {
             return base.Channel.ConfirmTransCouponPayment(request);
         }
         
-        public bool ConfirmTransCouponPayment(int transID, int serverBillID, double transMoney, out string msg) {
+        public bool ConfirmTransCouponPayment(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int transId, int serverBillId, double transMoney, out string msg) {
             z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentRequest inValue = new z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentRequest();
-            inValue.transID = transID;
-            inValue.serverBillID = serverBillID;
+            inValue.ABCSoapHeader = ABCSoapHeader;
+            inValue.transId = transId;
+            inValue.serverBillId = serverBillId;
             inValue.transMoney = transMoney;
-            z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).ConfirmTransCouponPayment(inValue);
+            z.ERP.API.PosServiceAPI.ConfirmTransCouponPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).ConfirmTransCouponPayment(inValue);
             msg = retVal.msg;
             return retVal.ConfirmTransCouponPaymentResult;
         }
@@ -3546,16 +3603,17 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.CancelTransCouponPaymentResponse z.ERP.API.PosServiceAPI.IPOSService.CancelTransCouponPayment(z.ERP.API.PosServiceAPI.CancelTransCouponPaymentRequest request) {
+        z.ERP.API.PosServiceAPI.CancelTransCouponPaymentResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.CancelTransCouponPayment(z.ERP.API.PosServiceAPI.CancelTransCouponPaymentRequest request) {
             return base.Channel.CancelTransCouponPayment(request);
         }
         
-        public bool CancelTransCouponPayment(int transID, int serverBillID, double transMoney, out string msg) {
+        public bool CancelTransCouponPayment(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int transId, int serverBillId, double transMoney, out string msg) {
             z.ERP.API.PosServiceAPI.CancelTransCouponPaymentRequest inValue = new z.ERP.API.PosServiceAPI.CancelTransCouponPaymentRequest();
-            inValue.transID = transID;
-            inValue.serverBillID = serverBillID;
+            inValue.ABCSoapHeader = ABCSoapHeader;
+            inValue.transId = transId;
+            inValue.serverBillId = serverBillId;
             inValue.transMoney = transMoney;
-            z.ERP.API.PosServiceAPI.CancelTransCouponPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).CancelTransCouponPayment(inValue);
+            z.ERP.API.PosServiceAPI.CancelTransCouponPaymentResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).CancelTransCouponPayment(inValue);
             msg = retVal.msg;
             return retVal.CancelTransCouponPaymentResult;
         }
@@ -3565,17 +3623,18 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesResponse z.ERP.API.PosServiceAPI.IPOSService.SaveRSaleBillArticles(z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesRequest request) {
+        z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.SaveRSaleBillArticles(z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesRequest request) {
             return base.Channel.SaveRSaleBillArticles(request);
         }
         
-        public bool SaveRSaleBillArticles(z.ERP.API.PosServiceAPI.RSaleBillHead billHead, z.ERP.API.PosServiceAPI.RSaleBillArticle[] billArticles, out string msg, out int serverBillID, out double decMoney, out z.ERP.API.PosServiceAPI.RSaleBillArticleDecMoney[] articleDecMoneys, out z.ERP.API.PosServiceAPI.RSaleBillArticlePromFlag[] articlePromFlags) {
+        public bool SaveRSaleBillArticles(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, z.ERP.API.PosServiceAPI.RSaleBillHead billHead, z.ERP.API.PosServiceAPI.RSaleBillArticle[] billArticles, out string msg, out int serverBillId, out double decMoney, out z.ERP.API.PosServiceAPI.RSaleBillArticleDecMoney[] articleDecMoneys, out z.ERP.API.PosServiceAPI.RSaleBillArticlePromFlag[] articlePromFlags) {
             z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesRequest inValue = new z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesRequest();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.billHead = billHead;
             inValue.billArticles = billArticles;
-            z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).SaveRSaleBillArticles(inValue);
+            z.ERP.API.PosServiceAPI.SaveRSaleBillArticlesResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).SaveRSaleBillArticles(inValue);
             msg = retVal.msg;
-            serverBillID = retVal.serverBillID;
+            serverBillId = retVal.serverBillId;
             decMoney = retVal.decMoney;
             articleDecMoneys = retVal.articleDecMoneys;
             articlePromFlags = retVal.articlePromFlags;
@@ -3587,17 +3646,18 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesResponse z.ERP.API.PosServiceAPI.IPOSService.SaveRSaleBackBillArticles(z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesRequest request) {
+        z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.SaveRSaleBackBillArticles(z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesRequest request) {
             return base.Channel.SaveRSaleBackBillArticles(request);
         }
         
-        public bool SaveRSaleBackBillArticles(z.ERP.API.PosServiceAPI.RSaleBillHead billHead, z.ERP.API.PosServiceAPI.RSaleBillArticle[] billArticles, out string msg, out int serverBillID, out z.ERP.API.PosServiceAPI.OfferBackCoupon[] offerBackCoupons, out z.ERP.API.PosServiceAPI.CouponPayback[] paybackCoupons) {
+        public bool SaveRSaleBackBillArticles(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, z.ERP.API.PosServiceAPI.RSaleBillHead billHead, z.ERP.API.PosServiceAPI.RSaleBillArticle[] billArticles, out string msg, out int serverBillId, out z.ERP.API.PosServiceAPI.OfferBackCoupon[] offerBackCoupons, out z.ERP.API.PosServiceAPI.CouponPayback[] paybackCoupons) {
             z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesRequest inValue = new z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesRequest();
+            inValue.ABCSoapHeader = ABCSoapHeader;
             inValue.billHead = billHead;
             inValue.billArticles = billArticles;
-            z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).SaveRSaleBackBillArticles(inValue);
+            z.ERP.API.PosServiceAPI.SaveRSaleBackBillArticlesResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).SaveRSaleBackBillArticles(inValue);
             msg = retVal.msg;
-            serverBillID = retVal.serverBillID;
+            serverBillId = retVal.serverBillId;
             offerBackCoupons = retVal.offerBackCoupons;
             paybackCoupons = retVal.paybackCoupons;
             return retVal.SaveRSaleBackBillArticlesResult;
@@ -3608,15 +3668,16 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyResponse z.ERP.API.PosServiceAPI.IPOSService.CalcRSaleBillDecMoney(z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyRequest request) {
+        z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.CalcRSaleBillDecMoney(z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyRequest request) {
             return base.Channel.CalcRSaleBillDecMoney(request);
         }
         
-        public bool CalcRSaleBillDecMoney(int serverBillID, z.ERP.API.PosServiceAPI.RSaleBillPayment[] payments, out string msg, out double decMoney, out z.ERP.API.PosServiceAPI.RSaleBillArticleDecMoney[] articleDecMoneys) {
+        public bool CalcRSaleBillDecMoney(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int serverBillId, z.ERP.API.PosServiceAPI.RSaleBillPayment[] payments, out string msg, out double decMoney, out z.ERP.API.PosServiceAPI.RSaleBillArticleDecMoney[] articleDecMoneys) {
             z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyRequest inValue = new z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyRequest();
-            inValue.serverBillID = serverBillID;
+            inValue.ABCSoapHeader = ABCSoapHeader;
+            inValue.serverBillId = serverBillId;
             inValue.payments = payments;
-            z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).CalcRSaleBillDecMoney(inValue);
+            z.ERP.API.PosServiceAPI.CalcRSaleBillDecMoneyResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).CalcRSaleBillDecMoney(inValue);
             msg = retVal.msg;
             decMoney = retVal.decMoney;
             articleDecMoneys = retVal.articleDecMoneys;
@@ -3628,20 +3689,27 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillResponse z.ERP.API.PosServiceAPI.IPOSService.PrepareCheckOutRSaleBill(z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillRequest request) {
+        z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.PrepareCheckOutRSaleBill(z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillRequest request) {
             return base.Channel.PrepareCheckOutRSaleBill(request);
         }
         
-        public bool PrepareCheckOutRSaleBill(int serverBillID, z.ERP.API.PosServiceAPI.RSaleBillPayment[] payments, bool couponPaid, out string msg, out double billCent, out z.ERP.API.PosServiceAPI.RSaleBillArticleCent[] articleCents, out z.ERP.API.PosServiceAPI.RSaleBillArticleCoupon[] articleCoupons) {
+        public bool PrepareCheckOutRSaleBill(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int serverBillId, z.ERP.API.PosServiceAPI.RSaleBillPayment[] payments, int payBackCouponVipId, bool couponPaid, out string msg, out double billCent, out bool needVipToOfferCoupon, out bool needBuyCent, out string offerCouponVipCode, out z.ERP.API.PosServiceAPI.RSaleBillArticleCent[] articleCents, out z.ERP.API.PosServiceAPI.RSaleBillArticleCoupon[] articleCoupons, out z.ERP.API.PosServiceAPI.OfferBackCoupon[] offerBackCoupons, out z.ERP.API.PosServiceAPI.CouponPayback[] paybackCoupons) {
             z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillRequest inValue = new z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillRequest();
-            inValue.serverBillID = serverBillID;
+            inValue.ABCSoapHeader = ABCSoapHeader;
+            inValue.serverBillId = serverBillId;
             inValue.payments = payments;
+            inValue.payBackCouponVipId = payBackCouponVipId;
             inValue.couponPaid = couponPaid;
-            z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).PrepareCheckOutRSaleBill(inValue);
+            z.ERP.API.PosServiceAPI.PrepareCheckOutRSaleBillResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).PrepareCheckOutRSaleBill(inValue);
             msg = retVal.msg;
             billCent = retVal.billCent;
+            needVipToOfferCoupon = retVal.needVipToOfferCoupon;
+            needBuyCent = retVal.needBuyCent;
+            offerCouponVipCode = retVal.offerCouponVipCode;
             articleCents = retVal.articleCents;
             articleCoupons = retVal.articleCoupons;
+            offerBackCoupons = retVal.offerBackCoupons;
+            paybackCoupons = retVal.paybackCoupons;
             return retVal.PrepareCheckOutRSaleBillResult;
         }
         
@@ -3650,17 +3718,19 @@ namespace z.ERP.API.PosServiceAPI {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        z.ERP.API.PosServiceAPI.CheckOutRSaleBillResponse z.ERP.API.PosServiceAPI.IPOSService.CheckOutRSaleBill(z.ERP.API.PosServiceAPI.CheckOutRSaleBillRequest request) {
+        z.ERP.API.PosServiceAPI.CheckOutRSaleBillResponse z.ERP.API.PosServiceAPI.PosWebServiceSoap.CheckOutRSaleBill(z.ERP.API.PosServiceAPI.CheckOutRSaleBillRequest request) {
             return base.Channel.CheckOutRSaleBill(request);
         }
         
-        public bool CheckOutRSaleBill(int serverBillID, out string msg, out double billCent, out double vipCent, out z.ERP.API.PosServiceAPI.OfferCoupon[] offerCoupons, out z.ERP.API.PosServiceAPI.SaleMoneyLeftWhenPromCalc[] leftSaleMoneys) {
+        public bool CheckOutRSaleBill(z.ERP.API.PosServiceAPI.ABCSoapHeader ABCSoapHeader, int serverBillId, out string msg, out double billCent, out double vipCent, out string offerCouponVipCode, out z.ERP.API.PosServiceAPI.OfferCoupon[] offerCoupons, out z.ERP.API.PosServiceAPI.SaleMoneyLeftWhenPromCalc[] leftSaleMoneys) {
             z.ERP.API.PosServiceAPI.CheckOutRSaleBillRequest inValue = new z.ERP.API.PosServiceAPI.CheckOutRSaleBillRequest();
-            inValue.serverBillID = serverBillID;
-            z.ERP.API.PosServiceAPI.CheckOutRSaleBillResponse retVal = ((z.ERP.API.PosServiceAPI.IPOSService)(this)).CheckOutRSaleBill(inValue);
+            inValue.ABCSoapHeader = ABCSoapHeader;
+            inValue.serverBillId = serverBillId;
+            z.ERP.API.PosServiceAPI.CheckOutRSaleBillResponse retVal = ((z.ERP.API.PosServiceAPI.PosWebServiceSoap)(this)).CheckOutRSaleBill(inValue);
             msg = retVal.msg;
             billCent = retVal.billCent;
             vipCent = retVal.vipCent;
+            offerCouponVipCode = retVal.offerCouponVipCode;
             offerCoupons = retVal.offerCoupons;
             leftSaleMoneys = retVal.leftSaleMoneys;
             return retVal.CheckOutRSaleBillResult;
@@ -3668,6 +3738,30 @@ namespace z.ERP.API.PosServiceAPI {
         
         public System.Threading.Tasks.Task<z.ERP.API.PosServiceAPI.CheckOutRSaleBillResponse> CheckOutRSaleBillAsync(z.ERP.API.PosServiceAPI.CheckOutRSaleBillRequest request) {
             return base.Channel.CheckOutRSaleBillAsync(request);
+        }
+        
+        public string GetShoppingDay(string s) {
+            return base.Channel.GetShoppingDay(s);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetShoppingDayAsync(string s) {
+            return base.Channel.GetShoppingDayAsync(s);
+        }
+        
+        public string DESEncrypt(string s, string key) {
+            return base.Channel.DESEncrypt(s, key);
+        }
+        
+        public System.Threading.Tasks.Task<string> DESEncryptAsync(string s, string key) {
+            return base.Channel.DESEncryptAsync(s, key);
+        }
+        
+        public string DESEncrypt2(string s, string key) {
+            return base.Channel.DESEncrypt2(s, key);
+        }
+        
+        public System.Threading.Tasks.Task<string> DESEncrypt2Async(string s, string key) {
+            return base.Channel.DESEncrypt2Async(s, key);
         }
     }
 }

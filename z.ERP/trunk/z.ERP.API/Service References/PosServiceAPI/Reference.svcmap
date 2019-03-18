@@ -19,14 +19,11 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://139.129.134.65:7019/ABCWcfService.svc/mex" Protocol="mex" SourceId="1" />
+    <MetadataSource Address="http://47.93.116.29:8221/ABCService.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="d75f6c42-4fac-4d48-8236-dc652fa92965" SourceId="1" SourceUrl="http://139.129.134.65:7019/ABCWcfService.svc/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="a94ffa39-4af8-40ce-a219-c81e9a023a77" SourceId="1" SourceUrl="http://139.129.134.65:7019/ABCWcfService.svc/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="2ada8e13-5007-4845-a0bc-3afbdf9f1049" SourceId="1" SourceUrl="http://139.129.134.65:7019/ABCWcfService.svc/mex" />
-    <MetadataFile FileName="ChangYi.Crm.Server.Wcf.xsd" MetadataType="Schema" ID="082b0aad-bf8c-4a9c-a9cd-5fe3dcbb9d10" SourceId="1" SourceUrl="http://139.129.134.65:7019/ABCWcfService.svc/mex" />
-    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="21b8e3ed-4e5c-4145-9462-c6bfaf381b71" SourceId="1" SourceUrl="http://139.129.134.65:7019/ABCWcfService.svc/mex" />
+    <MetadataFile FileName="ABCService.wsdl" MetadataType="Wsdl" ID="0be25fde-2937-43e8-9687-009e0217425f" SourceId="1" SourceUrl="http://47.93.116.29:8221/ABCService.asmx?wsdl" />
+    <MetadataFile FileName="ABCService.disco" MetadataType="Disco" ID="2a65e24f-6108-4ce1-953f-c85bcfe3ac91" SourceId="1" SourceUrl="http://47.93.116.29:8221/ABCService.asmx?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

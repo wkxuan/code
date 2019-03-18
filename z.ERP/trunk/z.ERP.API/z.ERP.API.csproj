@@ -54,19 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Service References\PosServiceAPI\Arrays.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\PosServiceAPI\ChangYi.Crm.Server.Wcf.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\PosServiceAPI\service.wsdl" />
-    <None Include="Service References\PosServiceAPI\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\PosServiceAPI\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Service References\PosServiceAPI\ABCService.wsdl" />
     <None Include="Service References\PosServiceAPI\z.ERP.API.PosServiceAPI.ArticleVipDisc.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -109,6 +97,9 @@
     <None Include="Service References\PosServiceAPI\z.ERP.API.PosServiceAPI.GetVipCardResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\PosServiceAPI\z.ERP.API.PosServiceAPI.GetVipCardToOfferCouponResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\PosServiceAPI\z.ERP.API.PosServiceAPI.GetVipCouponPayLimitResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -128,9 +119,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\PosServiceAPI\z.ERP.API.PosServiceAPI.PrepareTransCashCardPayment2Response.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\PosServiceAPI\z.ERP.API.PosServiceAPI.PrepareTransCashCardPaymentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\PosServiceAPI\z.ERP.API.PosServiceAPI.PrepareTransCouponPayment2Response.datasource">
@@ -184,6 +172,9 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PosServiceAPI\ABCService.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
