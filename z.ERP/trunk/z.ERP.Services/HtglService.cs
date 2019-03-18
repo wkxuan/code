@@ -227,7 +227,7 @@ namespace z.ERP.Services
 
 
             string sqlCost = $@"SELECT A.*,B.NAME,C.NAME FEERULENAME,D.NAME LATEFEERULENAME FROM CONTRACT_COST A,FEESUBJECT B,FEERULE C,LATEFEERULE D";
-            sqlCost += " WHERE A.TERMID=B.TRIMID AND A.FEERULEID=C.ID AND A.ZNGZID=D.ID(+) ";
+            sqlCost += " WHERE A.TERMID=B.TRIMID AND A.FEERULEID=C.ID(+) AND A.ZNGZID=D.ID(+) ";
             sqlCost += (" AND CONTRACTID= " + Data.CONTRACTID);
             sqlCost += " ORDER BY TERMID,STARTDATE";
             DataTable contract_cost = DbHelper.ExecuteTable(sqlCost);
@@ -295,6 +295,9 @@ namespace z.ERP.Services
             //当月度分解没定义的时候抛出异常提示待完善
             List<CONTRACT_RENTITEMEntity> zjfjList = new List<CONTRACT_RENTITEMEntity>();
 
+            CONFIGEntity config = new CONFIGEntity();
+            config = DbHelper.Select(new CONFIGEntity() { ID = "1003" });
+
             foreach (var ydfj in Data)
             {
                 List<PERIODEntity> Period = new List<PERIODEntity>();
@@ -328,8 +331,15 @@ namespace z.ERP.Services
 
                     zjfj.INX = ydfj.INX;
                     var je = Convert.ToDouble(ydfj.RENTS);
-                    var zzJe = Math.Round(je * (zjfjTs / allTs), 2, MidpointRounding.AwayFromZero);
-                    zjfj.RENTS = Convert.ToString(zzJe);
+
+                    if (zjfjTs != allTs)
+                    {
+                        zjfj.RENTS = Convert.ToString((Math.Round(je / (config.CUR_VAL).ToDouble() * zjfjTs, 0, MidpointRounding.AwayFromZero)).ToString());
+                    }
+                    else
+                    {
+                        zjfj.RENTS = Convert.ToString(je);
+                    }
                     zjfj.CREATEDATE = per.DATE_END;
                     zjfj.YEARMONTH = per.YEARMONTH;
                     zjfjList.Add(zjfj);

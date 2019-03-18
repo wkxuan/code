@@ -75,7 +75,6 @@ namespace z.ERP.Services
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
 
-        
         public List<SelectItem> operrule()
         {
             string sql = $@"SELECT A.ID,A.NAME FROM OPERATIONRULE A WHERE 1=1   ORDER BY  A.ID ";
@@ -360,6 +359,19 @@ namespace z.ERP.Services
             {
                 dt = dt.ToOneLine()
             };
+        }
+
+        public List<SelectItem> comPlainDept()
+        {
+            string sql = $@"select ID,NAME from COMPLAINDEPT ORDER BY ID";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ID", "NAME");
+        }
+        public List<SelectItem> comPlainType()
+        {
+            string sql = $@"select ID,NAME from COMPLAINTYPE ORDER BY ID";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ID", "NAME");
         }
 
     }
