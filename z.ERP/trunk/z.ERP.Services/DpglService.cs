@@ -79,7 +79,7 @@ namespace z.ERP.Services
 
         public DataGridResult GetFloorMap(SearchItem item)
         {
-            string sql = $@"select A.*,D.NAME||C.NAME||B.NAME as FLOORNAME from FLOORMAP A,FLOOR B,REGION C,BRANCH D where A.FLOORID=B.FLOORID AND B.REGIONID=C.REGIONID "
+            string sql = $@"select A.*,D.NAME||C.NAME||B.NAME as FLOORNAME from FLOORMAP A,FLOOR B,REGION C,BRANCH D where A.FLOORID=B.ID AND B.REGIONID=C.REGIONID "
                 +" AND C.BRANCHID=D.ID ";
             item.HasKey("MAPID", a => sql += $" and A.MAPID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = '{a}'");
@@ -284,6 +284,85 @@ namespace z.ERP.Services
             return assetchange.BILLID;
         }
 
+        public string SaveFloorMap(FLOORMAPEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.MAPID.IsEmpty())
+            {
+                SaveData.MAPID = NewINC("FLOORMAP"); 
+                SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            }
+            else
+            {
+                FLOORMAPEntity mer = DbHelper.Select(SaveData);
+                SaveData.VERIFY = mer.VERIFY;
+                SaveData.VERIFY_NAME = mer.VERIFY_NAME;
+                SaveData.VERIFY_TIME = mer.VERIFY_TIME;
+            }
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            v.Require(a => a.MAPID);
+            v.Require(a => a.FLOORID);
+            v.Require(a => a.BACKMAP);
+            v.Verify();
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                SaveData.FLOORSHOP?.ForEach(shop =>
+                {
+                    GetVerify(shop).Require(a => a.SHOPCODE);
+                });
+                DbHelper.Save(SaveData);
+
+                Tran.Commit();
+            }
+            return SaveData.MAPID;
+        }
+
+        public Tuple<dynamic, DataTable> GetFLOORMAPElement(FLOORMAPEntity Data)
+        {
+            if (Data.MAPID.IsEmpty())
+            {
+                throw new LogicException("请确认图纸编号!");
+            }
+            string sql = $@"SELECT * FROM FLOORMAP WHERE 1=1 ";
+            if (!Data.MAPID.IsEmpty())
+                sql += (" AND MAPID= " + Data.MAPID);
+            DataTable floormap = DbHelper.ExecuteTable(sql);
+
+            floormap.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT M.MAPID,M.SHOPCODE,M.SHOPID,M.P_X,M.P_Y" +
+                " FROM FLOORSHOP M " +
+                " where 1=1";
+            if (!Data.MAPID.IsEmpty())
+                sqlitem += (" and M.MAPID= " + Data.MAPID);
+            DataTable floorshop = DbHelper.ExecuteTable(sqlitem);
+            return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorshop);
+        }
+        /// <summary>
+        /// 列表页的删除,可以批量删除
+        /// </summary>
+        /// <param name="DeleteData"></param>
+        public void DeleteFloorMap(List<FLOORMAPEntity> DeleteData)
+        {
+            foreach (var map in DeleteData)
+            {
+                FLOORMAPEntity Data = DbHelper.Select(map);
+                if (Data.STATUS == ((int)普通单据状态.审核).ToString())
+                {
+                    throw new LogicException("此图纸已经审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var map in DeleteData)
+                {
+                    DbHelper.Delete(map);
+                }
+                Tran.Commit();
+            }
+        }
 
     }
 }

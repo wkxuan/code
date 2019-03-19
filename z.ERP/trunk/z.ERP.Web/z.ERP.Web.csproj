@@ -160,7 +160,7 @@
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\BJGL\BJT\BJTController.cs" />
-    <Compile Include="Areas\BJGL\BJDEF\BjdefController.cs" />
+    <Compile Include="Areas\BJGL\FLOORMAP\FloorMapController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
@@ -201,6 +201,7 @@
     <Compile Include="Areas\Report\SaleRecord\SaleRecordController.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
+    <Compile Include="Areas\Share\Render\UploadRender.cs" />
     <Compile Include="Areas\Share\Render\DropDownListsRender.cs" />
     <Compile Include="Areas\Share\Render\PopRender.cs" />
     <Compile Include="Areas\Share\Render\PopsRender.cs" />
@@ -270,8 +271,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\BJGL\BJT\BJTDef.js" />
-    <Content Include="Areas\BJGL\BJDEF\BjdefEdit.js" />
-    <Content Include="Areas\BJGL\BJDEF\BjdefList.js" />
+    <Content Include="Areas\BJGL\FLOORMAP\FloorMapEdit.js" />
+    <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.js" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.js" />
@@ -601,10 +602,10 @@
     <Content Include="Areas\WLGL\WLInStock\WLInStockMx.cshtml" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsList.cshtml" />
     <Content Include="Areas\BJGL\BJT\BJTDef.cshtml" />
-    <Content Include="Areas\BJGL\BJDEF\BjdefDetail.cshtml" />
-    <Content Include="Areas\BJGL\BJDEF\BjdefEdit.cshtml" />
-    <Content Include="Areas\BJGL\BJDEF\BjdefList.cshtml" />
-    <Content Include="Areas\BJGL\BJDEF\Print.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAP\FloorMapDetail.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAP\FloorMapEdit.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAP\Print.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockEdit.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockList.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockMx.cshtml" />
@@ -630,6 +631,7 @@
     <Content Include="Areas\HTGL\DJDW\DjdwEdit.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwList.cshtml" />
     <Content Include="File\Template\K3凭证.xlsx" />
+    <Content Include="Areas\Share\Upload.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
