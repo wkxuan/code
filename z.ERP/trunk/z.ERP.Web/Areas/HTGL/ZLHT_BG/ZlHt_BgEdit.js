@@ -939,13 +939,13 @@ editDetail.otherMethods = {
                 }
                 maxINX++;
             }
-        }
+        };
         if (editDetail.dataParam.CONTRACT_RENT.length == 0) {
-            temp.push({ INX: maxINX, STARTDATE: (editDetail.dataParam.CONT_START), RENTS: 0 });
+            temp.push({ INX: maxINX, STARTDATE: new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'), RENTS: 0 });
         }
         else {
-            temp.push({ INX: maxINX, STARTDATE: (addDate(maxSTARTDATE)), RENTS: 0 });
-        }
+            temp.push({ INX: maxINX, STARTDATE: new Date((addDate(maxSTARTDATE))).Format('yyyy-MM-dd'), RENTS: 0 });
+        };
 
         editDetail.dataParam.CONTRACT_RENT = temp;
     },
