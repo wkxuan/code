@@ -102,6 +102,19 @@
                 });
             }
         </i-col>
+
+
+        <i-col>
+           @{
+               RenderControl(new PopsRender()
+               {
+                   vModel = "screenParam.PopSigner",
+                   Src = "screenParam.srcPopSigner",
+                   Caption = "选择合同员",
+                   Width = "760"
+               });
+           }
+        </i-col>
     </row>  
 
     <row>
@@ -135,14 +148,14 @@
     </row>
 
 
-    <row>
+     <row>
         <i-col span="2" class="RowTitle">
             @{
                 RenderControl(new ButtonRender()
                 {
                     Click = "Merchant",
                     Text = "商户",
-                    Enable = false,
+                    Enable = true,
                     Type = "primary"
                 });
             }
@@ -151,8 +164,7 @@
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.MERCHANTID",
-                    Enable = false
+                    vModel = "dataParam.MERCHANTID"
                 });
             }
         </i-col>
@@ -215,7 +227,6 @@
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "dataParam.CONT_START",
-                    Enable = false
                 });
             }
         </i-col>
@@ -231,6 +242,41 @@
                 });
             }
         </i-col>
+
+
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelSigner",
+                    Text = "合同员",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.SIGNER_NAME",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            原合同号
+        </i-col>
+        <i-col span="2">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTRACT_OLD",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
     </row>
 
     <row>
@@ -242,8 +288,7 @@
                 RenderControl(new ServiceDropDownListRender()
                 {
                     vModel = "dataParam.ORGID",
-                    ServiceMothod = m => m.org_zs(),
-                    Enable=false
+                    ServiceMothod = m => m.org_zs()
                 });
             }
         </i-col>
@@ -289,18 +334,28 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle">
-            其他条款
+      <i-col span="2" class="RowTitle">
+            装修期起
         </i-col>
-        <i-col span="14">
+        <i-col span="6">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new DateBoxRender()
                 {
-                    vModel = "dataParam.DESCRIPTION"
+                    vModel = "dataParam.FIT_BEGIN",
                 });
             }
         </i-col>
-
+        <i-col span="2" class="RowTitle">
+            装修期至
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FIT_END",
+                });
+            }
+        </i-col>
         <i-col span="2" class="RowTitle">
             进项税率
         </i-col>
@@ -321,6 +376,59 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.XXSL",
+                });
+            }
+        </i-col>
+    </row> 
+
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            免租期起
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FREE_BEGIN",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            免租期至
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.FREE_END",
+                });
+            }
+        </i-col>
+    </row>
+
+
+    <row>
+        <i-col span="2" class="RowTitle">提前返款日</i-col>
+        <i-col span="22">
+            <i-select v-model="screenParam.TQFKR" multiple>
+               <i-option v-for="item in screenParam.fkrList" :value="item.value"
+                :key="item.value">{{ item.label }}</i-option>
+            </i-select>
+        </i-col>
+    </row>
+    
+    <row>
+        <i-col span="2" class="RowTitle">
+            其他条款
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION",
+                    type= "textarea",
+                    rows="5"
                 });
             }
         </i-col>

@@ -432,6 +432,16 @@
             }
         </i-col>
     </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">提前返款日</i-col>
+        <i-col span="22">
+            <i-select v-model="screenParam.TQFKR" multiple>
+               <i-option v-for="item in screenParam.fkrList" :value="item.value"
+                :key="item.value">{{ item.label }}</i-option>
+            </i-select>
+        </i-col>
+    </row>
     <row>
         <i-col span="2" class="RowTitle">
             其他条款

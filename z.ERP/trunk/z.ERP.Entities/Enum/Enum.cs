@@ -333,7 +333,4 @@ namespace z.ERP.Entities.Enum
         MD5 = 1,
         RSA = 2
     }
-
-
-
 }
