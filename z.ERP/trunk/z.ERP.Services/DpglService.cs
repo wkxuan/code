@@ -304,7 +304,6 @@ namespace z.ERP.Services
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
             v.Require(a => a.MAPID);
             v.Require(a => a.FLOORID);
-            v.Require(a => a.BACKMAP);
             v.Verify();
             using (var Tran = DbHelper.BeginTransaction())
             {
@@ -332,7 +331,7 @@ namespace z.ERP.Services
 
             floormap.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT M.MAPID,M.SHOPCODE,M.SHOPID,M.P_X,M.P_Y" +
+            string sqlitem = $@"SELECT M.MAPID,M.SHOPCODE,M.SHOPID,M.P_X,M.P_Y,'	#7B68EE' COLOR" +
                 " FROM FLOORSHOP M " +
                 " where 1=1";
             if (!Data.MAPID.IsEmpty())

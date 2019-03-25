@@ -160,6 +160,7 @@
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\BJGL\BJT\BJTController.cs" />
+    <Compile Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShowController.cs" />
     <Compile Include="Areas\BJGL\FLOORMAP\FloorMapController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Areas\Layout\EditDetail\EditDetailViewBase.cs" />
     <Compile Include="Areas\Layout\EditDetail\EditRender.cs" />
     <Compile Include="Areas\Layout\Edit\EditViewBase.cs" />
+    <Compile Include="Areas\Layout\MapShow\MapShowViewBase.cs" />
     <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\PopSearch\PopSearchViewBase.cs" />
@@ -271,6 +273,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\BJGL\BJT\BJTDef.js" />
+    <Content Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShow.js" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapEdit.js" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.js" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
@@ -306,6 +309,7 @@
     <Content Include="Areas\JSGL\JOINBILL\JoinBillList.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Edit\_Edit.js" />
+    <Content Include="Areas\Layout\MapShow\MapShow.js" />
     <Content Include="Areas\Layout\PopSearch\_PopSearchLayout.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Srch\_SrchLayout.js" />
@@ -632,6 +636,8 @@
     <Content Include="Areas\HTGL\DJDW\DjdwList.cshtml" />
     <Content Include="File\Template\K3凭证.xlsx" />
     <Content Include="Areas\Share\Upload.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShow.cshtml" />
+    <Content Include="Areas\Layout\MapShow\_MapShow.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
