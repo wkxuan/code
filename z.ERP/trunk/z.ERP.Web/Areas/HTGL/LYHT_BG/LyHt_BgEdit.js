@@ -7,8 +7,30 @@
     //添加时的初始化数据
     editDetail.dataParam.STATUS = 1;
     editDetail.dataParam.STYLE = 2;
-    editDetail.dataParam.JXSL = 0.16;
-    editDetail.dataParam.XXSL = 0.16;
+    editDetail.dataParam.JXSL = 0.13;
+    editDetail.dataParam.XXSL = 0.13;
+
+
+    editDetail.screenParam.TQFKR = [];
+
+
+
+    //初始化返款日信息
+    //转换为string 是为了保持从后台返回后一致，来显示
+    var tempList = [];
+    for (var i = 1; i <= 31; i++) {
+        tempList.push({
+            value: i.toString(),
+            label: i.toString(),
+        });
+    };
+    editDetail.screenParam.fkrList = tempList;
+
+
+
+    editDetail.screenParam.PopSysuser = false;
+    editDetail.screenParam.srcPopSigner = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
+    editDetail.screenParam.popParam = {};
 
 
     //初始化弹窗所要传递参数
@@ -482,9 +504,30 @@
         }
     };
 
-}
+};
+
+
+
+editDetail.popCallBack = function (data) {
+
+    if (editDetail.screenParam.PopSigner) {
+        editDetail.screenParam.PopSigner = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            editDetail.dataParam.SIGNER = data.sj[i].USERID;
+            editDetail.dataParam.SIGNER_NAME = data.sj[i].USERNAME;
+
+        };
+    };
+};
 
 editDetail.otherMethods = {
+
+    //点击合同员
+    SelSigner: function () {
+        Vue.set(editDetail.screenParam, "PopSigner", true);
+        editDetail.screenParam.popParam = { USER_TYPE: "7" };
+    },
+
     //点击商户弹窗
     Merchant: function () {
         Vue.set(editDetail.screenParam, "PopMerchant", true);
@@ -632,9 +675,15 @@ editDetail.otherMethods = {
             }
         }
     },
+
+
     //添加一行保底信息
     addColDefRENT: function () {
-        //判断是否存在并且结束日期是否有值
+
+        if (editDetail.dataParam.CONTRACT_SHOP.length == 0) {
+            iview.Message.info("请确定商铺!");
+            return false;
+        };
         if (editDetail.dataParam.CONTRACT_RENT) {
             for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
                 if (!editDetail.dataParam.CONTRACT_RENT[i].ENDDATE) {
@@ -658,13 +707,13 @@ editDetail.otherMethods = {
                 }
                 maxINX++;
             }
-        }
+        };
         if (editDetail.dataParam.CONTRACT_RENT.length == 0) {
-            temp.push({ INX: maxINX, STARTDATE: (editDetail.dataParam.CONT_START) });
+            temp.push({ INX: maxINX, STARTDATE: new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'), RENTS: 0 });
         }
         else {
-            temp.push({ INX: maxINX, STARTDATE: (addDate(maxSTARTDATE)) });
-        }
+            temp.push({ INX: maxINX, STARTDATE: new Date((addDate(maxSTARTDATE))).Format('yyyy-MM-dd'), RENTS: 0 });
+        };
 
         editDetail.dataParam.CONTRACT_RENT = temp;
     },
@@ -704,6 +753,10 @@ editDetail.otherMethods = {
     },
     //按年度分解
     operPeriod: function () {
+        if (editDetail.dataParam.CONTRACT_SHOP.length == 0) {
+            iview.Message.info("请确定商铺!");
+            return false;
+        };
         if (!editDetail.dataParam.CONT_START || !editDetail.dataParam.CONT_END) {
             iview.Message.info("请先维护租约开始结束日期!");
             return;
@@ -713,31 +766,60 @@ editDetail.otherMethods = {
             return;
         }
         editDetail.dataParam.CONTRACT_RENT = [];
-        var yearsValue = getYears(new Date(editDetail.dataParam.CONT_START), new Date(editDetail.dataParam.CONT_END));
+
+
+        var yearsValue = getYears(new Date(editDetail.dataParam.CONT_START),
+            new Date(editDetail.dataParam.CONT_END));
         var nestYear = null;
         var rentData = null;
         var beginHtq = editDetail.dataParam.CONT_START;
+        var beginMzqHtq = editDetail.dataParam.CONT_START;
 
+        var inx = 0;
+        if (editDetail.dataParam.FREE_END) {
+            rentData = {
+                INX: inx + 1,
+                STARTDATE: beginHtq,
+                ENDDATE: editDetail.dataParam.FREE_END,
+                DJLX: '2',  //默认月金额
+                PRICE: 0,
+                RENTS: 0,
+                RENTS_JSKL: 0,
+                SUMRENTS: 0
+            }
+            editDetail.dataParam.CONTRACT_RENT.push(rentData);
+            inx = 1;
+
+            beginMzqHtq = addDate(editDetail.dataParam.FREE_END, 1);
+        };
+
+        var copyHtQsr = (beginMzqHtq);
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
-            var copyHtQsr = (beginHtq);
+            if (i != 0) {
+                beginHtq = copyHtQsr;
+            }
             nestYear = getNextYears(beginHtq);
-            if (nestYear < (editDetail.dataParam.CONT_END)) {
+            if (nestYear < (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd'))) {
                 rentData = {
-                    INX: i + 1,
+                    INX: i + 1 + inx,
                     STARTDATE: copyHtQsr,
                     ENDDATE: nestYear,
+                    DJLX: '2',  //默认月金额
+                    PRICE: 0,
                     RENTS: 0,
                     RENTS_JSKL: 0,
                     SUMRENTS: 0
                 }
                 editDetail.dataParam.CONTRACT_RENT.push(rentData);
-                beginHtq = addDate(nestYear);
+                copyHtQsr = addDate(nestYear);
             } else {
                 rentData = {
-                    INX: i + 1,
+                    INX: i + 1 + inx,
                     STARTDATE: copyHtQsr,
-                    ENDDATE: (editDetail.dataParam.CONT_END),
+                    ENDDATE: (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')),
+                    DJLX: '2',  //默认月金额
+                    PRICE: 0,
                     RENTS: 0,
                     RENTS_JSKL: 0,
                     SUMRENTS: 0
@@ -1060,6 +1142,10 @@ editDetail.IsValidSave = function () {
         JHRQ: editDetail.dataParam.JHRQ
     });
 
+    if (editDetail.screenParam.TQFKR.length != 0) {
+        editDetail.dataParam.TQFKR = editDetail.screenParam.TQFKR.join(',');
+    };
+
     return true;
 }
 
@@ -1086,6 +1172,10 @@ editDetail.showOne = function (data, callback) {
         Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data.ContractRentParm.CONTRACT_RENTITEM);
         editDetail.dataParam.CONTRACT_COST = data.contractCost;
         editDetail.dataParam.CONTRACT_PAY = data.contractPay;
+
+        if (data.contract.TQFKR) {
+            Vue.set(editDetail.screenParam, "TQFKR", data.contract.TQFKR.split(',') || []);
+        };
         callback && callback(data);
     });
 }
