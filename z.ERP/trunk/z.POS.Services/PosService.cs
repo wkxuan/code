@@ -6,6 +6,7 @@ using z.POS.Entities.Pos;
 using System.Linq;
 using z.ServiceHelper;
 using System.Diagnostics;
+using z.ERP.API.PosServiceAPI;
 
 namespace z.POS.Services
 {
@@ -18,7 +19,21 @@ namespace z.POS.Services
         {
 
         }
+        #region 属性
+        PosWebServiceSoap _posapi;
 
+        PosWebServiceSoap PosAPI
+        {
+            get
+            {
+                if (_posapi == null)
+                {
+                    _posapi = WCF.CreateWCFServiceByURL<PosWebServiceSoap>(ConfigExtension.GetConfig("PosServiceUrl"));
+                }
+                return _posapi;
+            }
+        }
+        #endregion
         public LoginConfigInfo GetConfig()
         {
             /* string sql = " select S.BRANCHID,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,G.PID,G.KEY"
