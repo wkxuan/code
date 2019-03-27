@@ -28,7 +28,7 @@ namespace z.POS.Services
             {
                 if (_posapi == null)
                 {
-                    _posapi = WCF.CreateWCFServiceByURL<PosWebServiceSoap>(ConfigExtension.GetConfig("PosServiceUrl"));
+                    _posapi = WCF.CreateWCFServiceByURL<PosWebServiceSoap>(ConfigExtension.GetConfig("CRMServiceUrl"));
                 }
                 return _posapi;
             }

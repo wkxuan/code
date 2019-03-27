@@ -3534,13 +3534,13 @@ namespace z.ERP.Entities.Service.Pos
     public struct TTranPayments
     {
         public int Id;  //1现金 2储值卡 3银行卡       
-        public int PayMoney;
+        public float PayMoney;
     }
 
     public struct TTradePayments
     {
         public int id;  //1现金 2储值卡 3银行卡       
-        public int payMoney;
+        public float payMoney;
         public string name;
         public int type;
         public int yhqid;
@@ -4625,6 +4625,7 @@ namespace z.ERP.Entities.Service.Pos
     //计算商品的售价
     public class ReqGetGoods
     {
+        public int branchID;  //门店id
         public int contractID;
         public int vipIsDiscount; //0:作VIP折 1:不作VIP折
         public string validType;
@@ -4636,6 +4637,7 @@ namespace z.ERP.Entities.Service.Pos
 
     public class ReqGetCardPayable
     {
+        public int branchID; //门店id
         public int crmTranID;
         public string validType;
         public string validID;
@@ -4723,6 +4725,7 @@ namespace z.ERP.Entities.Service.Pos
 
     public class ReqConfirmDeal
     {
+        public int branchID;
         public int contractID;
         public string validType;
         public string validID;

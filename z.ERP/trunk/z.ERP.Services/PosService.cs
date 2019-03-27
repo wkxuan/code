@@ -43,8 +43,9 @@ namespace z.ERP.Services
 
         public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
         {
-            string sql = "select a.goodsid,a.goodsdm goodscode,a.name,a.type,nvl(a.price,0) price,nvl(a.member_price,0) member_price,b.shopid";
-            sql += "        from GOODS a,GOODS_SHOP b where a.goodsid=b.goodsid";
+            string sql = "select a.goodsid,a.goodsdm goodscode,a.name,a.type,nvl(a.price,0) price,nvl(a.member_price,0) member_price,b.shopid,d.orgcode";
+            sql += "        from GOODS a,GOODS_SHOP b,SHOP c,ORG d";
+            sql += "       where a.goodsid=b.goodsid and b.shopid=c.shopid and c.orgid=d.orgid";
 
             if (filter.shopid.HasValue)
                 sql += $"  and b.shopid = {filter.shopid}";
@@ -508,6 +509,7 @@ namespace z.ERP.Services
             {
                 throw new Exception("请求参数为空");
             }
+            
 
             CalcAccountsPayableResult payableResult = new CalcAccountsPayableResult();
 
@@ -519,7 +521,7 @@ namespace z.ERP.Services
 
             // int iDataType = UniCode_Json;
             int iHTH = 0;
-            string Shop = "001";
+            string Shop = reqMth.branchID.ToString().PadLeft(3, '0');
             string posNo = employee.PlatformId, userCode = employee.Code,
                  cardCodeToCheck = "", verifyCode = "", password = "",
                  CondValue = "", sVIPCode = "", sDeptCode = "";
@@ -662,6 +664,9 @@ namespace z.ERP.Services
                     bRslt = DoGetGoodsInfo(ItemCode, deptid, backType, bulkGoodsType, Shop, posNo,
                           out goods);
 
+                    if (!bRslt)
+                        throw new Exception("商品"+ ItemCode + "不存在!");
+
                     //  if (!bRslt)
                     //  {
                     //   CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<2.3> 查询数据定义失败：没有定义商品:" + ItemCode);
@@ -681,8 +686,8 @@ namespace z.ERP.Services
                                      + goods.DecreaseDiscount + goods.ChangeDiscount;
 
                     //CommonUtils.GetSPDisc(goods);
-
-                    //goods.DeptCode = reqMth.goodsList[i].
+                    goods.DeptId = deptid;
+                    goods.DeptCode = sDeptCode;
                     if ((goods.Price == 0) && (reqMth.goodsList[i].price != 0))
                         goods.Price = reqMth.goodsList[i].price;
 
@@ -1492,7 +1497,7 @@ namespace z.ERP.Services
                         //CommonUtils.GetSPDisc(GoodsList[i]);
                         article.ArticleCode = GoodsList[i].Code;
 
-                        article.DeptCode = "01";// GoodsList[i].DeptCode;
+                        article.DeptCode =  GoodsList[i].DeptCode;
 
                         article.DiscMoney = GoodsList[i].Discount;
                         article.Inx = i;
@@ -1584,7 +1589,7 @@ namespace z.ERP.Services
             List<Payment> DevicePayments = new List<Payment>();
 
             string Device = employee.PlatformId;
-            string shop = "001";
+            string shop = reqMth.branchID.ToString().PadLeft(3, '0') ;
 
             ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
             crmSoapHeader.UserId = "CRMUSER";
@@ -1695,8 +1700,6 @@ namespace z.ERP.Services
                     {
                         throw new Exception(msg);
                     }
-
-
                 }
                 else
                 {
@@ -1923,9 +1926,9 @@ namespace z.ERP.Services
 
         public ConfirmDealResult ConfirmDeal(ReqConfirmDeal ReqConfirm)
         {
-            string Shop = "001";
+            string Shop = ReqConfirm.branchID.ToString().PadLeft(3,'0');   // 
             string Device = employee.PlatformId;
-            string Operator = "99999"; // employee.Code;
+            string Operator = employee.Code;
             string msg = "";
             int result = -1, i = 0, j = 0, CrmBillId = 0, CrmMoneyCardTransID = 0, iHyId = 0;
             string PromniDealID = "", ErpTranID = "", MemberCardID = "",
