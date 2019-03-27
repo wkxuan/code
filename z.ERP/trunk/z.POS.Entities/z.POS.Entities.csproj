@@ -61,6 +61,12 @@
   <ItemGroup>
     <Folder Include="auto\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\z.ERP.API\z.ERP.API.csproj">
+      <Project>{91882ee9-bf22-4b43-85a4-aa9cecb65c48}</Project>
+      <Name>z.ERP.API</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-//using z.ERP.API.PosServiceAPI;
+using z.ERP.API.PosServiceAPI;
 using System.Text;
 
 namespace z.POS.Entities.Pos
 {
- /*   public class TableInfo
+    public class TableInfo
     {
         string tblName;
 
@@ -252,10 +252,10 @@ namespace z.POS.Entities.Pos
             set { deptCode = value; }
         }
 
-        int price;
+        double price;
 
 
-        public int Price
+        public double Price
         {
             get { return price; }
             set { price = value; }
@@ -3534,13 +3534,13 @@ namespace z.POS.Entities.Pos
     public struct TTranPayments
     {
         public int Id;  //1现金 2储值卡 3银行卡       
-        public int PayMoney;
+        public float PayMoney;
     }
 
     public struct TTradePayments
     {
         public int id;  //1现金 2储值卡 3银行卡       
-        public int payMoney;
+        public float payMoney;
         public string name;
         public int type;
         public int yhqid;
@@ -3590,7 +3590,7 @@ namespace z.POS.Entities.Pos
         public int id;
         public string code;
         public string name;
-        public int price;
+        public double price;
         public double count;
         public int totalOffAmount;
         public int accountsPayable;
@@ -3688,8 +3688,8 @@ namespace z.POS.Entities.Pos
             set { DeptCode = value; }
         }
 
-        int Price;
-        public int price
+        double Price;
+        public double price
         {
             get { return Price; }
             set { Price = value; }
@@ -4113,9 +4113,9 @@ namespace z.POS.Entities.Pos
     {
         public int id;
         public string code;
-        public int price;
+        public double price;  //int
         public int frontendOffAmount;
-        public string count;
+        public double count;
         //2017.07.11:新加,主要用于计算商品的售价格
         public int deptID;
         public string deptCode;
@@ -4167,8 +4167,8 @@ namespace z.POS.Entities.Pos
         }
 
 
-        int Price;
-        public int price
+        double Price;
+        public double price
         {
             get { return Price; }
             set { Price = value; }
@@ -4625,6 +4625,7 @@ namespace z.POS.Entities.Pos
     //计算商品的售价
     public class ReqGetGoods
     {
+        public int branchID;  //门店id
         public int contractID;
         public int vipIsDiscount; //0:作VIP折 1:不作VIP折
         public string validType;
@@ -4636,6 +4637,7 @@ namespace z.POS.Entities.Pos
 
     public class ReqGetCardPayable
     {
+        public int branchID; //门店id
         public int crmTranID;
         public string validType;
         public string validID;
@@ -4723,6 +4725,7 @@ namespace z.POS.Entities.Pos
 
     public class ReqConfirmDeal
     {
+        public int branchID;
         public int contractID;
         public string validType;
         public string validID;
@@ -5534,6 +5537,6 @@ namespace z.POS.Entities.Pos
         }
 
         public List<OrderInfo> data;
-    } */
+    }
 
 }
