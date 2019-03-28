@@ -1973,14 +1973,14 @@ namespace z.POS.Services
             }
 
 
-            if (Operator.Equals(""))
-            {
+          //  if (Operator.Equals(""))
+          //  {
                 //  result = RsltCode_Wrong_Para;
-                msg = "数据检查失败：计算销售价格,操作人员为空";
-                confirmResult.code = result;
-                confirmResult.text = msg;
+          //      msg = "数据检查失败：计算销售价格,操作人员为空";
+          //      confirmResult.code = result;
+          //      confirmResult.text = msg;
                 //  return result;
-            }
+          //  }
 
 
             if (ReqConfirm == null)

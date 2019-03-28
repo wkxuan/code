@@ -1045,10 +1045,12 @@ namespace z.ERP.Services
                     //   goods.Packaged = query.FieldByName("PACKED").AsBoolean;
                     //   goods.GoodsType = query.FieldByName("SPTYPE").AsInteger;
 
-                    goods.Price = 0; // int.Parse(dt.Rows[0]["PRICE"].ToString().ToDecimal()*100);
+                    goods.Price =  dt.Rows[0]["PRICE"].ToString().ToDouble();
                                      //CommonUtils.RoundMoney(query.FieldByName("LSDJ").AsCurrency * 100); //query.FieldByName("LSDJ").AsInteger;
                                      //   goods.MinPrice = CommonUtils.RoundMoney(query.FieldByName("ZDSJ").AsCurrency * 100); // query.FieldByName("ZDSJ").AsInteger;
-                    goods.VipPrice = 0; //CommonUtils.RoundMoney(query.FieldByName("HYLSDJ").AsCurrency * 100); //query.FieldByName("HYLSDJ").AsInteger;
+                    goods.VipPrice = dt.Rows[0]["MEMBER_PRICE"].ToString().ToDouble();
+
+                    //CommonUtils.RoundMoney(query.FieldByName("HYLSDJ").AsCurrency * 100); //query.FieldByName("HYLSDJ").AsInteger;
 
                     iPriceAttr = 0;
 
@@ -1073,7 +1075,8 @@ namespace z.ERP.Services
 
             //    CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<3.2.1> ");
 
-            int i = 0, mTotalCanUse = 0;
+            int i = 0;
+            double mTotalCanUse = 0;
             //1.1：创建变量
             desc = new CalcAccountsPayableResult();
 
@@ -1283,6 +1286,9 @@ namespace z.ERP.Services
                 PayCoupon = rep.coupons;
                 payLimits = rep.payLimits;
 
+                iVIPID = rep.vipId;
+                sVIPCode = rep.vipCode;
+
                 ListCoupon.Clear();
 
                 CouponDetails CouponItem;
@@ -1307,8 +1313,8 @@ namespace z.ERP.Services
                                 CouponItem.couponId = CurCoupon.CouponType;
                                 CouponItem.couponName = CurCoupon.CouponTypeName;
                                 CouponItem.couponType = CurCoupon.CouponType;
-                                CouponItem.amount = Convert.ToInt32(CurCoupon.Balance);
-                                CouponItem.amountCanUse = Convert.ToInt32(CurLimit.LimitMoney);
+                                CouponItem.amount = CurCoupon.Balance;
+                                CouponItem.amountCanUse = CurLimit.LimitMoney;
 
                                 CouponItem.returnMoney = 0;
                                 CouponItem.valid_date = "";
@@ -1330,20 +1336,9 @@ namespace z.ERP.Services
             return result;
         }
 
-        public static int RoundMoney(double money)
+        public static double RoundMoney(double money)
         {
-            if (money > 0)
-            {
-                return (int)(money + 0.5);
-            }
-            else if (money == 0)
-            {
-                return 0;
-            }
-            else
-            {
-                return (int)(money - 0.5);
-            }
+            return Math.Round(money, 2);
         }
 
         public bool ComputeVipDiscount(string shopCode, string posNo, MemberCard vipcard, List<Goods> GoodsList, out string msg)
@@ -1406,8 +1401,8 @@ namespace z.ERP.Services
                     articleVipDisc = rep.discs;
                     for (int i = 0; i <= GoodsList.Count - 1; i++)
                     {
-                        int disc = 0;
-                        int mTotalSPZK = GoodsList[i].FrontDiscount + GoodsList[i].BackDiscount;
+                        double disc = 0;
+                        double mTotalSPZK = GoodsList[i].FrontDiscount + GoodsList[i].BackDiscount;
                         disc = RoundMoney(((GoodsList[i].Price * GoodsList[i].SaleCount) - mTotalSPZK) * (1 - articleVipDisc[i].DiscRate));
                         GoodsList[i].MemberDiscount = disc;
                         GoodsList[i].MemberOffRate = articleVipDisc[i].DiscRate; //付会员折扣
@@ -1419,7 +1414,7 @@ namespace z.ERP.Services
                         //     GoodsList[i].FrontDiscount + " - " + GoodsList[i].BackDiscount + ") X ( 1 -  " + articleVipDisc[i].DiscRate + "))"
                         //       );
 
-                        int mDisc1 = GoodsList[i].MemberDiscount, mDisc2 = GoodsList[i].MemberDiscount;
+                        double mDisc1 = GoodsList[i].MemberDiscount, mDisc2 = GoodsList[i].MemberDiscount;
 
 
                         //    CommonUtils.ProcVIPDisc(posNo, mDisc1, ref mDisc2);
@@ -1748,18 +1743,18 @@ namespace z.ERP.Services
             desc.ticketCent = "";
 
             desc.name = sour.VipName;
-            //  desc.mobilePhone = sour.Mobile;
-            desc.sex = "";
+            desc.mobilePhone = sour.Mobile;
+          //  desc.sex = "";
             desc.validType = "";
-            desc.validID = "";
+            desc.validID = ""; 
             desc.typeLevel = 0;
 
 
             desc.sex = "";
-            // if (sour.SexType == 1)
-            //     desc.sex = "Female";
-            // else if (sour.SexType == 0)
-            //     desc.sex = "Male"; 
+             if (sour.SexType == 1)
+                 desc.sex = "Female";
+             else if (sour.SexType == 0)
+                 desc.sex = "Male"; 
             desc.memberTypeName = sour.CardTypeName;
 
             result = true;
@@ -1839,7 +1834,8 @@ namespace z.ERP.Services
            out GetCardPayableResult desc)
         {
 
-            int i = 0, mTotalCanUse = 0;
+            int i = 0;
+            double mTotalCanUse = 0;
             //1.1：创建变量
             desc = new GetCardPayableResult();
 
@@ -1926,7 +1922,7 @@ namespace z.ERP.Services
 
         public ConfirmDealResult ConfirmDeal(ReqConfirmDeal ReqConfirm)
         {
-            string Shop = ReqConfirm.branchID.ToString().PadLeft(3,'0');   // 
+            string Shop = ReqConfirm.branchID.ToString().PadLeft(3,'0');   //
             string Device = employee.PlatformId;
             string Operator = employee.Code;
             string msg = "";
@@ -1943,7 +1939,8 @@ namespace z.ERP.Services
             // sVer = CommonUtils.GetReqStr(sTitle);
 
             //2015.08.24
-            int transId = 0, iPerson = 0, mTotalMoney = 0;
+            int transId = 0, iPerson = 0;
+            double mTotalMoney = 0;
             double fCent = 0;
             Member member = new Member();
             Person CurPerson = new Person();
@@ -1990,14 +1987,14 @@ namespace z.ERP.Services
             }
 
 
-            if (Operator.Equals(""))
-            {
+         //   if (Operator.Equals(""))
+         //   {
                 //  result = RsltCode_Wrong_Para;
-                msg = "数据检查失败：计算销售价格,操作人员为空";
-                confirmResult.code = result;
-                confirmResult.text = msg;
+         //       msg = "数据检查失败：计算销售价格,操作人员为空";
+         //       confirmResult.code = result;
+          //      confirmResult.text = msg;
                 //  return result;
-            }
+          //  }
 
 
             if (ReqConfirm == null)
@@ -3188,8 +3185,8 @@ namespace z.ERP.Services
                 OfferBackCoupon[] offerBackCoupon;
                 CouponPayback[] payBackCoupons;
 
-                int iCurLine = 0;
-                int mYHJE = 0, iCouponType = -1;
+                int iCurLine = 0, iCouponType = -1;
+                double mYHJE = 0;
                 bool PrepareCheckOutResult;
                 double fRate = 0;
 
@@ -3259,7 +3256,7 @@ namespace z.ERP.Services
 
                             if ((iCurLine >= 0) && (iCurLine < GoodsList.Count))
                             {
-                                mYHJE = Convert.ToInt32(curArticle.SharedMoney);
+                                mYHJE = curArticle.SharedMoney;
                                 mYHJE = RoundMoney(mYHJE * (1 - fRate));
                                 iCouponType = curArticle.CouponType;
 
@@ -3445,7 +3442,7 @@ namespace z.ERP.Services
 
 
 
-        public double MoneyToDouble(int money)
+        public double MoneyToDouble(double money)
         {
             return (double)money;
         }
