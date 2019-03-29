@@ -188,6 +188,7 @@
     <Compile Include="Areas\Layout\MapShow\MapShowViewBase.cs" />
     <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
     <Compile Include="Areas\Layout\List\ListViewBase.cs" />
+    <Compile Include="Areas\Layout\PopShow\PopShowViewBase.cs" />
     <Compile Include="Areas\Layout\PopSearch\PopSearchViewBase.cs" />
     <Compile Include="Areas\Layout\Print\PrintViewBase.cs" />
     <Compile Include="Areas\Layout\Search\SearchRender.cs" />
@@ -310,6 +311,7 @@
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Edit\_Edit.js" />
     <Content Include="Areas\Layout\MapShow\MapShow.js" />
+    <Content Include="Areas\Layout\PopShow\_PopShowLayout.js" />
     <Content Include="Areas\Layout\PopSearch\_PopSearchLayout.js" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Srch\_SrchLayout.js" />
@@ -324,6 +326,7 @@
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.js" />
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
+    <Content Include="Areas\Pop\Pop\PopFloorMapShow.js" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsDjxxList.js" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsStockList.js" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsList.js" />
@@ -638,6 +641,8 @@
     <Content Include="Areas\Share\Upload.cshtml" />
     <Content Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShow.cshtml" />
     <Content Include="Areas\Layout\MapShow\_MapShow.cshtml" />
+    <Content Include="Areas\Layout\PopShow\_PopShowLayout.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopFloorMapShow.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

@@ -83,6 +83,11 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "物料业务数据";
             return View();
         }
+        public ActionResult PopFloorMapShow()
+        {
+            ViewBag.Title = " ";
+            return View();
+        }
     }
 
 }
