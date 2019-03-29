@@ -1210,10 +1210,10 @@ namespace z.ERP.Entities.Service.Pos
             set { changeType = value; }
         }
 
-        float payedMoney;//
+        double payedMoney;//
 
 
-        public float PayedMoney
+        public double PayedMoney
         {
             get { return payedMoney; }
             set { payedMoney = value; }
@@ -1247,9 +1247,9 @@ namespace z.ERP.Entities.Service.Pos
             set { bj_jf = value; }
         }
 
-        float morePayedMoney;//
+        double morePayedMoney;//
 
-        public float MorePayedMoney
+        public double MorePayedMoney
         {
             get { return morePayedMoney; }
             set { morePayedMoney = value; }
@@ -1257,9 +1257,9 @@ namespace z.ERP.Entities.Service.Pos
 
 
 
-        float realUsedMoney;
+        double realUsedMoney;
 
-        public float RealUsedMoney
+        public double RealUsedMoney
         {
             get { return realUsedMoney; }
             set { realUsedMoney = value; }
@@ -3534,13 +3534,13 @@ namespace z.ERP.Entities.Service.Pos
     public struct TTranPayments
     {
         public int Id;  //1现金 2储值卡 3银行卡       
-        public float PayMoney;
+        public double PayMoney;
     }
 
     public struct TTradePayments
     {
         public int id;  //1现金 2储值卡 3银行卡       
-        public float payMoney;
+        public double payMoney;
         public string name;
         public int type;
         public int yhqid;
@@ -3574,9 +3574,9 @@ namespace z.ERP.Entities.Service.Pos
         public int CouponId;
         public int CouponType;
         public string CouponName;
-        public int Balance;
-        public int AccountsPayable;
-        public int OutOfPocketAmount;
+        public double Balance;
+        public double AccountsPayable;
+        public double OutOfPocketAmount;
         public string PayID;
     }
 

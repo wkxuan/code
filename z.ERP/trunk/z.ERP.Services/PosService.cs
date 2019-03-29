@@ -501,7 +501,14 @@ namespace z.ERP.Services
         }
         #endregion
 
+        #endregion
 
+/**
+    * 
+    * 调用长益crm接口
+    * 
+    * 
+    **/
 
         public CalcAccountsPayableResult CalcAccountsPayable(ReqGetGoods reqMth)
         {
@@ -2252,6 +2259,7 @@ namespace z.ERP.Services
                 CurPerson.PersonCode = Operator; // employee.Code;
                 CurPerson.PersonName = employee.Name;
 
+                result = 0;
                 if (result != 0)
                 {
                     //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.1> 查询数据定义失败:没有营业员:" + Operator);
@@ -3501,7 +3509,8 @@ namespace z.ERP.Services
             ref string msg)
         {
             msg = "";
-            int i = 0, j = 0, k = 0, totalCash = 0, totalCoupon = 0;
+            int i = 0, j = 0, k = 0, totalCash = 0;
+            double totalCoupon = 0;
             bool result = false;
 
             //1:判断1:数目是否为0,为0:错误
@@ -3604,7 +3613,5 @@ namespace z.ERP.Services
             result = true;
             return result;
         }
-
-        #endregion
     }
 }

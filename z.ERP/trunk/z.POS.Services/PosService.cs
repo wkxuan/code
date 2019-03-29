@@ -19,33 +19,14 @@ namespace z.POS.Services
         {
 
         }
-        #region 属性
-        PosWebServiceSoap _posapi;
-
-        PosWebServiceSoap PosAPI
-        {
-            get
-            {
-                if (_posapi == null)
-                {
-                    _posapi = WCF.CreateWCFServiceByURL<PosWebServiceSoap>(ConfigExtension.GetConfig("CRMServiceUrl"));
-                }
-                return _posapi;
-            }
-        }
-        #endregion
 
 
         public LoginConfigInfo GetConfig()
         {
-            /* string sql = " select S.BRANCHID,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,G.PID,G.KEY"
-                        + " from STATION S, POSO2OWFTCFG G, SHOP P"
-                        + " where S.STATIONBH = G.POSNO(+)"
-                        + " AND S.SHOPID = P.SHOPID(+)"
-                        + $" AND S.STATIONBH = '{employee.PlatformId}'";  */
 
-            string sql = "select b.fdbh BRANCHID,a.shopid,'' shopcode,'' shopname,'' pid,'' key  from RYXX a,SKT b"
-                       + $" where person_id={employee.Id} and b.sktno='{employee.PlatformId}'";
+            string sql = "select b.fdbh BRANCHID,a.shopid,'' shopcode,'' shopname,'' pid,'' key  "
+                       +"   from RYXX a,SKT b"
+                      + $" where person_id={employee.Id} and b.sktno='{employee.PlatformId}'";
 
             LoginConfigInfo lgi = DbHelper.ExecuteOneObject<LoginConfigInfo>(sql);
             return lgi;  
@@ -70,8 +51,9 @@ namespace z.POS.Services
 
        public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
         {
-            string sql = "select a.sp_id goodsid,a.spcode goodscode,a.name,0 type,nvl(a.lsdj,0) price,nvl(a.hylsdj,0) member_price,b.deptid shopid";
-            sql += "        from SPXX a,GTSP b where a.sp_id=b.sp_id";
+            string sql = "select a.sp_id goodsid,a.spcode goodscode,a.name,0 type,nvl(a.lsdj,0) price,nvl(a.hylsdj,0) member_price,b.deptid shopid,c.bmdm orgcode";
+            sql += "        from SPXX a,GTSP b,BM c ";
+            sql += "       where a.sp_id=b.sp_id and b.deptid=c.deptid";
 
             if (filter.shopid.HasValue)
                 sql += $"  and a.shopid = {filter.shopid}";
@@ -486,6 +468,34 @@ namespace z.POS.Services
         }
 
 
+
+
+/**
+    *    调用长益crm接口 
+    * 
+    * 
+    **/
+
+
+
+        #region 属性
+        PosWebServiceSoap _posapi;
+
+        PosWebServiceSoap PosAPI
+        {
+            get
+            {
+                if (_posapi == null)
+                {
+                    _posapi = WCF.CreateWCFServiceByURL<PosWebServiceSoap>(ConfigExtension.GetConfig("CRMServiceUrl"));
+                }
+                return _posapi;
+            }
+        }
+        #endregion
+
+
+
         public CalcAccountsPayableResult CalcAccountsPayable(ReqGetGoods reqMth)
         {
             if (reqMth == null)
@@ -504,7 +514,7 @@ namespace z.POS.Services
 
             // int iDataType = UniCode_Json;
             int iHTH = 0;
-            string Shop = reqMth.branchID.ToString().PadLeft(3, '0');
+            string Shop = "00010001";    //reqMth.branchID.ToString().PadLeft(3, '0');
             string posNo = employee.PlatformId, userCode = employee.Code,
                  cardCodeToCheck = "", verifyCode = "", password = "",
                  CondValue = "", sVIPCode = "", sDeptCode = "";
@@ -660,7 +670,7 @@ namespace z.POS.Services
                     //  }
 
                     double fCount = 0;
-                    fCount = Convert.ToDouble(reqMth.goodsList[i].count);
+                    fCount = reqMth.goodsList[i].count;
 
                     //2.2.2:付:数量,总价
                     goods.SaleCount = fCount;
@@ -948,7 +958,7 @@ namespace z.POS.Services
             try
             {
                 //  DbConnection conn = DBConnManager.GetDBConnection("ERPDB");
-                string sql = "select PAYID,NAME from PAY where TYPE=2";
+                string sql = "select CODE PAYID,NAME from SKFS where TYPE=2";
 
                 //  sql.Append(" select C.HYKTYPE,C.PAYID,S.NAME from PAYMENT_CASHCARD C,SKFS S where S.CODE=C.PAYID AND C.HYKTYPE=" );
                 //  query.SQL.Text = sql.ToString();
@@ -999,7 +1009,7 @@ namespace z.POS.Services
                 status = 0;
 
                 //  int iHSFS = 0;
-                string sql = "select GOODSID,GOODSDM,BARCODE,NAME,KINDID,PRICE,MEMBER_PRICE,STATUS from GOODS ";
+                string sql = "select SP_ID GOODSID,SPCODE GOODSDM,BARCODE,NAME,SPFL KINDID,LSDJ PRICE,HYLSDJ MEMBER_PRICE,STATUS from SPXX ";
 
                 if (backType == 1)//是选单退货 
                 {
@@ -1007,7 +1017,7 @@ namespace z.POS.Services
                 }
                 else
                 {
-                    sql += $" where GOODSDM='{code}' OR BARCODE='{code}'";
+                    sql += $" where SPCODE='{code}' OR BARCODE='{code}'";
                 }
 
                 DataTable dt = DbHelper.ExecuteTable(sql);
@@ -1028,10 +1038,12 @@ namespace z.POS.Services
                     //   goods.Packaged = query.FieldByName("PACKED").AsBoolean;
                     //   goods.GoodsType = query.FieldByName("SPTYPE").AsInteger;
 
-                    goods.Price = 0; // int.Parse(dt.Rows[0]["PRICE"].ToString().ToDecimal()*100);
-                                     //CommonUtils.RoundMoney(query.FieldByName("LSDJ").AsCurrency * 100); //query.FieldByName("LSDJ").AsInteger;
-                                     //   goods.MinPrice = CommonUtils.RoundMoney(query.FieldByName("ZDSJ").AsCurrency * 100); // query.FieldByName("ZDSJ").AsInteger;
-                    goods.VipPrice = 0; //CommonUtils.RoundMoney(query.FieldByName("HYLSDJ").AsCurrency * 100); //query.FieldByName("HYLSDJ").AsInteger;
+                    goods.Price = dt.Rows[0]["PRICE"].ToString().ToDouble();
+                    //CommonUtils.RoundMoney(query.FieldByName("LSDJ").AsCurrency * 100); //query.FieldByName("LSDJ").AsInteger;
+                    //   goods.MinPrice = CommonUtils.RoundMoney(query.FieldByName("ZDSJ").AsCurrency * 100); // query.FieldByName("ZDSJ").AsInteger;
+                    goods.VipPrice = dt.Rows[0]["MEMBER_PRICE"].ToString().ToDouble();
+
+                    //CommonUtils.RoundMoney(query.FieldByName("HYLSDJ").AsCurrency * 100); //query.FieldByName("HYLSDJ").AsInteger;
 
                     iPriceAttr = 0;
 
@@ -1056,7 +1068,8 @@ namespace z.POS.Services
 
             //    CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<3.2.1> ");
 
-            int i = 0, mTotalCanUse = 0;
+            int i = 0;
+            double mTotalCanUse = 0;
             //1.1：创建变量
             desc = new CalcAccountsPayableResult();
 
@@ -1266,6 +1279,9 @@ namespace z.POS.Services
                 PayCoupon = rep.coupons;
                 payLimits = rep.payLimits;
 
+                iVIPID = rep.vipId;
+                sVIPCode = rep.vipCode;
+
                 ListCoupon.Clear();
 
                 CouponDetails CouponItem;
@@ -1290,8 +1306,8 @@ namespace z.POS.Services
                                 CouponItem.couponId = CurCoupon.CouponType;
                                 CouponItem.couponName = CurCoupon.CouponTypeName;
                                 CouponItem.couponType = CurCoupon.CouponType;
-                                CouponItem.amount = Convert.ToInt32(CurCoupon.Balance);
-                                CouponItem.amountCanUse = Convert.ToInt32(CurLimit.LimitMoney);
+                                CouponItem.amount = CurCoupon.Balance;
+                                CouponItem.amountCanUse = CurLimit.LimitMoney;
 
                                 CouponItem.returnMoney = 0;
                                 CouponItem.valid_date = "";
@@ -1313,20 +1329,9 @@ namespace z.POS.Services
             return result;
         }
 
-        public static int RoundMoney(double money)
+        public static double RoundMoney(double money)
         {
-            if (money > 0)
-            {
-                return (int)(money + 0.5);
-            }
-            else if (money == 0)
-            {
-                return 0;
-            }
-            else
-            {
-                return (int)(money - 0.5);
-            }
+            return Math.Round(money, 2);
         }
 
         public bool ComputeVipDiscount(string shopCode, string posNo, MemberCard vipcard, List<Goods> GoodsList, out string msg)
@@ -1389,8 +1394,8 @@ namespace z.POS.Services
                     articleVipDisc = rep.discs;
                     for (int i = 0; i <= GoodsList.Count - 1; i++)
                     {
-                        int disc = 0;
-                        int mTotalSPZK = GoodsList[i].FrontDiscount + GoodsList[i].BackDiscount;
+                        double disc = 0;
+                        double mTotalSPZK = GoodsList[i].FrontDiscount + GoodsList[i].BackDiscount;
                         disc = RoundMoney(((GoodsList[i].Price * GoodsList[i].SaleCount) - mTotalSPZK) * (1 - articleVipDisc[i].DiscRate));
                         GoodsList[i].MemberDiscount = disc;
                         GoodsList[i].MemberOffRate = articleVipDisc[i].DiscRate; //付会员折扣
@@ -1402,7 +1407,7 @@ namespace z.POS.Services
                         //     GoodsList[i].FrontDiscount + " - " + GoodsList[i].BackDiscount + ") X ( 1 -  " + articleVipDisc[i].DiscRate + "))"
                         //       );
 
-                        int mDisc1 = GoodsList[i].MemberDiscount, mDisc2 = GoodsList[i].MemberDiscount;
+                        double mDisc1 = GoodsList[i].MemberDiscount, mDisc2 = GoodsList[i].MemberDiscount;
 
 
                         //    CommonUtils.ProcVIPDisc(posNo, mDisc1, ref mDisc2);
@@ -1572,7 +1577,7 @@ namespace z.POS.Services
             List<Payment> DevicePayments = new List<Payment>();
 
             string Device = employee.PlatformId;
-            string shop = reqMth.branchID.ToString().PadLeft(3, '0');
+            string shop = "00010001";  //reqMth.branchID.ToString().PadLeft(3, '0');
 
             ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
             crmSoapHeader.UserId = "CRMUSER";
@@ -1731,18 +1736,18 @@ namespace z.POS.Services
             desc.ticketCent = "";
 
             desc.name = sour.VipName;
-            //  desc.mobilePhone = sour.Mobile;
-            desc.sex = "";
+            desc.mobilePhone = sour.Mobile;
+            //  desc.sex = "";
             desc.validType = "";
             desc.validID = "";
             desc.typeLevel = 0;
 
 
             desc.sex = "";
-            // if (sour.SexType == 1)
-            //     desc.sex = "Female";
-            // else if (sour.SexType == 0)
-            //     desc.sex = "Male"; 
+            if (sour.SexType == 1)
+                desc.sex = "Female";
+            else if (sour.SexType == 0)
+                desc.sex = "Male";
             desc.memberTypeName = sour.CardTypeName;
 
             result = true;
@@ -1822,7 +1827,8 @@ namespace z.POS.Services
            out GetCardPayableResult desc)
         {
 
-            int i = 0, mTotalCanUse = 0;
+            int i = 0;
+            double mTotalCanUse = 0;
             //1.1：创建变量
             desc = new GetCardPayableResult();
 
@@ -1909,7 +1915,7 @@ namespace z.POS.Services
 
         public ConfirmDealResult ConfirmDeal(ReqConfirmDeal ReqConfirm)
         {
-            string Shop = ReqConfirm.branchID.ToString().PadLeft(3, '0');   // 
+            string Shop = "00010001";  // ReqConfirm.branchID.ToString().PadLeft(3, '0');   //
             string Device = employee.PlatformId;
             string Operator = employee.Code;
             string msg = "";
@@ -1926,7 +1932,8 @@ namespace z.POS.Services
             // sVer = CommonUtils.GetReqStr(sTitle);
 
             //2015.08.24
-            int transId = 0, iPerson = 0, mTotalMoney = 0;
+            int transId = 0, iPerson = 0;
+            double mTotalMoney = 0;
             double fCent = 0;
             Member member = new Member();
             Person CurPerson = new Person();
@@ -1973,14 +1980,14 @@ namespace z.POS.Services
             }
 
 
-          //  if (Operator.Equals(""))
-          //  {
-                //  result = RsltCode_Wrong_Para;
-          //      msg = "数据检查失败：计算销售价格,操作人员为空";
-          //      confirmResult.code = result;
-          //      confirmResult.text = msg;
-                //  return result;
-          //  }
+            //   if (Operator.Equals(""))
+            //   {
+            //  result = RsltCode_Wrong_Para;
+            //       msg = "数据检查失败：计算销售价格,操作人员为空";
+            //       confirmResult.code = result;
+            //      confirmResult.text = msg;
+            //  return result;
+            //  }
 
 
             if (ReqConfirm == null)
@@ -2237,6 +2244,8 @@ namespace z.POS.Services
                 CurPerson.PersonId = employee.Id.ToInt();
                 CurPerson.PersonCode = Operator; // employee.Code;
                 CurPerson.PersonName = employee.Name;
+
+                result = 0;
 
                 if (result != 0)
                 {
@@ -3171,8 +3180,8 @@ namespace z.POS.Services
                 OfferBackCoupon[] offerBackCoupon;
                 CouponPayback[] payBackCoupons;
 
-                int iCurLine = 0;
-                int mYHJE = 0, iCouponType = -1;
+                int iCurLine = 0, iCouponType = -1;
+                double mYHJE = 0;
                 bool PrepareCheckOutResult;
                 double fRate = 0;
 
@@ -3242,7 +3251,7 @@ namespace z.POS.Services
 
                             if ((iCurLine >= 0) && (iCurLine < GoodsList.Count))
                             {
-                                mYHJE = Convert.ToInt32(curArticle.SharedMoney);
+                                mYHJE = curArticle.SharedMoney;
                                 mYHJE = RoundMoney(mYHJE * (1 - fRate));
                                 iCouponType = curArticle.CouponType;
 
@@ -3428,7 +3437,7 @@ namespace z.POS.Services
 
 
 
-        public double MoneyToDouble(int money)
+        public double MoneyToDouble(double money)
         {
             return (double)money;
         }
@@ -3439,11 +3448,11 @@ namespace z.POS.Services
             msg = "";
             payments = new List<Payment>();
 
-            string sql = $"select b.payid,b.name,b.type,b.fk,b.jf,b.zlfs,b.flag,b.couponid,b.bj_fq,b.bj_mbjz,b.jfbl ";
-            sql += $"        from station_pay a,pay b";
-            sql += $"       where a.payid = b.payid";
-            sql += $"         and void_flag = 1 and a.stationbh = '{posId}'";
-            sql += $"       order by b.flag";
+            string sql = $"select a.skfsid payid,b.name,decode(b.type,0,1,7,4,13,6,14,5,20,6,21,5,1) type,2 fk,b.bj_jf jf,b.zlclfs zlfs,b.xssx flag,b.yhqid couponid,0 bj_fq,0 bj_mbjz,0 jfbl ";
+            sql += $"        from skt_skfs a,skfs b";
+            sql += $"       where a.skfsid = b.code";
+            sql += $"         and a.sktno = '{posId}'";
+            sql += $"       order by b.xssx";
 
             DataTable payList = DbHelper.ExecuteTable(sql);
 
@@ -3487,7 +3496,8 @@ namespace z.POS.Services
             ref string msg)
         {
             msg = "";
-            int i = 0, j = 0, k = 0, totalCash = 0, totalCoupon = 0;
+            int i = 0, j = 0, k = 0, totalCash = 0;
+            double totalCoupon = 0;
             bool result = false;
 
             //1:判断1:数目是否为0,为0:错误
@@ -3590,8 +3600,5 @@ namespace z.POS.Services
             result = true;
             return result;
         }
-
-
-
     }
 }
