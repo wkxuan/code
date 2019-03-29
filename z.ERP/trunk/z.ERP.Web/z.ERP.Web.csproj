@@ -641,17 +641,14 @@
     <Content Include="Areas\HTGL\DJDW\DjdwEdit.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwList.cshtml" />
     <Content Include="File\Template\K3凭证.xlsx" />
-<<<<<<< HEAD
     <Content Include="Areas\Share\Upload.cshtml" />
     <Content Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShow.cshtml" />
     <Content Include="Areas\Layout\MapShow\_MapShow.cshtml" />
     <Content Include="Areas\Layout\PopShow\_PopShowLayout.cshtml" />
     <Content Include="Areas\Pop\Pop\PopFloorMapShow.cshtml" />
-=======
     <Content Include="Areas\WYGL\COMPLAIN\ComPlainList.cshtml" />
     <Content Include="Areas\WYGL\COMPLAIN\ComPlainEdit.cshtml" />
     <Content Include="Areas\WYGL\COMPLAIN\ComPlainDetail.cshtml" />
->>>>>>> a1dd74304475f6374f525695be58660ff3618e3e
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
