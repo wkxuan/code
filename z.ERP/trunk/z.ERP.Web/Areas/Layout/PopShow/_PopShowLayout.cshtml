@@ -1,0 +1,25 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+            "Areas/Layout/PopShow/_PopShowLayout.js"
+        };
+}
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+
+<div id="popshow">
+    @RenderSection("conditionParam", true)
+    @RenderSection("hide", false)
+    @RenderSection("pops", false) 
+</div>
+
+@section foot{
+    @RenderSection("foot", false)     
+}
