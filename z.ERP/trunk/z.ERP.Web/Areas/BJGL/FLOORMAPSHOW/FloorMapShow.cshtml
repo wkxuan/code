@@ -1,0 +1,114 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.MapShow;
+@inherits MapShowViewBase
+
+@section head{
+<style>
+    .ivu-table .demo-table-info-row td {
+        background-color: #2db7f5;
+        color: #fff;
+    }
+</style>
+
+    @InitFiles(new string[] {
+    "/Content/Maps/contextMenu.css",
+    "/Content/Maps/contextMenu.min.js",
+    "/Content/Maps/zMapPoint.css",
+    "/Content/Maps/zMapPoint.js"
+});
+}
+@section conditionParam{
+    <row>
+        <i-col span="1" class="RowTitle">年月</i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    Data = "screenParam.branchData",
+                    Change = "branchChange",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="1" class="RowTitle">门店</i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    Data = "screenParam.branchData",
+                    Change = "branchChange",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="1" class="RowTitle">区域</i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "searchParam.REGIONID",
+                    Data = "screenParam.regionData",
+                    Change = "regionChange",
+                    Enable = true
+                });
+            }
+        </i-col>
+
+        <i-col span="1" class="RowTitle">楼层</i-col>
+        <span v-show="disabled">
+            <i-col span="4">
+                @{
+                    RenderControl(new DropDownListsRender()
+                    {
+                        vModel = "searchParam.FLOORID",
+                        Data = "screenParam.floorData",
+                        Change = "floorChange",
+                        Enable = true
+                    });
+                }
+            </i-col>
+        </span>
+        <i-col span="2">
+            <i-Button type="text" >   </i-Button>
+            </i-col>
+            <i-col span="2">
+                <i-Button size="small" type="primary" v-on:click="SearchFloorMap">查询</i-Button>
+            </i-col>
+</row>
+    }
+@section resultLeft{
+<row>
+    <i-col>
+        <i-table height="600" highlight-row size="small" 
+                 :columns="screenParam.colDef" :data="screenParam.FLOORCATEGERY"></i-table>
+    </i-col>
+    </row>
+}
+@section resultRight{
+    <i-col span="18">
+        <div id="div_map">
+        </div>
+    </i-col>
+    @*</row>*@
+}
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopShop",
+                    Src = "screenParam.srcPopShop",
+                    Caption = " ",
+                    Width = "700"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+

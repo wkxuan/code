@@ -1,0 +1,190 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Print;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits PrintLayout<dynamic>
+
+@{
+    dynamic merchant = ViewBag.merchant;
+    DataTable merchantBrand = ViewBag.merchantBrand;
+}
+
+@section content{
+    <table border="0" cellpadding="0" cellspacing="0" class="noborder">
+        <caption>
+            <h1>
+                测试样例
+            </h1>
+        </caption>
+        <tr>
+            <td colspan="4">
+                <hr style="border: 1px solid #000;" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <table>
+                    <tr style="line-height: 20px;">
+                        <td style="width: 70%;">
+                            <span>
+                                【温馨提示：】XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br />
+                                这是第二行<br />
+                                我编不下去了
+                            </span>
+                        </td>
+                        <td>
+                            <table style="width: 100%; font-size: 14px; font-family: Geneva, Arial, Helvetica, sans-serif;">
+                                <tr>
+                                    <td style="text-align: center"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <hr style="border: 1px solid #000;" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align:right">
+                <span id="BOX"></span>
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="padding-left: 5px;">
+                <table style="width: 100%;">
+                    <tr style="line-height: 20px;">
+                        <td class="textjustify" style="width: 80px;">
+                            商户代码
+                        </td>
+                        <td class="style1">
+                            @merchant.MERCHANTID
+                        </td>
+                        <td class="style2">
+                            商户名称
+                        </td>
+                        <td class="style4">
+                            @merchant.NAME
+                        </td>
+                        <td class="textjustify" style="width: 70px;">
+                            状态
+                        </td>
+                        <td>
+                            @merchant.STATUSMC
+                        </td>
+                    </tr>
+                    <tr style="line-height: 20px;">
+                        <td class="textjustify" style="width: 80px;">
+                            税号
+                        </td>
+                        <td class="style1">
+                            @merchant.SH
+                        </td>
+                        <td class="textjustify">
+                            银行名称
+                        </td>
+                        <td colspan="1">
+                            @merchant.BANK_NAME
+                        </td>
+                        <td class="textjustify">
+                            账号
+                        </td>
+                        <td>
+                            @merchant.BANK
+                        </td>
+                    </tr>
+                    <tr style="line-height: 20px;">
+                        <td class="textjustify" style="width: 80px;">
+                            地址
+                        </td>
+                        <td class="style1">
+                            @merchant.ADRESS
+                        </td>
+                        <td class="textjustify">
+                            联系人
+                        </td>
+                        <td colspan="1">
+                            @merchant.CONTACTPERSON
+                        </td>
+                        <td class="textjustify">
+                            电话
+                        </td>
+                        <td>
+                            @merchant.PHONE
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td id="datatable" colspan="4">
+                <table class="table" border="1" cellpadding="1" cellspacing="1" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">
+                                品牌名称
+                            </th>
+                            <th style="width: 30%">
+                                业态ID
+                            </th>
+                            <th style="width: 40%">
+                                业态名称
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (DataRow dr in merchantBrand.Rows)
+                            {
+                                <tr>
+                                    <td>@dr["NAME"].ToString()</td>
+                                    <td>@dr["CATEGORYCODE"].ToString()</td>
+                                    <td>@dr["CATEGORYNAME"].ToString()</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="text-align: center" colspan="2">
+                                合&nbsp;&nbsp;计
+                            </td>
+                            <td style="text-align: center">
+                                <span>100.00</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </td>
+        </tr>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: left; width: 40%; padding-left: 5px;">
+                                优惠金额：<span>11</span>元
+                            </td>
+                            <td style="text-align: left; width: 40%;">
+                                运费：<span>22</span>元
+                            </td>
+                            <td style="text-align: right; width: 60%; padding-right: 10px;">
+                                合计：<span>33</span>元
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+}

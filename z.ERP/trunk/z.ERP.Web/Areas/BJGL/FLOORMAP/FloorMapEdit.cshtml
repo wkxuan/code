@@ -1,0 +1,103 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Edit;
+@using z.ERP.Entities;
+@using z.ERP.Model;
+@using z.Extensions;
+@inherits EditViewBase<string>
+@section head{
+
+    @InitFiles(new string[] {
+    "/Content/Maps/contextMenu.css",
+    "/Content/Maps/contextMenu.min.js",
+    "/Content/Maps/zMapPoint.css",
+    "/Content/Maps/zMapPoint.js"
+});
+}
+
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "dataParam.BRANCHID",
+                    Data = "screenParam.branchData",
+                    Change = "branchChange",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">区域</i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "dataParam.REGIONID",
+                    Data = "screenParam.regionData",
+                    Change = "regionChange",
+                    Enable = true
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">楼层</i-col>
+        <span v-show="disabled">
+            <i-col span="4">
+                @{
+                    RenderControl(new DropDownListsRender()
+                    {
+                        vModel = "dataParam.FLOORID",
+                        Data = "screenParam.floorData",
+                        Change = "floorChange",
+                        Enable = true
+                    });
+                }
+            </i-col>
+        </span>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2">
+            <i-table height="500" highlight-row size="small" border="true"
+                     :columns="screenParam.colDef" :data="dataParam.FLOORSHOP"></i-table>
+        </i-col>
+        <i-col span="22">
+            <i-row>
+                <i-col span="2">
+                    <Upload :before-upload="beforeUpload" :action="screenParam.uploadpath" 
+                            :format="['jpg','jpeg','png']"    :max-size="2048">
+                        <i-Button size="small" type="primary" style="align-self:flex-end">选择图纸</i-Button>
+                    </Upload>
+                </i-col>
+                <i-col span="2">
+                    <i-input v-model="screenParam.filename" type="text" size="small" disabled="true" ></i-input>
+                </i-col>
+
+                    <i-Button size="small" type="primary" v-if="screenParam.file !== null" v-on:click="upload" :loading="screenParam.loadingStatus">{{ screenParam.loadingStatus ? 'Uploading' : '上传' }}</i-Button>
+
+                    <i-Button size="small" type="primary" v-on:click="screenParam.addPoint">+</i-Button>
+
+                    @*<i-Button size="small" type="primary" v-on:click="screenParam.savePoint">save</i-Button>*@
+
+            </i-row>
+            <div id="div_map">
+            </div>
+        </i-col>
+    </row>
+}
+
+

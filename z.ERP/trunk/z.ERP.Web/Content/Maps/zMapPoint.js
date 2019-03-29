@@ -8,10 +8,12 @@
             height: 100,
             canEdit: false,
             Url: '',
-            data: []
+            data: [],
+            showmodel: false
         }
         var res = {};
         var options = $.extend(defaults, options);
+        
         var self = this;
         $(self).html('');
         $(self).width(options.width);
@@ -173,6 +175,21 @@
                         }]
                     });
                 }
+            }
+            else
+                //弹窗
+            {
+               //拖动函数
+                function bindmouseUp(el) {
+                    $(el).mousedown(function (e) {
+                        $(document).bind('mouseup', mouseUp);
+                        return false;
+                    });
+                    function mouseUp(e) {
+                        window.parent.mapShow.screenParam.showPopShop = true;
+                    }
+                }
+                bindmouseUp($(value)[0]);
             }
         }
         $(self).data('mapdata', options);
