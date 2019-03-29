@@ -51,6 +51,10 @@
       <Project>{DA64E4E3-1857-4B57-A6D9-ABBDB092E7E4}</Project>
       <Name>z.DbHelper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.ERP.API\z.ERP.API.csproj">
+      <Project>{91882EE9-BF22-4B43-85A4-AA9CECB65C48}</Project>
+      <Name>z.ERP.API</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.IOC\z.IOC.csproj">
       <Project>{34B3DD30-91D0-4E47-AB99-9EBD4BB51747}</Project>
       <Name>z.IOC</Name>

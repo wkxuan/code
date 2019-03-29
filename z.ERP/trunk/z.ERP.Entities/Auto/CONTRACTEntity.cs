@@ -406,5 +406,15 @@ namespace z.ERP.Entities
         }
 
 
+        /// <summary>
+        /// 提前返款日
+        /// <summary>
+        [Field("提前返款日")]
+        public string TQFKR
+        {
+            get; set;
+        }
+
+
     }
 }

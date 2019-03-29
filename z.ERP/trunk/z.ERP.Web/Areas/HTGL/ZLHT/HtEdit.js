@@ -8,6 +8,22 @@
     editDetail.dataParam.XXSL = 0;
     editDetail.dataParam.STANDARD = 1;
 
+
+    editDetail.screenParam.TQFKR = [];
+
+
+
+    //初始化返款日信息
+    //转换为string 是为了保持从后台返回后一致，来显示
+    var tempList = [];
+    for (var i = 1; i <= 31; i++) {
+        tempList.push({
+            value: i.toString(),
+            label: i.toString(),
+        });
+    };
+    editDetail.screenParam.fkrList = tempList;
+
     //初始化弹窗所要传递参数
 
     editDetail.screenParam.ParentMerchant = {};
@@ -999,13 +1015,13 @@ editDetail.otherMethods = {
                 }
                 maxINX++;
             }
-        }
+        };
         if (editDetail.dataParam.CONTRACT_RENT.length == 0) {
-            temp.push({ INX: maxINX, STARTDATE: (editDetail.dataParam.CONT_START), RENTS: 0 });
+            temp.push({ INX: maxINX, STARTDATE: new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'), RENTS: 0 });
         }
         else {
-            temp.push({ INX: maxINX, STARTDATE: (addDate(maxSTARTDATE)), RENTS: 0 });
-        }
+            temp.push({ INX: maxINX, STARTDATE: new Date((addDate(maxSTARTDATE))).Format('yyyy-MM-dd'), RENTS: 0 });
+        };
 
         editDetail.dataParam.CONTRACT_RENT = temp;
     },
@@ -1545,6 +1561,13 @@ editDetail.IsValidSave = function () {
         };
     };
 
+    if (editDetail.screenParam.TQFKR.length != 0) {
+        // console.log('最初选中后的数据');
+        // console.log(editDetail.screenParam.TQFKR);
+        editDetail.dataParam.TQFKR = editDetail.screenParam.TQFKR.join(',');
+        // console.log('转换为字符串后的数据');
+        // console.log(editDetail.dataParam.TQFKR);
+    };
     return true;
 }
 
@@ -1564,6 +1587,13 @@ editDetail.showOne = function (data, callback) {
         Vue.set(editDetail.dataParam.CONTRACT_RENT, "CONTRACT_RENTITEM", data.ContractRentParm.CONTRACT_RENTITEM);
         editDetail.dataParam.CONTRACT_COST = data.contractCost;
         editDetail.dataParam.CONTRACT_PAY = data.contractPay;
+
+
+        if (data.contract.TQFKR) {
+            Vue.set(editDetail.screenParam, "TQFKR", data.contract.TQFKR.split(',') || []);
+        };
+
+
         callback && callback(data);
     });
 };

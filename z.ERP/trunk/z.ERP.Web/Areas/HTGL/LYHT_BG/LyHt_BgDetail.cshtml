@@ -78,7 +78,37 @@
         <i-col span="4">
             <i-input v-model="OPERATERULEMC" :readonly="true"></i-input>
         </i-col>
+    </row> 
+
+        
+    <row>
+        <i-col span="2" class="RowText">装修期起</i-col>
+        <i-col span="4">
+            <i-input v-model="FIT_BEGIN" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">装修期至</i-col>
+        <i-col span="4">
+            <i-input v-model="FIT_END" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">免租期起</i-col>
+        <i-col span="4">
+            <i-input v-model="FREE_BEGIN" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">免租期至</i-col>
+        <i-col span="4">
+            <i-input v-model="FREE_END" :readonly="true"></i-input>
+        </i-col>
     </row>
+
+
+    <row>
+        <i-col span="2" class="RowText">其他条款</i-col>
+        <i-col span="22">
+            <i-input v-model="DESCRIPTION" :readonly="true" type="textarea" :rows="5"></i-input>
+        </i-col>
+    </row>
+
+
    <row>
        <i-col span="12">
            <i-table size="small" :border="true"
@@ -136,6 +166,14 @@
                 CONT_START:"@contract.CONT_START",
                 CONT_END:"@contract.CONT_END",
                 OPERATERULEMC:"@contract.OPERATERULEMC",
+
+                FIT_BEGIN:"@contract.FIT_BEGIN",
+                FIT_END:"@contract.FIT_END",
+
+                FREE_BEGIN:"@contract.FREE_BEGIN",
+                FREE_END:"@contract.FREE_END",
+
+                DESCRIPTION:" ",
 
                 colDefPP : [
                     {title: "品牌代码", key: 'BRANDID', width: 100},
@@ -197,6 +235,8 @@
                 _.Ajax('SearchContract', {
                     Data: { CONTRACTID: @contract.CONTRACTID }
                 }, function (data) {
+
+                    _self.DESCRIPTION=data.contract.DESCRIPTION;
                     _self.CONTRACT_BRAND = data.contractBrand;
                     _self.CONTRACT_SHOP = data.contractShop;
 

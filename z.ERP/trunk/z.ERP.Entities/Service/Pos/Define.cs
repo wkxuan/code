@@ -252,10 +252,10 @@ namespace z.ERP.Entities.Service.Pos
             set { deptCode = value; }
         }
 
-        int price;
+        double price;
 
 
-        public int Price
+        public double Price
         {
             get { return price; }
             set { price = value; }
@@ -270,19 +270,19 @@ namespace z.ERP.Entities.Service.Pos
             set { goodsType = value; }
         }
 
-        int minPrice;
+        double minPrice;
 
 
-        public int MinPrice
+        public double MinPrice
         {
             get { return minPrice; }
             set { minPrice = value; }
         }
 
-        int vipPrice;
+        double vipPrice;
 
 
-        public int VipPrice
+        public double VipPrice
         {
             get { return vipPrice; }
             set { vipPrice = value; }
@@ -351,10 +351,10 @@ namespace z.ERP.Entities.Service.Pos
             set { saleCount = value; }
         }
 
-        int saleMoney;
+        double saleMoney;
 
 
-        public int SaleMoney
+        public double SaleMoney
         {
             get { return saleMoney; }
             set { saleMoney = value; }
@@ -369,35 +369,35 @@ namespace z.ERP.Entities.Service.Pos
         }
 
 
-        int discount;
-        public int Discount
+        double discount;
+        public double Discount
         {
             get { return discount; }
             set { discount = value; }
         }
 
-        int preferentialMoney;//优惠金额
+        double preferentialMoney;//优惠金额
 
 
-        public int PreferentialMoney
+        public double PreferentialMoney
         {
             get { return preferentialMoney; }
             set { preferentialMoney = value; }
         }
 
-        int frontDiscount;
+        double frontDiscount;
 
 
-        public int FrontDiscount
+        public double FrontDiscount
         {
             get { return frontDiscount; }
             set { frontDiscount = value; }
         }
 
-        int backDiscount;
+        double backDiscount;
 
 
-        public int BackDiscount
+        public double BackDiscount
         {
             get { return backDiscount; }
             set { backDiscount = value; }
@@ -410,8 +410,8 @@ namespace z.ERP.Entities.Service.Pos
             set { backRate = value; }
         }
 
-        int memberDiscount;
-        public int MemberDiscount
+        double memberDiscount;
+        public double MemberDiscount
         {
             get { return memberDiscount; }
             set { memberDiscount = value; }
@@ -433,19 +433,19 @@ namespace z.ERP.Entities.Service.Pos
             set { bjsMbje = value; }
         }
 
-        int changeDiscount; //找零折扣
+        double changeDiscount; //找零折扣
 
 
-        public int ChangeDiscount
+        public double ChangeDiscount
         {
             get { return changeDiscount; }
             set { changeDiscount = value; }
         }
 
-        int discoaddDiscount; //折上折扣
+        double discoaddDiscount; //折上折扣
 
 
-        public int DiscoaddDiscount
+        public double DiscoaddDiscount
         {
             get { return discoaddDiscount; }
             set { discoaddDiscount = value; }
@@ -669,9 +669,9 @@ namespace z.ERP.Entities.Service.Pos
             set { oTherStr1 = value; }
         }
 
-        int oTherInt1;
+        double oTherInt1;
 
-        public int OTherInt1
+        public double OTherInt1
         {
             get { return oTherInt1; }
             set { oTherInt1 = value; }
@@ -2242,15 +2242,15 @@ namespace z.ERP.Entities.Service.Pos
             set { mangerCardNo = value; }
         }
 
-        int totalMoney;
-        public int TotalMoney
+        double totalMoney;
+        public double TotalMoney
         {
             get { return totalMoney; }
             set { totalMoney = value; }
         }
-        public int getTotalMoney()
+        public double getTotalMoney()
         {
-            int totalM = 0;
+            double totalM = 0;
 
             for (int i = 0; i < this.SubTickets.Count; i++)
             {
@@ -3534,13 +3534,13 @@ namespace z.ERP.Entities.Service.Pos
     public struct TTranPayments
     {
         public int Id;  //1现金 2储值卡 3银行卡       
-        public int PayMoney;
+        public float PayMoney;
     }
 
     public struct TTradePayments
     {
         public int id;  //1现金 2储值卡 3银行卡       
-        public int payMoney;
+        public float payMoney;
         public string name;
         public int type;
         public int yhqid;
@@ -3590,21 +3590,21 @@ namespace z.ERP.Entities.Service.Pos
         public int id;
         public string code;
         public string name;
-        public int price;
+        public double price;
         public double count;
-        public int totalOffAmount;
-        public int accountsPayable;
+        public double totalOffAmount;
+        public double accountsPayable;
         public int deptID;
         public string deptCode;
-        public int frontendOffAmount;
-        public int backendOffAmount;
-        public int changeDiscount; //零钱折扣
+        public double frontendOffAmount;
+        public double backendOffAmount;
+        public double changeDiscount; //零钱折扣
         public int backendOffID; //后台折扣单据ID
-        public int memberOff; //会员折扣金额
+        public double memberOff; //会员折扣金额
         public int memberOffID;//会员折扣单据ID
-        public int fullCutOffAmount;//满减折扣金额        
+        public double fullCutOffAmount;//满减折扣金额        
         public int fullCutOffID; //满减折扣单据ID       
-        public int roundOff; //四舍五入折扣 
+        public double roundOff; //四舍五入折扣 
     }
     public class JsonReqTranGoods
     {
@@ -3688,8 +3688,8 @@ namespace z.ERP.Entities.Service.Pos
             set { DeptCode = value; }
         }
 
-        int Price;
-        public int price
+        double Price;
+        public double price
         {
             get { return Price; }
             set { Price = value; }
@@ -3748,64 +3748,64 @@ namespace z.ERP.Entities.Service.Pos
             set { SaleCount = value; }
         }
 
-        int SaleMoney;
-        public int saleMoney
+        double SaleMoney;
+        public double saleMoney
         {
             get { return SaleMoney; }
             set { SaleMoney = value; }
         }
 
-        int Discount;
-        public int discount
+        double Discount;
+        public double discount
         {
             get { return Discount; }
             set { Discount = value; }
         }
 
-        int PreferentialMoney;//优惠金额
-        public int preferentialMoney
+        double PreferentialMoney;//优惠金额
+        public double preferentialMoney
         {
             get { return PreferentialMoney; }
             set { PreferentialMoney = value; }
         }
 
-        int FrontDiscount;
-        public int frontDiscount
+        double FrontDiscount;
+        public double frontDiscount
         {
             get { return FrontDiscount; }
             set { FrontDiscount = value; }
         }
 
-        int BackDiscount;
-        public int backDiscount
+        double BackDiscount;
+        public double backDiscount
         {
             get { return BackDiscount; }
             set { BackDiscount = value; }
         }
 
-        int MemberDiscount;
-        public int memberDiscount
+        double MemberDiscount;
+        public double memberDiscount
         {
             get { return MemberDiscount; }
             set { MemberDiscount = value; }
         }
 
-        int DecreaseDiscount;//满百减折
-        public int decreaseDiscount
+        double DecreaseDiscount;//满百减折
+        public double decreaseDiscount
         {
             get { return DecreaseDiscount; }
             set { DecreaseDiscount = value; }
         }
 
-        int ChangeDiscount; //找零折扣
-        public int changeDiscount
+        double ChangeDiscount; //找零折扣
+        public double changeDiscount
         {
             get { return ChangeDiscount; }
             set { ChangeDiscount = value; }
         }
 
-        int DiscoaddDiscount; //折上折扣
-        public int discoaddDiscount
+        double DiscoaddDiscount; //折上折扣
+        public double discoaddDiscount
         {
             get { return DiscoaddDiscount; }
             set { DiscoaddDiscount = value; }
@@ -3971,8 +3971,8 @@ namespace z.ERP.Entities.Service.Pos
         public int couponId;
         public int couponType;
         public string couponName;
-        public int balance;
-        public int accountsPayable;
+        public double balance;
+        public double accountsPayable;
         public string payID;
         public string payName;
         public string validity;
@@ -3980,17 +3980,17 @@ namespace z.ERP.Entities.Service.Pos
 
     public class DecDiscRule
     {
-        int saleMoney;
+        double saleMoney;
 
-        public int SaleMoney
+        public double SaleMoney
         {
             get { return saleMoney; }
             set { saleMoney = value; }
         }
 
-        int discMoney;
+        double discMoney;
 
-        public int DiscMoney
+        public double DiscMoney
         {
             get { return discMoney; }
             set { discMoney = value; }
@@ -4113,9 +4113,9 @@ namespace z.ERP.Entities.Service.Pos
     {
         public int id;
         public string code;
-        public int price;
-        public int frontendOffAmount;
-        public string count;
+        public double price;  //int
+        public double frontendOffAmount;
+        public double count;
         //2017.07.11:新加,主要用于计算商品的售价格
         public int deptID;
         public string deptCode;
@@ -4167,8 +4167,8 @@ namespace z.ERP.Entities.Service.Pos
         }
 
 
-        int Price;
-        public int price
+        double Price;
+        public double price
         {
             get { return Price; }
             set { Price = value; }
@@ -4327,23 +4327,23 @@ namespace z.ERP.Entities.Service.Pos
             set { CouponName = value; }
         }
 
-        int Amount;
-        public int amount
+        double Amount;
+        public double amount
         {
             get { return Amount; }
             set { Amount = value; }
         }
 
-        int AmountCanUse;
-        public int amountCanUse
+        double AmountCanUse;
+        public double amountCanUse
         {
             get { return AmountCanUse; }
             set { AmountCanUse = value; }
         }
 
 
-        int UseMoney;
-        public int useMoney
+        double UseMoney;
+        public double useMoney
         {
             get { return UseMoney; }
             set { UseMoney = value; }
@@ -4379,8 +4379,8 @@ namespace z.ERP.Entities.Service.Pos
         }
 
         //返券金额 
-        int ReturnMoney;
-        public int returnMoney
+        double ReturnMoney;
+        public double returnMoney
         {
             get { return ReturnMoney; }
             set { ReturnMoney = value; }
@@ -4393,8 +4393,8 @@ namespace z.ERP.Entities.Service.Pos
         public int CouponId;
         public int CouponType;
         public string CouponName;
-        public int Balance;
-        public int ReturnMoney;
+        public double Balance;
+        public double ReturnMoney;
         public string ValidDate;
     }
 
@@ -4625,6 +4625,7 @@ namespace z.ERP.Entities.Service.Pos
     //计算商品的售价
     public class ReqGetGoods
     {
+        public int branchID;  //门店id
         public int contractID;
         public int vipIsDiscount; //0:作VIP折 1:不作VIP折
         public string validType;
@@ -4636,6 +4637,7 @@ namespace z.ERP.Entities.Service.Pos
 
     public class ReqGetCardPayable
     {
+        public int branchID; //门店id
         public int crmTranID;
         public string validType;
         public string validID;
@@ -4723,6 +4725,7 @@ namespace z.ERP.Entities.Service.Pos
 
     public class ReqConfirmDeal
     {
+        public int branchID;
         public int contractID;
         public string validType;
         public string validID;

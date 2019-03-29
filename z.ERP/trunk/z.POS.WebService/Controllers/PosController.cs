@@ -63,5 +63,24 @@ namespace z.POS.WebService.Controllers
             return service.PosService.GetSaleSummary(filter);
         }
 
+
+        [ServiceAble("GetCardPayable")]
+        public GetCardPayableResult GetCardPayable(ReqGetCardPayable reqMth)
+        {
+            return service.PosService.GetCardPayable(reqMth);
+        }
+
+        [ServiceAble("CalcAccountsPayable")]
+        public CalcAccountsPayableResult CalcAccountsPayable(ReqGetGoods reqMth)
+        {
+            return service.PosService.CalcAccountsPayable(reqMth);
+        }
+
+        [ServiceAble("ConfirmDeal")]
+        public ConfirmDealResult ConfirmDeal(ReqConfirmDeal ReqConfirm)
+        {
+            return service.PosService.ConfirmDeal(ReqConfirm);
+        }
+
     }
 }
