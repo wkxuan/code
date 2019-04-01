@@ -514,6 +514,16 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+
+        public DataGridResult GetFeeAccount(SearchItem item)
+        {
+            string sql = $@"select * from fee_account where 1=1 ";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            sql += " order by ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 
 }

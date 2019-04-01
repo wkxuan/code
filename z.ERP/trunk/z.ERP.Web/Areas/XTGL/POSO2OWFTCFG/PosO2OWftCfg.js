@@ -14,7 +14,7 @@
 
 define.IsValidSave = function () {
     if (!define.dataParam.POSNO) {
-        iview.Message.info("终端号为空!");
+        iview.Message.info("终端号不能为空!");
         return false;
     }
     if (!define.dataParam.URL) {

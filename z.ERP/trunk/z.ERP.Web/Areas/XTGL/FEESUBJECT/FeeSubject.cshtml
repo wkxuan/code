@@ -124,6 +124,24 @@
             }
         </i-col>
     </row>
+
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            收费单位
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.FEE_ACCOUNTID",
+                    ServiceMothod = m => m.feeAccount(),
+                    Enable = false,
+                });
+            }
+
+        </i-col>
+</row>
 }
 
 

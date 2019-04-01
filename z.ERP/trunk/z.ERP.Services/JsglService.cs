@@ -423,9 +423,10 @@ namespace z.ERP.Services
 
         public DataGridResult GetBillNoticeList(SearchItem item)
         {
-            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,C.MERCHANTID,D.NAME MERCHANTNAME " +
-                " FROM BILL_NOTICE L,BRANCH B,CONTRACT C,MERCHANT D " +
-                "  WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)  ";
+            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,C.MERCHANTID,D.NAME MERCHANTNAME,F.NAME FEE_ACCOUNTNAME" +
+                "  FROM BILL_NOTICE L,BRANCH B,CONTRACT C,MERCHANT D,FEE_ACCOUNT F " +
+                " WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)  "+
+                "   AND L.FEE_ACCOUNTID = F.ID(+)";
 
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID= {a}");
             item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID = {a}");
@@ -434,6 +435,7 @@ namespace z.ERP.Services
             item.HasKey("NIANYUE", a => sql += $" and L.NIANYUE={a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
+            item.HasKey("FEE_ACCOUNTID", a => sql += $" and L.FEE_ACCOUNTID={a}");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
             item.HasDateKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
             item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
@@ -497,9 +499,10 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable> GetBillNoticeElement(BILL_NOTICEEntity Data)
         {
-            string sql = $@"SELECT A.*,B.NAME BRANCHNAME,D.NAME MERCHANTNAME "
-                        + "FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D "
-                        + "WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)";
+            string sql = $@"SELECT A.*,B.NAME BRANCHNAME,D.NAME MERCHANTNAME,F.NAME FEE_ACCOUNTNAME "
+                        + " FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D,FEE_ACCOUNT F "
+                        + "WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)"
+                        + "  AND A.FEE_ACCOUNTID=F.ID";
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billNotice = DbHelper.ExecuteTable(sql);
@@ -517,8 +520,9 @@ namespace z.ERP.Services
         }
         public Tuple<dynamic, DataTable> GetBillNoticePrint(BILL_NOTICEEntity Data)
         {
-            string sql = $@"SELECT A.*,TO_CHAR(A.VERIFY_TIME,'YYYYMM') CZNY,B.NAME BRANCHNAME,'('||D.MERCHANTID||')'||D.NAME MERCHANTNAME,B.PRINTNAME,B.BANK,B.ACCOUNT,"
-                 + " substr(B.ADDRESS,1,instr(B.ADDRESS,';',-1)-1) ADDRESS1,substr(B.ADDRESS,instr(B.ADDRESS,';',-1)+1) ADDRESS2,"
+            string sql = $@"SELECT A.*,TO_CHAR(A.VERIFY_TIME,'YYYYMM') CZNY,B.NAME BRANCHNAME,'('||D.MERCHANTID||')'||D.NAME MERCHANTNAME,"
+                 + " F.NAME PRINTNAME,F.BANK,F.ACCOUNT,"
+                 + " substr(F.ADDRESS,1,instr(B.ADDRESS,';',-1)-1) ADDRESS1,substr(F.ADDRESS,instr(B.ADDRESS,';',-1)+1) ADDRESS2,"
                  + " (select min(S.SHOPDM) from CONTRACT_SHOPXX S where S.CONTRACTID=C.CONTRACTID) SHOPDM,"
                  + " (select min(BR.NAME) from CONTRACT_BRAND R,BRAND BR where R.BRANDID=BR.ID and R.CONTRACTID=C.CONTRACTID) BRANDNAME,"
                  + " (select sum(AREA_RENTABLE) from CONTRACT_SHOP S where S.CONTRACTID=C.CONTRACTID) AREA_RENTABLE,"
@@ -527,8 +531,9 @@ namespace z.ERP.Services
                  + " (select SUM(Y.TCZJ) from CONTRACT_TCZJ Y where Y.CONTRACTID=C.CONTRACTID and Y.YEARMONTH=A.NIANYUE) KLZJ,"
                  + " (select sum(L.MUST_MONEY) from BILL_NOTICE_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) MUST_MONEY,"
                  + " (select sum(M.NOTICE_MONEY) from BILL_NOTICE_ITEM M,BILL L where M.BILLID=A.BILLID and M.FINAL_BILLID = L.BILLID) NOTICE_MONEY "
-                 + " FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D "
-                 + " WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)";
+                 + " FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D,FEE_ACCOUNT F "
+                 + " WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) "
+                 + "   and C.MERCHANTID=D.MERCHANTID(+) and A.FEE_ACCOUNTID=F.ID(+)";
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billNotice = DbHelper.ExecuteTable(sql);

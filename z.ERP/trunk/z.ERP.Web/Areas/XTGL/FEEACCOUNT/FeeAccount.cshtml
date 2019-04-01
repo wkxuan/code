@@ -1,0 +1,117 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+
+@section search{
+
+}
+
+@section element{
+
+<row>
+    <i-col span="2" class="RowTitle">单位编号</i-col>
+    <i-col span="4" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.ID",
+                Enable = true,
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="2" class="RowTitle">
+        <span class="mustElement">*</span>
+        单位名称
+    </i-col>
+    <i-col span="10" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.NAME",
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="2" class="RowTitle">
+        单位地址
+    </i-col>
+    <i-col span="15" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.ADDRESS",
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="2" class="RowTitle">
+        联系人
+    </i-col>
+    <i-col span="6" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.CONTACT",
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+        <i-col span="2" class="RowTitle">
+            联系电话
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CONTACT_NUM",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+</row>
+
+<row>
+    <i-col span="2" class="RowTitle">
+        银行
+    </i-col>
+    <i-col span="10" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.BANK",
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+<row>
+    <i-col span="2" class="RowTitle">
+        账户
+    </i-col>
+    <i-col span="10" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "dataParam.ACCOUNT",
+                Enable = false
+            });
+        }
+    </i-col>
+</row>
+
+}
