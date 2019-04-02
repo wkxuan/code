@@ -13,8 +13,8 @@ namespace z.ERP.Web.Areas.XTGL.POSO2OWFTCFG
             ViewBag.Title = "收费单位定义";
             return View(new DefineRender()
             {
-                Permission_Add = "10500501",
-                Permission_Mod = "10500502"
+                Permission_Add = "10101601",
+                Permission_Mod = "10101602"
             });
         }
 
