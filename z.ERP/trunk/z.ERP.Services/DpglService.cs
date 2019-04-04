@@ -339,6 +339,27 @@ namespace z.ERP.Services
             DataTable floorshop = DbHelper.ExecuteTable(sqlitem);
             return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorshop);
         }
+        public Tuple<dynamic, DataTable> GetFLOORMAPDATA(FLOORMAPEntity Data)
+        {
+            //if (Data.MAPID.IsEmpty())
+            //{
+            //    throw new LogicException("请确认图纸编号!");
+            //}
+            string sql = $@"SELECT * FROM FLOORMAP WHERE MAPID=15 ";
+            if (!Data.MAPID.IsEmpty())
+                sql += (" AND MAPID= " + Data.MAPID);
+            DataTable floormap = DbHelper.ExecuteTable(sql);
+
+            floormap.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT M.MAPID,M.SHOPCODE,M.SHOPID,M.P_X,M.P_Y,'	#7B68EE' COLOR" +
+                " FROM FLOORSHOP M " +
+                " where  MAPID=15 ";
+            if (!Data.MAPID.IsEmpty())
+                sqlitem += (" and M.MAPID= " + Data.MAPID);
+            DataTable floorshop = DbHelper.ExecuteTable(sqlitem);
+            return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorshop);
+        }
         /// <summary>
         /// 列表页的删除,可以批量删除
         /// </summary>

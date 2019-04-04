@@ -1,7 +1,7 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<PopsRender>
 
-<Modal v-model="@Model.vModel"  :width="@Model.Width" >
+<Modal v-model="@Model.vModel"  :width="@Model.Width" v-on:on-visible-change="@Model.VisibleChange">
     <p slot="header" style="text-align:center" name="header">
         <span>@Model.Caption</span>
     </p>

@@ -58,8 +58,17 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAPSHOW
                 }
             );
         }
-
-        
+        public UIResult SearchFloorMapData(FLOORMAPEntity Data)
+        {
+            var res = service.DpglService.GetFLOORMAPDATA(Data);
+            return new UIResult(
+                new
+                {
+                    floormap = res.Item1,
+                    floorshopdata = res.Item2
+                }
+            );
+        }
         public UIResult GetBranch(BRANCHEntity Data)
         {
             return new UIResult(service.DataService.GetBranch(Data));

@@ -2,9 +2,10 @@
 
     mapShow.theme3 = "light";
     mapShow.service = "DpglService";
-    mapShow.method = "GetFloorMap";
+    mapShow.method = "GetFloorMapData";
     mapShow.Key = 'MAPID';
     mapShow.screenParam.showPopShop = false;
+    mapShow.screenParam.selectCode = "";
     mapShow.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopFloorMapShow/";
     mapShow.screenParam.popParam = {};
 
@@ -122,12 +123,6 @@
             x: 0.01,
             y: 0.03
         });
-        //mapShow.screenParam.map.Add({
-        //    name: newname,
-        //    html: mapShow.GetHtml,
-        //    x: 0.01,
-        //    y: 0.03
-        //});
         mapShow.screenParam.FLOORSHOP.push({
             SHOPCODE: newname
         });
@@ -330,7 +325,29 @@ SearchFloorMap : function (data) {
         };
         mapShow.screenParam.map = $("#div_map").zMapPoint(mapShow.screenParam.options);
     });
-}
+},
+PopVisibleChange: function (data) {
+    if (mapShow.screenParam.showPopShop == true)
+    {
+        mapShow.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopFloorMapShow/";
+        iview.Message.info("查数!");
+        _.Ajax('SearchFloorMapData', {
+            Data: { MAPID: '15' }
+        }, function (data) {
+            mapShow.screenParam.popParam = { SHOPCODE: 'ASAS' }
+            //var _body = window.parent;
+            //var _iframe1 = _body.document.getElementById('popshow');
+            //_iframe1.contentWindow.location.reload(true);
+            //mapShow.screenParam.SHOPCODE = mapShow.screenParam.selectCode;
+            //popShow.screenParam.USERCODE = data.floorshopdata[0].SHOPCODE;
+            //popShow.screenParam.USERNAME = data.floorshopdata[0].SHOPCODE;
+        });
+    }
+    else
+    {
+        mapShow.screenParam.srcPopShop = "";
+    }
+},
 //mapShow.IsValidSave = function () {
 //    if (mapShow.screenParam.BRANCHID == 0) {
 //        iview.Message.info("请选择门店!");

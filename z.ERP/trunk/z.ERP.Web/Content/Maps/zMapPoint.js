@@ -22,7 +22,7 @@
         $(self).append(maparea);
         maparea.append('<img id="point_map" class="ip_tooltipImg" src="' + options.Url + '" width="' + options.width + '" height="' + options.height + '">');
         function addPoint(d) {
-            var newdom = $('<div class="ip_tooltip ip_img32" data-button="moreblue" data-tooltipbg="bgblack" data-round="roundBgW" data-animationtype="btt-slide" style="color:white"></div>');
+            var newdom = $('<div code="'+d.name+'"class="ip_tooltip ip_img32" data-button="moreblue" data-tooltipbg="bgblack" data-round="roundBgW" data-animationtype="btt-slide" style="color:white"></div>');
             //btt-slide: 上
             //ltr-slide: 右
             //rtl-slide: 左
@@ -182,10 +182,11 @@
                //拖动函数
                 function bindmouseUp(el) {
                     $(el).mousedown(function (e) {
-                        $(document).bind('mouseup', mouseUp);
+                        $(el).bind('mouseup', mouseUp);
                         return false;
                     });
                     function mouseUp(e) {
+                        window.parent.mapShow.screenParam.selectCode = e.delegateTarget.code;
                         window.parent.mapShow.screenParam.showPopShop = true;
                     }
                 }
