@@ -6,7 +6,7 @@
     editDetail.screenParam.USERMODULE = editDetail.screenParam.USERMODULE || [];
     editDetail.screenParam.fee = editDetail.screenParam.fee || [];
     editDetail.screenParam.showPopCrmRole = false;
-    editDetail.screenParam.srcPopCrmRole = "http://47.93.116.29:8002/PopupPage/defczgqx.aspx?personid=-5";
+    editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx?personid=-5";
     editDetail.screenParam.popParam = {};
 
     editDetail.screenParam.colDef_Menu = [
@@ -137,7 +137,7 @@ editDetail.otherMethods = {
             iview.Message.info("请输入角色代码!");
             return;
         }
-        editDetail.screenParam.srcPopCrmRole = "http://47.93.116.29:8002/PopupPage/defczgqx.aspx?personid=" + editDetail.dataParam.ROLECODE;
+        editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx?personid=" + editDetail.dataParam.ROLECODE;
         editDetail.screenParam.showPopCrmRole = true;
     }
 }
