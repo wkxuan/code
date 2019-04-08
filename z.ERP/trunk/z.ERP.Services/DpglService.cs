@@ -339,7 +339,7 @@ namespace z.ERP.Services
             DataTable floorshop = DbHelper.ExecuteTable(sqlitem);
             return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorshop);
         }
-        public Tuple<dynamic, DataTable> GetFLOORMAPDATA(FLOORMAPEntity Data)
+        public Tuple<dynamic, DataTable,DataTable> GetFLOORMAPDATA(FLOORMAPEntity Data)
         {
             //if (Data.MAPID.IsEmpty())
             //{
@@ -352,13 +352,28 @@ namespace z.ERP.Services
 
             floormap.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT M.MAPID,M.SHOPCODE,M.SHOPID,M.P_X,M.P_Y,'	#7B68EE' COLOR" +
-                " FROM FLOORSHOP M " +
-                " where  MAPID=15 ";
-            if (!Data.MAPID.IsEmpty())
-                sqlitem += (" and M.MAPID= " + Data.MAPID);
-            DataTable floorshop = DbHelper.ExecuteTable(sqlitem);
-            return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorshop);
+            string sqlitem1 = $@"select SUM(A.AMOUNT), P.CATEGORYID, Y.CATEGORYNAME || '(' || SUM(B.AREA_RENTABLE) || ')' CATEGORYNAME, Y.CATEGORYCODE
+                , (SELECT COLOR FROM CATEGORYCOLOR R WHERE R.CATEGORYCODE = Y.CATEGORYCODE) COLOR
+                from CONTRACT_SUMMARY A, CONTRACT_SHOP P,CATEGORY Y, SHOP B, FLOORSHOP C, FLOORMAP D
+                where A.CONTRACTID = P.CONTRACTID AND A.SHOPID = P.SHOPID AND P.CATEGORYID = Y.CATEGORYID
+                AND A.YEARMONTH = 201810 AND A.SHOPID = B.SHOPID AND B.CODE = C.SHOPCODE
+                AND C.MAPID = D.MAPID AND B.FLOORID = D.FLOORID  AND D.MAPID = 15
+                GROUP BY  P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE ";
+            //if (!Data.MAPID.IsEmpty())
+            //    sqlitem1 += (" and M.MAPID= " + Data.MAPID);
+            DataTable floorcategory = DbHelper.ExecuteTable(sqlitem1);
+
+            string sqlitem2 = $@" select A.SHOPID,SUM(A.AMOUNT),P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE,B.CODE SHOPCODE,C.P_X,C.P_Y 
+              ,(SELECT COLOR FROM CATEGORYCOLOR R WHERE R.CATEGORYCODE=Y.CATEGORYCODE) COLOR
+              from CONTRACT_SUMMARY A,CONTRACT T,CONTRACT_SHOP P,CATEGORY Y,SHOP B, FLOORSHOP C,FLOORMAP D 
+              where A.CONTRACTID=T.CONTRACTID AND A.CONTRACTID=P.CONTRACTID AND A.SHOPID=P.SHOPID AND P.CATEGORYID=Y.CATEGORYID 
+              AND A.YEARMONTH=201810 AND A.SHOPID=B.SHOPID AND  B.CODE=C.SHOPCODE 
+              AND C.MAPID=D.MAPID AND B.FLOORID=D.FLOORID  AND D.MAPID=15
+              GROUP BY A.SHOPID ,P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE,B.CODE,C.P_X,C.P_Y";
+            //if (!Data.MAPID.IsEmpty())
+            //    sqlitem2 += (" and M.MAPID= " + Data.MAPID);
+            DataTable floorshop = DbHelper.ExecuteTable(sqlitem2);
+            return new Tuple<dynamic, DataTable,DataTable>(floormap.ToOneLine(), floorcategory,floorshop);
         }
         /// <summary>
         /// 列表页的删除,可以批量删除

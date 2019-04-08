@@ -65,7 +65,8 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAPSHOW
                 new
                 {
                     floormap = res.Item1,
-                    floorshopdata = res.Item2
+                    floorcategory = res.Item2,
+                    floorshopdata = res.Item3
                 }
             );
         }

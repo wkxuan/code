@@ -32,7 +32,9 @@
                     dataDef: []
                 }
             },
-            mounted:function () {
+            mounted: function () {
+                if (window.parent.mapShow != undefined)
+                    _this.popInitParam(window.parent.mapShow.screenParam.popParam);
             },
             methods: {
                 seach: function (event) {

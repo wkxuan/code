@@ -5,8 +5,8 @@
     mapShow.method = "GetFloorMapData";
     mapShow.Key = 'MAPID';
     mapShow.screenParam.showPopShop = false;
-    mapShow.screenParam.selectCode = "";
-    mapShow.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopFloorMapShow/";
+    mapShow.screenParam.shopCode = "";
+    mapShow.screenParam.srcPopShop = "";//__BaseUrl + "/" + "Pop/Pop/PopFloorMapShow/";
     mapShow.screenParam.popParam = {};
 
     mapShow.screenParam.branchData = [];
@@ -39,11 +39,11 @@
                                 //        editDetail.dataParam.ASSETCHANGEITEM.splice(params.index, 1);
                                 //    }
                                 //},
-                            }, mapShow.screenParam.FLOORCATEGERY[params.index].SHOPCODE.substr(0,1))
+                            }, mapShow.screenParam.FLOORCATEGERY[params.index].CATEGORYNAME.substr(0,1))
                             ]);
                     }
                 },
-    { title: ' ', key: 'SHOPCODE', width: 150 }
+    { title: ' ', key: 'CATEGORYNAME', width: 150 }
 
     ];
     mapShow.GetHtml = function (data) {
@@ -308,19 +308,21 @@ regionChange: function (value) {
     }
 },
 SearchFloorMap : function (data) {
-    _.Ajax('SearchFloorMap', {
+    _.Ajax('SearchFloorMapData', {
         Data: { MAPID: '15' }
     }, function (data) {
-        mapShow.screenParam.FLOORCATEGERY = data.floorshop;
+        mapShow.screenParam.FLOORCATEGERY = data.floorcategory;
         mapShow.screenParam.mappath = '/BackMap/10.jpg';
         mapShow.screenParam.widths = data.WIDTHS;
         mapShow.screenParam.lengths = data.LENGTHS;
-        for (var i = 0; i < data.floorshop.length; i++) {
+        for (var i = 0; i < data.floorshopdata.length; i++) {
             mapShow.screenParam.SHOPDATA.push({
-                name: data.floorshop[i].SHOPCODE,
+                name: data.floorshopdata[i].SHOPCODE,
                 html: mapShow.GetHtml,
-                x: data.floorshop[i].P_X,
-                y: data.floorshop[i].P_Y
+                x: data.floorshopdata[i].P_X,
+                y: data.floorshopdata[i].P_Y,
+                catrgoryname: data.floorshopdata[i].CATEGORYNAME,
+                color: data.floorshopdata[i].COLOR
             });
         };
         mapShow.screenParam.map = $("#div_map").zMapPoint(mapShow.screenParam.options);
@@ -329,18 +331,16 @@ SearchFloorMap : function (data) {
 PopVisibleChange: function (data) {
     if (mapShow.screenParam.showPopShop == true)
     {
-        mapShow.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopFloorMapShow/";
-        iview.Message.info("查数!");
+        
         _.Ajax('SearchFloorMapData', {
             Data: { MAPID: '15' }
         }, function (data) {
-            mapShow.screenParam.popParam = { SHOPCODE: 'ASAS' }
-            //var _body = window.parent;
-            //var _iframe1 = _body.document.getElementById('popshow');
-            //_iframe1.contentWindow.location.reload(true);
-            //mapShow.screenParam.SHOPCODE = mapShow.screenParam.selectCode;
-            //popShow.screenParam.USERCODE = data.floorshopdata[0].SHOPCODE;
-            //popShow.screenParam.USERNAME = data.floorshopdata[0].SHOPCODE;
+            mapShow.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopFloorMapShow/";
+            mapShow.screenParam.popParam = {
+                SHOPCODE: mapShow.screenParam.shopCode,
+                USERCODE: mapShow.screenParam.shopCode,
+                USERNAME: mapShow.screenParam.shopCode,
+            }
         });
     }
     else
