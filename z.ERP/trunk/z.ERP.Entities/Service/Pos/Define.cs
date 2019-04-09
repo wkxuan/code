@@ -4260,12 +4260,13 @@ namespace z.ERP.Entities.Service.Pos
     //会员相关
     public struct ReqMemberCard
     {
-        public int id;
-        public string mobilePhone;
+     //   public int id;
+        public string storeCode;
+     //   public string mobilePhone;
         public string validType;
         public string validID;
-        public string memberNo;
-        public string couponPassword;
+     //   public string memberNo;
+     //   public string couponPassword;
     }
     //会员
     public struct MemberCard
@@ -4625,7 +4626,7 @@ namespace z.ERP.Entities.Service.Pos
     //计算商品的售价
     public class ReqGetGoods
     {
-        public int branchID;  //门店id
+        public string storeCode;  //门店id
         public int contractID;
         public int vipIsDiscount; //0:作VIP折 1:不作VIP折
         public string validType;
@@ -4637,7 +4638,7 @@ namespace z.ERP.Entities.Service.Pos
 
     public class ReqGetCardPayable
     {
-        public int branchID; //门店id
+        public string storeCode; //门店id
         public int crmTranID;
         public string validType;
         public string validID;
@@ -4725,7 +4726,7 @@ namespace z.ERP.Entities.Service.Pos
 
     public class ReqConfirmDeal
     {
-        public int branchID;
+        public string storeCode;
         public int contractID;
         public string validType;
         public string validID;

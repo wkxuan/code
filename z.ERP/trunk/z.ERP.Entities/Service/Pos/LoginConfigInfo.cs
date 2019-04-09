@@ -14,6 +14,12 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
+        public string crmStoreCode
+        {
+            get;
+            set;
+        }
+
         public string shopid
         {
             get;
