@@ -15,6 +15,7 @@ using z.Extensions;
 
 namespace z.DBHelper.Helper
 {
+    [DbNameAttribute("Oracle")]
     public class OracleDbHelper : DbHelperBase
     {
         #region 构造

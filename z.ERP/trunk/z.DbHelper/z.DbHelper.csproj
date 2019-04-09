@@ -59,6 +59,7 @@
     <Compile Include="Connection\SqlServerDbConnection.cs" />
     <Compile Include="Connection\SybaseConnection.cs" />
     <Compile Include="Connection\SqliteConnection.cs" />
+    <Compile Include="DbDomain\DbNameAttribute.cs" />
     <Compile Include="DbDomain\DbProcedureAttribute.cs" />
     <Compile Include="DbDomain\DbTableAttribute.cs" />
     <Compile Include="DbDomain\DbTypeAttribute.cs" />

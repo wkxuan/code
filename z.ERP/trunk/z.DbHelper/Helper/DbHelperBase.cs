@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Text.RegularExpressions;
 using z;
@@ -150,7 +151,7 @@ namespace z.DBHelper.Helper
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
                 lock (ObjectExtension.Locker)
                 {
-                    using (IDataReader reader = _dbCommand.ExecuteReader(Behavior))
+                    using (DbDataReader reader = _dbCommand.ExecuteReader(Behavior))
                     {
                         dt = this.ReaderToTable(reader);
                     }
@@ -169,18 +170,19 @@ namespace z.DBHelper.Helper
                 _dbCommand.CommandText = GetCountSql(sql);
                 lock (ObjectExtension.Locker)
                 {
-                    using (IDataReader reader = _dbCommand.ExecuteReader(Behavior))
-                    {
-                        DataTable dtcount = this.ReaderToTable(reader);
-                        if (dtcount.IsOneLine())
-                        {
-                            int.TryParse(dtcount.Rows[0][0].ToString(), out outall);
-                        }
-                        else
-                        {
-                            outall = 0;
-                        }
-                    }
+                    outall = _dbCommand.ExecuteScalar().ToString().ToInt();
+                    //using (DbDataReader reader = _dbCommand.ExecuteReader(Behavior))
+                    //{
+                    //    DataTable dtcount = this.ReaderToTable(reader);
+                    //    if (dtcount.IsOneLine())
+                    //    {
+                    //        int.TryParse(dtcount.Rows[0][0].ToString(), out outall);
+                    //    }
+                    //    else
+                    //    {
+                    //        outall = 0;
+                    //    }
+                    //}
                 }
             });
             allCount = outall;
@@ -296,7 +298,7 @@ namespace z.DBHelper.Helper
                 _dbCommand.CommandText = GetPageSql(sql, pageSize, pageIndex);
                 lock (ObjectExtension.Locker)
                 {
-                    using (IDataReader reader = _dbCommand.ExecuteReader())
+                    using (DbDataReader reader = _dbCommand.ExecuteReader())
                     {
                         list = this.ReaderToObject<T>(reader);
                     }
@@ -311,21 +313,23 @@ namespace z.DBHelper.Helper
             List<T> list = ExecuteObject<T>(sql, pageSize, pageIndex, parameters);
             RunSql(_dbCommand =>
             {
+                _dbCommand.Parameters.AddRange(parameters);
                 _dbCommand.CommandText = GetCountSql(sql);
                 lock (ObjectExtension.Locker)
                 {
-                    using (IDataReader reader = _dbCommand.ExecuteReader())
-                    {
-                        DataTable dtcount = this.ReaderToTable(reader);
-                        if (dtcount.IsOneLine())
-                        {
-                            resall = dtcount.Rows[0][0].ToString().ToInt();
-                        }
-                        else
-                        {
-                            resall = 0;
-                        }
-                    }
+                    resall = _dbCommand.ExecuteScalar().ToString().ToInt();
+                    //using (DbDataReader reader = _dbCommand.ExecuteReader())
+                    //{
+                    //    DataTable dtcount = this.ReaderToTable(reader);
+                    //    if (dtcount.IsOneLine())
+                    //    {
+                    //        resall = dtcount.Rows[0][0].ToString().ToInt();
+                    //    }
+                    //    else
+                    //    {
+                    //        resall = 0;
+                    //    }
+                    //}
                 }
             });
             allCount = resall;
@@ -468,7 +472,7 @@ namespace z.DBHelper.Helper
                 string tablename = info.GetTableName();
                 string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
                 _dbCommand.CommandText = string.Format(_selectcount, tablename, where);
-                using (IDataReader reader = _dbCommand.ExecuteReader())
+                using (DbDataReader reader = _dbCommand.ExecuteReader())
                 {
                     if (reader.Read())
                         i = reader.GetValue(0).ToString().ToInt();
@@ -662,7 +666,7 @@ namespace z.DBHelper.Helper
                 string select = string.Join(",", info.GetAllField().Select(a => GetFieldName(a.Name)));
                 string where = string.Join(" and ", info.GetPrimaryKey().Select(a => a.Name + "=" + GetPramCols(a.Name)));
                 _dbCommand.CommandText = string.Format(_select, select, tablename, where);
-                using (IDataReader reader = _dbCommand.ExecuteReader())
+                using (DbDataReader reader = _dbCommand.ExecuteReader())
                 {
                     res = this.ReaderToEntity(info.GetType(), reader).FirstOrDefault() as T;
                 }
@@ -736,7 +740,7 @@ namespace z.DBHelper.Helper
                 string select = string.Join(",", refinfo.GetAllField().Select(a => GetFieldName(a.Name)));
                 string where = string.Join(" and ", Allprop.Select(a => a.Name + "=" + GetPramCols(a.Name)));
                 _dbCommand.CommandText = string.Format(_select, select, tablename, where.IsEmpty(" 1=1 "));
-                using (IDataReader reader = _dbCommand.ExecuteReader())
+                using (DbDataReader reader = _dbCommand.ExecuteReader())
                 {
                     res = this.ReaderToEntity(TInfo, reader).ToList();
                 }
@@ -792,9 +796,9 @@ namespace z.DBHelper.Helper
         public virtual zDbTransaction BeginTransaction(IsolationLevel? iso = null)
         {
             if (_zTransaction != null)
-                return new zDbTransaction();
+                return new zDbTransaction(_zTransaction.Transaction, false);
             OpenConnection();
-            _zTransaction = new zDbTransaction(iso.HasValue ? _dbConnection.BeginTransaction(iso.Value) : _dbConnection.BeginTransaction());
+            _zTransaction = new zDbTransaction(iso.HasValue ? _dbConnection.BeginTransaction(iso.Value) : _dbConnection.BeginTransaction(), true);
             Action done = () =>
             {
                 if (this._dbConnection.State != ConnectionState.Closed)
@@ -809,28 +813,15 @@ namespace z.DBHelper.Helper
             return _zTransaction;
         }
 
-
+        #endregion
+        #region 其他操作
+        public string GetVersion()
+        {
+            OpenConnection();
+            return $"{this.GetAttribute<DbNameAttribute>()?.Name}:{_dbConnection.ServerVersion}";
+        }
         #endregion
         #region 链接操作
-        //public virtual void Open()
-        //{
-        //    //连接数据库
-        //    if (_dbConnection == null || _dbConnection.State != ConnectionState.Open)
-        //    {
-        //        _dbConnection = GetDbConnection(_dbConnectionInfoStr);
-        //        _dbConnection.Open();
-        //    }
-        //    if (_dbConnection.State == ConnectionState.Closed)
-        //    {
-        //        _dbConnection.Open();
-        //    }
-        //    else if (_dbConnection.State == ConnectionState.Broken)
-        //    {
-        //        _dbConnection.Close();
-        //        _dbConnection.Open();
-        //    }
-        //}
-
         void OpenConnection()
         {
             if (_dbConnection == null)
@@ -880,8 +871,6 @@ namespace z.DBHelper.Helper
             catch (Exception ex)
             {
                 Done();
-                //if (ex.InnerMessage().Equals("池式连接请求超时"))
-                //    throw new FailException("池式连接请求超时");
                 string sql = _dbCommand?.CommandText;
                 object obj = _dbCommand?.Parameters;
                 if (sql.IsEmpty())
@@ -900,7 +889,7 @@ namespace z.DBHelper.Helper
 
         #endregion
         #region 辅助方法
-        private List<T> ReaderToObject<T>(IDataReader reader)
+        private List<T> ReaderToObject<T>(DbDataReader reader)
         {
             List<T> res = new List<T>();
             while (reader.Read())
@@ -929,7 +918,7 @@ namespace z.DBHelper.Helper
         /// <param name="reader"></param>
         /// <returns></returns>
         /// 
-        private DataTable ReaderToTable(IDataReader reader)
+        private DataTable ReaderToTable(DbDataReader reader)
         {
             DataTable dt = new DataTable();
             for (int count = 0; count < reader.FieldCount; count++)
@@ -955,7 +944,7 @@ namespace z.DBHelper.Helper
         /// <param name="reader"></param>
         /// <returns></returns>
         /// 
-        private List<TableEntityBase> ReaderToEntity(Type t, IDataReader reader)
+        private List<TableEntityBase> ReaderToEntity(Type t, DbDataReader reader)
         {
             List<TableEntityBase> res = new List<TableEntityBase>();
             int fieldCount = reader.FieldCount;
@@ -1047,7 +1036,7 @@ namespace z.DBHelper.Helper
 
         public override string ToString()
         {
-            return _dbConnectionInfoStr.ToString();
+            return _dbConnectionInfoStr;
         }
 
         void _DeleteChildren(TableEntityBase info)
@@ -1178,11 +1167,11 @@ namespace z.DBHelper.Helper
                         if (arrv.Count() == 0)
                             throw new Exception("数组参数个数不能为0");
                         string[] pnames = arrv.Select(p =>
-                          {
-                              string pname = newp();
-                              res.Add(GetParameter(pname, p, pram.Type));
-                              return GetPramCols(pname);
-                          }).ToArray();
+                        {
+                            string pname = newp();
+                            res.Add(GetParameter(pname, p, pram.Type));
+                            return GetPramCols(pname);
+                        }).ToArray();
                         sql = sql.ReplaceOne(zstr, string.Join(",", pnames));
                     }
                     else  //单个参数

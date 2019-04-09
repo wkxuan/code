@@ -15,6 +15,7 @@ using z.Extensions;
 
 namespace z.DBHelper.Helper
 {
+    [DbNameAttribute("SqlServer")]
     public class SqlServerDbHelper : DbHelperBase
     {
         /// <summary>
@@ -153,7 +154,16 @@ namespace z.DBHelper.Helper
             {
                 return sql;
             }
-            throw new Exception("未实现分页功能");
+            int start = pageIndex * pageSize + 1;
+            int end = start + pageSize;
+            return $@"
+                SELECT  * ,
+                        ROW_NUMBER() OVER ( ORDER BY ( SELECT   0
+                                                     ) ) RowIndex
+                FROM    ( {sql}
+                        ) t
+                WHERE   RowIndex > {start}
+                        AND {end} >= RowIndex ";
         }
 
         protected override string GetPramCols(string cols)
