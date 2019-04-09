@@ -1380,7 +1380,7 @@ editDetail.IsValidSave = function () {
     };
 
 
-    if (editDetail.dataParam.FIT_BEGIN.length != 0) {
+    if (editDetail.dataParam.FIT_BEGIN != null) {
         if (((new Date(editDetail.dataParam.FIT_BEGIN).Format('yyyy-MM-dd') < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd')))
             ||
             ((new Date(editDetail.dataParam.FIT_BEGIN).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
@@ -1389,7 +1389,7 @@ editDetail.IsValidSave = function () {
         };
     };
 
-    if (editDetail.dataParam.FIT_END.length != 0) {
+    if (editDetail.dataParam.FIT_END != null) {
         if (((new Date(editDetail.dataParam.FIT_END).Format('yyyy-MM-dd') < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd')))
             ||
             ((new Date(editDetail.dataParam.FIT_END).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
@@ -1398,7 +1398,7 @@ editDetail.IsValidSave = function () {
         };
     };
 
-    if (editDetail.dataParam.FREE_BEGIN.length != 0) {
+    if (editDetail.dataParam.FREE_BEGIN != null) {
         if (((new Date(editDetail.dataParam.FREE_BEGIN).Format('yyyy-MM-dd') < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd')))
             ||
             ((new Date(editDetail.dataParam.FREE_BEGIN).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
@@ -1407,7 +1407,7 @@ editDetail.IsValidSave = function () {
         };
     };
 
-    if (editDetail.dataParam.FREE_END.length != 0) {
+    if (editDetail.dataParam.FREE_END != null) {
         if (((new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd') < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd')))
             ||
             ((new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
