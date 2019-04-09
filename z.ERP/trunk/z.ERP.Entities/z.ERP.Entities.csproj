@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\FEE_ACCOUNTEntity.cs" />
+    <Compile Include="FLOORMAPEntity.cs" />
+    <Compile Include="Auto\FLOORSHOPEntity.cs" />
+    <Compile Include="Auto\FLOORMAPEntity.cs" />
     <Compile Include="Auto\COMPLAINEntity.cs" />
     <Compile Include="Auto\CONTRACT_COST_DJDWEntity.cs" />
     <Compile Include="Auto\OPENBUSINESSEntity.cs" />

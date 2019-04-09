@@ -37,5 +37,10 @@
             get; set;
         }
 
+        public string orgcode
+        {
+            get; set;
+        }
+
     }
 }

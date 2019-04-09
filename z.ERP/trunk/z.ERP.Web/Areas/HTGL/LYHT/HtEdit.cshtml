@@ -265,12 +265,20 @@
             合作方式
         </i-col>
         <i-col span="6">
-            @{
+
+              @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.OPERATERULE",
+                    ServiceMothod = m => m.operrule()
+                });
+            }
+             @*@{
                 RenderControl(new EnumDropDownListRender<联营合同合作方式>()
                 {
                     vModel = "dataParam.OPERATERULE"
                 });
-            }
+            }*@
         </i-col>
 
 

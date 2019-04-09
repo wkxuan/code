@@ -1,0 +1,45 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+                    "Areas/Layout/MapShow/MapShow.js"
+                };
+}
+
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+<div id="mapShow">
+    <row>
+        <i-col>
+            <collapse v-model="panelName">
+                <panel name="condition">
+                    <p slot="content" class="element">
+                        @RenderSection("conditionParam", true)
+                    </p>
+                </panel>
+            </collapse>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="4">
+            @RenderSection("resultLeft", true)
+        </i-col>
+        <i-col>
+            @RenderSection("resultRight", true)
+        </i-col>
+    </row>
+    <div class="hide">
+        @RenderSection("hide", false)
+        @RenderSection("pops", false)
+    </div>
+</div>
+
+@section foot{
+    @RenderSection("foot", false)
+}

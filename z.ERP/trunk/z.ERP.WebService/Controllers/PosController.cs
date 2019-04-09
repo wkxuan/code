@@ -78,6 +78,12 @@ namespace z.ERP.WebService.Controllers
             return service.PosService.GetSaleSummary(filter);
         }
 
+        [ServiceAble("GetMemberInfo")]
+        public GetMemberCardDetailsResult GetMemberInfo(ReqMemberCard reqMC)
+        {
+            return service.PosService.GetMemberInfo(reqMC);
+        }
+
         [ServiceAble("GetCardPayable")]
         public GetCardPayableResult GetCardPayable(ReqGetCardPayable reqMth)
         {

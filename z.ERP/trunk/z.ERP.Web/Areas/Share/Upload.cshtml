@@ -1,0 +1,12 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<UploadRender>
+
+@{
+                <i-Upload :before-upload="@Model.handleUpload"
+                        action="//jsonplaceholder.typicode.com/posts/">
+                    <i-Button>...</i-Button>
+                </i-Upload>
+                <div> <i-Button type="text" v-on:click="@Model.Click" loading="false">"Uploading" </i-Button></div>
+                @*<div v-if="@Model.file !== null">Upload file: "@Model.filename" <i-Button type="text" v-on:click="@Model.Click" loading="true">"Uploading" </i-Button></div>*@
+}
+
