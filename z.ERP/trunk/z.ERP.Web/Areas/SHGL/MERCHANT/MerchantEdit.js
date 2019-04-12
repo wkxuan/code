@@ -142,7 +142,7 @@ editDetail.IsValidSave = function () {
         return false;
     };
 
-    if (editDetail.dataParam.MERCHANT_BRAND.length = 0) {
+    if (editDetail.dataParam.MERCHANT_BRAND.length == 0) {
         iview.Message.info("请维护品牌!");
         return false;
     };
