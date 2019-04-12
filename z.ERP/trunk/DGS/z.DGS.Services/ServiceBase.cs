@@ -10,7 +10,7 @@ using z.SSO;
 using z.SSO.Model;
 using z.Verify;
 
-namespace z.POS.Services
+namespace z.DGS.Services
 {
     #region 基础实现
     public class ServiceBase
@@ -19,7 +19,6 @@ namespace z.POS.Services
         public ServiceBase()
         {
             List<Type> mrs = new List<Type>();
-            //mrs.Add(typeof(TestServiceOverride));
             ioc = new SimpleIOC(mrs);
         }
 
@@ -51,11 +50,11 @@ namespace z.POS.Services
             }
         }
 
-        public PosService PosService
+        public DgsService DgsService
         {
             get
             {
-                return ioc.Create<PosService>();
+                return ioc.Create<DgsService>();
             }
         }
 
