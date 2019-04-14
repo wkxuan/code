@@ -1016,12 +1016,15 @@ editDetail.otherMethods = {
             return;
         }
         editDetail.dataParam.CONTRACT_RENT = [];
+
+
         var yearsValue = getYears(new Date(editDetail.dataParam.CONT_START),
             new Date(editDetail.dataParam.CONT_END));
         var nestYear = null;
         var rentData = null;
         var beginHtq = editDetail.dataParam.CONT_START;
         var beginMzqHtq = editDetail.dataParam.CONT_START;
+        var j = 0;
 
         var inx = 0;
         if (editDetail.dataParam.FREE_END) {
@@ -1039,21 +1042,30 @@ editDetail.otherMethods = {
             inx = 1;
 
             beginMzqHtq = addDate(editDetail.dataParam.FREE_END, 1);
+
+            var yearMzq = getNextYears(editDetail.dataParam.FREE_BEGIN);
+
+            if (yearMzq < (new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd'))) {
+                beginHtq = beginMzqHtq;
+                j = 1;
+            }
         };
 
         var copyHtQsr = (beginMzqHtq);
 
+
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
-            if (i != 0) {
+            if ((i != 0) && (j != 1)) {
                 beginHtq = copyHtQsr;
             }
             nestYear = getNextYears(beginHtq);
             if (nestYear < (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd'))) {
                 rentData = {
-                    INX: i + 1,
+                    INX: i + 1 + inx,
                     STARTDATE: copyHtQsr,
                     ENDDATE: nestYear,
+                    DJLX: '2',  //默认月金额
                     PRICE: 0,
                     RENTS: 0,
                     RENTS_JSKL: 0,
@@ -1063,9 +1075,10 @@ editDetail.otherMethods = {
                 copyHtQsr = addDate(nestYear);
             } else {
                 rentData = {
-                    INX: i + 1,
+                    INX: i + 1 + inx,
                     STARTDATE: copyHtQsr,
                     ENDDATE: (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')),
+                    DJLX: '2',  //默认月金额
                     PRICE: 0,
                     RENTS: 0,
                     RENTS_JSKL: 0,
@@ -1233,7 +1246,7 @@ editDetail.otherMethods = {
             for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
                 maxIndex = editDetail.dataParam.CONTRACT_COST[0].INX;
                 if (editDetail.dataParam.CONTRACT_COST[j].INX > maxIndex) {
-                    maxIndex = editDetail.dataParam.CONTRACT_COST[j].INDEX
+                    maxIndex = editDetail.dataParam.CONTRACT_COST[j].INX
                 }
                 maxIndex++;
             }
