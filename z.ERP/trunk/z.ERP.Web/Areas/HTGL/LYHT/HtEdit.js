@@ -789,7 +789,7 @@ editDetail.otherMethods = {
 
             var yearMzq = getNextYears(editDetail.dataParam.FREE_BEGIN);
 
-            if (yearMzq < (new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd'))) {
+            if (yearMzq <= (new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd'))) {
                 beginHtq = beginMzqHtq;
             }
         };
