@@ -769,7 +769,6 @@ editDetail.otherMethods = {
         var rentData = null;
         var beginHtq = editDetail.dataParam.CONT_START;
         var beginMzqHtq = editDetail.dataParam.CONT_START;
-        var j = 0;
 
         var inx = 0;
         if (editDetail.dataParam.FREE_END) {
@@ -792,7 +791,6 @@ editDetail.otherMethods = {
 
             if (yearMzq < (new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd'))) {
                 beginHtq = beginMzqHtq;
-                j = 1;
             }
         };
 
@@ -801,7 +799,7 @@ editDetail.otherMethods = {
 
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
-            if ((i != 0) && (j != 1)) {
+            if ((i != 0)) {
                 beginHtq = copyHtQsr;
             }
             nestYear = getNextYears(beginHtq);
