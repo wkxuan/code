@@ -12,6 +12,7 @@
     mapShow.screenParam.branchData = [];
     mapShow.screenParam.regionData = [];
     mapShow.screenParam.floorData = [];
+    mapShow.screenParam.mapid = 0;
     mapShow.screenParam.mappath = '/BackMap/10.jpg';
     mapShow.screenParam.widths = 1200;
     mapShow.screenParam.lengths = 600;
@@ -20,8 +21,10 @@
     mapShow.screenParam.BRANCHID = 0;
     mapShow.screenParam.REGIONID = 0;
     mapShow.screenParam.FLOORID = 0;
+
     mapShow.screenParam.FLOORCATEGERY = [];
-    mapShow.screenParam.SHOPDATA = [];
+    mapShow.screenParam.shopData = [];
+    mapShow.screenParam.shopDataInfo = [];
     mapShow.screenParam.colDef = [
                 {
                     title: ' ',
@@ -67,7 +70,7 @@
         //        html: mapShow.GetHtml
         //    }
         //]
-        data: mapShow.screenParam.SHOPDATA,
+        data: mapShow.screenParam.shopData,
         showmodel: mapShow.screenParam.showPopShop
     };
     mapShow.screenParam.map = $("#div_map").zMapPoint(mapShow.screenParam.options);
@@ -117,7 +120,7 @@
     ///添加热点
     mapShow.screenParam.addPoint = function () {
         var newname = prompt("请输入店铺号", "");
-        mapShow.screenParam.SHOPDATA.push({
+        mapShow.screenParam.shopData.push({
             name: newname,
             html: mapShow.GetHtml,
             x: 0.01,
@@ -308,15 +311,16 @@ regionChange: function (value) {
     }
 },
 SearchFloorMap : function (data) {
-    _.Ajax('SearchFloorMapData', {
-        Data: { MAPID: '15' }
+    _.Ajax('SearchFloorShowMapData', {
+        Data: { FLOORID: mapShow.screenParam.FLOORID }
     }, function (data) {
         mapShow.screenParam.FLOORCATEGERY = data.floorcategory;
+        mapShow.screenParam.mapid = data.mapid;
         mapShow.screenParam.mappath = '/BackMap/10.jpg';
         mapShow.screenParam.widths = data.WIDTHS;
         mapShow.screenParam.lengths = data.LENGTHS;
         for (var i = 0; i < data.floorshopdata.length; i++) {
-            mapShow.screenParam.SHOPDATA.push({
+            mapShow.screenParam.shopData.push({
                 name: data.floorshopdata[i].SHOPCODE,
                 html: mapShow.GetHtml,
                 x: data.floorshopdata[i].P_X,
@@ -325,23 +329,38 @@ SearchFloorMap : function (data) {
                 color: data.floorshopdata[i].COLOR
             });
         };
+        mapShow.screenParam.shopDataInfo = data.floorshopdata;
         mapShow.screenParam.map = $("#div_map").zMapPoint(mapShow.screenParam.options);
     });
 },
 PopVisibleChange: function (data) {
     if (mapShow.screenParam.showPopShop == true)
-    {
-        
-        _.Ajax('SearchFloorMapData', {
-            Data: { MAPID: '15' }
-        }, function (data) {
-            mapShow.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopFloorMapShow/";
-            mapShow.screenParam.popParam = {
-                SHOPCODE: mapShow.screenParam.shopCode,
-                USERCODE: mapShow.screenParam.shopCode,
-                USERNAME: mapShow.screenParam.shopCode,
-            }
-        });
+    {        
+        for (var i = 0; i < mapShow.screenParam.shopDataInfo.length; i++) {
+            if (mapShow.screenParam.shopDataInfo[i].SHOPCODE == mapShow.screenParam.shopCode)
+            {
+                mapShow.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopFloorMapShow/";
+                mapShow.screenParam.popParam = {
+                    SHOPCODE: mapShow.screenParam.shopDataInfo[i].SHOPCODE,
+                    STATUSMC: mapShow.screenParam.shopDataInfo[i].STATUSMC,
+                    RENTAREA:mapShow.screenParam.shopDataInfo[i].RENTAREA,
+                    CATEGORYNAME:mapShow.screenParam.shopDataInfo[i].CATEGORYNAME,
+                    BRANDNAME:mapShow.screenParam.shopDataInfo[i].BRANDNAME ,
+                    MERCHANTNAME:mapShow.screenParam.shopDataInfo[i].MERCHANTNAME,
+                    CONTRACTID:mapShow.screenParam.shopDataInfo[i].CONTRACTID ,
+                    CONT_S_E:mapShow.screenParam.shopDataInfo[i].CONT_S_E ,
+                    OPERATERULE:mapShow.screenParam.shopDataInfo[i].OPERATERULE,
+                    FEERULE:mapShow.screenParam.shopDataInfo[i].FEERULE ,
+                    RENT:mapShow.screenParam.shopDataInfo[i].RENT ,
+                    RENEFFECT: mapShow.screenParam.shopDataInfo[i].RENEFFECT ,
+                    AMOUNT:mapShow.screenParam.shopDataInfo[i].AMOUNT ,
+                    AMOUNTEFFECT:mapShow.screenParam.shopDataInfo[i].AMOUNTEFFECT,
+                    DISCRIPTION: mapShow.screenParam.shopDataInfo[i].DISCRIPTION 
+                }
+                }
+            };
+
+
     }
     else
     {

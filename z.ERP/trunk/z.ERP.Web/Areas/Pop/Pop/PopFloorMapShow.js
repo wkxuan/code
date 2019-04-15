@@ -1,9 +1,19 @@
 ﻿popShow.beforeVue = function () {
     popShow.screenParam.SHOPCODE = "";
-    popShow.screenParam.USERCODE = "";
-    popShow.screenParam.USERNAME = "";
-    popShow.service = "UserService";
-    popShow.method = "GetUser";
+    popShow.screenParam.STATUSMC = "";
+    popShow.screenParam.RENTAREA = "";
+    popShow.screenParam.CATEGORYNAME = "";
+    popShow.screenParam.BRANDNAME = "";
+    popShow.screenParam.MERCHANTNAME = "";
+    popShow.screenParam.CONTRACTID = "";
+    popShow.screenParam.CONT_S_E = "";
+    popShow.screenParam.OPERATERULE = "";
+    popShow.screenParam.FEERULE = "";
+    popShow.screenParam.RENT = "";
+    popShow.screenParam.RENEFFECT = "";
+    popShow.screenParam.AMOUNT = "";
+    popShow.screenParam.AMOUNTEFFECT = "";
+    popShow.screenParam.DISCRIPTION = "";
 }
 
 
@@ -11,7 +21,19 @@
 popShow.popInitParam = function (data) {
     if (data) {
         popShow.screenParam.SHOPCODE = data.SHOPCODE;
-        popShow.screenParam.USERCODE = data.USERCODE;;
-        popShow.screenParam.USERNAME = data.USERNAME;;
+        popShow.screenParam.STATUSMC = data.STATUSMC;
+        popShow.screenParam.RENTAREA = data.RENTAREA;
+        popShow.screenParam.CATEGORYNAME = data.CATEGORYNAME;
+        popShow.screenParam.BRANDNAME = data.BRANDNAME;
+        popShow.screenParam.MERCHANTNAME = data.MERCHANTNAME;
+        popShow.screenParam.CONTRACTID = data.CONTRACTID;
+        popShow.screenParam.CONT_S_E = data.CONT_S_E;
+        popShow.screenParam.OPERATERULE = data.OPERATERULE;
+        popShow.screenParam.FEERULE = data.FEERULE;
+        popShow.screenParam.RENT = data.RENT;
+        popShow.screenParam.RENEFFECT = data.RENEFFECT;
+        popShow.screenParam.AMOUNT = data.AMOUNT;
+        popShow.screenParam.AMOUNTEFFECT = data.AMOUNTEFFECT;
+        popShow.screenParam.DISCRIPTION = data.DISCRIPTION;
     }
 }

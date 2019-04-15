@@ -318,7 +318,7 @@ namespace z.ERP.Services
             return SaveData.MAPID;
         }
 
-        public Tuple<dynamic, DataTable> GetFLOORMAPElement(FLOORMAPEntity Data)
+        public Tuple<dynamic, DataTable> GetFloorMapElement(FLOORMAPEntity Data)
         {
             if (Data.MAPID.IsEmpty())
             {
@@ -331,7 +331,7 @@ namespace z.ERP.Services
 
             floormap.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT M.MAPID,M.SHOPCODE,M.SHOPID,M.P_X,M.P_Y,'	#7B68EE' COLOR" +
+            string sqlitem = $@"SELECT M.MAPID,M.SHOPCODE,M.SHOPID,M.P_X,M.P_Y " +
                 " FROM FLOORSHOP M " +
                 " where 1=1";
             if (!Data.MAPID.IsEmpty())
@@ -339,28 +339,58 @@ namespace z.ERP.Services
             DataTable floorshop = DbHelper.ExecuteTable(sqlitem);
             return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorshop);
         }
-        public Tuple<dynamic, DataTable,DataTable> GetFLOORMAPDATA(FLOORMAPEntity Data)
-        {
-            //if (Data.MAPID.IsEmpty())
-            //{
-            //    throw new LogicException("请确认图纸编号!");
-            //}
-            string sql = $@"SELECT * FROM FLOORMAP WHERE MAPID=15 ";
-            if (!Data.MAPID.IsEmpty())
-                sql += (" AND MAPID= " + Data.MAPID);
-            DataTable floormap = DbHelper.ExecuteTable(sql);
 
-            floormap.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+        public Tuple<dynamic, DataTable> GetFloorShowMap(FLOORMAPEntity Data)
+        {
+            string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE P.INITINATE_TIME<=SYSDATE AND NVL(P.TERMINATE_TIME,SYSDATE)<=SYSDATE ";
+            if (!Data.FLOORID.IsEmpty())
+                sql += (" AND FLOORID= " + Data.FLOORID);
+            DataTable dtmapid = DbHelper.ExecuteTable(sql);
+            int mapid = Convert.ToInt32(dtmapid.Rows[0]["MAPID"].ToString());
+
+            if (mapid== 0)
+            {
+                throw new LogicException("没有符合条件的分析图纸!");
+            }
+            string sqlmap = $@"SELECT * FROM FLOORMAP WHERE 1=1 ";
+            sqlmap += (" AND MAPID= " + mapid);
+            DataTable floormap = DbHelper.ExecuteTable(sqlmap);
 
             string sqlitem1 = $@"select SUM(A.AMOUNT), P.CATEGORYID, Y.CATEGORYNAME || '(' || SUM(B.AREA_RENTABLE) || ')' CATEGORYNAME, Y.CATEGORYCODE
                 , (SELECT COLOR FROM CATEGORYCOLOR R WHERE R.CATEGORYCODE = Y.CATEGORYCODE) COLOR
                 from CONTRACT_SUMMARY A, CONTRACT_SHOP P,CATEGORY Y, SHOP B, FLOORSHOP C, FLOORMAP D
                 where A.CONTRACTID = P.CONTRACTID AND A.SHOPID = P.SHOPID AND P.CATEGORYID = Y.CATEGORYID
                 AND A.YEARMONTH = 201810 AND A.SHOPID = B.SHOPID AND B.CODE = C.SHOPCODE
-                AND C.MAPID = D.MAPID AND B.FLOORID = D.FLOORID  AND D.MAPID = 15
-                GROUP BY  P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE ";
-            //if (!Data.MAPID.IsEmpty())
-            //    sqlitem1 += (" and M.MAPID= " + Data.MAPID);
+                AND C.MAPID = D.MAPID AND B.FLOORID = D.FLOORID  ";
+                sqlitem1 += (" and D.MAPID = " + mapid );
+                sqlitem1 += " GROUP BY  P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE ";
+            DataTable floorcategory = DbHelper.ExecuteTable(sqlitem1);
+
+            return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorcategory);
+        }
+        public Tuple<dynamic, DataTable, DataTable> GetGetFloorShowMapData(FLOORMAPEntity Data)
+        {
+            string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE P.INITINATE_TIME<=SYSDATE AND NVL(P.TERMINATE_TIME,SYSDATE)<=SYSDATE ";
+                   sql += " AND FLOORID= " + Data.FLOORID;
+            DataTable dtmapid = DbHelper.ExecuteTable(sql);
+            int mapid = Convert.ToInt32(dtmapid.Rows[0]["MAPID"].ToString());
+
+            if (mapid == 0)
+            {
+                throw new LogicException("没有符合条件的分析图纸!");
+            }
+            string sqlmap = $@"SELECT * FROM FLOORMAP WHERE 1=1 ";
+            sqlmap += " AND MAPID= " + mapid;
+            DataTable floormap = DbHelper.ExecuteTable(sqlmap);
+
+            string sqlitem1 = $@"select SUM(A.AMOUNT), P.CATEGORYID, Y.CATEGORYNAME || '(' || SUM(B.AREA_RENTABLE) || ')' CATEGORYNAME, Y.CATEGORYCODE
+                , (SELECT COLOR FROM CATEGORYCOLOR R WHERE R.CATEGORYCODE = Y.CATEGORYCODE) COLOR
+                from CONTRACT_SUMMARY A, CONTRACT_SHOP P,CATEGORY Y, SHOP B, FLOORSHOP C, FLOORMAP D
+                where A.CONTRACTID = P.CONTRACTID AND A.SHOPID = P.SHOPID AND P.CATEGORYID = Y.CATEGORYID
+                AND A.YEARMONTH = 201810 AND A.SHOPID = B.SHOPID AND B.CODE = C.SHOPCODE
+                AND C.MAPID = D.MAPID AND B.FLOORID = D.FLOORID  ";
+            sqlitem1 += " and D.MAPID = " + mapid;
+            sqlitem1 += " GROUP BY  P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE ";
             DataTable floorcategory = DbHelper.ExecuteTable(sqlitem1);
 
             string sqlitem2 = $@" select A.SHOPID,SUM(A.AMOUNT),P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE,B.CODE SHOPCODE,C.P_X,C.P_Y 
@@ -368,12 +398,11 @@ namespace z.ERP.Services
               from CONTRACT_SUMMARY A,CONTRACT T,CONTRACT_SHOP P,CATEGORY Y,SHOP B, FLOORSHOP C,FLOORMAP D 
               where A.CONTRACTID=T.CONTRACTID AND A.CONTRACTID=P.CONTRACTID AND A.SHOPID=P.SHOPID AND P.CATEGORYID=Y.CATEGORYID 
               AND A.YEARMONTH=201810 AND A.SHOPID=B.SHOPID AND  B.CODE=C.SHOPCODE 
-              AND C.MAPID=D.MAPID AND B.FLOORID=D.FLOORID  AND D.MAPID=15
-              GROUP BY A.SHOPID ,P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE,B.CODE,C.P_X,C.P_Y";
-            //if (!Data.MAPID.IsEmpty())
-            //    sqlitem2 += (" and M.MAPID= " + Data.MAPID);
+              AND C.MAPID=D.MAPID AND B.FLOORID=D.FLOORID ";
+            sqlitem2 += " and D.MAPID = " + mapid;
+            sqlitem2 += " GROUP BY A.SHOPID ,P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE,B.CODE,C.P_X,C.P_Y ";
             DataTable floorshop = DbHelper.ExecuteTable(sqlitem2);
-            return new Tuple<dynamic, DataTable,DataTable>(floormap.ToOneLine(), floorcategory,floorshop);
+            return new Tuple<dynamic, DataTable, DataTable>(floormap.ToOneLine(), floorcategory, floorshop);
         }
         /// <summary>
         /// 列表页的删除,可以批量删除

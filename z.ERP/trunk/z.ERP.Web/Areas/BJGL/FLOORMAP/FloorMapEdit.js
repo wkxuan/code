@@ -91,7 +91,9 @@
             name: newname,
             html: editDetail.GetHtml,
             x: 0.01,
-            y: 0.03
+            y: 0.03,
+            catrgoryname: "",
+            color: '#FA8072'
         });
         //editDetail.dataParam.map.Add({
         //    name: newname,
@@ -319,7 +321,9 @@ editDetail.showOne = function (data, callback) {
                 name: data.floorshop[i].SHOPCODE,
                 html: editDetail.GetHtml,
                 x: data.floorshop[i].P_X,
-                y: data.floorshop[i].P_Y
+                y: data.floorshop[i].P_Y,
+                catrgoryname: "",
+                color: '#FA8072'
             });
         };
         editDetail.screenParam.map = $("#div_map").zMapPoint(editDetail.screenParam.options);
