@@ -20,7 +20,7 @@
     define.screenParam.regionData = [];
     define.screenParam.floorData = [];
     define.dataParam.ORGIDCASCADER = [];
-    define.btnChkvisible = true;
+    define.btnChkvisible = false;
 
     _.Ajax('GetBranch', {
         Data: { ID: "" }
@@ -76,18 +76,18 @@
 define.newRecord = function () {
     if (define.searchParam.BRANCHID == 0) {
         iview.Message.info("请选择门店!");
-     //   return;
+        //   return;
     };
     if (define.searchParam.REGIONID == 0) {
         iview.Message.info("请选择区域!");
-      //  return;
+        //  return;
     };
     if (define.searchParam.FLOORID == 0) {
         iview.Message.info("请选择楼层!");
-      //  return;
+        //  return;
     };
 
-  //  define.dataParam.TYPE = 1;
+    //  define.dataParam.TYPE = 1;
     define.dataParam.STATUS = 1;
     define.dataParam.RENT_STATUS = 1;
     define.dataParam.ORGIDCASCADER = [];
@@ -195,8 +195,7 @@ define.otherMethods = {
         else {
             define.searchParam.FLOORID = define.dataParam.FLOORID;
         }
-        if (define.myve.disabled)
-        {
+        if (define.myve.disabled) {
             define.dataParam.SHOPID = "";
             define.dataParam.CODE = "";
             define.dataParam.NAME = "";
@@ -238,30 +237,35 @@ define.showone = function (data, callback) {
             define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.toString().split(",");
         if (define.dataParam.CATEGORYIDCASCADER != null)
             define.dataParam.CATEGORYIDCASCADER = define.dataParam.CATEGORYIDCASCADER.toString().split(",");
-        if (define.dataParam.STATUS == 2) {
-            define.myve.topbtnModVisible = define.isvisible(false);
-            define.myve.topbtnChkVisible = define.isvisible(false);
-        }
-        else
-        {
-            define.myve.topbtnModVisible = define.isvisible(true);
-            define.myve.topbtnChkVisible = define.isvisible(true);
-        }
+
+
+
+        //if (define.dataParam.STATUS == 2) {
+        //    define.myve.topbtnModVisible = define.isvisible(true);
+        //    define.myve.topbtnChkVisible = define.isvisible(true);
+        //}
+        //else {
+        //    define.myve.topbtnModVisible = define.isvisible(true);
+        //    define.myve.topbtnChkVisible = define.isvisible(true);
+        //}
+
+        define.myve.topbtnModVisible = define.isvisible(true);
+        define.myve.topbtnChkVisible = define.isvisible(false);
         callback && callback();
     });
 }
 
 
 define.IsValidSave = function () {
-    if (define.dataParam.BRANCHID==0) {
+    if (define.dataParam.BRANCHID == 0) {
         iview.Message.info("请选择门店!");
         return false;
     };
-    if (define.dataParam.REGIONID==0) {
+    if (define.dataParam.REGIONID == 0) {
         iview.Message.info("请选择区域!");
         return false;
     };
-    if (define.dataParam.FLOORID==0) {
+    if (define.dataParam.FLOORID == 0) {
         iview.Message.info("请选择楼层!");
         return false;
     };

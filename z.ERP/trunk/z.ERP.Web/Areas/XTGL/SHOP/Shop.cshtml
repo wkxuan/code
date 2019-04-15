@@ -11,25 +11,13 @@
                 RenderControl(new DropDownListsRender()
                 {
                     vModel = "searchParam.BRANCHID",
-                    Data= "screenParam.branchData",
-                    Change= "branchChange",
+                    Data = "screenParam.branchData",
+                    Change = "branchChange",
                     Enable = true
                 });
             }
         </i-col>
         <i-col span="3" class="RowTitle">区域</i-col>
-            <i-col span="5">
-                @{
-                    RenderControl(new DropDownListsRender()
-                    {
-                        vModel = "dataParam.REGIONID",
-                        Data = "screenParam.regionData",
-                        Change = "regionChange",
-                        Enable = true
-                    });
-                }
-            </i-col>
-   @*     <span v-show="!disabled">
         <i-col span="5">
             @{
                 RenderControl(new DropDownListsRender()
@@ -37,11 +25,23 @@
                     vModel = "dataParam.REGIONID",
                     Data = "screenParam.regionData",
                     Change = "regionChange",
-                    Enable = false
+                    Enable = true
                 });
             }
         </i-col>
-    </span>  *@
+        @*     <span v-show="!disabled">
+                <i-col span="5">
+                    @{
+                        RenderControl(new DropDownListsRender()
+                        {
+                            vModel = "dataParam.REGIONID",
+                            Data = "screenParam.regionData",
+                            Change = "regionChange",
+                            Enable = false
+                        });
+                    }
+                </i-col>
+            </span>  *@
 
         <i-col span="3" class="RowTitle">楼层</i-col>
         <span v-show="disabled">
@@ -58,52 +58,52 @@
             </i-col>
         </span>
         <span v-show="!disabled">
-        <i-col span="5">
+            <i-col span="5">
+                @{
+                    RenderControl(new DropDownListsRender()
+                    {
+                        vModel = "dataParam.FLOORID",
+                        Data = "screenParam.floorData",
+                        Change = "floorChange",
+                        Enable = false
+                    });
+                }
+            </i-col>
+        </span>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="9">
             @{
-                RenderControl(new DropDownListsRender()
+                RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.FLOORID",
-                    Data = "screenParam.floorData",
-                    Change = "floorChange",
-                    Enable = false
+                    vModel = "searchParam.CODE",
+                    Enable = true
                 });
             }
         </i-col>
-        </span>
+        <i-col span="3" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="9">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.NAME",
+                    Enable = true
+                });
+            }
+        </i-col>
     </row>
-<row>
-    <i-col span="3" class="RowTitle">
-        代码
-    </i-col>
-    <i-col span="9">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "searchParam.CODE",
-                Enable = true
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">
-        名称
-    </i-col>
-    <i-col span="9">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "searchParam.NAME",
-                Enable = true
-            });
-        }
-    </i-col>
-</row>
 
 }
 }
 @section element{
     <row>
         <span v-if="screenParam.componentVisible">
-            <i-col span="3" class="RowTitle">                
+            <i-col span="3" class="RowTitle">
                 单元编号
             </i-col>
             <i-col span="6">

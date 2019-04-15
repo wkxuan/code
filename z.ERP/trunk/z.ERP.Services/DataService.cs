@@ -374,5 +374,12 @@ namespace z.ERP.Services
             return dt.ToSelectItem("ID", "NAME");
         }
 
+        public List<SelectItem> feeAccount()    //收费单位
+        {
+            string sql = "select id,name from fee_account order by id ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("id", "name");
+        }
+
     }
 }

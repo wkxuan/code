@@ -17,11 +17,11 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
             ViewBag.Title = "品牌列表信息";
             return View(new SearchRender()
             {
-                Permission_Browse = "10200200",
+                //Permission_Browse = "10200200",
                 Permission_Add = "10200201",
-                Permission_Del = "10200201",
+                // Permission_Del = "10200201",
                 Permission_Edit = "10200201",
-                Permission_Exec = "10200202"
+                // Permission_Exec = "10200202"
             });
         }
 
@@ -35,20 +35,21 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
         {
             ViewBag.Title = "浏览品牌列表信息";
 
-            var entity = service.XtglService.GetBrandDetail(new BRANDEntity(Id));            
+            var entity = service.XtglService.GetBrandDetail(new BRANDEntity(Id));
             ViewBag.brand = entity.Item1;
             return View();
         }
 
         [Permission("102002")]
 
-        public string Save(BRANDEntity SaveData) {
-            return service.XtglService.SaveBrand(SaveData);            
+        public string Save(BRANDEntity SaveData)
+        {
+            return service.XtglService.SaveBrand(SaveData);
         }
 
-        public  void Delete(List<BRANDEntity> DeleteData)
+        public void Delete(List<BRANDEntity> DeleteData)
         {
-            foreach(var brand in DeleteData)
+            foreach (var brand in DeleteData)
             {
                 var v = GetVerify(brand);
                 v.Require(a => a.ID);

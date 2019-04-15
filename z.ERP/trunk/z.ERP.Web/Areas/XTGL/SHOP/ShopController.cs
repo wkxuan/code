@@ -4,17 +4,19 @@ using z.ERP.Entities;
 using z.Extensions;
 using z.MVC5.Results;
 using z.ERP.Web.Areas.Layout.Define;
+using z.ERP.Entities.Enum;
+using z.Exceptions;
 
 namespace z.ERP.Web.Areas.XTGL.SHOP
 {
-    public class ShopController: BaseController
+    public class ShopController : BaseController
     {
         public ActionResult Shop()
         {
             ViewBag.Title = "资产单元信息";
             return View(new DefineRender()
             {
-                Permission_Chk = "104004"
+                //Permission_Chk = "104004"
             });
         }
 
@@ -24,6 +26,32 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
             if (DefineSave.SHOPID.IsEmpty())
             {
                 DefineSave.SHOPID = service.CommonService.NewINC("SHOP");
+
+                DefineSave.STATUS = ((int)单元状态.正常).ToString();
+
+                DefineSave.RENT_STATUS = ((int)租用状态.空置).ToString();
+            }
+            else
+            {
+                var shop = new SHOPEntity();
+                shop = service.XtglService.SelectShop(DefineSave.SHOPID);
+                if (shop.RENT_STATUS == ((int)租用状态.出租).ToString())
+                {
+                    if (shop.AREA_RENTABLE != DefineSave.AREA_RENTABLE)
+                    {
+                        throw new LogicException($"出租状态不能修改租赁面积!");
+                    }
+
+                    if (shop.AREA_USABLE != DefineSave.AREA_USABLE)
+                    {
+                        throw new LogicException($"出租状态不能修改使用面积!");
+                    }
+
+                    if (shop.AREA_BUILD != DefineSave.AREA_BUILD)
+                    {
+                        throw new LogicException($"出租状态不能修改建筑面积!");
+                    }
+                }
             }
             v.IsUnique(a => a.SHOPID);
             v.IsUnique(a => a.CODE);

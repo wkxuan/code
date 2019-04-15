@@ -1101,9 +1101,17 @@ editDetail.otherMethods = {
             inx = 1;
 
             beginMzqHtq = addDate(editDetail.dataParam.FREE_END, 1);
+
+            var yearMzq = getNextYears(editDetail.dataParam.FREE_BEGIN);
+
+            if (yearMzq < (new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd'))) {
+                beginHtq = beginMzqHtq;
+            }
         };
 
         var copyHtQsr = (beginMzqHtq);
+
+
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
             if (i != 0) {
@@ -1296,7 +1304,7 @@ editDetail.otherMethods = {
             for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
                 maxIndex = editDetail.dataParam.CONTRACT_COST[0].INX;
                 if (editDetail.dataParam.CONTRACT_COST[j].INX > maxIndex) {
-                    maxIndex = editDetail.dataParam.CONTRACT_COST[j].INDEX
+                    maxIndex = editDetail.dataParam.CONTRACT_COST[j].INX
                 }
                 maxIndex++;
             }
@@ -1379,34 +1387,96 @@ editDetail.IsValidSave = function () {
         return false;
     };
 
-
-    if ((editDetail.dataParam.FIT_BEGIN) && ((new Date(editDetail.dataParam.FIT_BEGIN).Format('yyyy-MM-dd')
-        < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'))) || ((new Date(editDetail.dataParam.FIT_BEGIN).Format('yyyy-MM-dd')
-        > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
-        iview.Message.info("装修开始日期需在租约有效期内!");
-        return false;
+    if ((editDetail.dataParam.FIT_BEGIN != null) && (editDetail.dataParam.FIT_BEGIN.length > 0)) {
+        if (editDetail.dataParam.FIT_END == null) {
+            iview.Message.info("请维护装修结束日期!");
+            return false;
+        }
+        else if (editDetail.dataParam.FIT_END.length == 0) {
+            iview.Message.info("请维护装修结束日期!");
+            return false;
+        };
     };
 
-    if ((editDetail.dataParam.FIT_END) && ((new Date(editDetail.dataParam.FIT_END).Format('yyyy-MM-dd')
-    < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'))) || ((new Date(editDetail.dataParam.FIT_END).Format('yyyy-MM-dd')
-    > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
-        iview.Message.info("装修结束日期需在租约有效期内!");
-        return false;
+    if ((editDetail.dataParam.FIT_END != null) && (editDetail.dataParam.FIT_END.length > 0)) {
+        if (editDetail.dataParam.FIT_BEGIN == null) {
+            iview.Message.info("请维护装修开始日期!");
+            return false;
+        }
+        else if (editDetail.dataParam.FIT_BEGIN.length == 0) {
+            iview.Message.info("请维护装修开始日期!");
+            return false;
+        };
     };
 
 
-    if ((editDetail.dataParam.FREE_BEGIN) && ((new Date(editDetail.dataParam.FREE_BEGIN).Format('yyyy-MM-dd')
-    < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'))) || ((new Date(editDetail.dataParam.FREE_BEGIN).Format('yyyy-MM-dd')
-    > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
-        iview.Message.info("免租开始日期需在租约有效期内!");
-        return false;
+
+    if ((editDetail.dataParam.FREE_BEGIN != null) && (editDetail.dataParam.FREE_BEGIN.length > 0)) {
+        if (editDetail.dataParam.FREE_END == null) {
+            iview.Message.info("请维护免租结束日期!");
+            return false;
+        }
+        else if (editDetail.dataParam.FREE_END.length == 0) {
+            iview.Message.info("请维护免租结束日期!");
+            return false;
+        };
     };
 
-    if ((editDetail.dataParam.FREE_END) && ((new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd')
-    < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd'))) || ((new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd')
-    > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
-        iview.Message.info("免租结束日期需在租约有效期内!");
-        return false;
+    if ((editDetail.dataParam.FREE_END != null) && (editDetail.dataParam.FREE_END.length > 0)) {
+        if (editDetail.dataParam.FREE_BEGIN == null) {
+            iview.Message.info("请维护免租开始日期!");
+            return false;
+        }
+        else if (editDetail.dataParam.FREE_BEGIN.length == 0) {
+            iview.Message.info("请维护免租开始日期!");
+            return false;
+        };
+    };
+
+
+    if (editDetail.dataParam.FIT_BEGIN != null) {
+        if (editDetail.dataParam.FIT_BEGIN.length != 0) {
+            if (((new Date(editDetail.dataParam.FIT_BEGIN).Format('yyyy-MM-dd') < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd')))
+              ||
+              ((new Date(editDetail.dataParam.FIT_BEGIN).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
+                iview.Message.info("装修开始日期需在租约有效期内!");
+                return false;
+            };
+        };
+    };
+
+    if (editDetail.dataParam.FIT_END != null) {
+        if (editDetail.dataParam.FIT_END.length != 0) {
+            if (((new Date(editDetail.dataParam.FIT_END).Format('yyyy-MM-dd') < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd')))
+            ||
+            ((new Date(editDetail.dataParam.FIT_END).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
+                iview.Message.info("装修结束日期需在租约有效期内!");
+                return false;
+            };
+        };
+    };
+
+    if (editDetail.dataParam.FREE_BEGIN != null) {
+        if (editDetail.dataParam.FREE_BEGIN.length > 0) {
+            if (((new Date(editDetail.dataParam.FREE_BEGIN).Format('yyyy-MM-dd') < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd')))
+            ||
+            ((new Date(editDetail.dataParam.FREE_BEGIN).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
+                iview.Message.info("免租开始日期需在租约有效期内!");
+                return false;
+            };
+        };
+
+    };
+
+    if (editDetail.dataParam.FREE_END != null) {
+        if (editDetail.dataParam.FREE_END.length != 0) {
+            if (((new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd') < new Date(editDetail.dataParam.CONT_START).Format('yyyy-MM-dd')))
+            ||
+            ((new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')))) {
+                iview.Message.info("免租结束日期需在租约有效期内!");
+                return false;
+            };
+        };
     };
 
     if (!editDetail.dataParam.ORGID) {

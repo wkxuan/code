@@ -71,17 +71,35 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
             );
         }
 
-        public UIResult UploadMap(string path)
+        public UIResult UploadMap()
         {
-            string uploadPath =
-                HttpContext.Request.MapPath(@"/BackMap") + "\\";
-            IOExtension.CheckPath(uploadPath,true);
-            return new UIResult(
-            new
+            var dirPath = HttpContext.Request.MapPath(@"/BackMap") + "\\";
+
+            var fileName = string.Empty;
+
+
+            if (this.Request.Files.Count > 0)
             {
-                uploadpath = uploadPath
+                var file = this.Request.Files[0];
+                fileName = GenerateFileName(file.FileName);
+
+                var filePath = dirPath + @"\" + fileName;
+                file.SaveAs(filePath);
             }
-        );
+
+
+
+            return null;
+        }
+
+        private string GenerateFileName(string filename)
+        {
+            const string nameFMT = "{0}_{1:X}{2}";
+
+            var nameWithoutExt = Path.GetFileNameWithoutExtension(filename);
+            var ext = Path.GetExtension(filename);
+
+            return string.Format(nameFMT, nameWithoutExt, DateTime.Now.Ticks, ext);
         }
         public UIResult GetBranch(BRANCHEntity Data)
         {

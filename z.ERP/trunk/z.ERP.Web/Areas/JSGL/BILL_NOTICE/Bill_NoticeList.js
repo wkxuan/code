@@ -7,6 +7,7 @@
         { title: "租约号", key: "CONTRACTID", width: 100, sortable: true },
         { title: "商户编码", key: "MERCHANTID", width: 105, sortable: true },
         { title: "商户名称", key: "MERCHANTNAME", width: 200 },
+        { title: "收费单位", key: "FEE_ACCOUNTNAME", width: 200 },
         { title: "分店编号", key: "BRANCHID", width: 90 },
         { title: "分店名称", key: "BRANCHNAME", width: 150 },
         { title: "登记人", key: "REPORTER_NAME", width: 90 },

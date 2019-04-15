@@ -266,7 +266,7 @@ namespace z.ERP.Services
             string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID from STATION S where 1=1 ";
 
             if (!Data.STATIONBH.IsEmpty())
-              sql += $" and S.STATIONBH = '{ Data.STATIONBH}'";
+                sql += $" and S.STATIONBH = '{ Data.STATIONBH}'";
 
             sql += " order by S.STATIONBH";
 
@@ -513,6 +513,21 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
+        }
+
+        public DataGridResult GetFeeAccount(SearchItem item)
+        {
+            string sql = $@"select * from fee_account where 1=1 ";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            sql += " order by ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public SHOPEntity SelectShop(string shop)
+        {
+            return DbHelper.Select(new SHOPEntity() { SHOPID = shop });
         }
     }
 

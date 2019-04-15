@@ -29,13 +29,12 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
             item.HasKey("STYLE", a => sql += $" and A.STYLE = '{a}'");
-            // item.HasArrayKey("HTLX", a => sql += $" and A.HTLX in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
             item.HasKey("HTLX", a => sql += $" and A.HTLX = {a}");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = {a}");
-            item.HasKey("SIGNER", a => sql += $" and A.SIGNER = {a}");
-            item.HasKey("REPORTER", a => sql += $" and A.SIGNER = {a}");
-            item.HasKey("VERIFY", a => sql += $" and A.SIGNER = {a}");
+            item.HasKey("SIGNER_NAME", a => sql += $" and A.SIGNER_NAME  LIKE '%{a}%'");
+            item.HasKey("REPORTER_NAME", a => sql += $" and A.REPORTER_NAME  LIKE '%{a}%'");
+            item.HasKey("VERIFY_NAME", a => sql += $" and A.VERIFY_NAME  LIKE '%{a}%'");
             item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=A.CONTRACTID and UPPER(U.CODE) LIKE '{a.ToUpper()}%')");
             item.HasKey("BRANDNAME", a => sql += $" and exists(select 1 from CONTRACT_BRAND P,BRAND U where  P.BRANDID=U.ID and P.CONTRACTID=A.CONTRACTID and UPPER(U.NAME) LIKE '{a.ToUpper()}%')");
             sql += " ORDER BY  D.SHOPDM";

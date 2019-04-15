@@ -58,6 +58,6 @@ search.mountedInit = function () {
 
 search.otherMethods = {
     orgChange: function (value, selectedData) {
-        search.searchParam.CATEGORYCODE = selectedData[selectedData.length-1].code;
+        search.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
     },
 }

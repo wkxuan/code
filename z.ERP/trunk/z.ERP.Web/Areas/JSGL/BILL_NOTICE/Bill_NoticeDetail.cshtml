@@ -83,6 +83,10 @@
     <i-col span="4">
         <i-input v-model="NIANYUE" readonly="true"></i-input>
     </i-col>
+    <i-col span="2" class="RowTitle">收费单位</i-col>
+    <i-col span="4">
+        <i-input v-model="FEE_ACCOUNTNAME" readonly="true"></i-input>
+    </i-col>
 </row>
 <row>
     <i-col span="2" class="RowTitle">备注</i-col>
@@ -115,6 +119,7 @@
                 CONTRACTID:"@billNotice.CONTRACTID",
                 MERCHANTNAME:"@billNotice.MERCHANTNAME",
                 DESCRIPTION:"@billNotice.DESCRIPTION",
+                FEE_ACCOUNTNAME:"@billNotice.FEE_ACCOUNTNAME",
                 colDef : [
                 { title: "账单号", key: 'FINAL_BILLID', width: 100},
                 { title: '债权发生月', key: 'NIANYUE', width: 100 },

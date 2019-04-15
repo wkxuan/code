@@ -33,26 +33,7 @@ namespace z.POS.Services
                 });
             }
         }
-
-        //public void SetDb(DbHelperBase db)
-        //{
-        //    _db = db;
-        //}
-        //DbHelperBase _db;
-
-        //public DbHelperBase DbHelper
-        //{
-        //    get
-        //    {
-        //        if (_db == null)
-        //        {
-        //            throw new Exception("初始化异常");
-        //        }
-        //        return _db;
-        //    }
-        //}
-        static readonly DbHelperBase _db = new OracleDbHelper(ConfigExtension.GetConfig("connection"));
-
+        
         #region Service  
         public CommonService CommonService
         {

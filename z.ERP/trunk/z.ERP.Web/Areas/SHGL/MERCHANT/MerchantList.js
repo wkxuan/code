@@ -1,7 +1,7 @@
 ﻿search.beforeVue = function () {
     search.searchParam.MERCHANTID = "";
     var col = [
-        { title: '状态', key: 'STATUSMC', width: 80 },
+       // { title: '状态', key: 'STATUSMC', width: 80 },
         { title: "商户代码", key: 'MERCHANTID', width: 105, sortable: true },
         { title: '商户名称', key: 'NAME', width: 200 },
         { title: '税号', key: 'SH', width: 100 },
@@ -15,7 +15,7 @@
         { title: '审核人', key: 'VERIFY_NAME', width: 90 },
         { title: '审核时间', key: 'VERIFY_TIME', width: 150, sortable: true },
     ];
-    
+
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "ShglService";
     search.method = "GetMerchant";

@@ -198,6 +198,20 @@
             }
         </i-col>
     </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            收费单位
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.FEE_ACCOUNTID",
+                    ServiceMothod = m => m.feeAccount()
+                });
+            }
+        </i-col>
+    </row>
 }
 
 

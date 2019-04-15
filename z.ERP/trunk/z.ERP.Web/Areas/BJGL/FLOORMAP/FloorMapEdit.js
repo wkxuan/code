@@ -44,18 +44,18 @@
     };
     editDetail.screenParam.map = $("#div_map").zMapPoint(editDetail.screenParam.options);
     //加载底图按钮的验证
-    editDetail.screenParam.LoadMap=function(){
-    if (editDetail.dataParam.BRANCHID == 0) {
-        iview.Message.info("请选择门店!");
-        return ;
-    };
+    editDetail.screenParam.LoadMap = function () {
+        if (editDetail.dataParam.BRANCHID == 0) {
+            iview.Message.info("请选择门店!");
+            return;
+        };
         if (editDetail.dataParam.REGIONID == 0) {
             iview.Message.info("请选择区域!");
-            return ;
+            return;
         };
         if (editDetail.dataParam.FLOORID == 0) {
             iview.Message.info("请选择楼层!");
-            return ;
+            return;
         };
 
         //if (tzbj != "" && tzbj != null) {
@@ -73,11 +73,11 @@
         //        }
         //    });
         //}
-            var dt = $("#fileQueue").html();
-            if ($.trim(dt) == "") {
-                iview.Message.info("请选择上传文件");
-                return false;
-            }
+        var dt = $("#fileQueue").html();
+        if ($.trim(dt) == "") {
+            iview.Message.info("请选择上传文件");
+            return false;
+        }
         //保存一些信息 分店 楼层
         var msg = fdbh + "_" + floorid;
         msg += "$" + $("#txtqdrq").val();
@@ -138,11 +138,10 @@
             for (var i = 0; i < data.dt.length; i++) {
                 editDetail.screenParam.regionData.push({ value: data.dt[i].REGIONID, label: data.dt[i].NAME })
             }
-            if (data.dt.length > 0)
-            {
+            if (data.dt.length > 0) {
                 editDetail.dataParam.REGIONID = data.dt[0].REGIONID;
             }
-            
+
         }
         else {
 
@@ -157,11 +156,10 @@
             for (var i = 0; i < data.dt.length; i++) {
                 editDetail.screenParam.floorData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
             }
-            if (data.dt.length>0)
-            {
+            if (data.dt.length > 0) {
                 editDetail.dataParam.FLOORID = data.dt[0].ID;
             }
-            
+
             //editDetail.showlist();
         }
         else {
@@ -183,8 +181,7 @@ editDetail.otherMethods = {
                 for (var i = 0; i < Data.dt.length; i++) {
                     editDetail.screenParam.regionData.push({ value: Data.dt[i].REGIONID, label: Data.dt[i].NAME })
                 }
-                if (Data.dt.length > 0)
-                {
+                if (Data.dt.length > 0) {
                     editDetail.dataParam.REGIONID = Data.dt[0].RGIONID;
                     //editDetail.searchParam.REGIONID = Data.dt[0].RGIONID;
                 }
@@ -202,8 +199,7 @@ editDetail.otherMethods = {
                 for (var i = 0; i < Data.dt.length; i++) {
                     editDetail.screenParam.floorData.push({ value: Data.dt[i].ID, label: Data.dt[i].NAME })
                 }
-                if (Data.dt.length > 0)
-                {
+                if (Data.dt.length > 0) {
                     editDetail.dataParam.FLOORID = Data.dt[0].ID;
                 }
                 //editDetail.showlist();
@@ -222,7 +218,7 @@ editDetail.otherMethods = {
         }
         if (editDetail.myve.disabled) {
             //editDetail.dataParam.SHOPID = "";
-             _.Ajax('GetFloor', {
+            _.Ajax('GetFloor', {
                 Data: { REGIONID: value }
             }, function (Data) {
                 if (Data.dt) {
@@ -248,22 +244,54 @@ editDetail.otherMethods = {
         //    //editDetail.showlist();
         //}
     },
-    beforeUpload :function (file) {
-        editDetail.screenParam.file = file;
-        editDetail.screenParam.filename = file.name;
+    beforeUpload: function (file) {
+        // editDetail.screenParam.file = file;
+        //editDetail.screenParam.filename = file.name;
+
+
         editDetail.dataParam.WIDTHS = 1200;
         editDetail.dataParam.LENGTHS = 600;
-        _.Ajax('UploadMap', {
-            Data: { path: '../../../BackMap' }
-        }, function (data) {
-            editDetail.screenParam.uploadpath = data.uploadpath;
-        });
-        editDetail.screenParam.loadingStatus = false;
+
+        let form = new window.FormData(),
+            fileObj = null;
+
+        if (typeof (file) === 'string') {
+            let fileDom = $('#' + file)[0];
+            if (fileDom) {
+                fileObj = fileDom.files[0];
+            }
+        } else {
+            fileObj = file;
+        }
+
+        form.append('file', fileObj);
+
+
+
+        let ajaxdata = {
+            url: __ControllerUrl + '\UploadMap',
+            type: 'post',
+            dataType: 'json',
+            contentType: false,
+            data: form,
+            processData: false,
+            async: false,
+            success: function (data) {
+            }
+        };
+        $.ajax(ajaxdata);
+
+        //_.Ajax('UploadMap', {
+        //    Data: { obj: form }
+        //}, function (data) {
+        //    editDetail.screenParam.uploadpath = data.uploadpath;
+        //});
+        //editDetail.screenParam.loadingStatus = false;
         return false;
     },
-    upload :function() {
+    upload: function () {
         editDetail.screenParam.loadingStatus = true;
-        setTimeout(function(){
+        setTimeout(function () {
             //editDetail.screenParam.file = null;
             editDetail.screenParam.mappath = 'BackMap/10.jpg'
             editDetail.screenParam.loadingStatus = false;
@@ -294,11 +322,11 @@ editDetail.IsValidSave = function () {
         //      && editDetail.dataParam.FLOORSHOP.filter(function (item) {
         //      return parseInt(item.SHOPCODE) === data[i].name;
         //}).length === 0)) {
-            var shop = {};
-            shop.SHOPCODE = data[i].name;
-            shop.P_X = data[i].x;
-            shop.P_Y = data[i].y;
-            editDetail.dataParam.FLOORSHOP.push(shop);
+        var shop = {};
+        shop.SHOPCODE = data[i].name;
+        shop.P_X = data[i].x;
+        shop.P_Y = data[i].y;
+        editDetail.dataParam.FLOORSHOP.push(shop);
         //}
     };
 

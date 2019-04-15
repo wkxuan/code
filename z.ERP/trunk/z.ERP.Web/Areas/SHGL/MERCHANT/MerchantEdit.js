@@ -13,7 +13,7 @@
     editDetail.screenParam.Orgid = [];
 
     editDetail.screenParam.colDef = [
-    { type: 'selection', width: 60, align: 'center'},
+    { type: 'selection', width: 60, align: 'center' },
     {
         title: "品牌代码", key: 'BRANDID', width: 100,
         render: function (h, params) {
@@ -112,7 +112,7 @@ editDetail.showOne = function (data, callback) {
     }, function (data) {
         $.extend(editDetail.dataParam, data.merchant);
         editDetail.dataParam.BILLID = data.merchant.MERCHANTID;
-        editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand;   
+        editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand;
         callback && callback(data);
     });
 }
@@ -141,9 +141,12 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请商户名称!");
         return false;
     };
-    
 
-     for (var i = 0; i < editDetail.dataParam.MERCHANT_BRAND.length; i++) {
+    if (editDetail.dataParam.MERCHANT_BRAND.length == 0) {
+        iview.Message.info("请维护品牌!");
+        return false;
+    };
+    for (var i = 0; i < editDetail.dataParam.MERCHANT_BRAND.length; i++) {
         if (!editDetail.dataParam.MERCHANT_BRAND[i].BRANDID) {
             iview.Message.info("请确定品牌!");
             return false;

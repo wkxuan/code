@@ -28,9 +28,10 @@ namespace z.ERP.Services
 
         public LoginConfigInfo GetConfig()
         {
-            string sql = " select S.BRANCHID,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,G.PID,G.ENCRYPTION,G.KEY,G.KEY_PUB"
-                       + " from STATION S, POSO2OWFTCFG G, SHOP P"
-                       + " where S.STATIONBH = G.POSNO(+)"
+            string sql = " select S.BRANCHID,B.CRMSTORECODE,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,G.PID,G.ENCRYPTION,G.KEY,G.KEY_PUB"
+                       + " from BRANCH B,STATION S, POSO2OWFTCFG G, SHOP P"
+                       + " where B.ID= S.BRANCHID"
+                       + " AND S.STATIONBH = G.POSNO(+)"
                        + " AND S.SHOPID = P.SHOPID(+)"
                        + $" AND S.STATIONBH = '{employee.PlatformId}'";
 
@@ -528,7 +529,7 @@ namespace z.ERP.Services
 
             // int iDataType = UniCode_Json;
             int iHTH = 0;
-            string Shop = reqMth.branchID.ToString().PadLeft(3, '0');
+            string Shop = reqMth.storeCode;
             string posNo = employee.PlatformId, userCode = employee.Code,
                  cardCodeToCheck = "", verifyCode = "", password = "",
                  CondValue = "", sVIPCode = "", sDeptCode = "";
@@ -1591,7 +1592,7 @@ namespace z.ERP.Services
             List<Payment> DevicePayments = new List<Payment>();
 
             string Device = employee.PlatformId;
-            string shop = reqMth.branchID.ToString().PadLeft(3, '0') ;
+            string shop = reqMth.storeCode ;
 
             ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
             crmSoapHeader.UserId = "CRMUSER";
@@ -1768,6 +1769,582 @@ namespace z.ERP.Services
             return result;
         }
 
+
+        public GetMemberCardDetailsResult GetMemberInfo(ReqMemberCard reqMC)
+        {
+            string msg="";
+            string Device = employee.PlatformId;
+            string Shop = reqMC.storeCode;
+            GetMemberCardDetailsResult desc = new GetMemberCardDetailsResult();
+
+          //  int iDataType = UniCode_Json;
+            MemberCard vipcard = new MemberCard();
+            CashCardDetails cashCard = new CashCardDetails();
+            List<CouponDetails> ListCoupon = new List<CouponDetails>();
+            
+
+            int result = -1;
+            result = DoUniGetMemberInfo(Device, Shop, reqMC, out vipcard, out cashCard, out ListCoupon, out msg);
+
+         //   CommonUtils.WriteSKTLog(1, Device, "取会员信息<5.1.1> 准备汇总结果 ");
+
+            if (ListCoupon == null)
+                ListCoupon = new List<CouponDetails>();
+
+            GetMemberDetails(Device, result, msg, vipcard, cashCard, ListCoupon, out desc);
+
+          //  if (iDataType == UniCode_Json)
+          //      sOut = MethodInput.Serialize(desc);
+          //  else
+          //      sOut = MethodInput.XmlSerialize2(desc);
+         //   CommonUtils.WriteSKTLog(1, Device, "取会员信息:输出:" + sOut);
+
+            return desc;
+        }
+
+        public int DoUniGetMemberInfo(string Device, string Shop, ReqMemberCard reqMth,
+            out MemberCard vipcard, out CashCardDetails cashCard, out List<CouponDetails> ListCoupon, out string msg)
+        {
+            msg = "";
+          //  string input = "功能:取会员信息<DoUniGetMemberInfo>: 设备号码:" + Device + "  店:" + Shop + "  输入:" + sInput;
+          //  CommonUtils.WriteSKTLog(0, Device, input);
+
+            string phoneCode = "", cardCode = "", cardCodeToCheck = "", verifyCode = "",
+                password = "", CondValue = "", ValidIDType = "", ValidID = "", sTitle = "功能:取会员信息";
+            // MobilePhone = "", MemberCard = "",
+            //  string ProjectName = "", subProjectName = "";
+            //  ProjectName = CommonUtils.GetReqStr(ErpProc.SetConfig_ProjectName);
+            //  subProjectName = CommonUtils.GetReqStr(ErpProc.SetConfig_SubProjectName);
+
+            //  int iDataType = UniCode_Json;
+            int result = -1, i = 0, j = 0;
+            List<Payment> DevicePayments = new List<Payment>();
+
+            vipcard = new MemberCard();
+            cashCard = new CashCardDetails();
+            ListCoupon = new List<CouponDetails>();
+
+            //1.1:检查基本输入数据
+
+            if (Shop.Equals(""))
+            {
+             //   result = RsltCode_Wrong_Para;
+                msg = "数据检查失败：<取会员信息> 店号为空";
+                return result;
+            }
+
+
+            if (Device.Equals(""))
+            {
+                msg = "数据检查失败：<取会员信息> 设备号为空";
+             //   result = RsltCode_Wrong_Para;
+                return result;
+            }
+
+         //   input = "功能:取会员信息<1.1>: 准备转换输入数据:" + input;
+         //   CommonUtils.WriteSKTLog(1, Device, "取会员信息:" + input);
+
+            //1.2:Json分解输入
+           // ReqMemberCard reqMth = new ReqMemberCard();
+
+            try
+            {
+
+               // if (reqMth.memberNo == null)
+                //    reqMth.memberNo = "";
+               // if (reqMth.mobilePhone == null)
+               //     reqMth.mobilePhone = "";
+                if (reqMth.validType == null)
+                    reqMth.validType = "";
+                if (reqMth.validID == null)
+                    reqMth.validID = "";
+              //  if (reqMth.couponPassword == null)
+              //      reqMth.couponPassword = "";
+
+             //   MobilePhone = reqMth.mobilePhone;
+             //   MemberCard = reqMth.memberNo;
+                ValidID = reqMth.validID;
+                ValidIDType = reqMth.validType;
+
+             //   if (MobilePhone.Equals("") && MemberCard.Equals("") && ValidID.Equals(""))
+             //   {
+             //       msg = "数据检查失败：<取会员信息2> 输入为空";
+                  //  result = RsltCode_Wrong_Para;
+             //       return result;
+            //    }
+
+            }
+            catch (Exception e)
+            {
+                msg = "数据检查失败：传入参数失败:" + e.Message;
+             //   result = RsltCode_Wrong_Para;
+                return result;
+            }
+
+
+       //     input = "功能:取会员信息<1.2>: 输入数据:" + input + " 各项:设备号:" + Device + " 电话:" + phoneCode + " 卡号:" + cardCode;
+       //     CommonUtils.WriteSKTLog(1, Device, "取会员信息:" + input);
+
+
+            Stopwatch st = new Stopwatch();
+
+            try
+            {
+                st.Start();
+
+                //2.1: 取收款台 
+                //CommonUtils.WriteInputLogBySKT(1, posNo, "计算销售价格<1>", "第一步:取收款台");
+
+                //result = DoCheckStation(posNo, sMac, out msg);
+
+                //if (result != 0)
+                //{
+                //     CommonUtils.WriteInputLogBySKT(1, posNo, "取会员信息<1.3>", "查询数据定义失败：没有定义这个设备号:" + posNo);
+                //    return UniMakeStrMemberInfo(iDataType, RsltCode_Wrong_Para, "取会员信息失败：没有定义这个设备号:" + posNo, "", transId, vipcard, cashCard, ListCoupon);//02
+                // }
+
+
+              //  CommonUtils.WriteSKTLog(1, Device, sTitle + "<2.2.1> 取:收款台的收款方式:" + Device);
+                result = DoGetPayments(Device, out DevicePayments, out msg);
+                if (result != 0)
+                {
+                  //  CommonUtils.WriteSKTLog(1, Device, sTitle + "<4.2.1> 取收款方式失败:" + msg);
+                  //  result = RsltCode_Wrong_Calc;
+                    msg = sTitle + "失败:" + msg;
+                    return result;
+                }
+
+                //   string sCrmVer = ProcCRMFunc.GetCrmVer();
+                //   CommonUtils.WriteSKTLog(1, Device, "[2018.07.05]取会员信息<2.1> 准备取会员定义 CRM的类型[ " + sCrmVer + "] ");
+
+                //2.2:如果有会员.则取会员2017.06.16        
+                //0：磁道内容，1: 会员卡ID ,2：卡号,3:手机号，4：身份证号                 
+                int iMemberType = ValidIDType.ToInt();
+
+                GetMemberInfo(iMemberType, ValidID, out vipcard, out msg);
+
+                /*  iMemberType = Member_CondType_CDNR;
+                  if (ValidIDType.Equals(Member_CondTypeName_SFZ))
+                      iMemberType = Member_CondType_SFZBH;
+                  else if (ValidIDType.Equals(Member_CondTypeName_HZ))
+                      iMemberType = Member_CondType_SFZBH;
+                  else if (ValidIDType.Equals(Member_CondTypeName_CardNo))
+                      iMemberType = Member_CondType_HYK_NO;
+                  else if (ValidIDType.Equals(Member_CondTypeName_HYID))
+                      iMemberType = Member_CondType_HYID;
+                  else if (ValidIDType.Equals(Member_CondTypeName_Track))
+                      iMemberType = Member_CondType_CDNR;
+                  else if (ValidIDType.Equals(Member_CondTypeName_Phone))
+                      iMemberType = Member_CondType_SJHM;
+                  else if (ValidIDType.Equals(Member_CondTypeName_qrcode))
+                      iMemberType = Member_CondType_qrcode; */
+
+                //    CommonUtils.WriteSKTLog(1, Device, "取会员信息<2.5.1> [2017.06.16_现2018.07.09] 按证件号3 取定义< " + ValidID +
+                //        " 输入类型:" + ValidIDType + " 确定类型:" + iMemberType + " Sub项目:" + subProjectName +
+                //        " CRM的类型[ " + sCrmVer + "] ");
+
+
+                /*  if (ErpProc.SubProjectName_HNDT.Equals(subProjectName))
+                  {
+                      if (iMemberType == Member_CondType_qrcode)
+                      {
+                          CommonUtils.WriteSKTLog(1, Device, "取会员信息<2.5.2.2> 2017.10.02 按电子会员 解码前< " + ValidID +
+                            " 输入类型:" + ValidIDType + " 确定类型:" + iMemberType);
+
+
+                          ValidID = CommonUtils.QRCodeDesString(Device, ValidID);
+
+                          CommonUtils.WriteSKTLog(1, Device, "取会员信息<2.5.2.3> 2017.10.02 按电子会员 解码后<" + ValidID +
+                            "> 输入类型:" + ValidIDType + " 确定类型:" + iMemberType);
+                          if (string.IsNullOrEmpty(ValidID))
+                              ValidID = "";
+                          if ("".Equals(ValidID))
+                          {
+                              CommonUtils.WriteSKTLog(1, Device, sTitle + "<4.2.2> 电子会员号解析错误:" + msg);
+                              result = RsltCode_Wrong_Calc;
+                              msg = sTitle + "失败:" + msg;
+                              return result;
+                          }
+                          iMemberType = Member_CondType_HYK_NO;
+                          CommonUtils.WriteSKTLog(1, Device, "取会员信息<2.5.2.5> 2017.10.02 按电子会员 解码后<" + ValidID +
+                            "> 输入类型:" + ValidIDType + " 转变类型为CDNR 确定类型:" + iMemberType);
+                      }
+                  }
+
+                  if (sCrmVer == ProcCRMFunc.CRMVER_PC_HSMZ.ToUpper())
+                  {
+                      CommonUtils.WriteSKTLog(1, Device, "取会员信息<2.5.2.1> 2018.07.05 如果类型是5,则按0处理  定义< " + iMemberType + ">");
+                      if (iMemberType == Member_CondType_qrcode)
+                      {
+                          iMemberType = Member_CondType_CDNR;
+                          CommonUtils.WriteSKTLog(1, Device, "取会员信息<2.5.2.2> 2018.07.05 处理后定义< " + iMemberType + ">");
+                      }
+                  } */
+
+                //   if (iMemberType == 3)  //手机号 
+                //       GetMemberInfo(ValidID, out vipcard, out msg);
+                //   else
+                //       GetMemberInfo(iMemberType, ValidID, out vipcard, out msg);
+                //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<2.5.2> 取定义完成 提示:" + msg);
+                //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<2.5.3> 取到的信息: " + MethodInput.Serialize(vipcard));
+                /*if (vipcard.id <= 0)
+                {                    
+                    msg = "取会员信息失败" + msg;
+                    result = RsltCode_Wrong_NoMember;
+                    return result;
+                }*/
+
+
+                string sCouponCode = "";
+                int iServerID = 0, iCouponVIPID = 0;
+                bool bGetCash = false, bGetCoupon = false, bRight = false;
+                //2.3取CZK信息
+                if (vipcard.id > 0)
+                {
+                    cardCodeToCheck = ""; verifyCode = ""; password = ""; CondValue = Convert.ToString(vipcard.id);
+                  //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<3.2.1.1> 有会员号码_处理储值卡 ");
+                    bGetCash = GetCashCardInfo(1, CondValue, Shop, cardCodeToCheck, verifyCode, password, out cashCard, out msg);
+
+                   // CommonUtils.WriteSKTLog(1, Device, sTitle + "<3.2> 完成取储值卡 ID:" + cashCard.cardId + " No:" + cashCard.cardNo + " 计数:" + DevicePayments.Count);
+                    int iPayID = -1;
+                    string sPayName = "";
+                    GetCashCardPayID(ref iPayID, ref sPayName, out msg);
+                    if (iPayID > 0)
+                    {
+                        cashCard.payID = iPayID;
+                    }
+
+                  //  string sCounpPwd = "";
+                  //  sCounpPwd = reqMth.couponPassword;
+                   // CommonUtils.WriteSKTLog(1, Device, "取会员信息<3.2.1.2> 有会员号码_处理优惠券 券密码:" + sCounpPwd);
+                    bGetCoupon = GetVipCouponShow(Device, 1, CondValue, Shop, cardCodeToCheck, verifyCode,// sCounpPwd,
+                        iServerID, out ListCoupon, out iCouponVIPID, out sCouponCode, out msg);
+
+                    if (bGetCoupon)
+                        DoGetCouponPayments(DevicePayments, ref ListCoupon, ref msg);
+
+                    msg = "取会员信息成功";
+                  //  result = RsltCode_Success;
+
+                  //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<3.3.1.3> 有会员号码_准备返回 " + msg);
+
+                    return result;
+                }
+                else
+                {
+
+                    iMemberType = 2;  //卡号
+                    cardCodeToCheck = ""; verifyCode = ""; password = ""; CondValue = ValidID;
+                  //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<3.2.2.1> 无会员ID_处理储值卡 ");
+                    bGetCash = GetCashCardInfo(iMemberType, CondValue, Shop, cardCodeToCheck, verifyCode, password,
+                        out cashCard, out msg);
+
+                  //  CommonUtils.WriteSKTLog(1, Device, sTitle + "<3.2> 完成取储值卡 ID:" + cashCard.cardId + " No:" + cashCard.cardNo + " 计数:" + DevicePayments.Count);
+                    //收CZK所用的收款方式ID  
+                    if ((cashCard.cardId > 0) && (!cashCard.cardNo.Equals("")))
+                    {
+                        for (i = 0; i < DevicePayments.Count; i++)
+                        {
+                         //   CommonUtils.WriteSKTLog(1, Device, sTitle + "<3.2> Type:" + DevicePayments[i].TypeCode + " 设置:" + SKFSTYPECODE_MONEYCARD);
+
+                            if (DevicePayments[i].TypeCode == "2")
+                            {
+                                cashCard.payID = DevicePayments[i].Id;
+                                break;
+                            }
+                        }
+                    }
+
+                   // string sCounpPwd = "";
+                   // sCounpPwd = reqMth.couponPassword;
+                 //   CommonUtils.WriteSKTLog(1, Device, "取会员信息<3.2.2.2> 无会员ID_处理优惠券  券密码:" + sCounpPwd);
+                    bGetCoupon = GetVipCouponShow(Device, iMemberType, CondValue, Shop, cardCodeToCheck, verifyCode,
+                         iServerID, out ListCoupon, out iCouponVIPID, out sCouponCode, out msg);
+
+                    if (bGetCoupon)
+                        DoGetCouponPayments(DevicePayments, ref ListCoupon, ref msg);
+
+                    if ((bGetCash) || (bGetCoupon))
+                        bRight = true;
+                    if (bRight)
+                    {
+                        msg = "取会员信息成功";
+                        return result;
+                    }
+                    else
+                    {
+                        msg = "取会员信息失败";
+                        return result;
+                    }
+
+                }
+            }
+            finally
+            {
+                st.Stop();
+            }
+
+            return result;
+        }
+
+
+        public int GetMemberDetails(string Device, int iCode, string sPrompt,
+            MemberCard sourVipcard,
+            CashCardDetails sourCashCard, List<CouponDetails> sourCoupons,
+            out GetMemberCardDetailsResult desc)
+        {
+            int i = 0;
+
+         //   CommonUtils.WriteSKTLog(1, Device, "取会员信息<6.1> 汇总结果 ");
+
+            //1.1：创建变量
+            desc = new GetMemberCardDetailsResult();
+
+            VipCard vipcard = new VipCard();
+            CashCard cashCard = new CashCard();
+            List<CouponDetails> ListCoupon = new List<CouponDetails>();
+
+        //    CommonUtils.WriteSKTLog(1, Device, "取会员信息<6.2> 汇总结果 ");
+
+            desc.code = iCode;
+            desc.text = sPrompt;
+            desc.MemberInfo = new MemberCard();
+            desc.CashCard = new CashCardDetails();
+            desc.CouponList = new List<CouponDetails>();
+
+         //   CommonUtils.WriteSKTLog(1, Device, "取会员信息<6.3> 汇总结果 ");
+
+            if (iCode != 0)
+                return -1;
+
+
+          //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<6.4> 汇总会员: " + MethodInput.Serialize(sourVipcard));
+            //2.1:会员相关
+            IniMemberCard(out desc.MemberInfo);
+            if (sourVipcard.memberNo != null)
+            {
+                desc.MemberInfo.id = sourVipcard.id;
+                desc.MemberInfo.memberNo = sourVipcard.memberNo;
+                desc.MemberInfo.memberType = sourVipcard.memberType;
+                desc.MemberInfo.totalCent = sourVipcard.totalCent.ToString();
+                desc.MemberInfo.ticketCent = "";
+
+             //   CommonUtils.WriteSKTLog(1, Device, "取会员信息<6.5> 汇总结果 ");
+
+                desc.MemberInfo.name = sourVipcard.name;
+                desc.MemberInfo.mobilePhone = sourVipcard.mobilePhone;
+                desc.MemberInfo.sex = sourVipcard.sex;
+                desc.MemberInfo.validType = sourVipcard.validType;
+                desc.MemberInfo.validID = sourVipcard.validID;
+                desc.MemberInfo.validity = sourVipcard.validity;
+                desc.MemberInfo.memberTypeName = sourVipcard.memberTypeName;
+            }
+
+            if (sourCashCard.cardNo != null)
+            {
+              //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<6.6> 汇总储值: " + MethodInput.Serialize(sourCashCard));
+                //2.2储值相关
+                desc.CashCard.cardId = sourCashCard.cardId;
+                desc.CashCard.cardNo = sourCashCard.cardNo;
+                desc.CashCard.amount = Convert.ToInt32(sourCashCard.amount * 1);//100
+                desc.CashCard.useMoney = 0;
+                desc.CashCard.payID = sourCashCard.payID;
+            }
+
+          //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<6.7> 汇总优惠券: " + MethodInput.Serialize(sourCoupons));
+            //2.3:券相关
+            if ((sourCoupons != null) && (sourCoupons.Count > 0))
+            {
+              //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<6.8> 汇总结果 ");
+                CouponDetails Coupon;
+                for (i = 0; i < sourCoupons.Count; i++)
+                {
+                    bool bHave = false;
+             //       CommonUtils.WriteSKTLog(1, Device, "取会员信息<6.9> 汇总结果 ");
+                    Coupon = new CouponDetails();
+
+                    bHave = true;
+                    if (string.IsNullOrEmpty(sourCoupons[i].payID))
+                        bHave = false;
+                    else if (sourCoupons[i].payID.Equals(""))
+                        bHave = false;
+                    if (!bHave)
+                        continue;
+
+
+                    AssignCouponDetails(sourCoupons[i], out Coupon);
+                    desc.CouponList.Add(Coupon);
+                }
+            }
+
+          //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<6.10> 汇总结果 ");
+            return 0;
+        }
+
+        public static int IniMemberCard(out MemberCard sour)
+        {
+            sour = new MemberCard();
+            sour.id = 0;
+            sour.memberNo = "";
+            sour.memberType = 0;
+            sour.memberTypeName = "";
+            sour.mobilePhone = "";
+            sour.name = "";
+            sour.sex = "";
+            sour.ticketCent = "";
+            sour.totalCent = "";
+            sour.validID = "";
+            sour.validity = "";
+            sour.validType = "";
+            return 0;
+        }
+
+        private static bool AssignCouponDetails(CouponDetails Sour, out CouponDetails desc)
+        {
+            desc = new CouponDetails();
+            desc.amount = Sour.amount;
+            desc.amountCanUse = Sour.amountCanUse;
+            desc.cardId = Sour.cardId;
+            desc.cardNo = Sour.cardNo;
+            desc.couponId = Sour.couponId;
+            desc.couponName = Sour.couponName;
+            desc.couponType = Sour.couponType;
+            desc.payID = Sour.payID;
+            desc.payName = Sour.payName;
+            desc.returnMoney = Sour.returnMoney;
+            desc.useMoney = Sour.useMoney;
+            desc.valid_date = Sour.valid_date;
+            return true;
+        }
+
+        public bool GetVipCouponShow(string Device, int iCondType, string sCondValue, string sStoreCode,
+            string sCheck, string sVerify, int iServerID,
+            out List<CouponDetails> publicListCoupon, out int iVIPID, out string sVIPCode, out string msg)
+        {
+            int i = 0;
+            bool result = false;
+            bool bNeedDate = true;
+            msg = "";
+
+            iVIPID = -1;
+            sVIPCode = "";
+
+
+         //   CommonUtils.WriteSKTLog(1, Device, "查询优惠券<1.1> [GetVipCouponShow_UniWS] : CondType:" + iCondType + " StoreCode:" + sStoreCode +
+         //      "  Check " + sCheck.ToString() + " Verify:" + sVerify + " CondValue:" + sCondValue
+         //       );
+
+            string CRMUSer = "CRMUSER", CRMPwd = "CRMUSER";
+          //  CRMUSer = CommonUtils.GetReqStr("CRMUser");
+         //   CRMPwd = CommonUtils.GetReqStr("CRMPwd");
+
+            publicListCoupon = new List<CouponDetails>();
+
+
+            Coupon[] PayCoupon;
+
+            if (sCondValue.Equals(""))
+                return result;
+
+            PayCoupon = new Coupon[100];
+
+            try
+            {
+                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                crmSoapHeader.UserId = CRMUSer; 
+                crmSoapHeader.Password = CRMPwd;
+
+                //   CommonUtils.WriteSKTLog(1, Device, "查询优惠券<1.2> " + " 准备调用[CRM_GetVipCoupon]");
+
+                //    PosWebServiceSoapClient client = client = new PosWebServiceSoapClient();
+
+                GetVipCouponRequest req = new GetVipCouponRequest();
+
+                req.ABCSoapHeader = crmSoapHeader;
+                req.condType = iCondType;
+                req.condValue = sCondValue;
+                req.storeCode = sStoreCode;
+                req.cardCodeToCheck = sCheck;
+                req.verifyCode = sVerify;
+                req.requireValidDate = bNeedDate;
+
+
+                 GetVipCouponResponse rep = PosAPI.GetVipCoupon(req);
+
+                result = rep.GetVipCouponResult;
+
+
+                if (!result) return result;
+
+                msg = rep.msg;
+                iVIPID = rep.vipId;
+                sVIPCode = rep.vipCode;
+                PayCoupon = rep.coupons;
+
+
+
+
+                //      result = GetVipCoupon(crmSoapHeader, iCondType, sCondValue, sCheck, sVerify, sStoreCode,
+                //         bNeedDate, out msg, out iVIPID, out sVIPCode, out PayCoupon);
+
+                //   CommonUtils.WriteSKTLog(1, Device, "查询优惠券<2.1> " + " 完成调用[CRM_GetVipCoupon]");
+
+                //   string sValue = "";
+                //   sValue = MethodInput.Serialize(PayCoupon);
+
+                //   CommonUtils.WriteSKTLog(1, Device, "查询优惠券<2.2.2> " + " 返回的数据 " +
+                //       " iVIPID: " + iVIPID +
+                //       " sVIPCode: " + sVIPCode +
+                //       " msg: " + msg +
+                //       " PayCoupon: " + sValue
+                //       );
+
+
+
+                publicListCoupon.Clear();
+                CouponDetails CouponItem;
+                Coupon CurCoupon;
+
+             //   CommonUtils.WriteSKTLog(1, Device, "查询优惠券<2.2.3> ");
+
+                for (i = 0; i < PayCoupon.Length; i++)
+                {
+                    CurCoupon = PayCoupon[i];
+
+               //     CommonUtils.WriteSKTLog(1, Device, "查询优惠券<2.2.5> ");
+
+                    if ((CurCoupon.CouponType >= 0) && (!CurCoupon.CouponTypeName.Equals("")))
+                    {
+               //         CommonUtils.WriteSKTLog(1, Device, "查询优惠券<2.2.6> ");
+                        CouponItem = new CouponDetails();
+                        CouponItem.cardId = iVIPID;
+                        CouponItem.cardNo = sVIPCode;
+                        CouponItem.couponId = CurCoupon.CouponType;
+                        CouponItem.couponName = CurCoupon.CouponTypeName;
+                        CouponItem.couponType = CurCoupon.CouponType;
+                        CouponItem.amount = Convert.ToInt32(CurCoupon.Balance * 100);
+                        CouponItem.amountCanUse = CouponItem.amount;
+                        //CouponItem.valid_date = CurCoupon.
+                        CouponItem.returnMoney = 0;
+                        CouponItem.payID = "";
+
+
+                        publicListCoupon.Add(CouponItem);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                result = false;
+                msg = "查询优惠券失败:" + msg + " " + e.Message;
+            }
+
+            return result;
+        }
+
+
+
+
         public bool GetMemberInfo(int iMemberType, string MemberCardID, out MemberCard memberCard, out string msg)
         {
             bool result = false;
@@ -1929,7 +2506,7 @@ namespace z.ERP.Services
 
         public ConfirmDealResult ConfirmDeal(ReqConfirmDeal ReqConfirm)
         {
-            string Shop = ReqConfirm.branchID.ToString().PadLeft(3,'0');   //
+            string Shop = ReqConfirm.storeCode;   //
             string Device = employee.PlatformId;
             string Operator = employee.Code;
             string msg = "";
@@ -2818,6 +3395,29 @@ namespace z.ERP.Services
             {
                 st.Stop();
             }
+
+
+            //保存ERP销售数据
+
+       /*     SaleRequest saleReq = new SaleRequest();
+            
+
+
+
+
+            try
+            {
+                Sale(saleReq);
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception("保存erp销售数据出错:" + e);
+            }
+
+            
+            */
+
 
 
             return confirmResult;
