@@ -90,17 +90,17 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = " ";
             return View();
         }
-        public UIResult SearchFloorMapData(FLOORMAPEntity Data)
-        {
-            var res = service.DpglService.GetFLOORMAPDATA(Data);
-            return new UIResult(
-                new
-                {
-                    floormap = res.Item1,
-                    floorshopdata = res.Item2
-                }
-            );
-        }
+        //public UIResult SearchFloorMapData(FLOORMAPEntity Data)
+        //{
+        //    var res = service.DpglService.GetFLOORMAPDATA(Data);
+        //    return new UIResult(
+        //        new
+        //        {
+        //            floormap = res.Item1,
+        //            floorshopdata = res.Item2
+        //        }
+        //    );
+        //}
     }
 
 }

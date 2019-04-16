@@ -333,4 +333,11 @@ namespace z.ERP.Entities.Enum
         MD5 = 1,
         RSA = 2
     }
+    public enum 布局图状态    
+    {
+        未审核 = 1,
+        审核 = 3,
+        终止=4,
+        作废=5
+    }
 }

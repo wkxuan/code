@@ -49,6 +49,14 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
+        ///文件名称
+        /// <summary>
+        [Field("文件名称")]
+        public string FILENAME
+        {
+            get; set;
+        }
+        /// <summary>
         ///图纸宽度
         /// <summary>
         [Field("图纸宽度")]
@@ -181,6 +189,13 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-
+        /// <summary>
+        /// 调整标记
+        /// <summary>
+        [Field("调整标记")]
+        public string TZBJ
+        {
+            get; set;
+        }
     }
 }

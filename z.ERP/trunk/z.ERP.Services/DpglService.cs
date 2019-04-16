@@ -324,7 +324,7 @@ namespace z.ERP.Services
             {
                 throw new LogicException("请确认图纸编号!");
             }
-            string sql = $@"SELECT * FROM FLOORMAP WHERE 1=1 ";
+            string sql = $@"SELECT P.*,R.REGIONID,R.NAME FLOORNAME,N.BRANCHID,N.NAME REGIONNAME,H.NAME BRANCHNAME FROM FLOORMAP P,FLOOR R,REGION N ,BRANCH H WHERE P.FLOORID=R.ID AND R.REGIONID=N.REGIONID AND N.BRANCHID=H.ID ";
             if (!Data.MAPID.IsEmpty())
                 sql += (" AND MAPID= " + Data.MAPID);
             DataTable floormap = DbHelper.ExecuteTable(sql);
@@ -426,6 +426,54 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
+        }
+
+        /// <summary>
+        /// 详情页的审核
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public string ExecData(FLOORMAPEntity Data)
+        {
+            FLOORMAPEntity map = DbHelper.Select(Data);
+            if (map.STATUS == ((int)布局图状态.审核).ToString())
+            {
+                throw new LogicException("图纸(" + Data.MAPID + ")已经审核不能再次审核!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                map.VERIFY = employee.Id;
+                map.VERIFY_NAME = employee.Name;
+                map.VERIFY_TIME = DateTime.Now.ToString();
+                map.STATUS = ((int)布局图状态.审核).ToString();
+                DbHelper.Save(map);
+                Tran.Commit();
+            }
+            return map.MAPID;
+        }
+
+        /// <summary>
+        /// 详情页的作废
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public string EliminateData(FLOORMAPEntity Data)
+        {
+            FLOORMAPEntity map = DbHelper.Select(Data);
+            if (map.STATUS == ((int)布局图状态.作废).ToString())
+            {
+                throw new LogicException("图纸(" + Data.MAPID + ")已经作废不能再次作废!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                map.VERIFY = employee.Id;
+                map.VERIFY_NAME = employee.Name;
+                map.VERIFY_TIME = DateTime.Now.ToString();
+                map.STATUS = ((int)布局图状态.作废).ToString();
+                DbHelper.Save(map);
+                Tran.Commit();
+            }
+            return map.MAPID;
         }
 
     }

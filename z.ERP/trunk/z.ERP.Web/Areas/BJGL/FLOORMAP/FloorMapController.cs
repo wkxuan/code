@@ -32,12 +32,12 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
         }
 
 
-        public ActionResult Detail(string Id)
+        public ActionResult FloorMapDetail(string Id)
         {
-            ViewBag.Title = "商户信息浏览";
-            var entity = service.ShglService.GetMerchantElement(new MERCHANTEntity(Id));
-            ViewBag.merchant = entity.Item1;
-            ViewBag.merchantBrand = entity.Item2;
+            ViewBag.Title = "楼层图纸信息浏览";
+            var res = service.DpglService.GetFloorMapElement(new FLOORMAPEntity(Id));
+            ViewBag.floorMap = res.Item1;
+            ViewBag.floorShop = res.Item2;
             return View();
         }
 
@@ -61,7 +61,7 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
         }
         public UIResult SearchFloorMap(FLOORMAPEntity Data)
         {
-            var res = service.DpglService.GetFLOORMAPElement(Data);
+            var res = service.DpglService.GetFloorMapElement(Data);
             return new UIResult(
                 new
                 {
@@ -76,20 +76,22 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
             var dirPath = HttpContext.Request.MapPath(@"/BackMap") + "\\";
 
             var fileName = string.Empty;
-
+            var filePath = string.Empty;
 
             if (this.Request.Files.Count > 0)
             {
                 var file = this.Request.Files[0];
                 fileName = GenerateFileName(file.FileName);
 
-                var filePath = dirPath + @"\" + fileName;
+                filePath = dirPath + @"\" + fileName;
                 file.SaveAs(filePath);
             }
-
-
-
-            return null;
+            return new UIResult(
+                new
+                {
+                    uploadFileName = fileName,
+                    uploadPath = filePath
+                });
         }
 
         private string GenerateFileName(string filename)
@@ -114,14 +116,15 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
             return new UIResult(service.DataService.GetFloor(Data));
         }
         [Permission("10200102")]
-        public void ExecData(MERCHANTEntity Data)
+        public void ExecData(FLOORMAPEntity Data)
         {
-            service.ShglService.ExecData(Data);
+            service.DpglService.ExecData(Data);
+        }
+        [Permission("10200102")]
+        public void EliminateData(FLOORMAPEntity Data)
+        {
+            service.DpglService.EliminateData(Data);
         }
 
-        public string Output(string Id)
-        {
-            return service.ShglService.Output(Id);
-        }
     }
 }

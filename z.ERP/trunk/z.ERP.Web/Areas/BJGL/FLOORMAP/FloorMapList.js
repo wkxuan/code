@@ -34,8 +34,8 @@ search.modHref = function (row, index) {
 search.browseHref = function (row, index) {
     _.OpenPage({
         id: 10200102,
-        title: '浏览商户信息',
-        url: "SHGL/MERCHANT/Detail/" + row.MAPID
+        title: '浏览图纸信息',
+        url: "BJGL/FLOORMAP/FloorMapDetail/" + row.MAPID
     });
 };
 
