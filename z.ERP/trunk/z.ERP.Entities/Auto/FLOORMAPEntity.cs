@@ -200,7 +200,6 @@ namespace z.ERP.Entities
         /// <summary>
         /// 原图纸编号
         /// <summary>
-        [PrimaryKey]
         [Field("原图纸编号")]
         public string MAPID_OLD
         {

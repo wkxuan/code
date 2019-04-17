@@ -1,0 +1,156 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Detail;
+@using z.ERP.Entities;
+@using z.Extensions;
+@using z.ERP.Entities.Enum
+@using System.Data
+@inherits DetailLayout<dynamic>
+@section head{
+    @InitFiles(new string[] {
+    "/Content/Maps/contextMenu.css",
+    "/Content/Maps/contextMenu.min.js",
+    "/Content/Maps/zMapPoint.css",
+    "/Content/Maps/zMapPoint.js"
+});
+}
+@{
+    var floorMap = ViewBag.floorMap;
+    //var floorShop = ViewBag.floorShop;
+}
+@section btn{
+    @{
+        if (@floorMap.STATUS == "1")
+        {
+            RenderControl(new ButtonRender()
+            {
+                Text = "审核",
+                Click = "exec"
+            });
+        }
+        //if (@floorMap.STATUS == "3")
+        //{
+        //    RenderControl(new ButtonRender()
+        //    {
+        //        Text = "作废",
+        //        Click = "eliminate"
+        //    });
+        //}
+}}
+@section content{
+    <row>
+        <i-col span="2" class="RowTitle">图纸编号</i-col>
+        <i-col span="4">
+            <i-input v-model="MAPID" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="4">
+            <i-input v-model="STATUSMC" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">原图纸编号</i-col>
+        <i-col span="4">
+            <i-input v-model="MAPID_OLD" readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="4">
+            <i-input v-model="BRANCHNAME" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">区域</i-col>
+        <i-col span="4">
+            <i-input v-model="REGIONNAME" readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">楼层</i-col>
+        <i-col span="4">
+            <i-input v-model="FLOORNAME" readonly="true"></i-input>
+        </i-col>
+    </row>
+}
+@section baseParam{
+<row>
+    <i-col span="2">
+        <i-table height="500" highlight-row size="small" border="true"
+                 :columns="colDef" :data="FLOORSHOP"></i-table>
+    </i-col>
+    <i-col span="22">
+        <div id="div_map">
+        </div>
+    </i-col>
+</row>
+}
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true,
+                MAPID: "@floorMap.MAPID",
+                MAPID_OLD: "@floorMap.MAPID_OLD",
+                BRANCHNAME:"@floorMap.BRANCHNAME",
+                REGIONNAME:"@floorMap.REGIONNAME",
+                FLOORNAME:"@floorMap.FLOORNAME",
+                STATUSMC:"@floorMap.STATUSMC",
+                colDef : [
+                    { title: '铺位代码', key: 'SHOPCODE', width: 100 }
+                ],
+                FLOORSHOP:[]
+            },
+            mounted:function(){
+                var _self = this;
+                var shopData=[];
+                _.Ajax('SearchFloorMapAdjust', {
+                    Data: { MAPID: "@floorMap.MAPID" }
+                }, function (data) {
+                    _self.FLOORSHOP = data.floorshop;
+                    data.floorshop;
+                    for (var i = 0; i < data.floorshop.length; i++) {
+                    shopData.push({
+                        name: data.floorshop[i].SHOPCODE,
+                        html: data.floorshop[i].SHOPCODE,
+                        x: data.floorshop[i].P_X,
+                        y: data.floorshop[i].P_Y,
+                        catrgoryname: "",
+                        color: '#FA8072'
+                    });
+                };
+                });
+                var options = {
+                    Url: '../../../BackMap/' + "@floorMap.FILENAME",
+                    width: "@floorMap.WIDTHS",
+                    height: "@floorMap.LENGTHS",
+                    canEdit: false,
+                    data: shopData
+                };
+                $("#div_map").zMapPoint(options);
+            },
+            methods: {
+                exec: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('ExecData', {
+                        Data: {MAPID: "@floorMap.MAPID"},
+                    }, function (data) {
+                        _self.$Message.info("审核成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                },
+                @*eliminate: function (event) {
+                    event.stopPropagation();
+                    var _self = this;
+                    _.Ajax('EliminateData', {
+                        Data: {MAPID: "@floorMap.MAPID"},
+                    }, function (data) {
+                        _self.$Message.info("作废成功");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 100);
+                    });
+                }*@
+            }
+        });
+    </script>
+}

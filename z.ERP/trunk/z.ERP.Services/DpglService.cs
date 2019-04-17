@@ -274,7 +274,7 @@ namespace z.ERP.Services
             string sql = $@"select A.MAPID, A.FLOORID, A.BACKMAP, A.WIDTHS, A.LENGTHS, A.INITINATE_TIME_P, A.REPORTER
                             , A.REPORTER_NAME, A.REPORTER_TIME, A.VERIFY, A.VERIFY_NAME, A.VERIFY_TIME, A.INITINATE, A.INITINATE_NAME
                             , A.INITINATE_TIME, A.TERMINATE, A.TERMINATE_NAME, A.TERMINATE_TIME, A.STATUS, A.FILENAME
-                            , A.TZBJ,D.NAME BRANCHENAME,C.NAME REGIONNAME,B.NAME as FLOORNAME 
+                            , A.TZBJ,D.NAME BRANCHNAME,C.NAME REGIONNAME,B.NAME as FLOORNAME 
                     from FLOORMAP A,FLOOR B,REGION C,BRANCH D 
                     where NVL(A.TZBJ,0)=0 AND A.FLOORID=B.ID AND B.REGIONID=C.REGIONID "
                 + " AND C.BRANCHID=D.ID ";
@@ -295,7 +295,7 @@ namespace z.ERP.Services
                             , A.INITINATE_TIME, A.TERMINATE, A.TERMINATE_NAME, A.TERMINATE_TIME
                             , (CASE NVL(A.TZBJ,0) WHEN 0 THEN '' ELSE TO_CHAR(A.VERIFY) END) VERIFY
                             , (CASE NVL(A.TZBJ,0) WHEN 0 THEN '' ELSE A.VERIFY_NAME END) VERIFY_NAME
-                            , (CASE NVL(A.TZBJ,0) WHEN 0 THEN '' ELSE TO_CHAR(A.VERIFY_TIME,'YYYY-MM-DD') END) VERIFY_TIME
+                            , (CASE NVL(A.TZBJ,0) WHEN 0 THEN '' ELSE TO_CHAR(A.VERIFY_TIME,'YYYY-MM-DD hh24:mi:ss') END) VERIFY_TIME
                             , (CASE NVL(A.TZBJ,0) WHEN 0 THEN 1 ELSE A.STATUS END) STATUS
                             , (CASE NVL(A.TZBJ,0) WHEN 0 THEN '新建' ELSE '调整'END) TZBJMC
                     , A.FILENAME, A.TZBJ,D.NAME BRANCHNAME,C.NAME REGIONNAME,B.NAME as FLOORNAME 
