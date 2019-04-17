@@ -23,11 +23,12 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
             ViewBag.Title = "楼层图纸信息";
             return View(new SearchRender()
             {
-                Permission_Browse = "10200100",
-                Permission_Add = "10200101",
-                Permission_Del = "10200101",
-                Permission_Edit = "10200101",
-                Permission_Exec = "10200102"
+                
+                Permission_Add = "11010101",
+                Permission_Edit = "11010101",
+                Permission_Browse = "11010102",                
+                Permission_Exec = "11010103",
+                Permission_Del = "11010104"
             });
         }
 
@@ -48,13 +49,13 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
             return View("FloorMapEdit", model: (EditRender)Id);
 
         }
-
+        [Permission("11010104")]
         public void Delete(List<FLOORMAPEntity> DeleteData)
         {
             service.DpglService.DeleteFloorMap(DeleteData);
         }
 
-        [Permission("10200101")]
+        [Permission("11010101")]
         public string Save(FLOORMAPEntity SaveData)
         {
             return service.DpglService.SaveFloorMap(SaveData);
@@ -115,12 +116,12 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
         {
             return new UIResult(service.DataService.GetFloor(Data));
         }
-        [Permission("10200102")]
+        [Permission("11010103")]
         public void ExecData(FLOORMAPEntity Data)
         {
             service.DpglService.ExecData(Data);
         }
-        [Permission("10200102")]
+        [Permission("11010104")]
         public void EliminateData(FLOORMAPEntity Data)
         {
             service.DpglService.EliminateData(Data);

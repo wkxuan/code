@@ -77,20 +77,6 @@ namespace z.ERP.Services
             return new Tuple<dynamic,DataTable>(floor.ToOneLine(),floor);
         }
 
-        public DataGridResult GetFloorMap(SearchItem item)
-        {
-            string sql = $@"select A.*,D.NAME||C.NAME||B.NAME as FLOORNAME from FLOORMAP A,FLOOR B,REGION C,BRANCH D where A.FLOORID=B.ID AND B.REGIONID=C.REGIONID "
-                +" AND C.BRANCHID=D.ID ";
-            item.HasKey("MAPID", a => sql += $" and A.MAPID = {a}");
-            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = '{a}'");
-            item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
-            sql += " ORDER BY  MAPID DESC";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
-            return new DataGridResult(dt, count);
-        }
-
         public DataGridResult SearchShop(SearchItem item)
         {
             string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME " +
@@ -283,14 +269,55 @@ namespace z.ERP.Services
             }
             return assetchange.BILLID;
         }
-
+        public DataGridResult GetFloorMap(SearchItem item)
+        {
+            string sql = $@"select A.MAPID, A.FLOORID, A.BACKMAP, A.WIDTHS, A.LENGTHS, A.INITINATE_TIME_P, A.REPORTER
+                            , A.REPORTER_NAME, A.REPORTER_TIME, A.VERIFY, A.VERIFY_NAME, A.VERIFY_TIME, A.INITINATE, A.INITINATE_NAME
+                            , A.INITINATE_TIME, A.TERMINATE, A.TERMINATE_NAME, A.TERMINATE_TIME, A.STATUS, A.FILENAME
+                            , A.TZBJ,D.NAME BRANCHENAME,C.NAME REGIONNAME,B.NAME as FLOORNAME 
+                    from FLOORMAP A,FLOOR B,REGION C,BRANCH D 
+                    where NVL(A.TZBJ,0)=0 AND A.FLOORID=B.ID AND B.REGIONID=C.REGIONID "
+                + " AND C.BRANCHID=D.ID ";
+            item.HasKey("MAPID", a => sql += $" and A.MAPID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
+            item.HasKey("TZBJ", a => sql += $" and A.TZBJ = '{a}'");
+            sql += " ORDER BY  MAPID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<布局图状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+        public DataGridResult GetFloorMapAdjust(SearchItem item)
+        {
+            string sql = $@"select A.MAPID,A.MAPID_OLD, A.FLOORID, A.BACKMAP, A.WIDTHS, A.LENGTHS, A.INITINATE_TIME_P, A.REPORTER
+                            , A.REPORTER_NAME, A.REPORTER_TIME, A.INITINATE, A.INITINATE_NAME
+                            , A.INITINATE_TIME, A.TERMINATE, A.TERMINATE_NAME, A.TERMINATE_TIME
+                            , (CASE NVL(A.TZBJ,0) WHEN 0 THEN '' ELSE TO_CHAR(A.VERIFY) END) VERIFY
+                            , (CASE NVL(A.TZBJ,0) WHEN 0 THEN '' ELSE A.VERIFY_NAME END) VERIFY_NAME
+                            , (CASE NVL(A.TZBJ,0) WHEN 0 THEN '' ELSE TO_CHAR(A.VERIFY_TIME,'YYYY-MM-DD') END) VERIFY_TIME
+                            , (CASE NVL(A.TZBJ,0) WHEN 0 THEN 1 ELSE A.STATUS END) STATUS
+                            , (CASE NVL(A.TZBJ,0) WHEN 0 THEN '新建' ELSE '调整'END) TZBJMC
+                    , A.FILENAME, A.TZBJ,D.NAME BRANCHNAME,C.NAME REGIONNAME,B.NAME as FLOORNAME 
+                    from FLOORMAP A,FLOOR B,REGION C,BRANCH D 
+                    where (A.TZBJ=1 OR (NVL(A.TZBJ,0)=0 AND A.STATUS=3 ))  AND A.FLOORID=B.ID AND B.REGIONID=C.REGIONID "
+                + " AND C.BRANCHID=D.ID ";
+            item.HasKey("MAPID", a => sql += $" and A.MAPID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
+            sql += " ORDER BY  A.MAPID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<布局图状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
         public string SaveFloorMap(FLOORMAPEntity SaveData)
         {
             var v = GetVerify(SaveData);
             if (SaveData.MAPID.IsEmpty())
             {
                 SaveData.MAPID = NewINC("FLOORMAP"); 
-                SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+                SaveData.STATUS = ((int)布局图状态.未审核).ToString();
             }
             else
             {
@@ -329,7 +356,7 @@ namespace z.ERP.Services
                 sql += (" AND MAPID= " + Data.MAPID);
             DataTable floormap = DbHelper.ExecuteTable(sql);
 
-            floormap.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            floormap.NewEnumColumns<布局图状态>("STATUS", "STATUSMC");
 
             string sqlitem = $@"SELECT M.MAPID,M.SHOPCODE,M.SHOPID,M.P_X,M.P_Y " +
                 " FROM FLOORSHOP M " +
@@ -340,6 +367,35 @@ namespace z.ERP.Services
             return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorshop);
         }
 
+        public Tuple<dynamic, DataTable> GetFloorMapAdjustElement(FLOORMAPEntity Data)
+        {
+            if (Data.MAPID.IsEmpty())
+            {
+                throw new LogicException("请确认图纸编号!");
+            }
+            string sql = $@"SELECT (CASE NVL(A.TZBJ,0) WHEN 0 THEN '' ELSE TO_CHAR(A.MAPID) END) MAPID
+                            ,(CASE NVL(A.TZBJ,0) WHEN 0 THEN A.MAPID ELSE A.MAPID_OLD END) MAPID_OLD
+                            , (CASE NVL(A.TZBJ,0) WHEN 0 THEN 1 ELSE A.STATUS END) STATUS
+                            , A.FLOORID, A.BACKMAP, A.WIDTHS, A.LENGTHS, A.INITINATE_TIME_P, A.REPORTER
+                            , A.REPORTER_NAME, A.REPORTER_TIME, A.VERIFY, A.VERIFY_NAME, A.VERIFY_TIME, A.INITINATE, A.INITINATE_NAME
+                            , A.INITINATE_TIME, A.TERMINATE, A.TERMINATE_NAME, A.TERMINATE_TIME                            
+                            , A.FILENAME, A.TZBJ,R.REGIONID,R.NAME FLOORNAME,N.BRANCHID,N.NAME REGIONNAME,H.NAME BRANCHNAME 
+                            FROM FLOORMAP A,FLOOR R,REGION N ,BRANCH H WHERE A.FLOORID=R.ID AND R.REGIONID=N.REGIONID 
+                            AND N.BRANCHID=H.ID ";
+            if (!Data.MAPID.IsEmpty())
+                sql += (" AND A.MAPID= " + Data.MAPID);
+            DataTable floormap = DbHelper.ExecuteTable(sql);
+
+            floormap.NewEnumColumns<布局图状态>("STATUS", "STATUSMC");
+
+            string sqlitem = $@"SELECT M.MAPID,M.SHOPCODE,M.SHOPID,M.P_X,M.P_Y " +
+                " FROM FLOORSHOP M " +
+                " where 1=1";
+            if (!Data.MAPID.IsEmpty())
+                sqlitem += (" and M.MAPID= " + Data.MAPID);
+            DataTable floorshop = DbHelper.ExecuteTable(sqlitem);
+            return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorshop);
+        }
         public Tuple<dynamic, DataTable> GetFloorShowMap(FLOORMAPEntity Data)
         {
             string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE P.INITINATE_TIME<=SYSDATE AND NVL(P.TERMINATE_TIME,SYSDATE)<=SYSDATE ";

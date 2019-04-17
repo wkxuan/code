@@ -40,5 +40,10 @@ namespace z.ERP.Web.Areas.Layout.Search
             get;
             set;
         }
+        public string Permission_Elim
+        {
+            get;
+            set;
+        }
     }
 }

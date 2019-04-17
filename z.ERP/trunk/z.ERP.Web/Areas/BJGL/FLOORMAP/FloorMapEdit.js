@@ -6,6 +6,7 @@
     editDetail.method = "GetFloorMap";
     editDetail.Key = 'MAPID';
     editDetail.dataParam.STATUS = "1";
+    editDetail.dataParam.TZBJ = "0";
     editDetail.screenParam.branchData = [];
     editDetail.screenParam.regionData = [];
     editDetail.screenParam.floorData = [];

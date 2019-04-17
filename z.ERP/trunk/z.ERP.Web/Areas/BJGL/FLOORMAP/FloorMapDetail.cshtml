@@ -28,18 +28,18 @@
                 Click = "exec"
             });
         }
-        if (@floorMap.STATUS == "3")
-        {
-            RenderControl(new ButtonRender()
-            {
-                Text = "作废",
-                Click = "eliminate"
-            });
-        }
+        //if (@floorMap.STATUS == "3")
+        //{
+        //    RenderControl(new ButtonRender()
+        //    {
+        //        Text = "作废",
+        //        Click = "eliminate"
+        //    });
+        //}
 }}
 @section content{
     <row>
-        <i-col span="2" class="RowTitle">单据号</i-col>
+        <i-col span="2" class="RowTitle">图纸编号</i-col>
         <i-col span="4">
             <i-input v-model="MAPID" readonly="true"></i-input>
         </i-col>
@@ -133,7 +133,7 @@
                         }, 100);
                     });
                 },
-                eliminate: function (event) {
+                @*eliminate: function (event) {
                     event.stopPropagation();
                     var _self = this;
                     _.Ajax('EliminateData', {
@@ -144,7 +144,7 @@
                             window.location.reload();
                         }, 100);
                     });
-                }
+                }*@
             }
         });
     </script>

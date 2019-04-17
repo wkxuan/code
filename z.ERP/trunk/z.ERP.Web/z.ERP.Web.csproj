@@ -160,6 +160,7 @@
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\BJGL\BJT\BJTController.cs" />
+    <Compile Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustController.cs" />
     <Compile Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShowController.cs" />
     <Compile Include="Areas\BJGL\FLOORMAP\FloorMapController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
@@ -276,6 +277,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\BJGL\BJT\BJTDef.js" />
+    <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustEdit.js" />
+    <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustList.js" />
     <Content Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShow.js" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapEdit.js" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.js" />
@@ -617,7 +620,6 @@
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapDetail.cshtml" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapEdit.cshtml" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.cshtml" />
-    <Content Include="Areas\BJGL\FLOORMAP\Print.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockEdit.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockList.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockMx.cshtml" />
@@ -652,6 +654,9 @@
     <Content Include="Areas\WYGL\COMPLAIN\ComPlainEdit.cshtml" />
     <Content Include="Areas\WYGL\COMPLAIN\ComPlainDetail.cshtml" />
     <Content Include="Areas\XTGL\FEEACCOUNT\FeeAccount.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustDetail.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustEdit.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
