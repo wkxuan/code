@@ -396,7 +396,7 @@ namespace z.ERP.Services
             DataTable floorshop = DbHelper.ExecuteTable(sqlitem);
             return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorshop);
         }
-        public Tuple<dynamic, DataTable> GetFloorShowMap(FLOORMAPEntity Data)
+        public Tuple<dynamic, DataTable> GetFloorShowMap(FLOORMAPSHOWEntity Data)
         {
             string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE P.INITINATE_TIME<=SYSDATE AND NVL(P.TERMINATE_TIME,SYSDATE)<=SYSDATE ";
             if (!Data.FLOORID.IsEmpty())
@@ -424,7 +424,7 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorcategory);
         }
-        public Tuple<dynamic, DataTable, DataTable> GetGetFloorShowMapData(FLOORMAPEntity Data)
+        public Tuple<dynamic, DataTable, DataTable> GetGetFloorShowMapData(FLOORMAPSHOWEntity Data)
         {
             string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE P.INITINATE_TIME<=SYSDATE AND NVL(P.TERMINATE_TIME,SYSDATE)<=SYSDATE ";
                    sql += " AND FLOORID= " + Data.FLOORID;
@@ -449,15 +449,22 @@ namespace z.ERP.Services
             sqlitem1 += " GROUP BY  P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE ";
             DataTable floorcategory = DbHelper.ExecuteTable(sqlitem1);
 
-            string sqlitem2 = $@" select A.SHOPID,SUM(A.AMOUNT),P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE,B.CODE SHOPCODE,C.P_X,C.P_Y 
+            string sqlitem2 = $@" select A.SHOPID,A.CONTRACTID,SUM(A.AMOUNT) AMOUNT
+                ,(CASE P.AREA WHEN 0 THEN 0 ELSE ROUND(SUM(A.AMOUNT)/P.AREA,2) END) AMOUNTEFFECT
+                ,TO_CHAR(T.CONT_START,'YYYY-MM-DD')||'至'||TO_CHAR(T.CONT_END,'YYYY-MM-DD') AS CONT_S_E,T.OPERATERULE,T.QZRQ,T.DESCRIPTION,T1.NAME MERCHANTNAME
+                ,P.AREA RENTAREA,P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE
+                ,B.CODE SHOPCODE,B.RENT_STATUS,C.P_X,C.P_Y 
               ,(SELECT COLOR FROM CATEGORYCOLOR R WHERE R.CATEGORYCODE=Y.CATEGORYCODE) COLOR
-              from CONTRACT_SUMMARY A,CONTRACT T,CONTRACT_SHOP P,CATEGORY Y,SHOP B, FLOORSHOP C,FLOORMAP D 
-              where A.CONTRACTID=T.CONTRACTID AND A.CONTRACTID=P.CONTRACTID AND A.SHOPID=P.SHOPID AND P.CATEGORYID=Y.CATEGORYID 
+              from CONTRACT_SUMMARY A,CONTRACT T,MERCHANT T1,CONTRACT_SHOP P,CATEGORY Y,SHOP B, FLOORSHOP C,FLOORMAP D 
+              where A.CONTRACTID=T.CONTRACTID AND A.MERCHANTID=T1.MERCHANTID AND A.CONTRACTID=P.CONTRACTID AND A.SHOPID=P.SHOPID AND P.CATEGORYID=Y.CATEGORYID 
               AND A.YEARMONTH=201810 AND A.SHOPID=B.SHOPID AND  B.CODE=C.SHOPCODE 
               AND C.MAPID=D.MAPID AND B.FLOORID=D.FLOORID ";
             sqlitem2 += " and D.MAPID = " + mapid;
-            sqlitem2 += " GROUP BY A.SHOPID ,P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE,B.CODE,C.P_X,C.P_Y ";
+            sqlitem2 += " GROUP BY  A.SHOPID ,A.CONTRACTID,T.CONT_START,T.CONT_END,T.OPERATERULE,T.QZRQ,T.DESCRIPTION ,T1.NAME,P.AREA,P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE,B.CODE,B.RENT_STATUS,C.P_X,C.P_Y ";
             DataTable floorshop = DbHelper.ExecuteTable(sqlitem2);
+            floorshop.NewEnumColumns<租用状态>("RENT_STATUS", "STATUSMC");
+            floorshop.NewEnumColumns<合作方式>("OPERATERULE", "OPERATERULENAME");
+
             return new Tuple<dynamic, DataTable, DataTable>(floormap.ToOneLine(), floorcategory, floorshop);
         }
         /// <summary>

@@ -12,13 +12,13 @@ using z.DBHelper.DBDomain;
 namespace z.ERP.Entities
 {
     [DbTable("FLOORMAP", "楼层图纸")]
-    public partial class FLOORMAPEntity : TableEntityBase
+    public partial class FLOORMAPSHOWEntity : TableEntityBase
     {
-        public FLOORMAPEntity()
+        public FLOORMAPSHOWEntity()
         {
         }
 
-        public FLOORMAPEntity(string mapid)
+        public FLOORMAPSHOWEntity(string mapid)
         {
             MAPID = mapid;
         }
@@ -26,9 +26,16 @@ namespace z.ERP.Entities
         /// <summary>
         /// 图纸编号
         /// <summary>
-        [PrimaryKey]
         [Field("图纸编号")]
         public string MAPID
+        {
+            get; set;
+        }
+        /// <summary>
+        /// 年月
+        /// <summary>
+        [Field("年月")]
+        public string YEARMONTH
         {
             get; set;
         }

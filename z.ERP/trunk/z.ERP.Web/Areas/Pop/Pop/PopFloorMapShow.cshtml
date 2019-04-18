@@ -105,17 +105,17 @@
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "screenParam.OPERATERULE",
+                vModel = "screenParam.OPERATERULENAME",
                 Readonly = "true"
             });
         }
     </i-col>
-    <i-col span="3" class="RowTitle">租金规则</i-col>
+    <i-col span="3" class="RowTitle">起租日期</i-col>
     <i-col span="8">
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "screenParam.FEERULE",
+                vModel = "screenParam.QZRQ",
                 Readonly = "true"
             });
         }
@@ -167,11 +167,11 @@
                 Readonly = "true"
             });
         }
-    </i-col>
+        </i-col>
 </row>
 <row>
     <i-col span="3" class="RowTitle">
-        特殊约定
+        其他条款
     </i-col>
     <i-col span="19">
         @{

@@ -59,7 +59,7 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAPSHOW
             );
         }
 
-        public UIResult SearchFloorShowMap(FLOORMAPEntity Data)
+        public UIResult SearchFloorShowMap(FLOORMAPSHOWEntity Data)
         {
             var res = service.DpglService.GetFloorShowMap(Data);
             return new UIResult(
@@ -70,7 +70,7 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAPSHOW
                 }
             );
         }
-        public UIResult SearchFloorShowMapData(FLOORMAPEntity Data)
+        public UIResult SearchFloorShowMapData(FLOORMAPSHOWEntity Data)
         {
             var res = service.DpglService.GetGetFloorShowMapData(Data);
             return new UIResult(
