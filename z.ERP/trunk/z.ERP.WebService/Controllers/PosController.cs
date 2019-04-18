@@ -97,9 +97,21 @@ namespace z.ERP.WebService.Controllers
         }
 
         [ServiceAble("ConfirmDeal")]
-        public ConfirmDealResult ConfirmDeal(ReqConfirmDeal ReqConfirm)
+        public ConfirmDealResult ConfirmDeal(ReqConfirmDeal req)
         {
-            return service.PosService.ConfirmDeal(ReqConfirm);
+            return service.PosService.ConfirmDeal(req);
+        }
+
+        [ServiceAble("CalcAccountsBackable")]
+        public RespBackable CalcAccountsBackable(ReqBackAble req)
+        {
+            return service.PosService.CalcAccountsBackable(req);
+        }
+
+        [ServiceAble("ConfirmBackDeal")]
+        public ConfirmBackDealResult ConfirmBackDeal(ReqConfirmBackDeal req)
+        {
+            return service.PosService.ConfirmBackDeal(req);
         }
 
     }
