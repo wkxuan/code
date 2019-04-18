@@ -3696,15 +3696,15 @@ namespace z.ERP.Entities.Service.Pos
         }
 
 
-        int MinPrice;
-        public int minPrice
+        double MinPrice;
+        public double minPrice
         {
             get { return MinPrice; }
             set { MinPrice = value; }
         }
 
-        int VipPrice;
-        public int vipPrice
+        double VipPrice;
+        public double vipPrice
         {
             get { return VipPrice; }
             set { VipPrice = value; }
@@ -4292,8 +4292,8 @@ namespace z.ERP.Entities.Service.Pos
     {
         public int cardId;
         public string cardNo;
-        public int useMoney;
-        public int amount;
+        public double useMoney;
+        public double amount;
         public int payID;
         public int cardTypeId;
     }
@@ -4807,10 +4807,10 @@ namespace z.ERP.Entities.Service.Pos
     //退款申请
     public class ReqConfirmBackDeal
     {
+        public string storeCode;  //crm门店代码
         public int contractID;
         public string validType;
         public string validID;
-
         public int deptID;
         public string deptCode;
         public string outOrder;
@@ -5052,6 +5052,7 @@ namespace z.ERP.Entities.Service.Pos
 
     public class ReqBackAble
     {
+        public string storeCode; //crm门店代码
         public int contractID;
         public int vipIsDiscount; //0:作VIP折 1:不作VIP折
         public string validType;
@@ -5538,6 +5539,31 @@ namespace z.ERP.Entities.Service.Pos
         }
 
         public List<OrderInfo> data;
+    }
+
+    public class ErrorMessage
+    {
+        public ErrorMessage()
+        {
+            errorType = 2;
+            message = "";
+        }
+
+        int errorType; //1 需要show的错误 2 不需要show的错误 3 offline
+
+        public int ErrorType
+        {
+            get { return errorType; }
+            set { errorType = value; }
+        }
+
+        string message;
+
+        public string Message
+        {
+            get { return message; }
+            set { message = value; }
+        }
     }
 
 }
