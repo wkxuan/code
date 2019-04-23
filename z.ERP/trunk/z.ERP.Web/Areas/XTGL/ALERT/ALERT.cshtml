@@ -1,0 +1,72 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+
+@section element{
+    <row>
+        <i-col span="2" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender
+                {
+                    vModel = "dataParam.ID",
+                    Id = "tb_id",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            名称
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender
+                {
+                    vModel = "dataParam.MC",
+                    Id = "tb_name",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            显示顺序
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender
+                {
+                    vModel = "dataParam.XSSX",
+                    Id = "tb_xxsx",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            预警SQL
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.SQLSTR",
+                    type = "textarea",
+                    rows = "10"
+                });
+            }
+        </i-col>
+    </row>
+
+}

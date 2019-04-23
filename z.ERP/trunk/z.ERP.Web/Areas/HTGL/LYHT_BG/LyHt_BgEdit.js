@@ -185,67 +185,94 @@
         },
     ]
 
-    //保底表格
+    //租金表格
     editDetail.screenParam.colDefRENT = [
        { type: 'selection', width: 60, align: 'center', },
        { title: '时间段', key: 'INX', width: 80 },
-       {
-           title: '开始日期',
-           key: 'STARTDATE',
-           width: 150,
-           render: function (h, params) {
-               return h('div',
-                 new Date(this.row.STARTDATE).Format('yyyy-MM-dd'));
-           }
-       },
-       {
-           title: '结束日期',
-           key: 'ENDDATE',
-           width: 150,
-           render: function (h, params) {
-               return h('DatePicker', {
-                   props: {
-                       value: params.row.ENDDATE
-                   },
-                   on: {
-                       'on-change': function (event) {
-                           Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'ENDDATE', event);
-                       }
-                   },
-               })
-           },
-       },
-       {
-           title: "保底(毛利or销售)", key: 'RENTS', width: 150,
-           render: function (h, params) {
-               return h('Input', {
-                   props: {
-                       value: params.row.RENTS
-                   },
-                   on: {
-                       'on-blur': function (event) {
-                           editDetail.dataParam.CONTRACT_RENT[params.index].RENTS = event.target.value;
-                       }
-                   },
-               })
-           },
-       },
-       {
-           title: "保底扣点", key: 'RENTS_JSKL', width: 120,
-           render: function (h, params) {
-               return h('Input', {
-                   props: {
-                       value: params.row.RENTS_JSKL
-                   },
-                   on: {
-                       'on-blur': function (event) {
-                           editDetail.dataParam.CONTRACT_RENT[params.index].RENTS_JSKL = event.target.value;
-                       }
-                   },
-               })
-           },
-       },
-       { title: "总保底(毛利or销售)", key: 'SUMRENTS', width: 150 },
+        {
+            title: '开始日期',
+            key: 'STARTDATE',
+            width: 150,
+            render: function (h, params) {
+                return h('div',
+                  new Date(this.row.STARTDATE).Format('yyyy-MM-dd'));
+            }
+
+        },
+        {
+            title: '结束日期',
+            key: 'ENDDATE',
+            width: 150,
+            render: function (h, params) {
+                return h('DatePicker', {
+                    props: {
+                        value: params.row.ENDDATE
+                    },
+                    on: {
+                        'on-change': function (event) {
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'ENDDATE', event);
+                        }
+                    },
+                })
+            },
+        },
+
+        {
+            title: '金额类型', key: 'DJLX', width: 150,
+            render: function (h, params) {
+                return h('Select', {
+                    props: {
+                        value: params.row.DJLX
+                    },
+                    on: {
+                        'on-change': function (event) {
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'DJLX', event);
+                        }
+                    }
+                },
+                [h('Option', { props: { value: '1' } }, '日金额'),
+                  h('Option', { props: { value: '2' } }, '月金额')
+                ])
+            }
+        },
+        {
+            title: "单价", key: 'PRICE', width: 150,
+            render: function (h, params) {
+                return h('Input', {
+                    props: {
+                        value: params.row.PRICE
+                    },
+                    on: {
+                        'on-enter': function (event) {
+                            editDetail.dataParam.CONTRACT_RENT[params.index].PRICE = event.target.value;
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'RENTS', (event.target.value * editDetail.dataParam.AREAR).toFixed(2));
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'CONTRACT_RENTITEM', []);
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'SUMRENTS', 0);
+
+                        }
+                    },
+                })
+            },
+        },
+        {
+            title: "租金", key: 'RENTS', width: 150,
+            render: function (h, params) {
+                return h('Input', {
+                    props: {
+                        value: params.row.RENTS
+                    },
+                    on: {
+                        'on-enter': function (event) {
+                            editDetail.dataParam.CONTRACT_RENT[params.index].RENTS = event.target.value;
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'PRICE', (event.target.value / editDetail.dataParam.AREAR).toFixed(2));
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'CONTRACT_RENTITEM', []);
+                            Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'SUMRENTS', 0);
+                        }
+                    },
+                })
+            },
+        },
+        { title: "总租金", key: 'SUMRENTS', width: 150 },
     ];
 
     //月度分解表格
@@ -266,9 +293,68 @@
             }
         },
         { title: '年月', key: 'YEARMONTH', width: 100 },
-        { title: '保底销售or毛利', key: 'RENTS', width: 200 },
+        { title: '租金', key: 'RENTS', width: 200 },
         {
-            title: '清算标记', key: 'QSBJ', width: 150,
+            title: '减免金额', key: 'JMJE', width: 100,
+            render: function (h, params) {
+                return h('Input', {
+                    props: {
+                        value: params.row.JMJE
+                    },
+                    on: {
+                        'on-blur': function (event) {
+                            var len = 0;
+                            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                                var lenold = len;
+                                len += editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM.length;
+                                var colIndex = params.index + 1;
+
+                                if ((colIndex > lenold) && (colIndex <= len)) {
+                                    editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[params.index - lenold].JMJE = event.target.value;;
+                                    break;
+                                }
+                            };
+                        }
+                    },
+                })
+            },
+        },
+        {
+            //title: '生成日期', key: 'CREATEDATE', width: 170,
+            //render: function (h, params) {
+            //    return h('div',
+            //      new Date(this.row.CREATEDATE).Format('yyyy-MM-dd'));
+            //}
+
+            title: '生成日期',
+            key: 'CREATEDATE',
+            width: 150,
+            render: function (h, params) {
+                return h('DatePicker', {
+                    props: {
+                        value: params.row.CREATEDATE
+                    },
+                    on: {
+                        'on-change': function (event) {
+                            //  Vue.set(editDetail.dataParam.CONTRACT_RENT[params.index], 'CREATEDATE', event);
+                            var len = 0;
+                            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                                var lenold = len;
+                                len += editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM.length;
+                                var colIndex = params.index + 1;
+
+                                if ((colIndex > lenold) && (colIndex <= len)) {
+                                    editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[params.index - lenold].CREATEDATE = event;
+                                    break;
+                                }
+                            };
+                        }
+                    },
+                })
+            },
+        },
+        {
+            title: '月清算标记', key: 'QSBJ', width: 150,
             render: function (h, params) {
                 return h('Select', {
                     props: {
@@ -290,12 +376,44 @@
                         }
                     }
                 },
-                [h('Option', { props: { value: "1" } }, '清算'),
-                  h('Option', { props: { value: "2" } }, '不清算')
+                [
+                    h('Option', { props: { value: "1" } }, '是'),
+                    h('Option', { props: { value: "2" } }, '否')
+                ])
+            }
+        },
+
+        {
+            title: '区间清算标记', key: 'QJQSBJ', width: 150,
+            render: function (h, params) {
+                return h('Select', {
+                    props: {
+                        value: params.row.QJQSBJ
+                    },
+                    on: {
+                        'on-change': function (event) {
+                            var len = 0;
+                            for (var i = 0; i < editDetail.dataParam.CONTRACT_RENT.length; i++) {
+                                var lenold = len;
+                                len += editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM.length;
+                                var colIndex = params.index + 1;
+
+                                if ((colIndex > lenold) && (colIndex <= len)) {
+                                    editDetail.dataParam.CONTRACT_RENT[i].CONTRACT_RENTITEM[params.index - lenold].QJQSBJ = event;
+                                    break;
+                                }
+                            };
+                        }
+                    }
+                },
+                [
+                    h('Option', { props: { value: "1" } }, '是'),
+                    h('Option', { props: { value: "2" } }, '否')
                 ])
             }
         },
     ];
+
 
     //收费项目
     editDetail.screenParam.colDefCOST = [
@@ -1292,6 +1410,8 @@ function getNextYears(date) { //获取当前日前的下一年上一天
     var tomYear = new Date(date);
     tomYear.setFullYear(tomYear.getFullYear() + 1); //下一年的今天
     tomYear.setDate(tomYear.getDate() - 1); //下一年的昨天
+
+    var tomYear = new Date(tomYear).Format('yyyy-MM-dd');
     return (tomYear);
 };
 
@@ -1301,5 +1421,6 @@ function addDate(date, days) {
     }
     var lastDay = new Date(date); //日前复制防止原来日期发生变化
     lastDay.setDate(lastDay.getDate() + days); //日期加天数
+    var lastDay = new Date(lastDay).Format('yyyy-MM-dd');
     return lastDay;
 };

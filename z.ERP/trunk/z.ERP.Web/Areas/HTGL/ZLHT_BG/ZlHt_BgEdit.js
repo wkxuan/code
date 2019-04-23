@@ -1002,6 +1002,7 @@ editDetail.otherMethods = {
     },
 
     //按年度分解
+    //按年度分解
     operPeriod: function () {
         if (editDetail.dataParam.CONTRACT_SHOP.length == 0) {
             iview.Message.info("请确定商铺!");
@@ -1054,7 +1055,7 @@ editDetail.otherMethods = {
 
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
-            if ((i != 0)) {
+            if (i != 0) {
                 beginHtq = copyHtQsr;
             }
             nestYear = getNextYears(beginHtq);
@@ -1640,6 +1641,8 @@ function getNextYears(date) { //获取当前日前的下一年上一天
     var tomYear = new Date(date);
     tomYear.setFullYear(tomYear.getFullYear() + 1); //下一年的今天
     tomYear.setDate(tomYear.getDate() - 1); //下一年的昨天
+
+    var tomYear = new Date(tomYear).Format('yyyy-MM-dd');
     return (tomYear);
 };
 
@@ -1649,5 +1652,6 @@ function addDate(date, days) {
     }
     var lastDay = new Date(date); //日前复制防止原来日期发生变化
     lastDay.setDate(lastDay.getDate() + days); //日期加天数
+    var lastDay = new Date(lastDay).Format('yyyy-MM-dd');
     return lastDay;
 };

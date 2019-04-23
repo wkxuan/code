@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto\FEE_ACCOUNTEntity.cs" />
+    <Compile Include="Auto\DEF_ALERTEntity.cs" />
     <Compile Include="Auto\FLOORMAPSHOWEntity .cs" />
     <Compile Include="FLOORMAPEntity.cs" />
     <Compile Include="Auto\FLOORSHOPEntity.cs" />
