@@ -90,6 +90,7 @@
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="FREESHOPEntity.cs" />
     <Compile Include="OPENBUSINESSEntity.cs" />
+    <Compile Include="Service\Pos\PayRecord.cs" />
     <Compile Include="WLCHECKEntity.cs" />
     <Compile Include="WLSETTLEEntity.cs" />
     <Compile Include="WLUSESEntity.cs" />
