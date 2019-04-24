@@ -2470,7 +2470,7 @@ namespace z.POS.Services
             string PromniDealID = "", ErpTranID = "", MemberCardID = "",
                 sOut = "", posNo = "", userCode = "";
 
-            //   ErrorMessage errorMessage;
+            ErrorMessage errorMessage;
             //   int iDataType = UniCode_Json;
             ConfirmDealResult confirmResult = new ConfirmDealResult();
 
@@ -2494,7 +2494,7 @@ namespace z.POS.Services
             List<TDealSaleMoneyLeft> CanReturnCouponList = new List<TDealSaleMoneyLeft>();
 
             bool bCheckMember = false, bCheckCrmTran = true;
-            bCheckMember = true;
+           // bCheckMember = true;
 
             posNo = Device;
             userCode = Operator;
@@ -2502,28 +2502,23 @@ namespace z.POS.Services
             //1.1:检查基本输入数据
             string input = "";
 
-            if (bCheckCrmTran)
-                input = input + " [设置检查CRM交易---是否为空]";
-            else
-                input = input + " [设置不检查CRM交易*****是否为空]";
-
             //1:判断输入数据
             if (Shop.Equals(""))
             {
-                //  result = RsltCode_Wrong_Para;
-                msg = "数据检查失败：计算销售价格,设备号为空";
+                result = -1;
+                msg = "数据检查失败：CRM门店为空";
                 confirmResult.code = result;
                 confirmResult.text = msg;
-                //   return result;
+                throw new Exception(msg);
             }
 
             if (Device.Equals(""))
             {
-                //  result = RsltCode_Wrong_Para;
-                msg = "数据检查失败：计算销售价格,设备号为空";
+                result = -1;
+                msg = "数据检查失败：设备号为空";
                 confirmResult.code = result;
                 confirmResult.text = msg;
-                //   return result;
+                throw new Exception(msg);
             }
 
 
@@ -2539,11 +2534,11 @@ namespace z.POS.Services
 
             if (ReqConfirm == null)
             {
-                //  result = RsltCode_Wrong_Para;
-                msg = "数据检查失败：<保存销售>输入数据为空";
+                result = -1;
+                msg = "数据检查失败：输入数据为空";
                 confirmResult.code = result;
                 confirmResult.text = msg;
-                //  return result;
+                throw new Exception(msg);
             }
             //2.1:转换输入数据
             //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.2> 准备转换输入数据");
@@ -2589,83 +2584,70 @@ namespace z.POS.Services
                 if (string.IsNullOrEmpty(ddJLBH))
                     ddJLBH = "";
 
-
-                // input = "ERP交易号[" + Shop + "] 外部订单号[" + PromniDealID + "] 会员码[" + MemberCardID + "]" + " DDJLBH[" + ddJLBH + "]";
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.3.2> 输入数据:" + input);
-
                 if (ErpTranID.Equals(""))
                 {
-                    // result = RsltCode_Wrong_Para;
-                    msg = "数据检查失败：<保存销售>ERP订单号为空";
+                    result = -1;
+                    msg = "数据检查失败：ERP订单号为空";
                     confirmResult.code = result;
                     confirmResult.text = msg;
-                    // CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.3.3.1> 返回:" + confirmResult.code + " 信息:" + confirmResult.text);
-                    //  return result;
+                    throw new Exception(msg);
                 }
 
                 if (bCheckCrmTran)
                 {
-                    //  CommonUtils.WriteSKTLog(1, posNo, "保存销售 <1.3.3.1.3> 设置检查CRM交易:");
                     if (CrmBillId <= 0)
                     {
-                        // result = RsltCode_Wrong_Para;
-                        msg = "数据检查失败：<保存销售>CRM订单号";
+                        result = -1;
+                        msg = "数据检查失败：CRM订单号小于0";
                         confirmResult.code = result;
                         confirmResult.text = msg;
-                        //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.3.3.1.5> 返回:" + confirmResult.code + " 信息:" + confirmResult.text);
-                        //  return result;
+                        throw new Exception(msg);
                     }
                 }
 
                 if (bCheckMember && (MemberCardID.Equals("")))
                 {
-                    // result = RsltCode_Wrong_Para;
-                    msg = "数据检查失败：<保存销售>保存销售,会员为空";
+                    result = -1;
+                    msg = "数据检查失败：会员为空";
                     confirmResult.code = result;
                     confirmResult.text = msg;
-
-                    //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.3.3.2> 返回:" + confirmResult.code + " 信息:" + confirmResult.text);
-                    // return result;
+                    throw new Exception(msg);
                 }
 
                 if (ReqConfirm.goodsList == null)
                 {
-                    //  result = RsltCode_Wrong_NoDef;
-                    msg = "数据检查失败: <保存销售> 商品数据为空";
+                    result = -1;
+                    msg = "数据检查失败: 商品数据为空";
                     confirmResult.code = result;
                     confirmResult.text = msg;
-                    //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.3.3.3> 返回:" + confirmResult.code + " 信息:" + confirmResult.text);
-                    // return result;
+                    throw new Exception(msg);
                 }
 
                 if (ReqConfirm.goodsList.Count() <= 0)
                 {
-                    //  result = RsltCode_Wrong_NoDef;
-                    msg = "数据检查失败: <保存销售> 商品计数为空";
+                    result = -1;
+                    msg = "数据检查失败: 商品计数为空";
                     confirmResult.code = result;
                     confirmResult.text = msg;
-                    //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.3.3.5> 返回:" + confirmResult.code + " 信息:" + confirmResult.text);
-                    // return result;
+                    throw new Exception(msg);
                 }
 
                 if (ReqConfirm.paysList == null)
                 {
-                    //  result = RsltCode_Wrong_NoDef;
-                    msg = "数据检查失败: <保存销售> 付款数据为空";
+                    result = -1;
+                    msg = "数据检查失败: 付款数据为空";
                     confirmResult.code = result;
                     confirmResult.text = msg;
-                    //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.3.3.6> 返回:" + confirmResult.code + " 信息:" + confirmResult.text);
-                    //  return result;
+                    throw new Exception(msg);
                 }
 
                 if (ReqConfirm.paysList.Count() <= 0)
                 {
-                    //   result = RsltCode_Wrong_NoDef;
-                    msg = "数据检查失败: <保存销售> 付款计数为空";
+                    result = -1;
+                    msg = "数据检查失败: 付款计数为空";
                     confirmResult.code = result;
                     confirmResult.text = msg;
-                    //   CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.3.3.7> 返回:" + confirmResult.code + " 信息:" + confirmResult.text);
-                    //  return result;
+                    throw new Exception(msg);
                 }
                 if (ReqConfirm.creditDetailList == null)
                 {
@@ -6235,200 +6217,6 @@ namespace z.POS.Services
             return true;
         }
 
-        /*    public bool CheckOutSaleToDatabase(string Shop, string sktNo, int iPersonID, int jlbh, int CrmBillId, string PromniDealID,
-                Member member, List<Goods> goodsList, List<Payment> pays,
-                int CrmMoneyCardTransID, int CrmCouponTransId, out ErrorMessage message)
-            {
-                message = new ErrorMessage();
-
-                string sMsg = "";
-                bool result = false;
-
-                // 检查数据
-                result = CheckSaveData(sktNo, goodsList, pays, ref sMsg);
-                if (!result)
-                {
-                    message.ErrorType = 3;
-                    message.Message = "保存时检查数据失败:" + sMsg;
-                    return false;
-                }
-
-                //总金额
-                double mTotal = 0;
-                mTotal = GetTotalMoney(goodsList);
-
-               // HdDbConnection conn = HdDbConnection.GetInstance("ERPDB");
-              //  if (!conn.TryOpen(out sMsg))
-              //  {
-              //      return false;
-              //  }
-
-                int iCount = 0;
-             //   string sTM = CommonUtils.GetTM();
-                int iTranType = 0;
-             //   DbCommand cmd = conn.GetCommand(out sMsg);
-
-               // CommonUtils.WriteSKTLog(1, sktNo, "保存销售:<2.5.1.7> 保存销售 准备保存 ");
-                try
-                {
-                  //  CommonUtils.WriteSKTLog(10, sktNo, "ERP保存销售<1>");
-                    cmd.Transaction = conn.Connection.BeginTransaction();
-
-                   // CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.1>准备保存XSJL");
-                    PrepareSaveXSJL(sktNo, iPersonID, jlbh, CrmBillId, iTranType, member, goodsList, cmd);
-
-                   // CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成 <2.2>准备保存XSJLC");
-                    PrepareSaveXSJLC(Shop, sktNo, jlbh, goodsList, cmd);
-
-                  //  CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.3>准备保存XSJLM");
-                    CheckOutSaveXSJLM(sktNo, jlbh, pays, cmd, out iCount);
-                  //  CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.5>准备保存XSJLT");
-                    CheckOutSaveXSJLT(sktNo, iPersonID, jlbh, goodsList, cmd, ref iCount);
-
-                   // CheckOutProcXSJL(sktNo, jlbh, cmd);
-                   // CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.6> 删除CRM备注:CZK:" + CrmMoneyCardTransID + " YHQ:" + CrmCouponTransId);
-                    DeleteCrmTrans(sktNo, CrmMoneyCardTransID, CrmCouponTransId, cmd);
-                   // CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<3>_准备提交");
-
-                    //cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.Transaction.Commit();
-
-                   // CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<3>_完成提交");
-                }
-                catch (Exception e)
-                {
-                    cmd.Transaction.Rollback();
-                    message.ErrorType = 1;
-                    message.Message = "预先保存销售失败:" + e.Message.ToString();
-
-                  //  CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售失败:提示:" + message.Message);
-
-                    return false;
-                }
-                finally
-                {
-                    //conn.Close();
-                }
-                return true;
-            }
-
-
-            //增加银行明细
-            public bool CheckOutSaleToDatabase(string Shop, string sktNo, int iPersonID, int jlbh, int CrmBillId, string PromniDealID,
-                Member member, List<Goods> goodsList, List<Payment> pays, List<CreditDetail> creditDetailList,
-                int CrmMoneyCardTransID, int CrmCouponTransId, out ErrorMessage message)
-            {
-                message = new ErrorMessage();
-
-                string sMsg = "";
-                bool result = false, bHaveCredit = false;
-
-                CommonUtils.WriteSKTLog(1, sktNo, "保存销售:<2.5.1.3> [s80] 保存销售 准备检查数据 ");
-
-
-                bHaveCredit = false;
-                if (creditDetailList == null)
-                {
-                    bHaveCredit = false;
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售<1.1.2.5.1> : 没有银行类数据[creditDetailList=null]:");
-                }
-                else if (creditDetailList.Count <= 0)
-                {
-                    bHaveCredit = false;
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售<1.1.2.5.2> : 没有银行类数据[creditDetailList数目为0]:");
-                }
-                else
-                {
-                    bHaveCredit = true;
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售<1.1.2.5.3> : 有银行类数据[creditDetailList数目大于0]:");
-                }
-
-
-                result = CheckSaveData(sktNo, goodsList, pays, ref sMsg);
-                if (!result)
-                {
-                    message.ErrorType = 3;
-                    message.Message = "保存时检查数据失败:" + sMsg;
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.0.1> 保存时检查数据失败:" + sMsg);
-                    return false;
-                }
-
-
-                int mTotal = 0;
-                mTotal = GetTotalMoney(goodsList);
-                CommonUtils.WriteSKTLog(1, sktNo, "保存销售:<2.5.1.5> 保存销售 总金额: " + mTotal);
-
-
-
-                HdDbConnection conn = HdDbConnection.GetInstance("ERPDB");
-                if (!conn.TryOpen(out sMsg))
-                {
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售<4.1>错误:连不上数据库" + sMsg);
-                    return false;
-                }
-
-                CommonUtils.WriteSKTLog(1, sktNo, "保存销售:<2.5.1.6> 保存销售 准备保存 ");
-
-                int iCount = 0;
-                string sTM = CommonUtils.GetTM();
-                int iTranType = 0;
-                DbCommand cmd = conn.GetCommand(out sMsg);
-
-                CommonUtils.WriteSKTLog(1, sktNo, "保存销售:<2.5.1.7> 保存销售 准备保存 ");
-                try
-                {
-                    CommonUtils.WriteSKTLog(10, sktNo, "ERP保存销售<1>");
-                    cmd.Transaction = conn.Connection.BeginTransaction();
-
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.1>准备保存XSJL");
-                    PrepareSaveXSJL(sktNo, iPersonID, jlbh, CrmBillId, iTranType, member, goodsList, cmd);
-
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成 <2.2>准备保存XSJLC");
-                    PrepareSaveXSJLC(Shop, sktNo, jlbh, goodsList, cmd);
-
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.3>准备保存XSJLM");
-                    CheckOutSaveXSJLM(sktNo, jlbh, pays, cmd, out iCount);
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.5>准备保存XSJLT");
-                    CheckOutSaveXSJLT(sktNo, iPersonID, jlbh, goodsList, cmd, ref iCount);
-
-                //    CheckOutProcXSJL(sktNo, jlbh, cmd);
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.6> 删除CRM备注:CZK:" + CrmMoneyCardTransID + " YHQ:" + CrmCouponTransId);
-
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.7.1>准备保存银行类数据  ");
-                    if (bHaveCredit)
-                    {
-                        int iCount1 = 0;
-                        CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.7.2>刷过卡,有银行类数据,准备保存 ");
-                        SaleProcDo.DoSaveCreditDetails(sktNo, jlbh, iPersonID, creditDetailList, cmd, out iCount1);
-                        CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.7.3> 保存完成");
-                    }
-
-
-                    DeleteCrmTrans(sktNo, CrmMoneyCardTransID, CrmCouponTransId, cmd);
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<3>_准备提交");
-
-                    //cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.Transaction.Commit();
-
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<3>_完成提交");
-                }
-                catch (Exception e)
-                {
-                    cmd.Transaction.Rollback();
-                    message.ErrorType = 1;
-                    message.Message = "预先保存销售失败:" + e.Message.ToString();
-
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售失败:提示:" + message.Message);
-
-                    return false;
-                }
-                finally
-                {
-                    //conn.Close();
-                }
-                return true;
-            }  */
-
 
         public bool CheckSaveData(string posNo, List<Goods> GoodList, List<Payment> PayList,
             ref string msg)
@@ -6555,6 +6343,24 @@ namespace z.POS.Services
             result = true;
             return result;
         }
+
+
+        private void DeleteCrmTrans(string posId, int Id, int iCouble)
+        {
+            string sql;
+            if (Id > 0)
+            {
+                sql = $"delete from CRMJYBZ where SKTNO = '{posId}' and JLBH = {Id}";
+                DbHelper.ExecuteNonQuery(sql);
+            }
+
+            if (iCouble > 0)
+            {
+                sql = $"delete from CRMJYBZ where SKTNO = '{posId}' and JLBH = {iCouble}";
+                DbHelper.ExecuteNonQuery(sql);
+            }
+        }
+
 
 
 

@@ -229,7 +229,9 @@ namespace z.ERP.Services
                 int goodsCount = request.goodslist.Count;
                 int payCount = request.paylist.Count;
                 int clerkCount = request.clerklist.Count;
-                int payRecordCount = request.payRecord.Count;
+                int payRecordCount = 0;
+                if (request.payRecord != null)
+                    payRecordCount = request.payRecord.Count;
 
                 string[] sqlarr = new string[1 + goodsCount + payCount + clerkCount + payRecordCount + goodsCount * payCount];
 
@@ -316,7 +318,7 @@ namespace z.ERP.Services
 
                 decimal goodsPayAmount = 0;
                 decimal payAmount = 0;
-                j = 1 + goodsCount + payCount + clerkCount;
+                j = 1 + goodsCount + payCount + clerkCount + payRecordCount;
                 int inx = 0;
                 for (int m = 0; m < request.paylist.Count(); m++)
                 {
@@ -3015,22 +3017,33 @@ namespace z.ERP.Services
                  saleReq.clerklist = clerkLst;
 
                 //PayRecord
-                List<PayRecord> payRcd = new List<PayRecord>();
-                PayRecord payRcdOne = new PayRecord();
 
-                for (int p = 0; p <= ReqConfirm.creditDetailList.Count - 1; p++)
+                if (!ReqConfirm.creditDetailList.IsEmpty())
                 {
-                    payRcdOne.inx = ReqConfirm.creditDetailList[p].inx;
-                    payRcdOne.payid = ReqConfirm.creditDetailList[p].payid;
-                    payRcdOne.cardno = ReqConfirm.creditDetailList[p].cardno;
-                    payRcdOne.bank = ReqConfirm.creditDetailList[p].bank;
-                    payRcdOne.bankid = ReqConfirm.creditDetailList[p].bankid;
-                    payRcdOne.amount = ReqConfirm.creditDetailList[p].amount;
-                    payRcdOne.serialno = ReqConfirm.creditDetailList[p].serialno;
-                    payRcdOne.refno = ReqConfirm.creditDetailList[p].refno;
-                    payRcdOne.opertime = ReqConfirm.creditDetailList[p].opertime;
-                    payRcd.Add(payRcdOne);
+                    List<PayRecord> payRcd = new List<PayRecord>();
+                    PayRecord payRcdOne = new PayRecord();
+
+                    for (int p = 0; p <= ReqConfirm.creditDetailList.Count - 1; p++)
+                    {
+                        payRcdOne.inx = ReqConfirm.creditDetailList[p].inx;
+                        payRcdOne.payid = ReqConfirm.creditDetailList[p].payid;
+                        payRcdOne.cardno = ReqConfirm.creditDetailList[p].cardno;
+                        payRcdOne.bank = ReqConfirm.creditDetailList[p].bank;
+                        payRcdOne.bankid = ReqConfirm.creditDetailList[p].bankid;
+                        payRcdOne.amount = ReqConfirm.creditDetailList[p].amount;
+                        payRcdOne.serialno = ReqConfirm.creditDetailList[p].serialno;
+                        payRcdOne.refno = ReqConfirm.creditDetailList[p].refno;
+                        payRcdOne.opertime = ReqConfirm.creditDetailList[p].opertime;
+                        payRcd.Add(payRcdOne);
+                    }
+
+                    saleReq.payRecord = payRcd;
                 }
+                else
+                {
+                    saleReq.payRecord = null;
+                }
+
 
                 errorMessage = new ErrorMessage();
                  try
@@ -5366,10 +5379,6 @@ namespace z.ERP.Services
             //保存ERP交易数据
             try
             {
-
-
-                //保存erp销售记录
-
                 SaleRequest saleReq = new SaleRequest();
 
                 //sale
@@ -5378,6 +5387,8 @@ namespace z.ERP.Services
                 saleReq.member_cardid = member.MemberId.ToString();
                 saleReq.crm_recordid = CrmBillId;
                 saleReq.cashierid = iPersonID;
+                saleReq.posno_old = OldPosId;
+                saleReq.dealid_old = OldErpTranId;
 
                 saleReq.sale_amount = decimal.Parse(mTotal.ToString());
 
@@ -5429,21 +5440,31 @@ namespace z.ERP.Services
                 saleReq.clerklist = clerkLst;
 
                 //PayRecord
-                List<PayRecord> payRcd = new List<PayRecord>();
-                PayRecord payRcdOne = new PayRecord();
 
-                for (int p = 0; p <= creditList.Count - 1; p++)
+                if (!creditList.IsEmpty())
                 {
-                    payRcdOne.inx = creditList[p].inx;
-                    payRcdOne.payid = creditList[p].payid;
-                    payRcdOne.cardno = creditList[p].cardno;
-                    payRcdOne.bank = creditList[p].bank;
-                    payRcdOne.bankid = creditList[p].bankid;
-                    payRcdOne.amount = creditList[p].amount;
-                    payRcdOne.serialno = creditList[p].serialno;
-                    payRcdOne.refno = creditList[p].refno;
-                    payRcdOne.opertime = creditList[p].opertime;
-                    payRcd.Add(payRcdOne);
+                    List<PayRecord> payRcd = new List<PayRecord>();
+                    PayRecord payRcdOne = new PayRecord();
+
+                    for (int p = 0; p <= creditList.Count - 1; p++)
+                    {
+                        payRcdOne.inx = creditList[p].inx;
+                        payRcdOne.payid = creditList[p].payid;
+                        payRcdOne.cardno = creditList[p].cardno;
+                        payRcdOne.bank = creditList[p].bank;
+                        payRcdOne.bankid = creditList[p].bankid;
+                        payRcdOne.amount = creditList[p].amount;
+                        payRcdOne.serialno = creditList[p].serialno;
+                        payRcdOne.refno = creditList[p].refno;
+                        payRcdOne.opertime = creditList[p].opertime;
+                        payRcd.Add(payRcdOne);
+                    }
+
+                    saleReq.payRecord = payRcd;
+                }
+                else
+                {
+                    saleReq.payRecord = null;
                 }
 
 
@@ -6101,200 +6122,6 @@ namespace z.ERP.Services
             }
             return true;
         }
-
-    /*    public bool CheckOutSaleToDatabase(string Shop, string sktNo, int iPersonID, int jlbh, int CrmBillId, string PromniDealID,
-            Member member, List<Goods> goodsList, List<Payment> pays,
-            int CrmMoneyCardTransID, int CrmCouponTransId, out ErrorMessage message)
-        {
-            message = new ErrorMessage();
-
-            string sMsg = "";
-            bool result = false;
-
-            // 检查数据
-            result = CheckSaveData(sktNo, goodsList, pays, ref sMsg);
-            if (!result)
-            {
-                message.ErrorType = 3;
-                message.Message = "保存时检查数据失败:" + sMsg;
-                return false;
-            }
-
-            //总金额
-            double mTotal = 0;
-            mTotal = GetTotalMoney(goodsList);
-
-           // HdDbConnection conn = HdDbConnection.GetInstance("ERPDB");
-          //  if (!conn.TryOpen(out sMsg))
-          //  {
-          //      return false;
-          //  }
-
-            int iCount = 0;
-         //   string sTM = CommonUtils.GetTM();
-            int iTranType = 0;
-         //   DbCommand cmd = conn.GetCommand(out sMsg);
-
-           // CommonUtils.WriteSKTLog(1, sktNo, "保存销售:<2.5.1.7> 保存销售 准备保存 ");
-            try
-            {
-              //  CommonUtils.WriteSKTLog(10, sktNo, "ERP保存销售<1>");
-                cmd.Transaction = conn.Connection.BeginTransaction();
-
-               // CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.1>准备保存XSJL");
-                PrepareSaveXSJL(sktNo, iPersonID, jlbh, CrmBillId, iTranType, member, goodsList, cmd);
-
-               // CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成 <2.2>准备保存XSJLC");
-                PrepareSaveXSJLC(Shop, sktNo, jlbh, goodsList, cmd);
-
-              //  CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.3>准备保存XSJLM");
-                CheckOutSaveXSJLM(sktNo, jlbh, pays, cmd, out iCount);
-              //  CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.5>准备保存XSJLT");
-                CheckOutSaveXSJLT(sktNo, iPersonID, jlbh, goodsList, cmd, ref iCount);
-
-               // CheckOutProcXSJL(sktNo, jlbh, cmd);
-               // CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.6> 删除CRM备注:CZK:" + CrmMoneyCardTransID + " YHQ:" + CrmCouponTransId);
-                DeleteCrmTrans(sktNo, CrmMoneyCardTransID, CrmCouponTransId, cmd);
-               // CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<3>_准备提交");
-
-                //cmd.CommandType = System.Data.CommandType.Text;
-                cmd.Transaction.Commit();
-
-               // CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<3>_完成提交");
-            }
-            catch (Exception e)
-            {
-                cmd.Transaction.Rollback();
-                message.ErrorType = 1;
-                message.Message = "预先保存销售失败:" + e.Message.ToString();
-
-              //  CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售失败:提示:" + message.Message);
-
-                return false;
-            }
-            finally
-            {
-                //conn.Close();
-            }
-            return true;
-        }
-
-
-        //增加银行明细
-        public bool CheckOutSaleToDatabase(string Shop, string sktNo, int iPersonID, int jlbh, int CrmBillId, string PromniDealID,
-            Member member, List<Goods> goodsList, List<Payment> pays, List<CreditDetail> creditDetailList,
-            int CrmMoneyCardTransID, int CrmCouponTransId, out ErrorMessage message)
-        {
-            message = new ErrorMessage();
-
-            string sMsg = "";
-            bool result = false, bHaveCredit = false;
-
-            CommonUtils.WriteSKTLog(1, sktNo, "保存销售:<2.5.1.3> [s80] 保存销售 准备检查数据 ");
-
-
-            bHaveCredit = false;
-            if (creditDetailList == null)
-            {
-                bHaveCredit = false;
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售<1.1.2.5.1> : 没有银行类数据[creditDetailList=null]:");
-            }
-            else if (creditDetailList.Count <= 0)
-            {
-                bHaveCredit = false;
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售<1.1.2.5.2> : 没有银行类数据[creditDetailList数目为0]:");
-            }
-            else
-            {
-                bHaveCredit = true;
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售<1.1.2.5.3> : 有银行类数据[creditDetailList数目大于0]:");
-            }
-
-
-            result = CheckSaveData(sktNo, goodsList, pays, ref sMsg);
-            if (!result)
-            {
-                message.ErrorType = 3;
-                message.Message = "保存时检查数据失败:" + sMsg;
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.0.1> 保存时检查数据失败:" + sMsg);
-                return false;
-            }
-
-
-            int mTotal = 0;
-            mTotal = GetTotalMoney(goodsList);
-            CommonUtils.WriteSKTLog(1, sktNo, "保存销售:<2.5.1.5> 保存销售 总金额: " + mTotal);
-
-
-
-            HdDbConnection conn = HdDbConnection.GetInstance("ERPDB");
-            if (!conn.TryOpen(out sMsg))
-            {
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售<4.1>错误:连不上数据库" + sMsg);
-                return false;
-            }
-
-            CommonUtils.WriteSKTLog(1, sktNo, "保存销售:<2.5.1.6> 保存销售 准备保存 ");
-
-            int iCount = 0;
-            string sTM = CommonUtils.GetTM();
-            int iTranType = 0;
-            DbCommand cmd = conn.GetCommand(out sMsg);
-
-            CommonUtils.WriteSKTLog(1, sktNo, "保存销售:<2.5.1.7> 保存销售 准备保存 ");
-            try
-            {
-                CommonUtils.WriteSKTLog(10, sktNo, "ERP保存销售<1>");
-                cmd.Transaction = conn.Connection.BeginTransaction();
-
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.1>准备保存XSJL");
-                PrepareSaveXSJL(sktNo, iPersonID, jlbh, CrmBillId, iTranType, member, goodsList, cmd);
-
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成 <2.2>准备保存XSJLC");
-                PrepareSaveXSJLC(Shop, sktNo, jlbh, goodsList, cmd);
-
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.3>准备保存XSJLM");
-                CheckOutSaveXSJLM(sktNo, jlbh, pays, cmd, out iCount);
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.5>准备保存XSJLT");
-                CheckOutSaveXSJLT(sktNo, iPersonID, jlbh, goodsList, cmd, ref iCount);
-
-            //    CheckOutProcXSJL(sktNo, jlbh, cmd);
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.6> 删除CRM备注:CZK:" + CrmMoneyCardTransID + " YHQ:" + CrmCouponTransId);
-
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.7.1>准备保存银行类数据  ");
-                if (bHaveCredit)
-                {
-                    int iCount1 = 0;
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.7.2>刷过卡,有银行类数据,准备保存 ");
-                    SaleProcDo.DoSaveCreditDetails(sktNo, jlbh, iPersonID, creditDetailList, cmd, out iCount1);
-                    CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<2.7.3> 保存完成");
-                }
-
-
-                DeleteCrmTrans(sktNo, CrmMoneyCardTransID, CrmCouponTransId, cmd);
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<3>_准备提交");
-
-                //cmd.CommandType = System.Data.CommandType.Text;
-                cmd.Transaction.Commit();
-
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售完成<3>_完成提交");
-            }
-            catch (Exception e)
-            {
-                cmd.Transaction.Rollback();
-                message.ErrorType = 1;
-                message.Message = "预先保存销售失败:" + e.Message.ToString();
-
-                CommonUtils.WriteSKTLog(1, sktNo, "ERP保存销售失败:提示:" + message.Message);
-
-                return false;
-            }
-            finally
-            {
-                //conn.Close();
-            }
-            return true;
-        }  */
 
 
         public bool CheckSaveData(string posNo, List<Goods> GoodList, List<Payment> PayList,

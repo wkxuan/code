@@ -5441,7 +5441,7 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
-        public DateTime opertime
+        public string opertime  //yyyy-mm-dd HH24:MI:SS
         {
             get;
             set;

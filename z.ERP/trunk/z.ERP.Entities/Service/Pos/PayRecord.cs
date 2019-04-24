@@ -55,7 +55,7 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
-        public DateTime opertime
+        public string opertime
         {
             get;
             set;
