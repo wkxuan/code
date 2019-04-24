@@ -160,6 +160,7 @@
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\BJGL\BJT\BJTController.cs" />
+    <Compile Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustController.cs" />
     <Compile Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShowController.cs" />
     <Compile Include="Areas\BJGL\FLOORMAP\FloorMapController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
@@ -200,7 +201,9 @@
     <Compile Include="Areas\Report\ContractInfo\ContractInfoController.cs" />
     <Compile Include="Areas\Report\ContractSale\ContractSaleController.cs" />
     <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
+    <Compile Include="Areas\Report\MerchantPayCost\MerchantPayCostController.cs" />
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
+    <Compile Include="Areas\Report\PayTypeSale\PayTypeSaleController.cs" />
     <Compile Include="Areas\Report\SaleRecord\SaleRecordController.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
@@ -244,6 +247,7 @@
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\WYGL\MARCHINAREAR\MarchinArearController.cs" />
     <Compile Include="Areas\WYGL\OPENBUSINESS\OpenBusinessController.cs" />
+    <Compile Include="Areas\XTGL\ALERT\ALERTController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFilesController.cs" />
     <Compile Include="Areas\XTGL\FEEACCOUNT\FeeAccountController.cs" />
@@ -276,6 +280,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\BJGL\BJT\BJTDef.js" />
+    <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustEdit.js" />
+    <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustList.js" />
     <Content Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShow.js" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapEdit.js" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.js" />
@@ -345,7 +351,9 @@
     <Content Include="Areas\Report\ContractInfo\ContractInfo.js" />
     <Content Include="Areas\Report\ContractSale\ContractSale.js" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.js" />
+    <Content Include="Areas\Report\MerchantPayCost\MerchantPayCost.js" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.js" />
+    <Content Include="Areas\Report\PayTypeSale\PayTypeSale.js" />
     <Content Include="Areas\Report\SaleRecord\SaleRecord.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
@@ -379,6 +387,7 @@
     <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearList.js" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessEdit.js" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessList.js" />
+    <Content Include="Areas\XTGL\ALERT\ALERT.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\FEEACCOUNT\FeeAccount.js" />
     <Content Include="Areas\XTGL\GOODS_KIND\Goods_Kind.js" />
@@ -617,7 +626,6 @@
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapDetail.cshtml" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapEdit.cshtml" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.cshtml" />
-    <Content Include="Areas\BJGL\FLOORMAP\Print.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockEdit.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockList.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockMx.cshtml" />
@@ -652,6 +660,20 @@
     <Content Include="Areas\WYGL\COMPLAIN\ComPlainEdit.cshtml" />
     <Content Include="Areas\WYGL\COMPLAIN\ComPlainDetail.cshtml" />
     <Content Include="Areas\XTGL\FEEACCOUNT\FeeAccount.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustDetail.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustEdit.cshtml" />
+    <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustList.cshtml" />
+    <Content Include="Areas\XTGL\ALERT\ALERT.cshtml" />
+    <Content Include="Areas\Report\PayTypeSale\PayTypeSale.cshtml" />
+    <Content Include="File\Template\收款方式销售导出.xlsx" />
+    <Content Include="File\Template\POS销售导出.xlsx" />
+    <Content Include="File\Template\合同信息表.xlsx" />
+    <Content Include="File\Template\商品销售导出.xlsx" />
+    <Content Include="File\Template\商户租金计提表.xlsx" />
+    <Content Include="File\Template\租约列表导出.xlsx" />
+    <Content Include="File\Template\租约销售导出.xlsx" />
+    <Content Include="Areas\Report\MerchantPayCost\MerchantPayCost.cshtml" />
+    <Content Include="File\Template\租赁商户缴费记录导出.xlsx" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

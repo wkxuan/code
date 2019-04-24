@@ -6,7 +6,7 @@
     editDetail.method = "GetFloorMap";
     editDetail.Key = 'MAPID';
     editDetail.dataParam.STATUS = "1";
-    editDetail.dataParam.TZBJ = "0";
+    editDetail.dataParam.TZBJ = "1";
     editDetail.screenParam.branchData = [];
     editDetail.screenParam.regionData = [];
     editDetail.screenParam.floorData = [];
@@ -323,6 +323,7 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请选择楼层!");
         return false;
     };
+    editDetail.dataParam.TZBJ = 1;
     editDetail.dataParam.FLOORSHOP = [];
     var data = editDetail.screenParam.map.GetData();
 
@@ -344,7 +345,7 @@ editDetail.IsValidSave = function () {
 }
 
 editDetail.showOne = function (data, callback) {
-    _.Ajax('SearchFloorMap', {
+    _.Ajax('SearchFloorMapAdjust', {
         Data: { MAPID: data }
     }, function (data) {
         $.extend(editDetail.dataParam, data.floormap);

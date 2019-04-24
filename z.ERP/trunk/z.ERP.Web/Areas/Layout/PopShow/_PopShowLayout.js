@@ -3,6 +3,7 @@
     var _this = this;
 
     this.beforeVue = function () { }
+    this.afterVue = function () { }
 
     this.enabled = function (val) { return val; }
 
@@ -31,8 +32,9 @@
                     dataDef: []
                 }
             },
-            mounted:function () {
-
+            mounted: function () {
+                if (window.parent.mapShow != undefined)
+                    _this.popInitParam(window.parent.mapShow.screenParam.popParam);
             },
             methods: {
                 seach: function (event) {
@@ -117,7 +119,8 @@
             return (!ve.screenParamData.dataDef) || (ve.screenParamData.dataDef.length == 0)
         }
     }
-
+    this.showOne = function (data, callback) {
+    }
     this.addHref = function () { }
 
     this.modHref = function (row, index) { }
@@ -145,16 +148,7 @@
         _this.vueInit();
         _this.beforeVue();
         _this.vue();
-        _this.showList(function (data) {
-            if (_this.screenParam.dataDef.length > 0) {
-                $.extend(popShow.screenParam, _this.screenParam.dataDef);
-                //    ve.panelName = 'result';
-                //    Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
-            }
-            else {
-                mess.$Message.info("没有满足当前查询条件的结果!");
-            }
-        });
+        //popShow.showOne();
     }, 100);
 }
 var popShow = new _PopShow();

@@ -1101,9 +1101,17 @@ editDetail.otherMethods = {
             inx = 1;
 
             beginMzqHtq = addDate(editDetail.dataParam.FREE_END, 1);
+
+            var yearMzq = getNextYears(editDetail.dataParam.FREE_BEGIN);
+
+            if (yearMzq <= (new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd'))) {
+                beginHtq = beginMzqHtq;
+            }
         };
 
         var copyHtQsr = (beginMzqHtq);
+
+
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
             if (i != 0) {
@@ -1296,7 +1304,7 @@ editDetail.otherMethods = {
             for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
                 maxIndex = editDetail.dataParam.CONTRACT_COST[0].INX;
                 if (editDetail.dataParam.CONTRACT_COST[j].INX > maxIndex) {
-                    maxIndex = editDetail.dataParam.CONTRACT_COST[j].INDEX
+                    maxIndex = editDetail.dataParam.CONTRACT_COST[j].INX
                 }
                 maxIndex++;
             }

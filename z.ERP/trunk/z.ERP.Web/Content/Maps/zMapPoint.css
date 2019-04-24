@@ -53,8 +53,8 @@
 .ip_bg24 .roundBgWInner { height: 28px; width: 28px; }
 .roundBgW { border-radius: 30px; position: absolute; animation: pulseW 1.5s 1s infinite alternate; -moz-animation: pulseW 1.5s 1s infinite alternate; /* Firefox */ -webkit-animation: pulseW 1.5s 1s infinite alternate; /* Safari and Chrome */ -o-animation: pulseW 1.5s 1s infinite alternate; /* Opera */ }
 .roundBgWIn { border-radius: 30px; position: absolute; top: 4px; left: 4px; animation: pulseWIn 1.5s 0.5s infinite alternate; -moz-animation: pulseWIn 1.5s 0.5s infinite alternate; /* Firefox */ -webkit-animation: pulseWIn 1.5s 0.5s infinite alternate; /* Safari and Chrome */ -o-animation: pulseWIn 1.5s 0.5s infinite alternate; /* Opera */ }
-.roundBgWInner { border-radius: 30px; position: absolute; top: 7px; left: 7px; animation: pulseWInner 1.5s infinite alternate; -moz-animation: pulseWInner 1.5s infinite alternate; /* Firefox */ -webkit-animation: pulseWInner 1.5s infinite alternate; /* Safari and Chrome */ -o-animation: pulseWInner 1.5s infinite alternate; /* Opera */ }
-
+.roundBgWInner { border-radius: 30px; position: absolute; top: 7px; left: 7px;}
+/*.roundBgWInner { border-radius: 30px; position: absolute; top: 7px; left: 7px; animation: pulseWInner 1.5s infinite alternate; -moz-animation: pulseWInner 1.5s infinite alternate; /* Firefox */ -webkit-animation: pulseWInner 1.5s infinite alternate; /* Safari and Chrome */ -o-animation: pulseWInner 1.5s infinite alternate; /* Opera */ }*/
 @keyframes pulseW {
     from { background: rgba(0,0,0, 0.2); }
     to { background: rgb(255, 255, 255); }

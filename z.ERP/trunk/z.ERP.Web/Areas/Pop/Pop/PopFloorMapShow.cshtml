@@ -5,99 +5,132 @@
 @section conditionParam{
 <row>
     <i-col span="3" class="RowTitle">
-        代码
+        店铺代码
     </i-col>
     <i-col span="8">
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "screenParam.USERCODE",
+                vModel = "screenParam.SHOPCODE",
+                Readonly = "true"
             });
         }
     </i-col>
-    <i-col span="3" class="RowTitle">名称</i-col>
+    <i-col span="3" class="RowTitle">店铺状态</i-col>
     <i-col span="8">
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "screenParam.USERNAME"
-            });
-        }
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">
-        代码
-    </i-col>
-    <i-col span="8">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.USERCODE",
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">名称</i-col>
-    <i-col span="8">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.USERNAME"
-            });
-        }
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">        铺位代码    </i-col>
-    <i-col span="8">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.USERCODE",
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">业态</i-col>
-    <i-col span="8">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.USERNAME"
+                vModel = "screenParam.STATUSMC",
+                Readonly = "true"
             });
         }
     </i-col>
 </row>
 <row>
     <i-col span="3" class="RowTitle">
-        合同期
+        租赁面积
     </i-col>
     <i-col span="8">
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "screenParam.USERCODE",
+                vModel = "screenParam.RENTAREA",
+                Readonly = "true"
             });
         }
     </i-col>
-    <i-col span="3" class="RowTitle">租金规则</i-col>
+    <i-col span="3" class="RowTitle">细分业态</i-col>
     <i-col span="8">
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "screenParam.USERNAME"
+                vModel = "screenParam.CATEGORYNAME",
+                Readonly = "true"
             });
         }
     </i-col>
 </row>
 <row>
     <i-col span="3" class="RowTitle">
-        租金
+        品牌名称
     </i-col>
     <i-col span="8">
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "screenParam.USERCODE",
+                vModel = "screenParam.BRANDNAME",
+                Readonly = "true"
+            });
+        }
+    </i-col>
+    <i-col span="3" class="RowTitle">商户名称</i-col>
+    <i-col span="8">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "screenParam.MERCHANTNAME",
+                Readonly = "true"
+            });
+        }
+    </i-col>
+</row>
+<row>
+    <i-col span="3" class="RowTitle"> 合同编号 </i-col>
+    <i-col span="8">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "screenParam.CONTRACTID",
+                Readonly = "true"
+            });
+        }
+    </i-col>
+    <i-col span="3" class="RowTitle">合同有效期</i-col>
+    <i-col span="8">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "screenParam.CONT_S_E",
+                Readonly = "true"
+            });
+        }
+    </i-col>
+</row>
+<row>
+    <i-col span="3" class="RowTitle">
+        合作方式
+    </i-col>
+    <i-col span="8">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "screenParam.OPERATERULENAME",
+                Readonly = "true"
+            });
+        }
+    </i-col>
+    <i-col span="3" class="RowTitle">起租日期</i-col>
+    <i-col span="8">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "screenParam.QZRQ",
+                Readonly = "true"
+            });
+        }
+    </i-col>
+</row>
+<row>
+    <i-col span="3" class="RowTitle">
+        租金金额
+    </i-col>
+    <i-col span="8">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "screenParam.RENT",
+                Readonly = "true"
             });
         }
     </i-col>
@@ -106,20 +139,22 @@
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "screenParam.USERNAME"
+                vModel = "screenParam.RENTEFFECT",
+                Readonly = "true"
             });
         }
     </i-col>
 </row>
 <row>
     <i-col span="3" class="RowTitle">
-        销售
+        销售金额
     </i-col>
     <i-col span="8">
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "screenParam.USERCODE",
+                vModel = "screenParam.AMOUNT",
+                Readonly = "true"
             });
         }
     </i-col>
@@ -128,76 +163,25 @@
         @{
             RenderControl(new TextBoxRender()
             {
-                vModel = "screenParam.USERNAME"
+                vModel = "screenParam.AMOUNTEFFECT",
+                Readonly = "true"
             });
         }
-    </i-col>
+        </i-col>
 </row>
 <row>
     <i-col span="3" class="RowTitle">
-        租金
+        其他条款
     </i-col>
-    <i-col span="8">
+    <i-col span="19">
         @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.USERCODE",
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">租金坪效</i-col>
-    <i-col span="8">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.USERNAME"
-            });
+    RenderControl(new TextBoxRender()
+    {
+        vModel = "screenParam.DISCRIPTION",
+        Readonly = "true"
+});
         }
     </i-col>
 </row>
-<row>
-    <i-col span="3" class="RowTitle">
-        销售
-    </i-col>
-    <i-col span="8">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.USERCODE",
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">销售坪效</i-col>
-    <i-col span="8">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.USERNAME"
-            });
-        }
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">
-        销售
-    </i-col>
-    <i-col span="8">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.USERCODE",
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">销售坪效</i-col>
-    <i-col span="8">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.USERNAME"
-            });
-        }
-    </i-col>
-    </row>
 }
 

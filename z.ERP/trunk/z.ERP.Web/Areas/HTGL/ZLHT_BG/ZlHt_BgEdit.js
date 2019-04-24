@@ -1002,6 +1002,7 @@ editDetail.otherMethods = {
     },
 
     //按年度分解
+    //按年度分解
     operPeriod: function () {
         if (editDetail.dataParam.CONTRACT_SHOP.length == 0) {
             iview.Message.info("请确定商铺!");
@@ -1016,6 +1017,8 @@ editDetail.otherMethods = {
             return;
         }
         editDetail.dataParam.CONTRACT_RENT = [];
+
+
         var yearsValue = getYears(new Date(editDetail.dataParam.CONT_START),
             new Date(editDetail.dataParam.CONT_END));
         var nestYear = null;
@@ -1039,9 +1042,16 @@ editDetail.otherMethods = {
             inx = 1;
 
             beginMzqHtq = addDate(editDetail.dataParam.FREE_END, 1);
+
+            var yearMzq = getNextYears(editDetail.dataParam.FREE_BEGIN);
+
+            if (yearMzq <= (new Date(editDetail.dataParam.FREE_END).Format('yyyy-MM-dd'))) {
+                beginHtq = beginMzqHtq;
+            }
         };
 
         var copyHtQsr = (beginMzqHtq);
+
 
         //循环年数
         for (var i = 0; i <= yearsValue; i++) {
@@ -1051,9 +1061,10 @@ editDetail.otherMethods = {
             nestYear = getNextYears(beginHtq);
             if (nestYear < (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd'))) {
                 rentData = {
-                    INX: i + 1,
+                    INX: i + 1 + inx,
                     STARTDATE: copyHtQsr,
                     ENDDATE: nestYear,
+                    DJLX: '2',  //默认月金额
                     PRICE: 0,
                     RENTS: 0,
                     RENTS_JSKL: 0,
@@ -1063,9 +1074,10 @@ editDetail.otherMethods = {
                 copyHtQsr = addDate(nestYear);
             } else {
                 rentData = {
-                    INX: i + 1,
+                    INX: i + 1 + inx,
                     STARTDATE: copyHtQsr,
                     ENDDATE: (new Date(editDetail.dataParam.CONT_END).Format('yyyy-MM-dd')),
+                    DJLX: '2',  //默认月金额
                     PRICE: 0,
                     RENTS: 0,
                     RENTS_JSKL: 0,
@@ -1233,7 +1245,7 @@ editDetail.otherMethods = {
             for (var j = 0; j < editDetail.dataParam.CONTRACT_COST.length; j++) {
                 maxIndex = editDetail.dataParam.CONTRACT_COST[0].INX;
                 if (editDetail.dataParam.CONTRACT_COST[j].INX > maxIndex) {
-                    maxIndex = editDetail.dataParam.CONTRACT_COST[j].INDEX
+                    maxIndex = editDetail.dataParam.CONTRACT_COST[j].INX
                 }
                 maxIndex++;
             }
@@ -1629,6 +1641,8 @@ function getNextYears(date) { //获取当前日前的下一年上一天
     var tomYear = new Date(date);
     tomYear.setFullYear(tomYear.getFullYear() + 1); //下一年的今天
     tomYear.setDate(tomYear.getDate() - 1); //下一年的昨天
+
+    var tomYear = new Date(tomYear).Format('yyyy-MM-dd');
     return (tomYear);
 };
 
@@ -1638,5 +1652,6 @@ function addDate(date, days) {
     }
     var lastDay = new Date(date); //日前复制防止原来日期发生变化
     lastDay.setDate(lastDay.getDate() + days); //日期加天数
+    var lastDay = new Date(lastDay).Format('yyyy-MM-dd');
     return lastDay;
 };

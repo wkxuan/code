@@ -47,6 +47,10 @@
         <i-col span="4">
             <i-input v-model="STATUSMC" readonly="true"></i-input>
         </i-col>
+        <i-col span="2" class="RowTitle">原图纸编号</i-col>
+        <i-col span="4">
+            <i-input v-model="MAPID_OLD" readonly="true"></i-input>
+        </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">门店</i-col>
@@ -82,7 +86,8 @@
             data: {
                 Mainpanel: 'condition',
                 disabled:true,
-                MAPID:"@floorMap.MAPID",
+                MAPID: "@floorMap.MAPID",
+                MAPID_OLD: "@floorMap.MAPID_OLD",
                 BRANCHNAME:"@floorMap.BRANCHNAME",
                 REGIONNAME:"@floorMap.REGIONNAME",
                 FLOORNAME:"@floorMap.FLOORNAME",
@@ -95,7 +100,7 @@
             mounted:function(){
                 var _self = this;
                 var shopData=[];
-                _.Ajax('SearchFloorMap', {
+                _.Ajax('SearchFloorMapAdjust', {
                     Data: { MAPID: "@floorMap.MAPID" }
                 }, function (data) {
                     _self.FLOORSHOP = data.floorshop;

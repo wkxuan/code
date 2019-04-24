@@ -83,15 +83,12 @@ search.popCallBack = function (data) {
         search.screenParam.showPopSysuser = false;
         for (var i = 0; i < data.sj.length; i++) {
             if (btnFlag == "SIGNER") {
-                search.searchParam.SIGNER = data.sj[i].USERID;
                 search.searchParam.SIGNER_NAME = data.sj[i].USERNAME;
             }
             else if (btnFlag == "REPORTER") {
-                search.searchParam.REPORTER = data.sj[i].USERID;
                 search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
             }
             else if (btnFlag == "VERIFY") {
-                search.searchParam.VERIFY = data.sj[i].USERID;
                 search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
             }
         };
@@ -175,7 +172,7 @@ search.bgHref = function (row, index) {
             _.OpenPage({
                 id: 10600203,
                 title: '变更租赁租约',
-                url: "HTGL/ZLHT_BG/ZlHt_BgEdit/" + row.CONTRACTID
+                url: "HTGL/LYHT_BG/LyHt_BgEdit/" + row.CONTRACTID
             });
         };
     };

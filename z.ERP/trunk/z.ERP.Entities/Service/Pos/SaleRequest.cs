@@ -62,6 +62,11 @@ namespace z.ERP.Entities.Service.Pos
         {
             get; set;
         }
+        public List<PayRecord> payRecord
+        {
+            get; set;
+        }
+
 
     }
 }

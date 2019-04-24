@@ -22,7 +22,8 @@
         $(self).append(maparea);
         maparea.append('<img id="point_map" class="ip_tooltipImg" src="' + options.Url + '" width="' + options.width + '" height="' + options.height + '">');
         function addPoint(d) {
-            var newdom = $('<div class="ip_tooltip ip_img32" data-button="moreblue" data-tooltipbg="bgblack" data-round="roundBgW" data-animationtype="btt-slide" style="color:white"></div>');
+            var newdom = $('<div id="' + d.name + '" class="ip_tooltip ip_img32" data-button="moreblue" data-tooltipbg="bgblack" data-round="roundBgW" data-animationtype="btt-slide" style="color:white"></div>');
+            //var newdom = $('<div id="'+d.name+'"class="ip_tooltip ip_img32" data-button="moreblue" data-tooltipbg="bgblack" data-round="roundBgW" data-animationtype="btt-slide" style="color:white"></div>');
             //btt-slide: 上
             //ltr-slide: 右
             //rtl-slide: 左
@@ -32,19 +33,20 @@
             newdom.html(d.html ? d.html(d) : d.name);
             newdom.data('data', d);
             maparea.append(newdom);
-            Render(newdom);
+            Render(newdom,d);
         }
         options.data.forEach(function (d, i) {
             addPoint(d);
         });
-        function Render(value) {
+        function Render(value,d) {
             htmlContent = $(value).html();
             button = $(value).data('button');
             round = $(value).data('round');
             tooltipBg = $(value).data('tooltipbg');
             $(value).html('');
             if (round != undefined && round != "") {
-                $('<div class="' + round + '"></div><div class="' + round + 'In"></div><div class="' + round + 'Inner"></div>')
+                $('<div  class="' + round + 'Inner" style="text-align:center;background:' + d.color + '">' + d.catrgoryname.substr(0, 1) + '</div>')
+                //$('<div class="' + round + '"></div><div class="' + round + 'In"></div><div class="' + round + 'Inner"></div>')
                     .appendTo(value);
             }
             $('<div class="button ' + button + '"></div>').appendTo(value);
@@ -182,10 +184,11 @@
                //拖动函数
                 function bindmouseUp(el) {
                     $(el).mousedown(function (e) {
-                        $(document).bind('mouseup', mouseUp);
+                        $(el).bind('mouseup', mouseUp);
                         return false;
                     });
                     function mouseUp(e) {
+                        window.parent.mapShow.screenParam.shopCode = e.delegateTarget.id;
                         window.parent.mapShow.screenParam.showPopShop = true;
                     }
                 }

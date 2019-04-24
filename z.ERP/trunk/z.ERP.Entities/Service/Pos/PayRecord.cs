@@ -4,62 +4,63 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace z.POS.Entities.Pos
+namespace z.ERP.Entities.Service.Pos
 {
-    public class LoginConfigInfo
+    public class PayRecord
     {
-        public string branchid
+        public int inx
+        {
+            get;
+            set;
+        }
+        public int payid
         {
             get;
             set;
         }
 
-        public string crmStoreCode
+        public string cardno
         {
             get;
             set;
         }
 
-        public string shopid
+        public string bank
         {
             get;
             set;
         }
 
-        public string shopcode
+        public int bankid
         {
             get;
             set;
         }
 
-        public string shopname
+        public double amount
         {
             get;
             set;
         }
 
-        public string pid
+        public string serialno
         {
             get;
             set;
         }
 
-        public string encryption
+        public string refno
         {
             get;
             set;
         }
 
-        public string key
+        public DateTime opertime
         {
             get;
             set;
         }
 
-        public string key_pub
-        {
-            get;
-            set;
-        }
+
     }
 }

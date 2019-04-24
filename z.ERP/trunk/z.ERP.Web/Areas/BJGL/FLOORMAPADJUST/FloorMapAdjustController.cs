@@ -14,26 +14,26 @@ using z.MVC5.Attributes;
 using System.IO;
 using z.ERP.Web.Areas.Layout.EditDetail;
 
-namespace z.ERP.Web.Areas.BJGL.FLOORMAP
+namespace z.ERP.Web.Areas.BJGL.FLOORMAPADJUST
 {
-    public class FloorMapController : BaseController
+    public class FloorMapAdjustController : BaseController
     {
-        public ActionResult FloorMapList()
+        public ActionResult FloorMapAdjustList()
         {
             ViewBag.Title = "楼层图纸信息";
             return View(new SearchRender()
             {
                 
-                Permission_Add = "11010101",
-                Permission_Edit = "11010101",
-                Permission_Browse = "11010102",                
-                Permission_Exec = "11010103",
-                Permission_Del = "11010104"
+                Permission_Add = "11010201",
+                Permission_Edit = "11010201",
+                Permission_Browse = "11010202",                
+                Permission_Exec = "11010203",
+                Permission_Del = "11010204"
             });
         }
 
 
-        public ActionResult FloorMapDetail(string Id)
+        public ActionResult FloorMapAdjustDetail(string Id)
         {
             ViewBag.Title = "楼层图纸信息浏览";
             var res = service.DpglService.GetFloorMapElement(new FLOORMAPEntity(Id));
@@ -42,27 +42,27 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
             return View();
         }
 
-        public ActionResult FloorMapEdit(string Id)
+        public ActionResult FloorMapAdjustEdit(string Id)
         {
             ViewBag.Title = "楼层图纸信息编辑";
 
-            return View("FloorMapEdit", model: (EditRender)Id);
+            return View("FloorMapAdjustEdit", model: (EditRender)Id);
 
         }
-        [Permission("11010104")]
+        [Permission("11010204")]
         public void Delete(List<FLOORMAPEntity> DeleteData)
         {
             service.DpglService.DeleteFloorMap(DeleteData);
         }
 
-        [Permission("11010101")]
+        [Permission("11010201")]
         public string Save(FLOORMAPEntity SaveData)
         {
             return service.DpglService.SaveFloorMap(SaveData);
         }
-        public UIResult SearchFloorMap(FLOORMAPEntity Data)
+        public UIResult SearchFloorMapAdjust(FLOORMAPEntity Data)
         {
-            var res = service.DpglService.GetFloorMapElement(Data);
+            var res = service.DpglService.GetFloorMapAdjustElement(Data);
             return new UIResult(
                 new
                 {
@@ -116,12 +116,12 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
         {
             return new UIResult(service.DataService.GetFloor(Data));
         }
-        [Permission("11010103")]
+        [Permission("11010203")]
         public void ExecData(FLOORMAPEntity Data)
         {
             service.DpglService.ExecData(Data);
         }
-        [Permission("11010104")]
+        [Permission("11010204")]
         public void EliminateData(FLOORMAPEntity Data)
         {
             service.DpglService.EliminateData(Data);

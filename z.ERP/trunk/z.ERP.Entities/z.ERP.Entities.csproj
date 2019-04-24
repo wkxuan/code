@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto\FEE_ACCOUNTEntity.cs" />
+    <Compile Include="Auto\DEF_ALERTEntity.cs" />
+    <Compile Include="Auto\FLOORMAPSHOWEntity .cs" />
     <Compile Include="FLOORMAPEntity.cs" />
     <Compile Include="Auto\FLOORSHOPEntity.cs" />
     <Compile Include="Auto\FLOORMAPEntity.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="FREESHOPEntity.cs" />
     <Compile Include="OPENBUSINESSEntity.cs" />
+    <Compile Include="Service\Pos\PayRecord.cs" />
     <Compile Include="WLCHECKEntity.cs" />
     <Compile Include="WLSETTLEEntity.cs" />
     <Compile Include="WLUSESEntity.cs" />
