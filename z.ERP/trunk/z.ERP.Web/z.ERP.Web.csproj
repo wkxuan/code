@@ -666,6 +666,12 @@
     <Content Include="Areas\XTGL\ALERT\ALERT.cshtml" />
     <Content Include="Areas\Report\PayTypeSale\PayTypeSale.cshtml" />
     <Content Include="File\Template\收款方式销售导出.xlsx" />
+    <Content Include="File\Template\POS销售导出.xlsx" />
+    <Content Include="File\Template\合同信息表.xlsx" />
+    <Content Include="File\Template\商品销售导出.xlsx" />
+    <Content Include="File\Template\商户租金计提表.xlsx" />
+    <Content Include="File\Template\租约列表导出.xlsx" />
+    <Content Include="File\Template\租约销售导出.xlsx" />
     <Content Include="Areas\Report\MerchantPayCost\MerchantPayCost.cshtml" />
     <Content Include="File\Template\租赁商户缴费记录导出.xlsx" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
