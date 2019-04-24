@@ -340,4 +340,9 @@ namespace z.ERP.Entities.Enum
         终止=4,
         作废=5
     }
+    public enum 列表或汇总
+    {
+        普通列表 = 1,
+        期间汇总 = 2
+    }
 }

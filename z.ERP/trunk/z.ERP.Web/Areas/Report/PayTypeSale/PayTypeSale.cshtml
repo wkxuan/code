@@ -1,0 +1,133 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Srch;
+@using z.ERP.Entities.Enum;
+@inherits SrchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            查询类型
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new EnumDropDownListRender<列表或汇总>()
+                {
+                    vModel = "searchParam.SrchTYPE",
+                    Change = "changeSrchType",
+                    EmptyText = "普通列表"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelMerchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTID",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="4" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTNAME",
+                    Enable = true
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            收款方式
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.Pay",
+                    ServiceMothod = m => m.pay(),
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            销售日期
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.RQ_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.RQ_END"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            销售年月
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new YearMonthBoxRender()
+                {
+                    vModel = "searchParam.YEARMONTH_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new YearMonthBoxRender()
+                {
+                    vModel = "searchParam.YEARMONTH_END"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopMerchant",
+                    Caption = "选择商户",
+                    Width = "900",
+                    Src = "screenParam.srcPopMerchant"
+                });
+            }
+        </i-col>
+    </row>
+}

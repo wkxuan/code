@@ -202,6 +202,7 @@
     <Compile Include="Areas\Report\ContractSale\ContractSaleController.cs" />
     <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
+    <Compile Include="Areas\Report\PayTypeSale\PayTypeSaleController.cs" />
     <Compile Include="Areas\Report\SaleRecord\SaleRecordController.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
@@ -350,6 +351,7 @@
     <Content Include="Areas\Report\ContractSale\ContractSale.js" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.js" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.js" />
+    <Content Include="Areas\Report\PayTypeSale\PayTypeSale.js" />
     <Content Include="Areas\Report\SaleRecord\SaleRecord.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
@@ -660,6 +662,8 @@
     <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustEdit.cshtml" />
     <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustList.cshtml" />
     <Content Include="Areas\XTGL\ALERT\ALERT.cshtml" />
+    <Content Include="Areas\Report\PayTypeSale\PayTypeSale.cshtml" />
+    <Content Include="File\Template\收款方式销售导出.xlsx" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
