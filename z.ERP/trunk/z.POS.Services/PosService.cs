@@ -25,11 +25,11 @@ namespace z.POS.Services
         {
 
             string sql = "select b.fdbh BRANCHID,a.shopid,'' shopcode,'' shopname,'' pid,'' key  "
-                       +"   from RYXX a,SKT b"
+                       + "   from RYXX a,SKT b"
                       + $" where person_id={employee.Id} and b.sktno='{employee.PlatformId}'";
 
             LoginConfigInfo lgi = DbHelper.ExecuteOneObject<LoginConfigInfo>(sql);
-            return lgi;  
+            return lgi;
 
         }
 
@@ -49,7 +49,7 @@ namespace z.POS.Services
             return (lastDealid > lastDealid_his) ? lastDealid : lastDealid_his;
         }
 
-       public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
+        public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
         {
             string sql = "select a.sp_id goodsid,a.spcode goodscode,a.name,0 type,nvl(a.lsdj,0) price,nvl(a.hylsdj,0) member_price,b.deptid shopid,c.bmdm orgcode";
             sql += "        from SPXX a,GTSP b,BM c ";
@@ -66,7 +66,7 @@ namespace z.POS.Services
                 throw new Exception("商品不存在或不属于此店铺!");
 
             return goodsList;
-        }  
+        }
 
         public UserYYYResult GetClerkShop(PersonInfo req)    //暂不使用
         {
@@ -326,7 +326,7 @@ namespace z.POS.Services
                 catch (Exception e)
                 {
 
-                    throw new Exception("提交数据库时发生异常:" + e +":"+ String.Join(";", sqlarr));
+                    throw new Exception("提交数据库时发生异常:" + e + ":" + String.Join(";", sqlarr));
                 }
 
             }
@@ -470,11 +470,11 @@ namespace z.POS.Services
 
 
 
-/**
-    *    调用长益crm接口 
-    * 
-    * 
-    **/
+        /**
+            *    调用长益crm接口 
+            * 
+            * 
+            **/
 
 
 
@@ -490,6 +490,19 @@ namespace z.POS.Services
                     _posapi = WCF.CreateWCFServiceByURL<PosWebServiceSoap>(ConfigExtension.GetConfig("CRMServiceUrl"));
                 }
                 return _posapi;
+            }
+        }
+
+        API.PosServiceAPI2.PosWebServiceSoap _PosAPI2;
+        API.PosServiceAPI2.PosWebServiceSoap PosAPI2
+        {
+            get
+            {
+                if (_PosAPI2 == null)
+                {
+                    _PosAPI2 = WCF.CreateWCFServiceByURL<API.PosServiceAPI2.PosWebServiceSoap>(ConfigExtension.GetConfig("CRMServiceUrl2"));
+                }
+                return _PosAPI2;
             }
         }
         #endregion
@@ -611,7 +624,10 @@ namespace z.POS.Services
                 //2.3取CZK信息
                 if (vipcard.id > 0)
                 {
-                    cardCodeToCheck = ""; verifyCode = ""; password = ""; CondValue = Convert.ToString(vipcard.id);
+                    cardCodeToCheck = "";
+                    verifyCode = "";
+                    password = "";
+                    CondValue = Convert.ToString(vipcard.id);
                     GetCashCardInfo(1, CondValue, Shop, cardCodeToCheck, verifyCode, password,
                         out cashCard, out msg);
 
@@ -1240,7 +1256,6 @@ namespace z.POS.Services
 
             iVIPID = -1;
             sVIPCode = "";
-
             ListCoupon = new List<CouponDetails>();
             Coupon[] PayCoupon;
             CouponPayLimit[] payLimits;
@@ -1250,7 +1265,6 @@ namespace z.POS.Services
 
             PayCoupon = new Coupon[100];
             payLimits = new CouponPayLimit[100];
-
             ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
             crmSoapHeader.UserId = "CRMUSER";
             crmSoapHeader.Password = "CRMUSER";

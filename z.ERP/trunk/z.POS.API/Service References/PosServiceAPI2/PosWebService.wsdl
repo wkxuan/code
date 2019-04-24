@@ -1,0 +1,1712 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetVipCard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="condType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="condValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardCodeToCheck" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="verifyCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVipCardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetVipCardResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="vipCard" type="tns:VipCard" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="VipCard">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CardId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VipName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CardTypeId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardTypeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CanCent" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="CanOwnCoupon" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="CanDisc" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ValidCent" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="YearCent" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="StageCent" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="Hello" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdCardCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Birthday" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SexType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mobile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EMail" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CrmSoapHeader" type="tns:CrmSoapHeader" />
+      <s:complexType name="CrmSoapHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="GetVipCardToOfferCoupon">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="condType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="condValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardCodeToCheck" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="verifyCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVipCardToOfferCouponResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetVipCardToOfferCouponResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="vipCard" type="tns:VipCard" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateVipInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="vipInfo" type="tns:VipInfoUpdated" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="VipInfoUpdated">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CardId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mobile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EMail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Vipname" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SexType" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Birthday" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateVipInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateVipInfoResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateVipCent">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="vipId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="updateCent" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="updateType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="storeCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="posId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="billId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateVipCentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateVipCentResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetArticleVipDisc">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="vipId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="vipType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="storeCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="articles" type="tns:ArrayOfDeptArticleCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDeptArticleCode">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DeptArticleCode" nillable="true" type="tns:DeptArticleCode" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DeptArticleCode">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DeptCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ArticleCode" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetArticleVipDiscResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetArticleVipDiscResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="discs" type="tns:ArrayOfArticleVipDisc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfArticleVipDisc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ArticleVipDisc" nillable="true" type="tns:ArticleVipDisc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArticleVipDisc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DiscRate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="MultiDiscRate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="PrecisionType" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DiscCombinationType" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DiscBillId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCashCard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="condType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="condValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardCodeToCheck" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="verifyCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="storeCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCashCardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetCashCardResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cashCard" type="tns:CashCard" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CashCard">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CardId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CardTypeId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Balance" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVipCoupon">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="condType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="condValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardCodeToCheck" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="verifyCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="storeCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="requireValidDate" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVipCouponResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetVipCouponResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="vipId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="vipCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="coupons" type="tns:ArrayOfCoupon" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCoupon">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Coupon" nillable="true" type="tns:Coupon" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Coupon">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CouponType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CouponTypeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Balance" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVipCouponToPay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="condType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="condValue" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardCodeToCheck" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="verifyCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="storeCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVipCouponToPayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetVipCouponToPayResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="vipId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="vipCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="coupons" type="tns:ArrayOfCoupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="payLimits" type="tns:ArrayOfCouponPayLimit" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCouponPayLimit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CouponPayLimit" nillable="true" type="tns:CouponPayLimit" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CouponPayLimit">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CouponType" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LimitMoney" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVipCouponPayLimit">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="vipType" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="couponTypes" type="tns:ArrayOfInt" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVipCouponPayLimitResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetVipCouponPayLimitResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="payLimits" type="tns:ArrayOfCouponPayLimit" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PrepareTransCashCardPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="payments" type="tns:ArrayOfCashCardPayment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCashCardPayment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CashCardPayment" nillable="true" type="tns:CashCardPayment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CashCardPayment">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CardId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="PayMoney" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PrepareTransCashCardPaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PrepareTransCashCardPaymentResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="transId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PrepareTransCashCardPayment2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="storeCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="posId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="billId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="cashier" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="accountDate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="payments" type="tns:ArrayOfCashCardPayment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PrepareTransCashCardPayment2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PrepareTransCashCardPayment2Result" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="transId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmTransCashCardPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="transId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="transMoney" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmTransCashCardPaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ConfirmTransCashCardPaymentResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelTransCashCardPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="transId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="transMoney" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelTransCashCardPaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CancelTransCashCardPaymentResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PrepareTransCouponPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="payments" type="tns:ArrayOfCouponPayment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCouponPayment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CouponPayment" nillable="true" type="tns:CouponPayment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CouponPayment">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="VipId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CouponType" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="PayMoney" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PrepareTransCouponPaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PrepareTransCouponPaymentResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="transId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PrepareTransCouponPayment2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="storeCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="posId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="billId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="cashier" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="accountDate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="payments" type="tns:ArrayOfCouponPayment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PrepareTransCouponPayment2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PrepareTransCouponPayment2Result" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="transId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmTransCouponPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="transId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="transMoney" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConfirmTransCouponPaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ConfirmTransCouponPaymentResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelTransCouponPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="transId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="transMoney" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelTransCouponPaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CancelTransCouponPaymentResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveRSaleBillArticles">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="billHead" type="tns:RSaleBillHead" />
+            <s:element minOccurs="0" maxOccurs="1" name="billArticles" type="tns:ArrayOfRSaleBillArticle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RSaleBillHead">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="StoreCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PosId" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BillId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="BillType" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="VipId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="VipCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SaleTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccountDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cashier" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OriginalPosId" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OriginalBillId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRSaleBillArticle">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RSaleBillArticle" nillable="true" type="tns:RSaleBillArticle" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RSaleBillArticle">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Inx" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="OriginalInx" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeptCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ArticleCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ArticleId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="SaleNum" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="SaleMoney" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="DiscMoney" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="VipDiscMoney" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="VipDiscRate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="VipDiscBillId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsNoCent" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsNoProm" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SaveRSaleBillArticlesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SaveRSaleBillArticlesResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="decMoney" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="articleDecMoneys" type="tns:ArrayOfRSaleBillArticleDecMoney" />
+            <s:element minOccurs="0" maxOccurs="1" name="articlePromFlags" type="tns:ArrayOfRSaleBillArticlePromFlag" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRSaleBillArticleDecMoney">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RSaleBillArticleDecMoney" nillable="true" type="tns:RSaleBillArticleDecMoney" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RSaleBillArticleDecMoney">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ArticleInx" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DecMoney" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="DecMoneyIsExpense" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRSaleBillArticlePromFlag">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RSaleBillArticlePromFlag" nillable="true" type="tns:RSaleBillArticlePromFlag" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RSaleBillArticlePromFlag">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ArticleInx" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="JoinPromCent" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="JoinOfferCoupon" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="JoinDecMoney" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SaveRSaleBackBillArticles">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="billHead" type="tns:RSaleBillHead" />
+            <s:element minOccurs="0" maxOccurs="1" name="billArticles" type="tns:ArrayOfRSaleBillArticle" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveRSaleBackBillArticlesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SaveRSaleBackBillArticlesResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="originalServerBillId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="originalVipCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="offerBackCoupons" type="tns:ArrayOfOfferBackCoupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="paybackCoupons" type="tns:ArrayOfCouponPayback" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfOfferBackCoupon">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OfferBackCoupon" nillable="true" type="tns:OfferBackCoupon" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OfferBackCoupon">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CouponType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CouponTypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ValidDate" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OfferMoney" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Balance" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Difference" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCouponPayback">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CouponPayback" nillable="true" type="tns:CouponPayback" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CouponPayback">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CouponType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CouponTypeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PayMoney" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CancelRSaleBackBill">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelRSaleBackBillResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CancelRSaleBackBillResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CalcRSaleBillDecMoney">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="payments" type="tns:ArrayOfRSaleBillPayment" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRSaleBillPayment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RSaleBillPayment" nillable="true" type="tns:RSaleBillPayment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RSaleBillPayment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PayTypeCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PayMoney" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CalcRSaleBillDecMoneyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CalcRSaleBillDecMoneyResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="decMoney" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="articleDecMoneys" type="tns:ArrayOfRSaleBillArticleDecMoney" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PrepareCheckOutRSaleBill">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="payments" type="tns:ArrayOfRSaleBillPayment" />
+            <s:element minOccurs="1" maxOccurs="1" name="payBackCouponVipId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="couponPaid" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PrepareCheckOutRSaleBillResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PrepareCheckOutRSaleBillResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="billCent" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="needVipToOfferCoupon" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="needBuyCent" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="offerCouponVipCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="articleCents" type="tns:ArrayOfRSaleBillArticleCent" />
+            <s:element minOccurs="0" maxOccurs="1" name="articleCoupons" type="tns:ArrayOfRSaleBillArticleCoupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="offerBackCoupons" type="tns:ArrayOfOfferBackCoupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="paybackCoupons" type="tns:ArrayOfCouponPayback" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRSaleBillArticleCent">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RSaleBillArticleCent" nillable="true" type="tns:RSaleBillArticleCent" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RSaleBillArticleCent">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ArticleInx" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Cent" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRSaleBillArticleCoupon">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RSaleBillArticleCoupon" nillable="true" type="tns:RSaleBillArticleCoupon" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RSaleBillArticleCoupon">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CouponType" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ArticleInx" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="SharedMoney" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CheckOutRSaleBill">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="serverBillId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckOutRSaleBillResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckOutRSaleBillResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="billCent" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="vipCent" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="offerCouponVipCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="offerCoupons" type="tns:ArrayOfOfferCoupon" />
+            <s:element minOccurs="0" maxOccurs="1" name="leftSaleMoneys" type="tns:ArrayOfSaleMoneyLeftWhenPromCalc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfOfferCoupon">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OfferCoupon" nillable="true" type="tns:OfferCoupon" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OfferCoupon">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CouponType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CouponTypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ValidDate" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OfferMoney" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Balance" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSaleMoneyLeftWhenPromCalc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SaleMoneyLeftWhenPromCalc" nillable="true" type="tns:SaleMoneyLeftWhenPromCalc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SaleMoneyLeftWhenPromCalc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AddupTypeDesc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PromotionName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CouponTypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RuleName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SaleMoney" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetShoppingDay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="s" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetShoppingDayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetShoppingDayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchArticlePromRule">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="companyCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="storeId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="deptCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="articleCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="vipType" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="vipId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="vipCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="payTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="bankId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="bankCardCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="saleTime" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchArticlePromRuleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SearchArticlePromRuleResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="msg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="promBillItemList" type="tns:ArrayOfCrmPromBillItemDesc" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCrmPromBillItemDesc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="CrmPromBillItemDesc" nillable="true" type="tns:CrmPromBillItemDesc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CrmPromBillItemDesc">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="BillType" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="PromId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PromDesc" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BillId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="SubBillInx" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ItemInx" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="BeginTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="PeriodDesc" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RuleId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RuleDesc" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CouponType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CouponName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SpecialType" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="DESEncrypt">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="s" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="key" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DESEncryptResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DESEncryptResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DESEncrypt2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="s" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="key" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DESEncrypt2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DESEncrypt2Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetVipCardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVipCard" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVipCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCardCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCardToOfferCouponSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVipCardToOfferCoupon" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCardToOfferCouponSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVipCardToOfferCouponResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCardToOfferCouponCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="UpdateVipInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateVipInfo" />
+  </wsdl:message>
+  <wsdl:message name="UpdateVipInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateVipInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateVipInfoCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="UpdateVipCentSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateVipCent" />
+  </wsdl:message>
+  <wsdl:message name="UpdateVipCentSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateVipCentResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateVipCentCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetArticleVipDiscSoapIn">
+    <wsdl:part name="parameters" element="tns:GetArticleVipDisc" />
+  </wsdl:message>
+  <wsdl:message name="GetArticleVipDiscSoapOut">
+    <wsdl:part name="parameters" element="tns:GetArticleVipDiscResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetArticleVipDiscCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetCashCardSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCashCard" />
+  </wsdl:message>
+  <wsdl:message name="GetCashCardSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCashCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCashCardCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCouponSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVipCoupon" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCouponSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVipCouponResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCouponCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCouponToPaySoapIn">
+    <wsdl:part name="parameters" element="tns:GetVipCouponToPay" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCouponToPaySoapOut">
+    <wsdl:part name="parameters" element="tns:GetVipCouponToPayResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCouponToPayCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCouponPayLimitSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVipCouponPayLimit" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCouponPayLimitSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVipCouponPayLimitResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVipCouponPayLimitCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCashCardPaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:PrepareTransCashCardPayment" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCashCardPaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:PrepareTransCashCardPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCashCardPaymentCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCashCardPayment2SoapIn">
+    <wsdl:part name="parameters" element="tns:PrepareTransCashCardPayment2" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCashCardPayment2SoapOut">
+    <wsdl:part name="parameters" element="tns:PrepareTransCashCardPayment2Response" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCashCardPayment2CrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmTransCashCardPaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:ConfirmTransCashCardPayment" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmTransCashCardPaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:ConfirmTransCashCardPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmTransCashCardPaymentCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="CancelTransCashCardPaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:CancelTransCashCardPayment" />
+  </wsdl:message>
+  <wsdl:message name="CancelTransCashCardPaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:CancelTransCashCardPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelTransCashCardPaymentCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCouponPaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:PrepareTransCouponPayment" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCouponPaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:PrepareTransCouponPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCouponPaymentCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCouponPayment2SoapIn">
+    <wsdl:part name="parameters" element="tns:PrepareTransCouponPayment2" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCouponPayment2SoapOut">
+    <wsdl:part name="parameters" element="tns:PrepareTransCouponPayment2Response" />
+  </wsdl:message>
+  <wsdl:message name="PrepareTransCouponPayment2CrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmTransCouponPaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:ConfirmTransCouponPayment" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmTransCouponPaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:ConfirmTransCouponPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConfirmTransCouponPaymentCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="CancelTransCouponPaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:CancelTransCouponPayment" />
+  </wsdl:message>
+  <wsdl:message name="CancelTransCouponPaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:CancelTransCouponPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelTransCouponPaymentCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="SaveRSaleBillArticlesSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveRSaleBillArticles" />
+  </wsdl:message>
+  <wsdl:message name="SaveRSaleBillArticlesSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveRSaleBillArticlesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveRSaleBillArticlesCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="SaveRSaleBackBillArticlesSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveRSaleBackBillArticles" />
+  </wsdl:message>
+  <wsdl:message name="SaveRSaleBackBillArticlesSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveRSaleBackBillArticlesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveRSaleBackBillArticlesCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="CancelRSaleBackBillSoapIn">
+    <wsdl:part name="parameters" element="tns:CancelRSaleBackBill" />
+  </wsdl:message>
+  <wsdl:message name="CancelRSaleBackBillSoapOut">
+    <wsdl:part name="parameters" element="tns:CancelRSaleBackBillResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelRSaleBackBillCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="CalcRSaleBillDecMoneySoapIn">
+    <wsdl:part name="parameters" element="tns:CalcRSaleBillDecMoney" />
+  </wsdl:message>
+  <wsdl:message name="CalcRSaleBillDecMoneySoapOut">
+    <wsdl:part name="parameters" element="tns:CalcRSaleBillDecMoneyResponse" />
+  </wsdl:message>
+  <wsdl:message name="CalcRSaleBillDecMoneyCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="PrepareCheckOutRSaleBillSoapIn">
+    <wsdl:part name="parameters" element="tns:PrepareCheckOutRSaleBill" />
+  </wsdl:message>
+  <wsdl:message name="PrepareCheckOutRSaleBillSoapOut">
+    <wsdl:part name="parameters" element="tns:PrepareCheckOutRSaleBillResponse" />
+  </wsdl:message>
+  <wsdl:message name="PrepareCheckOutRSaleBillCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="CheckOutRSaleBillSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckOutRSaleBill" />
+  </wsdl:message>
+  <wsdl:message name="CheckOutRSaleBillSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckOutRSaleBillResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckOutRSaleBillCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetShoppingDaySoapIn">
+    <wsdl:part name="parameters" element="tns:GetShoppingDay" />
+  </wsdl:message>
+  <wsdl:message name="GetShoppingDaySoapOut">
+    <wsdl:part name="parameters" element="tns:GetShoppingDayResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchArticlePromRuleSoapIn">
+    <wsdl:part name="parameters" element="tns:SearchArticlePromRule" />
+  </wsdl:message>
+  <wsdl:message name="SearchArticlePromRuleSoapOut">
+    <wsdl:part name="parameters" element="tns:SearchArticlePromRuleResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchArticlePromRuleCrmSoapHeader">
+    <wsdl:part name="CrmSoapHeader" element="tns:CrmSoapHeader" />
+  </wsdl:message>
+  <wsdl:message name="DESEncryptSoapIn">
+    <wsdl:part name="parameters" element="tns:DESEncrypt" />
+  </wsdl:message>
+  <wsdl:message name="DESEncryptSoapOut">
+    <wsdl:part name="parameters" element="tns:DESEncryptResponse" />
+  </wsdl:message>
+  <wsdl:message name="DESEncrypt2SoapIn">
+    <wsdl:part name="parameters" element="tns:DESEncrypt2" />
+  </wsdl:message>
+  <wsdl:message name="DESEncrypt2SoapOut">
+    <wsdl:part name="parameters" element="tns:DESEncrypt2Response" />
+  </wsdl:message>
+  <wsdl:portType name="PosWebServiceSoap">
+    <wsdl:operation name="GetVipCard">
+      <wsdl:input message="tns:GetVipCardSoapIn" />
+      <wsdl:output message="tns:GetVipCardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCardToOfferCoupon">
+      <wsdl:input message="tns:GetVipCardToOfferCouponSoapIn" />
+      <wsdl:output message="tns:GetVipCardToOfferCouponSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVipInfo">
+      <wsdl:input message="tns:UpdateVipInfoSoapIn" />
+      <wsdl:output message="tns:UpdateVipInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVipCent">
+      <wsdl:input message="tns:UpdateVipCentSoapIn" />
+      <wsdl:output message="tns:UpdateVipCentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetArticleVipDisc">
+      <wsdl:input message="tns:GetArticleVipDiscSoapIn" />
+      <wsdl:output message="tns:GetArticleVipDiscSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCashCard">
+      <wsdl:input message="tns:GetCashCardSoapIn" />
+      <wsdl:output message="tns:GetCashCardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCoupon">
+      <wsdl:input message="tns:GetVipCouponSoapIn" />
+      <wsdl:output message="tns:GetVipCouponSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCouponToPay">
+      <wsdl:input message="tns:GetVipCouponToPaySoapIn" />
+      <wsdl:output message="tns:GetVipCouponToPaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCouponPayLimit">
+      <wsdl:input message="tns:GetVipCouponPayLimitSoapIn" />
+      <wsdl:output message="tns:GetVipCouponPayLimitSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCashCardPayment">
+      <wsdl:input message="tns:PrepareTransCashCardPaymentSoapIn" />
+      <wsdl:output message="tns:PrepareTransCashCardPaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCashCardPayment2">
+      <wsdl:input message="tns:PrepareTransCashCardPayment2SoapIn" />
+      <wsdl:output message="tns:PrepareTransCashCardPayment2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmTransCashCardPayment">
+      <wsdl:input message="tns:ConfirmTransCashCardPaymentSoapIn" />
+      <wsdl:output message="tns:ConfirmTransCashCardPaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelTransCashCardPayment">
+      <wsdl:input message="tns:CancelTransCashCardPaymentSoapIn" />
+      <wsdl:output message="tns:CancelTransCashCardPaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCouponPayment">
+      <wsdl:input message="tns:PrepareTransCouponPaymentSoapIn" />
+      <wsdl:output message="tns:PrepareTransCouponPaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCouponPayment2">
+      <wsdl:input message="tns:PrepareTransCouponPayment2SoapIn" />
+      <wsdl:output message="tns:PrepareTransCouponPayment2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmTransCouponPayment">
+      <wsdl:input message="tns:ConfirmTransCouponPaymentSoapIn" />
+      <wsdl:output message="tns:ConfirmTransCouponPaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelTransCouponPayment">
+      <wsdl:input message="tns:CancelTransCouponPaymentSoapIn" />
+      <wsdl:output message="tns:CancelTransCouponPaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveRSaleBillArticles">
+      <wsdl:input message="tns:SaveRSaleBillArticlesSoapIn" />
+      <wsdl:output message="tns:SaveRSaleBillArticlesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveRSaleBackBillArticles">
+      <wsdl:input message="tns:SaveRSaleBackBillArticlesSoapIn" />
+      <wsdl:output message="tns:SaveRSaleBackBillArticlesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelRSaleBackBill">
+      <wsdl:input message="tns:CancelRSaleBackBillSoapIn" />
+      <wsdl:output message="tns:CancelRSaleBackBillSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CalcRSaleBillDecMoney">
+      <wsdl:input message="tns:CalcRSaleBillDecMoneySoapIn" />
+      <wsdl:output message="tns:CalcRSaleBillDecMoneySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PrepareCheckOutRSaleBill">
+      <wsdl:input message="tns:PrepareCheckOutRSaleBillSoapIn" />
+      <wsdl:output message="tns:PrepareCheckOutRSaleBillSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckOutRSaleBill">
+      <wsdl:input message="tns:CheckOutRSaleBillSoapIn" />
+      <wsdl:output message="tns:CheckOutRSaleBillSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetShoppingDay">
+      <wsdl:input message="tns:GetShoppingDaySoapIn" />
+      <wsdl:output message="tns:GetShoppingDaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchArticlePromRule">
+      <wsdl:input message="tns:SearchArticlePromRuleSoapIn" />
+      <wsdl:output message="tns:SearchArticlePromRuleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DESEncrypt">
+      <wsdl:input message="tns:DESEncryptSoapIn" />
+      <wsdl:output message="tns:DESEncryptSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DESEncrypt2">
+      <wsdl:input message="tns:DESEncrypt2SoapIn" />
+      <wsdl:output message="tns:DESEncrypt2SoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PosWebServiceSoap" type="tns:PosWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetVipCard">
+      <soap:operation soapAction="http://tempuri.org/GetVipCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetVipCardCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCardToOfferCoupon">
+      <soap:operation soapAction="http://tempuri.org/GetVipCardToOfferCoupon" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetVipCardToOfferCouponCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVipInfo">
+      <soap:operation soapAction="http://tempuri.org/UpdateVipInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:UpdateVipInfoCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVipCent">
+      <soap:operation soapAction="http://tempuri.org/UpdateVipCent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:UpdateVipCentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetArticleVipDisc">
+      <soap:operation soapAction="http://tempuri.org/GetArticleVipDisc" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetArticleVipDiscCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCashCard">
+      <soap:operation soapAction="http://tempuri.org/GetCashCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetCashCardCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCoupon">
+      <soap:operation soapAction="http://tempuri.org/GetVipCoupon" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetVipCouponCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCouponToPay">
+      <soap:operation soapAction="http://tempuri.org/GetVipCouponToPay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetVipCouponToPayCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCouponPayLimit">
+      <soap:operation soapAction="http://tempuri.org/GetVipCouponPayLimit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetVipCouponPayLimitCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCashCardPayment">
+      <soap:operation soapAction="http://tempuri.org/PrepareTransCashCardPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:PrepareTransCashCardPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCashCardPayment2">
+      <soap:operation soapAction="http://tempuri.org/PrepareTransCashCardPayment2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:PrepareTransCashCardPayment2CrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmTransCashCardPayment">
+      <soap:operation soapAction="http://tempuri.org/ConfirmTransCashCardPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ConfirmTransCashCardPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelTransCashCardPayment">
+      <soap:operation soapAction="http://tempuri.org/CancelTransCashCardPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CancelTransCashCardPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCouponPayment">
+      <soap:operation soapAction="http://tempuri.org/PrepareTransCouponPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:PrepareTransCouponPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCouponPayment2">
+      <soap:operation soapAction="http://tempuri.org/PrepareTransCouponPayment2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:PrepareTransCouponPayment2CrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmTransCouponPayment">
+      <soap:operation soapAction="http://tempuri.org/ConfirmTransCouponPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ConfirmTransCouponPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelTransCouponPayment">
+      <soap:operation soapAction="http://tempuri.org/CancelTransCouponPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CancelTransCouponPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveRSaleBillArticles">
+      <soap:operation soapAction="http://tempuri.org/SaveRSaleBillArticles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SaveRSaleBillArticlesCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveRSaleBackBillArticles">
+      <soap:operation soapAction="http://tempuri.org/SaveRSaleBackBillArticles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SaveRSaleBackBillArticlesCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelRSaleBackBill">
+      <soap:operation soapAction="http://tempuri.org/CancelRSaleBackBill" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CancelRSaleBackBillCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalcRSaleBillDecMoney">
+      <soap:operation soapAction="http://tempuri.org/CalcRSaleBillDecMoney" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CalcRSaleBillDecMoneyCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareCheckOutRSaleBill">
+      <soap:operation soapAction="http://tempuri.org/PrepareCheckOutRSaleBill" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:PrepareCheckOutRSaleBillCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckOutRSaleBill">
+      <soap:operation soapAction="http://tempuri.org/CheckOutRSaleBill" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CheckOutRSaleBillCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetShoppingDay">
+      <soap:operation soapAction="http://tempuri.org/GetShoppingDay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchArticlePromRule">
+      <soap:operation soapAction="http://tempuri.org/SearchArticlePromRule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SearchArticlePromRuleCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DESEncrypt">
+      <soap:operation soapAction="http://tempuri.org/DESEncrypt" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DESEncrypt2">
+      <soap:operation soapAction="http://tempuri.org/DESEncrypt2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="PosWebServiceSoap12" type="tns:PosWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetVipCard">
+      <soap12:operation soapAction="http://tempuri.org/GetVipCard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetVipCardCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCardToOfferCoupon">
+      <soap12:operation soapAction="http://tempuri.org/GetVipCardToOfferCoupon" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetVipCardToOfferCouponCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVipInfo">
+      <soap12:operation soapAction="http://tempuri.org/UpdateVipInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:UpdateVipInfoCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVipCent">
+      <soap12:operation soapAction="http://tempuri.org/UpdateVipCent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:UpdateVipCentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetArticleVipDisc">
+      <soap12:operation soapAction="http://tempuri.org/GetArticleVipDisc" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetArticleVipDiscCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCashCard">
+      <soap12:operation soapAction="http://tempuri.org/GetCashCard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetCashCardCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCoupon">
+      <soap12:operation soapAction="http://tempuri.org/GetVipCoupon" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetVipCouponCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCouponToPay">
+      <soap12:operation soapAction="http://tempuri.org/GetVipCouponToPay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetVipCouponToPayCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVipCouponPayLimit">
+      <soap12:operation soapAction="http://tempuri.org/GetVipCouponPayLimit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetVipCouponPayLimitCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCashCardPayment">
+      <soap12:operation soapAction="http://tempuri.org/PrepareTransCashCardPayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:PrepareTransCashCardPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCashCardPayment2">
+      <soap12:operation soapAction="http://tempuri.org/PrepareTransCashCardPayment2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:PrepareTransCashCardPayment2CrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmTransCashCardPayment">
+      <soap12:operation soapAction="http://tempuri.org/ConfirmTransCashCardPayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ConfirmTransCashCardPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelTransCashCardPayment">
+      <soap12:operation soapAction="http://tempuri.org/CancelTransCashCardPayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CancelTransCashCardPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCouponPayment">
+      <soap12:operation soapAction="http://tempuri.org/PrepareTransCouponPayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:PrepareTransCouponPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareTransCouponPayment2">
+      <soap12:operation soapAction="http://tempuri.org/PrepareTransCouponPayment2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:PrepareTransCouponPayment2CrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConfirmTransCouponPayment">
+      <soap12:operation soapAction="http://tempuri.org/ConfirmTransCouponPayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ConfirmTransCouponPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelTransCouponPayment">
+      <soap12:operation soapAction="http://tempuri.org/CancelTransCouponPayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CancelTransCouponPaymentCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveRSaleBillArticles">
+      <soap12:operation soapAction="http://tempuri.org/SaveRSaleBillArticles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:SaveRSaleBillArticlesCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveRSaleBackBillArticles">
+      <soap12:operation soapAction="http://tempuri.org/SaveRSaleBackBillArticles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:SaveRSaleBackBillArticlesCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelRSaleBackBill">
+      <soap12:operation soapAction="http://tempuri.org/CancelRSaleBackBill" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CancelRSaleBackBillCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalcRSaleBillDecMoney">
+      <soap12:operation soapAction="http://tempuri.org/CalcRSaleBillDecMoney" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CalcRSaleBillDecMoneyCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PrepareCheckOutRSaleBill">
+      <soap12:operation soapAction="http://tempuri.org/PrepareCheckOutRSaleBill" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:PrepareCheckOutRSaleBillCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckOutRSaleBill">
+      <soap12:operation soapAction="http://tempuri.org/CheckOutRSaleBill" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CheckOutRSaleBillCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetShoppingDay">
+      <soap12:operation soapAction="http://tempuri.org/GetShoppingDay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchArticlePromRule">
+      <soap12:operation soapAction="http://tempuri.org/SearchArticlePromRule" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:SearchArticlePromRuleCrmSoapHeader" part="CrmSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DESEncrypt">
+      <soap12:operation soapAction="http://tempuri.org/DESEncrypt" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DESEncrypt2">
+      <soap12:operation soapAction="http://tempuri.org/DESEncrypt2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PosWebService">
+    <wsdl:port name="PosWebServiceSoap" binding="tns:PosWebServiceSoap">
+      <soap:address location="http://47.96.23.9:8011/PosWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="PosWebServiceSoap12" binding="tns:PosWebServiceSoap12">
+      <soap12:address location="http://47.96.23.9:8011/PosWebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
