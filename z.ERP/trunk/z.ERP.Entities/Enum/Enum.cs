@@ -345,4 +345,9 @@ namespace z.ERP.Entities.Enum
         普通列表 = 1,
         期间汇总 = 2
     }
+    public enum 是否已付清
+    {
+        已付清 = 1,
+        未付清 = 4
+    }
 }

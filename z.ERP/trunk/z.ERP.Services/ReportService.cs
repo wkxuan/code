@@ -861,6 +861,11 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
 
         }
+        /// <summary>
+        /// 明细导出
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public string PayTypeSaleOutput(SearchItem item) {
             //历史交易数据
             String sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,to_char(HIS_SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,HIS_SALE.DEALID,HIS_SALE.POSNO,PAY.NAME PAYNAME,HIS_SALE_GOODS_PAY.AMOUNT
@@ -911,6 +916,11 @@ namespace z.ERP.Services
                 a.SetTable(dt);
             });
         }
+        /// <summary>
+        /// 汇总导出
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public string PayTypeSaleSOutput(SearchItem item)
         {
             //历史记录
@@ -955,6 +965,154 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sqlsum);
             dt.TableName = "PayTypeSale";
             return GetExport("收款方式销售导出", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+        #endregion
+
+        #region
+        /// <summary>
+        /// 商户缴费明细
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult MerchantPayCost(SearchItem item) {
+            String sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BILL.NIANYUE,FEESUBJECT.NAME TRIMNAME,BRAND.NAME BRANDNAME,BILL.MUST_MONEY,BILL.RECEIVE_MONEY,BILL.MUST_MONEY-BILL.RECEIVE_MONEY UNPAID_MONEY from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
+                        WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID ";
+            item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            String ISPAYS = "";
+            item.HasKey("ISpay", a => ISPAYS = $"{a}");
+            if (!string.IsNullOrEmpty(ISPAYS)) {
+                if (ISPAYS == "4")
+                {
+                    sql += $" and BILL.STATUS = " + ISPAYS + "";
+                }
+                else {
+                    sql += $" and BILL.STATUS <> " + ISPAYS + "";
+                }
+            }
+            item.HasKey("YEARMONTH_START", a => sql += $" and BILL.NIANYUE >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and BILL.NIANYUE <= {a}");
+            sql += @" ORDER BY MERCHANTID,NIANYUE,TRIMID ";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        /// <summary>
+        /// 商户缴费汇总
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult MerchantPayCostS(SearchItem item)
+        {
+            string sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,FEESUBJECT.NAME TRIMNAME,SUM(BILL.MUST_MONEY) MUST_MONEY,SUM(BILL.RECEIVE_MONEY) RECEIVE_MONEY,SUM(BILL.MUST_MONEY)-SUM(BILL.RECEIVE_MONEY) UNPAID_MONEY from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
+                        WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID ";
+            item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            String ISPAYS = "";
+            item.HasKey("ISpay", a => ISPAYS = $"{a}");
+            if (!string.IsNullOrEmpty(ISPAYS))
+            {
+                if (ISPAYS == "4")
+                {
+                    sql += $" and BILL.STATUS = " + ISPAYS + "";
+                }
+                else
+                {
+                    sql += $" and BILL.STATUS <> " + ISPAYS + "";
+                }
+            }
+            item.HasKey("YEARMONTH_START", a => sql += $" and BILL.NIANYUE >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and BILL.NIANYUE <= {a}");
+            sql += @" GROUP BY MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME,FEESUBJECT.NAME ORDER BY MERCHANT.MERCHANTID,FEESUBJECT.NAME";
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        /// <summary>
+        /// 商户缴费明细导出
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public string MerchantPayCostOutput(SearchItem item) {
+            String sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BILL.NIANYUE,FEESUBJECT.NAME TRIMNAME,BRAND.NAME BRANDNAME,BILL.MUST_MONEY,BILL.RECEIVE_MONEY,BILL.MUST_MONEY-BILL.RECEIVE_MONEY UNPAID_MONEY from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
+                        WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID ";
+            item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            String ISPAYS = "";
+            item.HasKey("ISpay", a => ISPAYS = $"{a}");
+            if (!string.IsNullOrEmpty(ISPAYS))
+            {
+                if (ISPAYS == "4")
+                {
+                    sql += $" and BILL.STATUS = " + ISPAYS + "";
+                }
+                else
+                {
+                    sql += $" and BILL.STATUS <> " + ISPAYS + "";
+                }
+            }
+            item.HasKey("YEARMONTH_START", a => sql += $" and BILL.NIANYUE >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and BILL.NIANYUE <= {a}");
+            sql += @" ORDER BY MERCHANTID,NIANYUE,TRIMID ";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "MerchantPayCost";
+            return GetExport("租赁商户缴费记录导出", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+        /// <summary>
+        /// 商户缴费汇总导出
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public string MerchantPayCostSOutput(SearchItem item)
+        {
+            string sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,FEESUBJECT.NAME TRIMNAME,SUM(BILL.MUST_MONEY) MUST_MONEY,SUM(BILL.RECEIVE_MONEY) RECEIVE_MONEY,SUM(BILL.MUST_MONEY)-SUM(BILL.RECEIVE_MONEY) UNPAID_MONEY from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
+                        WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID ";
+            item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            String ISPAYS = "";
+            item.HasKey("ISpay", a => ISPAYS = $"{a}");
+            if (!string.IsNullOrEmpty(ISPAYS))
+            {
+                if (ISPAYS == "4")
+                {
+                    sql += $" and BILL.STATUS = " + ISPAYS + "";
+                }
+                else
+                {
+                    sql += $" and BILL.STATUS <> " + ISPAYS + "";
+                }
+            }
+            item.HasKey("YEARMONTH_START", a => sql += $" and BILL.NIANYUE >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and BILL.NIANYUE <= {a}");
+            sql += @" GROUP BY MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME,FEESUBJECT.NAME ORDER BY MERCHANT.MERCHANTID,FEESUBJECT.NAME";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "MerchantPayCost";
+            return GetExport("租赁商户缴费记录导出", a =>
             {
                 a.SetTable(dt);
             });
