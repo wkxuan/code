@@ -1237,5 +1237,87 @@ namespace z.ERP.Services
             });
         }
         #endregion
+
+        #region 商品销售明细查询
+        public DataGridResult GoodsSaleDetail(SearchItem item) {
+            string sql = @" SELECT * FROM ( select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT, NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
+                        from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT
+                        WHERE HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO AND HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID
+                        ";
+            item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
+            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("GOODSDM", a => sql += $" and GOODS.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
+            
+
+            sql += @" UNION ALL ";
+
+            sql += @"select SALE.SALE_TIME,SALE.POSNO,SALE.DEALID,GOODS.NAME GOODSNAME,PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,NVL(SALE.DEALID_OLD,0) DEALID_OLD
+                    from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT
+                    WHERE SALE.POSNO=SALE_GOODS_PAY.POSNO AND SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID
+                    ";
+            item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
+            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(SALE.SALE_TIME) >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(SALE.SALE_TIME) <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("GOODSDM", a => sql += $" and GOODS.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
+
+            sql += @" ) ORDER BY POSNO,SALE_TIME DESC,DEALID";
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public string GoodsSaleDetailOutput(SearchItem item) {
+
+            string sql = @" SELECT * FROM ( select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT, NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
+                        from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT
+                        WHERE HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO AND HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID
+                        ";
+            item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
+            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("GOODSDM", a => sql += $" and GOODS.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
+
+
+            sql += @" UNION ALL ";
+
+            sql += @"select SALE.SALE_TIME,SALE.POSNO,SALE.DEALID,GOODS.NAME GOODSNAME,PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,NVL(SALE.DEALID_OLD,0) DEALID_OLD
+                    from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT
+                    WHERE SALE.POSNO=SALE_GOODS_PAY.POSNO AND SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID
+                    ";
+            item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
+            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(SALE.SALE_TIME) >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(SALE.SALE_TIME) <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("GOODSDM", a => sql += $" and GOODS.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
+
+            sql += @" ) ORDER BY POSNO,SALE_TIME DESC,DEALID";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "GoodsSaleDetail";
+            return GetExport("商品销售明细导出", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+        #endregion
     }
 }
