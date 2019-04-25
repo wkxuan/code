@@ -350,4 +350,9 @@ namespace z.ERP.Entities.Enum
         已付清 = 1,
         未付清 = 4
     }
+    public enum 租金收取方式
+    {
+        提成租金=1,
+        固定租金=2
+    }
 }
