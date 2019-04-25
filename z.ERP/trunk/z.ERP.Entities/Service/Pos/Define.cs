@@ -4816,7 +4816,7 @@ namespace z.ERP.Entities.Service.Pos
         public string outOrder;
         public string erpTranID;
         public string crmTranID;
-        public string oldDevice;
+        public string oldDeviceNo;
         public string oldErpTranID;
         public List<TTranGoods> goodsList;
         public List<TTranPayments> paysList;

@@ -19,11 +19,5 @@ namespace z.POS.Entities.Pos
             set;
         }
 
-        public string remarks
-        {
-            get;
-            set;
-        }
-
     }
 }

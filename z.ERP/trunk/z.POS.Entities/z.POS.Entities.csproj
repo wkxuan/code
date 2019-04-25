@@ -50,6 +50,7 @@
     <Compile Include="Pos\GoodsResult.cs" />
     <Compile Include="Pos\LoginConfigInfo.cs" />
     <Compile Include="Pos\PayDetailResult.cs" />
+    <Compile Include="Pos\PayRecord.cs" />
     <Compile Include="Pos\PayResult.cs" />
     <Compile Include="Pos\PaySumResult.cs" />
     <Compile Include="Pos\SaleRequest.cs" />
