@@ -145,11 +145,14 @@ namespace z.POS.Services
             sqlGoods += $" xsje sale_amount,zkje discount_amount,yhje coupon_amount from {strTable}xsjlc";
             sqlGoods += $" where sktno='{posNo}' and jlbh={filter.dealid}";
 
-            string sqlPay = $"select skfs payid,skje amount,remarks from {strTable}xsjlm";
+            string sqlPay = $"select skfs payid,skje amount from {strTable}xsjlm";
             sqlPay += $" where sktno='{posNo}' and jlbh={filter.dealid}";
 
             string sqlClerk = $"select tckt_inx sheetid,yyy clerkid from {strTable}xsjlt";
             sqlClerk += $" where sktno='{posNo}' and jlbh={filter.dealid}";
+
+            string sqlPayRecord = $"select inx,skfs payid,kh cardno,yh bank,yhid bankid,je amount,lsh serialno,jyckh refno,jysj opertime from xykjl";
+            sqlPayRecord += $" where sktno='{posNo}' and jlbh={filter.dealid}";
 
             DataTable saleDt = DbHelper.ExecuteTable(sqlSale);
             //   List<SaleRequest> saleList = DbHelper.ExecuteObject<SaleRequest>(sqlSale);
@@ -176,7 +179,8 @@ namespace z.POS.Services
                 dealid_old = saleDt.Rows[0][10].ToString().ToInt(),
                 goodslist = DbHelper.ExecuteObject<GoodsResult>(sqlGoods),
                 paylist = DbHelper.ExecuteObject<PayResult>(sqlPay),
-                clerklist = DbHelper.ExecuteObject<ClerkResult>(sqlClerk)
+                clerklist = DbHelper.ExecuteObject<ClerkResult>(sqlClerk),
+                payRecord = DbHelper.ExecuteObject<PayRecord>(sqlPayRecord)
             };
         }
 
@@ -220,8 +224,11 @@ namespace z.POS.Services
                 int goodsCount = request.goodslist.Count;
                 int payCount = request.paylist.Count;
                 int clerkCount = request.clerklist.Count;
+                int payRecordCount = 0;
+                if (request.payRecord != null)
+                    payRecordCount = request.payRecord.Count;
 
-                string[] sqlarr = new string[1 + goodsCount + payCount + clerkCount];  // + goodsCount * payCount
+                string[] sqlarr = new string[1 + goodsCount + payCount + clerkCount + payRecordCount];  // + goodsCount * payCount
 
                 sqlarr[0] = "insert into xsjl(sktno,jlbh,jysj,jzrq,sky,xsje,";
                 sqlarr[0] += "zlje,vipid,xfjlid,sktno_old,jlbh_old)";
@@ -272,12 +279,8 @@ namespace z.POS.Services
                 for (int i = 1 + goodsCount; i <= goodsCount + payCount; i++)
                 {
 
-                    sqlarr[i] = "insert into xsjlm(sktno,jlbh,skfs,skje,remarks)";
-                    sqlarr[i] += $"values('{posNo}',{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount},";
-                    if (request.paylist[j].remarks.IsEmpty())
-                        sqlarr[i] += "null)";
-                    else
-                        sqlarr[i] += $"'{request.paylist[j].remarks}')";
+                    sqlarr[i] = "insert into xsjlm(sktno,jlbh,skfs,skje)";
+                    sqlarr[i] += $"values('{posNo}',{request.dealid},{request.paylist[j].payid},{request.paylist[j].amount})";
                     j++;
                 }
 
@@ -286,6 +289,21 @@ namespace z.POS.Services
                 {
                     sqlarr[i] = "insert into xsjlt(sktno,jlbh,tckt_inx,yyy,deptid)";
                     sqlarr[i] += $"values('{posNo}',{request.dealid},{request.clerklist[j].sheetid},{request.clerklist[j].clerkid},{request.goodslist[0].shopid})";
+                    j++;
+                }
+
+                j = 0;
+                for (int i = 1 + goodsCount + payCount + clerkCount; i <= goodsCount + payCount + clerkCount + payRecordCount; i++)
+                {
+                    sqlarr[i] = "insert into XYKJL(sktno,jlbh,inx,sksf,kh,yh,yhid,je,lsh,jyckh,jysj)";
+                    sqlarr[i] += $"values('{posNo}',{request.dealid},{request.payRecord[j].inx},{request.payRecord[j].payid},";
+                    sqlarr[i] += $"'{request.payRecord[j].cardno}','{request.payRecord[j].bank}',{request.payRecord[j].bankid},";
+                    sqlarr[i] += $"{request.payRecord[j].amount},'{request.payRecord[j].serialno}','{request.payRecord[j].refno}',";
+
+                    if (request.payRecord[j].opertime.ToString().IsEmpty())
+                        sqlarr[i] += "sysdate)";
+                    else
+                        sqlarr[i] += $" to_date('{request.payRecord[j].opertime}', 'yyyy-mm-dd HH24:MI:SS'))";
                     j++;
                 }
 
@@ -2749,25 +2767,23 @@ namespace z.POS.Services
 
 
                 DoGetPayments(posNo, out sktPayments, out msg);
-                /*  if ((sktPayments == null))
+                  if ((sktPayments == null))
                   {
-                      CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.5> 查询数据定义失败:本收款台没有定义收款方式:[ 收款台:" + posNo + "]");
-                      result = RsltCode_Wrong_NoDef;
-                      msg = "< 保存销售 > 本收款台没有定义收款方式:[ 收款台:" + posNo + "]";
-                      confirmResult.code = result;
-                      confirmResult.text = msg;
-                      return result;
+                    result = -1;
+                    msg = "< 保存销售 > 本收款台没有定义收款方式:[ 收款台:" + posNo + "]";
+                    confirmResult.code = result;
+                    confirmResult.text = msg;
+                    throw new Exception(msg);
                   } 
 
                   if ((sktPayments != null) && (sktPayments.Count() < 0))
                   {
-                      CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.6.1> 查询数据定义失败：本收款台没有定义收款方式:[ 收款台:" + posNo + "]");
-                      result = RsltCode_Wrong_NoDef;
-                      msg = "< 保存销售 > 本收款台没有定义收款方式:[ 收款台:" + posNo + "]";
-                      confirmResult.code = result;
-                      confirmResult.text = msg;
-                      return result;
-                  } */
+                    result = -1;
+                    msg = "< 保存销售 > 本收款台没有定义收款方式:[ 收款台:" + posNo + "]";
+                    confirmResult.code = result;
+                    confirmResult.text = msg;
+                    throw new Exception(msg);
+                } 
 
                 // CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.6.3> 检查数量");
                 if (!CheckSaveData(posNo, sktPayments, ReqConfirm, ref msg))
@@ -2889,10 +2905,6 @@ namespace z.POS.Services
                     mTotalMoney = mTotalMoney + ReqConfirm.goodsList[i].accountsPayable;
                 }
 
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.3.1.0>商品数据 " + MethodInput.Serialize(GoodList));
-
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.3.1.1>付款方式数:" + ReqConfirm.paysList.Count() + " 总金额:" + mTotalMoney);
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.3.1.2>付款方式数: 定义付款方式 " + MethodInput.Serialize(sktPayments));
 
                 for (i = 0; i < ReqConfirm.paysList.Count(); i++)
                 {
@@ -2982,12 +2994,12 @@ namespace z.POS.Services
 
             try
             {
-                /*   member.MemberId = -1;
+                   member.MemberId = -1;
                    member.MemberNo = "";
                    member.MemberType = -1;
 
 
-                   int iMemberType = 0;
+               /*    int iMemberType = 0;
                    if (string.IsNullOrEmpty(ReqConfirm.validType))
                        ReqConfirm.validType = Member_CondTypeName_Track;
                    else if (ReqConfirm.validType.Equals(""))
@@ -3131,130 +3143,154 @@ namespace z.POS.Services
 
                 bValue = false;
 
-                /*   if (sVer.Equals(Version_Project_JH))
-                   {
-                      // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.1> 调用_CheckOutSaleToDatabase [PJH] " + sVer);
-                       bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                        PayList, ReqConfirm.creditDetailList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                   }
-                   else if (sVer.Equals(Version_Statand_80))
-                   {
-                      // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.2.1> 调用_CheckOutSaleToDatabase [S80] " + sVer);
 
-                       if (ReqConfirm.creditDetailList == null)
-                       {
-                         //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.2.2>  银行付款数据为NULL 不保存银行 ");
-                           bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                            PayList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                       }
-                       else if (ReqConfirm.creditDetailList.Count <= 0)
-                       {
-                         //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.2.3>  银行付款数据小于或者等于0 不保存银行 ");
-                           bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                            PayList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                       }
-                       else
-                       {
-                         //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.2.5>  银行付款数据大于0 保存银行 ");
-                           bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                             PayList, ReqConfirm.creditDetailList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                       }
-                   }
-                   else if (sVer.Equals(Version_Statand_75))//2018.06.19
-                   {
-                     //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.3.1> 调用_CheckOutSaleToDatabase [S75] " + sVer);
+                //保存erp销售记录
 
-                       if (ReqConfirm.creditDetailList == null)
-                       {
-                         //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.3.2>  银行付款数据为NULL 不保存银行 ");
-                           bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                            PayList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                       }
-                       else if (ReqConfirm.creditDetailList.Count <= 0)
-                       {
-                          // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.3.3>  银行付款数据小于或者等于0 不保存银行 ");
-                           bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                            PayList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                       }
-                       else
-                       {
-                         //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.3.5>  银行付款数据大于0 保存银行 ");
-                           bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                             PayList, ReqConfirm.creditDetailList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                       }
-                   }
-                   else
-                   {
-                      // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.10> 调用_CheckOutSaleToDatabase [其它] " + sVer);
-                       bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                            PayList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                   } */
+                SaleRequest saleReq = new SaleRequest();
+
+                //sale
+                saleReq.posno = posNo;
+                saleReq.dealid = transId;
+                saleReq.member_cardid = member.MemberId.ToString();
+                saleReq.crm_recordid = CrmBillId;
+                saleReq.cashierid = iPerson;
+
+                double totalMoney = 0;
+
+                for (int t = 0; t < GoodList.Count; t++)
+                {
+                    totalMoney = totalMoney + (GoodList[t].SaleMoney - GoodList[t].Discount);
+                }
+
+                saleReq.sale_amount = decimal.Parse(totalMoney.ToString());
+
+                saleReq.sale_time = DateTime.Now;
+                saleReq.account_date = DateTime.Now.Date;
+
+                //sale_goods
+                List<GoodsResult> goodsLst = new List<GoodsResult>();
+                GoodsResult goodsOne = new GoodsResult();
+
+                for (int g = 0; g <= GoodList.Count - 1; g++)
+                {
+                    goodsOne.sheetid = 0;
+                    goodsOne.inx = g;
+                    goodsOne.goodsid = GoodList[g].Id;
+                    goodsOne.goodscode = GoodList[g].Code;
+                    goodsOne.price = decimal.Parse(GoodList[g].Price.ToString());
+                    goodsOne.quantity = float.Parse(GoodList[g].SaleCount.ToString());
+                    goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney - GoodList[g].Discount).ToString());
+                    goodsOne.discount_amount = decimal.Parse(GoodList[g].Discount.ToString());
+                    goodsOne.coupon_amount = decimal.Parse((GoodList[g].PreferentialMoney + GoodList[g].DecreasePreferential).ToString());
+                    goodsOne.shopid = GoodList[g].ShopId;
+                    goodsLst.Add(goodsOne);
+                }
+
+                saleReq.goodslist = goodsLst;
+
+                //sale_pay
+                List<PayResult> payLst = new List<PayResult>();
+                PayResult payOne = new PayResult();
+
+                for (int p = 0; p <= PayList.Count - 1; p++)
+                {
+                    payOne.payid = PayList[p].Id;
+                    payOne.amount = decimal.Parse(PayList[p].PayedMoney.ToString());
+                    payLst.Add(payOne);
+                }
+
+                saleReq.paylist = payLst;
+
+                //sale_clerk
+                List<ClerkResult> clerkLst = new List<ClerkResult>();
+                ClerkResult clerkOne = new ClerkResult();
+
+                clerkOne.sheetid = 0;
+                clerkOne.clerkid = iPerson;
+                clerkLst.Add(clerkOne);
+
+                saleReq.clerklist = clerkLst;
+
+                //PayRecord
+
+                if (!ReqConfirm.creditDetailList.IsEmpty())
+                {
+                    List<PayRecord> payRcd = new List<PayRecord>();
+                    PayRecord payRcdOne = new PayRecord();
+
+                    for (int p = 0; p <= ReqConfirm.creditDetailList.Count - 1; p++)
+                    {
+                        payRcdOne.inx = ReqConfirm.creditDetailList[p].inx;
+                        payRcdOne.payid = ReqConfirm.creditDetailList[p].payid;
+                        payRcdOne.cardno = ReqConfirm.creditDetailList[p].cardno;
+                        payRcdOne.bank = ReqConfirm.creditDetailList[p].bank;
+                        payRcdOne.bankid = ReqConfirm.creditDetailList[p].bankid;
+                        payRcdOne.amount = ReqConfirm.creditDetailList[p].amount;
+                        payRcdOne.serialno = ReqConfirm.creditDetailList[p].serialno;
+                        payRcdOne.refno = ReqConfirm.creditDetailList[p].refno;
+                        payRcdOne.opertime = ReqConfirm.creditDetailList[p].opertime;
+                        payRcd.Add(payRcdOne);
+                    }
+
+                    saleReq.payRecord = payRcd;
+                }
+                else
+                {
+                    saleReq.payRecord = null;
+                }
 
 
-                //保存erp销售记录 暂不处理 wangkx 
-                /* if (ReqConfirm.creditDetailList == null)
-                 {
-                     //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.2.2>  银行付款数据为NULL 不保存银行 ");
-                     bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                      PayList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                 }
-                 else if (ReqConfirm.creditDetailList.Count <= 0)
-                 {
-                     //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.2.3>  银行付款数据小于或者等于0 不保存银行 ");
-                     bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                      PayList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                 }
-                 else
-                 {
-                     //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.9.2.5>  银行付款数据大于0 保存银行 ");
-                     bValue = CheckOutSaleToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member, GoodList,
-                       PayList, ReqConfirm.creditDetailList, CrmMoneyCardTransID, CrmCouponTransId, out errorMessage);
-                 }
-
-                 if (!bValue)
-                 {
-                     result = -1;
-                     string error = "";
-                   //  if (errorMessage.Message.Equals(""))
-                   //      msg = CommonUtils.ErrorMessageToString(errorMessage);
-                   //  else
-                   //      msg = errorMessage.Message;
-
-                     confirmResult.code = result;
-                     confirmResult.text = msg + jdMsg;
+                errorMessage = new ErrorMessage();
+                try
+                {
+                    Sale(saleReq);
+                    DeleteCrmTrans(posNo, CrmMoneyCardTransID, CrmCouponTransId);
+                    bValue = true;
+                }
+                catch (Exception e)
+                {
+                    bValue = false;
+                    errorMessage.ErrorType = 1;
+                    errorMessage.Message = "保存erp销售数据出错:" + e;
+                }
 
 
-                   //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<2.5.2>保存销售失败:" + msg);
-
-                     if (CrmMoneyCardTransID > 0)
-                     {
-                       //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<2.5.3>保存销售失败:储值冲正 交易号:" + CrmMoneyCardTransID);
-                         ProcCRM.ProcCRMFunc.CancelMoneyCard(posNo, out error);
-                       //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<2.5.3>保存销售失败:储值冲正 完成 ");
-                     } 
-                     if (CrmCouponTransId > 0)
-                     {
-                       //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<2.5.5>保存销售失败:优惠券冲正 交易号:" + CrmCouponTransId);
-                         ProcCRM.ProcCRMFunc.CancelCoupon(posNo, out error);
-                       //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<2.5.5>保存销售失败:优惠券冲正 完成 ");
-                     }
-                 }
-                 else
-                 {  */
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.6.1> 提交CRM  0104-->Commit");
-
-                ReturnCouponList.Clear();
-                CanReturnCouponList.Clear();
-                if (!CheckOut(posNo, CrmBillId, out ReturnCouponList, out CanReturnCouponList, out msg))
+                if (!bValue)
                 {
                     result = -1;
-                    //   CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.6.2> 提交CRM  失败:" + msg);
-                }
-                // else
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<2.6.2> 提交CRM成功:");
-                // }
+                    string error = "";
+                    if (errorMessage.Message.Equals(""))
+                        msg = ErrorMessageToString(errorMessage);
+                    else
+                        msg = errorMessage.Message;
 
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售<3.1>数据保存完成,准备返回");
+                    confirmResult.code = result;
+                    confirmResult.text = msg + jdMsg;
+
+                    if (CrmMoneyCardTransID > 0)
+                    {
+                        ////保存销售失败:储值卡冲正
+                        CancelMoneyCard(posNo, out error);
+                    }
+                    if (CrmCouponTransId > 0)
+                    {
+                        ////  保存销售失败:优惠券冲正
+                        CancelCoupon(posNo, out error);
+                    }
+                }
+                else
+                {
+                    ReturnCouponList.Clear();
+                    CanReturnCouponList.Clear();
+                    if (!CheckOut(posNo, CrmBillId, out ReturnCouponList, out CanReturnCouponList, out msg))
+                    {
+                        result = -1;
+                        //提交CRM失败
+                    }
+
+                }
+
+
                 //5:返回数据
                 if (result == 0)
                 {
@@ -3303,8 +3339,6 @@ namespace z.POS.Services
                         MemberInfo.totalCent = TotalCent.ToString(); //vipcard.totalCent.ToString();
                     }
 
-
-
                     // CommonUtils.WriteSKTLog(1, posNo, "保存销售<3.2>数据保存完成,准备返回");
 
                     UniConfirmDealResult(posNo, result, transId, CrmBillId, "",
@@ -3328,13 +3362,12 @@ namespace z.POS.Services
                 }
                 else
                 {
-                    //  result = RsltCode_Wrong_Proc;
+                    result = -1;
                     msg = "保存销售:失败：" + msg;
                     confirmResult.code = result;
                     confirmResult.text = msg + jdMsg;
-                    //   return result;
+                    throw new Exception(msg);
                 }
-
 
                 /*
                 else
@@ -4265,6 +4298,28 @@ namespace z.POS.Services
                 throw new Exception("数据检查失败：原来退款交易号小于等于0!");
             }
 
+            //判断是否重复退货
+
+            string sqlsale = $"select 1 from xsjl where sktno='{OldPosId}' and jlbh={OldErpTranId}";
+
+            DataTable saleCount = DbHelper.ExecuteTable(sqlsale);
+
+            if (saleCount.Rows.Count > 0)
+            {
+                result = -1;
+                msg = "款台号[" + OldPosId + "] 交易号[" + req.oldErpTranID + "]已退货,不能重复退货!";
+                throw new Exception(msg);
+            }
+
+            sqlsale = $"select 1 from sktxsjl where sktno='{OldPosId}' and jlbh={OldErpTranId}";
+            saleCount = DbHelper.ExecuteTable(sqlsale);
+
+            if (saleCount.Rows.Count > 0)
+            {
+                result = -1;
+                msg = "款台号[" + OldPosId + "] 交易号[" + req.oldErpTranID + "]已退货,不能重复退货!";
+                throw new Exception(msg);
+            }
 
 
             iHTH = req.contractID;
@@ -4351,9 +4406,9 @@ namespace z.POS.Services
 
                     if (string.IsNullOrEmpty(req.goodsList[i].deptCode))
                     {
-                        sql = "select d.orgcode from GOODS a,GOODS_SHOP b,SHOP c,ORG d";   //取部门
-                        sql += "  where a.goodsid=b.goodsid and b.shopid=c.shopid and c.orgid=d.orgid ";
-                        sql += $"  and a.goodsid = {goods.Id} ";
+                        sql = "select b.bmdm from gtsp a,bm b";   //取部门
+                        sql += "  where a.deptid=b.deptid ";
+                        sql += $"  and a.sp_id = {goods.Id} ";
 
                         DataTable dt = DbHelper.ExecuteTable(sql);
 
@@ -4765,7 +4820,7 @@ namespace z.POS.Services
                 MemberCardID = ReqConfirm.validID;
 
 
-                OldPosId = ReqConfirm.oldDevice;
+                OldPosId = ReqConfirm.oldDeviceNo;
                 OldErpTranId = Convert.ToInt32(ReqConfirm.oldErpTranID);
 
                 if (string.IsNullOrEmpty(ErpTranID))
@@ -4778,9 +4833,6 @@ namespace z.POS.Services
                 if (string.IsNullOrEmpty(OldPosId))
                     OldPosId = "";
 
-                //   input = "ERP交易号[" + Shop + "] 外部订单号[" + PromniDealID + "] 会员码[" + MemberCardID + "]" +
-                //        " 原收款台:" + OldPosId + " 原交易:" + OldErpTranId;
-                //   CommonUtils.WriteSKTLog(1, posNo, sFunc + "<1.3.2> 输入数据:" + input);
 
                 if (ErpTranID.Equals(""))
                 {
@@ -5121,8 +5173,8 @@ namespace z.POS.Services
 
                 //保存退货的单据
                 if (!CheckOutBackTranToDatabase(Shop, posNo, iPerson, transId, CrmBillId, PromniDealID, member,
-                    GoodList,
-                    PayList, CrmMoneyCardTransID, CrmCouponTransId, OldPosId, OldErpTranId, out errorMessage))
+                    GoodList, PayList,ReqConfirm.creditDetailList,
+                     CrmMoneyCardTransID, CrmCouponTransId, OldPosId, OldErpTranId, out errorMessage))
                 {
                     result = -1;
                     string error = "";
@@ -5553,7 +5605,7 @@ namespace z.POS.Services
 
         //保存退款
         public bool CheckOutBackTranToDatabase(string Shop, string sktNo, int iPersonID, int jlbh, int CrmBillId, string PromniDealID,
-            Member member, List<Goods> goodsList, List<Payment> pays,
+            Member member, List<Goods> goodsList, List<Payment> pays, List<CreditDetail> creditList,
             int CrmMoneyCardTransID, int CrmCouponTransId, string OldPosId, int OldErpTranId,
             out ErrorMessage message)
         {
@@ -5579,27 +5631,97 @@ namespace z.POS.Services
             //保存ERP交易数据
             try
             {
-                // CommonUtils.WriteSKTLog(10, sktNo, sOper + "<1>");
-                // cmd.Transaction = conn.Connection.BeginTransaction();
+                SaleRequest saleReq = new SaleRequest();
 
-                //XSJL
-                //    PrepareSaveBackTranXSJL(sktNo, iPersonID, jlbh, CrmBillId, member, goodsList,
-                //        OldPosId, OldErpTranId, cmd);
-                // XSJLC
-                //    PrepareSaveBackTranXSJLC(Shop, sktNo, jlbh, goodsList, cmd);
-                // XSJLM
-                //     CheckOutSaveBackTranXSJLM(sktNo, jlbh, pays, cmd, out iCount);
-                // XSJLT
-                //     CheckOutSaveXSJLT(sktNo, iPersonID, jlbh, goodsList, cmd, ref iCount);
+                //sale
+                saleReq.posno = sktNo;
+                saleReq.dealid = jlbh;
+                saleReq.member_cardid = member.MemberId.ToString();
+                saleReq.crm_recordid = CrmBillId;
+                saleReq.cashierid = iPersonID;
+                saleReq.posno_old = OldPosId;
+                saleReq.dealid_old = OldErpTranId;
 
-                //     CheckOutProcXSJL(sktNo, jlbh, cmd);
-                //  CommonUtils.WriteSKTLog(1, sktNo, sOper + "完成<2.6> 删除CRM备注:CZK:" + CrmMoneyCardTransID + " YHQ:" + CrmCouponTransId);
-                //     DeleteCrmTrans(sktNo, CrmMoneyCardTransID, CrmCouponTransId, cmd);
-                //  CommonUtils.WriteSKTLog(1, sktNo, sOper + "完成<3>_准备提交");
+                saleReq.sale_amount = decimal.Parse(mTotal.ToString());
 
-                //cmd.CommandType = System.Data.CommandType.Text;
-                //  cmd.Transaction.Commit();
-                //  CommonUtils.WriteSKTLog(1, sktNo, sOper + "完成<3>_完成提交");
+                saleReq.sale_time = DateTime.Now;
+                saleReq.account_date = DateTime.Now.Date;
+
+                //sale_goods
+                List<GoodsResult> goodsLst = new List<GoodsResult>();
+                GoodsResult goodsOne = new GoodsResult();
+
+                for (int g = 0; g <= goodsList.Count - 1; g++)
+                {
+                    goodsOne.sheetid = 0;
+                    goodsOne.inx = g;
+                    goodsOne.goodsid = goodsList[g].Id;
+                    goodsOne.goodscode = goodsList[g].Code;
+                    goodsOne.price = decimal.Parse(goodsList[g].Price.ToString());
+                    goodsOne.quantity = float.Parse(goodsList[g].SaleCount.ToString());
+                    goodsOne.sale_amount = decimal.Parse((goodsList[g].SaleMoney - goodsList[g].Discount).ToString());
+                    goodsOne.discount_amount = decimal.Parse(goodsList[g].Discount.ToString());
+                    goodsOne.coupon_amount = decimal.Parse((goodsList[g].PreferentialMoney + goodsList[g].DecreasePreferential).ToString());
+                    goodsOne.shopid = goodsList[g].ShopId;
+                    goodsLst.Add(goodsOne);
+                }
+
+                saleReq.goodslist = goodsLst;
+
+                //sale_pay
+                List<PayResult> payLst = new List<PayResult>();
+                PayResult payOne = new PayResult();
+
+                for (int p = 0; p <= pays.Count - 1; p++)
+                {
+                    payOne.payid = pays[p].Id;
+                    payOne.amount = decimal.Parse(pays[p].PayedMoney.ToString());
+                    payLst.Add(payOne);
+                }
+
+                saleReq.paylist = payLst;
+
+                //sale_clerk
+                List<ClerkResult> clerkLst = new List<ClerkResult>();
+                ClerkResult clerkOne = new ClerkResult();
+
+                clerkOne.sheetid = 0;
+                clerkOne.clerkid = iPersonID;
+                clerkLst.Add(clerkOne);
+
+                saleReq.clerklist = clerkLst;
+
+                //PayRecord
+
+                if (!creditList.IsEmpty())
+                {
+                    List<PayRecord> payRcd = new List<PayRecord>();
+                    PayRecord payRcdOne = new PayRecord();
+
+                    for (int p = 0; p <= creditList.Count - 1; p++)
+                    {
+                        payRcdOne.inx = creditList[p].inx;
+                        payRcdOne.payid = creditList[p].payid;
+                        payRcdOne.cardno = creditList[p].cardno;
+                        payRcdOne.bank = creditList[p].bank;
+                        payRcdOne.bankid = creditList[p].bankid;
+                        payRcdOne.amount = creditList[p].amount * (-1);
+                        payRcdOne.serialno = creditList[p].serialno;
+                        payRcdOne.refno = creditList[p].refno;
+                        payRcdOne.opertime = creditList[p].opertime;
+                        payRcd.Add(payRcdOne);
+                    }
+
+                    saleReq.payRecord = payRcd;
+                }
+                else
+                {
+                    saleReq.payRecord = null;
+                }
+
+
+                Sale(saleReq);
+                DeleteCrmTrans(sktNo, CrmMoneyCardTransID, CrmCouponTransId);
             }
             catch (Exception e)
             {
