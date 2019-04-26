@@ -534,6 +534,20 @@ namespace z.ERP.Services
         {
             return DbHelper.Select(new SHOPEntity() { SHOPID = shop });
         }
+        /// <summary>
+        /// POS银联支付配置列表
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult GetPOSUMSCONFIG(SearchItem item)
+        {
+            string sql = $@"select * from POSUMSCONFIG where 1=1 ";
+            item.HasKey("POSNO", a => sql += $" and POSNO = '{a}'");
+            sql += " order by POSNO";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 
 }

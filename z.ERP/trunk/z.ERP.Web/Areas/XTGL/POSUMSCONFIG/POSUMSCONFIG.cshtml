@@ -1,0 +1,170 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+
+@section search{
+    <row>
+        <i-col span="5" class="RowTitle">终端号</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.POSNO"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section element{
+
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            终端号
+        </i-col>
+        <i-col span="5" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.POSNO",
+                    Enable = false,
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            IP
+        </i-col>
+        <i-col span="15" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.IP",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            备用IP
+        </i-col>
+        <i-col span="15" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.IP_BAK",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            端口
+        </i-col>
+        <i-col span="5" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PORT",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            银联实体卡商户号
+        </i-col>
+        <i-col span="15" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CFX_MCHTID",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            银联实体卡终端号
+        </i-col>
+        <i-col span="15" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CFX_TERMID",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            银行扫码商户名称
+        </i-col>
+        <i-col span="15" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CFXMPAY_MCHTNAME",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            银行扫码商户号
+        </i-col>
+        <i-col span="15" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CFXMPAY_MCHTID",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            银行扫码终端号
+        </i-col>
+        <i-col span="15" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CFXMPAY_TERMID",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+
+
+}
+
+
