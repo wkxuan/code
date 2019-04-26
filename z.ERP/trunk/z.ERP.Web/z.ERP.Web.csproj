@@ -338,6 +338,7 @@
     <Content Include="Areas\Pop\Pop\PopGoodsList.js" />
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
     <Content Include="Areas\Pop\Pop\PopFloorMapShow.js" />
+    <Content Include="Areas\Pop\Pop\PopStationList.js" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsDjxxList.js" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsStockList.js" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsList.js" />
@@ -685,6 +686,7 @@
     <Content Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetail.cshtml" />
     <Content Include="File\Template\商品销售明细导出.xlsx" />
     <Content Include="Areas\XTGL\POSUMSCONFIG\POSUMSCONFIG.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopStationList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

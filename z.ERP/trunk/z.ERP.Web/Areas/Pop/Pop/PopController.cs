@@ -90,6 +90,10 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = " ";
             return View();
         }
+        public ActionResult PopStationList() {
+            ViewBag.Title = "POS";
+            return View();
+        }
         //public UIResult SearchFloorMapData(FLOORMAPEntity Data)
         //{
         //    var res = service.DpglService.GetFLOORMAPDATA(Data);
