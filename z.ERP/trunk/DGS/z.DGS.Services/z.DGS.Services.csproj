@@ -71,6 +71,10 @@
       <Project>{68597feb-8ff8-486e-b603-ce7e8de57f5b}</Project>
       <Name>z</Name>
     </ProjectReference>
+    <ProjectReference Include="..\z.DGS.Entities\z.DGS.Entities.csproj">
+      <Project>{32f07260-f5ba-443e-9888-5cba1a4b896f}</Project>
+      <Name>z.DGS.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

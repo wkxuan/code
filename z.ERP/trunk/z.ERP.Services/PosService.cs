@@ -28,14 +28,38 @@ namespace z.ERP.Services
 
         public LoginConfigInfo GetConfig()
         {
-            string sql = " select S.BRANCHID,B.CRMSTORECODE,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,G.PID,G.ENCRYPTION,G.KEY,G.KEY_PUB"
-                       + " from BRANCH B,STATION S, POSO2OWFTCFG G, SHOP P"
-                       + " where B.ID= S.BRANCHID"
-                       + " AND S.STATIONBH = G.POSNO(+)"
+            string sql = " select S.BRANCHID,B.CRMSTORECODE,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME"
+                       + " from BRANCH B,STATION S,SHOP P,SYSUSER R"
+                       + " where B.ID= S.BRANCHID and S.SHOPID=R.SHOPID"
+                       + "  AND R.USER_TYPE in (1,2) "
                        + " AND S.SHOPID = P.SHOPID(+)"
-                       + $" AND S.STATIONBH = '{employee.PlatformId}'";
+                       + $" AND S.STATIONBH = '{employee.PlatformId}'"
+                       + $" AND R.USERID = {employee.Id}";
+
+
+            string sqlUMS = " select ip,ip_bak,port,cfx_mchtid,cfx_termid,cfxmpay_mchtname,cfxmpay_mchtid,cfxmpay_termid"
+                         + $"   from POSUMSCONFIG where POSNO = '{employee.PlatformId}'";
+
+            string sqlWFT = " select url,pid,encryption,key,key_pub"
+                         + $"   from POSO2OWFTCFG where POSNO = '{employee.PlatformId}'";
+
+
 
             LoginConfigInfo lgi = DbHelper.ExecuteOneObject<LoginConfigInfo>(sql);
+
+
+
+            if (lgi!=null)
+            {
+                TicketInfo ticket = new TicketInfo();
+                ticket.tickethead = ConfigExtension.GetConfig("TicketHead");
+                ticket.tickettail = ConfigExtension.GetConfig("TicketTail");
+                lgi.ticketInfo = ticket;
+                lgi.posWFTConfig = DbHelper.ExecuteOneObject<PosWFTConfig>(sqlWFT);
+                lgi.posUMSConfig = DbHelper.ExecuteOneObject<PosUMSConfig>(sqlUMS);
+            }
+
+
             return lgi;
 
         }
@@ -5828,7 +5852,7 @@ namespace z.ERP.Services
 
                 //准备测试充正
                 mPayTotal = mPayTotal + PayList[i].PayedMoney;
-                if ((PayList[i].PaymentType == iSKFSType_Yhq) || (PayList[i].PaymentType == 4))
+                if (PayList[i].PaymentType == iSKFSType_Yhq)
                     mPayTotalYHJE = mPayTotalYHJE + (PayList[i].PayedMoney * (1 - 0));//PayList[i].CashBL; 
             }
 
@@ -6192,7 +6216,7 @@ namespace z.ERP.Services
 
                 //充正
                 mPayTotal = mPayTotal + PayList[i].PayedMoney;
-                if ((PayList[i].PaymentType == iSKFSType_Yhq) || (PayList[i].PaymentType == 4))
+                if (PayList[i].PaymentType == iSKFSType_Yhq)
                     mPayTotalYHJE = mPayTotalYHJE + PayList[i].PayedMoney;
             }
 

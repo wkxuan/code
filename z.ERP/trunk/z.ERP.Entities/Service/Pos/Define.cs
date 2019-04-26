@@ -2150,6 +2150,9 @@ namespace z.ERP.Entities.Service.Pos
             set { iJYH = value; }
         }
     }
+
+    /*
+
     public class TicketInfo
     {
         private List<CashCardItem> cashCardList;
@@ -2302,7 +2305,11 @@ namespace z.ERP.Entities.Service.Pos
             set { oldId = value; }
         }
 
-    }//小票
+    }//小票    
+
+
+    */
+
 
     public class CrmGetDMZFListPacketed
     {
