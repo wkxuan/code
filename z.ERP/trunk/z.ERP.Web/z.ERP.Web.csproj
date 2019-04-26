@@ -200,7 +200,9 @@
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
     <Compile Include="Areas\Report\ContractInfo\ContractInfoController.cs" />
     <Compile Include="Areas\Report\ContractSale\ContractSaleController.cs" />
+    <Compile Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetailController.cs" />
     <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
+    <Compile Include="Areas\Report\MerchantBusinessStatus\MerchantBusinessStatusController.cs" />
     <Compile Include="Areas\Report\MerchantPayCost\MerchantPayCostController.cs" />
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
     <Compile Include="Areas\Report\PayTypeSale\PayTypeSaleController.cs" />
@@ -350,7 +352,9 @@
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\Report\ContractInfo\ContractInfo.js" />
     <Content Include="Areas\Report\ContractSale\ContractSale.js" />
+    <Content Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetail.js" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.js" />
+    <Content Include="Areas\Report\MerchantBusinessStatus\MerchantBusinessStatus.js" />
     <Content Include="Areas\Report\MerchantPayCost\MerchantPayCost.js" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.js" />
     <Content Include="Areas\Report\PayTypeSale\PayTypeSale.js" />
@@ -674,6 +678,10 @@
     <Content Include="File\Template\租约销售导出.xlsx" />
     <Content Include="Areas\Report\MerchantPayCost\MerchantPayCost.cshtml" />
     <Content Include="File\Template\租赁商户缴费记录导出.xlsx" />
+    <Content Include="Areas\Report\MerchantBusinessStatus\MerchantBusinessStatus.cshtml" />
+    <Content Include="File\Template\商户租金经营状况导出.xlsx" />
+    <Content Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetail.cshtml" />
+    <Content Include="File\Template\商品销售明细导出.xlsx" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

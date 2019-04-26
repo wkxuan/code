@@ -9,11 +9,11 @@
         </i-col>
         <i-col span="6" class="RowTitle">
             @{
-                RenderControl(new EnumDropDownListRender<列表或汇总>()
+                RenderControl(new EnumDropDownListRender<租金收取方式>()
                 {
                     vModel = "searchParam.SrchTYPE",
                     Change = "changeSrchType",
-                    EmptyText = "普通列表"
+                    EmptyText = "提成租金"
                 });
             }
         </i-col>
@@ -90,32 +90,6 @@
             }
         </i-col>
     </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            收费项目
-        </i-col>
-        <i-col span="6" class="RowTitle">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.TRIMID",
-                    ServiceMothod = m => m.feesubject(),
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            是否已付清
-        </i-col>
-        <i-col span="6" class="RowTitle">
-            @{
-                RenderControl(new EnumDropDownListRender<是否已付清>()
-                {
-                    vModel = "searchParam.ISpay",
-                });
-            }
-        </i-col>
-    </row>
-
     <row>
         <i-col span="2" class="RowTitle">
             债权发生月

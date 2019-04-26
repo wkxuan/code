@@ -5,19 +5,6 @@
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">
-            查询类型
-        </i-col>
-        <i-col span="6" class="RowTitle">
-            @{
-                RenderControl(new EnumDropDownListRender<列表或汇总>()
-                {
-                    vModel = "searchParam.SrchTYPE",
-                    Change = "changeSrchType",
-                    EmptyText = "普通列表"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
             门店
         </i-col>
         <i-col span="6" class="RowTitle">
@@ -29,96 +16,83 @@
                 });
             }
         </i-col>
-    </row>
-    <row>
+        
         <i-col span="2" class="RowTitle">
             @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelMerchant",
-                    Text = "商户",
-                    Enable = true,
-                    Type = "primary"
-                });
+            RenderControl(new ButtonRender()
+            {
+            Click = "SelMerchant",
+            Text = "商户",
+            Enable = true,
+            Type = "primary"
+            });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
             @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTID",
-                    Enable = true
-                });
+            RenderControl(new TextBoxRender()
+            {
+            vModel = "searchParam.MERCHANTID",
+            Enable = true
+            });
             }
         </i-col>
         <i-col span="4" class="RowTitle">
             @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTNAME",
-                    Enable = true
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelBrand",
-                    Text = "品牌",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.BRANDID",
-                    Enable = true
-                });
-            }
-        </i-col>
-        <i-col span="4" class="RowTitle">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.BRANDNAME",
-                    Enable = true
-                });
+            RenderControl(new TextBoxRender()
+            {
+            vModel = "searchParam.MERCHANTNAME",
+            Enable = true
+            });
             }
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            收费项目
+            商品名称
         </i-col>
         <i-col span="6" class="RowTitle">
             @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.TRIMID",
-                    ServiceMothod = m => m.feesubject(),
-                });
+            RenderControl(new TextBoxRender()
+            {
+            vModel = "searchParam.GOODSNAME"
+            });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            是否已付清
+            商品编码
         </i-col>
         <i-col span="6" class="RowTitle">
             @{
-                RenderControl(new EnumDropDownListRender<是否已付清>()
-                {
-                    vModel = "searchParam.ISpay",
-                });
+            RenderControl(new TextBoxRender()
+            {
+            vModel = "searchParam.GOODSDM"
+            });
             }
         </i-col>
     </row>
-
     <row>
         <i-col span="2" class="RowTitle">
-            债权发生月
+            销售日期
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.RQ_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.RQ_END"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            销售年月
         </i-col>
         <i-col span="3" class="RowTitle">
             @{
@@ -166,4 +140,5 @@
             }
         </i-col>
     </row>
+
 }
