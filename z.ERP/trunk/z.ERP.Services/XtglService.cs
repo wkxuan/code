@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using z.Encryption;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
@@ -331,6 +332,10 @@ namespace z.ERP.Services
             v.Require(a => a.TYPE);
             v.Require(a => a.IP);
             v.IsUnique(a => a.IP);
+
+        //    if (DefineSave.Encryption.IsEmpty())
+        //        DefineSave.Encryption = MD5Encryption.Encrypt($"z.DGS.LoginSalt{DefineSave.STATIONBH }");
+
 
             DefineSave.STATION_PAY?.ForEach(sdb =>
             {
