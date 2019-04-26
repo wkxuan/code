@@ -261,6 +261,7 @@
     <Compile Include="Areas\XTGL\FEESUBJECT\FeeSubjectController.cs" />
     <Compile Include="Areas\XTGL\FKFS\FkfsController.cs" />
     <Compile Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfgController.cs" />
+    <Compile Include="Areas\XTGL\POSUMSCONFIG\POSUMSCONFIGController.cs" />
     <Compile Include="Areas\XTGL\RCL\RCLController.cs" />
     <Compile Include="Areas\XTGL\REGION\RegionController.cs" />
     <Compile Include="Areas\XTGL\ROLE\RoleController.cs" />
@@ -400,6 +401,7 @@
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.js" />
+    <Content Include="Areas\XTGL\POSUMSCONFIG\POSUMSCONFIG.js" />
     <Content Include="Areas\XTGL\RCL\RCL.js" />
     <Content Include="Areas\XTGL\REGION\Region.js" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.js" />
@@ -682,6 +684,7 @@
     <Content Include="File\Template\商户租金经营状况导出.xlsx" />
     <Content Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetail.cshtml" />
     <Content Include="File\Template\商品销售明细导出.xlsx" />
+    <Content Include="Areas\XTGL\POSUMSCONFIG\POSUMSCONFIG.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
