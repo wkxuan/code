@@ -3,6 +3,18 @@
 @using z.ERP.Web.Areas.Layout.Define
 @inherits DefineViewBase
 
+@section head{
+    <style>
+        .ivu-table-tip {
+            overflow-x: hidden;
+        }
+
+        .ivu-table-overflowX {
+            overflow-x: hidden;
+        }
+    </style>
+}
+
 @section search{
     <row>
         <i-col span="5" class="RowTitle">终端号</i-col>
@@ -20,16 +32,24 @@
 @section element{
 
     <row>
+
         <i-col span="4" class="RowTitle">
-            <span class="mustElement">*</span>
-            终端号
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelStation",
+                    Text = "终端号",
+                    Enable = false,
+                    Type = "primary"
+                });
+            }
         </i-col>
         <i-col span="5" class="RowTitle">
             @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.POSNO",
-                    Enable = false,
+                    Enable = false
                 });
             }
         </i-col>
@@ -164,6 +184,22 @@
     </row>
 
 
+
+}
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopStation",
+                    Caption = "选择终端号",
+                    Width = "900",
+                    Src = "screenParam.srcPopStation"
+                });
+            }
+        </i-col>
+    </row>
 
 }
 

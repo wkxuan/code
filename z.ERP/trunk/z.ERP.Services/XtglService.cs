@@ -548,6 +548,18 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public DataGridResult GetStationList(SearchItem item) {
+            string sql= @"select STATION.STATIONBH POSNO, STATION.TYPE,BRANCH.NAME BRANCHNAME from STATION ,BRANCH WHERE BRANCH.ID=STATION.BRANCHID ";
+            item.HasKey("BRANCHID", a => sql += $" and STATION.BRANCHID= '{a}'");
+            item.HasKey("POSNO", a => sql += $" and STATION.STATIONBH LIKE '%{a}%'");
+            item.HasKey("POSTYPE", a => sql += $" and STATION.TYPE = '{a}'");
+            item.HasKey("SqlCondition", a => sql += $" and {a}");
+            sql += @" ORDER BY STATION.STATIONBH";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<POS类型>("TYPE", "TYPENAME");
+            return new DataGridResult(dt, count);
+        }       
     }
 
 }

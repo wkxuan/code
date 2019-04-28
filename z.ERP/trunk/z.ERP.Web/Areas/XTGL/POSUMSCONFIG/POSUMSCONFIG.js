@@ -4,13 +4,37 @@
     { title: '终端号', key: 'POSNO', width: 400 }
     ];
 
+
+
+    define.screenParam.popParam = {};
+
     define.screenParam.dataDef = [];
     define.service = "XtglService";
     define.method = "GetPOSUMSCONFIG";
     define.methodList = "GetPOSUMSCONFIG";
     define.Key = 'POSNO';
+    define.screenParam.showPopStation = false;
+    define.screenParam.srcPopStation = __BaseUrl + "/" + "Pop/Pop/PopStationList/";
+}
+
+define.otherMethods = {
+    SelStation: function () {
+        define.screenParam.showPopStation = true;
+        define.screenParam.popParam = { SqlCondition: " not exists(select 1 from posumsconfig  where STATION.stationbh=posumsconfig.posno)" };
+    },
 
 }
+
+define.popCallBack = function (data) {
+
+    if (define.screenParam.showPopStation) {
+        define.screenParam.showPopStation = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            define.dataParam.POSNO = data.sj[i].POSNO;
+        }
+    }
+};
+
 
 define.IsValidSave = function () {
     if (!define.dataParam.POSNO) {
