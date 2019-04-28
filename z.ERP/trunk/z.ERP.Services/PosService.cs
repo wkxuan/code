@@ -2738,6 +2738,7 @@ namespace z.ERP.Services
                     GoodItem.Name = ReqConfirm.goodsList[i].name;
                     GoodItem.Price = ReqConfirm.goodsList[i].price;
                     GoodItem.SaleCount = ReqConfirm.goodsList[i].count;
+                    GoodItem.ShopId = GetGoodsShopId(ReqConfirm.goodsList[i].id);
                     GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable + ReqConfirm.goodsList[i].totalOffAmount;
 
                     /* if (ProjectName_TJ_JYB.Equals(ProjectName))
@@ -4734,6 +4735,7 @@ namespace z.ERP.Services
                     GoodItem.Code = ReqConfirm.goodsList[i].code;
                     GoodItem.DeptCode = ReqConfirm.goodsList[i].deptCode;
                     GoodItem.DeptId = ReqConfirm.goodsList[i].deptID;
+                    GoodItem.ShopId = GetGoodsShopId(ReqConfirm.goodsList[i].id);
                     GoodItem.BackDiscount = ReqConfirm.goodsList[i].backendOffAmount;
                     GoodItem.DiscountBillId = ReqConfirm.goodsList[i].backendOffID;
                     GoodItem.IRefNo_MJ = ReqConfirm.goodsList[i].fullCutOffID;
@@ -6253,6 +6255,20 @@ namespace z.ERP.Services
                 sql = $"delete from CRMJYBZ where SKTNO = '{posId}' and JLBH = {iCouble}";
                 DbHelper.ExecuteNonQuery(sql);
             }
+        }
+
+
+
+        public int GetGoodsShopId(int goodsid)
+        {
+            string sql = $"select shopid from goods_shop where goodsid={goodsid}";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            if (dt.IsNotNull())
+                return dt.Rows[0][0].ToString().ToInt();
+            else
+                return 0;
         }
 
 
