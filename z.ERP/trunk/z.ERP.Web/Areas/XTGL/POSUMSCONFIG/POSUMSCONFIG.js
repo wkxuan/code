@@ -20,6 +20,7 @@
 define.otherMethods = {
     SelStation: function () {
         define.screenParam.showPopStation = true;
+        define.screenParam.popParam = { SqlCondition: " not exists(select 1 from posumsconfig  where STATION.stationbh=posumsconfig.posno)" };
     },
 
 }
@@ -29,7 +30,7 @@ define.popCallBack = function (data) {
     if (define.screenParam.showPopStation) {
         define.screenParam.showPopStation = false;
         for (var i = 0; i < data.sj.length; i++) {
-            define.searchParam.POSNO = data.sj[i].POSNO;
+            define.dataParam.POSNO = data.sj[i].POSNO;
         }
     }
 };
