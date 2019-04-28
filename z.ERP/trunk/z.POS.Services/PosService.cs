@@ -6,7 +6,7 @@ using z.POS.Entities.Pos;
 using System.Linq;
 using z.ServiceHelper;
 using System.Diagnostics;
-using z.ERP.API.PosServiceAPI;
+using z.POS.API.PosServiceAPI2;
 
 namespace z.POS.Services
 {
@@ -1000,7 +1000,7 @@ namespace z.POS.Services
 
             try
             {
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
 
@@ -1009,8 +1009,7 @@ namespace z.POS.Services
                 //    PosWebServiceSoapClient client = client = new PosWebServiceSoapClient();
 
                 GetVipCouponRequest req = new GetVipCouponRequest();
-
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.condType = iCondType;
                 req.condValue = sCondValue;
                 req.storeCode = sStoreCode;
@@ -1235,7 +1234,7 @@ namespace z.POS.Services
                     //2018.04.23_1:处理负库存标记
                     //  CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<2.1.1> 第二步:查询商品 部门代码:" + sDeptCode +
                     //      " 部门ID:" + deptid);
-                    bRslt = DoGetGoodsInfo(ItemCode, deptid, backType, bulkGoodsType, Shop, posNo,
+                    bRslt = DoGetGoodsInfo(ItemCode, deptid, sDeptCode, backType, bulkGoodsType, Shop, posNo,
                           out goods);
 
                     if (!bRslt)
@@ -1471,11 +1470,11 @@ namespace z.POS.Services
 
                 //   result = client.GetCashCard(crmSoapHeader, condType, condValue, cardCodeToCheck, verifyCode, password, storeCode,
                 //       out msg, out cashCard);
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
                 GetCashCardRequest req = new GetCashCardRequest();
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.condType = condType;
                 req.condValue = condValue;
                 req.cardCodeToCheck = cardCodeToCheck;
@@ -1562,11 +1561,11 @@ namespace z.POS.Services
             return result;
         }
 
-        public bool DoGetGoodsInfo(string code, int deptid, int backType, int bulkGoodsType, string shopCode, string posId,
+        public bool DoGetGoodsInfo(string code, int deptid,string sDeptCode, int backType, int bulkGoodsType, string shopCode, string posId,
            out Goods goods)
         {
 
-            int iPriceAttr = 0; //商品价格属性
+           // int iPriceAttr = 0; //商品价格属性
             goods = new Goods();
             try
             {
@@ -1578,16 +1577,22 @@ namespace z.POS.Services
                 status = 0;
 
                 //  int iHSFS = 0;
-                string sql = "select SP_ID GOODSID,SPCODE GOODSDM,BARCODE,NAME,SPFL KINDID,LSDJ PRICE,HYLSDJ MEMBER_PRICE,STATUS from SPXX ";
+                string sql = "select X.SP_ID GOODSID,X.SPCODE GOODSDM,X.BARCODE,X.NAME,X.SPFL KINDID,X.LSDJ PRICE,X.HYLSDJ MEMBER_PRICE,X.STATUS,P.DEPTID,M.BMDM DEPTCODE "
+                           + "  from SPXX X,GTSP P,BM M WHERE X.SP_ID=P.SP_ID AND P.DEPTID=M.DEPTID";
 
                 if (backType == 1)//是选单退货 
                 {
-                    sql += $" where SP_ID={goods.Id}";
+                    sql += $" where X.SP_ID={goods.Id}";
                 }
                 else
                 {
-                    sql += $" where SPCODE='{code}' OR BARCODE='{code}'";
+                    sql += $" where (X.SPCODE='{code}' OR X.BARCODE='{code}')";
                 }
+                if (deptid != 0)
+                    sql += $" and M.DEPTID='{sDeptCode}'";
+
+                if (sDeptCode.IsNotEmpty())
+                    sql += $" and M.BMDM='{sDeptCode}'";
 
                 DataTable dt = DbHelper.ExecuteTable(sql);
 
@@ -1601,6 +1606,8 @@ namespace z.POS.Services
                     goods.Name = dt.Rows[0]["NAME"].ToString();
                     goods.ClassType = dt.Rows[0]["KINDID"].ToString();
                     goods.Status = dt.Rows[0]["STATUS"].ToString().ToInt();
+                    goods.DeptId = dt.Rows[0]["DEPTID"].ToString().ToInt();
+                    goods.DeptCode = dt.Rows[0]["DEPTCODE"].ToString();
 
                     //   goods.Unit = query.FieldByName("UNIT").AsString;
                     //   goods.Logo = query.FieldByName("SB").AsInteger;    //sb
@@ -1608,13 +1615,9 @@ namespace z.POS.Services
                     //   goods.GoodsType = query.FieldByName("SPTYPE").AsInteger;
 
                     goods.Price = dt.Rows[0]["PRICE"].ToString().ToDouble();
-                    //CommonUtils.RoundMoney(query.FieldByName("LSDJ").AsCurrency * 100); //query.FieldByName("LSDJ").AsInteger;
-                    //   goods.MinPrice = CommonUtils.RoundMoney(query.FieldByName("ZDSJ").AsCurrency * 100); // query.FieldByName("ZDSJ").AsInteger;
                     goods.VipPrice = dt.Rows[0]["MEMBER_PRICE"].ToString().ToDouble();
 
-                    //CommonUtils.RoundMoney(query.FieldByName("HYLSDJ").AsCurrency * 100); //query.FieldByName("HYLSDJ").AsInteger;
-
-                    iPriceAttr = 0;
+                  //  iPriceAttr = 0;
 
                 }
                 else
@@ -1818,7 +1821,7 @@ namespace z.POS.Services
 
             PayCoupon = new Coupon[100];
             payLimits = new CouponPayLimit[100];
-            ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+            CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
             crmSoapHeader.UserId = "CRM";
             crmSoapHeader.Password = "CRM";
 
@@ -1826,7 +1829,7 @@ namespace z.POS.Services
             {
 
                 GetVipCouponToPayRequest req = new GetVipCouponToPayRequest();
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.condType = iCondType;
                 req.condValue = sCondValue;
                 req.cardCodeToCheck = sCheck;
@@ -1916,7 +1919,7 @@ namespace z.POS.Services
                 //    CommonUtils.WriteSKTLog(11, posNo, "计算会员折扣<1.2> 商品[" + GoodsList[i].Code + "] 传入数据:" + deptArticleCode[i].DeptCode);
             }
 
-            ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+            CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
             crmSoapHeader.UserId = "CRM";
             crmSoapHeader.Password = "CRM";
 
@@ -1928,7 +1931,7 @@ namespace z.POS.Services
                 //   CommonUtils.WriteSKTLog(11, posNo, "计算会员折扣<2.1> 准备发送折扣请求");
 
                 GetArticleVipDiscRequest req = new GetArticleVipDiscRequest();
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.vipId = vipcard.id;
                 req.vipType = vipcard.memberType;
                 req.storeCode = shopCode;
@@ -2062,11 +2065,11 @@ namespace z.POS.Services
 
                 //  CommonUtils.WriteSKTLog(1, posNo, "准备上传商品<5.1.5>" + " 开始调用上传接口:");
 
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
                 SaveRSaleBillArticlesRequest req = new SaveRSaleBillArticlesRequest();
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.billHead = billHead;
                 req.billArticles = articles;
 
@@ -2117,7 +2120,7 @@ namespace z.POS.Services
             string Device = employee.PlatformId;
             string shop = reqMth.storeCode;
 
-            ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+            CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
             crmSoapHeader.UserId = "CRM";
             crmSoapHeader.Password = "CRM";
 
@@ -2230,7 +2233,7 @@ namespace z.POS.Services
                 else
                 {
                     GetVipCouponToPayRequest couponRequest = new GetVipCouponToPayRequest();
-                    couponRequest.ABCSoapHeader = crmSoapHeader;
+                    couponRequest.CrmSoapHeader = crmSoapHeader;
                     couponRequest.condType = 1;
                     couponRequest.condValue = Convert.ToString(vipcard.id);
                     couponRequest.cardCodeToCheck = "";
@@ -2298,12 +2301,12 @@ namespace z.POS.Services
             memberCard = new MemberCard();
             VipCard vipCard = new VipCard();
 
-            ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+            CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
             crmSoapHeader.UserId = "CRM";
             crmSoapHeader.Password = "CRM";
             GetVipCardRequest request = new GetVipCardRequest();
 
-            request.ABCSoapHeader = crmSoapHeader;
+            request.CrmSoapHeader = crmSoapHeader;
             request.condType = iMemberType;
             request.condValue = MemberCardID;
 
@@ -2695,33 +2698,11 @@ namespace z.POS.Services
                 }
                 if (transId < iRemoteTranID)
                 {
-                    //   CommonUtils.WriteSKTLog(1, posNo, "保存销售<0.3>" +
-                    //       "记录号错误[数据库记录号:" + iRemoteTranID + " 请求记录号:" + transId + "]");
-
-                    //   result = RsltCode_Wrong_Para;
+                    result = -1;
                     msg = "保存销售： 记录号错误：记录号错误[" + transId + "]";
                     confirmResult.code = result;
                     confirmResult.text = msg;
-
-                    throw new Exception("销售记录号出错！");
-
-
-                    //  return result;
-                }
-
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.5> 查询收款台:" + posNo);
-                result = -1;
-                //result = DoCheckStation(posNo, sMac, out msg);
-                result = 0;
-
-                if (result != 0)
-                {
-                    // CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.5> 查询数据定义失败:没有定义这个设备号:" + posNo);
-                    // result = RsltCode_Wrong_NoDef;
-                    msg = "< 保存销售 > 查询数据定义失败:没有定义这个设备号: " + posNo;
-                    confirmResult.code = result;
-                    confirmResult.text = msg;
-                    //  return result;
+                    throw new Exception(msg);
                 }
 
 
@@ -2744,15 +2725,13 @@ namespace z.POS.Services
                     throw new Exception(msg);
                 } 
 
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.6.3> 检查数量");
                 if (!CheckSaveData(posNo, sktPayments, ReqConfirm, ref msg))
                 {
-                    //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.6.4> 查询数据一致失败：[ " + msg + "]");
-                    //  result = RsltCode_Wrong_NoDef;
+                    result = -1;
                     msg = "< 保存销售 > 查询数据一致失败:[ " + msg + "]";
                     confirmResult.code = result;
                     confirmResult.text = msg;
-                    //  return result;
+                    throw new Exception(msg);
                 }
 
                 result = -1;
@@ -2767,26 +2746,24 @@ namespace z.POS.Services
 
                 if (result != 0)
                 {
-                    //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.1> 查询数据定义失败:没有营业员:" + Operator);
 
-                    //  result = RsltCode_Wrong_NoDef;
+                    result = -1;
                     msg = "< 保存销售 > 查询数据定义失败：没有营业员:" + Operator;
                     confirmResult.code = result;
                     confirmResult.text = msg;
-                    //  return result;
+                    throw new Exception(msg);
                 }
 
                 iPerson = CurPerson.PersonId;
 
-                //   CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.8> 成功-->转换人员,收款台 数据");
             }
             catch (Exception e)
             {
-                //  result = RsltCode_Wrong_NoDef;
+                result = -1;
                 msg = "< 保存销售 > 取数据失败" + e.Message;
                 confirmResult.code = result;
                 confirmResult.text = msg;
-                //   return result;
+                throw new Exception(msg);
             }
 
 
@@ -3141,7 +3118,7 @@ namespace z.POS.Services
                     goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney - GoodList[g].Discount).ToString());
                     goodsOne.discount_amount = decimal.Parse(GoodList[g].Discount.ToString());
                     goodsOne.coupon_amount = decimal.Parse((GoodList[g].PreferentialMoney + GoodList[g].DecreasePreferential).ToString());
-                    goodsOne.shopid = GoodList[g].ShopId;
+                    goodsOne.shopid = GoodList[g].DeptId;
                     goodsLst.Add(goodsOne);
                 }
 
@@ -3489,12 +3466,12 @@ namespace z.POS.Services
 
                 // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.6.2.5> 准备向CRM提交  ");
 
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
 
                 CheckOutRSaleBillRequest req = new CheckOutRSaleBillRequest();
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.serverBillId = CrmBillId;
                 CheckOutRSaleBillResponse res = PosAPI.CheckOutRSaleBill(req);
 
@@ -3708,11 +3685,11 @@ namespace z.POS.Services
                 //    CommonUtils.WriteSKTLog(1, posNo, "<0104_ERP保存销售><1.1>准备提交");
 
 
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
                 PrepareCheckOutRSaleBillRequest req = new PrepareCheckOutRSaleBillRequest();
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.serverBillId = CrmBillId;
                 req.payments = pays;
                 req.payBackCouponVipId = 0;
@@ -3880,12 +3857,12 @@ namespace z.POS.Services
                 int transId;
                 bool result;
 
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
 
                 PrepareTransCouponPaymentRequest req = new PrepareTransCouponPaymentRequest();
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.serverBillId = CrmBillId;
                 req.payments = cashCardPayments;
 
@@ -3910,7 +3887,7 @@ namespace z.POS.Services
 
 
                     ConfirmTransCouponPaymentRequest ctreq = new ConfirmTransCouponPaymentRequest();
-                    ctreq.ABCSoapHeader = crmSoapHeader;
+                    ctreq.CrmSoapHeader = crmSoapHeader;
                     ctreq.transId = transId;
                     ctreq.serverBillId = CrmBillId;
                     ctreq.transMoney = totalMoney;
@@ -4315,7 +4292,6 @@ namespace z.POS.Services
                 }
 
                 //2.2:取商品
-                //   CommonUtils.WriteSKTLog(1, posNo, sFuncCode + " <2> 第二步:查询商品 店:" + shopId);
                 result = -1;
 
                 bool bRslt = false;
@@ -4330,30 +4306,15 @@ namespace z.POS.Services
                 for (i = 0; i < req.goodsList.Count; i++)
                 {
                     ItemCode = req.goodsList[i].code;
-                    bRslt = DoGetGoodsInfo(ItemCode, deptid, backType, bulkGoodsType, Shop, posNo,
+                    deptid = req.goodsList[i].deptID;
+                    sDeptCode = req.goodsList[i].deptCode;
+                    bRslt = DoGetGoodsInfo(ItemCode, deptid, sDeptCode, backType, bulkGoodsType, Shop, posNo,
                           out goods);
 
                     if (!bRslt)
                     {
                         throw new Exception("商品" + ItemCode + "未定义!");
                     }
-
-
-                    if (string.IsNullOrEmpty(req.goodsList[i].deptCode))
-                    {
-                        sql = "select b.bmdm from gtsp a,bm b";   //取部门
-                        sql += "  where a.deptid=b.deptid ";
-                        sql += $"  and a.sp_id = {goods.Id} ";
-
-                        DataTable dt = DbHelper.ExecuteTable(sql);
-
-                        if (dt.IsNotNull())
-                        {
-                            goods.DeptCode = dt.Rows[0][0].ToString();
-                        }
-                    }
-
-
 
                     double fCount = 0;
                     fCount = Convert.ToDouble(req.goodsList[i].count);
@@ -4480,7 +4441,7 @@ namespace z.POS.Services
                 //   CommonUtils.GetReqStr(sGet, sTitle1, sTitle2, sTitle3, sTitle4, sTitle5, ref sValue1, ref sValue2, ref sValue3, ref sValue4, ref sValue5);
                 string canReturnCoupon = sValue1;
 
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
                 //  PosWebServiceSoapClient client = new PosWebServiceSoapClient();
@@ -4550,7 +4511,7 @@ namespace z.POS.Services
 
                 SaveRSaleBackBillArticlesRequest req = new SaveRSaleBackBillArticlesRequest();
 
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.billHead = billHead;
                 req.billArticles = articles;
 
@@ -5423,7 +5384,7 @@ namespace z.POS.Services
                     return false;
                 }
 
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
                 List<CashCardPayment> moneyCardList = new List<CashCardPayment>();
@@ -5453,7 +5414,7 @@ namespace z.POS.Services
 
                 //准备储值卡支付交易
                 PrepareTransCashCardPayment2Request req = new PrepareTransCashCardPayment2Request();
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.storeCode = storeCode;
                 req.posId = posNo;
                 req.billId = iJlbh;
@@ -5479,7 +5440,7 @@ namespace z.POS.Services
 
                     //确认储值卡支付交易
                     ConfirmTransCashCardPaymentRequest reqC = new ConfirmTransCashCardPaymentRequest();
-                    reqC.ABCSoapHeader = crmSoapHeader;
+                    reqC.CrmSoapHeader = crmSoapHeader;
                     reqC.transId = transId;
                     reqC.transMoney = totalMoney;
                     reqC.serverBillId = 0;
@@ -5591,7 +5552,7 @@ namespace z.POS.Services
                     goodsOne.sale_amount = decimal.Parse((goodsList[g].SaleMoney - goodsList[g].Discount).ToString());
                     goodsOne.discount_amount = decimal.Parse(goodsList[g].Discount.ToString());
                     goodsOne.coupon_amount = decimal.Parse((goodsList[g].PreferentialMoney + goodsList[g].DecreasePreferential).ToString());
-                    goodsOne.shopid = goodsList[g].ShopId;
+                    goodsOne.shopid = goodsList[g].DeptId;
                     goodsLst.Add(goodsOne);
                 }
 
@@ -5713,7 +5674,7 @@ namespace z.POS.Services
 
             try
             {
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
                 //  PosWebServiceSoapClient client = new PosWebServiceSoapClient();
@@ -5743,7 +5704,7 @@ namespace z.POS.Services
                 //     out offerCouponVipCode, out articleCents, out articleCoupons, out offerBackCoupon, out payBackCoupons);
 
                 PrepareCheckOutRSaleBillRequest req = new PrepareCheckOutRSaleBillRequest();
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.serverBillId = CrmBillId;
                 req.payments = pays;
                 req.payBackCouponVipId = PayBackCouponVipId;
@@ -5827,7 +5788,7 @@ namespace z.POS.Services
                 }
 
 
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
                 //     PosWebServiceSoapClient client = new PosWebServiceSoapClient();
@@ -5862,7 +5823,7 @@ namespace z.POS.Services
 
                 PrepareTransCouponPaymentRequest req = new PrepareTransCouponPaymentRequest();
 
-                req.ABCSoapHeader = crmSoapHeader;
+                req.CrmSoapHeader = crmSoapHeader;
                 req.serverBillId = CrmBillId;
                 req.payments = cashCardPayments;
 
@@ -5886,7 +5847,7 @@ namespace z.POS.Services
 
                     ConfirmTransCouponPaymentRequest reqCTCP = new ConfirmTransCouponPaymentRequest();
 
-                    reqCTCP.ABCSoapHeader = crmSoapHeader;
+                    reqCTCP.CrmSoapHeader = crmSoapHeader;
                     reqCTCP.transId = transId;
                     reqCTCP.serverBillId = CrmBillId;
                     reqCTCP.transMoney = totalMoney;
@@ -6153,7 +6114,7 @@ namespace z.POS.Services
             msg = "";
             try
             {
-                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
                 crmSoapHeader.UserId = "CRM";
                 crmSoapHeader.Password = "CRM";
                 //   PosWebServiceSoapClient client;
@@ -6169,7 +6130,7 @@ namespace z.POS.Services
                     //   result = client.CancelTransCashCardPayment(crmSoapHeader, transId, ServerBillID, totalMoney, out msg);
 
                     CancelTransCashCardPaymentRequest req = new CancelTransCashCardPaymentRequest();
-                    req.ABCSoapHeader = crmSoapHeader;
+                    req.CrmSoapHeader = crmSoapHeader;
                     req.serverBillId = ServerBillID;
                     req.transId = transId;
                     req.transMoney = totalMoney;
@@ -6197,7 +6158,7 @@ namespace z.POS.Services
                     //  result = client.CancelTransCouponPayment(crmSoapHeader, transId, ServerBillID, totalMoney, out msg);
 
                     CancelTransCouponPaymentRequest req = new CancelTransCouponPaymentRequest();
-                    req.ABCSoapHeader = crmSoapHeader;
+                    req.CrmSoapHeader = crmSoapHeader;
                     req.serverBillId = ServerBillID;
                     req.transId = transId;
                     req.transMoney = totalMoney;
