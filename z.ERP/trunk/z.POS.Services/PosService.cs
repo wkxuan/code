@@ -1259,8 +1259,8 @@ namespace z.POS.Services
                                      + goods.DecreaseDiscount + goods.ChangeDiscount;
 
                     //CommonUtils.GetSPDisc(goods);
-                    goods.DeptId = deptid;
-                    goods.DeptCode = sDeptCode;
+                    //goods.DeptId = deptid;
+                    //goods.DeptCode = sDeptCode;
                     if ((goods.Price == 0) && (reqMth.goodsList[i].price != 0))
                         goods.Price = reqMth.goodsList[i].price;
 
@@ -1582,11 +1582,11 @@ namespace z.POS.Services
 
                 if (backType == 1)//是选单退货 
                 {
-                    sql += $" where X.SP_ID={goods.Id}";
+                    sql += $" and X.SP_ID={goods.Id}";
                 }
                 else
                 {
-                    sql += $" where (X.SPCODE='{code}' OR X.BARCODE='{code}')";
+                    sql += $" and (X.SPCODE='{code}' OR X.BARCODE='{code}')";
                 }
                 if (deptid != 0)
                     sql += $" and M.DEPTID='{sDeptCode}'";
