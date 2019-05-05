@@ -180,7 +180,7 @@ editDetail.IsValidSave = function () {
         return false;
     };
     if (!editDetail.dataParam.NIANYUE) {
-        iview.Message.info("请选择付款年月!");
+        iview.Message.info("请选择收款年月!");
         return false;
     };
     if (editDetail.dataParam.BILL_OBTAIN_ITEM.length == 0) {

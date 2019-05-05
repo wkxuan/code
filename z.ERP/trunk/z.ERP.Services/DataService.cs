@@ -206,7 +206,7 @@ namespace z.ERP.Services
             item.HasKey("TYPE", a => sql += $" and A.TYPE = {a}");
             item.HasKey("NIANYUE", a => sql += $" and A.NIANYUE = {a}");
             item.HasKey("YEARMONTH", a => sql += $" and A.YEARMONTH = {a}");
-            item.HasKey("REPORTER", a => sql += $" and A.REPORTER = {a}");
+            item.HasKey("REPORTER", a => sql += $" and REPORTER_NAME  LIKE '%{a}%'");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= {a}");
             item.HasDateKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= {a}");
             item.HasKey("WFDJ", a => sql += $" and A.MUST_MONEY - A.RECEIVE_MONEY<>0");
