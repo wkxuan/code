@@ -212,7 +212,10 @@ namespace z.ERP.Services
             item.HasKey("WFDJ", a => sql += $" and A.MUST_MONEY - A.RECEIVE_MONEY<>0");
             item.HasKey("FTYPE",a => sql += $" and F.TYPE = {a}");    //费用项目类型
             item.HasKey("RRETURNFLAG", a => sql += $" and A.RECEIVE_MONEY <> 0");
-            
+            item.HasKey("SCFS_TZD", a => sql += $" and F.SCFS_TZD = {a}");
+            item.HasKey("FEE_ACCOUNTID", a => sql += $" and F.FEE_ACCOUNTID = {a}");
+
+
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<账单状态>("STATUS", "STATUSMC");
