@@ -1,12 +1,12 @@
 ﻿var colD = [
     { title: '交易日期', key: 'SALE_TIME', width: 200 },
-    { title: '终端号', key: 'POSNO', width: 150 },
-    { title: '交易号', key: 'DEALID', width: 150 },
+    { title: '终端号', key: 'POSNO', width: 100 },
+    { title: '交易号', key: 'DEALID', width: 100 },
     { title: '商品名称', key: 'GOODSNAME', width: 200 },
     { title: '品牌名称', key: 'BRANDNAME', width: 150 },
-    { title: '收款方式', key: 'NAME', width: 150 },
-    { title: '销售金额', key: 'AMOUNT', width: 150, align: "right" },
-    { title: '原终端号', key: 'POSNO_OLD', width: 150 },
+    { title: '收款方式', key: 'NAME', width: 120 },
+    { title: '销售金额', key: 'AMOUNT', width: 100, align: "right" },
+    { title: '原终端号', key: 'POSNO_OLD', width: 100 },
     {
         title: '原交易号', key: 'DEALID_OLD', width: 150,
         render: function (h, params) {
