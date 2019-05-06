@@ -71,6 +71,7 @@ namespace z.ERP.Services
             string sql = "select a.goodsid,a.goodsdm goodscode,a.name,a.type,nvl(a.price,0) price,nvl(a.member_price,0) member_price,b.shopid,d.orgcode";
             sql += "        from GOODS a,GOODS_SHOP b,SHOP c,ORG d";
             sql += "       where a.goodsid=b.goodsid and b.shopid=c.shopid and c.orgid=d.orgid";
+            sql += "         and a.STATUS = 2";
 
             if (filter.shopid.HasValue)
                 sql += $"  and b.shopid = {filter.shopid}";
@@ -2450,13 +2451,13 @@ namespace z.ERP.Services
             string msg = "";
             int result = -1, i = 0, j = 0, CrmBillId = 0, CrmMoneyCardTransID = 0, iHyId = 0;
             string PromniDealID = "", ErpTranID = "", MemberCardID = "",
-                sOut = "", posNo = "", userCode = "";
+                 posNo = "", userCode = "";
 
             ErrorMessage errorMessage;
             ConfirmDealResult confirmResult = new ConfirmDealResult();
 
             bool bValue = false;
-            string sTitle = "SysVer", sVer = "", ddJLBH = "";
+            string  ddJLBH = "";
 
             int transId = 0, iPerson = 0;
             double mTotalMoney = 0;
@@ -2732,14 +2733,14 @@ namespace z.ERP.Services
                     GoodItem.MemberDiscount = ReqConfirm.goodsList[i].memberOff;
                     GoodItem.FrontDiscount = ReqConfirm.goodsList[i].frontendOffAmount;
                     GoodItem.DiscoaddDiscount = ReqConfirm.goodsList[i].fullCutOffAmount;
-                    GoodItem.MemberDiscount = ReqConfirm.goodsList[i].memberOff;
+                  //  GoodItem.MemberDiscount = ReqConfirm.goodsList[i].memberOff;
                     GoodItem.ChangeDiscount = ReqConfirm.goodsList[i].changeDiscount;
                     GoodItem.Discount = ReqConfirm.goodsList[i].totalOffAmount;
                     GoodItem.Name = ReqConfirm.goodsList[i].name;
                     GoodItem.Price = ReqConfirm.goodsList[i].price;
                     GoodItem.SaleCount = ReqConfirm.goodsList[i].count;
                     GoodItem.ShopId = GetGoodsShopId(ReqConfirm.goodsList[i].id);
-                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable + ReqConfirm.goodsList[i].totalOffAmount;
+                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable;//+ ReqConfirm.goodsList[i].totalOffAmount;
 
                     /* if (ProjectName_TJ_JYB.Equals(ProjectName))
                      {
@@ -2954,20 +2955,6 @@ namespace z.ERP.Services
                     throw new Exception(msg);
                 }
 
-
-
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1> 开始保存销售  储值交易号:");
-                //    + CrmMoneyCardTransID + "  券交易号:" + CrmCouponTransId + " 分:" );
-
-                //CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.1> PersonId :" + CurPerson.PersonId);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.2> transId :" + transId);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.3> CrmBillId :" + CrmBillId);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.4> PromniDealID :" + PromniDealID);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.5> GoodList :" + GoodList.Count);
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.6> PayList :" + PayList.Count);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.7> CrmMoneyCardTransID :" + CrmMoneyCardTransID);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.8> CrmCouponTransId :" + CrmCouponTransId);
-
                 bValue = false;
 
                 //保存erp销售记录
@@ -3005,8 +2992,9 @@ namespace z.ERP.Services
                      goodsOne.goodscode = GoodList[g].Code;
                      goodsOne.price = decimal.Parse(GoodList[g].Price.ToString());
                      goodsOne.quantity = float.Parse(GoodList[g].SaleCount.ToString());
-                     goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney-GoodList[g].Discount).ToString());
-                     goodsOne.discount_amount = decimal.Parse(GoodList[g].Discount.ToString());
+                     goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney).ToString()); //-GoodList[g].Discount
+                    //wangkx  扣折暂时记为0
+                    goodsOne.discount_amount = 0; //decimal.Parse(GoodList[g].Discount.ToString());
                      goodsOne.coupon_amount = decimal.Parse((GoodList[g].PreferentialMoney + GoodList[g].DecreasePreferential).ToString());
                      goodsOne.shopid = GoodList[g].ShopId;
                      goodsLst.Add(goodsOne);
@@ -3485,44 +3473,23 @@ namespace z.ERP.Services
             fCent = 0;
             CrmCouponTransId = 0;
             CrmMoneyCardTransId = 0;
-            bool bCheckCrmTran = true;
-
-            //  CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.1.1> 销售记录号:" + iJlbh + " Crm记录号:" + CrmBillId);
+           // bool bCheckCrmTran;
 
             msg = "";
 
-            bCheckCrmTran = true; //CommonUtils.GetConfigSet(SetConfig_SaveTranCheckCrmTran, true);
-                                  /*  if (bCheckCrmTran)
-                                        CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.1.5> 设置检查CRM交易 任何情况都要上传CRM ");
-                                    else
-                                    {
-                                        CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.1.2> 设置为不检查CRM交易 可以不向CRM上传数据");
-
-                                        if (CrmBillId <= 0)
-                                        {
-                                            CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.1.3> 设置为不检查CRM交易 当前CRM交易号小于等于0 直接返回");
-                                            return true;
-                                        }
-                                    } */
-
-            // CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.1.6> 开始作CRM的prepare ");
+           // bCheckCrmTran = true;
             try
             {
                 if (!Prepare(posNo, CrmBillId, payList, ref GoodsList, out fCent, out msg))
                 {
                     return false;
                 }
-
-
-                //  CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.2> CZK消费");
-
                 // CZK 消费暂不处理  wangkx
                 /* if (!ProcCRM.ProcCRMFunc.SaveMoneyCard(sShop, posNo, iJlbh, CrmBillId, cards, out CrmMoneyCardTransId, out msg))
                  {
                      return false;
                  } */
 
-                // CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.3> 券消费");
                 if (!SaveCoupons(posNo, CrmBillId, Coupons, out CrmCouponTransId, out msg))
                     return false;
             }
@@ -3533,8 +3500,6 @@ namespace z.ERP.Services
                 return false;
             }
 
-            //   CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.5>");
-
             return true;
         }
 
@@ -3544,15 +3509,11 @@ namespace z.ERP.Services
             fCent = 0;
             int i = 0, j = 0;
 
-            //////2016.04.25 新加输出
-            int PayBackCouponVipId = 0;
+          //  int PayBackCouponVipId = 0;
             bool CouponPaid = false;
-            string offerCouponVipCode = "";
-            bool bNeedVipToOfferCoupon, bNeedBuyCent;
+          //  string offerCouponVipCode = "";
+          //  bool bNeedVipToOfferCoupon, bNeedBuyCent;
 
-            //  string CRMUSer = "CRMUSER", CRMPwd = "CRMUSER";
-            //  CRMUSer = CommonUtils.GetReqStr("CRMUser");
-            //  CRMPwd = CommonUtils.GetReqStr("CRMPwd");
 
             try
             {
@@ -3577,8 +3538,7 @@ namespace z.ERP.Services
                 bool PrepareCheckOutResult;
                 double fRate = 0;
 
-                //    CommonUtils.WriteSKTLog(1, posNo, "<0104_ERP保存销售><1.1>准备提交");
-
+                //保存销售
 
                 ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
                 crmSoapHeader.UserId = "CRMUSER";
@@ -3610,7 +3570,6 @@ namespace z.ERP.Services
 
                 if (PrepareCheckOutResult)
                 {
-                    //2015.09.29
                     //如果这里成功，处理积分 与 返券，目前先不做
 
                     //  CommonUtils.WriteSKTLog(1, posNo, "<0104_ERP保存销售><2.0.1>准备分摊优惠 ");
@@ -4749,7 +4708,7 @@ namespace z.ERP.Services
                     GoodItem.Name = ReqConfirm.goodsList[i].name;
                     GoodItem.Price = ReqConfirm.goodsList[i].price;
                     GoodItem.SaleCount = ReqConfirm.goodsList[i].count;
-                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable + ReqConfirm.goodsList[i].totalOffAmount;
+                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable; //+ ReqConfirm.goodsList[i].totalOffAmount;
 
                     GoodItem.BackDiscount = GoodItem.BackDiscount * -1;
                     GoodItem.MemberDiscount = GoodItem.MemberDiscount * -1;
@@ -5418,8 +5377,9 @@ namespace z.ERP.Services
                     goodsOne.goodscode = goodsList[g].Code;
                     goodsOne.price = decimal.Parse(goodsList[g].Price.ToString());
                     goodsOne.quantity = float.Parse(goodsList[g].SaleCount.ToString());
-                    goodsOne.sale_amount = decimal.Parse((goodsList[g].SaleMoney - goodsList[g].Discount).ToString());
-                    goodsOne.discount_amount = decimal.Parse(goodsList[g].Discount.ToString());
+                    goodsOne.sale_amount = decimal.Parse((goodsList[g].SaleMoney ).ToString());  //- goodsList[g].Discount
+                    //wangkx 暂时折扣记为0
+                    goodsOne.discount_amount = 0;// decimal.Parse(goodsList[g].Discount.ToString());
                     goodsOne.coupon_amount = decimal.Parse((goodsList[g].PreferentialMoney + goodsList[g].DecreasePreferential).ToString());
                     goodsOne.shopid = goodsList[g].ShopId;
                     goodsLst.Add(goodsOne);
