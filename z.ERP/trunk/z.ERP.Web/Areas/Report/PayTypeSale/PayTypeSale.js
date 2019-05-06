@@ -42,9 +42,13 @@ srch.otherMethods = {
     },
     changeSrchType: function (value) {
         if (value == 1) {
+            Vue.set(this.screenParamData, "dataDef", []);   //清空table
+            Vue.set(this, "pagedataCount", 0);    //清空分页数据
             Vue.set(srch.screenParam, "colDef", colList);
             Vue.set(srch, "method", "PayTypeSale");
         } else {
+            Vue.set(this.screenParamData, "dataDef", []); //清空table
+            Vue.set(this, "pagedataCount", 0); //清空分页数据
             Vue.set(srch.screenParam, "colDef", colSum);
             Vue.set(srch, "method", "PayTypeSaleS");
         }

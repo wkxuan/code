@@ -314,10 +314,13 @@ namespace z.ERP.Services
             item.HasKey("TYPE", a => sql += $" and L.TYPE = {a}");
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
+            item.HasKey("MERCHANTID", a => sql += $" and L.MERCHANTID={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
+            item.HasKey("REPORTER_NAME", a => sql += $" and L.REPORTER_NAME  LIKE '%{a}%'");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
             item.HasDateKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
             item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
+            item.HasKey("VERIFY_NAME", a => sql += $" and L.VERIFY_NAME  LIKE '%{a}%'");
             item.HasDateKey("VERIFY_TIME_START", a => sql += $" and L.VERIFY_TIME>={a}");
             item.HasDateKey("VERIFY_TIME_END", a => sql += $" and L.VERIFY_TIME<={a}");
             sql += " ORDER BY  L.BILLID DESC";
