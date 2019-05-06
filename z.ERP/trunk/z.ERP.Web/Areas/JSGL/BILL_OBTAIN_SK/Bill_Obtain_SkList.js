@@ -3,7 +3,7 @@
         { title: "单据编号", key: "BILLID", width: 105, sortable: true },
         { title: "商户编号", key: "MERCHANTID", width: 105, sortable: true },
         { title: "商户名称", key: "MERCHANTNAME", width: 200 },
-        { title: "权债发生月", key: "NIANYUE", width: 115, sortable: true },
+        { title: "收款年月", key: "NIANYUE", width: 115, sortable: true },
         { title: "状态", key: "STATUSMC", width: 80 },
         { title: "分店编号", key: "BRANCHID", width: 90 },
         { title: "分店名称", key: "BRANCHNAME", width: 200 },
