@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaleGatherReq.cs" />
+    <Compile Include="SalePay.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\z.DbHelper\z.DbHelper.csproj">

@@ -38,29 +38,22 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
-        public string pid
+        public TicketInfo ticketInfo
         {
             get;
             set;
         }
 
-        public string encryption
+        public PosWFTConfig posWFTConfig
         {
             get;
             set;
         }
 
-        public string key
+        public PosUMSConfig posUMSConfig
         {
             get;
             set;
         }
-
-        public string key_pub
-        {
-            get;
-            set;
-        }
-
     }
 }
