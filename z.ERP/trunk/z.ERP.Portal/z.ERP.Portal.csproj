@@ -146,7 +146,6 @@
     <Compile Include="Areas\Base\BaseController.cs" />
     <Compile Include="Areas\Base\CommonController.cs" />
     <Compile Include="Areas\Home\ChangePassword\ChangePassword.cs" />
-    <Compile Include="Areas\Home\DefaultNew\DefaultNewController.cs" />
     <Compile Include="Areas\Home\Default\DefaultController.cs" />
     <Compile Include="Areas\Home\Index\IndexController.cs" />
     <Compile Include="Areas\Home\Login\LoginController.cs" />
@@ -162,8 +161,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Home\ChangePassword\ChangePassword.js" />
-    <Content Include="Areas\Home\DefaultNew\DefaultNew.css" />
-    <Content Include="Areas\Home\DefaultNew\DefaultNew.js" />
     <Content Include="Areas\Home\Default\Default.css" />
     <Content Include="Areas\Home\Default\Default.js" />
     <Content Include="Areas\Home\Index\Index.js" />
@@ -535,7 +532,6 @@
     <Content Include="Content\ui\js\simditor\css\simditor.scss" />
     <Content Include="Areas\Home\Index\Index.cshtml" />
     <Content Include="Areas\Home\Default\Default.cshtml" />
-    <Content Include="Areas\Home\DefaultNew\DefaultNew.cshtml" />
     <None Include="Properties\PublishProfiles\laj.pubxml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
     <None Include="Properties\PublishProfiles\zgy.pubxml" />
