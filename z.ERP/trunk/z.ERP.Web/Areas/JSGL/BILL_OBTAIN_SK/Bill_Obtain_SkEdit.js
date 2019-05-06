@@ -16,7 +16,8 @@
 
     editDetail.screenParam.colDef = [
     { title: '账单号', key: 'FINAL_BILLID', width: 100 },
-    { title: '权债年月', key: 'YEARMONTH', width: 100 },
+    { title: '权债年月', key: 'NIANYUE', width: 100 },
+    { title: '收付实现月', key: 'YEARMONTH', width: 100 },
     { title: '租约号', key: 'CONTRACTID', width: 100 },
     { title: '收费项目', key: 'TERMMC', width: 200 },
     { title: '应收金额', key: 'MUST_MONEY', width: 100 },
@@ -112,6 +113,19 @@ editDetail.otherMethods = {
         };
         editDetail.screenParam.showPopBill = true;
         editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID,WFDJ : 1 };
+    },
+
+    YfkChange: function () {
+        if (parseFloat(editDetail.dataParam.ADVANCE_MONEY) > parseFloat(editDetail.dataParam.MERCHANT_MONEY)) {
+            iview.Message.info("预付款金额不能大于商户余额!");
+            editDetail.dataParam.ADVANCE_MONEY = "0";
+            return;
+        }
+        let fkje = 0;
+        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
+            fkje += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
+        };
+        editDetail.dataParam.ALL_MONEY = fkje - editDetail.dataParam.ADVANCE_MONEY;
     }
 }
 
@@ -126,7 +140,9 @@ editDetail.popCallBack = function (data) {
         }
         for (var i = 0; i < data.sj.length; i++) {
             editDetail.dataParam.BILL_OBTAIN_ITEM.push({
-                FINAL_BILLID: data.sj[i].BILLID, YEARMONTH: data.sj[i].YEARMONTH, CONTRACTID: data.sj[i].CONTRACTID,
+                FINAL_BILLID: data.sj[i].BILLID, YEARMONTH: data.sj[i].YEARMONTH,
+                NIANYUE: data.sj[i].NIANYUE,
+                CONTRACTID: data.sj[i].CONTRACTID,
                 TERMMC: data.sj[i].TERMMC,
                 MUST_MONEY: data.sj[i].MUST_MONEY,
                 UNPAID_MONEY: data.sj[i].UNPAID_MONEY,
@@ -138,7 +154,7 @@ editDetail.popCallBack = function (data) {
         for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
             sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
         }
-        editDetail.dataParam.ALL_MONEY = sumJE;
+        editDetail.dataParam.ALL_MONEY = sumJE - editDetail.dataParam.ADVANCE_MONEY;
     }
     else if (editDetail.screenParam.showPopMerchant) {
         editDetail.screenParam.showPopMerchant = false;
