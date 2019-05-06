@@ -70,7 +70,8 @@
                 RenderControl(new EnumDropDownListRender<通知单类型>()
                 {
                     vModel = "dataParam.TYPE",
-                    Enable = false
+                    Change = "chgTYPE",
+                    Enable = true
                 });
             }
         </i-col>
@@ -84,7 +85,8 @@
                 {
                     vModel = "dataParam.FEE_ACCOUNTID",
                     ServiceMothod = m => m.feeAccount(),
-                    Enable = false
+                    Enable = true,
+                    Change = "chgFAT",
                 });
             }
         </i-col>

@@ -12,7 +12,7 @@
     editDetail.dataParam.BILL_NOTICE_ITEM = [];
 
     editDetail.dataParam.NIANYUE = (new Date()).getFullYear() + ('0' + ((new Date()).getMonth() + 1)).substr(-2); //默认当前年月
-    editDetail.dataParam.TYPE = 1;
+   // editDetail.dataParam.TYPE = 1;
 
     editDetail.screenParam.colDef = [
     //{
@@ -92,7 +92,7 @@
 
 editDetail.newRecord = function () {
     editDetail.dataParam.NIANYUE = (new Date()).getFullYear() + ('0'+((new Date()).getMonth() + 1)).substr(-2); //默认当前年月
-    editDetail.dataParam.TYPE = 1;
+  //  editDetail.dataParam.TYPE = 1;
 }
 
 editDetail.showOne = function (data, callback) {
@@ -124,13 +124,33 @@ editDetail.otherMethods = {
             iview.Message.info("请选择租约!");
             return;
         };
+        if(!editDetail.dataParam.TYPE){
+            iview.Message.info("请选择类型!");
+        return;
+         };
+        if (!editDetail.dataParam.FEE_ACCOUNTID) {
+            iview.Message.info("请选择收费单位!");
+        return;
+        };
+
+
         editDetail.screenParam.showPopBill = true;
         editDetail.screenParam.popParam = {
             BRANCHID: editDetail.dataParam.BRANCHID,
             CONTRACTID: editDetail.dataParam.CONTRACTID,
-            WFDJ: 1
+            WFDJ: 1,
+            SCFS_TZD: editDetail.dataParam.TYPE,
+            FEE_ACCOUNTID: editDetail.dataParam.FEE_ACCOUNTID
         };
+    },
+
+    chgTYPE: function () {
+        Vue.set(editDetail.dataParam, "BILL_NOTICE_ITEM", []);
+    },
+    chgFAT: function () {
+        Vue.set(editDetail.dataParam, "BILL_NOTICE_ITEM", []);
     }
+
 }
 
 ///接收弹窗返回参数

@@ -485,6 +485,9 @@ namespace z.ERP.Services
             v.Require(a => a.BILLID);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.CONTRACTID);
+            v.Require(a => a.TYPE);
+            v.Require(a => a.FEE_ACCOUNTID);
+
             v.Verify();
 
             using (var Tran = DbHelper.BeginTransaction())
