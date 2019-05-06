@@ -249,6 +249,7 @@
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\WYGL\MARCHINAREAR\MarchinArearController.cs" />
     <Compile Include="Areas\WYGL\OPENBUSINESS\OpenBusinessController.cs" />
+    <Compile Include="Areas\XTGL\AlertShow\AlertShowController.cs" />
     <Compile Include="Areas\XTGL\ALERT\ALERTController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFilesController.cs" />
@@ -682,6 +683,7 @@
     <Content Include="File\Template\商户租金经营状况导出.xlsx" />
     <Content Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetail.cshtml" />
     <Content Include="File\Template\商品销售明细导出.xlsx" />
+    <Content Include="Areas\XTGL\AlertShow\AlertShow.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
