@@ -18,7 +18,7 @@
     ];
     search.screenParam.colDef = col.concat(search.colMul);
     search.service = "DataService";
-    search.method = "GetBill";
+    search.method = "GetBillPart";
 
   //  search.screenParam.TERMID = 0;
 

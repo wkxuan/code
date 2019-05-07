@@ -251,7 +251,11 @@ namespace z.ERP.Entities.Enum
         调整单 = 2,
         减免单 = 3
     }
-
+    public enum 账单类型Part
+    {
+        账单 = 1,
+        调整单 = 2,
+    }
     public enum 月末标记
     {
         月末 = -1
@@ -264,6 +268,11 @@ namespace z.ERP.Entities.Enum
         全部付款 = 4,
         返还 = 5,
         终止 = 6,
+    }
+    public enum 账单状态Part
+    {
+        审核 = 2,
+        部分付款 = 3,
     }
     public enum 退铺单状态
     {
