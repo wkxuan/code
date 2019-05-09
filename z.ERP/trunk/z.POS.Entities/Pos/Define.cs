@@ -4265,6 +4265,7 @@ namespace z.POS.Entities.Pos
         public string storeCode;
         public string validType;
         public string validID;
+        public string verifyCode;
       //  public string memberNo;
       //  public string couponPassword;
     }
@@ -4292,8 +4293,8 @@ namespace z.POS.Entities.Pos
     {
         public int cardId;
         public string cardNo;
-        public int useMoney;
-        public int amount;
+        public double useMoney;
+        public double amount;
         public int payID;
         public int cardTypeId;
     }

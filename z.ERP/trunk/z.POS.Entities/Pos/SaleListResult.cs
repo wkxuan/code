@@ -1,36 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace z.POS.Entities.Pos
 {
-    public class PayResult
+    public class SaleListResult
     {
-        public int payid
+        public decimal saleamountsum
         {
             get;
             set;
         }
 
-        public string payname
+        public decimal saleamountreturn
         {
             get;
             set;
         }
 
-        public int paytype
+        public List<PaySumResult> paysumlist
         {
             get;
             set;
         }
 
-        public decimal amount
+        public List<SaleList> salelist
         {
             get;
             set;
         }
-
     }
 }
