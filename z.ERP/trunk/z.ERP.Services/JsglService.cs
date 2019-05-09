@@ -552,6 +552,7 @@ namespace z.ERP.Services
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             sqlitem += " GROUP BY C.NAME,TO_CHAR(B.START_DATE,'YYYY-MM-DD')||'至'||to_char(B.END_DATE,'YYYY-MM-DD')";
+            sqlitem += " ORDER BY 2";
             DataTable billNoticeItem = DbHelper.ExecuteTable(sqlitem);
 
             return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);

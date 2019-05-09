@@ -1,26 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace z.POS.Entities.Pos
 {
-    public class PayResult
+    public class SaleList
     {
-        public int payid
+        public string posno
         {
             get;
             set;
         }
 
-        public string payname
+        public int dealid
         {
             get;
             set;
         }
 
-        public int paytype
+        public string sale_time
         {
             get;
             set;
@@ -31,6 +27,5 @@ namespace z.POS.Entities.Pos
             get;
             set;
         }
-
     }
 }

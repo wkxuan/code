@@ -51,10 +51,18 @@ namespace z.POS.WebService.Controllers
             return service.PosService.GetDeal(filter);
         }
 
+        /*
         [ServiceAble("Sale")]
         public void Sale(SaleRequest Request)
         {
             service.PosService.Sale(Request);
+        }
+        */
+
+        [ServiceAble("GetSaleList")]
+        public SaleListResult GetSaleList(SaleListFilter filter)
+        {
+            return service.PosService.GetSaleList(filter);
         }
 
         [ServiceAble("GetSaleSummary")]

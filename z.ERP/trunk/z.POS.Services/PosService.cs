@@ -145,8 +145,8 @@ namespace z.POS.Services
             sqlGoods += $" xsje sale_amount,zkje discount_amount,yhje coupon_amount from {strTable}xsjlc";
             sqlGoods += $" where sktno='{posNo}' and jlbh={filter.dealid}";
 
-            string sqlPay = $"select skfs payid,skje amount from {strTable}xsjlm";
-            sqlPay += $" where sktno='{posNo}' and jlbh={filter.dealid}";
+            string sqlPay = $"select skfs payid,b.name payname,decode(b.type,0,1,2,2,4,3,7,4,13,6,14,5,20,6,21,5,1) paytype,skje amount from {strTable}xsjlm a,skfs b";
+            sqlPay += $" where a.skfs=b.code and sktno='{posNo}' and jlbh={filter.dealid}";
 
             string sqlClerk = $"select tckt_inx sheetid,yyy clerkid from {strTable}xsjlt";
             sqlClerk += $" where sktno='{posNo}' and jlbh={filter.dealid}";
@@ -200,7 +200,7 @@ namespace z.POS.Services
 
             if (sumGoodsAmount != sumPayAmount)
             {
-                throw new Exception("商品列表中金额合计与支付列表中的金额合计不相等!");
+                throw new Exception("商品列表中金额合计与支付列表中的金额合计不相等:"+ sumGoodsAmount.ToString()+"--"+ sumPayAmount.ToString());
             }
 
             string sql = $"select xsje from xsjl where sktno='{posNo}' and jlbh={dealId} ";
@@ -355,6 +355,136 @@ namespace z.POS.Services
                    throw new Exception("写入数据不完整!");
                } */
         }
+
+        public SaleListResult GetSaleList(SaleListFilter filter)
+        {
+            string sql = $"select s.sktno posno,s.jlbh dealid,"
+                       + "        to_char(s.jysj,'yyyy-mm-dd HH24:MI:SS') sale_time,s.xsje amount"
+                       + "   from xsjl s"
+                       + "  where 1=1";
+            if (String.IsNullOrEmpty(filter.posno))
+                sql += $" and s.sktno = '{employee.PlatformId}'";
+            else
+                sql += $" and s.sktno = '{filter.posno}'";
+
+            if (String.IsNullOrEmpty(filter.saledate_begin) && String.IsNullOrEmpty(filter.saledate_end))
+                sql += $" and trunc(s.jysj) = trunc(sysdate)";
+            else
+            {
+                if (!String.IsNullOrEmpty(filter.saledate_begin))
+                    sql += $" and trunc(s.jysj) >= to_date('{filter.saledate_begin.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sql += $" and trunc(s.jysj) >= trunc(sysdate)";
+                if (!String.IsNullOrEmpty(filter.saledate_end))
+                    sql += $" and trunc(s.jysj) <= to_date('{filter.saledate_end.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sql += $" and trunc(s.jysj) <= trunc(sysdate)";
+            }
+
+            sql += " union all ";
+
+            sql += $"select s.sktno posno,s.jlbh dealid,"
+                  + "       to_char(s.jysj,'yyyy-mm-dd HH24:MI:SS') sale_time,s.xsje amount"
+                  + "  from sktxsjl s"
+                  + " where 1=1";
+            if (String.IsNullOrEmpty(filter.posno))
+                sql += $" and s.sktno = '{employee.PlatformId}'";
+            else
+                sql += $" and s.sktno = '{filter.posno}'";
+
+            if (String.IsNullOrEmpty(filter.saledate_begin) && String.IsNullOrEmpty(filter.saledate_end))
+                sql += $" and trunc(s.jysj) = trunc(sysdate)";
+            else
+            {
+                if (!String.IsNullOrEmpty(filter.saledate_begin))
+                    sql += $" and trunc(s.jysj) >= to_date('{filter.saledate_begin.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sql += $" and trunc(s.jysj) >= trunc(sysdate)";
+                if (!String.IsNullOrEmpty(filter.saledate_end))
+                    sql += $" and trunc(s.jysj) <= to_date('{filter.saledate_end.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sql += $" and trunc(s.jysj) <= trunc(sysdate)";
+            }
+
+            sql += " order by 3 desc"; //按交易时间倒序排列
+
+            List<SaleList> detaillist = DbHelper.ExecuteObject<SaleList>(sql);
+
+            if (detaillist.Count <= 0)
+                throw new Exception("无销售记录");
+
+            string sqlsum = "select payid,payname,sum(returnflag * amount) amountreturn,sum(amount) amountsum from(";
+
+
+
+            sqlsum += $"select s.sktno posno,s.jlbh dealid,decode(sign(s.xsje),0,0,1,0,-1,1) returnflag,"
+                          + "       p.skfs payid,y.name payname, p.skje amount"
+                          + "  from xsjl s, xsjlm p,skfs y"
+                          + " where s.sktno = p.sktno"
+                          + "   and s.jlbh = p.jlbh"
+                          + "   and p.skfs = y.code";
+            if (String.IsNullOrEmpty(filter.posno))
+                sqlsum += $" and s.sktno = '{employee.PlatformId}'";
+            else
+                sqlsum += $" and s.sktno = '{filter.posno}'";
+
+            if (String.IsNullOrEmpty(filter.saledate_begin) && String.IsNullOrEmpty(filter.saledate_end))
+                sqlsum += $" and trunc(s.jysj) = trunc(sysdate)";
+            else
+            {
+                if (!String.IsNullOrEmpty(filter.saledate_begin))
+                    sqlsum += $" and trunc(s.jysj) >= to_date('{filter.saledate_begin.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sqlsum += $" and trunc(s.jysj) >= trunc(sysdate)";
+                if (!String.IsNullOrEmpty(filter.saledate_end))
+                    sqlsum += $" and trunc(s.jysj) <= to_date('{filter.saledate_end.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sqlsum += $" and trunc(s.jysj) <= trunc(sysdate)";
+            }
+
+            sqlsum += " union all ";
+
+            sqlsum += $"select s.sktno posno,s.jlbh dealid,decode(sign(s.xsje),0,0,1,0,-1,1) returnflag,"
+                  + "       p.skfs payid,y.name payname, p.skje amount"
+                  + "  from sktxsjl s, sktxsjlm p,skfs y"
+                  + " where s.sktno = p.sktno"
+                  + "   and s.jlbh = p.jlbh"
+                  + "   and p.skfs = y.code";
+            if (String.IsNullOrEmpty(filter.posno))
+                sqlsum += $" and s.sktno = '{employee.PlatformId}'";
+            else
+                sqlsum += $" and s.sktno = '{filter.posno}'";
+
+            if (String.IsNullOrEmpty(filter.saledate_begin) && String.IsNullOrEmpty(filter.saledate_end))
+                sqlsum += $" and trunc(s.jysj) = trunc(sysdate)";
+            else
+            {
+                if (!String.IsNullOrEmpty(filter.saledate_begin))
+                    sqlsum += $" and trunc(s.jysj) >= to_date('{filter.saledate_begin.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sqlsum += $" and trunc(s.jysj) >= trunc(sysdate)";
+                if (!String.IsNullOrEmpty(filter.saledate_end))
+                    sqlsum += $" and trunc(s.jysj) <= to_date('{filter.saledate_end.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sqlsum += $" and trunc(s.jysj) <= trunc(sysdate)";
+            }
+
+            sqlsum += ") group by payid,payname";
+
+            List<PaySumResult> sumlist = DbHelper.ExecuteObject<PaySumResult>(sqlsum);
+            decimal salesum = detaillist.Sum(a => a.amount);
+            decimal salereturn = sumlist.Sum(a => a.amountreturn);
+
+            return new SaleListResult()
+            {
+                saleamountsum = salesum,
+                saleamountreturn = salereturn,
+                paysumlist = sumlist,
+                salelist = detaillist
+            };
+        }
+
+
 
         public SaleSummaryResult GetSaleSummary(SaleSummaryFilter filter)
         {
@@ -567,14 +697,8 @@ namespace z.POS.Services
             //  string input = "功能:取会员信息<DoUniGetMemberInfo>: 设备号码:" + Device + "  店:" + Shop + "  输入:" + sInput;
             //  CommonUtils.WriteSKTLog(0, Device, input);
 
-            string phoneCode = "", cardCode = "", cardCodeToCheck = "", verifyCode = "",
+            string cardCodeToCheck = "", verifyCode = reqMth.verifyCode,
                 password = "", CondValue = "", ValidIDType = "", ValidID = "", sTitle = "功能:取会员信息";
-            // MobilePhone = "", MemberCard = "",
-            //  string ProjectName = "", subProjectName = "";
-            //  ProjectName = CommonUtils.GetReqStr(ErpProc.SetConfig_ProjectName);
-            //  subProjectName = CommonUtils.GetReqStr(ErpProc.SetConfig_SubProjectName);
-
-            //  int iDataType = UniCode_Json;
             int result = -1, i = 0, j = 0;
             List<Payment> DevicePayments = new List<Payment>();
 
@@ -586,7 +710,7 @@ namespace z.POS.Services
 
             if (Shop.Equals(""))
             {
-                //   result = RsltCode_Wrong_Para;
+                result = -1;
                 msg = "数据检查失败：<取会员信息> 店号为空";
                 return result;
             }
@@ -595,7 +719,7 @@ namespace z.POS.Services
             if (Device.Equals(""))
             {
                 msg = "数据检查失败：<取会员信息> 设备号为空";
-                //   result = RsltCode_Wrong_Para;
+                result = -1;
                 return result;
             }
 
@@ -635,13 +759,9 @@ namespace z.POS.Services
             catch (Exception e)
             {
                 msg = "数据检查失败：传入参数失败:" + e.Message;
-                //   result = RsltCode_Wrong_Para;
+                result = -1;
                 return result;
             }
-
-
-            //     input = "功能:取会员信息<1.2>: 输入数据:" + input + " 各项:设备号:" + Device + " 电话:" + phoneCode + " 卡号:" + cardCode;
-            //     CommonUtils.WriteSKTLog(1, Device, "取会员信息:" + input);
 
 
             Stopwatch st = new Stopwatch();
@@ -666,14 +786,10 @@ namespace z.POS.Services
                 result = DoGetPayments(Device, out DevicePayments, out msg);
                 if (result != 0)
                 {
-                    //  CommonUtils.WriteSKTLog(1, Device, sTitle + "<4.2.1> 取收款方式失败:" + msg);
                     //  result = RsltCode_Wrong_Calc;
                     msg = sTitle + "失败:" + msg;
                     return result;
                 }
-
-                //   string sCrmVer = ProcCRMFunc.GetCrmVer();
-                //   CommonUtils.WriteSKTLog(1, Device, "[2018.07.05]取会员信息<2.1> 准备取会员定义 CRM的类型[ " + sCrmVer + "] ");
 
                 //2.2:如果有会员.则取会员2017.06.16        
                 //0：磁道内容，1: 会员卡ID ,2：卡号,3:手机号，4：身份证号                 
@@ -759,9 +875,9 @@ namespace z.POS.Services
                 //2.3取CZK信息
                 if (vipcard.id > 0)
                 {
-                    cardCodeToCheck = ""; verifyCode = ""; password = ""; CondValue = Convert.ToString(vipcard.id);
+                    cardCodeToCheck = ""; password = ""; CondValue = Convert.ToString(vipcard.id);
                     //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<3.2.1.1> 有会员号码_处理储值卡 ");
-                    bGetCash = GetCashCardInfo(1, CondValue, Shop, cardCodeToCheck, verifyCode, password, out cashCard, out msg);
+                    bGetCash = GetCashCardInfo(0, CondValue, Shop, cardCodeToCheck, verifyCode, password, out cashCard, out msg);
 
                     // CommonUtils.WriteSKTLog(1, Device, sTitle + "<3.2> 完成取储值卡 ID:" + cashCard.cardId + " No:" + cashCard.cardNo + " 计数:" + DevicePayments.Count);
                     int iPayID = -1;
@@ -782,7 +898,7 @@ namespace z.POS.Services
                         DoGetCouponPayments(DevicePayments, ref ListCoupon, ref msg);
 
                     msg = "读取会员信息成功";
-                    //  result = RsltCode_Success;
+                    result = 0;
 
                     //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<3.3.1.3> 有会员号码_准备返回 " + msg);
 
@@ -790,11 +906,9 @@ namespace z.POS.Services
                 }
                 else
                 {
-
-                    iMemberType = 2;  //卡号
-                    cardCodeToCheck = ""; verifyCode = ""; password = ""; CondValue = ValidID;
+                    cardCodeToCheck = ""; password = ""; CondValue = ValidID;
                     //  CommonUtils.WriteSKTLog(1, Device, "取会员信息<3.2.2.1> 无会员ID_处理储值卡 ");
-                    bGetCash = GetCashCardInfo(iMemberType, CondValue, Shop, cardCodeToCheck, verifyCode, password,
+                    bGetCash = GetCashCardInfo(0, CondValue, Shop, cardCodeToCheck, verifyCode, password,
                         out cashCard, out msg);
 
                     //  CommonUtils.WriteSKTLog(1, Device, sTitle + "<3.2> 完成取储值卡 ID:" + cashCard.cardId + " No:" + cashCard.cardNo + " 计数:" + DevicePayments.Count);
@@ -904,7 +1018,7 @@ namespace z.POS.Services
                 //2.2储值相关
                 desc.CashCard.cardId = sourCashCard.cardId;
                 desc.CashCard.cardNo = sourCashCard.cardNo;
-                desc.CashCard.amount = Convert.ToInt32(sourCashCard.amount * 1);//100
+                desc.CashCard.amount = sourCashCard.amount * 1;
                 desc.CashCard.useMoney = 0;
                 desc.CashCard.payID = sourCashCard.payID;
             }
@@ -1071,7 +1185,7 @@ namespace z.POS.Services
                         CouponItem.couponId = CurCoupon.CouponType;
                         CouponItem.couponName = CurCoupon.CouponTypeName;
                         CouponItem.couponType = CurCoupon.CouponType;
-                        CouponItem.amount = Convert.ToInt32(CurCoupon.Balance * 100);
+                        CouponItem.amount = CurCoupon.Balance;
                         CouponItem.amountCanUse = CouponItem.amount;
                         //CouponItem.valid_date = CurCoupon.
                         CouponItem.returnMoney = 0;
@@ -1429,29 +1543,13 @@ namespace z.POS.Services
 
             if (condValue.Equals(""))
                 return result;
-
-
-            /* bool isCZK2 = false;
-             string sHeadName = "PosWebServiceSoap2", sUrl = "";
-             isCZK2 = CommonUtils.GetConfigSet("CZK2");
-             CommonUtils.WriteSKTLog(1, "000", "[GetCashCardInfo]" + "<1.9.1> 配置CZK的连接方式-> [" + condValue + "]");
-             if (isCZK2)
-             {
-                 sHeadName = ConfigurationManager.AppSettings["CZK2_NAME"];
-                 sUrl = ConfigurationManager.AppSettings["CZK2_URL"];
-
-                 CommonUtils.WriteSKTLog(1, "000", "[GetCashCardInfo]" + "<1.9.2> CZK连接2-> head[" + sHeadName + "]" +
-                     " Url[" + sUrl + "]");
-             } */
-
-
             try
             {
                 //PosWebServiceSoapClient client = client = new PosWebServiceSoapClient();
 
                 //2017.11.15 此处修改 client = new PosWebServiceSoapClient() isCZK2
 
-                PosWebServiceSoapClient client;
+              //  PosWebServiceSoapClient client;
 
                 // if (isCZK2)
                 //  {
@@ -1488,8 +1586,6 @@ namespace z.POS.Services
                 msg = resp.msg;
                 cashCard = resp.cashCard;
 
-                //  CommonUtils.WriteSKTLog(1, "000", "[GetCashCardInfo]" + "<1.9.5.2> CZK准备取卡号 完成");
-
                 if (cashCard != null)
                     AssignLocalToPublic_CashCard(cashCard, out publicCashCard);
             }
@@ -1507,7 +1603,7 @@ namespace z.POS.Services
             desc.cardId = sour.CardId;
             desc.cardNo = sour.CardCode;
             desc.cardTypeId = sour.CardTypeId;
-            desc.amount = Convert.ToInt32(sour.Balance * 100); //Convert.ToInt32(sour.Balance * 100);
+            desc.amount = sour.Balance;
             desc.useMoney = 0;
             desc.payID = -1;
             return true;
@@ -1576,7 +1672,6 @@ namespace z.POS.Services
                 int status;
                 status = 0;
 
-                //  int iHSFS = 0;
                 string sql = "select X.SP_ID GOODSID,X.SPCODE GOODSDM,X.BARCODE,X.NAME,X.SPFL KINDID,X.LSDJ PRICE,X.HYLSDJ MEMBER_PRICE,X.STATUS,P.DEPTID,M.BMDM DEPTCODE "
                            + "  from SPXX X,GTSP P,BM M WHERE X.SP_ID=P.SP_ID AND P.DEPTID=M.DEPTID";
 
@@ -1589,7 +1684,7 @@ namespace z.POS.Services
                     sql += $" and (X.SPCODE='{code}' OR X.BARCODE='{code}')";
                 }
                 if (deptid != 0)
-                    sql += $" and M.DEPTID='{sDeptCode}'";
+                    sql += $" and M.DEPTID='{deptid}'";
 
                 if (sDeptCode.IsNotEmpty())
                     sql += $" and M.BMDM='{sDeptCode}'";
@@ -1610,14 +1705,12 @@ namespace z.POS.Services
                     goods.DeptCode = dt.Rows[0]["DEPTCODE"].ToString();
 
                     //   goods.Unit = query.FieldByName("UNIT").AsString;
-                    //   goods.Logo = query.FieldByName("SB").AsInteger;    //sb
+                    //   goods.Logo = query.FieldByName("SB").AsInteger;   
                     //   goods.Packaged = query.FieldByName("PACKED").AsBoolean;
                     //   goods.GoodsType = query.FieldByName("SPTYPE").AsInteger;
 
                     goods.Price = dt.Rows[0]["PRICE"].ToString().ToDouble();
                     goods.VipPrice = dt.Rows[0]["MEMBER_PRICE"].ToString().ToDouble();
-
-                  //  iPriceAttr = 0;
 
                 }
                 else
@@ -2301,6 +2394,9 @@ namespace z.POS.Services
             memberCard = new MemberCard();
             VipCard vipCard = new VipCard();
 
+            if (MemberCardID.Length == 11)
+                iMemberType = 3;
+
             CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
             crmSoapHeader.UserId = "CRM";
             crmSoapHeader.Password = "CRM";
@@ -2465,14 +2561,11 @@ namespace z.POS.Services
                 sOut = "", posNo = "", userCode = "";
 
             ErrorMessage errorMessage;
-            //   int iDataType = UniCode_Json;
             ConfirmDealResult confirmResult = new ConfirmDealResult();
 
             bool bValue = false;
-            string sTitle = "SysVer", sVer = "", ddJLBH = "";
-            // sVer = CommonUtils.GetReqStr(sTitle);
+            string ddJLBH = "";
 
-            //2015.08.24
             int transId = 0, iPerson = 0;
             double mTotalMoney = 0;
             double fCent = 0;
@@ -2534,31 +2627,8 @@ namespace z.POS.Services
                 confirmResult.text = msg;
                 throw new Exception(msg);
             }
-            //2.1:转换输入数据
-            //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.2> 准备转换输入数据");
-            /*  ReqConfirmDeal ReqConfirm = new ReqConfirmDeal();    //ReqConfirm
-              try
-              {
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.1.1> 开始转换请求数据");
-                  if (iDataType == UniCode_Json)
-                      ReqConfirm = MethodInput.Deserialize<ReqConfirmDeal>(sInput);
-                  else
-                      ReqConfirm = MethodInput.XmlDeserialize2<ReqConfirmDeal>(sInput);
 
-                  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.1.2> 转换请求数据<成功>");
-                  msg = CommonUtils.UniMakeStr(iDataType, ReqConfirm);
-                  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.1.3> 转换后数据 " + msg);
-              }
-              catch (Exception e)
-              {
-                  result = RsltCode_Wrong_NoDef;
-                  msg = "< 保存销售 > 转换请求数据失败" + e.Message;
-                  confirmResult.code = result;
-                  confirmResult.text = msg;
-                  return result;
-              } */
             //2.2:判断基础数据
-            // CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.3.1> 检查输入数据");
             try
             {
                 ErpTranID = ReqConfirm.erpTranID;
@@ -2581,7 +2651,7 @@ namespace z.POS.Services
                 if (ErpTranID.Equals(""))
                 {
                     result = -1;
-                    msg = "数据检查失败：ERP订单号为空";
+                    msg = "数据检查失败：ERP交易号为空";
                     confirmResult.code = result;
                     confirmResult.text = msg;
                     throw new Exception(msg);
@@ -2592,7 +2662,7 @@ namespace z.POS.Services
                     if (CrmBillId <= 0)
                     {
                         result = -1;
-                        msg = "数据检查失败：CRM订单号小于0";
+                        msg = "数据检查失败：CRM交易号小于0";
                         confirmResult.code = result;
                         confirmResult.text = msg;
                         throw new Exception(msg);
@@ -2659,28 +2729,27 @@ namespace z.POS.Services
             }
             catch (Exception e)
             {
-                //  result = RsltCode_Wrong_NoDef;
+                result = -1;
                 msg = "< 保存销售 > 检查请求数据失败" + e.Message;
                 confirmResult.code = result;
                 confirmResult.text = msg;
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.3.3.8> 返回:" + confirmResult.code + " 信息:" + confirmResult.text);
-                // return result;
+                throw new Exception(msg);
+
             }
 
 
             //2.3:转换基础数据.判断数据库中的数据
             try
             {
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.1> 转换人员,收款台 数据");
                 transId = 0;
                 transId = Convert.ToInt32(ErpTranID);
                 if (transId <= 0)
                 {
-                    //   result = RsltCode_Wrong_Para;
-                    msg = "数据检查失败：转换记录失败：[2.1]记录号小于或者等于0[" + transId + "-" + ErpTranID + "]";
+                    result = -1;
+                    msg = "数据检查失败：记录号小于或者等于0[" + transId + "-" + ErpTranID + "]";
                     confirmResult.code = result;
                     confirmResult.text = msg;
-                    //    return result;
+                    throw new Exception(msg);
                 }
                 // CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.2> 转换数据 交易号[int]:" + transId);
                 long iRemoteTranID = GetLastDealid();
@@ -2689,17 +2758,17 @@ namespace z.POS.Services
                 //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.5.3> 转换数据 当前最大交易号:" + iRemoteTranID);
                 if (iRemoteTranID <= 0)
                 {
-                    //  result = RsltCode_Wrong_Para;
-                    msg = "数据检查失败：转换记录失败： 取记录号失败：[2.2]记录号小于或者等于0[" + iRemoteTranID + "]";
+                    result = -1;
+                    msg = "数据检查失败：取记录号失败：记录号小于或者等于0[" + iRemoteTranID + "]";
                     confirmResult.code = result;
                     confirmResult.text = msg;
-                    //   return result;
+                    throw new Exception(msg);
 
                 }
                 if (transId < iRemoteTranID)
                 {
                     result = -1;
-                    msg = "保存销售： 记录号错误：记录号错误[" + transId + "]";
+                    msg = "保存销售：记录号错误[" + transId + "]";
                     confirmResult.code = result;
                     confirmResult.text = msg;
                     throw new Exception(msg);
@@ -2735,11 +2804,10 @@ namespace z.POS.Services
                 }
 
                 result = -1;
-                //  CommonUtils.WriteSKTLog(1, posNo, "<保存销售> <1.5.7> 检查人员:" + Operator);
                 //  result = DoGetPersonInfo(posNo, 0, Operator, "", WorkType_NoSet, out CurPerson, out msg);
 
                 CurPerson.PersonId = employee.Id.ToInt();
-                CurPerson.PersonCode = Operator; // employee.Code;
+                CurPerson.PersonCode = Operator;
                 CurPerson.PersonName = employee.Name;
 
                 result = 0;
@@ -2773,12 +2841,10 @@ namespace z.POS.Services
             List<CashCardDetails> CashCardList = new List<CashCardDetails>();
             List<CouponDetails> CouponList = new List<CouponDetails>();
 
-            // CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.1> 转换商品,付款,券 数据");
 
             try
             {
                 mTotalMoney = 0;
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.2>商品数:" + ReqConfirm.goodsList.Count());
                 for (i = 0; i < ReqConfirm.goodsList.Count(); i++)
                 {
                     Goods GoodItem = new Goods();
@@ -2802,7 +2868,7 @@ namespace z.POS.Services
                     GoodItem.Name = ReqConfirm.goodsList[i].name;
                     GoodItem.Price = ReqConfirm.goodsList[i].price;
                     GoodItem.SaleCount = ReqConfirm.goodsList[i].count;
-                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable + ReqConfirm.goodsList[i].totalOffAmount;
+                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable; //+ ReqConfirm.goodsList[i].totalOffAmount;
 
                     /* if (ProjectName_TJ_JYB.Equals(ProjectName))
                      {
@@ -2848,8 +2914,6 @@ namespace z.POS.Services
                     PayItem.Id = ReqConfirm.paysList[i].Id;
                     PayItem.PayedMoney = ReqConfirm.paysList[i].PayMoney;
 
-                    //   CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.3.2>付款方式:" + PayItem.Id + " 金额:" + PayItem.PayedMoney);
-
                     for (j = 0; j < sktPayments.Count; j++)
                     {
                         if (sktPayments[j].Id == PayItem.Id)
@@ -2857,7 +2921,6 @@ namespace z.POS.Services
                             PayItem.PaymentType = sktPayments[j].PaymentType;
                             PayItem.CouponId = sktPayments[j].CouponId;
                             PayItem.Yhjid = sktPayments[j].Yhjid;
-
                             break;
                         }
                     }
@@ -2890,9 +2953,9 @@ namespace z.POS.Services
                     }
                 }
 
+                //储值卡
                 if ((ReqConfirm.cashCashList != null) && (ReqConfirm.cashCashList.Count() > 0))
                 {
-                    // CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.6>用储值卡数:" + ReqConfirm.cashCashList.Count());
                     for (i = 0; i < ReqConfirm.cashCashList.Count(); i++)
                     {
                         CashCardDetails CashItem = new CashCardDetails();
@@ -2904,25 +2967,19 @@ namespace z.POS.Services
                     }
                 }
 
-
-
-                //   CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.6> 成功-->转换数据");
             }
             catch (Exception e)
             {
-                //  result = RsltCode_Wrong_NoDef;
-                msg = "转换数据失败:<保存销售>传入数据有错误,失败:" + e.Message;
+                result = -1;
+                msg = "<保存销售>传入数据有错误,失败:" + e.Message;
                 confirmResult.code = result;
                 confirmResult.text = msg;
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售<1.6.4> " + msg);
-                // return result;
+                throw new Exception(msg);
             }
 
 
             //3.1:取VIP相关信息
             input = "设备号:" + Device + " 用户代码:" + userCode + " 会员号:" + MemberCardID;
-            //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<1.7.1>" + input);
-
 
             iHyId = 0;
             MemberCard vipcard = new MemberCard();
@@ -2994,7 +3051,7 @@ namespace z.POS.Services
             }
             catch (Exception e)
             {
-                throw new Exception(msg);
+                throw new Exception(e.ToString());
             }
 
 
@@ -3006,7 +3063,6 @@ namespace z.POS.Services
                 st.Start();
                 //3.1:取数据:收款台
                 result = 0;
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.1> 开始保存 上传商品");
 
                 //3.2:取数据:上传商品
                 /*if (!ProcCRM.ProcCRMFunc.UploadSp(posNo, Operator, transId, Shop, member, GoodList, out CrmBillId, out msg))
@@ -3023,7 +3079,6 @@ namespace z.POS.Services
                 if (member.MemberId > 0)
                 {
                     int iVIPID = 0;
-                    //2017.05.04
                     //  string sCountPwd = "NOCHECKPWD";
                     string cardCodeToCheck = "", verifyCode = "", sVIPCode = "", CondValue = Convert.ToString(member.MemberId);
 
@@ -3035,11 +3090,9 @@ namespace z.POS.Services
                     //        out ListCoupon, out iVIPID, out sVIPCode, out msg);
                 }
 
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.3.1.1> 分摊纸券");
+                // 分摊纸券
                 //    DevicePaperVoucher(posNo, PayList, ref GoodList, ref msg);
 
-                //2015.09.25:优惠券列表
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.3.1.2> CRM:作0104的Prepare 函数[BeforeSave]");
 
                 CrmMoneyCardTransID = 0;
                 int CrmCouponTransId = 0;
@@ -3060,22 +3113,6 @@ namespace z.POS.Services
                     throw new Exception(msg);
                 }
 
-
-
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1> 开始保存销售  储值交易号:");
-                //    + CrmMoneyCardTransID + "  券交易号:" + CrmCouponTransId + " 分:" );
-
-                //CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.1> PersonId :" + CurPerson.PersonId);
-
-
-
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.2> transId :" + transId);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.3> CrmBillId :" + CrmBillId);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.4> PromniDealID :" + PromniDealID);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.5> GoodList :" + GoodList.Count);
-                //  CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.6> PayList :" + PayList.Count);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.7> CrmMoneyCardTransID :" + CrmMoneyCardTransID);
-                // CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.5.1.1.8> CrmCouponTransId :" + CrmCouponTransId);
 
                 bValue = false;
 
@@ -3105,17 +3142,18 @@ namespace z.POS.Services
 
                 //sale_goods
                 List<GoodsResult> goodsLst = new List<GoodsResult>();
-                GoodsResult goodsOne = new GoodsResult();
+                
 
                 for (int g = 0; g <= GoodList.Count - 1; g++)
                 {
+                    GoodsResult goodsOne = new GoodsResult();
                     goodsOne.sheetid = 0;
                     goodsOne.inx = g;
                     goodsOne.goodsid = GoodList[g].Id;
                     goodsOne.goodscode = GoodList[g].Code;
                     goodsOne.price = decimal.Parse(GoodList[g].Price.ToString());
                     goodsOne.quantity = float.Parse(GoodList[g].SaleCount.ToString());
-                    goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney - GoodList[g].Discount).ToString());
+                    goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney ).ToString());  //- GoodList[g].Discount
                     goodsOne.discount_amount = decimal.Parse(GoodList[g].Discount.ToString());
                     goodsOne.coupon_amount = decimal.Parse((GoodList[g].PreferentialMoney + GoodList[g].DecreasePreferential).ToString());
                     goodsOne.shopid = GoodList[g].DeptId;
@@ -3126,10 +3164,10 @@ namespace z.POS.Services
 
                 //sale_pay
                 List<PayResult> payLst = new List<PayResult>();
-                PayResult payOne = new PayResult();
-
+                
                 for (int p = 0; p <= PayList.Count - 1; p++)
                 {
+                    PayResult payOne = new PayResult();
                     payOne.payid = PayList[p].Id;
                     payOne.amount = decimal.Parse(PayList[p].PayedMoney.ToString());
                     payLst.Add(payOne);
@@ -3152,10 +3190,11 @@ namespace z.POS.Services
                 if (!ReqConfirm.creditDetailList.IsEmpty())
                 {
                     List<PayRecord> payRcd = new List<PayRecord>();
-                    PayRecord payRcdOne = new PayRecord();
+                    
 
                     for (int p = 0; p <= ReqConfirm.creditDetailList.Count - 1; p++)
                     {
+                        PayRecord payRcdOne = new PayRecord();
                         payRcdOne.inx = ReqConfirm.creditDetailList[p].inx;
                         payRcdOne.payid = ReqConfirm.creditDetailList[p].payid;
                         payRcdOne.cardno = ReqConfirm.creditDetailList[p].cardno;
@@ -3521,10 +3560,10 @@ namespace z.POS.Services
                             ReturnCoupon.ValidDate = gainedCoupons[i].ValidDate;
 
                             //   CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.6.2.7.2.7> 取返券金额:OfferMoney[" + gainedCoupons[i].OfferMoney + "]");
-                            ReturnCoupon.ReturnMoney = RoundMoney(gainedCoupons[i].OfferMoney * 100);
+                            ReturnCoupon.ReturnMoney = gainedCoupons[i].OfferMoney;
 
                             //   CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.6.2.7.2.8> 取券余额:Balance[" + gainedCoupons[i].Balance + "]");
-                            ReturnCoupon.Balance = RoundMoney(gainedCoupons[i].Balance * 100);
+                            ReturnCoupon.Balance = gainedCoupons[i].Balance;
 
                             //   CommonUtils.WriteSKTLog(1, posNo, "保存销售:<2.6.2.7.2.9> 添加数据");
                             ReturnCouponList.Add(ReturnCoupon);
@@ -3594,27 +3633,11 @@ namespace z.POS.Services
             fCent = 0;
             CrmCouponTransId = 0;
             CrmMoneyCardTransId = 0;
-            bool bCheckCrmTran = true;
-
-            //  CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.1.1> 销售记录号:" + iJlbh + " Crm记录号:" + CrmBillId);
+          //  bool bCheckCrmTran = true;
 
             msg = "";
 
-            bCheckCrmTran = true; //CommonUtils.GetConfigSet(SetConfig_SaveTranCheckCrmTran, true);
-                                  /*  if (bCheckCrmTran)
-                                        CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.1.5> 设置检查CRM交易 任何情况都要上传CRM ");
-                                    else
-                                    {
-                                        CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.1.2> 设置为不检查CRM交易 可以不向CRM上传数据");
-
-                                        if (CrmBillId <= 0)
-                                        {
-                                            CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.1.3> 设置为不检查CRM交易 当前CRM交易号小于等于0 直接返回");
-                                            return true;
-                                        }
-                                    } */
-
-            // CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.1.6> 开始作CRM的prepare ");
+          //  bCheckCrmTran = true; 
             try
             {
                 if (!Prepare(posNo, CrmBillId, payList, ref GoodsList, out fCent, out msg))
@@ -3622,27 +3645,23 @@ namespace z.POS.Services
                     return false;
                 }
 
-
                 //  CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.2> CZK消费");
 
-                // CZK 消费暂不处理  wangkx
-                /* if (!ProcCRM.ProcCRMFunc.SaveMoneyCard(sShop, posNo, iJlbh, CrmBillId, cards, out CrmMoneyCardTransId, out msg))
+                // CZK 消费预提交
+                 if (!SaveMoneyCard(sShop, posNo, iJlbh, CrmBillId, cards, out CrmMoneyCardTransId, out msg))
                  {
                      return false;
-                 } */
+                 } 
 
-                // CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.3> 券消费");
+                // 券消费预提交
                 if (!SaveCoupons(posNo, CrmBillId, Coupons, out CrmCouponTransId, out msg))
                     return false;
             }
             catch (Exception e)
             {
-                // CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.4> 失败:" + e.Message.ToString());
                 msg = "预提交出错:" + e.Message.ToString();
                 return false;
             }
-
-            //   CommonUtils.WriteSKTLog(1, posNo, "<0104_预提交> <3.5>");
 
             return true;
         }
@@ -3817,11 +3836,9 @@ namespace z.POS.Services
             msg = "";
             string error = "";
 
-            //    CommonUtils.WriteSKTLog(1, posNo, "<0104_保存券> UniWS <3.3.1> CRMID： " + CrmBillId);
-
             try
             {
-                // 2015.09.25:判断.后面要再加
+                //判断
                 if (!CancelCoupon(posNo, out msg))
                 {
                     msg = "存在优惠券冲正信息，请处理后再进行优惠券交易！";
@@ -3878,12 +3895,11 @@ namespace z.POS.Services
                 if (result)
                 {
                     //写冲正文件  2:YHQ 操作类型
-                    //wangkx
-                    /* if (!ErpProc.WriteCancelFile(posNo, transId, 0, totalMoney, 2, out msg))
+                     if (!WriteCancelFile(posNo, transId, 0, totalMoney, 2, out msg))
                      {
                          Cancel(posNo, 2, transId, CrmBillId, totalMoney, out msg);
                          return false;
-                     } */
+                     } 
 
 
                     ConfirmTransCouponPaymentRequest ctreq = new ConfirmTransCouponPaymentRequest();
@@ -3898,19 +3914,17 @@ namespace z.POS.Services
 
                     // result = client.ConfirmTransCouponPayment(crmSoapHeader, transId, CrmBillId, totalMoney, out msg);
 
-                    /*  if (!result)
+                      if (!result)
                       {
-                          //msg = error;
-                          //wangkx
-                          Cancel(posNo, 2, transId, CrmBillId, totalMoney, out error);
-                          return false;
-                      } */
+                        Cancel(posNo, 2, transId, CrmBillId, totalMoney, out error);
+                        msg = error;
+                        return false;
+                      }
 
                     CrmCouponTransId = transId;
                 }
                 else
                 {
-                    //msg = error;
                     return false;
                 }
             }
@@ -3944,8 +3958,6 @@ namespace z.POS.Services
             for (int i = 0; i <= payList.Rows.Count - 1; i++)
             {
                 Payment pay = new Payment();
-                payments.Add(pay);
-
                 pay.Id = payList.Rows[i][0].ToString().ToInt();
                 pay.Name = payList.Rows[i][1].ToString();
                 pay.PaymentType = payList.Rows[i][2].ToString().ToInt();
@@ -3969,6 +3981,7 @@ namespace z.POS.Services
                 pay.RealUsedMoney = 0;
 
                 pay.TypeCode = pay.PaymentType.ToString();
+                payments.Add(pay);
 
             }
 
@@ -3981,8 +3994,8 @@ namespace z.POS.Services
             ref string msg)
         {
             msg = "";
-            int i = 0, j = 0, k = 0, totalCash = 0;
-            double totalCoupon = 0;
+            int i = 0, j = 0, k = 0;
+            double totalCoupon = 0, totalCash = 0;
             bool result = false;
 
             //1:判断1:数目是否为0,为0:错误
@@ -4212,7 +4225,7 @@ namespace z.POS.Services
 
             //判断是否重复退货
 
-            string sqlsale = $"select 1 from xsjl where sktno='{OldPosId}' and jlbh={OldErpTranId}";
+            string sqlsale = $"select 1 from xsjl where sktno_old='{OldPosId}' and jlbh_old={OldErpTranId}";
 
             DataTable saleCount = DbHelper.ExecuteTable(sqlsale);
 
@@ -4223,7 +4236,7 @@ namespace z.POS.Services
                 throw new Exception(msg);
             }
 
-            sqlsale = $"select 1 from sktxsjl where sktno='{OldPosId}' and jlbh={OldErpTranId}";
+            sqlsale = $"select 1 from sktxsjl where sktno_old='{OldPosId}' and jlbh_old={OldErpTranId}";
             saleCount = DbHelper.ExecuteTable(sqlsale);
 
             if (saleCount.Rows.Count > 0)
@@ -4243,9 +4256,6 @@ namespace z.POS.Services
 
                 result = -1;
                 //2.1: 取收款台 
-                //CommonUtils.WriteSKTLog(1, posNo, sFuncCode + "<1.1> " + "第一步:取收款台");
-
-                //    CommonUtils.WriteSKTLog(1, Device, sFuncCode + "<1.1> 取:收款台的收款方式:收款台号:" + Device);
                 result = DoGetPayments(posNo, out DevicePayments, out msg);
                 if (result != 0)
                 {
@@ -4279,7 +4289,7 @@ namespace z.POS.Services
                 if (vipcard.id > 0)
                 {
                     cardCodeToCheck = ""; verifyCode = ""; password = ""; CondValue = Convert.ToString(vipcard.id);
-                    GetCashCardInfo(1, CondValue, Shop, cardCodeToCheck, verifyCode, password,
+                    GetCashCardInfo(0, CondValue, Shop, cardCodeToCheck, verifyCode, password,
                         out cashCard, out msg);
 
                     int iPayID = -1;
@@ -4884,7 +4894,7 @@ namespace z.POS.Services
                     GoodItem.Name = ReqConfirm.goodsList[i].name;
                     GoodItem.Price = ReqConfirm.goodsList[i].price;
                     GoodItem.SaleCount = ReqConfirm.goodsList[i].count;
-                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable + ReqConfirm.goodsList[i].totalOffAmount;
+                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable; //+ ReqConfirm.goodsList[i].totalOffAmount;
 
                     GoodItem.BackDiscount = GoodItem.BackDiscount * -1;
                     GoodItem.MemberDiscount = GoodItem.MemberDiscount * -1;
@@ -5539,17 +5549,17 @@ namespace z.POS.Services
 
                 //sale_goods
                 List<GoodsResult> goodsLst = new List<GoodsResult>();
-                GoodsResult goodsOne = new GoodsResult();
 
                 for (int g = 0; g <= goodsList.Count - 1; g++)
                 {
+                    GoodsResult goodsOne = new GoodsResult();
                     goodsOne.sheetid = 0;
                     goodsOne.inx = g;
                     goodsOne.goodsid = goodsList[g].Id;
                     goodsOne.goodscode = goodsList[g].Code;
                     goodsOne.price = decimal.Parse(goodsList[g].Price.ToString());
                     goodsOne.quantity = float.Parse(goodsList[g].SaleCount.ToString());
-                    goodsOne.sale_amount = decimal.Parse((goodsList[g].SaleMoney - goodsList[g].Discount).ToString());
+                    goodsOne.sale_amount = decimal.Parse((goodsList[g].SaleMoney ).ToString());  //- goodsList[g].Discount
                     goodsOne.discount_amount = decimal.Parse(goodsList[g].Discount.ToString());
                     goodsOne.coupon_amount = decimal.Parse((goodsList[g].PreferentialMoney + goodsList[g].DecreasePreferential).ToString());
                     goodsOne.shopid = goodsList[g].DeptId;
@@ -5560,10 +5570,10 @@ namespace z.POS.Services
 
                 //sale_pay
                 List<PayResult> payLst = new List<PayResult>();
-                PayResult payOne = new PayResult();
 
                 for (int p = 0; p <= pays.Count - 1; p++)
                 {
+                    PayResult payOne = new PayResult();
                     payOne.payid = pays[p].Id;
                     payOne.amount = decimal.Parse(pays[p].PayedMoney.ToString());
                     payLst.Add(payOne);
@@ -5586,10 +5596,10 @@ namespace z.POS.Services
                 if (!creditList.IsEmpty())
                 {
                     List<PayRecord> payRcd = new List<PayRecord>();
-                    PayRecord payRcdOne = new PayRecord();
 
                     for (int p = 0; p <= creditList.Count - 1; p++)
                     {
+                        PayRecord payRcdOne = new PayRecord();
                         payRcdOne.inx = creditList[p].inx;
                         payRcdOne.payid = creditList[p].payid;
                         payRcdOne.cardno = creditList[p].cardno;
@@ -6383,7 +6393,118 @@ namespace z.POS.Services
             }
         }
 
+        public bool SaveMoneyCard(string storeCode, string posNo, int iJlbh, int CrmBillId, List<CashCardDetails> cards,
+            out int CrmMoneyCardTransId, out string msg)
+        {
+            CrmMoneyCardTransId = 0;
+            msg = "";
+            string error = "";
 
+            string sPersonCode = "";
+            DateTime accountDate = DateTime.Now.Date;
+
+            try
+            {
+                if (!CancelMoneyCard(posNo, out msg))
+                {
+                    msg = "存在储值卡冲正信息，请处理后再进行储值卡交易！";
+                    return false;
+                }
+
+                CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
+                crmSoapHeader.UserId = "CRM";
+                crmSoapHeader.Password = "CRM"; 
+
+
+              //  PosWebServiceSoapClient client;
+              //  client = new PosWebServiceSoapClient();
+
+
+                List<CashCardPayment> moneyCardList = new List<CashCardPayment>();
+                double totalMoney = 0;
+
+
+                for (int j = 0; j < cards.Count; j++)
+                {
+                    CashCardPayment payment = new CashCardPayment();
+                    payment.PayMoney = cards[j].useMoney;
+                    payment.CardId = cards[j].cardId;
+                    moneyCardList.Add(payment);
+                    totalMoney += payment.PayMoney;
+                }
+
+                if (moneyCardList.Count == 0)
+                {
+                    return true;
+                }
+                CashCardPayment[] cashCardPayments = new CashCardPayment[moneyCardList.Count];
+                moneyCardList.CopyTo(cashCardPayments);
+                int transId;
+                bool result;
+
+                //CRM预提交
+              //  result = client.PrepareTransCashCardPayment2(crmSoapHeader, storeCode, posNo, iJlbh, sPersonCode, accountDate, cashCardPayments, out msg, out transId);
+
+                PrepareTransCashCardPayment2Request req = new PrepareTransCashCardPayment2Request();
+
+                req.CrmSoapHeader = crmSoapHeader;
+                req.storeCode = storeCode;
+                req.posId = posNo;
+                req.billId = iJlbh;
+                req.cashier = sPersonCode;
+                req.accountDate = accountDate;
+                req.payments = cashCardPayments;
+
+                PrepareTransCashCardPayment2Response res = PosAPI.PrepareTransCashCardPayment2(req);
+
+                result = res.PrepareTransCashCardPayment2Result;
+                msg = res.msg;
+                transId = res.transId;
+
+                if (result)
+                {
+
+                    //写冲正文件
+                    if (!WriteCancelFile(posNo, transId, 0, totalMoney, 1, out msg))
+                    {
+                        Cancel(posNo, 1, transId, CrmBillId, totalMoney, out msg);
+                        return false;
+                    }
+
+                    //提交
+                    // result = client.ConfirmTransCashCardPayment(crmSoapHeader, transId, 0, totalMoney, out msg);
+
+                    ConfirmTransCashCardPaymentRequest reqC = new ConfirmTransCashCardPaymentRequest();
+                    reqC.CrmSoapHeader = crmSoapHeader;
+                    reqC.transId = transId;
+                    reqC.serverBillId = 0;
+                    reqC.transMoney = totalMoney;
+
+                    ConfirmTransCashCardPaymentResponse resC = PosAPI.ConfirmTransCashCardPayment(reqC);
+                    result = resC.ConfirmTransCashCardPaymentResult;
+                    msg = resC.msg;
+
+                    if (!result)
+                    {
+                        //保存CZK失败 冲正
+                        Cancel(posNo, 1, transId, CrmBillId, totalMoney, out error);
+                        return false;
+                    }
+                    CrmMoneyCardTransId = transId;
+                }
+                else
+                {
+                   // 保存CZK失败
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                msg = e.Message.ToString();
+                return false;
+            }
+            return true;
+        }
 
 
 
