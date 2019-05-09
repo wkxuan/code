@@ -34,3 +34,9 @@
 #box2 .ivu-table-large td {
     height:100px;
 }
+.ivu-col-offset-1 {
+    margin-left: 1.16666667% !important;
+}
+.ivu-col-span-6 {
+    width:28% !important;
+}

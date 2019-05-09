@@ -4,21 +4,21 @@
         box1colDef: [
                 { title: ' ', key: 'TIME', width: 70, },
                 {
-                    title: '营业额(万元)', key: 'AMOUNT', width: 120,
+                    title: '营业额(元)', key: 'AMOUNT', width: 120,
                     render: function (h, params) {
                         return h('div',
                             this.row.AMOUNT.toFixed(2));
                     }
                 },
                 {
-                    title: '同比(%)', key: 'AMOUNTHB', width: 100,
+                    title: '同比(%)', key: 'AMOUNTHB', width: 90,
                     render: function (h, params) {
                         return h('div',
                             this.row.AMOUNTHB.toFixed(2));
                     }
                 },
                 {
-                    title: '环比(%)', key: 'AMOUNTTB', width: 100,
+                    title: '环比(%)', key: 'AMOUNTTB', width: 90,
                     render: function (h, params) {
                         return h('div',
                             this.row.AMOUNTTB.toFixed(2));
@@ -27,9 +27,9 @@
         box1dataDef: [],
         box2colDef: [
                 { title: ' ', key: 'TYPE', width: 100, },
-                { title: '店铺数量(个)', key: 'NUMBERS', width: 130, },
+                { title: '店铺数量(个)', key: 'NUMBERS', width: 120, },
                 {
-                    title: '租赁面积(m²)', key: 'AREA', width: 130,
+                    title: '租赁面积(m²)', key: 'AREA', width: 110,
                     render: function (h, params) {
                         return h('div',
                             this.row.AREA.toFixed(2));
@@ -39,14 +39,38 @@
         box3colDef: [
                 { title: ' ', key: 'NO', width: 80, },
                 { title: '商铺名称', key: 'SHOPNAME', width: 200, },
-                { title: '租赁面积(m²)', key: 'AREA', width: 150, },
-                { title: '营业额(元)', key: 'AMOUNT', width: 150, }, ],
+                {
+                    title: '租赁面积(m²)', key: 'AREA', width: 130,
+                    render: function (h, params) {
+                        return h('div',
+                            this.row.AREA.toFixed(2));
+                    }
+                },
+                {
+                    title: '营业额(元)', key: 'AMOUNT', width: 130,
+                    render: function (h, params) {
+                        return h('div',
+                            this.row.AMOUNT.toFixed(2));
+                    }
+                }, ],
         box3dataDef: [],
         box6colDef: [
                 { title: ' ', key: 'NO', width: 80, },
                 { title: '业态名称', key: 'AREANAME', width: 200, },
-                { title: '租赁面积(m²)', key: 'AREA', width: 150, },
-                { title: '营业额(元)', key: 'AMOUNT', width: 150, }, ],
+                {
+                    title: '租赁面积(m²)', key: 'AREA', width: 130,
+                    render: function (h, params) {
+                        return h('div',
+                            this.row.AREA.toFixed(2));
+                    }
+                },
+                {
+                    title: '营业额(元)', key: 'AMOUNT', width: 130,
+                    render: function (h, params) {
+                        return h('div',
+                            this.row.AMOUNT.toFixed(2));
+                    }
+                }, ],
         box6dataDef: [],
         tableH: 300
     },
