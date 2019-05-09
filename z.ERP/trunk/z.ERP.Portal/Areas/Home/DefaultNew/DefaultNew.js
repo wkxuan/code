@@ -2,15 +2,39 @@
     el: '#main',
     data: {
         box1colDef: [
-                { title: ' ', key: 'TIME', width: 100, },
-                { title: '营业额(万元)', key: 'AMOUNT', width: 120, },
-                { title: '同比(%)', key: 'T_BI', width: 100, },
-                { title: '环比(%)', key: 'H_BI', width: 100, }, ],
+                { title: ' ', key: 'TIME', width: 70, },
+                {
+                    title: '营业额(万元)', key: 'AMOUNT', width: 120,
+                    render: function (h, params) {
+                        return h('div',
+                            this.row.AMOUNT.toFixed(2));
+                    }
+                },
+                {
+                    title: '同比(%)', key: 'AMOUNTHB', width: 100,
+                    render: function (h, params) {
+                        return h('div',
+                            this.row.AMOUNTHB.toFixed(2));
+                    }
+                },
+                {
+                    title: '环比(%)', key: 'AMOUNTTB', width: 100,
+                    render: function (h, params) {
+                        return h('div',
+                            this.row.AMOUNTTB.toFixed(2));
+                    }
+                }, ],
         box1dataDef: [],
         box2colDef: [
                 { title: ' ', key: 'TYPE', width: 100, },
                 { title: '店铺数量(个)', key: 'NUMBERS', width: 130, },
-                { title: '租赁面积(m²)', key: 'AREA', width: 130, }, ],
+                {
+                    title: '租赁面积(m²)', key: 'AREA', width: 130,
+                    render: function (h, params) {
+                        return h('div',
+                            this.row.AREA.toFixed(2));
+                    }
+                }, ],
         box2dataDef: [],
         box3colDef: [
                 { title: ' ', key: 'NO', width: 80, },
@@ -31,6 +55,7 @@
         _.Ajax('BoxData', {
             type:type
         }, function (data) {
+            DefaultNew.box1dataDef = data.box1data;
             DefaultNew.box2dataDef = data.box2data;
             DefaultNew.box3dataDef = data.box3data;
             DefaultNew.box6dataDef = data.box6data;

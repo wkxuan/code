@@ -18,14 +18,14 @@ namespace z.ERP.Portal.Areas.Home.Default
         }
         public UIResult BoxData(string type)
         {
-            //var box1data = service.DefaultDataService.Box1Data();
+            var box1data = service.DefaultDataService.Box1Data();
             var box2data = service.DefaultDataService.Box2Data();
             var box3data = service.DefaultDataService.Box3Data(type);
             var box6data = service.DefaultDataService.Box6Data(type);
             return new UIResult(
                 new
                 {
-                    //box1data = box1data,
+                    box1data = box1data,
                     box2data = box2data,
                     box3data = box3data,
                     box6data = box6data,
