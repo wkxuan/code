@@ -36,12 +36,12 @@
 </head>
 <body style="background: rgb(238, 238, 238)">
     <div id="main">
-        <Row style="background:#eee;padding:20px;height:400px">
+        <Row style="background:#eee;padding:10px;height:260px">
             <i-col span="6">
                 <div id="box1">
                     <Card :bordered="false">
                         <p slot="title">经营总况</p>
-                            <i-table size="large" :height="tableH" :disabled-hover="true"
+                            <i-table size="small" :height="tableH" :disabled-hover="true"
                                      :columns="box1colDef" :data="box1dataDef"></i-table>
                     </Card>
                 </div>
@@ -50,7 +50,7 @@
                 <div id="box2">
                     <Card :bordered="false">
                         <p slot="title">店铺状态</p>
-                        <i-table size="large" :height="tableH" :disabled-hover="true"
+                        <i-table size="small" :height="tableH" :disabled-hover="true"
                                  :columns="box2colDef" :data="box2dataDef">
                         </i-table>
                     </Card>
@@ -61,20 +61,20 @@
                     <Card :bordered="false">
                         <p slot="title">
                             商铺经营榜
-                            <i-Select style="width:100px;float:right" v-on:on-change="box3datechange" placeholder="昨日">
+                            <i-Select style="width:100px;float:right" size="small" v-on:on-change="box3datechange" placeholder="昨日">
                                 <i-Option value="1" selected="selected">昨日</i-Option>
                                 <i-Option value="2">本月</i-Option>
                                 <i-Option value="3">上月</i-Option>
                             </i-Select>
                         </p>
-                        <i-table size="large" :height="tableH" :disabled-hover="true"
+                        <i-table size="small" :height="tableH" :disabled-hover="true"
                                  :columns="box3colDef" :data="box3dataDef">
                         </i-table>
                     </Card>
                 </div>
             </i-col>
         </Row>
-        <Row style="background:#eee;padding:20px;height:400px">
+        <Row style="background:#eee;padding:10px;height:260px">
             <i-col span="6">
                 <div id="box4">
                     <Card :bordered="false">
@@ -94,13 +94,13 @@
                     <Card :bordered="false">
                         <p slot="title">
                             业态经营榜
-                            <i-Select style="width:100px;float:right" v-on:on-change="box6datechange" placeholder="昨日">
+                            <i-Select style="width:100px;float:right" size="small" v-on:on-change="box6datechange" placeholder="昨日">
                                 <i-Option value="1" selected="selected">昨日</i-Option>
                                 <i-Option value="2">本月</i-Option>
                                 <i-Option value="3">上月</i-Option>
                             </i-Select>
                         </p>
-                        <i-table size="large" :height="tableH" :disabled-hover="true"
+                        <i-table size="small" :height="tableH" :disabled-hover="true"
                                  :columns="box6colDef" :data="box6dataDef">
                         </i-table>
                     </Card>
