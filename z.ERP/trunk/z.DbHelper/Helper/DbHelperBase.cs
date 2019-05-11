@@ -278,7 +278,7 @@ namespace z.DBHelper.Helper
         {
             string _sql = sql;
             DbParameter[] ps = RenderSql(ref _sql, parameters);
-            return ExecuteObject<T>(sql, pageSize, pageIndex, ps);
+            return ExecuteObject<T>(_sql, pageSize, pageIndex, ps);
         }
 
 
@@ -286,7 +286,7 @@ namespace z.DBHelper.Helper
         {
             string _sql = sql;
             DbParameter[] ps = RenderSql(ref _sql, parameters);
-            return ExecuteObject<T>(sql, pageSize, pageIndex, out allCount, ps);
+            return ExecuteObject<T>(_sql, pageSize, pageIndex, out allCount, ps);
         }
 
         public List<T> ExecuteObject<T>(string sql, int pageSize, int pageIndex, DbParameter[] parameters)
@@ -608,7 +608,7 @@ namespace z.DBHelper.Helper
         public int DeleteList(TableEntityBase info)
         {
             int res = 0;
-            PropertyInfo[] Allprop = info.GetAllField().Where(a =>
+            PropertyInfo[] Allprop = info.GetAllSelectField().Where(a =>
             {
                 return a.GetValue(info, null) != null;
             }).ToArray();
@@ -723,7 +723,7 @@ namespace z.DBHelper.Helper
         {
             List<TableEntityBase> res = new List<TableEntityBase>();
             TableEntityBase refinfo = TableEntityBase.Create(TInfo);
-            PropertyInfo[] Allprop = Filter.GetAllField().Where(a =>
+            PropertyInfo[] Allprop = Filter.GetAllSelectField().Where(a =>
             {
                 return a.GetValue(Filter, null) != null;
             }).ToArray();
@@ -1148,7 +1148,7 @@ namespace z.DBHelper.Helper
                 string cs = rin0.Match(sql).Value;
                 if (errcs.IsMatch(cs))
                     throw new Exception("sql匹配失败,请检查占位符是否有特殊字符或{{标签没有闭合");
-                zParameter pram = parameters?.FirstOrDefault(p => p.Name == cs);
+                zParameter pram = parameters?.FirstOrDefault(p => p != null && p.Name == cs);
                 if (pram != null) //参数存在,则拼接进去
                 {
                     //先替换掉可空标记
@@ -1193,8 +1193,7 @@ namespace z.DBHelper.Helper
             }
             //如果还有残余的占位符,说明sql有问题了
             {
-                Regex regex = new Regex(@"[{{|}}]");
-                if (regex.IsMatch(sql))
+                if (sql.Contains("{{") || sql.Contains("}}"))
                     throw new Exception("占位符异常");
             }
             return res.ToArray();

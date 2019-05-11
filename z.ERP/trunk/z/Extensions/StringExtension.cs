@@ -188,6 +188,16 @@ namespace z.Extensions
             return i;
         }
 
+        public static double ToDouble(this decimal str)
+        {
+            return (double)str;
+        }
+
+        public static decimal ToDecimal(this double str)
+        {
+            return (decimal)str;
+        }
+
         /// <summary>
         /// 根据字符型的枚举值取枚举
         /// </summary>

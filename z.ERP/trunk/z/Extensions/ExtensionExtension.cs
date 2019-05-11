@@ -39,5 +39,23 @@ namespace z.Extensions
                 return ex;
         }
 
+        /// <summary>
+        /// 获取异常的描述信息
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        public static string ToMessage(this Exception ex)
+        {
+            Exception ie = ex.GetInnerException();
+            return $@"
+表层信息:
+Message:{ex.Message}
+StackTrace:{ex.StackTrace}
+最内层信息:
+Message:{ie.Message}
+StackTrace:{ie.StackTrace}
+";
+        }
+
     }
 }
