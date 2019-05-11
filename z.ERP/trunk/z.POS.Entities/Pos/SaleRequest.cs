@@ -62,6 +62,10 @@ namespace z.POS.Entities.Pos
         {
             get; set;
         }
+        public List<PayRecord> payRecord
+        {
+            get; set;
+        }
 
     }
 }

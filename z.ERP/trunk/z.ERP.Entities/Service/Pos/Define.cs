@@ -2150,6 +2150,9 @@ namespace z.ERP.Entities.Service.Pos
             set { iJYH = value; }
         }
     }
+
+    /*
+
     public class TicketInfo
     {
         private List<CashCardItem> cashCardList;
@@ -2302,7 +2305,11 @@ namespace z.ERP.Entities.Service.Pos
             set { oldId = value; }
         }
 
-    }//小票
+    }//小票    
+
+
+    */
+
 
     public class CrmGetDMZFListPacketed
     {
@@ -4816,7 +4823,7 @@ namespace z.ERP.Entities.Service.Pos
         public string outOrder;
         public string erpTranID;
         public string crmTranID;
-        public string oldDevice;
+        public string oldDeviceNo;
         public string oldErpTranID;
         public List<TTranGoods> goodsList;
         public List<TTranPayments> paysList;
@@ -5441,7 +5448,7 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
-        public DateTime opertime
+        public string opertime  //yyyy-mm-dd HH24:MI:SS
         {
             get;
             set;

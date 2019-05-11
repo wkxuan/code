@@ -17,14 +17,7 @@ namespace z.ERP.Web.Areas.XTGL.ALERT
 
         public string Save(DEF_ALERTEntity DefineSave)
         {
-            var v = GetVerify(DefineSave);
-            if (DefineSave.ID.IsEmpty())
-                DefineSave.ID = service.CommonService.NewINC("DEF_ALERT");
-            v.Require(a => a.MC);
-            v.IsNumber(a => a.ID);
-            v.IsUnique(a => a.MC);
-            v.Verify();
-            return CommonSave(DefineSave);
+            return service.XtglService.SaveAlert(DefineSave);
         }
         public void Delete(DEF_ALERTEntity DefineDelete)
         {

@@ -380,7 +380,7 @@ namespace z.ERP.Services
             sql += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH";
             item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
             item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
-          //  item.HasKey("SHOPID", a => sql += $" and exists(select 1 from SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
+            //  item.HasKey("SHOPID", a => sql += $" and exists(select 1 from SALE_GOODS G where S.POSNO=G.POSNO and S.DEALID=G.DEALID and G.SHOPID={a})");
             item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID ='{a}')");
             item.HasKey("MERCHANTNAME", a => sql += $" and EXISTS(SELECT 1 FROM SALE_GOODS G,GOODS D,MERCHANT M WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID=M.MERCHANTID AND M.NAME LIKE '%{a}%')");
             item.HasKey("SHOPCODE", a => sql += $" and exists(select 1 from SALE_GOODS G,SHOP P where G.SHOPID=P.SHOPID and S.POSNO=G.POSNO and S.DEALID=G.DEALID and P.CODE LIKE '%{a}%')");
@@ -690,9 +690,10 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public DataGridResult PayTypeSale(SearchItem item) {
+        public DataGridResult PayTypeSale(SearchItem item)
+        {
             //历史交易数据
-            String sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,HIS_SALE.SALE_TIME,HIS_SALE.DEALID,HIS_SALE.POSNO,PAY.NAME PAYNAME,HIS_SALE_GOODS_PAY.AMOUNT
+            String sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,HIS_SALE.SALE_TIME,HIS_SALE.DEALID,HIS_SALE.POSNO,PAY.NAME PAYNAME,HIS_SALE_GOODS_PAY.AMOUNT
                          FROM HIS_SALE 
                         LEFT JOIN HIS_SALE_GOODS_PAY ON HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=HIS_SALE_GOODS_PAY.PAYID
@@ -700,6 +701,8 @@ namespace z.ERP.Services
                         LEFT JOIN CONTRACT_SHOP ON HIS_SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
                         LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
+						LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
+						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
                         ";
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
@@ -710,11 +713,13 @@ namespace z.ERP.Services
             item.HasKey("Pay", a => sql += $" and PAY.PAYID= {a}");
             item.HasKey("YEARMONTH_START", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
             item.HasKey("YEARMONTH_END", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
 
 
-            
+
             //当天交易数据
-            String sql1 = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,SALE.SALE_TIME,SALE.DEALID,SALE.POSNO,PAY.NAME PAYNAME,SALE_GOODS_PAY.AMOUNT
+            String sql1 = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,SALE.SALE_TIME,SALE.DEALID,SALE.POSNO,PAY.NAME PAYNAME,SALE_GOODS_PAY.AMOUNT
                          FROM SALE 
                         LEFT JOIN SALE_GOODS_PAY ON SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE.POSNO=SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=SALE_GOODS_PAY.PAYID
@@ -722,6 +727,8 @@ namespace z.ERP.Services
                         LEFT JOIN CONTRACT_SHOP ON SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
                         LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
+                        LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
+						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
                         ";
             item.HasKey("BRANCHID", a => sql1 += $" and CONTRACT.BRANCHID = {a}");
@@ -732,8 +739,10 @@ namespace z.ERP.Services
             item.HasKey("Pay", a => sql1 += $" and PAY.PAYID= {a}");
             item.HasKey("YEARMONTH_START", a => sql1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
             item.HasKey("YEARMONTH_END", a => sql1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("BRANDID", a => sql1 += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql1 += $" and BRAND.NAME LIKE '%{a}%'");
 
-            string sqlunion = "select * from ("+sql + " union all " + sql1+ " ) ORDER BY MERCHANTID,SALE_TIME DESC,PAYNAME";
+            string sqlunion = "select * from (" + sql + " union all " + sql1 + " ) ORDER BY MERCHANTID,SALE_TIME DESC,PAYNAME";
 
             int count;
             DataTable dt = DbHelper.ExecuteTable(sqlunion, item.PageInfo, out count);
@@ -749,6 +758,8 @@ namespace z.ERP.Services
                         LEFT JOIN CONTRACT_SHOP ON HIS_SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
                         LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
+						LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
+						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
                         ";
                 item.HasKey("BRANCHID", a => sqlSum += $" and CONTRACT.BRANCHID = {a}");
@@ -759,6 +770,8 @@ namespace z.ERP.Services
                 item.HasKey("Pay", a => sqlSum += $" and PAY.PAYID= {a}");
                 item.HasKey("YEARMONTH_START", a => sqlSum += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
                 item.HasKey("YEARMONTH_END", a => sqlSum += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
+                item.HasKey("BRANDID", a => sqlSum += $" and BRAND.ID = {a}");
+                item.HasKey("BRANDNAME", a => sqlSum += $" and BRAND.NAME LIKE '%{a}%'");
 
                 //当天交易金额汇总
                 String sqlSum1 = @"SELECT NVL(SUM(SALE_GOODS_PAY.AMOUNT),0) AMOUNT
@@ -769,6 +782,8 @@ namespace z.ERP.Services
                         LEFT JOIN CONTRACT_SHOP ON SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
                         LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
+						LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
+						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
                         ";
                 item.HasKey("BRANCHID", a => sqlSum1 += $" and CONTRACT.BRANCHID = {a}");
@@ -779,6 +794,8 @@ namespace z.ERP.Services
                 item.HasKey("Pay", a => sqlSum1 += $" and PAY.PAYID= {a}");
                 item.HasKey("YEARMONTH_START", a => sqlSum1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
                 item.HasKey("YEARMONTH_END", a => sqlSum1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
+                item.HasKey("BRANDID", a => sqlSum1 += $" and BRAND.ID = {a}");
+                item.HasKey("BRANDNAME", a => sqlSum1 += $" and BRAND.NAME LIKE '%{a}%'");
 
                 string sqlunions = sqlSum + " union all " + sqlSum1;
 
@@ -810,6 +827,8 @@ namespace z.ERP.Services
                         LEFT JOIN CONTRACT_SHOP ON HIS_SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
                         LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
+						LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
+						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1 ";
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
@@ -819,6 +838,8 @@ namespace z.ERP.Services
             item.HasKey("Pay", a => sql += $" and PAY.PAYID= {a}");
             item.HasKey("YEARMONTH_START", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
             item.HasKey("YEARMONTH_END", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
             //当天记录
             string sql1 = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,PAY.NAME PAYNAME,SALE.POSNO,SALE_GOODS_PAY.AMOUNT
                          FROM SALE 
@@ -828,6 +849,8 @@ namespace z.ERP.Services
                         LEFT JOIN CONTRACT_SHOP ON SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
                         LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
+						LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
+						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1";
             item.HasKey("BRANCHID", a => sql1 += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql1 += $" and TRUNC(SALE.SALE_TIME) >= {a}");
@@ -837,6 +860,8 @@ namespace z.ERP.Services
             item.HasKey("Pay", a => sql1 += $" and PAY.PAYID= {a}");
             item.HasKey("YEARMONTH_START", a => sql1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
             item.HasKey("YEARMONTH_END", a => sql1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("BRANDID", a => sql1 += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql1 += $" and BRAND.NAME LIKE '%{a}%'");
 
             string sqlsum = @"select MERCHANTID,NAME,PAYNAME,POSNO,SUM(AMOUNT) AMOUNT from (" + sql + " union all " + sql1 + " ) GROUP BY MERCHANTID,POSNO,NAME,PAYNAME ORDER BY MERCHANTID,PAYNAME";
 
@@ -866,9 +891,10 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public string PayTypeSaleOutput(SearchItem item) {
+        public string PayTypeSaleOutput(SearchItem item)
+        {
             //历史交易数据
-            String sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,to_char(HIS_SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,HIS_SALE.DEALID,HIS_SALE.POSNO,PAY.NAME PAYNAME,HIS_SALE_GOODS_PAY.AMOUNT
+            String sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,to_char(HIS_SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,HIS_SALE.DEALID,HIS_SALE.POSNO,PAY.NAME PAYNAME,HIS_SALE_GOODS_PAY.AMOUNT
                          FROM HIS_SALE 
                         LEFT JOIN HIS_SALE_GOODS_PAY ON HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=HIS_SALE_GOODS_PAY.PAYID
@@ -876,6 +902,8 @@ namespace z.ERP.Services
                         LEFT JOIN CONTRACT_SHOP ON HIS_SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
                         LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
+                        LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
+						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
                         ";
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
@@ -886,9 +914,11 @@ namespace z.ERP.Services
             item.HasKey("Pay", a => sql += $" and PAY.PAYID= {a}");
             item.HasKey("YEARMONTH_START", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
             item.HasKey("YEARMONTH_END", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
 
             //当天交易数据
-            String sql1 = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,to_char(SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,SALE.DEALID,SALE.POSNO,PAY.NAME PAYNAME,SALE_GOODS_PAY.AMOUNT
+            String sql1 = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,to_char(SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,SALE.DEALID,SALE.POSNO,PAY.NAME PAYNAME,SALE_GOODS_PAY.AMOUNT
                          FROM SALE 
                         LEFT JOIN SALE_GOODS_PAY ON SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE.POSNO=SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=SALE_GOODS_PAY.PAYID
@@ -896,6 +926,8 @@ namespace z.ERP.Services
                         LEFT JOIN CONTRACT_SHOP ON SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
                         LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
+                        LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
+						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
                         ";
             item.HasKey("BRANCHID", a => sql1 += $" and CONTRACT.BRANCHID = {a}");
@@ -906,6 +938,8 @@ namespace z.ERP.Services
             item.HasKey("Pay", a => sql1 += $" and PAY.PAYID= {a}");
             item.HasKey("YEARMONTH_START", a => sql1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
             item.HasKey("YEARMONTH_END", a => sql1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("BRANDID", a => sql1 += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql1 += $" and BRAND.NAME LIKE '%{a}%'");
 
             string sqlunion = "select * from (" + sql + " union all " + sql1 + " ) ORDER BY MERCHANTID,SALE_TIME DESC,PAYNAME";
 
@@ -932,6 +966,8 @@ namespace z.ERP.Services
                         LEFT JOIN CONTRACT_SHOP ON HIS_SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
                         LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
+						LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
+						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1 ";
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
@@ -941,6 +977,8 @@ namespace z.ERP.Services
             item.HasKey("Pay", a => sql += $" and PAY.PAYID= {a}");
             item.HasKey("YEARMONTH_START", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
             item.HasKey("YEARMONTH_END", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
             //当天记录
             string sql1 = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,PAY.NAME PAYNAME,SALE.POSNO,SALE_GOODS_PAY.AMOUNT
                          FROM SALE 
@@ -950,6 +988,8 @@ namespace z.ERP.Services
                         LEFT JOIN CONTRACT_SHOP ON SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
                         LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
+						LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
+						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1";
             item.HasKey("BRANCHID", a => sql1 += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql1 += $" and TRUNC(SALE.SALE_TIME) >= {a}");
@@ -959,6 +999,8 @@ namespace z.ERP.Services
             item.HasKey("Pay", a => sql1 += $" and PAY.PAYID= {a}");
             item.HasKey("YEARMONTH_START", a => sql1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
             item.HasKey("YEARMONTH_END", a => sql1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("BRANDID", a => sql1 += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql1 += $" and BRAND.NAME LIKE '%{a}%'");
 
             string sqlsum = @"select MERCHANTID,NAME,PAYNAME,POSNO,SUM(AMOUNT) AMOUNT from (" + sql + " union all " + sql1 + " ) GROUP BY MERCHANTID,NAME,PAYNAME ORDER BY MERCHANTID,PAYNAME";
 
@@ -971,13 +1013,14 @@ namespace z.ERP.Services
         }
         #endregion
 
-        #region
+        #region  商户缴费
         /// <summary>
         /// 商户缴费明细
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public DataGridResult MerchantPayCost(SearchItem item) {
+        public DataGridResult MerchantPayCost(SearchItem item)
+        {
             String sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BILL.NIANYUE,FEESUBJECT.NAME TRIMNAME,BRAND.NAME BRANDNAME,BILL.MUST_MONEY,BILL.RECEIVE_MONEY,BILL.MUST_MONEY-BILL.RECEIVE_MONEY UNPAID_MONEY from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
                         WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID ";
             item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
@@ -988,12 +1031,14 @@ namespace z.ERP.Services
             item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
             String ISPAYS = "";
             item.HasKey("ISpay", a => ISPAYS = $"{a}");
-            if (!string.IsNullOrEmpty(ISPAYS)) {
+            if (!string.IsNullOrEmpty(ISPAYS))
+            {
                 if (ISPAYS == "4")
                 {
                     sql += $" and BILL.STATUS = " + ISPAYS + "";
                 }
-                else {
+                else
+                {
                     sql += $" and BILL.STATUS <> " + ISPAYS + "";
                 }
             }
@@ -1045,7 +1090,8 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public string MerchantPayCostOutput(SearchItem item) {
+        public string MerchantPayCostOutput(SearchItem item)
+        {
             String sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BILL.NIANYUE,FEESUBJECT.NAME TRIMNAME,BRAND.NAME BRANDNAME,BILL.MUST_MONEY,BILL.RECEIVE_MONEY,BILL.MUST_MONEY-BILL.RECEIVE_MONEY UNPAID_MONEY from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
                         WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID ";
             item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
@@ -1113,6 +1159,209 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.TableName = "MerchantPayCost";
             return GetExport("租赁商户缴费记录导出", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+        #endregion
+
+        #region 商户租金经营状况
+        /// <summary>
+        /// 提成资金
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult MerchantBusinessStatus(SearchItem item)
+        {
+            string sql = @"SELECT TC.* ,BILL.MUST_MONEY+TC.MUST_MONEY PAID_MONEY,ROUND(TC.AMOUNT/TC.AREA_RENTABLE,2) AMOUNT_AREA,ROUND((BILL.MUST_MONEY+TC.MUST_MONEY)/TC.AREA_RENTABLE,2) AREA_MONEY  FROM 
+                        (SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.CONTRACTID,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
+                        FROM BILL,CONTRACT_TCZJ,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
+                        WHERE BILL.CONTRACTID=CONTRACT_TCZJ.CONTRACTID AND BILL.NIANYUE=CONTRACT_TCZJ.YEARMONTH AND BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
+                        AND BILL.TERMID =1001 ";
+            item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and BILL.NIANYUE >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and BILL.NIANYUE <= {a}");
+            sql += @" GROUP BY MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME,BILL.CONTRACTID,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
+                        ORDER by MERCHANTID,NIANYUE
+                        ) TC,BILL   WHERE TC.MERCHANTID=BILL.MERCHANTID AND TC.NIANYUE=BILL.NIANYUE AND BILL.CONTRACTID=TC.CONTRACTID AND BILL.TERMID=1000 
+                        ORDER BY TC.MERCHANTID,TC.NIANYUE";
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        /// <summary>
+        /// 固定资金
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult MerchantBusinessStatusGD(SearchItem item)
+        {
+            string sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_SUMMARY_YM.AMOUNT,
+                    ROUND(CONTRACT_SUMMARY_YM.AMOUNT/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AMOUNT_AREA,ROUND(BILL.MUST_MONEY/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AREA_MONEY
+                    FROM BILL,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
+                    WHERE  BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
+                    AND BILL.TERMID =1000";
+            item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and BILL.NIANYUE >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and BILL.NIANYUE <= {a}");
+            sql +=@" ORDER BY MERCHANTID,NIANYUE";
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        /// <summary>
+        /// 提成租金 导出
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public string MerchantBusinessStatusOutput(SearchItem item)
+        {
+            string sql = @"SELECT TC.* ,BILL.MUST_MONEY+TC.MUST_MONEY PAID_MONEY,ROUND(TC.AMOUNT/TC.AREA_RENTABLE,2) AMOUNT_AREA,ROUND((BILL.MUST_MONEY+TC.MUST_MONEY)/TC.AREA_RENTABLE,2) AREA_MONEY  FROM 
+                        (SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.CONTRACTID,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
+                        FROM BILL,CONTRACT_TCZJ,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
+                        WHERE BILL.CONTRACTID=CONTRACT_TCZJ.CONTRACTID AND BILL.NIANYUE=CONTRACT_TCZJ.YEARMONTH AND BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
+                        AND BILL.TERMID =1001 ";
+            item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and BILL.NIANYUE >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and BILL.NIANYUE <= {a}");
+            sql += @" GROUP BY MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME,BILL.CONTRACTID,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
+                        ORDER by MERCHANTID,NIANYUE
+                        ) TC,BILL   WHERE TC.MERCHANTID=BILL.MERCHANTID AND TC.NIANYUE=BILL.NIANYUE AND BILL.CONTRACTID=TC.CONTRACTID AND BILL.TERMID=1000 
+                        ORDER BY TC.MERCHANTID,TC.NIANYUE";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "MerchantBusinessStatus";
+            return GetExport("商户租金经营状况导出", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+        /// <summary>
+        /// 固定租金 导出
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public string MerchantBusinessStatusGDOutput(SearchItem item)
+        {
+            string sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_SUMMARY_YM.AMOUNT,
+                    ROUND(CONTRACT_SUMMARY_YM.AMOUNT/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AMOUNT_AREA,ROUND(BILL.MUST_MONEY/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AREA_MONEY
+                    FROM BILL,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
+                    WHERE  BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
+                    AND BILL.TERMID =1000";
+            item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and BILL.NIANYUE >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and BILL.NIANYUE <= {a}");
+            sql += @" ORDER BY MERCHANTID,NIANYUE";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "MerchantBusinessStatus";
+            return GetExport("商户租金经营状况导出", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+        #endregion
+
+        #region 商品销售明细查询
+        public DataGridResult GoodsSaleDetail(SearchItem item) {
+            string sql = @" SELECT * FROM ( select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT, NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
+                        from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
+                        WHERE HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO AND HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
+                        ";
+            item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
+            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("GOODSDM", a => sql += $" and GOODS.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+
+
+            sql += @" UNION ALL ";
+
+            sql += @"select SALE.SALE_TIME,SALE.POSNO,SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,NVL(SALE.DEALID_OLD,0) DEALID_OLD
+                    from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
+                    WHERE SALE.POSNO=SALE_GOODS_PAY.POSNO AND SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
+                    ";
+            item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
+            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(SALE.SALE_TIME) >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(SALE.SALE_TIME) <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("GOODSDM", a => sql += $" and GOODS.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+
+            sql += @" ) ORDER BY POSNO,SALE_TIME DESC,DEALID";
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public string GoodsSaleDetailOutput(SearchItem item) {
+
+            string sql = @" SELECT * FROM ( select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT, NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
+                        from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
+                        WHERE HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO AND HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
+                        ";
+            item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
+            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("GOODSDM", a => sql += $" and GOODS.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+
+
+            sql += @" UNION ALL ";
+
+            sql += @"select SALE.SALE_TIME,SALE.POSNO,SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,NVL(SALE.DEALID_OLD,0) DEALID_OLD
+                    from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
+                    WHERE SALE.POSNO=SALE_GOODS_PAY.POSNO AND SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
+                    ";
+            item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
+            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(SALE.SALE_TIME) >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(SALE.SALE_TIME) <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
+            item.HasKey("GOODSDM", a => sql += $" and GOODS.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
+
+            sql += @" ) ORDER BY POSNO,SALE_TIME DESC,DEALID";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "GoodsSaleDetail";
+            return GetExport("商品销售明细导出", a =>
             {
                 a.SetTable(dt);
             });

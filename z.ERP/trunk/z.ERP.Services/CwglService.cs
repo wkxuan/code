@@ -332,6 +332,7 @@ namespace z.ERP.Services
                                 .OrderBy(a => a.VOUCHERID).ToList();
                             foreach (var fldata in record)
                             {
+                                string PZMC = fldata.RECORDNAME;
                                 var fldat = fldata.SQLCOLTORECORD; //借方贷方金额
                                 var wldwdat = fldata.SQLCOLTOMERCHANT;    //商户
                                 var bmdat = fldata.SQLCOLTOORG;       //部门
@@ -433,7 +434,7 @@ namespace z.ERP.Services
                                     rowNew["PZBH"] = iPZBH;  //凭证号
                                     
                                     rowNew["KMBM"] = PZMK;  //科目编码
-                                    rowNew["KMMC"] = PZMK;  //科目名称
+                                    rowNew["KMMC"] = PZMC;  //科目名称
                                     
                                     rowNew["BZDM"] = "RMB";  //币种代码
                                     rowNew["BZMC"] = "人民币";  //币种名称

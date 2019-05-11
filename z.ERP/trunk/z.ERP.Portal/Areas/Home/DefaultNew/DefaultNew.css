@@ -1,0 +1,49 @@
+﻿body {
+    width:100%;
+    height:100%;
+    /*background:#eee;*/
+    /*background: rgb(238, 238, 238);*/
+}
+.ivu-card-head p, .ivu-card-head-inner {
+    height:24px !important; 
+    line-height:24px !important;
+    /*font-size:20px !important;*/
+}
+.ivu-card-body {
+    padding:0px !important;
+}
+
+/*.ivu-table th {
+    background-color:#fff !important;
+}*/
+.ivu-table-header {
+    background-color:#f8f8f9;
+}
+.ivu-table-wrapper {
+    border:0px !important;
+}
+.ivu-table:before {
+    height:0px !important;
+}
+.ivu-table td, .ivu-table th {
+    border:0px !important;
+}
+.ivu-table:after {
+    width:0px !important;
+}
+#box2 .ivu-table-large td {
+    height:100px;
+}
+.ivu-col-offset-1 {
+    margin-left: 1.16666667% !important;
+}
+.ivu-col-span-6 {
+    width:28% !important;
+}
+.ivu-card-head {
+    padding:8px 16px !important;
+}
+.ivu-table-cell {
+    padding:0px !important;
+    padding-left:5px !important;
+}

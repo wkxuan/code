@@ -13,13 +13,20 @@ namespace z.POS.Entities.Pos
             get;
             set;
         }
-        public decimal amount
+
+        public string payname
         {
             get;
             set;
         }
 
-        public string remarks
+        public int paytype
+        {
+            get;
+            set;
+        }
+
+        public decimal amount
         {
             get;
             set;

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using z.Extensions;
-using System.Data;
-using System.Linq;
-using z.ServiceHelper;
-using System.Diagnostics;
-using z.DBHelper.DBDomain;
+﻿using z.DBHelper.DBDomain;
+using z.DGS.Entities;
+
 
 namespace z.DGS.Services
 {
@@ -23,5 +18,16 @@ namespace z.DGS.Services
         {
             return DbHelper.ExecuteTable("select Ip from STATION where TYPE=3  and STATIONBH= {{code}}", new zParameter("code", employee.Id)).Rows[0][0].ToString();
         }
+
+
+
+        public void SaleGather(SaleGatherReq req)
+        {
+            //double sumPayAmount = req.payList.Sum(a => a.amount);
+        }
+
+
+
+
     }
 }

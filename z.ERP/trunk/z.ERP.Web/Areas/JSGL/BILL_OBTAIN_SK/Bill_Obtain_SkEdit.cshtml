@@ -88,13 +88,14 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            冲销预付款金额
+            冲销预付款
         </i-col>
         <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.ADVANCE_MONEY"
+                    vModel = "dataParam.ADVANCE_MONEY",
+                    Change = "YfkChange"
                 });
             }
         </i-col>
