@@ -59,5 +59,10 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        public string Encryption
+        {
+            get; set;
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace z.MathTools
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
         /// <param name="settings"></param>
-        public static void Allocation<T>(this List<T> list, AllocationSettings<T> settings)
+        public static void Allocation<T>(this IEnumerable<T> list, AllocationSettings<T> settings)
         {
             settings.Allocation.SetValue = settings.SetValue;
             settings.Allocation.GetValue = settings.GetValue;
@@ -50,7 +50,7 @@ namespace z.MathTools
         /// <param name="decimals">保留小数位数</param>
         /// <param name="Rounding">舍入方式</param>
         /// <returns></returns>
-        public static double Round(this double d, int decimals = 0, RoundingType Rounding = RoundingType.Normal)
+        internal static double Round(this double d, int decimals = 0, RoundingType Rounding = RoundingType.Normal)
         {
             switch (Rounding)
             {
@@ -207,20 +207,27 @@ namespace z.MathTools
         /// <param name="list"></param>
         /// <param name="allqty"></param>
         /// <returns>分配数量</returns>
-        public abstract double Do(List<T> list, double allqty);
+        internal abstract double Do(IEnumerable<T> list, double allqty);
     }
 
     /// <summary>
     /// 平均分配
     /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class EqualAllocationMatch<T> : AllocationMatchBase<T>
     {
-        public override double Do(List<T> list, double allqty)
+        /// <summary>
+        /// 平均分配
+        /// </summary>
+        public EqualAllocationMatch()
+        {
+        }
+        internal override double Do(IEnumerable<T> list, double allqty)
         {
             double fp = 0;
             list.ForEach(l =>
            {
-               double i = (allqty / list.Count).Round(RoundCent, Rounding);
+               double i = (allqty / list.Count()).Round(RoundCent, Rounding);
                fp += i;
                SetValue(l, i);
            });
@@ -231,8 +238,18 @@ namespace z.MathTools
     /// <summary>
     /// 加权分配
     /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class WeightingAllocationMatch<T> : AllocationMatchBase<T>
     {
+        /// <summary>
+        /// 加权分配
+        /// </summary>
+        /// <param name="weightingvalue">权重计算方式</param>
+        public WeightingAllocationMatch(Func<T, double> weightingvalue)
+        {
+            WeightingValue = weightingvalue;
+        }
+
         /// <summary>
         /// 获取权重值
         /// </summary>
@@ -249,7 +266,7 @@ namespace z.MathTools
             base._Verify();
         }
 
-        public override double Do(List<T> list, double allqty)
+        internal override double Do(IEnumerable<T> list, double allqty)
         {
             double fp = 0;
             double allWei = list.Sum(a => WeightingValue(a)).Round(RoundCent, Rounding);
@@ -283,7 +300,7 @@ namespace z.MathTools
         /// <param name="list"></param>
         /// <param name="Tail"></param>
         /// <returns></returns>
-        public abstract void Do(List<T> list, double Tail);
+        public abstract void Do(IEnumerable<T> list, double Tail);
     }
 
     /// <summary>
@@ -296,7 +313,7 @@ namespace z.MathTools
         /// 分配在第一个上
         /// </summary>
         public bool First = false;
-        public override void Do(List<T> list, double Tail)
+        public override void Do(IEnumerable<T> list, double Tail)
         {
             T t = First ? list.First() : list.Last();
             SetValue(t, GetValue(t) + Tail);
@@ -313,10 +330,14 @@ namespace z.MathTools
         /// 分配在最小的上
         /// </summary>
         public bool Min = false;
-        public override void Do(List<T> list, double Tail)
+        public override void Do(IEnumerable<T> list, double Tail)
         {
-            T t = Min ? list.Min2(a => GetValue(a)) : list.Max2(a => GetValue(a));
-            SetValue(t, GetValue(t) + Tail);
+            if (Tail > 0)
+            {
+                T t = Min ? list.Min2(a => GetValue(a)) : list.Max2(a => GetValue(a));
+                if (t != null)
+                    SetValue(t, GetValue(t) + Tail);
+            }
         }
     }
 

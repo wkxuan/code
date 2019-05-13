@@ -2150,6 +2150,9 @@ namespace z.ERP.Entities.Service.Pos
             set { iJYH = value; }
         }
     }
+
+    /*
+
     public class TicketInfo
     {
         private List<CashCardItem> cashCardList;
@@ -2302,7 +2305,11 @@ namespace z.ERP.Entities.Service.Pos
             set { oldId = value; }
         }
 
-    }//小票
+    }//小票    
+
+
+    */
+
 
     public class CrmGetDMZFListPacketed
     {
@@ -4816,12 +4823,13 @@ namespace z.ERP.Entities.Service.Pos
         public string outOrder;
         public string erpTranID;
         public string crmTranID;
-        public string oldDevice;
+        public string oldDeviceNo;
         public string oldErpTranID;
         public List<TTranGoods> goodsList;
         public List<TTranPayments> paysList;
         public List<TTranCoupon> couponsList;
         public List<CashCardDetails> cashCashList;
+        public List<CreditDetail> creditDetailList;   //20190424增加
     }
 
     public class ConfirmBackDealResult
@@ -5366,29 +5374,87 @@ namespace z.ERP.Entities.Service.Pos
     }
 
     //2017.11.23 如下是银行的付款明细,一般采用异步保存,当时付款了。马上保存 最好不要和交易一起保存
-    public struct CreditDetail
+    /*  public struct CreditDetail
+      {
+          public string deviceCode;       //设备号
+          public int ticketId;            //票据号
+          public int personId;            //人员ID 
+          public string personCode;       //人员代码
+          public string operTime;         //发生的时间
+          public string accoutTime;       //记帐日期,和销售记录中的记帐日期相同,如果为空,记为当前日期 
+          public string typeCode;         //付款的收款类型代码:
+          public int skfsId;              //收款方式ID
+          public string skfsCode;         //收款方式代码
+          public int inx;             //第几条数据
+          public string operType;        //银行的操作类型[可以是银行的操作代码]:如:01:执行消费 02:撤消  03:退款
+          public string bankCode;         //银行代码
+          public int bankId;              //银行ID 
+          public string onLineReferenceNumber;  //线上交易参考号
+          public string onLineSerialNumber;     //线上交易流水号 
+          public string offLineOrderNumber;     //线下交易号
+          public int orderMoney;            //订单金额[包括:付款金额+折扣金额] 例如:订单100,实付:90,厂家出:10 我们记:按100
+          public int payMoney;            //付款金额
+          public int discMoney;           //折扣金额
+          public int banlanceMoney;       //帐户余额
+          public string other;            //其它项目.此处以备后用。可以用json,也可以用竖线相隔
+      } */
+
+    public class CreditDetail
     {
-        public string deviceCode;       //设备号
-        public int ticketId;            //票据号
-        public int personId;            //人员ID 
-        public string personCode;       //人员代码
-        public string operTime;         //发生的时间
-        public string accoutTime;       //记帐日期,和销售记录中的记帐日期相同,如果为空,记为当前日期 
-        public string typeCode;         //付款的收款类型代码:
-        public int skfsId;              //收款方式ID
-        public string skfsCode;         //收款方式代码
-        public int inx;             //第几条数据
-        public string operType;        //银行的操作类型[可以是银行的操作代码]:如:01:执行消费 02:撤消  03:退款
-        public string bankCode;         //银行代码
-        public int bankId;              //银行ID 
-        public string onLineReferenceNumber;  //线上交易参考号
-        public string onLineSerialNumber;     //线上交易流水号 
-        public string offLineOrderNumber;     //线下交易号
-        public int orderMoney;            //订单金额[包括:付款金额+折扣金额] 例如:订单100,实付:90,厂家出:10 我们记:按100
-        public int payMoney;            //付款金额
-        public int discMoney;           //折扣金额
-        public int banlanceMoney;       //帐户余额
-        public string other;            //其它项目.此处以备后用。可以用json,也可以用竖线相隔
+        public int inx
+        {
+            get;
+            set;
+        }
+        public int payid
+        {
+            get;
+            set;
+        }
+
+        public string cardno
+        {
+            get;
+            set;
+        }
+
+        public string bank
+        {
+            get;
+            set;
+        }
+
+        public int bankid
+        {
+            get;
+            set;
+        }
+
+        public double amount
+        {
+            get;
+            set;
+        }
+
+        public string serialno
+        {
+            get;
+            set;
+        }
+
+        public string refno
+        {
+            get;
+            set;
+        }
+
+        public string opertime  //yyyy-mm-dd HH24:MI:SS
+        {
+            get;
+            set;
+        }
+
+
     }
 
     public class ReqSaveCreditDetail

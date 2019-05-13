@@ -314,10 +314,13 @@ namespace z.ERP.Services
             item.HasKey("TYPE", a => sql += $" and L.TYPE = {a}");
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
+            item.HasKey("MERCHANTID", a => sql += $" and L.MERCHANTID={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
+            item.HasKey("REPORTER_NAME", a => sql += $" and L.REPORTER_NAME  LIKE '%{a}%'");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
             item.HasDateKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
             item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
+            item.HasKey("VERIFY_NAME", a => sql += $" and L.VERIFY_NAME  LIKE '%{a}%'");
             item.HasDateKey("VERIFY_TIME_START", a => sql += $" and L.VERIFY_TIME>={a}");
             item.HasDateKey("VERIFY_TIME_END", a => sql += $" and L.VERIFY_TIME<={a}");
             sql += " ORDER BY  L.BILLID DESC";
@@ -482,6 +485,9 @@ namespace z.ERP.Services
             v.Require(a => a.BILLID);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.CONTRACTID);
+            v.Require(a => a.TYPE);
+            v.Require(a => a.FEE_ACCOUNTID);
+
             v.Verify();
 
             using (var Tran = DbHelper.BeginTransaction())
@@ -546,6 +552,7 @@ namespace z.ERP.Services
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             sqlitem += " GROUP BY C.NAME,TO_CHAR(B.START_DATE,'YYYY-MM-DD')||'至'||to_char(B.END_DATE,'YYYY-MM-DD')";
+            sqlitem += " ORDER BY 2";
             DataTable billNoticeItem = DbHelper.ExecuteTable(sqlitem);
 
             return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);

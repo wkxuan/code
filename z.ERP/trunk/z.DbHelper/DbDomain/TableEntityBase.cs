@@ -100,6 +100,27 @@ namespace z.DBHelper.DBDomain
                 .ToArray();
         }
 
+        public PropertyInfo[] GetAllSelectField()
+        {
+            return GetType()
+                .GetProperties()
+                .Where(a =>
+                {
+                    if (a.GetAttribute<IgnoreAttribute>() != null)
+                        return false;
+                    if (a.GetAttribute<PrimaryKeyAttribute>() != null)
+                        return true;
+                    if (a.IsArray())
+                        return false;
+                    if (a.PropertyType == typeof(string))
+                        return true;
+                    if (!a.PropertyType.IsNullable())
+                        return false ;
+                    return true;
+                })
+                .ToArray();
+        }
+
         /// <summary>
         /// 获取插入字段
         /// </summary>

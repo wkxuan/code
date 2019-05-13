@@ -29,7 +29,11 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and NAME  LIKE '%{a}%'");
             item.HasKey("SH", a => sql += $" and SH LIKE '%{a}%'");
             item.HasKey("BANK", a => sql += $" and BANK LIKE '%{a}%'");
+            item.HasKey("REPORTER_NAME", a => sql += $" and REPORTER_NAME  LIKE '%{a}%'");
+            item.HasKey("REPORTER_TIME_START", a => sql += $" and REPORTER_TIME>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
+            item.HasKey("REPORTER_TIME_END", a => sql += $" and REPORTER_TIME< to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS') + 1");
             item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("STATUSL", a => sql += $" and STATUS={a}");
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

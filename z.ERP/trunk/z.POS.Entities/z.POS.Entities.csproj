@@ -49,11 +49,15 @@
     <Compile Include="Pos\GetDealFilter.cs" />
     <Compile Include="Pos\GoodsResult.cs" />
     <Compile Include="Pos\LoginConfigInfo.cs" />
+    <Compile Include="Pos\SaleList.cs" />
     <Compile Include="Pos\PayDetailResult.cs" />
+    <Compile Include="Pos\PayRecord.cs" />
     <Compile Include="Pos\PayResult.cs" />
     <Compile Include="Pos\PaySumResult.cs" />
     <Compile Include="Pos\SaleRequest.cs" />
+    <Compile Include="Pos\SaleListFilter.cs" />
     <Compile Include="Pos\SaleSummaryFilter.cs" />
+    <Compile Include="Pos\SaleListResult.cs" />
     <Compile Include="Pos\SaleSummaryResult.cs" />
     <Compile Include="Pos\UserYYYResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

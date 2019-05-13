@@ -1,0 +1,42 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.PopSearch;
+@inherits PopSearchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            终端号
+        </i-col>
+        <i-col span="5">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.POSNO"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            类型
+        </i-col>
+        <i-col span="5">
+            @{
+                RenderControl(new EnumDropDownListRender<POS类型>()
+                {
+                    vModel = "searchParam.POSTYPE",
+                });
+            }
+        </i-col>
+    </row>
+}

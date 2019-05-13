@@ -172,7 +172,13 @@ namespace z.ERP.Services
                 return ioc.Create<CwglService>();
             }
         }
-
+        public DefaultDataService DefaultDataService
+        {
+            get
+            {
+                return ioc.Create<DefaultDataService>();
+            }
+        }
         #endregion
 
         #region 通用方法

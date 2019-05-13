@@ -26,7 +26,7 @@
         <i-col span="3" class="RowTitle">状态</i-col>
         <i-col span="5">
             @{
-                RenderControl(new EnumDropDownListRender<账单状态>()
+                RenderControl(new EnumDropDownListRender<账单状态Part>()
                 {
                     vModel = "searchParam.STATUS",
                 });
@@ -63,7 +63,7 @@
             </i-col>
             <i-col span="5">
                 @{
-                    RenderControl(new EnumDropDownListRender<账单类型>()
+                    RenderControl(new EnumDropDownListRender<账单类型Part>()
                     {
                         vModel = "searchParam.TYPE",
                     });

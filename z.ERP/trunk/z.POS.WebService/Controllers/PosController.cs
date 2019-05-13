@@ -51,10 +51,18 @@ namespace z.POS.WebService.Controllers
             return service.PosService.GetDeal(filter);
         }
 
+        /*
         [ServiceAble("Sale")]
         public void Sale(SaleRequest Request)
         {
             service.PosService.Sale(Request);
+        }
+        */
+
+        [ServiceAble("GetSaleList")]
+        public SaleListResult GetSaleList(SaleListFilter filter)
+        {
+            return service.PosService.GetSaleList(filter);
         }
 
         [ServiceAble("GetSaleSummary")]
@@ -63,6 +71,12 @@ namespace z.POS.WebService.Controllers
             return service.PosService.GetSaleSummary(filter);
         }
 
+
+        [ServiceAble("GetMemberInfo")]
+        public GetMemberCardDetailsResult GetMemberInfo(ReqMemberCard reqMC)
+        {
+            return service.PosService.GetMemberInfo(reqMC);
+        }
 
         [ServiceAble("GetCardPayable")]
         public GetCardPayableResult GetCardPayable(ReqGetCardPayable reqMth)
@@ -81,6 +95,20 @@ namespace z.POS.WebService.Controllers
         {
             return service.PosService.ConfirmDeal(ReqConfirm);
         }
+
+        [ServiceAble("CalcAccountsBackable")]
+        public RespBackable CalcAccountsBackable(ReqBackAble req)
+        {
+            return service.PosService.CalcAccountsBackable(req);
+        }
+
+        [ServiceAble("ConfirmBackDeal")]
+        public ConfirmBackDealResult ConfirmBackDeal(ReqConfirmBackDeal req)
+        {
+            return service.PosService.ConfirmBackDeal(req);
+        }
+
+
 
     }
 }

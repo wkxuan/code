@@ -18,6 +18,11 @@ namespace z.DBHelper.DBDomain
             ChildrenKey = AllKey;
         }
 
+        /// <summary>
+        /// 外键定义
+        /// </summary>
+        /// <param name="parentkey">父表的键</param>
+        /// <param name="childrenkey">子表的键(带类名)</param>
         public ForeignKeyAttribute(string parentkey, string childrenkey)
         {
             ParentKey = parentkey;

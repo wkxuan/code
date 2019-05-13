@@ -172,7 +172,7 @@ search.bgHref = function (row, index) {
             _.OpenPage({
                 id: 10600203,
                 title: '变更租赁租约',
-                url: "HTGL/ZLHT_BG/ZlHt_BgEdit/" + row.CONTRACTID
+                url: "HTGL/LYHT_BG/LyHt_BgEdit/" + row.CONTRACTID
             });
         };
     };

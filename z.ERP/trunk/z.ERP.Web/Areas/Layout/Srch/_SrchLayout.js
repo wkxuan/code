@@ -92,7 +92,17 @@
                     if (notExistsData()) {
                         this.$Message.error("没有要打印的数据!");
                     } else {
-                        this.$Message.error("尚未提供打印方法!");
+                        // 获取原来的窗口界面body的html内容，并保存起来
+                        var oldhtml = window.document.body.innerHTML;
+                        //根据div标签ID拿到div中的局部内容
+                        var TableData = window.document.getElementById("TableData").innerHTML;
+                        //把获取的 局部div内容赋给body标签
+                        window.document.body.innerHTML=TableData; 
+                        window.print();
+                        // 将原来窗口body的html值回填展示
+                        window.document.body.innerHTML = oldhtml;
+                        //刷新页面,否则无法点击
+                        window.location.reload();
                     }
 
                 },

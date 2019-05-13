@@ -1,0 +1,44 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Detail;
+
+@inherits DetailLayout<dynamic>
+
+@section Title{}
+
+@{
+    var id = ViewBag.id;
+}
+@section content{
+    <row>
+        <i-col span="24">
+            <i-table size="small" :border="true"
+                     :columns="col" :data="data"></i-table>
+        </i-col>
+    </row>
+}
+
+@section foot{
+    <script type="text/javascript">
+        var ve = new Vue({
+            el: '#detail_Main',
+            data: {
+                Mainpanel: 'condition',
+                disabled:true,
+                col:[
+                    { title: "合同号", key: '合同号', width: 150 },
+                ],
+                data:[]
+
+            },
+            mounted:function(){
+                var _self = this;
+                _.Ajax('SearchAlert', {
+                    Data: { ID: @id }
+                }, function (data) {
+                    Vue.set(_self, "data",data.alert);
+                });
+            }
+        });
+    </script>
+}
