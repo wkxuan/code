@@ -694,6 +694,7 @@
     <Folder Include="Areas\Home\" />
     <Folder Include="Areas\XTGL\Views\PosO2OWftCfg\" />
     <Folder Include="Areas\XTGL\Views\Tree\" />
+    <Folder Include="BackMap\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
