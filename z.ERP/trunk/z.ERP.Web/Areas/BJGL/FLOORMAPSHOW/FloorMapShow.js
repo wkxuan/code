@@ -217,7 +217,7 @@ SearchFloorMap: function (data) {
         };
 
     _.Ajax('SearchFloorShowMapData', {
-        Data: { FLOORID: mapShow.screenParam.FLOORID, YEARMONTH: mapShow.screenParam.YEARMONTH }
+        Data: { FLOORID: mapShow.searchParam.FLOORID, YEARMONTH: mapShow.searchParam.YEARMONTH }
     }, function (data) {
         mapShow.screenParam.mapid = data.floormap.MAPID;
         mapShow.screenParam.mappath = '../../../BackMap/' + data.floormap.FILENAME;

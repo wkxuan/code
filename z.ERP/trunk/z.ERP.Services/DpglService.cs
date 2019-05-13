@@ -426,7 +426,8 @@ namespace z.ERP.Services
         }
         public Tuple<dynamic, DataTable, DataTable> GetGetFloorShowMapData(FLOORMAPSHOWEntity Data)
         {
-            string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE P.INITINATE_TIME<="+Data.YEARMONTH + "SYSDATE AND NVL(P.TERMINATE_TIME,SYSDATE)<= "+Data.YEARMONTH  ;
+            string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE TO_NUMBER(to_char(NVL(P.INITINATE_TIME,P.VERIFY_TIME),'YYYYMM'))<=" +Data.YEARMONTH 
+                + @" AND TO_NUMBER(to_char(NVL(P.TERMINATE_TIME,SYSDATE),'YYYYMM'))>= " + Data.YEARMONTH  ;
                    sql += " AND FLOORID= " + Data.FLOORID;
             DataTable dtmapid = DbHelper.ExecuteTable(sql);
             int mapid = Convert.ToInt32(dtmapid.Rows[0]["MAPID"].ToString());
