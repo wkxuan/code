@@ -151,8 +151,8 @@ namespace z.POS.Services
             string sqlClerk = $"select tckt_inx sheetid,yyy clerkid from {strTable}xsjlt";
             sqlClerk += $" where sktno='{posNo}' and jlbh={filter.dealid}";
 
-            string sqlPayRecord = $"select inx,skfs payid,kh cardno,yh bank,yhid bankid,je amount,lsh serialno,jyckh refno,jysj opertime from xykjl";
-            sqlPayRecord += $" where sktno='{posNo}' and jlbh={filter.dealid}";
+            string sqlPayRecord = $"select inx,skfs payid,kh cardno,yh bank,yhid bankid,je amount,lsh serialno,jyckh refno,jysj opertime,b.type paytype from xykjl a,skfs b ";
+            sqlPayRecord += $" where a.skfs=b.code and sktno='{posNo}' and jlbh={filter.dealid}";
 
             DataTable saleDt = DbHelper.ExecuteTable(sqlSale);
             //   List<SaleRequest> saleList = DbHelper.ExecuteObject<SaleRequest>(sqlSale);
@@ -295,7 +295,7 @@ namespace z.POS.Services
                 j = 0;
                 for (int i = 1 + goodsCount + payCount + clerkCount; i <= goodsCount + payCount + clerkCount + payRecordCount; i++)
                 {
-                    sqlarr[i] = "insert into XYKJL(sktno,jlbh,inx,sksf,kh,yh,yhid,je,lsh,jyckh,jysj)";
+                    sqlarr[i] = "insert into XYKJL(sktno,jlbh,inx,skfs,kh,yh,yhid,je,lsh,jyckh,jysj)";
                     sqlarr[i] += $"values('{posNo}',{request.dealid},{request.payRecord[j].inx},{request.payRecord[j].payid},";
                     sqlarr[i] += $"'{request.payRecord[j].cardno}','{request.payRecord[j].bank}',{request.payRecord[j].bankid},";
                     sqlarr[i] += $"{request.payRecord[j].amount},'{request.payRecord[j].serialno}','{request.payRecord[j].refno}',";
@@ -5992,7 +5992,7 @@ namespace z.POS.Services
 
                 //准备测试充正
                 mPayTotal = mPayTotal + PayList[i].PayedMoney;
-                if ((PayList[i].PaymentType == iSKFSType_Yhq) || (PayList[i].PaymentType == 4))
+                if (PayList[i].PaymentType == iSKFSType_Yhq)
                     mPayTotalYHJE = mPayTotalYHJE + (PayList[i].PayedMoney * (1 - 0));//PayList[i].CashBL; 
             }
 
@@ -6354,7 +6354,7 @@ namespace z.POS.Services
 
                 //充正
                 mPayTotal = mPayTotal + PayList[i].PayedMoney;
-                if ((PayList[i].PaymentType == iSKFSType_Yhq) || (PayList[i].PaymentType == 4))
+                if (PayList[i].PaymentType == iSKFSType_Yhq) 
                     mPayTotalYHJE = mPayTotalYHJE + PayList[i].PayedMoney;
             }
 

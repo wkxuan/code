@@ -13,6 +13,12 @@
             set;
         }
 
+        public int paytype
+        {
+            get;
+            set;
+        }
+
         public string cardno
         {
             get;
