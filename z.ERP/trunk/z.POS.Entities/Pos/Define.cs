@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using z.ERP.API.PosServiceAPI;
+using z.POS.API.PosServiceAPI2;
 using System.Text;
 
 namespace z.POS.Entities.Pos
