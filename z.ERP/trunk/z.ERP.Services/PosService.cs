@@ -2982,35 +2982,35 @@ namespace z.ERP.Services
 
                  //sale_goods
                  List<GoodsResult> goodsLst = new List<GoodsResult>();
-                 GoodsResult goodsOne = new GoodsResult();
 
                  for (int g = 0; g <= GoodList.Count - 1; g++)
                  {
-                     goodsOne.sheetid = 0;
-                     goodsOne.inx = g;
-                     goodsOne.goodsid = GoodList[g].Id;
-                     goodsOne.goodscode = GoodList[g].Code;
-                     goodsOne.price = decimal.Parse(GoodList[g].Price.ToString());
-                     goodsOne.quantity = float.Parse(GoodList[g].SaleCount.ToString());
-                     goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney).ToString()); //-GoodList[g].Discount
-                    //wangkx  扣折暂时记为0
+                    GoodsResult goodsOne = new GoodsResult();
+                    goodsOne.sheetid = 0;
+                    goodsOne.inx = g;
+                    goodsOne.goodsid = GoodList[g].Id;
+                    goodsOne.goodscode = GoodList[g].Code;
+                    goodsOne.price = decimal.Parse(GoodList[g].Price.ToString());
+                    goodsOne.quantity = float.Parse(GoodList[g].SaleCount.ToString());
+                    goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney).ToString()); //-GoodList[g].Discount
+                //wangkx  扣折暂时记为0
                     goodsOne.discount_amount = 0; //decimal.Parse(GoodList[g].Discount.ToString());
-                     goodsOne.coupon_amount = decimal.Parse((GoodList[g].PreferentialMoney + GoodList[g].DecreasePreferential).ToString());
-                     goodsOne.shopid = GoodList[g].ShopId;
-                     goodsLst.Add(goodsOne);
+                    goodsOne.coupon_amount = decimal.Parse((GoodList[g].PreferentialMoney + GoodList[g].DecreasePreferential).ToString());
+                    goodsOne.shopid = GoodList[g].ShopId;
+                    goodsLst.Add(goodsOne);
                  }
 
                  saleReq.goodslist = goodsLst;
 
                  //sale_pay
                  List<PayResult> payLst = new List<PayResult>();
-                 PayResult payOne = new PayResult();
 
                  for (int p = 0; p <= PayList.Count - 1; p++)
                  {
-                     payOne.payid = PayList[p].Id;
-                     payOne.amount = decimal.Parse(PayList[p].PayedMoney.ToString());
-                     payLst.Add(payOne);
+                    PayResult payOne = new PayResult();
+                    payOne.payid = PayList[p].Id;
+                    payOne.amount = decimal.Parse(PayList[p].PayedMoney.ToString());
+                    payLst.Add(payOne);
                  }
 
                  saleReq.paylist = payLst;
@@ -3030,10 +3030,10 @@ namespace z.ERP.Services
                 if (!ReqConfirm.creditDetailList.IsEmpty())
                 {
                     List<PayRecord> payRcd = new List<PayRecord>();
-                    PayRecord payRcdOne = new PayRecord();
 
                     for (int p = 0; p <= ReqConfirm.creditDetailList.Count - 1; p++)
                     {
+                        PayRecord payRcdOne = new PayRecord();
                         payRcdOne.inx = ReqConfirm.creditDetailList[p].inx;
                         payRcdOne.payid = ReqConfirm.creditDetailList[p].payid;
                         payRcdOne.cardno = ReqConfirm.creditDetailList[p].cardno;
@@ -5367,10 +5367,10 @@ namespace z.ERP.Services
 
                 //sale_goods
                 List<GoodsResult> goodsLst = new List<GoodsResult>();
-                GoodsResult goodsOne = new GoodsResult();
 
                 for (int g = 0; g <= goodsList.Count - 1; g++)
                 {
+                    GoodsResult goodsOne = new GoodsResult();
                     goodsOne.sheetid = 0;
                     goodsOne.inx = g;
                     goodsOne.goodsid = goodsList[g].Id;
@@ -5389,10 +5389,10 @@ namespace z.ERP.Services
 
                 //sale_pay
                 List<PayResult> payLst = new List<PayResult>();
-                PayResult payOne = new PayResult();
 
                 for (int p = 0; p <= pays.Count - 1; p++)
                 {
+                    PayResult payOne = new PayResult();
                     payOne.payid = pays[p].Id;
                     payOne.amount = decimal.Parse(pays[p].PayedMoney.ToString());
                     payLst.Add(payOne);
@@ -5415,10 +5415,10 @@ namespace z.ERP.Services
                 if (!creditList.IsEmpty())
                 {
                     List<PayRecord> payRcd = new List<PayRecord>();
-                    PayRecord payRcdOne = new PayRecord();
 
                     for (int p = 0; p <= creditList.Count - 1; p++)
                     {
+                        PayRecord payRcdOne = new PayRecord();
                         payRcdOne.inx = creditList[p].inx;
                         payRcdOne.payid = creditList[p].payid;
                         payRcdOne.cardno = creditList[p].cardno;
