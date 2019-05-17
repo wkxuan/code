@@ -2,7 +2,7 @@
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<TextBoxRender>
 
 <i-input id="@Model.Id" v-model="@Model.vModel" 
-         placeholder="@Model.Placeholder" :readonly="@Model.Readonly" v-on:on-change="@Model.Change"
+         placeholder="@Model.Placeholder" :readonly="@Model.Readonly" v-on:on-change="@Model.Change" v-on:on-blur="@Model.blur" 
          v-on:on-enter="@Model.Enter"
          :disabled="@(Model.Enable?"!disabled":"disabled")"
          type="@Model.type" :rows="@Model.rows">

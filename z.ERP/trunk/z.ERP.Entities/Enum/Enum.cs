@@ -342,12 +342,12 @@ namespace z.ERP.Entities.Enum
         MD5 = 1,
         RSA = 2
     }
-    public enum 布局图状态    
+    public enum 布局图状态
     {
         未审核 = 1,
         审核 = 3,
-        终止=4,
-        作废=5
+        终止 = 4,
+        作废 = 5
     }
     public enum 列表或汇总
     {
@@ -361,7 +361,16 @@ namespace z.ERP.Entities.Enum
     }
     public enum 租金收取方式
     {
-        提成租金=1,
-        固定租金=2
+        提成租金 = 1,
+        固定租金 = 2
+    }
+    public enum 发票类型
+    {
+        百元票 = 1,
+        千元票 = 2,
+        万元票 = 3,
+        十万元票 = 4,
+        百万元票 = 5,
+        千万元票 = 6
     }
 }

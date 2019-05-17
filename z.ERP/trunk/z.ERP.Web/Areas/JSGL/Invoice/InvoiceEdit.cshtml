@@ -1,0 +1,129 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Entities;
+@inherits EditDetailViewBase<string>
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span> 发票号码</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.INVOICENUMBER",
+                    blur = "NUMBERChange",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span> 
+            发票类型
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<发票类型>()
+                {
+                    vModel = "dataParam.TYPE",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span> 
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelMerchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERCHANTID",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="4" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERCHANTNAME",
+                    Enable = true
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span> 发票金额</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.INVOICEAMOUNT",
+                    type="number",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span> 增值税金额</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.VATAMOUNT",
+                    type ="number",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle"><span class="mustElement">*</span> 
+            开票日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.INVOICEDATE"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">录入人</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CREATENAME",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+}
+
+@section pops{
+<row>
+    <i-col>
+        @{
+            RenderControl(new PopsRender()
+            {
+                vModel = "screenParam.showPopMerchant",
+                Caption = "选择商户",
+                Width = "900",
+                Src = "screenParam.srcPopMerchant"
+            });
+        }
+    </i-col>
+</row>
+
+
+
+}
+
+
+
+
+
