@@ -25,6 +25,7 @@
 
 search.browseHref = function (row, index) {
     _.OpenPage({
+        id: 10700800,
         title: '浏览开票记录',
         url: "JSGL/Invoice/InvoiceDetail/" + row.INVOICEID
     });
@@ -32,12 +33,14 @@ search.browseHref = function (row, index) {
 
 search.addHref = function (row) {
     _.OpenPage({
+        id: 10700801,
         title: '新增开票记录',
         url: "JSGL/Invoice/InvoiceEdit/"
     });
 }
 search.modHref = function (row, index) {
     _.OpenPage({
+        id: 10700801,
         title: '编辑开票记录',
         url: "JSGL/Invoice/InvoiceEdit/" + row.INVOICEID
     });
