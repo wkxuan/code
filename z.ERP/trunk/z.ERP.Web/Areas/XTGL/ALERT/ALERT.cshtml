@@ -5,7 +5,7 @@
 
 @section element{
     <row>
-        <i-col span="2" class="RowTitle">
+        <i-col span="3" class="RowTitle">
             代码
         </i-col>
         <i-col span="6">
@@ -17,9 +17,7 @@
                 });
             }
         </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
+        <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             名称
         </i-col>
@@ -33,14 +31,11 @@
                 });
             }
         </i-col>
-    </row>
-
-    <row>
-        <i-col span="2" class="RowTitle">
+        <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             显示顺序
         </i-col>
-        <i-col span="6">
+        <i-col span="3">
             @{
                 RenderControl(new TextBoxRender
                 {
@@ -53,21 +48,47 @@
     </row>
 
     <row>
-        <i-col span="8" class="RowTitle">
-            预警SQL(SQL语句中列,请AS成中文意思)
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            SQL设置
         </i-col>
-    </row>
-    <row>
-        <i-col span="8">
+        <i-col span="6">
             @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.SQLSTR",
                     type = "textarea",
-                    rows = "10",
+                    rows = "20",
                     Enable = false
                 });
             }
+        </i-col>
+
+
+        <i-col span="15">
+            <span class="mustElement">显示设置</span>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "addCol",
+                    Text = "添加一行",
+                    Enable = false,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "delCol",
+                    Text = "删除一行",
+                    Enable = false,
+                    Type = "error",
+                    Icon = "minus-circled"
+                });
+            }
+            <i-table size="small" :border="true"
+                     :columns="screenParam.colAlertField" :data="dataParam.ALERT_FIELD" ref="selectAlert"></i-table>
         </i-col>
     </row>
 

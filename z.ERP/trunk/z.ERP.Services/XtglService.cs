@@ -576,6 +576,28 @@ namespace z.ERP.Services
 
 
 
+
+        public Tuple<dynamic, DataTable> GetAlertElement(DEF_ALERTEntity Data)
+        {
+            string sql = $@"select ID,MC,XSSX,SQLSTR FROM DEF_ALERT where 1=1";
+            if (!Data.ID.IsEmpty())
+            {
+                sql += " and ID = " + Data.ID;
+            }
+            DataTable defalert = DbHelper.ExecuteTable(sql);
+
+
+            string sqlItem = $@"select FIELDMC,CHINAMC,WIDTH from ALERT_FIELD where 1=1";
+            if (!Data.ID.IsEmpty())
+            {
+                sqlItem += " and ID = " + Data.ID;
+            }
+            DataTable defalertItem = DbHelper.ExecuteTable(sqlItem);
+            return new Tuple<dynamic, DataTable>(defalert.ToOneLine(), defalertItem);
+        }
+
+
+
         public string SaveAlert(DEF_ALERTEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
@@ -592,7 +614,9 @@ namespace z.ERP.Services
             v.Verify();
             if (DefineSave.ID.IsEmpty())
                 DefineSave.ID = CommonService.NewINC("DEF_ALERT");
-            CommonService.CommonSave(DefineSave);
+
+            DbHelper.Save(DefineSave);
+
             return DefineSave.ID;
         }
 
@@ -612,12 +636,19 @@ namespace z.ERP.Services
         }
 
 
-        public Tuple<DataTable> GetAlertSql(DEF_ALERTEntity Data)
+        public Tuple<DataTable, DataTable> GetAlertSql(DEF_ALERTEntity Data)
         {
             DEF_ALERTEntity alert = new DEF_ALERTEntity();
             alert = DbHelper.Select(new DEF_ALERTEntity() { ID = Data.ID });
             DataTable alertSql = DbHelper.ExecuteTable(alert.SQLSTR);
-            return new Tuple<DataTable>(alertSql);
+
+            string sqlItem = $@"select FIELDMC,CHINAMC,WIDTH from ALERT_FIELD where 1=1";
+            if (!Data.ID.IsEmpty())
+            {
+                sqlItem += " and ID = " + Data.ID;
+            }
+            DataTable alertCol = DbHelper.ExecuteTable(sqlItem);
+            return new Tuple<DataTable, DataTable>(alertSql, alertCol);
         }
     }
 

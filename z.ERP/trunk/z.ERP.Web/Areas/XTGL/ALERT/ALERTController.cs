@@ -1,8 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using z.ERP.Web.Areas.Base;
+using System.Web.Mvc;
 using z.ERP.Entities;
-using z.ERP.Web.Areas.Base;
+using z.MVC5.Results;
 using z.ERP.Web.Areas.Layout.Define;
-using z.Extensions;
 
 namespace z.ERP.Web.Areas.XTGL.ALERT
 {
@@ -25,6 +25,18 @@ namespace z.ERP.Web.Areas.XTGL.ALERT
             v.Require(a => a.ID);
             v.Verify();
             CommenDelete(DefineDelete);
+        }
+
+        public UIResult SearchAlert(DEF_ALERTEntity Data)
+        {
+            var res = service.XtglService.GetAlertElement(Data);
+            return new UIResult(
+                new
+                {
+                    defalert = res.Item1,
+                    item = res.Item2
+                }
+                );
         }
 
     }

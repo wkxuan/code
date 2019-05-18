@@ -250,6 +250,7 @@
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\WYGL\MARCHINAREAR\MarchinArearController.cs" />
     <Compile Include="Areas\WYGL\OPENBUSINESS\OpenBusinessController.cs" />
+    <Compile Include="Areas\XTGL\AlertShow\AlertShowController.cs" />
     <Compile Include="Areas\XTGL\ALERT\ALERTController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFilesController.cs" />
@@ -693,6 +694,7 @@
     <Content Include="Areas\JSGL\Invoice\InvoiceList.cshtml" />
     <Content Include="Areas\JSGL\Invoice\InvoiceEdit.cshtml" />
     <Content Include="Areas\JSGL\Invoice\InvoiceDetail.cshtml" />
+    <Content Include="Areas\XTGL\AlertShow\AlertShow.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

@@ -40,11 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\ALERT_FIELD.cs" />
     <Compile Include="Auto\FEE_ACCOUNTEntity.cs" />
     <Compile Include="Auto\DEF_ALERTEntity.cs" />
     <Compile Include="Auto\FLOORMAPSHOWEntity .cs" />
     <Compile Include="Auto\InvoiceEntity.cs" />
     <Compile Include="Auto\POSUMSCONFIGEntity.cs" />
+    <Compile Include="DEF_ALERT.cs" />
     <Compile Include="FLOORMAPEntity.cs" />
     <Compile Include="Auto\FLOORSHOPEntity.cs" />
     <Compile Include="Auto\FLOORMAPEntity.cs" />
