@@ -46,6 +46,8 @@
     <Compile Include="Auto\FLOORMAPSHOWEntity .cs" />
     <Compile Include="Auto\InvoiceEntity.cs" />
     <Compile Include="Auto\POSUMSCONFIGEntity.cs" />
+    <Compile Include="Auto\ROLE_REGIONEntity.cs" />
+    <Compile Include="Auto\ROLE_YTEntity.cs" />
     <Compile Include="DEF_ALERT.cs" />
     <Compile Include="FLOORMAPEntity.cs" />
     <Compile Include="Auto\FLOORSHOPEntity.cs" />

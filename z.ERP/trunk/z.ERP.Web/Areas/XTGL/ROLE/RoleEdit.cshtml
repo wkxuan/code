@@ -59,7 +59,7 @@
         </i-col>
     </row>
     <row>
-        <i-col span="10">菜单权限
+        <i-col span="8">菜单权限
             <i-table size="small" :border="true" height="370"
                      :columns="screenParam.colDef_Menu" :data="screenParam.USERMODULE"
                      v-on:on-select="screenParam.selectData"
@@ -67,14 +67,14 @@
                      v-on:on-select-cancel="screenParam.selectCancel"></i-table>
         </i-col>
 
-        <i-col span="5">费用项目
+        <i-col span="4">费用项目
             <i-table size="small" :border="true" height="370"
                      :columns="screenParam.colDef_Menufee" :data="screenParam.fee"
                      v-on:on-select="screenParam.selectDatafee"
                      v-on:on-select-all="screenParam.selectDataAllfee"
                      v-on:on-select-cancel="screenParam.selectCancelfee"></i-table>
         </i-col>
-        <i-col span="5">其他权限
+        <i-col span="2">其他权限
         <row>
             <i-col>
                 @{
@@ -88,8 +88,23 @@
                 }
             </i-col>
         </row>
-        </i-col>    
-</row>
+        </i-col>   
+        <i-col span="4">区域
+            <i-table size="small" :border="true" height="370"
+                        :columns="screenParam.colDef_Menuregion" :data="screenParam.region"
+                        v-on:on-select="screenParam.selectDataregion"
+                        v-on:on-select-all="screenParam.selectDataAllregion"
+                        v-on:on-select-cancel="screenParam.selectCancelregion"></i-table>
+        </i-col>
+        
+        <i-col span="4">
+            业态
+            <Tree :data="screenParam.ytTreeData" show-checkbox></Tree>
+        </i-col>         
+    </row>
+    <row>  
+
+    </row>
 }
 
 @section pops{
