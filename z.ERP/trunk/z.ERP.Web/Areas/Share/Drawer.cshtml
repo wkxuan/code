@@ -1,0 +1,10 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<DrawerRender>
+
+@{
+    <Drawer title="@Model.Title" v-model="@Model.vModel"
+            width="@Model.Width" :styles="@Model.Styles"
+            :closable="@Model.Closable" :draggable="@Model.Draggable">
+            @Model.Html
+    </Drawer>
+}
