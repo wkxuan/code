@@ -1,0 +1,132 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Empty
+@inherits EmptyViewBase
+
+@section head{
+}
+
+@section btn{
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "add",
+            Text = "添加",
+            Enable = false
+        });
+    }
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "mod",
+            Text = "修改",
+            Enable = true
+        });
+    }
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "save",
+            Text = "存档",
+            Enable = true
+        });
+    }
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "quit",
+            Text = "放弃",
+            Enable = true
+        });
+    }
+
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "del",
+            Text = "删除",
+            Enable = true
+        });
+    }
+
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "exec",
+            Text = "审核",
+            Enable = true
+        });
+    }
+
+    @{
+        RenderControl(new ButtonRender()
+        {
+            Click = "over",
+            Text = "终止",
+            Enable = true
+        });
+    }
+}
+
+@section content{
+    <row>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "createDrawer",
+                Text = "产生一个侧边栏",
+                Enable = false,
+                Type = "primary"
+            });
+        }
+
+        <Drawer title="侧边栏信息维护区"
+                v-model="showDrawer"
+                width="50%"
+                @*styles="styles"
+                closable="false"
+                draggable="false"*@>
+            <i-input style="width: 150px"></i-input>
+            <i-input style="width: 150px"></i-input>
+            <i-input style="width: 150px"></i-input>
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "sureDrawer",
+                    Text = "Submit",
+                    Enable = false,
+                    Type = "primary"
+                });
+            }
+
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "cancelDrawer",
+                    Text = "Cancel",
+                    Enable = false,
+                    Type = "primary"
+                });
+            }
+        </Drawer>
+    </row>
+    <row>
+        <i-input style="width: 150px"></i-input>
+    </row>
+    <row>
+        <i-input style="width: 150px"></i-input>
+    </row>
+    <row>
+        <i-input style="width: 150px"></i-input>
+    </row>
+    <row>
+        <i-input style="width: 150px"></i-input>
+    </row>
+    <row>
+        <i-input style="width: 150px"></i-input>
+    </row>
+    <row>
+        <i-input style="width: 150px"></i-input>
+    </row>
+}
