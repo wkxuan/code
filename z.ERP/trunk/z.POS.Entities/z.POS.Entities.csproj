@@ -43,6 +43,7 @@
     <Compile Include="Pos\ClerkResultt.cs" />
     <Compile Include="Pos\DealResult.cs" />
     <Compile Include="Pos\Define.cs" />
+    <Compile Include="Pos\DiscountRecord.cs" />
     <Compile Include="Pos\FindGoodsFilter.cs" />
     <Compile Include="Pos\FindGoodsResult.cs" />
     <Compile Include="Pos\FKFSResult.cs" />
