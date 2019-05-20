@@ -4,6 +4,18 @@
 @inherits EmptyViewBase
 
 @section head{
+    <style>
+        .drawer-footer {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid #e8e8e8;
+            padding: 10px 16px;
+            text-align: right;
+            background: #fff;
+        }
+    </style>
 }
 
 @section btn{
@@ -70,63 +82,307 @@
 
 @section content{
     <row>
+        <i-col span="2" class="RowTitle">
+            记录编号
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "BILLID"
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            菜单号
+        </i-col>
+        <i-col span="6">
+            @{
+                //未来为了方便可以用一个初始化表设置,为了控制可以用枚举类型处理，暂定枚举类型
+                RenderControl(new EnumDropDownListRender<审批流程菜单号>()
+                {
+                    vModel = "MENUID",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
         @{
             RenderControl(new ButtonRender()
             {
-                Click = "createDrawer",
-                Text = "产生一个侧边栏",
+                Click = "SpjdDef",
+                Text = "流程节点",
+                Enable = false,
+                Type = "primary"
+            });
+        }
+        <Drawer title="流程节点"
+                v-model="spjdDrawer"
+                width="50%"
+                @*styles="styles"
+                closable="false"
+                draggable="false"*@>
+
+            @*节点信息数据维护*@
+            <row>
+                <i-col span="3" class="RowTitle">
+                    <span class="mustElement">*</span>
+                    节点名称
+                </i-col>
+                <i-col span="8">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "JDNAME",
+                            Enable = false
+                        });
+                    }
+                </i-col>
+            </row>
+
+            <row>
+                <i-col span="3" class="RowTitle">
+                    <span class="mustElement">*</span>
+                    节点类型
+                </i-col>
+                <i-col span="8">
+                    @{
+                        RenderControl(new EnumDropDownListRender<审批流程节点类型>()
+                        {
+                            vModel = "JDTYPE",
+                            Enable = false
+                        });
+                    }
+                </i-col>
+            </row>
+
+            <row>
+                <i-col span="3">
+                    @{
+                        RenderControl(new ButtonRender()
+                        {
+                            Click = "SelRole",
+                            Text = "添加角色",
+                            Enable = false,
+                            Type = "primary",
+                            Icon = "plus-circled"
+                        });
+                    }
+                </i-col>
+
+                <i-col span="8">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "ROLENAME",
+                            Enable = true
+                        });
+                    }
+                </i-col>
+            </row>
+
+            <row>
+                <i-col span="3" class="RowTitle">
+                    <span class="mustElement">*</span>
+                    节点顺序
+                </i-col>
+                <i-col span="8">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "JDINX",
+                            Enable = false
+                        });
+                    }
+                </i-col>
+            </row>
+            <div class="drawer-footer">
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "sureSpjd",
+                        Text = "确认",
+                        Enable = false,
+                        Type = "primary"
+                    });
+                }
+
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "cancelSpjd",
+                        Text = "取消",
+                        Enable = false,
+                        Type = "primary"
+                    });
+                }
+            </div>
+        </Drawer>
+
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "SpjdJg",
+                Text = "流程节点步骤",
                 Enable = false,
                 Type = "primary"
             });
         }
 
-        <Drawer title="侧边栏信息维护区"
-                v-model="showDrawer"
+        <Drawer title="流程节点步骤"
+                v-model="spjdjgDrawer"
                 width="50%"
                 @*styles="styles"
                 closable="false"
                 draggable="false"*@>
-            <i-input style="width: 150px"></i-input>
-            <i-input style="width: 150px"></i-input>
-            <i-input style="width: 150px"></i-input>
+            <div class="drawer-footer">
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "sureSpjdjg",
+                        Text = "确认",
+                        Enable = false,
+                        Type = "primary"
+                    });
+                }
 
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "sureDrawer",
-                    Text = "Submit",
-                    Enable = false,
-                    Type = "primary"
-                });
-            }
-
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "cancelDrawer",
-                    Text = "Cancel",
-                    Enable = false,
-                    Type = "primary"
-                });
-            }
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "cancelSpjdjg",
+                        Text = "取消",
+                        Enable = false,
+                        Type = "primary"
+                    });
+                }
+            </div>
         </Drawer>
     </row>
     <row>
-        <i-input style="width: 150px"></i-input>
+        <i-col span="10">
+
+            @{
+                RenderControl(new TableRender()
+                {
+                    Height = "450",
+                    Size = "small",
+                    Border = "true",
+                    Columns = "colSplcjd",
+                    Data = "SPLCJD",
+                    Ref = "selectSplcjd"
+                });
+            }
+        </i-col>
+
+        <i-col span="14">
+
+            @{
+                RenderControl(new TableRender()
+                {
+                    Height = "300",
+                    Size = "small",
+                    Border = "true",
+                    Columns = "colSplcjg",
+                    Data = "SPLCJG",
+                    Ref = "selectSplcjg"
+                });
+            }
+            <row>
+                <i-col span="2" class="RowTitle">
+                    制单人
+                </i-col>
+                <i-col span="6">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "REPORTER_NAME"
+                        });
+                    }
+                </i-col>
+
+                <i-col span="2" class="RowTitle">
+                    制单时间
+                </i-col>
+                <i-col span="6">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "REPORTER_TIME"
+                        });
+                    }
+                </i-col>
+            </row>
+
+            <row>
+                <i-col span="2" class="RowTitle">
+                    审核人
+                </i-col>
+                <i-col span="6">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "VERIFY_NAME"
+                        });
+                    }
+                </i-col>
+
+                <i-col span="2" class="RowTitle">
+                    审核时间
+                </i-col>
+                <i-col span="6">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "VERIFY_TIME"
+                        });
+                    }
+                </i-col>
+            </row>
+
+
+            <row>
+                <i-col span="2" class="RowTitle">
+                    终止人
+                </i-col>
+                <i-col span="6">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "TERMINATE_NAME"
+                        });
+                    }
+                </i-col>
+
+                <i-col span="2" class="RowTitle">
+                    终止时间
+                </i-col>
+                <i-col span="6">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "TERMINATE_TIME"
+                        });
+                    }
+                </i-col>
+            </row>
+
+        </i-col>
     </row>
+
     <row>
-        <i-input style="width: 150px"></i-input>
-    </row>
-    <row>
-        <i-input style="width: 150px"></i-input>
-    </row>
-    <row>
-        <i-input style="width: 150px"></i-input>
-    </row>
-    <row>
-        <i-input style="width: 150px"></i-input>
-    </row>
-    <row>
-        <i-input style="width: 150px"></i-input>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "showPopRole",
+                    Src = "srcPopRole",
+                    Caption = "选择角色",
+                    Width = "800"
+                });
+            }
+        </i-col>
     </row>
 }
