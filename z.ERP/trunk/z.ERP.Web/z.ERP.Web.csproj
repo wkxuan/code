@@ -341,6 +341,7 @@
     <Content Include="Areas\Pop\Pop\PopBrandList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.js" />
+    <Content Include="Areas\Pop\Pop\PopInvoiceList.js" />
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
     <Content Include="Areas\Pop\Pop\PopFloorMapShow.js" />
     <Content Include="Areas\Pop\Pop\PopStationList.js" />
@@ -700,6 +701,7 @@
     <Content Include="Areas\XTGL\AlertShow\AlertShow.cshtml" />
     <Content Include="Areas\XTGL\SPLC\SPLC.cshtml" />
     <Content Include="Areas\Share\Drawer.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopInvoiceList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
