@@ -702,6 +702,7 @@
     <Content Include="Areas\XTGL\SPLC\SPLC.cshtml" />
     <Content Include="Areas\Share\Drawer.cshtml" />
     <Content Include="Areas\Pop\Pop\PopInvoiceList.cshtml" />
+    <Content Include="Content\VUE\styles\fonts\ionicons.woff2" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
