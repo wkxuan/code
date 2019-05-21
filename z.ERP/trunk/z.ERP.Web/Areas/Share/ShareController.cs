@@ -122,5 +122,10 @@ namespace z.ERP.Web.Areas.Share
         {
             return View(render);
         }
+
+        public ActionResult Table(TableRender render)
+        {
+            return View(render);
+        }
     }
 }

@@ -373,4 +373,20 @@ namespace z.ERP.Entities.Enum
         百万元票 = 5,
         千万元票 = 6
     }
+
+
+    /// <summary>
+    /// 暂时使用未来改成从一个固定表里面获取
+    /// </summary>
+    public enum 审批流程菜单号
+    {
+        租赁合同 = 10600200
+    }
+
+    public enum 审批流程节点类型
+    {
+        开始 = 1,
+        表决 = 2,
+        结束 = 3
+    }
 }
