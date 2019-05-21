@@ -264,7 +264,7 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable> GetStaionElement(STATIONEntity Data)
         {
-            string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID from STATION S where 1=1 ";
+            string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID,S.NETWORK_NODE_ADDRESS from STATION S where 1=1 ";
 
             if (!Data.STATIONBH.IsEmpty())
                 sql += $" and S.STATIONBH = '{ Data.STATIONBH}'";

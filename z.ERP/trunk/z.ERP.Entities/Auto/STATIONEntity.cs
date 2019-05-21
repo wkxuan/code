@@ -64,5 +64,13 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        /// <summary>
+        /// MAC地址
+        /// </summary>
+        [Field("MAC地址")]
+        public string NETWORK_NODE_ADDRESS
+        {
+            get; set;
+        }
     }
 }

@@ -96,6 +96,9 @@ define.otherMethods = {
         }        
         define.screenParam.showPopShop = true;
         define.screenParam.popParam = { BRANCHID: define.dataParam.BRANCHID };
+    },
+    atoA: function () {
+        define.dataParam.NETWORK_NODE_ADDRESS = define.dataParam.NETWORK_NODE_ADDRESS.toUpperCase()
     }
 }
 

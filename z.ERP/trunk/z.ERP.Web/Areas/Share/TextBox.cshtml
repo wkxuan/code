@@ -3,7 +3,7 @@
 
 <i-input id="@Model.Id" v-model="@Model.vModel" 
          placeholder="@Model.Placeholder" :readonly="@Model.Readonly" v-on:on-change="@Model.Change" v-on:on-blur="@Model.blur" 
-         v-on:on-enter="@Model.Enter"
+         v-on:on-enter="@Model.Enter"  v-on:on-keyup="@Model.keyup"
          :disabled="@(Model.Enable?"!disabled":"disabled")"
          type="@Model.type" :rows="@Model.rows">
 </i-input>

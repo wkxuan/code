@@ -2,63 +2,49 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using z.MVC5.Models;
 
 namespace z.ERP.Web.Areas.Share.Render
 {
-    public class TextBoxRender : VueRender
+    public class TableRender : VueRender
     {
         public override string ControllerMothod
         {
             get
             {
-                return "TextBox";
+                return "Table";
             }
         }
-        /// <summary>
-        /// 水印说明
-        /// </summary>
-        public string Placeholder
+
+        public string Height
         {
             get;
             set;
         }
-        public string Readonly
+        public string Size
+        {
+            get;
+            set;
+        }
+        public string Border
         {
             get;
             set;
         }
 
-        public string type
+        public string Columns
         {
             get;
             set;
         }
-
-        public string Change
+        public string Data
         {
             get;
             set;
         }
-        public string Enter
+        public string Ref
         {
             get;
             set;
-        }
-        public string rows
-        {
-            get;
-            set;
-        }
-        public string blur
-        {
-            set;
-            get;
-        }
-        public string keyup
-        {
-            set;
-            get;
         }
     }
 }

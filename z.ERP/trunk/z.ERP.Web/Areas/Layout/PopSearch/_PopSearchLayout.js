@@ -76,11 +76,13 @@
                         window.parent.srch.popCallBack(data)
                     else if (window.parent.search != undefined)
                         window.parent.search.popCallBack(data)
-                    
+
                     else if (window.parent.define != undefined)
                         window.parent.define.popCallBack(data);
+                    else if (window.parent.splc != undefined)
+                        window.parent.splc.popCallBack(data);
                     //清空查询结果
-                    Vue.set(ve.screenParamData, "dataDef",[]);
+                    Vue.set(ve.screenParamData, "dataDef", []);
                     //localStorage.setItem("relt", data);
                     //var site = localStorage.getItem("relt");
                 },

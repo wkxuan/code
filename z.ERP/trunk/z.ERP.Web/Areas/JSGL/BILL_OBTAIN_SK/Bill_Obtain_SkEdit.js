@@ -9,6 +9,8 @@
     //初始化弹窗所要传递参数
     editDetail.screenParam.showPopBill = false;
     editDetail.screenParam.showPopMerchant = false;
+    editDetail.screenParam.showPopInvoice = false;
+    editDetail.screenParam.srcPopInvoice = __BaseUrl + "/" + "Pop/Pop/PopInvoiceList/";
     editDetail.screenParam.srcPopBill = __BaseUrl + "/" + "Pop/Pop/PopBillList/";
     editDetail.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
 
@@ -70,6 +72,45 @@
     }
     ];
 
+    //发票pop
+    editDetail.screenParam.colDefI = [
+        { title: "发票号码", key: "INVOICENUMBER", width: 120},
+        { title: "商户", key: "MERCHANTNAME", width: 200},
+        { title: "发票类型", key: "TYPENAME", width: 100 },
+        {
+            title: "开票日期", key: "INVOICEDATE", width: 115,
+            render: function (h, params) {
+                return h('div',
+                    this.row.INVOICEDATE.substr(0, 10));
+            }
+        },
+        { title: "不含税金额", key: "NOVATAMOUNT", width: 100 },
+        { title: "增值税金额", key: "VATAMOUNT", width: 100 },
+        { title: "发票金额", key: "INVOICEAMOUNT", width: 100 },
+        {
+            title: '操作',
+            key: 'action',
+            width: 80,
+            align: 'center',
+            render: function (h, params) {
+                return h('div',
+                    [
+                    h('Button', {
+                        props: { type: 'primary', size: 'small', disabled: false },
+
+                        style: { marginRight: '50px' },
+                        on: {
+                            click: function (event) {
+                                editDetail.dataParam.BILL_OBTAIN_INVOICE.splice(params.index, 1);
+                            }
+                        },
+                    }, '删除')
+                    ]);
+            }
+        }
+    ];
+
+
     if (!editDetail.dataParam.BILL_OBTAIN_ITEM) {
         editDetail.dataParam.BILL_OBTAIN_ITEM = [{
             FINAL_BILLID: "",
@@ -77,18 +118,29 @@
             MUST_MONEY: "",
         }]
     }
+    //发票数据初始化
+    if (!editDetail.dataParam.BILL_OBTAIN_INVOICE) {
+        debugger
+        editDetail.dataParam.BILL_OBTAIN_INVOICE = []
+    }
     editDetail.screenParam.addCol = function () {
+        debugger
         var temp = editDetail.dataParam.BILL_OBTAIN_ITEM || [];
+        var tempI = editDetail.dataParam.BILL_OBTAIN_INVOICE || [];
         temp.push({});
+        tempI.push({});
         editDetail.dataParam.BILL_OBTAIN_ITEM = temp;
+        editDetail.dataParam.BILL_OBTAIN_INVOICE = tempI;
     }
 }
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchBill_Obtain', {
         Data: { BILLID: data }
     }, function (data) {
+        debugger
         $.extend(editDetail.dataParam, data.billObtain);
         editDetail.dataParam.BILL_OBTAIN_ITEM = data.billObtainItem;
+        editDetail.dataParam.BILL_OBTAIN_INVOICE = data.billObtainInvoice || [];
         callback && callback(data);
     });
 }
@@ -113,6 +165,19 @@ editDetail.otherMethods = {
         };
         editDetail.screenParam.showPopBill = true;
         editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID,WFDJ : 1 };
+    },
+
+    SelInvoice: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info("请选择分店!");
+            return;
+        };
+        if (!editDetail.dataParam.MERCHANTID) {
+            iview.Message.info("请选择商户!");
+            return;
+        };
+        editDetail.screenParam.showPopInvoice = true;
+        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID };
     },
 
     YfkChange: function () {
@@ -163,6 +228,21 @@ editDetail.popCallBack = function (data) {
             editDetail.dataParam.MERCHANTNAME = data.sj[i].NAME;
             editDetail.dataParam.MERCHANT_MONEY = data.sj[i].MERCHANT_MONEY;
         }
+    } else if (editDetail.screenParam.showPopInvoice) {   //发票返回参数回填
+        editDetail.screenParam.showPopInvoice = false;        
+        for (var i = 0; i < data.sj.length; i++) {
+            editDetail.dataParam.BILL_OBTAIN_INVOICE.push({
+                INVOICENUMBER: data.sj[i].INVOICENUMBER,
+                MERCHANTNAME: data.sj[i].MERCHANTNAME,
+                TYPENAME: data.sj[i].TYPENAME,
+                INVOICEDATE: data.sj[i].INVOICEDATE,
+                NOVATAMOUNT: data.sj[i].NOVATAMOUNT,
+                VATAMOUNT: data.sj[i].VATAMOUNT,
+                INVOICEAMOUNT: data.sj[i].INVOICEAMOUNT,
+                INVOICEID:data.sj[i].INVOICEID,
+                TYPE: 1
+            });
+        }
     }
 }
 
@@ -178,6 +258,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.ALL_MONEY = 0;
     editDetail.dataParam.ADVANCE_MONEY = 0;
     editDetail.dataParam.BILL_OBTAIN_ITEM = [];
+    editDetail.dataParam.BILL_OBTAIN_INVOICE = [];
 }
 
 editDetail.IsValidSave = function () {

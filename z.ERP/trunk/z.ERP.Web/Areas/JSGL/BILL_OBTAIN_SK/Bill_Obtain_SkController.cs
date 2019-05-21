@@ -34,6 +34,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
             var entity = service.JsglService.GetBillObtainElement(new BILL_OBTAINEntity(Id));
             ViewBag.billObtain = entity.Item1;
             ViewBag.billObtainItem = entity.Item2;
+            ViewBag.billObtainInvoice = entity.Item3;
             return View(entity);
         }
 
@@ -58,8 +59,9 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
                 new
                 {
                     billObtain = res.Item1,
-                    billObtainItem = res.Item2
-                }
+                    billObtainItem = res.Item2,
+                    billObtainInvoice = res.Item3,
+        }
                 );
         }
         public ActionResult Bill_Obtain_SkPrint(string Id)

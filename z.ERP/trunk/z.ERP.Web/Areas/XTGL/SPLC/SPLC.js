@@ -1,17 +1,39 @@
-﻿var aaa = '<i-input style="width: 150px"></i-input>'
-
-var period = new Vue({
+﻿var splc = new Vue({
     el: "#List_Main",
     data: {
-        showDrawer: false,
-        stylesDrawer: {
-            height: 'calc(100% - 55px)',
-            overflow: 'auto',
-            paddingBottom: '53px',
-            position: 'static'
-        },
+        spjdDrawer: false,
+        spjdjgDrawer: false,
+        colSplcjd: [
+            { title: '节点名称', key: 'JDNAME', width: 200 },
+            { title: '类型', key: 'JDTYPE', width: 80 },
+            { title: '角色组', key: 'ROLENAME', width: 100 },
+            { title: '顺序', key: 'JDINX', width: 80 }
+        ],
+        SPLCJD: [],
+
+        colSplcjg: [
+            { title: '结果ID', key: 'JGID', width: 100 },
+            { title: '条件描述', key: 'TJMC', width: 200 },
+            { title: '结果类型', key: 'JGTYPE', width: 100 },
+            { title: '结果描述', key: 'JGMC', width: 200 }
+        ],
+        SPLCJG: [],
         disabled: false,
-        DrawerHtml: '<i-input style="width: 150px"></i-input>'
+        BILLID: "",
+        MENUID: "",
+        JDNAME: "",
+        JDTYPE: "",
+        ROLEID: "",
+        ROLENAME: "",
+        JDINX: "",
+        REPORTER_NAME: "",
+        REPORTER_TIME: "",
+        VERIFY_NAME: "",
+        VERIFY_TIME: "",
+        TERMINATE_NAME: "",
+        TERMINATE_TIME: "",
+        showPopRole: false,
+        srcPopRole: __BaseUrl + "/" + "Pop/Pop/PopRoleList/"
     },
     methods: {
         add: function () { },
@@ -21,14 +43,40 @@ var period = new Vue({
         del: function () { },
         exec: function () { },
         over: function () { },
-        createDrawer: function () {
-            this.showDrawer = true;
+        SpjdDef: function () {
+            this.spjdDrawer = true;
         },
-        sureDrawer: function () {
-            this.showDrawer = false;
+        sureSpjd: function () {
+            this.spjdDrawer = false;
         },
-        cancelDrawer: function () {
-            this.showDrawer = false;
+        cancelSpjd: function () {
+            this.spjdDrawer = false;
         },
+        SpjdJg: function () {
+            if (this.SPLCJD.length == 0) {
+                iview.Message.info("请先定义审批流程节点!");
+                return;
+            };
+            this.spjdjgDrawer = true;
+        },
+        sureSpjdjg: function () {
+            this.spjdjgDrawer = false;
+        },
+        cancelSpjdjg: function () {
+            this.spjdjgDrawer = false;
+        },
+        SelRole: function () {
+            this.showPopRole = true;
+        }
     }
-})
+});
+
+splc.popCallBack = function (data) {
+    if (splc.showPopRole) {
+        splc.showPopRole = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            splc.ROLEID = data.sj[i].ROLEID;
+            splc.ROLENAME = data.sj[i].ROLENAME;
+        };
+    };
+};

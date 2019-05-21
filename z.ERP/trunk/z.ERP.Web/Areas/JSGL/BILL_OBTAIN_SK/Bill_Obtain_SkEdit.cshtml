@@ -133,6 +133,25 @@
                      :columns="screenParam.colDef" :data="dataParam.BILL_OBTAIN_ITEM"></i-table>
         </i-col>
     </row>
+    <br />
+    <br />
+    <row>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "SelInvoice",
+                Text = "选择发票",
+                Enable = true,
+                Type = "primary",
+                Icon = "plus-circled"
+            });
+        }
+        <i-col span="24">
+            <i-table size="small" :border="true"
+                     :columns="screenParam.colDefI" :data="dataParam.BILL_OBTAIN_INVOICE"></i-table>
+        </i-col>
+    </row>
+
 }
 
 @section pops{
@@ -162,5 +181,19 @@
             }
         </i-col>
     </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopInvoice",
+                    Caption = "选择发票",
+                    Width = "900",
+                    Src = "screenParam.srcPopInvoice"
+                });
+            }
+        </i-col>
+    </row>
+
 }
 

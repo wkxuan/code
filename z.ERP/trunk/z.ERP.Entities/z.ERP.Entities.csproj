@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto\ALERT_FIELD.cs" />
+    <Compile Include="Auto\BILL_OBTAIN_INVOICEEntity.cs" />
     <Compile Include="Auto\FEE_ACCOUNTEntity.cs" />
     <Compile Include="Auto\DEF_ALERTEntity.cs" />
     <Compile Include="Auto\FLOORMAPSHOWEntity .cs" />

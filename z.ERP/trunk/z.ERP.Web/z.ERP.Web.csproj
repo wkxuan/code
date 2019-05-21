@@ -208,6 +208,7 @@
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
     <Compile Include="Areas\Report\PayTypeSale\PayTypeSaleController.cs" />
     <Compile Include="Areas\Report\SaleRecord\SaleRecordController.cs" />
+    <Compile Include="Areas\Share\Render\TableRender.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
     <Compile Include="Areas\Share\Render\DrawerRender.cs" />
@@ -703,6 +704,7 @@
     <Content Include="Areas\Share\Drawer.cshtml" />
     <Content Include="Areas\Pop\Pop\PopInvoiceList.cshtml" />
     <Content Include="Content\VUE\styles\fonts\ionicons.woff2" />
+    <Content Include="Areas\Share\Table.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
