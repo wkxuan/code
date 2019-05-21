@@ -227,8 +227,11 @@ namespace z.POS80.Services
                 int payRecordCount = 0;
                 if (request.payRecord != null)
                     payRecordCount = request.payRecord.Count;
+                int discountCount = 0;
+                if (request.discountlist != null)
+                    discountCount = request.discountlist.Count;
 
-                string[] sqlarr = new string[1 + goodsCount + payCount + clerkCount + payRecordCount];  // + goodsCount * payCount
+                string[] sqlarr = new string[1 + goodsCount + payCount + clerkCount + payRecordCount + discountCount];  // + goodsCount * payCount
 
                 sqlarr[0] = "insert into xsjl(sktno,jlbh,jysj,jzrq,sky,xsje,";
                 sqlarr[0] += "zlje,vipid,xfjlid,sktno_old,jlbh_old)";
@@ -304,6 +307,17 @@ namespace z.POS80.Services
                         sqlarr[i] += "sysdate)";
                     else
                         sqlarr[i] += $" to_date('{request.payRecord[j].opertime}', 'yyyy-mm-dd HH24:MI:SS'))";
+                    j++;
+                }
+
+                //xsjlc_zk
+                j = 0;
+                for (int i = 1 + goodsCount + payCount + clerkCount + payRecordCount; i <= goodsCount + payCount + clerkCount + payRecordCount + discountCount; i++)
+                {
+                    sqlarr[i] = "insert into XSJLC_ZK(sktno,jlbh,tckt_inx,inx,zklx,zkje,zkl,refno)";
+                    sqlarr[i] += $"values('{posNo}',{request.dealid},{request.discountlist[j].sheetid},{request.discountlist[j].inx},";
+                    sqlarr[i] += $"'{request.discountlist[j].type}','{request.discountlist[j].amount}',{request.discountlist[j].rate},";
+                    sqlarr[i] += $"{request.discountlist[j].refno})";
                     j++;
                 }
 
@@ -1422,15 +1436,12 @@ namespace z.POS80.Services
                     //   ErpProcS80.CheckGoodCanVIPZK(posNo, ref GoodsList, out msg);
 
                     //如果有VIP折扣。就要处理一下VIP和后台的有关系　
-                    //   ErpProcFunc.ProcGoodDisc(posNo, GoodsList, ref msg);
+                    ProcGoodDisc(posNo, GoodsList, ref msg);
                 }
 
                 for (i = 0; i < GoodsList.Count(); i++)
                 {
-                    GoodsList[i].Discount = GoodsList[i].FrontDiscount + GoodsList[i].BackDiscount
-                        + GoodsList[i].MemberDiscount + GoodsList[i].DecreaseDiscount + GoodsList[i].ChangeDiscount;
-
-                    //CommonUtils.GetSPDisc(GoodsList[i]);
+                    GoodsList[i].Discount = GetSPDisc(GoodsList[i]);
                 }
 
                // int mTotalYQJE = 0;
@@ -1765,16 +1776,13 @@ namespace z.POS80.Services
 
                     AssignGoodToUniGood(GoodsList[i], out uniGood);
 
-                    uniGood.discount = GoodsList[i].FrontDiscount + GoodsList[i].BackDiscount + GoodsList[i].MemberDiscount
-                        + GoodsList[i].DecreaseDiscount + GoodsList[i].ChangeDiscount;
-
-                    //GetSPDisc(GoodsList[i]);
+                    uniGood.discount = GetSPDisc(GoodsList[i]);
 
 
                     //    CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<3.2.7> ");
 
                     //2016.02.17：输出数据时，折扣计入
-                    uniGood.saleMoney = uniGood.saleMoney - uniGood.discount;
+                    uniGood.saleMoney = RoundMoney(uniGood.saleMoney - uniGood.discount);
                     desc.GoodsList.Add(uniGood);
 
                     //     CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<3.2.8> ");
@@ -1951,7 +1959,7 @@ namespace z.POS80.Services
                 Coupon CurCoupon;
                 CouponPayLimit CurLimit;
 
-                //2016.12.13：原来:顺序按:券的顺序  修改后:顺序按:可用顺序
+                //原来:顺序按:券的顺序  修改后:顺序按:可用顺序
                 //第一级循环:payLimits, 第二级:PayCoupon 
                 for (i = 0; i < payLimits.Length; i++)
                 {
@@ -2868,7 +2876,7 @@ namespace z.POS80.Services
                     GoodItem.Name = ReqConfirm.goodsList[i].name;
                     GoodItem.Price = ReqConfirm.goodsList[i].price;
                     GoodItem.SaleCount = ReqConfirm.goodsList[i].count;
-                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable; //+ ReqConfirm.goodsList[i].totalOffAmount;
+                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable + ReqConfirm.goodsList[i].totalOffAmount;
 
                     /* if (ProjectName_TJ_JYB.Equals(ProjectName))
                      {
@@ -3142,7 +3150,8 @@ namespace z.POS80.Services
 
                 //sale_goods
                 List<GoodsResult> goodsLst = new List<GoodsResult>();
-                
+                List<DiscountRecord> disLst = new List<DiscountRecord>();
+
 
                 for (int g = 0; g <= GoodList.Count - 1; g++)
                 {
@@ -3153,14 +3162,83 @@ namespace z.POS80.Services
                     goodsOne.goodscode = GoodList[g].Code;
                     goodsOne.price = decimal.Parse(GoodList[g].Price.ToString());
                     goodsOne.quantity = float.Parse(GoodList[g].SaleCount.ToString());
-                    goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney ).ToString());  //- GoodList[g].Discount
+                    goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney - GoodList[g].Discount).ToString()) ;
                     goodsOne.discount_amount = decimal.Parse(GoodList[g].Discount.ToString());
                     goodsOne.coupon_amount = decimal.Parse((GoodList[g].PreferentialMoney + GoodList[g].DecreasePreferential).ToString());
                     goodsOne.shopid = GoodList[g].DeptId;
                     goodsLst.Add(goodsOne);
+
+                    //xsjlc_zk
+                    if ((GoodList[g].FrontDiscount != 0) && (GoodList[g].SaleMoney != 0))
+                    {
+                        DiscountRecord disOne = new DiscountRecord();
+                        disOne.sheetid = 0;
+                        disOne.inx = g;
+                        disOne.type = (int)DicountType.XSZKTYPE_QTZK;    //1前台折扣
+                        disOne.amount = GoodList[g].SaleMoney;
+                        disOne.rate = Math.Round(GoodList[g].FrontDiscount / GoodList[g].SaleMoney, 4);
+                        disOne.refno = 0;
+
+                        disLst.Add(disOne);
+                    }
+
+                    if ((GoodList[g].MemberDiscount != 0) && (GoodList[g].SaleMoney != 0))
+                    {
+                        DiscountRecord disOne = new DiscountRecord();
+                        disOne.sheetid = 0;
+                        disOne.inx = g;
+                        disOne.type = (int)DicountType.XSZKTYPE_VIPZK;    //1VIP折扣
+                        disOne.amount = GoodList[g].SaleMoney;
+                        disOne.rate = Math.Round(GoodList[g].MemberDiscount / GoodList[g].SaleMoney, 4);
+                        disOne.refno = 0;
+
+                        disLst.Add(disOne);
+                    }
+
+                    if ((GoodList[g].BackDiscount != 0) && (GoodList[g].SaleMoney != 0))
+                    {
+                        DiscountRecord disOne = new DiscountRecord();
+                        disOne.sheetid = 0;
+                        disOne.inx = g;
+                        disOne.type = (int)DicountType.XSZKTYPE_HTZK;    //3后台折扣
+                        disOne.amount = GoodList[g].SaleMoney;
+                        disOne.rate = Math.Round(GoodList[g].BackDiscount / GoodList[g].SaleMoney, 4);
+                        disOne.refno = GoodList[g].IRefNo_ZK;
+
+                        disLst.Add(disOne);
+                    }
+
+                    if ((GoodList[g].DiscoaddDiscount != 0) && (GoodList[g].SaleMoney != 0))
+                    {
+                        DiscountRecord disOne = new DiscountRecord();
+                        disOne.sheetid = 0;
+                        disOne.inx = g;
+                        disOne.type = (int)DicountType.XSZKTYPE_MBJZ;    //4满佰减折
+                        disOne.amount = GoodList[g].SaleMoney;
+                        disOne.rate = Math.Round(GoodList[g].DiscoaddDiscount / GoodList[g].SaleMoney, 4);
+                        disOne.refno = GoodList[g].IRefNo_MJ;
+
+                        disLst.Add(disOne);
+                    }
+
+                    if ((GoodList[g].ChangeDiscount != 0) && (GoodList[g].SaleMoney != 0))
+                    {
+                        DiscountRecord disOne = new DiscountRecord();
+                        disOne.sheetid = 0;
+                        disOne.inx = g;
+                        disOne.type = (int)DicountType.XSZKTYPE_SLZK;    //6舍零折扣
+                        disOne.amount = GoodList[g].SaleMoney;
+                        disOne.rate = Math.Round(GoodList[g].ChangeDiscount / GoodList[g].SaleMoney, 4);
+
+                        disLst.Add(disOne);
+                    }
                 }
 
                 saleReq.goodslist = goodsLst;
+                if (disLst.Count <= 0)
+                    saleReq.discountlist = null;
+                else
+                    saleReq.discountlist = disLst;
 
                 //sale_pay
                 List<PayResult> payLst = new List<PayResult>();
@@ -4894,7 +4972,7 @@ namespace z.POS80.Services
                     GoodItem.Name = ReqConfirm.goodsList[i].name;
                     GoodItem.Price = ReqConfirm.goodsList[i].price;
                     GoodItem.SaleCount = ReqConfirm.goodsList[i].count;
-                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable; //+ ReqConfirm.goodsList[i].totalOffAmount;
+                    GoodItem.SaleMoney = ReqConfirm.goodsList[i].accountsPayable + ReqConfirm.goodsList[i].totalOffAmount;
 
                     GoodItem.BackDiscount = GoodItem.BackDiscount * -1;
                     GoodItem.MemberDiscount = GoodItem.MemberDiscount * -1;
@@ -5549,6 +5627,7 @@ namespace z.POS80.Services
 
                 //sale_goods
                 List<GoodsResult> goodsLst = new List<GoodsResult>();
+                List<DiscountRecord> disLst = new List<DiscountRecord>();
 
                 for (int g = 0; g <= goodsList.Count - 1; g++)
                 {
@@ -5559,14 +5638,85 @@ namespace z.POS80.Services
                     goodsOne.goodscode = goodsList[g].Code;
                     goodsOne.price = decimal.Parse(goodsList[g].Price.ToString());
                     goodsOne.quantity = float.Parse(goodsList[g].SaleCount.ToString());
-                    goodsOne.sale_amount = decimal.Parse((goodsList[g].SaleMoney ).ToString());  //- goodsList[g].Discount
+                    goodsOne.sale_amount = decimal.Parse((goodsList[g].SaleMoney - goodsList[g].Discount).ToString());  
                     goodsOne.discount_amount = decimal.Parse(goodsList[g].Discount.ToString());
                     goodsOne.coupon_amount = decimal.Parse((goodsList[g].PreferentialMoney + goodsList[g].DecreasePreferential).ToString());
                     goodsOne.shopid = goodsList[g].DeptId;
                     goodsLst.Add(goodsOne);
+
+
+                    //xsjlc_zk
+                    if ((goodsList[g].FrontDiscount != 0) && (goodsList[g].SaleMoney != 0))
+                    {
+                        DiscountRecord disOne = new DiscountRecord();
+                        disOne.sheetid = 0;
+                        disOne.inx = g;
+                        disOne.type = (int)DicountType.XSZKTYPE_QTZK;    //1前台折扣
+                        disOne.amount = goodsList[g].SaleMoney;
+                        disOne.rate = Math.Round(goodsList[g].FrontDiscount / goodsList[g].SaleMoney, 4);
+                        disOne.refno = 0;
+
+                        disLst.Add(disOne);
+                    }
+
+                    if ((goodsList[g].MemberDiscount != 0) && (goodsList[g].SaleMoney != 0))
+                    {
+                        DiscountRecord disOne = new DiscountRecord();
+                        disOne.sheetid = 0;
+                        disOne.inx = g;
+                        disOne.type = (int)DicountType.XSZKTYPE_VIPZK;    //1VIP折扣
+                        disOne.amount = goodsList[g].SaleMoney;
+                        disOne.rate = Math.Round(goodsList[g].MemberDiscount / goodsList[g].SaleMoney, 4);
+                        disOne.refno = 0;
+
+                        disLst.Add(disOne);
+                    }
+
+                    if ((goodsList[g].BackDiscount != 0) && (goodsList[g].SaleMoney != 0))
+                    {
+                        DiscountRecord disOne = new DiscountRecord();
+                        disOne.sheetid = 0;
+                        disOne.inx = g;
+                        disOne.type = (int)DicountType.XSZKTYPE_HTZK;    //3后台折扣
+                        disOne.amount = goodsList[g].SaleMoney;
+                        disOne.rate = Math.Round(goodsList[g].BackDiscount / goodsList[g].SaleMoney, 4);
+                        disOne.refno = goodsList[g].IRefNo_ZK;
+
+                        disLst.Add(disOne);
+                    }
+
+                    if ((goodsList[g].DiscoaddDiscount != 0) && (goodsList[g].SaleMoney != 0))
+                    {
+                        DiscountRecord disOne = new DiscountRecord();
+                        disOne.sheetid = 0;
+                        disOne.inx = g;
+                        disOne.type = (int)DicountType.XSZKTYPE_MBJZ;    //4满佰减折
+                        disOne.amount = goodsList[g].SaleMoney;
+                        disOne.rate = Math.Round(goodsList[g].DiscoaddDiscount / goodsList[g].SaleMoney, 4);
+                        disOne.refno = goodsList[g].IRefNo_MJ;
+
+                        disLst.Add(disOne);
+                    }
+
+                    if ((goodsList[g].ChangeDiscount != 0) && (goodsList[g].SaleMoney != 0))
+                    {
+                        DiscountRecord disOne = new DiscountRecord();
+                        disOne.sheetid = 0;
+                        disOne.inx = g;
+                        disOne.type = (int)DicountType.XSZKTYPE_SLZK;    //6舍零折扣
+                        disOne.amount = goodsList[g].SaleMoney;
+                        disOne.rate = Math.Round(goodsList[g].ChangeDiscount / goodsList[g].SaleMoney, 4);
+
+                        disLst.Add(disOne);
+                    }
                 }
 
                 saleReq.goodslist = goodsLst;
+
+                if (disLst.Count <= 0)
+                    saleReq.discountlist = null;
+                else
+                    saleReq.discountlist = disLst;
 
                 //sale_pay
                 List<PayResult> payLst = new List<PayResult>();
@@ -6506,6 +6656,63 @@ namespace z.POS80.Services
             return true;
         }
 
+        /*功能:处理商品折扣*/
+        public bool ProcGoodDisc(string posId, List<Goods> GoodsList, ref string msg)
+        {
+            bool result = false;
+            //  string sVer = "";
+            //   sVer = CommonUtils.GetReqStr(CommonUtils.ConfigName_Version);
+            //   if (!sVer.Equals(ErpProc.Version_Project_JH))
+            //       return false;
+
+            //   CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.1> 会员和前台 哪个大用哪个 商品列表 " + MethodInput.Serialize(GoodsList));
+            for (int i = 0; i <= GoodsList.Count - 1; i++)
+            {
+                //如果商品为null,或者ID小于或者等于0，则不处理这一条                
+                if (GoodsList[i] == null)
+                    continue;
+                if (GoodsList[i].Id <= 0)
+                    continue;
+
+                if (GoodsList[i].MemberDiscount <= 0)
+                {
+                    //   CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.2.1> 不处理_会员折:" + GoodsList[i].MemberDiscount);
+                    continue;
+                }
+
+                if (GoodsList[i].FrontDiscount <= 0)
+                {
+                    //  CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.2.2> 不处理_前台折:" + GoodsList[i].FrontDiscount);
+                    continue;
+                }
+
+                // CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.3.1> 前台折[" + GoodsList[i].FrontDiscount + "]" +
+                //      " 会员折[" + GoodsList[i].MemberDiscount + "]");
+
+                if (GoodsList[i].MemberDiscount > GoodsList[i].FrontDiscount)
+                {
+                    GoodsList[i].FrontDiscount = 0;
+                    //   CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.3.2> 前台折清0[" + GoodsList[i].FrontDiscount + "]" +
+                    //    " 会员折[" + GoodsList[i].MemberDiscount + "]");
+                }
+                else if (GoodsList[i].MemberDiscount < GoodsList[i].FrontDiscount)
+                {
+                    GoodsList[i].MemberDiscount = 0;
+                    //   CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.3.3> 后台折[" + GoodsList[i].FrontDiscount + "]" +
+                    //   " 会员折清0[" + GoodsList[i].MemberDiscount + "]");
+                }
+                else
+                {
+                    GoodsList[i].FrontDiscount = 0;
+                    //   CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.3.5> 两个折相等 前台折清0[" + GoodsList[i].BackDiscount + "] " +
+                    //   " 保流会员折[" + GoodsList[i].MemberDiscount + "]");
+                }
+            }
+
+            //  CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.5> 处理完成");
+            return result;
+
+        }
 
 
     }

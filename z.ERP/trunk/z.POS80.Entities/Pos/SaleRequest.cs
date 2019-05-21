@@ -67,5 +67,11 @@ namespace z.POS80.Entities.Pos
             get; set;
         }
 
+        public List<DiscountRecord> discountlist
+        {
+            get;
+            set;
+        }
+
     }
 }
