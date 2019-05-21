@@ -28,7 +28,7 @@ namespace z.ERP.Services
 
         public LoginConfigInfo GetConfig()
         {
-            string sql = " select S.BRANCHID,B.CRMSTORECODE,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME"
+            string sql = " select S.BRANCHID,B.CRMSTORECODE,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,UPPER(trim(S.NETWORK_NODE_ADDRESS)) MACADDRESS"
                        + " from BRANCH B,STATION S,SHOP P,SYSUSER R"
                        + " where B.ID= S.BRANCHID and S.SHOPID=R.SHOPID"
                        + "  AND R.USER_TYPE in (1,2) "
@@ -63,6 +63,32 @@ namespace z.ERP.Services
             return lgi;
 
         }
+
+        public void BindAddress(Address ads)
+        {
+            if (ads.address.IsEmpty())
+            {
+                throw new Exception("MAC地址为空！");
+            }
+
+            string address = ads.address;
+
+            string sql = $"update STATION set NETWORK_NODE_ADDRESS=UPPER(trim('{address}')) where STATIONBH = '{employee.PlatformId}' and trim(NETWORK_NODE_ADDRESS) is null";
+
+            try
+            {
+                int icount = DbHelper.ExecuteNonQuery(sql);
+
+                if (icount == 0)
+                {
+                    throw new Exception("该终端已绑定MAC地址,不能重复绑定！");
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception("绑定MAC地址出错:" + e.ToString());
+            }
+         }
 
 
 
