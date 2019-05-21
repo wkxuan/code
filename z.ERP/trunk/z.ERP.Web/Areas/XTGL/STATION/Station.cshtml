@@ -99,6 +99,19 @@
                 });
             }
         </i-col>
+        <i-col span="3" class="RowTitle">
+            MAC地址
+        </i-col>
+        <i-col span="5">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.NETWORK_NODE_ADDRESS",
+                    Enable = false,
+                    keyup="atoA"
+                });
+            }
+        </i-col>
     </row>
     <row>
         <i-col span="3" class="RowTitle">

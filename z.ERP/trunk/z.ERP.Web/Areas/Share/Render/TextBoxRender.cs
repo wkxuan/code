@@ -55,5 +55,10 @@ namespace z.ERP.Web.Areas.Share.Render
             set;
             get;
         }
+        public string keyup
+        {
+            set;
+            get;
+        }
     }
 }
