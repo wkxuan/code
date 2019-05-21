@@ -1,6 +1,6 @@
 ﻿search.beforeVue = function () {
     var col = [
-        { title: "发票号码", key: "INVOICENUMBER", width: 100, sortable: true },
+        { title: "发票号码", key: "INVOICENUMBER", width: 120, sortable: true },
         { title: "商户", key: "MERCHANTNAME", width: 200, sortable: true },
         { title: "发票类型", key: "TYPENAME", width: 100 },
         {

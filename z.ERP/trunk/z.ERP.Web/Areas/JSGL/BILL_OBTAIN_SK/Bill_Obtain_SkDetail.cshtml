@@ -91,6 +91,12 @@
                      :columns="colDef" :data="OBTAIN_ITEM" height="350"></i-table>
         </i-col>
     </row>
+    <row>
+        <i-col span="18">
+            <i-table size="small" :border="true"
+                     :columns="colDefI" :data="OBTAIN_INVOICE" height="350"></i-table>
+        </i-col>
+    </row>
 }
 @section foot{
     <script type="text/javascript">
@@ -122,7 +128,22 @@
                 { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
                 { title: '付款金额', key: 'RECEIVE_MONEY', width: 100 },
                 ],
-                OBTAIN_ITEM:[]
+                colDefI : [
+                { title: "发票号码", key: "INVOICENUMBER", width: 120},
+                { title: "商户", key: "MERCHANTNAME", width: 200},
+                { title: "发票类型", key: "TYPENAME", width: 100 },
+                {
+                    title: "开票日期", key: "INVOICEDATE", width: 115,
+                    render: function (h, params) {
+                        return h('div',
+                            this.row.INVOICEDATE.substr(0, 10));
+                    }
+                },
+                { title: "不含税金额", key: "NOVATAMOUNT", width: 100 },
+                { title: "增值税金额", key: "VATAMOUNT", width: 100 },
+                { title: "发票金额", key: "INVOICEAMOUNT", width: 100 }],
+                OBTAIN_ITEM:[],
+                OBTAIN_INVOICE:[]
             },
             mounted:function(){
                 var _self = this;
@@ -130,6 +151,7 @@
                     Data: { BILLID: @billObtain.BILLID }
                 }, function (data) {
                     _self.OBTAIN_ITEM = data.billObtainItem;
+                    _self.OBTAIN_INVOICE = data.billObtainInvoice;
                 });
             },
             methods: {

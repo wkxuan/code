@@ -372,6 +372,11 @@ namespace z.ERP.Services
                 {
                     GetVerify(item).Require(a => a.FINAL_BILLID);
                 });
+                //账单发票保存
+                SaveData.BILL_OBTAIN_INVOICE?.ForEach(item =>
+                {
+                    GetVerify(item).Require(a => a.INVOICEID);
+                });
                 DbHelper.Save(SaveData);
 
                 Tran.Commit();
@@ -379,7 +384,7 @@ namespace z.ERP.Services
             return SaveData.BILLID;
         }
 
-        public Tuple<dynamic, DataTable> GetBillObtainElement(BILL_OBTAINEntity Data)
+        public Tuple<dynamic, DataTable, DataTable> GetBillObtainElement(BILL_OBTAINEntity Data)
         {
             string sql = $@"SELECT A.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME,D.NAME FKFSNAME "
                         + "FROM BILL_OBTAIN A,BRANCH B,MERCHANT C,FKFS D "
@@ -397,7 +402,15 @@ namespace z.ERP.Services
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
 
-            return new Tuple<dynamic, DataTable>(billObtain.ToOneLine(), billObtainItem);
+            //发票数据
+            string sqlinvoice = @"SELECT B.BILLID,B.TYPE BTYPE,M.NAME MERCHANTNAME,I.* FROM BILL_OBTAIN_INVOICE B,INVOICE I,MERCHANT M
+                    WHERE B.INVOICEID=I.INVOICEID AND I.MERCHANTID=M.MERCHANTID";
+            if (!Data.BILLID.IsEmpty())
+                sqlitem += (" and B.BILLID= " + Data.BILLID);
+            DataTable billObtainInvoice = DbHelper.ExecuteTable(sqlinvoice);
+            billObtainInvoice.NewEnumColumns<发票类型>("TYPE", "TYPENAME");
+
+            return new Tuple<dynamic, DataTable, DataTable>(billObtain.ToOneLine(), billObtainItem, billObtainInvoice);
         }
 
         /// <summary>
