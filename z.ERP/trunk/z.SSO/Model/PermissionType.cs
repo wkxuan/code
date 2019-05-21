@@ -31,6 +31,14 @@ namespace z.SSO.Model
         /// <summary>
         /// 收费项目
         /// </summary>
-        Feesubject = 5
+        Feesubject = 5,
+        /// <summary>
+        /// 区域
+        /// </summary>
+        Region = 6,
+        /// <summary>
+        /// 业态
+        /// </summary>
+        Category = 7            
     }
 }

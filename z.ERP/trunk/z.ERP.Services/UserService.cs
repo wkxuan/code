@@ -112,19 +112,19 @@ namespace z.ERP.Services
             DataTable region = DbHelper.ExecuteTable(sqlRegion);
 
             //List<GOODS_KINDEntity> p = DbHelper.SelectList(new GOODS_KINDEntity()).OrderBy(a => a.CODE).ToList();
-            string sqlYt2 = "select G.ID,G.CODE,G.NAME,Y.YTID LAST_BJ from GOODS_KIND G,ROLE_YT Y where G.ID =Y.YTID(+) ";
-            sqlYt += (" AND G.ROLEID(+)= " + Data.ROLEID);
+            string sqlYt2 = "select G.CATEGORYID,G.CATEGORYCODE,G.CATEGORYNAME,Y.YTID LEVEL_LAST from CATEGORY G,ROLE_YT Y where G.CATEGORYID =Y.YTID(+) ";
+            sqlYt2 += (" AND Y.ROLEID(+)= " + Data.ROLEID);
 
-            List<GOODS_KINDEntity> p =  DbHelper.ExecuteTable(sqlYt2).ToList<GOODS_KINDEntity>();
+            List<CATEGORYEntity> p =  DbHelper.ExecuteTable(sqlYt2).ToList<CATEGORYEntity>();
 
             var ytTreeData = TreeModel.Create(p,
-                a => a.CODE,
+                a => a.CATEGORYCODE,
                 a => new TreeModel()
                 {
-                    value  = a.ID,
-                    @checked = !a.LAST_BJ.IsNullValue(),
-                    code = a.CODE,
-                    title = a.CODE + " " + a.NAME,
+                    value  = a.CATEGORYID,
+                    @checked = !a.LEVEL_LAST.IsNullValue(),
+                    code = a.CATEGORYCODE,
+                    title = a.CATEGORYCODE + " " + a.CATEGORYNAME,
                     expand = false
                 })?.ToArray();
 
@@ -153,14 +153,14 @@ namespace z.ERP.Services
             string sqlitemRegion = $@"select A.REGIONID,A.NAME from REGION A  order by A.REGIONID";
             DataTable region = DbHelper.ExecuteTable(sqlitemRegion);
 
-            List<GOODS_KINDEntity> p = DbHelper.SelectList(new GOODS_KINDEntity()).OrderBy(a => a.CODE).ToList();
+            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
             var ytTreeData = TreeModel.Create(p,
-                a => a.CODE,
+                a => a.CATEGORYCODE,
                 a => new TreeModel()
                 {
-                    value = a.ID,
-                    code = a.CODE,
-                    title = a.CODE + " " + a.NAME,
+                    value = a.CATEGORYID,
+                    code = a.CATEGORYCODE,
+                    title = a.CATEGORYCODE + " " + a.CATEGORYNAME,
                     expand = false
                 })?.ToArray();
 

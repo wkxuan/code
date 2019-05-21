@@ -10,6 +10,7 @@ using z.Exceptions;
 using z.Extensions;
 using z.Extensions;
 using z.MVC5.Results;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -21,7 +22,29 @@ namespace z.ERP.Services
 
         public DataGridResult GetBrandData(SearchItem item)
         {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( C.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or C.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
             string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME,B.ID BRANDID FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("ID", a => sql += $" and B.ID = '{a}'");
             item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
@@ -199,10 +222,34 @@ namespace z.ERP.Services
         }
         public DataGridResult GetShop(SearchItem item)
         {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( B.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or B.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
             string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME " +
                    "  FROM SHOP A,CATEGORY B,ORG C,BRANCH D,FLOOR F "
                    + " WHERE  A.CATEGORYID = B.CATEGORYID(+) and A.ORGID=C.ORGID(+)"
+                   + " and F.REGIONID in (" + GetPermissionSql(PermissionType.Region) + " )"
                    + " and  A.BRANCHID = D.ID and A.FLOORID=F.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
+
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
@@ -214,9 +261,31 @@ namespace z.ERP.Services
         }
         public DataGridResult GetShopElement(SearchItem item)
         {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( B.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or B.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
             string sql = $@"SELECT  A.*,B.CATEGORYCODE,B.CATEGORYNAME,B.CATEGORYIDCASCADER,A.AREA_BUILD AREA,C.ORGIDCASCADER " +
                    "  FROM SHOP A,CATEGORY B,ORG C WHERE  A.CATEGORYID = B.CATEGORYID(+) "
                    + " and A.ORGID=C.ORGID(+)";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("SHOPID", a => sql += $" and A.SHOPID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
