@@ -2,6 +2,7 @@
 using z.MVC5.Results;
 using System;
 using z.Extensions;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -13,10 +14,34 @@ namespace z.ERP.Services
 
         public DataGridResult ContractSale(SearchItem item)
         {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( G.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or G.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1 )
+                {
+                    SqlyTQx += ")";
+                }
+            }
+
             string sql = $"SELECT C.*,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID and S.FLOORID=F.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
+            
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
@@ -41,6 +66,10 @@ namespace z.ERP.Services
                 sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
                 sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
                 sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+                if (SqlyTQx != "")
+                {
+                    sql += " and " + SqlyTQx;
+                }
                 item.HasKey("CATEGORYCODE", a => sqlsum += $" and G.CATEGORYCODE LIKE '{a}%'");
                 item.HasKey("FLOORID", a => sqlsum += $" and F.ID = {a}");
                 item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID = {a}");
@@ -69,12 +98,34 @@ namespace z.ERP.Services
 
         public DataGridResult ContractSaleM(SearchItem item)
         {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( G.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or G.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
             string sql = $"SELECT C.YEARMONTH,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
             sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,";
             sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
@@ -100,6 +151,10 @@ namespace z.ERP.Services
                 sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F ";
                 sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
                 sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+                if (SqlyTQx != "")
+                {
+                    sql += " and " + SqlyTQx;
+                }
                 item.HasKey("CATEGORYCODE", a => sqlsum += $" and G.CATEGORYCODE LIKE '{a}%'");
                 item.HasKey("FLOORID", a => sqlsum += $" and F.ID = {a}");
                 item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID = {a}");
@@ -127,12 +182,34 @@ namespace z.ERP.Services
         }
         public string ContractSaleOutput(SearchItem item)
         {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( G.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or G.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
             string sql = $"SELECT  to_char(C.RQ,'yyyy-mm-dd') RQ,C.AMOUNT,C.COST,C.DIS_AMOUNT,C.PER_AMOUNT,C.MERCHANTID,C.CONTRACTID,";
             sql += "  M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME, ";
             sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F  ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
@@ -159,12 +236,34 @@ namespace z.ERP.Services
 
         public string ContractSaleMOutput(SearchItem item)
         {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( G.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or G.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
             string sql = $"SELECT C.YEARMONTH RQ,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
             sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME, ";
             sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F  ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
