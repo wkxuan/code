@@ -406,7 +406,7 @@ namespace z.ERP.Services
             string sqlinvoice = @"SELECT B.BILLID,B.TYPE BTYPE,M.NAME MERCHANTNAME,I.* FROM BILL_OBTAIN_INVOICE B,INVOICE I,MERCHANT M
                     WHERE B.INVOICEID=I.INVOICEID AND I.MERCHANTID=M.MERCHANTID";
             if (!Data.BILLID.IsEmpty())
-                sqlitem += (" and B.BILLID= " + Data.BILLID);
+                sqlinvoice += (" and B.BILLID= " + Data.BILLID);
             DataTable billObtainInvoice = DbHelper.ExecuteTable(sqlinvoice);
             billObtainInvoice.NewEnumColumns<发票类型>("TYPE", "TYPENAME");
 
