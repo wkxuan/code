@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pos\Address.cs" />
     <Compile Include="Pos\ClerkResultt.cs" />
     <Compile Include="Pos\DealResult.cs" />
     <Compile Include="Pos\Define.cs" />

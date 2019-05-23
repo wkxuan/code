@@ -17,6 +17,12 @@ namespace z.POS80.WebService.Controllers
             return service.PosService.GetConfig();
         }
 
+        [ServiceAble("BindAddress")]
+        public void BindAddress(Address ads)
+        {
+            service.PosService.BindAddress(ads);
+        }
+
         /// <summary>
         /// 最大交易号,测试方法,开始做就要删除
         /// </summary>

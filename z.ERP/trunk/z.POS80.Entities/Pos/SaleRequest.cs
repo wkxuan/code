@@ -54,6 +54,7 @@ namespace z.POS80.Entities.Pos
         {
             get; set;
         }
+
         public List<PayResult> paylist
         {
             get; set;
