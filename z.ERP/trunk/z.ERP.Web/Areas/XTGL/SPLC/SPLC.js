@@ -4,20 +4,25 @@
         spjdDrawer: false,
         spjdjgDrawer: false,
         colSplcjd: [
+            { type: 'selection', width: 60, align: 'center' },
             { title: '节点名称', key: 'JDNAME', width: 200 },
-            { title: '类型', key: 'JDTYPE', width: 80 },
+            {
+                title: '类型', key: 'JDTYPENAME', width: 80
+            },
             { title: '角色组', key: 'ROLENAME', width: 100 },
-            { title: '顺序', key: 'JDINX', width: 80 }
+            { title: '顺序', key: 'JDINX', width: 80, sortable: true }
         ],
         SPLCJD: [],
 
         colSplcjg: [
-            { title: '结果ID', key: 'JGID', width: 100 },
+           // { title: '结果ID', key: 'JGID', width: 100 },
             { title: '条件描述', key: 'TJMC', width: 200 },
             { title: '结果类型', key: 'JGTYPE', width: 100 },
+            { title: '类型名称', key: 'JGTYPENAME', width: 100 },
             { title: '结果描述', key: 'JGMC', width: 200 }
         ],
         SPLCJG: [],
+        SPLCJGALL: [],
         disabled: false,
         BILLID: "",
         MENUID: "",
@@ -32,6 +37,11 @@
         VERIFY_TIME: "",
         TERMINATE_NAME: "",
         TERMINATE_TIME: "",
+        JDTYPENAME: "",
+        TJMC: "",
+        JGTYPE: "",
+        JGMC: "",
+        JGTYPENAME: "",
         showPopRole: false,
         srcPopRole: __BaseUrl + "/" + "Pop/Pop/PopRoleList/"
     },
@@ -47,6 +57,62 @@
             this.spjdDrawer = true;
         },
         sureSpjd: function () {
+
+            //判断节点数据合法性
+            //开始节点只能有一个,结束节点只能有一个
+            if (!this.JDNAME) {
+                iview.Message.info("请维护节点名称!");
+                return false;
+            };
+            if (!this.JDTYPE) {
+                iview.Message.info("请维护节点类型!");
+                return false;
+            };
+            if (!this.ROLENAME) {
+                iview.Message.info("请维护节点角色!");
+                return false;
+            };
+            if (!this.JDINX) {
+                iview.Message.info("请维护节点顺序!");
+                return false;
+            };
+            if (this.SPLCJD.length > 0) {
+                for (var i = 0; i < this.SPLCJD.length; i++) {
+                    if (this.JDTYPE == 1) {
+                        if (this.SPLCJD[i].JDTYPE == 1) {
+                            iview.Message.info("一个审批流程只能有一个开始节点!");
+                            return;
+                        };
+                    };
+                    if (this.JDTYPE == 3) {
+                        if (this.SPLCJD[i].JDTYPE == 3) {
+                            iview.Message.info("一个审批流程只能有一个结束节点!");
+                            return;
+                        };
+                    };
+                    if (this.SPLCJD[i].JDINX == this.JDINX) {
+                        iview.Message.info("当前的节点顺序已经存在!");
+                        return;
+                    };
+                };
+            };
+
+            if (this.JDTYPE == 1) {
+                this.JDTYPENAME = "开始";
+            } else if (this.JDTYPE == 2) {
+                this.JDTYPENAME = "表决";
+            } else if (this.JDTYPE == 3) {
+                this.JDTYPENAME = "结束";
+            };
+            let jdDataOne = {
+                JDNAME: this.JDNAME,
+                JDTYPE: this.JDTYPE,
+                ROLENAME: this.ROLENAME,
+                JDINX: this.JDINX,
+                ROLEID: this.ROLEID,
+                JDTYPENAME: this.JDTYPENAME
+            };
+            this.SPLCJD.push(jdDataOne);
             this.spjdDrawer = false;
         },
         cancelSpjd: function () {
@@ -57,9 +123,43 @@
                 iview.Message.info("请先定义审批流程节点!");
                 return;
             };
+            //并且选中一条流程节点数据
+            var selectSolcjd = this.$refs.selectSplcjd.getSelection();
+            if (selectSolcjd.length != 1) {
+                iview.Message.info("请选中一条流程节点!");
+                return;
+            };
             this.spjdjgDrawer = true;
         },
         sureSpjdjg: function () {
+            if (!this.TJMC) {
+                iview.Message.info("请条件描述!");
+                return false;
+            };
+            if (!this.JGTYPE) {
+                iview.Message.info("请维护结果类型!");
+                return false;
+            };
+            if (!this.JGMC) {
+                iview.Message.info("请维护结果描述!");
+                return false;
+            };
+
+            if (this.JGTYPE == 1) {
+                this.JGTYPENAME = "通过";
+            } else if (this.JGTYPE == 2) {
+                this.JGTYPENAME = "不通过";
+            };
+            let jgDataOne = {
+                JGID: this.JGTYPE,
+                TJMC: this.TJMC,
+                JGTYPE: this.JGTYPE,
+                JGTYPENAME: this.JGTYPENAME,
+                JGMC: this.JGMC
+            };
+            this.SPLCJG.push(jgDataOne);
+
+            this.SPLCJGALL.push(jgDataOne);
             this.spjdjgDrawer = false;
         },
         cancelSpjdjg: function () {
