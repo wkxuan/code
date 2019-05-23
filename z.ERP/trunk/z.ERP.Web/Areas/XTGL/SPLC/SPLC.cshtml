@@ -238,6 +238,53 @@
                 @*styles="styles"
                 closable="false"
                 draggable="false"*@>
+            <row>
+                <i-col span="3" class="RowTitle">
+                    <span class="mustElement">*</span>
+                    条件描述
+                </i-col>
+                <i-col span="8">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "TJMC",
+                            Enable = false
+                        });
+                    }
+                </i-col>
+            </row>
+
+            <row>
+                <i-col span="3" class="RowTitle">
+                    <span class="mustElement">*</span>
+                    结果类型
+                </i-col>
+                <i-col span="8">
+                    @{
+                        RenderControl(new EnumDropDownListRender<审批结果类型>()
+                        {
+                            vModel = "JGTYPE",
+                            Enable = false
+                        });
+                    }
+                </i-col>
+            </row>
+
+            <row>
+                <i-col span="3" class="RowTitle">
+                    <span class="mustElement">*</span>
+                    结果描述
+                </i-col>
+                <i-col span="8">
+                    @{
+                        RenderControl(new TextBoxRender()
+                        {
+                            vModel = "JGMC",
+                            Enable = false
+                        });
+                    }
+                </i-col>
+            </row>
             <div class="drawer-footer">
                 @{
                     RenderControl(new ButtonRender()
