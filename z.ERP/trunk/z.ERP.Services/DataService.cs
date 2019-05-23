@@ -387,6 +387,17 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
+        public DataGridResult GetGoodsList(SearchItem item)
+        {
+            string sql = @"SELECT G.*,C.JSKL,B.NAME BRANDMC FROM GOODS G, CONTRACT_GROUP C ,BRAND B WHERE  G.STATUS=2 AND G.CONTRACTID=C.CONTRACTID AND G.JSKL_GROUP=C.GROUPNO AND G.BRANDID=B.ID ";
+            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+            item.HasKey("NAME", a => sql += $" and G.NAME like '%{a}%'");
+            sql += " ORDER BY  G.GOODSDM";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
         public object GetPay(PAYEntity Data)
         {
             string sql = " SELECT  * FROM " +

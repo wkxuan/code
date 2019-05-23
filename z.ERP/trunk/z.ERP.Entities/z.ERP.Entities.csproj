@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADJUSTDISCOUNTEntity.cs" />
+    <Compile Include="Auto\ADJUSTDISCOUNTEntity.cs" />
+    <Compile Include="Auto\ADJUSTDISCOUNTITEMEntity.cs" />
     <Compile Include="Auto\ALERT_FIELD.cs" />
     <Compile Include="Auto\BILL_OBTAIN_INVOICEEntity.cs" />
     <Compile Include="Auto\FEE_ACCOUNTEntity.cs" />
