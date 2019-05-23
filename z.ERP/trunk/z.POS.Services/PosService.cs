@@ -89,12 +89,14 @@ namespace z.POS.Services
         {
             string sql = "select a.sp_id goodsid,a.spcode goodscode,a.name,0 type,nvl(a.lsdj,0) price,nvl(a.hylsdj,0) member_price,b.deptid shopid,c.bmdm orgcode";
             sql += "        from SPXX a,GTSP b,BM c ";
-            sql += "       where a.sp_id=b.sp_id and b.deptid=c.deptid";
+            sql += "       where a.sp_id=b.sp_id and b.deptid=c.deptid and a.status in (0,3,4)";
 
             if (filter.shopid.HasValue)
                 sql += $"  and a.shopid = {filter.shopid}";
             if (filter.goodscode.IsNotEmpty())
                 sql += $"  and (a.spcode = '{filter.goodscode}' or a.barcode = '{filter.goodscode}')";
+
+            sql += " order by a.sp_id";
 
             List<FindGoodsResult> goodsList = DbHelper.ExecuteObject<FindGoodsResult>(sql);
 
@@ -2910,7 +2912,8 @@ namespace z.POS.Services
                     GoodItem.DeptCode = ReqConfirm.goodsList[i].deptCode;
                     GoodItem.DeptId = ReqConfirm.goodsList[i].deptID;
                     GoodItem.BackDiscount = ReqConfirm.goodsList[i].backendOffAmount;
-                    GoodItem.DiscountBillId = ReqConfirm.goodsList[i].backendOffID;
+                   // GoodItem.DiscountBillId = ReqConfirm.goodsList[i].backendOffID;
+                    GoodItem.IRefNo_ZK = ReqConfirm.goodsList[i].backendOffID;
                     GoodItem.IRefNo_MJ = ReqConfirm.goodsList[i].fullCutOffID;
                     GoodItem.VipDiscBillId = ReqConfirm.goodsList[i].memberOffID;
                     GoodItem.MemberDiscount = ReqConfirm.goodsList[i].memberOff;
@@ -4476,6 +4479,8 @@ namespace z.POS.Services
                     goods.SubGoodsInx = req.goodsList[i].inx;
                     goods.SubGoodsInx_old = req.goodsList[i].inx;
                     goods.CrmInx = req.goodsList[i].inx;
+                    goods.IRefNo_ZK = req.goodsList[i].backendOffID;
+                    goods.IRefNo_MJ = req.goodsList[i].fullCutOffID;
 
                     GoodsList.Add(goods);
                 }
@@ -5010,10 +5015,10 @@ namespace z.POS.Services
                     GoodItem.DeptCode = ReqConfirm.goodsList[i].deptCode;
                     GoodItem.DeptId = ReqConfirm.goodsList[i].deptID;
                     GoodItem.BackDiscount = ReqConfirm.goodsList[i].backendOffAmount;
-                    GoodItem.DiscountBillId = ReqConfirm.goodsList[i].backendOffID;
+                   // GoodItem.DiscountBillId = ReqConfirm.goodsList[i].backendOffID;
+                    GoodItem.IRefNo_ZK = ReqConfirm.goodsList[i].backendOffID;
                     GoodItem.IRefNo_MJ = ReqConfirm.goodsList[i].fullCutOffID;
                     GoodItem.VipDiscBillId = ReqConfirm.goodsList[i].memberOffID;
-                    //GoodItem.MemberDiscount = ReqConfirm.goodsList[i].memberOff;
                     GoodItem.FrontDiscount = ReqConfirm.goodsList[i].frontendOffAmount;
                     GoodItem.DiscoaddDiscount = ReqConfirm.goodsList[i].fullCutOffAmount;
                     GoodItem.MemberDiscount = ReqConfirm.goodsList[i].memberOff;
