@@ -61,5 +61,11 @@ namespace z.POS80.Entities.Pos
             get;
             set;
         }
+
+        public string macaddress
+        {
+            get;
+            set;
+        }
     }
 }

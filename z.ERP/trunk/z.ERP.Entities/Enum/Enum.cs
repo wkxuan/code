@@ -389,4 +389,10 @@ namespace z.ERP.Entities.Enum
         表决 = 2,
         结束 = 3
     }
+
+    public enum 审批结果类型
+    {
+        通过 = 1,
+        不通过 = 2
+    }
 }

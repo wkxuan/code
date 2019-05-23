@@ -6,19 +6,23 @@
         colSplcjd: [
             { type: 'selection', width: 60, align: 'center' },
             { title: '节点名称', key: 'JDNAME', width: 200 },
-            { title: '类型', key: 'JDTYPE', width: 80 },
+            {
+                title: '类型', key: 'JDTYPENAME', width: 80
+            },
             { title: '角色组', key: 'ROLENAME', width: 100 },
             { title: '顺序', key: 'JDINX', width: 80, sortable: true }
         ],
         SPLCJD: [],
 
         colSplcjg: [
-            { title: '结果ID', key: 'JGID', width: 100 },
+           // { title: '结果ID', key: 'JGID', width: 100 },
             { title: '条件描述', key: 'TJMC', width: 200 },
             { title: '结果类型', key: 'JGTYPE', width: 100 },
+            { title: '类型名称', key: 'JGTYPENAME', width: 100 },
             { title: '结果描述', key: 'JGMC', width: 200 }
         ],
         SPLCJG: [],
+        SPLCJGALL: [],
         disabled: false,
         BILLID: "",
         MENUID: "",
@@ -33,6 +37,11 @@
         VERIFY_TIME: "",
         TERMINATE_NAME: "",
         TERMINATE_TIME: "",
+        JDTYPENAME: "",
+        TJMC: "",
+        JGTYPE: "",
+        JGMC: "",
+        JGTYPENAME: "",
         showPopRole: false,
         srcPopRole: __BaseUrl + "/" + "Pop/Pop/PopRoleList/"
     },
@@ -87,12 +96,21 @@
                     };
                 };
             };
+
+            if (this.JDTYPE == 1) {
+                this.JDTYPENAME = "开始";
+            } else if (this.JDTYPE == 2) {
+                this.JDTYPENAME = "表决";
+            } else if (this.JDTYPE == 3) {
+                this.JDTYPENAME = "结束";
+            };
             let jdDataOne = {
                 JDNAME: this.JDNAME,
                 JDTYPE: this.JDTYPE,
                 ROLENAME: this.ROLENAME,
                 JDINX: this.JDINX,
-                ROLEID: this.ROLEID
+                ROLEID: this.ROLEID,
+                JDTYPENAME: this.JDTYPENAME
             };
             this.SPLCJD.push(jdDataOne);
             this.spjdDrawer = false;
@@ -114,6 +132,34 @@
             this.spjdjgDrawer = true;
         },
         sureSpjdjg: function () {
+            if (!this.TJMC) {
+                iview.Message.info("请条件描述!");
+                return false;
+            };
+            if (!this.JGTYPE) {
+                iview.Message.info("请维护结果类型!");
+                return false;
+            };
+            if (!this.JGMC) {
+                iview.Message.info("请维护结果描述!");
+                return false;
+            };
+
+            if (this.JGTYPE == 1) {
+                this.JGTYPENAME = "通过";
+            } else if (this.JGTYPE == 2) {
+                this.JGTYPENAME = "不通过";
+            };
+            let jgDataOne = {
+                JGID: this.JGTYPE,
+                TJMC: this.TJMC,
+                JGTYPE: this.JGTYPE,
+                JGTYPENAME: this.JGTYPENAME,
+                JGMC: this.JGMC
+            };
+            this.SPLCJG.push(jgDataOne);
+
+            this.SPLCJGALL.push(jgDataOne);
             this.spjdjgDrawer = false;
         },
         cancelSpjdjg: function () {
