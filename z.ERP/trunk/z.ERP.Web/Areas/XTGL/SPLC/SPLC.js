@@ -6,9 +6,7 @@
         colSplcjd: [
             { type: 'index', width: 60, align: 'center' },
             { title: '节点名称', key: 'JDNAME', width: 200 },
-            {
-                title: '类型', key: 'JDTYPENAME', width: 80
-            },
+            { title: '类型', key: 'JDTYPENAME', width: 80 },
             { title: '角色组', key: 'ROLENAME', width: 100 },
             { title: '顺序', key: 'JDINX', width: 80, sortable: true }
         ],
@@ -19,6 +17,7 @@
             { title: '条件描述', key: 'TJMC', width: 200 },
             { title: '结果类型', key: 'JGTYPE', width: 100 },
             { title: '类型名称', key: 'JGTYPENAME', width: 100 },
+            { title: '节点名称', key: 'JDNAMEXS', width: 200 },
             { title: '结果描述', key: 'JGMC', width: 200 }
         ],
         SPLCJG: [],
@@ -43,19 +42,48 @@
         JGMC: "",
         JGTYPENAME: "",
         JDID: "-1",
+        JDNAMEXS: "",
         JGID: "",
         JGNANE: "",
+        JDTYPESelect: "-1",
         showPopRole: false,
+        CanAdd: false,
+        CanModify: true,
+        CanSave: true,
+        CanQuit: true,
+        CanDel: true,
+        CanExec: true,
+        CanOver: true,
         srcPopRole: __BaseUrl + "/" + "Pop/Pop/PopRoleList/"
     },
+    mounted: function () {
+        this.ButtonEnable(false, true, true, true);
+    },
     methods: {
-        add: function () { },
-        mod: function () { },
-        save: function () { },
-        quit: function () { },
-        del: function () { },
-        exec: function () { },
-        over: function () { },
+        add: function () {
+            this.ButtonEnable(true, true, true, true);
+        },
+        mod: function () {
+            this.ButtonEnable(true, true, true, true);
+        },
+        save: function () {
+            this.ButtonEnable(false, false, false, true);
+        },
+        quit: function () {
+            if (this.BILLID != "")
+                this.ButtonEnable(false, false, false, true);
+            else
+                this.ButtonEnable(false, true, true, true);
+        },
+        del: function () {
+            this.ButtonEnable(false, true, true, true);
+        },
+        exec: function () {
+            this.ButtonEnable(false, true, true, false);
+        },
+        over: function () {
+            this.ButtonEnable(false, true, true, true);
+        },
         SpjdDef: function () {
             this.spjdDrawer = true;
         },
@@ -126,6 +154,8 @@
         selectSpjd: function (currentRow, oldCurrentRow) {
             this.JDID = currentRow.JDID;
 
+            this.JDTYPESelect = currentRow.JDTYPE;
+
             let splcjgLocal = [];
             for (var i = 0; i <= this.SPLCJGALL.length - 1; i++) {
                 if (this.SPLCJGALL[i].JDID == this.JDID) {
@@ -145,7 +175,11 @@
             if (parseInt(this.JDID) == -1) {
                 iview.Message.info("请先单击选择流程节点!");
                 return;
-            }
+            };
+            if (this.JDTYPESelect == 3) {
+                iview.Message.info("节点类型为结束节点不需要定义节点步骤!");
+                return;
+            };
             this.spjdjgDrawer = true;
         },
         sureSpjdjg: function () {
@@ -162,13 +196,23 @@
                 return false;
             };
 
+            if ((this.JDTYPESelect == 1) && (this.JGTYPE != 1)) {
+                iview.Message.info("节点类型为开始必须流程结果为通过!");
+                return false;
+            }
             if (this.JGTYPE == 1) {
                 this.JGTYPENAME = "通过";
             } else if (this.JGTYPE == 2) {
                 this.JGTYPENAME = "不通过";
             };
+            for (var i = 0; i <= this.SPLCJD.length - 1; i++) {
+                if (this.JGID == this.SPLCJD[i].JDID) {
+                    this.JDNAMEXS = this.SPLCJD[i].JDNAME;
+                };
+            };
             let jgDataOne = {
                 JDID: this.JDID,
+                JDNAMEXS: this.JDNAMEXS,
                 JGID: this.JGID,
                 TJMC: this.TJMC,
                 JGTYPE: this.JGTYPE,
@@ -194,6 +238,15 @@
         },
         SelRole: function () {
             this.showPopRole = true;
+        },
+        ButtonEnable: function (b1, b2, b3, b4) {
+            this.CanAdd = b1;
+            this.CanModify = b2;
+            this.CanSave = (!b1);
+            this.CanQuit = (!b1);
+            this.CanDel = b2;
+            this.CanExec = b3;
+            this.CanOver = b4;
         }
     }
 });
