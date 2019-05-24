@@ -257,6 +257,18 @@
             <row>
                 <i-col span="3" class="RowTitle">
                     <span class="mustElement">*</span>
+                    结果节点
+                </i-col>
+                <i-col span="8">
+                    <i-select v-model="JGID" style="width:100%">
+                        <i-option v-for="item in SPLCJD" :value="item.JDID" :key="item.JDID">{{ item.JDNAME }}</i-option>
+                    </i-select>
+                </i-col>
+            </row>
+
+            <row>
+                <i-col span="3" class="RowTitle">
+                    <span class="mustElement">*</span>
                     结果类型
                 </i-col>
                 <i-col span="8">
@@ -319,7 +331,9 @@
                     Border = "true",
                     Columns = "colSplcjd",
                     Data = "SPLCJD",
-                    Ref = "selectSplcjd"
+                    Ref = "selectSplcjd",
+                    Highlight = "true",
+                    SelectOne = "selectSpjd",
                 });
             }
         </i-col>

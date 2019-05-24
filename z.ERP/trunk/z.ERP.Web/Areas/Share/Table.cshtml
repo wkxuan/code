@@ -3,6 +3,6 @@
 
 @{
     <i-table height="@Model.Height" size="@Model.Size" :border="@Model.Border"
-             :columns="@Model.Columns"
+             :columns="@Model.Columns" :highlight-row="@Model.Highlight" v-on:on-current-change="@Model.SelectOne"
              :data="@Model.Data" ref="@Model.Ref"></i-table>
 }

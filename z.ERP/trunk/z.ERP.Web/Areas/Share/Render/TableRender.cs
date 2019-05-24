@@ -46,5 +46,15 @@ namespace z.ERP.Web.Areas.Share.Render
             get;
             set;
         }
+        public string Highlight
+        {
+            get;
+            set;
+        }
+        public string SelectOne
+        {
+            get;
+            set;
+        }
     }
 }

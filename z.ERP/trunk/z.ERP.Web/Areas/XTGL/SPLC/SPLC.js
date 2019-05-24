@@ -4,7 +4,7 @@
         spjdDrawer: false,
         spjdjgDrawer: false,
         colSplcjd: [
-            { type: 'selection', width: 60, align: 'center' },
+            { type: 'index', width: 60, align: 'center' },
             { title: '节点名称', key: 'JDNAME', width: 200 },
             {
                 title: '类型', key: 'JDTYPENAME', width: 80
@@ -42,6 +42,9 @@
         JGTYPE: "",
         JGMC: "",
         JGTYPENAME: "",
+        JDID: "-1",
+        JGID: "",
+        JGNANE: "",
         showPopRole: false,
         srcPopRole: __BaseUrl + "/" + "Pop/Pop/PopRoleList/"
     },
@@ -110,7 +113,8 @@
                 ROLENAME: this.ROLENAME,
                 JDINX: this.JDINX,
                 ROLEID: this.ROLEID,
-                JDTYPENAME: this.JDTYPENAME
+                JDTYPENAME: this.JDTYPENAME,
+                JDID: this.JDINX
             };
             this.SPLCJD.push(jdDataOne);
             this.spjdDrawer = false;
@@ -118,17 +122,30 @@
         cancelSpjd: function () {
             this.spjdDrawer = false;
         },
+
+        selectSpjd: function (currentRow, oldCurrentRow) {
+            this.JDID = currentRow.JDID;
+
+            let splcjgLocal = [];
+            for (var i = 0; i <= this.SPLCJGALL.length - 1; i++) {
+                if (this.SPLCJGALL[i].JDID == this.JDID) {
+                    splcjgLocal.push(this.SPLCJGALL[i]);
+                }
+            };
+            this.SPLCJG = [];
+            this.SPLCJG = splcjgLocal;
+        },
+
         SpjdJg: function () {
             if (this.SPLCJD.length == 0) {
                 iview.Message.info("请先定义审批流程节点!");
                 return;
             };
             //并且选中一条流程节点数据
-            var selectSolcjd = this.$refs.selectSplcjd.getSelection();
-            if (selectSolcjd.length != 1) {
-                iview.Message.info("请选中一条流程节点!");
+            if (parseInt(this.JDID) == -1) {
+                iview.Message.info("请先单击选择流程节点!");
                 return;
-            };
+            }
             this.spjdjgDrawer = true;
         },
         sureSpjdjg: function () {
@@ -151,15 +168,25 @@
                 this.JGTYPENAME = "不通过";
             };
             let jgDataOne = {
-                JGID: this.JGTYPE,
+                JDID: this.JDID,
+                JGID: this.JGID,
                 TJMC: this.TJMC,
                 JGTYPE: this.JGTYPE,
                 JGTYPENAME: this.JGTYPENAME,
                 JGMC: this.JGMC
             };
-            this.SPLCJG.push(jgDataOne);
+
 
             this.SPLCJGALL.push(jgDataOne);
+            //把当前==this.JDID的数据重新给节点结果
+            let splcjgLocal = [];
+            for (var i = 0; i <= this.SPLCJGALL.length - 1; i++) {
+                if (this.SPLCJGALL[i].JDID == this.JDID) {
+                    splcjgLocal.push(this.SPLCJGALL[i]);
+                }
+            };
+            this.SPLCJG = [];
+            this.SPLCJG = splcjgLocal;
             this.spjdjgDrawer = false;
         },
         cancelSpjdjg: function () {
