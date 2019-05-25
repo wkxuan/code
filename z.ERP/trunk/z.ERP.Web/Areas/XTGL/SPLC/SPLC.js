@@ -67,6 +67,13 @@
             this.ButtonEnable(true, true, true, true);
         },
         save: function () {
+            _.Ajax('Save', {
+                SPLCDEFD: { MENUID: this.MENUID },
+                SPLCJD: this.SPLCJD,
+                SPLCJG: this.SPLCJGALL
+            }, function (data) {
+                iview.Message.info("保存成功!");
+            });
             this.ButtonEnable(false, false, false, true);
         },
         quit: function () {

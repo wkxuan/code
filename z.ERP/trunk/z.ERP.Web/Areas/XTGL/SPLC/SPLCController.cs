@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using z.ERP.Entities;
 using z.MVC5.Results;
 using z.ERP.Web.Areas.Layout.Define;
+using System.Collections.Generic;
 
 namespace z.ERP.Web.Areas.XTGL.SPLC
 {
@@ -15,7 +16,8 @@ namespace z.ERP.Web.Areas.XTGL.SPLC
             return View();
         }
 
-        public string Save(DEF_ALERTEntity DefineSave)
+        public string Save(SPLCDEFDEntity SPLCDEFD,
+            List<SPLCJDEntity> SPLCJD, List<SPLCJGEntity> SPLCJG)
         {
             return null;
         }
