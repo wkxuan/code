@@ -395,4 +395,11 @@ namespace z.ERP.Entities.Enum
         通过 = 1,
         不通过 = 2
     }
+
+    public enum 审批单状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        终止 = 3
+    }
 }

@@ -36,12 +36,7 @@
             记录编号
         </i-col>
         <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "BILLID"
-                });
-            }
+            <i-input v-model="BILLID" v-on:on-enter="billEnter" :disabled="CanBillid"></i-input>
         </i-col>
 
         <i-col span="2" class="RowTitle">
@@ -58,17 +53,23 @@
                 });
             }
         </i-col>
+
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "STATUSMC"
+                });
+            }
+        </i-col>
     </row>
     <row>
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "SpjdDef",
-                Text = "流程节点",
-                Enable = false,
-                Type = "primary"
-            });
-        }
+        <i-button v-on:click="SpjdDef" :disabled="CanSpjdDef">流程节点</i-button>
+        @*<i-button v-on:click="SpjdDel" :disabled="CanSpjdDef">删除流程节点</i-button>*@
+
         <Drawer title="流程节点"
                 v-model="spjdDrawer"
                 width="50%"
@@ -171,16 +172,8 @@
                 }
             </div>
         </Drawer>
-
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "SpjdJg",
-                Text = "流程节点步骤",
-                Enable = false,
-                Type = "primary"
-            });
-        }
+        <i-button v-on:click="SpjdJg" :disabled="CanSpjdJg">流程节点步骤</i-button>
+        @*<i-button v-on:click="SpjdJgDel" :disabled="CanSpjdJg">删除流程节点步骤</i-button>*@
 
         <Drawer title="流程节点步骤"
                 v-model="spjdjgDrawer"

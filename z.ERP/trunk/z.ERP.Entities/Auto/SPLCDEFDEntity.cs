@@ -25,8 +25,6 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-        [PrimaryKey]
-        [Field("菜单")]
         public string MENUID
         {
             get; set;

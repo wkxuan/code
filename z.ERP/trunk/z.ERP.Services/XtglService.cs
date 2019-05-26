@@ -719,6 +719,160 @@ namespace z.ERP.Services
             DataTable alertCol = DbHelper.ExecuteTable(sqlItem);
             return new Tuple<DataTable, DataTable>(alertSql, alertCol);
         }
+
+
+
+        public string SaveSplc(SPLCDEFDEntity SPLCDEFD,
+            List<SPLCJDEntity> SPLCJD, List<SPLCJGEntity> SPLCJG)
+        {
+            var v = GetVerify(SPLCDEFD);
+            v.Require(a => a.MENUID);
+            if (SPLCDEFD.BILLID.IsEmpty())
+            {
+                SPLCDEFD.BILLID = NewINC("SPLCDEFD");
+                SPLCDEFD.STATUS = ((int)审批单状态.未审核).ToString();
+            }
+            else
+            {
+                SPLCDEFDEntity con = DbHelper.Select(SPLCDEFD);
+                if (con.STATUS != ((int)审批单状态.未审核).ToString())
+                {
+                    throw new LogicException($"审批单({SPLCDEFD.BILLID})已经不是未审核状态!");
+                }
+                SPLCDEFD.VERIFY = con.VERIFY;
+                SPLCDEFD.VERIFY_NAME = con.VERIFY_NAME;
+                SPLCDEFD.VERIFY_TIME = con.VERIFY_TIME;
+            }
+
+            SPLCDEFD.REPORTER = employee.Id;
+            SPLCDEFD.REPORTER_NAME = employee.Name;
+            SPLCDEFD.REPORTER_TIME = DateTime.Now.ToString();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var splcjd in SPLCJD)
+                {
+                    splcjd.BILLID = SPLCDEFD.BILLID;
+                    DbHelper.Save(splcjd);
+                }
+                foreach (var splcjg in SPLCJG)
+                {
+                    splcjg.BILLID = SPLCDEFD.BILLID;
+                    DbHelper.Save(splcjg);
+                }
+                DbHelper.Save(SPLCDEFD);
+                Tran.Commit();
+            }
+            return SPLCDEFD.BILLID;
+        }
+        public void DeleteSplc(SPLCDEFDEntity Data)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                List<SPLCJDEntity> lcjd = new List<SPLCJDEntity>();
+                lcjd = DbHelper.SelectList(new SPLCJDEntity()).
+                    Where(a => (a.BILLID == Data.BILLID)).ToList();
+
+                foreach (var item in lcjd)
+                {
+                    DbHelper.Delete(item);
+                };
+                List<SPLCJGEntity> lcjg = new List<SPLCJGEntity>();
+                lcjg = DbHelper.SelectList(new SPLCJGEntity()).
+                    Where(a => (a.BILLID == Data.BILLID)).ToList();
+
+                foreach (var item in lcjg)
+                {
+                    DbHelper.Delete(item);
+                };
+                DbHelper.Delete(Data);
+                Tran.Commit();
+            }
+        }
+
+        public Tuple<dynamic, DataTable, DataTable> GetSplcdefdElement(SPLCDEFDEntity Data)
+        {
+            if (Data.BILLID.IsEmpty())
+            {
+                throw new LogicException("请确认单号!");
+            }
+            string sql = $@"SELECT A.* ";
+            sql += " from SPLCDEFD A where 1=1 ";
+            sql += (" AND A.BILLID= " + Data.BILLID);
+            DataTable spd = DbHelper.ExecuteTable(sql);
+            if (!spd.IsNotNull())
+            {
+                throw new LogicException("找不到审批单!");
+            }
+            spd.NewEnumColumns<审批单状态>("STATUS", "STATUSMC");
+
+
+            string sqlspjd = $@"SELECT A.JDID,JDNAME,JDTYPE,A.ROLEID,A.JDINX,B.ROLENAME  " +
+                             " FROM SPLCJD A,ROLE B WHERE A.ROLEID=B.ROLEID ";
+            sqlspjd += (" and A.BILLID= " + Data.BILLID);
+
+            DataTable spjd = DbHelper.ExecuteTable(sqlspjd);
+
+            spjd.NewEnumColumns<审批流程节点类型>("JDTYPE", "JDTYPENAME");
+
+            string sqlspjg = $@"SELECT B.JDID,B.JGID,B.TJMC,B.JGTYPE,B.JGMC,A.JDNAME JDNAMEXS,A.JDTYPE" +
+                           " FROM SPLCJD A,SPLCJG B" +
+                           " WHERE A.BILLID=B.BILLID AND A.JDID=B.JDID";
+
+            sqlspjg += (" and A.BILLID= " + Data.BILLID);
+            DataTable spjg = DbHelper.ExecuteTable(sqlspjg);
+            spjg.NewEnumColumns<审批结果类型>("JGTYPE", "JGTYPENAME");
+
+            return new Tuple<dynamic, DataTable, DataTable>(
+                spd.ToOneLine(),
+                spjd,
+                spjg
+            );
+        }
+
+        public string ExecSplc(SPLCDEFDEntity Data)
+        {
+            var v = GetVerify(Data);
+            v.Require(a => a.BILLID);
+            SPLCDEFDEntity con = DbHelper.Select(Data);
+            if (con.STATUS != ((int)审批单状态.未审核).ToString())
+            {
+                throw new LogicException($"审批单({Data.BILLID})已经不是未审核状态!");
+            }
+            con.VERIFY = employee.Id;
+            con.VERIFY_NAME = employee.Name;
+            con.VERIFY_TIME = DateTime.Now.ToString();
+            con.STATUS = ((int)审批单状态.审核).ToString();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(con);
+                Tran.Commit();
+            }
+            return con.BILLID;
+        }
+
+        public string OverSplc(SPLCDEFDEntity Data)
+        {
+            var v = GetVerify(Data);
+            v.Require(a => a.BILLID);
+            SPLCDEFDEntity con = DbHelper.Select(Data);
+            if (con.STATUS != ((int)审批单状态.审核).ToString())
+            {
+                throw new LogicException($"审批单({Data.BILLID})已经不是审核状态!");
+            }
+            con.TERMINATE = employee.Id;
+            con.TERMINATE_NAME = employee.Name;
+            con.TERMINATE_TIME = DateTime.Now.ToString();
+            con.STATUS = ((int)审批单状态.终止).ToString();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(con);
+                Tran.Commit();
+            }
+            return con.BILLID;
+        }
     }
 
 }

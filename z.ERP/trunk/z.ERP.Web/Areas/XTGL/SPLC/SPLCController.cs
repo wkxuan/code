@@ -15,14 +15,38 @@ namespace z.ERP.Web.Areas.XTGL.SPLC
             ViewBag.Title = "审批流程定义";
             return View();
         }
+        public string Save(SPLCDEFDEntity SPLCDEFD, List<SPLCJDEntity> SPLCJD, List<SPLCJGEntity> SPLCJG)
+        {
+            return service.XtglService.SaveSplc(SPLCDEFD, SPLCJD, SPLCJG);
+        }
+        public void Delete(SPLCDEFDEntity Data)
+        {
+            service.XtglService.DeleteSplc(Data);
+        }
 
-        public string Save(SPLCDEFDEntity SPLCDEFD,
-            List<SPLCJDEntity> SPLCJD, List<SPLCJGEntity> SPLCJG)
+        public UIResult Srch(SPLCDEFDEntity Data)
         {
-            return null;
+            var res = service.XtglService.GetSplcdefdElement(Data);
+            return new UIResult(
+                new
+                {
+                    spd = res.Item1,
+                    spjd = res.Item2,
+                    spjg = res.Item3
+                }
+            );
         }
-        public void Delete(DEF_ALERTEntity DefineDelete)
+
+        public string exec(SPLCDEFDEntity Data)
         {
+            return service.XtglService.ExecSplc(Data);
         }
+
+        public string over(SPLCDEFDEntity Data)
+        {
+            return service.XtglService.OverSplc(Data);
+        }
+
     }
+
 }
