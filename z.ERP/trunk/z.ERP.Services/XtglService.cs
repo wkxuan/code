@@ -810,6 +810,7 @@ namespace z.ERP.Services
             string sqlspjd = $@"SELECT A.JDID,JDNAME,JDTYPE,A.ROLEID,A.JDINX,B.ROLENAME  " +
                              " FROM SPLCJD A,ROLE B WHERE A.ROLEID=B.ROLEID ";
             sqlspjd += (" and A.BILLID= " + Data.BILLID);
+            sqlspjd += " ORDER BY A.JDINX";
 
             DataTable spjd = DbHelper.ExecuteTable(sqlspjd);
 
