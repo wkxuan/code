@@ -873,6 +873,62 @@ namespace z.ERP.Services
             }
             return con.BILLID;
         }
+
+
+        public Tuple<DataTable, DataTable> GetSplc(SPLCDEFDEntity Data)
+        {
+
+            //找当前应该是那个节点数据
+
+            if (Data.MENUID.IsEmpty())
+            {
+                throw new LogicException("请确认查找审批流程的菜单号信息!");
+            }
+            string sql = $@"select JDID,JDNAME from";
+            sql += " SPLCDEFD A,SPLCJD B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+            sql += (" AND A.MENUID= " + Data.MENUID);
+            DataTable splc = DbHelper.ExecuteTable(sql);
+
+            //找最后一个审批数据
+            var i = 1;
+
+            string sql1 = $@"select JDID from";
+            sql1 += " SPLCJG_MENU WHERE 1=1 ";
+            sql1 += (" AND MENUID= " + Data.MENUID);
+            sql1 += (" AND BILLID= " + Data.JLBH);
+            sql1 += " order by CLSJ desc";
+            DataTable spBillJg = DbHelper.ExecuteTable(sql1);
+            if (spBillJg.Rows.Count > 0)
+            {
+                i = spBillJg.Rows[0][0].ToString().ToInt();
+            }
+
+
+            string sqlxz = $@"select JDID,JGID,JGTYPE,JGMC from";
+            sqlxz += " SPLCDEFD A,SPLCJG B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+            sqlxz += (" AND A.MENUID= " + Data.MENUID);
+            sqlxz += (" AND B.JDID= " + i);
+            DataTable splxz = DbHelper.ExecuteTable(sqlxz);
+            splxz.NewEnumColumns<审批结果类型>("JGTYPE", "JGTYPENAME");
+
+            return new Tuple<DataTable, DataTable>(
+                 splc,
+                 splxz
+            );
+        }
+
+        public void ExecMenuSplc(SPLCJG_MENUEntity Data)
+        {
+            var v = GetVerify(Data);
+            v.Require(a => a.BILLID);
+            v.Require(a => a.MENUID);
+            v.Require(a => a.JDID);
+            v.Require(a => a.BZ);
+            Data.CLSJ = DateTime.Now.ToString();
+            Data.XH = NewINC("SPLCJG_MENUE");
+            DbHelper.Save(Data);
+        }
+
     }
 
 }
