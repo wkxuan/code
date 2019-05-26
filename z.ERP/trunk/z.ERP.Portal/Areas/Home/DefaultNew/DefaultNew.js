@@ -72,6 +72,12 @@
                     }
                 }, ],
         box6dataDef: [],
+        boxDclrwcolDef: [
+                { title: '菜单号', key: 'MENUID', width: 80, },
+                { title: '菜单名称', key: 'NAME', width: 150, },
+                { title: '分店', key: 'BRANCHMC', width: 90, },
+                { title: '数量', key: 'COUNT', width: 50, }, ],
+        boxDclrwdataDef:[],
         tableH: 200
     },
     mounted: function () {
@@ -83,6 +89,7 @@
             DefaultNew.box2dataDef = data.box2data;
             DefaultNew.box3dataDef = data.box3data;
             DefaultNew.box6dataDef = data.box6data;
+            DefaultNew.boxDclrwdataDef = data.boxDclrwdata;
         });
     },
     methods: {
@@ -102,6 +109,14 @@
             }, function (data) {
                 DefaultNew.box6dataDef = data;
             });
+        },
+        dclrwClick: function (event) {
+            //列表 重新查询
+            _.OpenPage({
+                id: event.MENUID,
+                title: '浏览销售补录单',
+                url: event.URL + event.BILLID
+            })
         }
     }
 })

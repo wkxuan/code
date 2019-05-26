@@ -257,6 +257,24 @@ namespace z.ERP.Services
             e.Process();
             return "/File/Output/" + newname;
         }
+        /// <summary>
+        /// 待处理任务
+        /// </summary>
+        /// <param name="billStatus"></param>
+        public void InsertDclRw(BILLSTATUSEntity billStatus)
+        {
+            var v = GetVerify(billStatus);
+            v.Require(a => a.BILLID);
+            v.Require(a => a.MENUID);
+            v.Require(a => a.BRABCHID);
+            v.Require(a => a.URL);
+            DbHelper.Save(billStatus);
+        }
+        public void DelDclRw(BILLSTATUSEntity billStatus)
+        {
+            var v = GetVerify(billStatus);
+            DbHelper.Delete(billStatus);
+        }
         #endregion
 
         #region 权限

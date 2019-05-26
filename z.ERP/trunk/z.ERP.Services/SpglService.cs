@@ -294,6 +294,17 @@ namespace z.ERP.Services
                 DbHelper.Save(SaveData);
                 Tran.Commit();
             }
+
+
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.BILLID,
+                MENUID = "10500402",
+                BRABCHID = SaveData.BRANCHID,
+                URL = " SPGL/SALEBILL/SaleBillDetail/"
+            };
+            InsertDclRw(dcl);
+
             return SaveData.BILLID;
         }
         public object ShowOneSaleBillEdit(SALEBILLEntity Data)
@@ -337,6 +348,15 @@ namespace z.ERP.Services
                 {
                     var v = GetVerify(salebill);
                     //校验
+
+                    var dcl = new BILLSTATUSEntity
+                    {
+                        BILLID = salebill.BILLID,
+                        MENUID = "10500402",
+                        BRABCHID = salebill.BRANCHID,
+                        URL = " SPGL/SALEBILL/SaleBillDetail/"
+                    };
+                    DelDclRw(dcl);
                     DbHelper.Delete(salebill);
                 }
                 Tran.Commit();
@@ -377,6 +397,14 @@ namespace z.ERP.Services
                 DbHelper.ExecuteProcedure(execsalebill);
                 Tran.Commit();
             }
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.BILLID,
+                MENUID = "10500402",
+                BRABCHID = Data.BRANCHID,
+                URL = " SPGL/SALEBILL/SaleBillDetail/"
+            };
+            DelDclRw(dcl);
             return mer.BILLID;
         }
         #region 扣率调整单

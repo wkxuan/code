@@ -22,6 +22,7 @@ namespace z.ERP.Portal.Areas.Home.Default
             var box2data = service.DefaultDataService.Box2Data();
             var box3data = service.DefaultDataService.Box3Data(type);
             var box6data = service.DefaultDataService.Box6Data(type);
+            var boxDclrwdata = service.DefaultDataService.BoxDclrwData();
             return new UIResult(
                 new
                 {
@@ -29,6 +30,7 @@ namespace z.ERP.Portal.Areas.Home.Default
                     box2data = box2data,
                     box3data = box3data,
                     box6data = box6data,
+                    boxDclrwdata = boxDclrwdata
                 }
                 );
         }
