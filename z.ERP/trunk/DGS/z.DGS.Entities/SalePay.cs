@@ -9,7 +9,7 @@ namespace z.DGS.Entities
     public class SalePay
     {
 
-        public int payid
+        public int payType
         {
             get; set;
         }
