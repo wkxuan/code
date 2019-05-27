@@ -44,6 +44,7 @@
     <Compile Include="Auto\ADJUSTDISCOUNTEntity.cs" />
     <Compile Include="Auto\ADJUSTDISCOUNTITEMEntity.cs" />
     <Compile Include="Auto\BILLSTATUSEntity.cs" />
+    <Compile Include="Auto\MERCHANT_ACCOUNTEntity.cs" />
     <Compile Include="Auto\SPLCJG_MENUEntity.cs" />
     <Compile Include="Auto\SPLCJGEntity.cs" />
     <Compile Include="Auto\SPLCJDEntity.cs" />

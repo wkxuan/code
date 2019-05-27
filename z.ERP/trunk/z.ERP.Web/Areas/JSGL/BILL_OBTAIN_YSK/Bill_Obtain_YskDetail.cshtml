@@ -58,6 +58,12 @@
     <i-col span="4">
         <i-input v-model="FKFSNAME" readonly="true"></i-input>
     </i-col>
+    <i-col span="2" class="RowTitle">收费单位</i-col>
+    <i-col span="4">
+        <i-input v-model="FEE_ACCOUNT_NAME" readonly="true"></i-input>
+    </i-col>
+</row>
+<row>
     <i-col span="2" class="RowTitle">收款金额</i-col>
     <i-col span="4">
         <i-input v-model="ALL_MONEY" readonly="true"></i-input>
@@ -92,6 +98,7 @@
                 MERCHANTNAME:"@billObtain_Ysk.MERCHANTNAME",
                 ALL_MONEY:"@billObtain_Ysk.ALL_MONEY",
                 FKFSNAME:"@billObtain_Ysk.FKFSNAME",
+                FEE_ACCOUNT_NAME:"@billObtain_Ysk.FEE_ACCOUNT_NAME",
                 DESCRIPTION:"@billObtain_Ysk.DESCRIPTION"
             },
             methods: {
