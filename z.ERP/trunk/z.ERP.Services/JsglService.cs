@@ -386,10 +386,10 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable, DataTable> GetBillObtainElement(BILL_OBTAINEntity Data)
         {
-            string sql = $@"SELECT A.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME,D.NAME FKFSNAME "
-                        + "FROM BILL_OBTAIN A,BRANCH B,MERCHANT C,FKFS D "
-                        + "WHERE A.BRANCHID=B.ID and A.MERCHANTID = C.MERCHANTID(+)"
-                        + " AND A.FKFSID=D.ID(+)";
+            string sql = $@"SELECT A.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME,D.NAME FKFSNAME ,F.NAME FEE_ACCOUNT_NAME "
+                        + "FROM BILL_OBTAIN A,BRANCH B,MERCHANT C,FKFS D ,FEE_ACCOUNT F "
+                        + "WHERE A.BRANCHID=B.ID and A.MERCHANTID = C.MERCHANTID(+) "
+                        + " AND A.FKFSID=D.ID(+) AND A.FEE_ACCOUNT_ID=F.ID(+)";
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billObtain = DbHelper.ExecuteTable(sql);
