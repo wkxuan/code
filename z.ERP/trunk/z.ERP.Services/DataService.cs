@@ -9,6 +9,7 @@ using z.MVC5.Results;
 using z.Results;
 using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
+using z.ERP.Entities.Auto;
 
 namespace z.ERP.Services
 {
@@ -431,6 +432,19 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("id", "name");
         }
-
+        //商户收费单位余额
+        public object GetBalance(MERCHANT_ACCOUNTEntity Data)
+        {
+            string sql = @" SELECT * FROM MERCHANT_ACCOUNT WHERE 1=1";
+            if (!Data.MERCHANTID.IsEmpty())
+                sql += " AND MERCHANTID='" + Data.MERCHANTID + "'";
+            if (!Data.FEE_ACCOUNT_ID.IsEmpty())
+                sql += " AND FEE_ACCOUNT_ID='" + Data.FEE_ACCOUNT_ID + "'";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
+        }
     }
 }
