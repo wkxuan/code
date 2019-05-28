@@ -12,7 +12,6 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchBill_Obtain_Ysk', {
         Data: { BILLID: data }
     }, function (data) {
-        debugger
         $.extend(editDetail.dataParam, data.billObtainYsk);
         Vue.set(editDetail.dataParam, data.billObtainYsk);
         editDetail.dataParam.BILLID = data.billObtainYsk.BILLID;

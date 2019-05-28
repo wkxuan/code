@@ -6,6 +6,7 @@
     editDetail.dataParam.TYPE = 3;
     editDetail.dataParam.ALL_MONEY = 0;
     editDetail.dataParam.ADVANCE_MONEY = 0;
+    editDetail.dataParam.MERCHANT_MONEY = 0;
     //初始化弹窗所要传递参数
     editDetail.screenParam.showPopBill = false;
     editDetail.screenParam.showPopMerchant = false;
@@ -137,7 +138,6 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchBill_Obtain', {
         Data: { BILLID: data }
     }, function (data) {
-        debugger
         $.extend(editDetail.dataParam, data.billObtain);
         editDetail.dataParam.BILL_OBTAIN_ITEM = data.billObtainItem;
         editDetail.dataParam.BILL_OBTAIN_INVOICE = data.billObtainInvoice || [];
@@ -153,6 +153,7 @@ editDetail.otherMethods = {
             return;
         };
         editDetail.screenParam.showPopMerchant = true;
+        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID};
     },
     SelBill: function () {
         if (!editDetail.dataParam.BRANCHID) {
@@ -164,7 +165,7 @@ editDetail.otherMethods = {
             return;
         };
         editDetail.screenParam.showPopBill = true;
-        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID,WFDJ : 1 };
+        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID, FEE_ACCOUNTID: editDetail.dataParam.FEE_ACCOUNT_ID, WFDJ: 1 };
     },
 
     SelInvoice: function () {
@@ -176,8 +177,7 @@ editDetail.otherMethods = {
             iview.Message.info("请选择商户!");
             return;
         };
-        editDetail.screenParam.showPopInvoice = true;
-        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID };
+        editDetail.screenParam.showPopInvoice = true;       
     },
 
     YfkChange: function () {
@@ -190,7 +190,26 @@ editDetail.otherMethods = {
         for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
             fkje += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
         };
+        editDetail.dataParam.ADVANCE_MONEY = editDetail.dataParam.ADVANCE_MONEY.replace('-');   //限制输入负号
         editDetail.dataParam.ALL_MONEY = fkje - editDetail.dataParam.ADVANCE_MONEY;
+    },
+    balance: function () {
+        //收款方式和商户不为空，验证余额，其余情况置未0
+        if (editDetail.dataParam.MERCHANTNAME != null && editDetail.dataParam.MERCHANTNAME != undefined && editDetail.dataParam.FEE_ACCOUNT_ID != null && editDetail.dataParam.FEE_ACCOUNT_ID != undefined) {
+            _.Ajax('SearchBalance', {
+                Data: { MERCHANTID: editDetail.dataParam.MERCHANTID, FEE_ACCOUNT_ID: editDetail.dataParam.FEE_ACCOUNT_ID }
+            }, function (data) {
+                if (data.dt != null) {
+                    editDetail.dataParam.MERCHANT_MONEY=data.dt.BALANCE;
+                } else {
+                    editDetail.dataParam.MERCHANT_MONEY= 0;
+                }
+            });
+        } else {
+            editDetail.dataParam.MERCHANT_MONEY= 0;
+        }
+        //收款方式和商户改变 账单置为空
+        editDetail.dataParam.BILL_OBTAIN_ITEM = [];
     }
 }
 
@@ -226,7 +245,8 @@ editDetail.popCallBack = function (data) {
         for (var i = 0; i < data.sj.length; i++) {
             editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
             editDetail.dataParam.MERCHANTNAME = data.sj[i].NAME;
-            editDetail.dataParam.MERCHANT_MONEY = data.sj[i].MERCHANT_MONEY;
+            editDetail.dataParam.MERCHANT_MONEY = 0;
+            editDetail.dataParam.FEE_ACCOUNT_ID = null;
         }
     } else if (editDetail.screenParam.showPopInvoice) {   //发票返回参数回填
         editDetail.screenParam.showPopInvoice = false;        
@@ -274,6 +294,10 @@ editDetail.IsValidSave = function () {
     };
     if (!editDetail.dataParam.FKFSID) {
         iview.Message.info("请选择付款方式!");
+        return false;
+    };
+    if (!editDetail.dataParam.FEE_ACCOUNT_ID) {
+        iview.Message.info("请选收费单位!");
         return false;
     };
     if (!editDetail.dataParam.NIANYUE) {

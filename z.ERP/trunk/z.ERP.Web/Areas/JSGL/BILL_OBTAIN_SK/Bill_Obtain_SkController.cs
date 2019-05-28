@@ -6,6 +6,7 @@ using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Results;
 using System;
+using z.ERP.Entities.Auto;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
 {
@@ -71,6 +72,9 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
             ViewBag.billObtainItem = entity.Item2;
             ViewBag.CurrentDate = System.DateTime.Now;
             return View();
+        }
+        public UIResult SearchBalance(MERCHANT_ACCOUNTEntity Data) {
+            return new UIResult(service.DataService.GetBalance(Data));
         }
     }
 }
