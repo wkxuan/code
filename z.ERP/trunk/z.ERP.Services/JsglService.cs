@@ -538,7 +538,7 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);
         }
-        public Tuple<dynamic, DataTable> GetBillNoticePrint(BILL_NOTICEEntity Data)
+        public Tuple<dynamic, DataTable, DataTable> GetBillNoticePrint(BILL_NOTICEEntity Data)
         {
             string sql = $@"SELECT A.*,TO_CHAR(A.VERIFY_TIME,'YYYYMM') CZNY,B.NAME BRANCHNAME,'('||D.MERCHANTID||')'||D.NAME MERCHANTNAME,"
                  + " F.NAME PRINTNAME,F.BANK,F.ACCOUNT,"
@@ -569,7 +569,14 @@ namespace z.ERP.Services
             sqlitem += " ORDER BY 2";
             DataTable billNoticeItem = DbHelper.ExecuteTable(sqlitem);
 
-            return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);
+            //添加预收款余额明细 by：Dzk
+            string sqlaccount = @"SELECT M.BALANCE  FROM MERCHANT_ACCOUNT M ,CONTRACT C,BILL_NOTICE B
+									WHERE  C.MERCHANTID=M.MERCHANTID AND B.CONTRACTID=C.CONTRACTID AND M.FEE_ACCOUNT_ID=B.FEE_ACCOUNTID";
+            if (!Data.BILLID.IsEmpty())
+                sqlaccount += (" AND B.BILLID= " + Data.BILLID);
+            DataTable DTA = DbHelper.ExecuteTable(sqlaccount);
+
+            return new Tuple<dynamic, DataTable, DataTable>(billNotice.ToOneLine(), billNoticeItem,DTA);
         }
         /// <summary>
         /// 缴费通知单审核
