@@ -3,6 +3,9 @@
     editDetail.branchid = true;
     editDetail.dataParam.othersName = "商品扣率详情";
     editDetail.Key = 'BILLID';
+    //初始化参数
+    editDetail.screenParam.DISCOUNT = 0;
+
     //初始化弹窗所要传递参数
 
     editDetail.screenParam.showPopGoods = false;
@@ -21,7 +24,8 @@
                     },
                     on: {
                         'on-blur': function (event) {
-                            editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].DISCOUNT_LOWER = event.target.value;
+                            //editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].DISCOUNT_LOWER = event.target.value;
+                            editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].DISCOUNT_LOWER = event.target.value == "" || event.target.value == undefined ? 0 : event.target.value;
                         }
                     },
                 })
@@ -36,7 +40,8 @@
                     },
                     on: {
                         'on-blur': function (event) {
-                            editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].DISCOUNT_CEILING = event.target.value;
+                            //editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].DISCOUNT_CEILING = event.target.value;
+                            editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].DISCOUNT_CEILING = event.target.value == "" || event.target.value == undefined ? 0 : event.target.value;
                         }
                     },
                 })
@@ -54,7 +59,6 @@
                             editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].DISCOUNT_RISE_POINTS = 0;
                             editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].DISCOUNT_DROP_POINTS = event.target.value==""||event.target.value==undefined ? 0 : event.target.value;
                             editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].NEW_DISCOUNT = parseFloat(editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].OLD_DISCOUNT) - parseFloat(editDetail.dataParam.ADJUSTDISCOUNTITEM[params.index].DISCOUNT_DROP_POINTS);
-
                         }
                     },
                 })
@@ -127,7 +131,7 @@
 
 editDetail.showOne = function (data, callback) {
     _.Ajax('ShowOneAdjustDiscountEdit', {
-        Data: { ADIDID: data }
+        Data: { ADID: data }
     }, function (data) {
         $.extend(editDetail.dataParam, data.AdjustDiscount[0]);
         editDetail.dataParam.BILLID = data.AdjustDiscount[0].ADID;
