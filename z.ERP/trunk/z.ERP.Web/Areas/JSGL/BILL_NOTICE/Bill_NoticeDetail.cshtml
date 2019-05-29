@@ -13,6 +13,7 @@
 
 @{
     var billNotice = ViewBag.billNotice;
+    var printurl = ViewBag.printurl;
 }
 @section btn{
     @{
@@ -32,75 +33,75 @@
             Click = "Print",
         });
 
-      @*  if (@billNotice.STATUS == "1")
-    {
-        RenderControl(new ButtonRender()
-        {
-            Text = "审核",
-            Click = "exec",
-        });
-    }
-    else
-    {
-        RenderControl(new ButtonRender()
-        {
-            Text = "打印",
-            Click = "Print",
-        });
-    } *@
+        @*  if (@billNotice.STATUS == "1")
+            {
+                RenderControl(new ButtonRender()
+                {
+                    Text = "审核",
+                    Click = "exec",
+                });
+            }
+            else
+            {
+                RenderControl(new ButtonRender()
+                {
+                    Text = "打印",
+                    Click = "Print",
+                });
+            } *@
     }
 }
 
 @section content{
-<row>
-    <i-col span="2" class="RowTitle">单据号</i-col>
-    <i-col span="4">
-        <i-input v-model="BILLID" readonly="true"></i-input>
-    </i-col>
-    <i-col span="2" class="RowTitle">门店名称</i-col>
-    <i-col span="4">
-        <i-input v-model="BRANCHNAME" readonly="true"></i-input>
-    </i-col>
-    <i-col span="2" class="RowTitle">类型</i-col>
-    <i-col span="4">
-        <i-input v-model="TYPEMC" readonly="true"></i-input>
-    </i-col>
-    <i-col span="2" class="RowTitle">状态</i-col>
-    <i-col span="4">
-        <i-input v-model="STATUSMC" readonly="true"></i-input>
-    </i-col>
-</row>
-<row>
-    <i-col span="2" class="RowTitle">租约号</i-col>
-    <i-col span="4">
-        <i-input v-model="CONTRACTID" readonly="true"></i-input>
-    </i-col>
-    <i-col span="2" class="RowTitle">商户名称</i-col>
-    <i-col span="4">
-        <i-input v-model="MERCHANTNAME" readonly="true"></i-input>
-    </i-col>
-    <i-col span="2" class="RowTitle">年月</i-col>
-    <i-col span="4">
-        <i-input v-model="NIANYUE" readonly="true"></i-input>
-    </i-col>
-    <i-col span="2" class="RowTitle">收费单位</i-col>
-    <i-col span="4">
-        <i-input v-model="FEE_ACCOUNTNAME" readonly="true"></i-input>
-    </i-col>
-</row>
-<row>
-    <i-col span="2" class="RowTitle">备注</i-col>
-    <i-col span="16">
-        <i-input v-model="DESCRIPTION" readonly="true"></i-input>
-    </i-col>
+    <row>
+        <i-col span="2" class="RowTitle">单据号</i-col>
+        <i-col span="4">
+            <i-input v-model="BILLID" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">门店名称</i-col>
+        <i-col span="4">
+            <i-input v-model="BRANCHNAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">类型</i-col>
+        <i-col span="4">
+            <i-input v-model="TYPEMC" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="4">
+            <i-input v-model="STATUSMC" :readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">租约号</i-col>
+        <i-col span="4">
+            <i-input v-model="CONTRACTID" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">商户名称</i-col>
+        <i-col span="4">
+            <i-input v-model="MERCHANTNAME" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">年月</i-col>
+        <i-col span="4">
+            <i-input v-model="NIANYUE" :readonly="true"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">收费单位</i-col>
+        <i-col span="4">
+            <i-input v-model="FEE_ACCOUNTNAME" :readonly="true"></i-input>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">备注</i-col>
+        <i-col span="16">
+            <i-input v-model="DESCRIPTION" :readonly="true"></i-input>
+        </i-col>
 
-</row>
-<row>
-    <i-col span="18">
-        <i-table size="small" border="true"
-                 :columns="colDef" :data="NOTICE_ITEM" height="400"></i-table>
-    </i-col>
-</row>
+    </row>
+    <row>
+        <i-col span="18">
+            <i-table size="small" :border="true"
+                     :columns="colDef" :data="NOTICE_ITEM" height="400"></i-table>
+        </i-col>
+    </row>
 }
 @section foot{
     <script type="text/javascript">
@@ -153,23 +154,25 @@
                 },
                 Print :function (event) {
                     event.stopPropagation();
-
-                    if(@billNotice.TYPE == "2"){
-                        _.OpenPage({
-                            id: 10700501,
-                            title: '打印',
-                            url: "JSGL/BILL_NOTICE/Bill_Notice_Print/" + @billNotice.BILLID,
-                        })
-                    }
-                    else
-                    {
-                        _.OpenPage({
-                            id: 10700501,
-                            title: '打印',
-                            url: "JSGL/BILL_NOTICE/Bill_Notice_PrintOther/" + @billNotice.BILLID,
-                        })
-                    }
-;
+                    if("@printurl"!=""){
+                        if(@billNotice.TYPE == "2"){
+                            _.OpenPage({
+                                id: 10700501,
+                                title: '打印',
+                                url: "@printurl"+"/" + @billNotice.BILLID,
+                            })
+                        }
+                        else
+                        {
+                            _.OpenPage({
+                                id: 10700501,
+                                title: '打印',
+                                url: "@printurl"+"Other/" + @billNotice.BILLID,
+                            })
+                        }
+                    }else{
+                        alert("未配置打印地址")
+                    };
                 }
             }
         });

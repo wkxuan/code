@@ -446,5 +446,17 @@ namespace z.ERP.Services
                 dt = dt.ToOneLine()
             };
         }
+        //获取打印地址
+        public DataTable GetPrintUrl(string menuid,string printtype)
+        {
+            string sql = @" SELECT * FROM PRINTDEF WHERE  USED=1 ";
+            if (!menuid.IsEmpty())
+                sql += " AND MENUID='" + menuid + "'";
+            if (!printtype.IsEmpty())
+                sql += " AND PRINTTYPE='" + printtype + "'";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+
     }
 }

@@ -710,6 +710,8 @@
     <Content Include="Areas\Share\Table.cshtml" />
     <Content Include="Areas\SPGL\ADJUSTDISCOUNT\AdjustDiscountList.cshtml" />
     <Content Include="Areas\SPGL\ADJUSTDISCOUNT\AdjustDiscountEdit.cshtml" />
+    <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintSH.cshtml" />
+    <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintSHOther.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
