@@ -179,40 +179,24 @@
                                 </span>
                             </td>
                         </tr>
-                    </tfoot>
-                </table>
-            </td>
-        </tr>
-
-        <tr>
-            <td colspan="3">
-                <table style="width: 90%;" border="1">
-                    <tr style="line-height: 20px;"> 
-                        <td style="text-align: center">
-                            商户预收款余额
-                        </td>
-                        <td style="text-align: center">
-                            @{
-                                @MERCHANTACCOUNT.ToString("N")
-                            }
-                        </td>
-                        <td style="text-align: center">
-                            应付合计
-                        </td>
-                        <td style="text-align: center">
-                            @{
-                                @payable.ToString("N")
-                            }
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
-        <tr>
-            <td id="datatable" colspan="3">
-                <table class="table" border="1" cellpadding="1" cellspacing="1" style="width: 90%;">
-                    <tfoot>
+                        <tr style="line-height: 20px;">
+                            <td style="text-align: center">
+                                商户预收款余额
+                            </td>
+                            <td style="text-align: center" colspan="2">
+                                @{
+                                    @MERCHANTACCOUNT.ToString("N")
+                                }
+                            </td>
+                            <td style="text-align: center">
+                                应付合计
+                            </td>
+                            <td style="text-align: center">
+                                @{
+                                    @payable.ToString("N")
+                                }
+                            </td>
+                        </tr>
                         <tr>
                             <td rowspan="3">
                                 付款信息
