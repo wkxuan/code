@@ -78,7 +78,8 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAPSHOW
                 {
                     floormap = res.Item1,
                     floorcategory = res.Item2,
-                    floorshopdata = res.Item3
+                    floorshopdata = res.Item3,
+                    floorshoprent_status = res.Item4
                 }
             );
         }

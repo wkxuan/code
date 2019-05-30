@@ -132,6 +132,11 @@ namespace z.ERP.Entities.Enum
         空置 = 1,
         出租 = 2
     }
+    public enum 租用状态COLOR
+    {
+        C0000FF = 1,
+        C87CEFA = 2
+    }
     public enum POS类型
     {
         统一收银 = 1,

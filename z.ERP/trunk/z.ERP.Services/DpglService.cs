@@ -424,7 +424,7 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorcategory);
         }
-        public Tuple<dynamic, DataTable, DataTable> GetGetFloorShowMapData(FLOORMAPSHOWEntity Data)
+        public Tuple<dynamic, DataTable, DataTable,DataTable> GetGetFloorShowMapData(FLOORMAPSHOWEntity Data)
         {
             string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE TO_NUMBER(to_char(NVL(P.INITINATE_TIME,P.VERIFY_TIME),'YYYYMM'))<=" +Data.YEARMONTH 
                 + @" AND TO_NUMBER(to_char(NVL(P.TERMINATE_TIME,SYSDATE),'YYYYMM'))>= " + Data.YEARMONTH  ;
@@ -444,7 +444,7 @@ namespace z.ERP.Services
                 , (SELECT COLOR FROM CATEGORYCOLOR R WHERE R.CATEGORYCODE = Y.CATEGORYCODE) COLOR
                 from CONTRACT_SUMMARY A, CONTRACT_SHOP P,CATEGORY Y, SHOP B, FLOORSHOP C, FLOORMAP D
                 where A.CONTRACTID = P.CONTRACTID AND A.SHOPID = P.SHOPID AND P.CATEGORYID = Y.CATEGORYID
-                AND A.YEARMONTH = "+Data.YEARMONTH +@" AND A.SHOPID = B.SHOPID AND B.CODE = C.SHOPCODE
+                AND A.YEARMONTH = " +Data.YEARMONTH +@" AND A.SHOPID = B.SHOPID AND B.CODE = C.SHOPCODE 
                 AND C.MAPID = D.MAPID AND B.FLOORID = D.FLOORID  ";
             sqlitem1 += " and D.MAPID = " + mapid;
             sqlitem1 += " GROUP BY  P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE ";
@@ -466,7 +466,15 @@ namespace z.ERP.Services
             floorshop.NewEnumColumns<租用状态>("RENT_STATUS", "STATUSMC");
             floorshop.NewEnumColumns<合作方式>("OPERATERULE", "OPERATERULENAME");
 
-            return new Tuple<dynamic, DataTable, DataTable>(floormap.ToOneLine(), floorcategory, floorshop);
+            string sqlitem3 = $@"select SUM(A.AMOUNT), B.RENT_STATUS , S.NAME || '(' || SUM(B.AREA_RENTABLE) || ')' STATUSNAME,S.COLOR 
+                from CONTRACT_SUMMARY A, SHOP B,RENT_STATUS S, FLOORSHOP C, FLOORMAP D
+                where A.YEARMONTH = " + Data.YEARMONTH + @" AND A.SHOPID = B.SHOPID AND B.RENT_STATUS=S.RENT_STATUS(+) AND B.CODE = C.SHOPCODE 
+                AND C.MAPID = D.MAPID AND B.FLOORID = D.FLOORID  ";
+            sqlitem3 += " and D.MAPID = " + mapid;
+            sqlitem3 += " GROUP BY  B.RENT_STATUS,S.NAME,S.COLOR ";
+            DataTable shoprent_status = DbHelper.ExecuteTable(sqlitem3);
+
+            return new Tuple<dynamic, DataTable, DataTable,DataTable>(floormap.ToOneLine(), floorcategory, floorshop, shoprent_status);
         }
         /// <summary>
         /// 列表页的删除,可以批量删除
