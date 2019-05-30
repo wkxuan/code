@@ -219,6 +219,7 @@
     <Compile Include="Areas\Share\Render\ViewDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\ViewEnumDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\YearMonthBoxRender.cs" />
+    <Compile Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccountController.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
@@ -370,6 +371,8 @@
     <Content Include="Areas\Report\MerchantRent\MerchantRent.js" />
     <Content Include="Areas\Report\PayTypeSale\PayTypeSale.js" />
     <Content Include="Areas\Report\SaleRecord\SaleRecord.js" />
+    <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccount.js" />
+    <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccountDetail.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
@@ -712,6 +715,8 @@
     <Content Include="Areas\SPGL\ADJUSTDISCOUNT\AdjustDiscountEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintSH.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintSHOther.cshtml" />
+    <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccount.cshtml" />
+    <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccountDetail.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
