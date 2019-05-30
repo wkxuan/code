@@ -8,7 +8,9 @@
     editDetail.screenParam.showPopCrmRole = false;
     editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx?personid=-5";
     editDetail.screenParam.popParam = {};
-
+    editDetail.screenParam.ytTreeData = editDetail.screenParam.ytTreeData || [];
+    editDetail.screenParam.region = editDetail.screenParam.region || [];
+    editDetail.screenParam.localYt = [];
     editDetail.screenParam.colDef_Menu = [
         { type: 'selection', width: 60, align: 'center' },
         { title: '菜单名称', key: 'MENUNAME', width: 150 },
@@ -18,6 +20,10 @@
     editDetail.screenParam.colDef_Menufee = [
         { type: 'selection', width: 60, align: 'center' },
         { title: '费用项目名称', key: 'NAME', width: 150 }
+    ];
+    editDetail.screenParam.colDef_Menuregion = [
+        { type: 'selection', width: 60, align: 'center' },
+        { title: '区域名称', key: 'NAME', width: 150 }
     ];
 
     editDetail.screenParam.selectData = function (selection, row) {
@@ -41,6 +47,17 @@
     };
     editDetail.screenParam.selectCancelfee = function (selection) {
         editDetail.checkfee(selection);
+    };
+
+    editDetail.screenParam.selectDataregion = function (selection, row) {
+        editDetail.checkregion(selection);
+    };
+
+    editDetail.screenParam.selectDataAllregion = function (selection) {
+        editDetail.checkregion(selection);
+    };
+    editDetail.screenParam.selectCancelregion = function (selection) {
+        editDetail.checkregion(selection);
     };
 
 };
@@ -76,6 +93,8 @@ editDetail.showOne = function (data, callback) {
         Vue.set(editDetail.screenParam, "ORGData", datainit.treeOrg.Obj);
         Vue.set(editDetail.screenParam, "USERMODULE", datainit.module);
         Vue.set(editDetail.screenParam, "fee", datainit.fee);
+        Vue.set(editDetail.screenParam, "ytTreeData", datainit.ytTree);
+        Vue.set(editDetail.screenParam, "region", datainit.region);
 
 
         _.Ajax('SearchRole', {
@@ -117,6 +136,23 @@ editDetail.showOne = function (data, callback) {
                     }
                     Vue.set(editDetail.dataParam, 'ROLE_FEE', localFee);
                 };
+
+                var localRegion = [];
+                for (var j = 0; j < editDetail.screenParam.region.length; j++) {
+                    Vue.set(editDetail.screenParam.region[j], '_checked', false);
+
+                    for (var i = 0; i < data.region.length; i++) {
+                        if (data.region[i].REGIONID == editDetail.screenParam.region[j].REGIONID) {
+                            Vue.set(editDetail.screenParam.region[j], '_checked', true);
+                            localRegion.push({
+                                REGIONID: data.region[i].REGIONID
+                            });
+                        }
+                    }
+                    Vue.set(editDetail.dataParam, 'ROLE_REGION', localRegion);
+                };
+               
+                editDetail.screenParam.ytTreeData = data.ytTreeData;                
             };
         });
     });
@@ -124,8 +160,31 @@ editDetail.showOne = function (data, callback) {
 }
 
 editDetail.IsValidSave = function () {
+    editDetail.screenParam.localYt = [];
+    for (var j = 0; j < editDetail.screenParam.ytTreeData.length; j++) {
+        var itemdata = editDetail.screenParam.ytTreeData[j].children;
+        InsertTree(itemdata);
+    };
     return true;
 }
+
+function InsertTree(treeData) {
+    if (treeData.length>0)
+    {
+        for (var i = 0; i < treeData.length; i++)
+        {
+            if (treeData[i].checked) {
+                editDetail.screenParam.localYt.push({ YTID: treeData[i].value });
+                Vue.set(editDetail.dataParam, 'ROLE_YT', editDetail.screenParam.localYt);
+            }
+            else if (treeData[i].children.length>0)
+            {
+                InsertTree(treeData[i].children)
+            }
+        }
+    }
+}
+
 
 editDetail.otherMethods = {
     orgChange: function (value, selectedData) {
@@ -149,6 +208,15 @@ editDetail.checkfee = function (selection) {
         localData.push({ TRIMID: selection[i].TRIMID });
     };
     Vue.set(editDetail.dataParam, 'ROLE_FEE', localData);
+}
+
+editDetail.checkregion = function (selection) {
+    editDetail.dataParam.ROLE_REGION = [];
+    var localData = [];
+    for (var i = 0; i < selection.length; i++) {
+        localData.push({ REGIONID: selection[i].REGIONID });
+    };
+    Vue.set(editDetail.dataParam, 'ROLE_REGION', localData);
 }
 
 editDetail.mountedInit = function () {

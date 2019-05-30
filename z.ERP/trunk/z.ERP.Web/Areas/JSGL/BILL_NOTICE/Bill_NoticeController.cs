@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using z.MVC5.Results;
 using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
+using System;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
 {
@@ -31,8 +32,16 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
         {
             ViewBag.Title = "缴费通知单";
             var entity = service.JsglService.GetBillNoticeElement(new BILL_NOTICEEntity(Id));
+            var print = service.DataService.GetPrintUrl("107005","2");
             ViewBag.billNotice = entity.Item1;
             ViewBag.billNoticeItem = entity.Item2;
+            if (print.Rows.Count > 0)
+            {
+                ViewBag.printurl = print.Rows[0]["PRINTURL"].ToString();
+            }
+            else {
+                ViewBag.printurl = "";
+            }
             return View(entity);
         }
 
@@ -73,6 +82,26 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
             var entity = service.JsglService.GetBillNoticePrint(new BILL_NOTICEEntity(Id));
             ViewBag.billNotice = entity.Item1;
             ViewBag.billNoticeItem = entity.Item2;
+            if (entity.Item3.Rows.Count > 0)
+            {
+                ViewBag.MERCHANTACCOUNT = Convert.ToDecimal(entity.Item3.Rows[0]["BALANCE"]);
+                //应付金额
+                var a = Convert.ToDecimal(entity.Item1.NOTICE_MONEY);
+                var b = Convert.ToDecimal(entity.Item3.Rows[0]["BALANCE"].ToString());
+                if (a > b)
+                {
+                    ViewBag.payable = a - b;
+                }
+                else
+                {
+                    ViewBag.payable = 0;
+                }
+            }
+            else
+            {
+                ViewBag.MERCHANTACCOUNT = 0;
+                ViewBag.payable = Convert.ToDecimal(ViewBag.billNotice.NOTICE_MONEY);
+            }
             ViewBag.CurrentDate = System.DateTime.Now;
             return View();
         }
@@ -82,8 +111,87 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
             var entity = service.JsglService.GetBillNoticePrint(new BILL_NOTICEEntity(Id));
             ViewBag.billNotice = entity.Item1;
             ViewBag.billNoticeItem = entity.Item2;
+            if (entity.Item3.Rows.Count > 0)
+            {
+                ViewBag.MERCHANTACCOUNT = Convert.ToDecimal(entity.Item3.Rows[0]["BALANCE"]);
+                //应付金额
+                var a = Convert.ToDecimal(entity.Item1.NOTICE_MONEY);
+                var b = Convert.ToDecimal(entity.Item3.Rows[0]["BALANCE"].ToString());
+                if (a > b)
+                {
+                    ViewBag.payable = a - b;
+                }
+                else
+                {
+                    ViewBag.payable = 0;
+                }
+            }
+            else
+            {
+                ViewBag.MERCHANTACCOUNT = 0;
+                ViewBag.payable = Convert.ToDecimal(ViewBag.billNotice.NOTICE_MONEY);
+            }            
             ViewBag.CurrentDate = System.DateTime.Now;
             return View();
         }
+        #region  四海打印方法
+        public ActionResult Bill_Notice_PrintSH(string Id)
+        {
+            var entity = service.JsglService.GetBillNoticePrint(new BILL_NOTICEEntity(Id));
+            ViewBag.billNotice = entity.Item1;
+            ViewBag.billNoticeItem = entity.Item2;
+            if (entity.Item3.Rows.Count > 0)
+            {
+                ViewBag.MERCHANTACCOUNT = Convert.ToDecimal(entity.Item3.Rows[0]["BALANCE"]);
+                //应付金额
+                var a = Convert.ToDecimal(entity.Item1.NOTICE_MONEY);
+                var b = Convert.ToDecimal(entity.Item3.Rows[0]["BALANCE"].ToString());
+                if (a > b)
+                {
+                    ViewBag.payable = a - b;
+                }
+                else
+                {
+                    ViewBag.payable = 0;
+                }
+            }
+            else
+            {
+                ViewBag.MERCHANTACCOUNT = 0;
+                ViewBag.payable = Convert.ToDecimal(ViewBag.billNotice.NOTICE_MONEY);
+            }
+            ViewBag.CurrentDate = System.DateTime.Now;
+            return View();
+        }
+
+        public ActionResult Bill_Notice_PrintSHOther(string Id)
+        {
+            var entity = service.JsglService.GetBillNoticePrint(new BILL_NOTICEEntity(Id));
+            ViewBag.billNotice = entity.Item1;
+            ViewBag.billNoticeItem = entity.Item2;
+            if (entity.Item3.Rows.Count > 0)
+            {
+                ViewBag.MERCHANTACCOUNT = Convert.ToDecimal(entity.Item3.Rows[0]["BALANCE"]);
+                //应付金额
+                var a = Convert.ToDecimal(entity.Item1.NOTICE_MONEY);
+                var b = Convert.ToDecimal(entity.Item3.Rows[0]["BALANCE"].ToString());
+                if (a > b)
+                {
+                    ViewBag.payable = a - b;
+                }
+                else
+                {
+                    ViewBag.payable = 0;
+                }
+            }
+            else
+            {
+                ViewBag.MERCHANTACCOUNT = 0;
+                ViewBag.payable = Convert.ToDecimal(ViewBag.billNotice.NOTICE_MONEY);
+            }
+            ViewBag.CurrentDate = System.DateTime.Now;
+            return View();
+        }
+        #endregion
     }
 }

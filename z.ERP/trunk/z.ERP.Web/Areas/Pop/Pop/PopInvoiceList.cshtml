@@ -1,0 +1,55 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.PopSearch;
+@inherits PopSearchViewBase
+@section conditionParam{
+    <row>
+
+    <i-col span="2" class="RowTitle">发票号码</i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "searchParam.INVOICENUMBER"
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        发票类型
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new EnumDropDownListRender<发票类型>()
+            {
+                vModel = "searchParam.TYPE",
+            });
+        }
+    </i-col>
+</row>
+<row>
+    <i-col span="2" class="RowTitle">
+        商户
+    </i-col>
+    <i-col span="6" class="RowTitle">
+        @{
+            RenderControl(new TextBoxRender()
+            {
+                vModel = "searchParam.MERCHANTID",
+                Enable = true
+            });
+        }
+    </i-col>
+    <i-col span="2" class="RowTitle">
+        开票日期
+    </i-col>
+    <i-col span="6">
+        @{
+            RenderControl(new DateBoxRender()
+            {
+                vModel = "searchParam.INVOICEDATE"
+            });
+        }
+    </i-col>
+</row>
+   
+}

@@ -40,10 +40,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADJUSTDISCOUNTEntity.cs" />
+    <Compile Include="Auto\ADJUSTDISCOUNTEntity.cs" />
+    <Compile Include="Auto\ADJUSTDISCOUNTITEMEntity.cs" />
+    <Compile Include="Auto\BILLSTATUSEntity.cs" />
+    <Compile Include="Auto\MERCHANT_ACCOUNTEntity.cs" />
+    <Compile Include="Auto\SPLCJG_MENUEntity.cs" />
+    <Compile Include="Auto\SPLCJGEntity.cs" />
+    <Compile Include="Auto\SPLCJDEntity.cs" />
+    <Compile Include="Auto\SPLCDEFDEntity.cs" />
+    <Compile Include="Auto\ALERT_FIELD.cs" />
+    <Compile Include="Auto\BILL_OBTAIN_INVOICEEntity.cs" />
     <Compile Include="Auto\FEE_ACCOUNTEntity.cs" />
     <Compile Include="Auto\DEF_ALERTEntity.cs" />
     <Compile Include="Auto\FLOORMAPSHOWEntity .cs" />
+    <Compile Include="Auto\InvoiceEntity.cs" />
     <Compile Include="Auto\POSUMSCONFIGEntity.cs" />
+    <Compile Include="Auto\ROLE_REGIONEntity.cs" />
+    <Compile Include="Auto\ROLE_YTEntity.cs" />
+    <Compile Include="DEF_ALERT.cs" />
     <Compile Include="FLOORMAPEntity.cs" />
     <Compile Include="Auto\FLOORSHOPEntity.cs" />
     <Compile Include="Auto\FLOORMAPEntity.cs" />
@@ -91,6 +106,7 @@
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="FREESHOPEntity.cs" />
     <Compile Include="OPENBUSINESSEntity.cs" />
+    <Compile Include="Service\Pos\Address.cs" />
     <Compile Include="Service\Pos\PayRecord.cs" />
     <Compile Include="Service\Pos\PosUMSConfig.cs" />
     <Compile Include="Service\Pos\PosWFTConfig.cs" />

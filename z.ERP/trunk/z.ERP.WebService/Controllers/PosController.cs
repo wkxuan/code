@@ -48,6 +48,12 @@ namespace z.ERP.WebService.Controllers
             return service.PosService.GetConfig();
         }
 
+        [ServiceAble("BindAddress")]
+        public void BindAddress(Address ads)
+        {
+             service.PosService.BindAddress(ads);
+        }
+
         [ServiceAble("GetClerkShop")]
         public UserYYYResult GetClerkShop(PersonInfo req)
         {

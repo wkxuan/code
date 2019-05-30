@@ -18,11 +18,13 @@ namespace z.ERP.Web.Areas.XTGL.AlertShow
 
         public UIResult SearchAlert(DEF_ALERTEntity Data)
         {
+            //返回预警的列表给col,返回预警的结果给data
             var res = service.XtglService.GetAlertSql(Data);
             return new UIResult(
                 new
                 {
-                    alert = res.Item1
+                    alertData = res.Item1,
+                    alertCol = res.Item2
                 }
             );
         }

@@ -1,0 +1,156 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Entities;
+@inherits EditDetailViewBase<string>
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            开始时间
+        </i-col>
+        <i-col span="6">
+            <date-picker type="datetime" format="yyyy-MM-dd HH:mm:ss" v-on:on-change="dataParam.STARTTIME=$event"
+                         :value="dataParam.STARTTIME"></date-picker>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            结束时间
+        </i-col>
+        <i-col span="6">
+            <date-picker type="datetime" format="yyyy-MM-dd HH:mm:ss" v-on:on-change="dataParam.ENDTIME=$event"
+                         :value="dataParam.ENDTIME"></date-picker>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            备注
+        </i-col>
+        <i-col span="22">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.DESCRIPTION"
+                });
+            }
+        </i-col>
+    </row>
+
+}
+@section detailParam{
+    <row>
+        <i-col span="3">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchColGoods",
+                    Text = "选择商品",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+        </i-col>
+        <i-col span="1" class="RowTitle">
+            扣率(%):
+        </i-col>
+        <i-col span="1">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "screenParam.DISCOUNT",
+                    type="number",
+                });
+            }
+        </i-col>
+        <i-col span="15">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "cDISCOUNT_LOWER",
+                    Text = "批量设置折扣下限",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }      
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "cDISCOUNT_CEILING",
+                    Text = "批量设置折扣上限",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "cDISCOUNT_DROP_POINTS",
+                    Text = "批量设置折扣降点",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "cDISCOUNT_RISE_POINTS",
+                    Text = "批量设置折扣升点",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "cleardata",
+                    Text = "清空",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="24">
+            <i-table size="small" :border="true"
+                     :columns="screenParam.colDef" :data="dataParam.ADJUSTDISCOUNTITEM"></i-table>
+        </i-col>
+    </row>
+
+}
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopGoods",
+                    Caption = "选择商品",
+                    Width = "900",
+                    Src = "screenParam.srcPopGoods"
+                });
+            }
+        </i-col>
+    </row>
+}
+

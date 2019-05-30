@@ -36,7 +36,9 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                 {
                     role = res.Item1,
                     fee = res.Item2,
-                    module = res.Item3
+                    module = res.Item3,
+                    ytTreeData = res.Item6,
+                    region = res.Item5
                 }
             );
         }
@@ -62,7 +64,9 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                 {
                     treeOrg = res.Item1,
                     fee = res.Item2,
-                    module = res.Item3
+                    module = res.Item3,
+                    ytTree = res.Item4,
+                    region = res.Item5
                 }
             );
         }

@@ -5,6 +5,9 @@ using z.Extensions;
 using System;
 using z.SSO.Model;
 using z.ERP.Entities.Enum;
+using System.Collections.Generic;
+using z.ERP.Model.Vue;
+using System.Linq;
 
 namespace z.ERP.Services
 {
@@ -76,7 +79,7 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public Tuple<dynamic, DataTable, DataTable> GetRoleElement(ROLEEntity Data)
+        public Tuple<dynamic, DataTable, DataTable, DataTable, DataTable, TreeModel[]> GetRoleElement(ROLEEntity Data)
         {
             string sql = $@"SELECT A.*,B.ORGIDCASCADER  FROM ROLE A,ORG B  WHERE A.ORGID=B.ORGID ";
             if (!Data.ROLEID.IsEmpty())
@@ -95,11 +98,41 @@ namespace z.ERP.Services
                 sqlFee += (" AND ROLEID= " + Data.ROLEID);
             DataTable fee = DbHelper.ExecuteTable(sqlFee);
 
-            return new Tuple<dynamic, DataTable, DataTable>(role.ToOneLine(), fee, module);
+
+
+            string sqlYt = $@" SELECT YTID ID FROM  ROLE_YT WHERE 1=1";
+            if (!Data.ROLEID.IsEmpty())
+                sqlYt += (" AND ROLEID= " + Data.ROLEID);
+            DataTable yt = DbHelper.ExecuteTable(sqlYt);
+
+
+            string sqlRegion = $@" SELECT REGIONID FROM  ROLE_REGION WHERE 1=1";
+            if (!Data.ROLEID.IsEmpty())
+                sqlRegion += (" AND ROLEID= " + Data.ROLEID);
+            DataTable region = DbHelper.ExecuteTable(sqlRegion);
+
+            //List<GOODS_KINDEntity> p = DbHelper.SelectList(new GOODS_KINDEntity()).OrderBy(a => a.CODE).ToList();
+            string sqlYt2 = "select G.CATEGORYID,G.CATEGORYCODE,G.CATEGORYNAME,Y.YTID LEVEL_LAST from CATEGORY G,ROLE_YT Y where G.CATEGORYID =Y.YTID(+) ";
+            sqlYt2 += (" AND Y.ROLEID(+)= " + Data.ROLEID);
+
+            List<CATEGORYEntity> p =  DbHelper.ExecuteTable(sqlYt2).ToList<CATEGORYEntity>();
+
+            var ytTreeData = TreeModel.Create(p,
+                a => a.CATEGORYCODE,
+                a => new TreeModel()
+                {
+                    value  = a.CATEGORYID,
+                    @checked = !a.LEVEL_LAST.IsNullValue(),
+                    code = a.CATEGORYCODE,
+                    title = a.CATEGORYCODE + " " + a.CATEGORYNAME,
+                    expand = false
+                })?.ToArray();
+
+            return new Tuple<dynamic, DataTable, DataTable, DataTable, DataTable, TreeModel[]>(role.ToOneLine(), fee, module, yt, region, ytTreeData);
         }
 
 
-        public Tuple<dynamic, DataTable, DataTable> GetRoleInit()
+        public Tuple<dynamic, DataTable, DataTable, TreeModel[], DataTable> GetRoleInit()
         {
 
             var org = DataService.GetTreeOrg();
@@ -117,7 +150,21 @@ namespace z.ERP.Services
             string sqlitem2 = $@"select A.TRIMID,A.NAME from FEESUBJECT A  order by A.TRIMID";
             DataTable fee = DbHelper.ExecuteTable(sqlitem2);
 
-            return new Tuple<dynamic, DataTable, DataTable>(org.Item1, fee, module);
+            string sqlitemRegion = $@"select A.REGIONID,A.NAME from REGION A  order by A.REGIONID";
+            DataTable region = DbHelper.ExecuteTable(sqlitemRegion);
+
+            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
+            var ytTreeData = TreeModel.Create(p,
+                a => a.CATEGORYCODE,
+                a => new TreeModel()
+                {
+                    value = a.CATEGORYID,
+                    code = a.CATEGORYCODE,
+                    title = a.CATEGORYCODE + " " + a.CATEGORYNAME,
+                    expand = false
+                })?.ToArray();
+
+            return new Tuple<dynamic, DataTable, DataTable, TreeModel[], DataTable>(org.Item1, fee, module, ytTreeData, region);
         }
 
 

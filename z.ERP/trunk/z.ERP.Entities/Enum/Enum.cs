@@ -108,7 +108,11 @@ namespace z.ERP.Entities.Enum
         银行卡 = 4,
         支付宝 = 5,
         微信 = 6,
-        扫码支付 = 7
+        扫码支付 = 7,
+        
+        //20以后为第三对接支付用
+        猫酷优惠券 = 21,
+        猫酷折扣券 = 22
     }
     public enum 单元类型
     {
@@ -342,12 +346,12 @@ namespace z.ERP.Entities.Enum
         MD5 = 1,
         RSA = 2
     }
-    public enum 布局图状态    
+    public enum 布局图状态
     {
         未审核 = 1,
         审核 = 3,
-        终止=4,
-        作废=5
+        终止 = 4,
+        作废 = 5
     }
     public enum 列表或汇总
     {
@@ -361,7 +365,45 @@ namespace z.ERP.Entities.Enum
     }
     public enum 租金收取方式
     {
-        提成租金=1,
-        固定租金=2
+        提成租金 = 1,
+        固定租金 = 2
+    }
+    public enum 发票类型
+    {
+        百元票 = 1,
+        千元票 = 2,
+        万元票 = 3,
+        十万元票 = 4,
+        百万元票 = 5,
+        千万元票 = 6
+    }
+
+
+    /// <summary>
+    /// 暂时使用未来改成从一个固定表里面获取
+    /// </summary>
+    public enum 审批流程菜单号
+    {
+        租赁合同 = 10600200
+    }
+
+    public enum 审批流程节点类型
+    {
+        开始 = 1,
+        表决 = 2,
+        结束 = 3
+    }
+
+    public enum 审批结果类型
+    {
+        通过 = 1,
+        不通过 = 2
+    }
+
+    public enum 审批单状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        终止 = 3
     }
 }

@@ -22,5 +22,18 @@ namespace z.ERP.Entities
             set;
         }
 
+        [ForeignKey(nameof(ROLEID), nameof(ROLE_FEEEntity.ROLEID))]
+        public List<ROLE_REGIONEntity> ROLE_REGION
+        {
+            get;
+            set;
+        }
+
+        [ForeignKey(nameof(ROLEID), nameof(ROLE_FEEEntity.ROLEID))]
+        public List<ROLE_YTEntity> ROLE_YT
+        {
+            get;
+            set;
+        }
     }
 }

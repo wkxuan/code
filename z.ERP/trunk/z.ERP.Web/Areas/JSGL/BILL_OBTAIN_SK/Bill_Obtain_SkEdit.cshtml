@@ -12,7 +12,7 @@
                     Click = "SelMerchant",
                     Text = "商户",
                     Enable = true,
-                    Type = "primary"
+                    Type = "primary"                   
                 });
             }
         </i-col>
@@ -21,22 +21,27 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.MERCHANTNAME",
-                    Readonly = "true"
+                    Readonly = "true",
+                    Change = "balance"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            商户余额
+            <span class="mustElement">*</span>
+            收费单位
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new ServiceDropDownListRender()
                 {
-                    vModel = "dataParam.MERCHANT_MONEY",
-                    Readonly = "true"
+                    vModel = "dataParam.FEE_ACCOUNT_ID",
+                    ServiceMothod = m => m.feeAccount(),
+                    Change= "balance"
                 });
             }
+
         </i-col>
+        
         <i-col span="2" class="RowTitle">
             状态
         </i-col>
@@ -63,6 +68,18 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
+            商户余额
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.MERCHANT_MONEY",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
             付款方式
         </i-col>
         <i-col span="6">
@@ -74,6 +91,7 @@
                 });
             }
         </i-col>
+        
     </row>
     <row>        
         <i-col span="2" class="RowTitle">
@@ -95,7 +113,9 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.ADVANCE_MONEY",
-                    Change = "YfkChange"
+                    Change = "YfkChange",
+                    type="number",
+                  
                 });
             }
         </i-col>
@@ -133,6 +153,25 @@
                      :columns="screenParam.colDef" :data="dataParam.BILL_OBTAIN_ITEM"></i-table>
         </i-col>
     </row>
+    <br />
+    <br />
+    <row>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "SelInvoice",
+                Text = "选择发票",
+                Enable = true,
+                Type = "primary",
+                Icon = "plus-circled"
+            });
+        }
+        <i-col span="24">
+            <i-table size="small" :border="true"
+                     :columns="screenParam.colDefI" :data="dataParam.BILL_OBTAIN_INVOICE"></i-table>
+        </i-col>
+    </row>
+
 }
 
 @section pops{
@@ -162,5 +201,19 @@
             }
         </i-col>
     </row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopInvoice",
+                    Caption = "选择发票",
+                    Width = "900",
+                    Src = "screenParam.srcPopInvoice"
+                });
+            }
+        </i-col>
+    </row>
+
 }
 

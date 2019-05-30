@@ -40,9 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pos\Address.cs" />
     <Compile Include="Pos\ClerkResultt.cs" />
     <Compile Include="Pos\DealResult.cs" />
     <Compile Include="Pos\Define.cs" />
+    <Compile Include="Pos\DiscountRecord.cs" />
     <Compile Include="Pos\FindGoodsFilter.cs" />
     <Compile Include="Pos\FindGoodsResult.cs" />
     <Compile Include="Pos\FKFSResult.cs" />
@@ -66,9 +68,9 @@
     <Folder Include="auto\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\z.ERP.API\z.ERP.API.csproj">
-      <Project>{91882ee9-bf22-4b43-85a4-aa9cecb65c48}</Project>
-      <Name>z.ERP.API</Name>
+    <ProjectReference Include="..\z.POS.API\z.POS.API.csproj">
+      <Project>{e2f065b3-2407-418d-af7b-cace0d9a9331}</Project>
+      <Name>z.POS.API</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

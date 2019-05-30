@@ -6,6 +6,7 @@ using z.MVC5.Results;
 using z.MVC5.Attributes;
 using z.ERP.Web.Areas.Layout.Search;
 using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Entities.Enum;
 
 namespace z.ERP.Web.Areas.HTGL.ZLHT
 {
@@ -22,7 +23,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                 Permission_Del = "10600201",
                 Permission_Exec = "10600202",
                 Permission_Bg = "10600203"
-                
+
             });
         }
 
@@ -110,6 +111,31 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         public string Output(SearchItem item)
         {
             return service.HtglService.GetContractOutput(item);
+        }
+
+        //返回节点数据，并且返回当前节点要面临的操作步骤
+        public UIResult Srchsplc(SPLCDEFDEntity Data)
+        {
+            var res = service.XtglService.GetSplc(Data);
+            return new UIResult(
+                new
+                {
+                    splc = res.Item1,
+                    splxz = res.Item2
+                }
+            );
+        }
+
+        public void ExecSplc(SPLCJG_MENUEntity Data)
+        {
+            if (Data.JGTYPE == ((int)审批流程节点类型.结束).ToString())
+            {
+                var Data1 = new CONTRACTEntity();
+                Data1.CONTRACTID = Data.BILLID;
+                service.HtglService.ExecData(Data1);
+            }
+            else
+                service.XtglService.ExecMenuSplc(Data);
         }
 
     }

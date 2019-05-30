@@ -94,6 +94,10 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "POS";
             return View();
         }
+        public ActionResult PopInvoiceList() {
+            ViewBag.Title = "发票";
+            return View();
+        }
         //public UIResult SearchFloorMapData(FLOORMAPEntity Data)
         //{
         //    var res = service.DpglService.GetFLOORMAPDATA(Data);

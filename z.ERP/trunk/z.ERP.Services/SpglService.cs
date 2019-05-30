@@ -294,6 +294,17 @@ namespace z.ERP.Services
                 DbHelper.Save(SaveData);
                 Tran.Commit();
             }
+
+
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.BILLID,
+                MENUID = "10500402",
+                BRABCHID = SaveData.BRANCHID,
+                URL = " SPGL/SALEBILL/SaleBillDetail/"
+            };
+            InsertDclRw(dcl);
+
             return SaveData.BILLID;
         }
         public object ShowOneSaleBillEdit(SALEBILLEntity Data)
@@ -337,6 +348,15 @@ namespace z.ERP.Services
                 {
                     var v = GetVerify(salebill);
                     //校验
+
+                    var dcl = new BILLSTATUSEntity
+                    {
+                        BILLID = salebill.BILLID,
+                        MENUID = "10500402",
+                        BRABCHID = salebill.BRANCHID,
+                        URL = " SPGL/SALEBILL/SaleBillDetail/"
+                    };
+                    DelDclRw(dcl);
                     DbHelper.Delete(salebill);
                 }
                 Tran.Commit();
@@ -377,7 +397,112 @@ namespace z.ERP.Services
                 DbHelper.ExecuteProcedure(execsalebill);
                 Tran.Commit();
             }
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.BILLID,
+                MENUID = "10500402",
+                BRABCHID = Data.BRANCHID,
+                URL = " SPGL/SALEBILL/SaleBillDetail/"
+            };
+            DelDclRw(dcl);
             return mer.BILLID;
         }
+        #region 扣率调整单
+        public DataGridResult GetAdjustDiscountList(SearchItem item)
+        {
+            string sql = @"SELECT A.*,B.NAME BRANCHNAME FROM ADJUSTDISCOUNT A,BRANCH B
+                    WHERE A.BRANCHID=B.ID ";
+            item.HasKey("ADID", a => sql += $" and A.ADID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID={a}");           
+            item.HasDateKey("DATE_START", a => sql += $" and A.STARTTIME>={a}");
+            item.HasDateKey("DATE_END", a => sql += $" and A.ENDTIME<={a}");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS={a}");
+            item.HasKey("REPORTER", a => sql += $" and A.REPORTER={a}");
+            item.HasDateKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME>={a}");
+            item.HasDateKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME<={a}");
+            item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
+            item.HasDateKey("VERIFY_TIME_START", a => sql += $" and A.VERIFY_TIME>={a}");
+            item.HasDateKey("VERIFY_TIME_END", a => sql += $" and A.VERIFY_TIME<={a}");
+            sql += " ORDER BY  ADID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+
+        public object ShowOneAdjustDiscountEdit(ADJUSTDISCOUNTEntity Data)
+        {
+            string sql = @"SELECT A.*,B.NAME BRANCHNAME FROM ADJUSTDISCOUNT A,BRANCH B
+                    WHERE A.BRANCHID=B.ID ";
+            if (!Data.ADID.IsEmpty())
+                sql += (" and A.ADID= " + Data.ADID);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            string sqlsale = @"SELECT A.*,G.GOODSDM,G.NAME FROM ADJUSTDISCOUNTITEM A,GOODS G
+                    WHERE A.GOODSID=G.GOODSID";
+            if (!Data.ADID.IsEmpty())
+                sqlsale += (" and A.ADID= " + Data.ADID);
+            DataTable dtsale = DbHelper.ExecuteTable(sqlsale);
+
+            var result = new
+            {
+                AdjustDiscount = dt,
+                AdjustDiscountItem = new dynamic[] {
+                   dtsale
+                }
+            };
+            return result;
+        }
+        public string SaveAdjustDiscount(ADJUSTDISCOUNTEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.ADID.IsEmpty())
+                SaveData.ADID = NewINC("ADJUSTDISCOUNT");
+            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            SaveData.VERIFY = employee.Id;
+            v.Require(a => a.ADID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.STARTTIME);
+            v.Require(a => a.ENDTIME);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                SaveData.ADJUSTDISCOUNTITEM?.ForEach(item =>
+                {
+                    item.PHASE = "1";
+                    GetVerify(item).Require(a => a.GOODSID);
+                    GetVerify(item).Require(a => a.NEW_DISCOUNT);
+                });
+                DbHelper.Save(SaveData);
+                Tran.Commit();
+            }
+            return SaveData.ADID;
+        }
+        public void DeleteAdjustDiscount(List<ADJUSTDISCOUNTEntity> DeleteData)
+        {
+            foreach (var con in DeleteData)
+            {
+                ADJUSTDISCOUNTEntity Data = DbHelper.Select(con);
+                if (Data.STATUS != ((int)普通单据状态.未审核).ToString())
+                {
+                    throw new LogicException($"租约({Data.ADID})已经不是未审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var AD in DeleteData)
+                {
+                    var v = GetVerify(AD);
+                    //校验
+                    DbHelper.Delete(AD);
+                }
+                Tran.Commit();
+            }
+        }
+        #endregion
     }
 }

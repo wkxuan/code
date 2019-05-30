@@ -38,6 +38,12 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
+        public string macaddress
+        {
+            get;
+            set;
+        }
+
         public TicketInfo ticketInfo
         {
             get;

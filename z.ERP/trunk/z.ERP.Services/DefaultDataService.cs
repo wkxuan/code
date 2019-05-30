@@ -130,5 +130,15 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
+
+        public DataTable BoxDclrwData()
+        {
+            var sql = " select B.MENUID,M.NAME,C.NAME BRANCHMC ,B.URL,count(*) COUNT,min(BILLID) BILLID  from BILLSTATUS B,MENU M,BRANCH C" +
+                "  where B.MENUID=M.ID and B.BRABCHID =C.ID" +
+                " and exists (select 1 from USER_ROLE U,ROLE_MENU N where U.ROLEID = N.ROLEID and N.MENUID = M.ID and U.USERID =  " + employee.Id +") "+ 
+                "  group by B.MENUID,M.NAME,C.NAME,B.URL ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
     }
 }

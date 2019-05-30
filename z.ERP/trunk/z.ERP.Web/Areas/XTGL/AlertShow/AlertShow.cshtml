@@ -24,19 +24,27 @@
             el: '#detail_Main',
             data: {
                 Mainpanel: 'condition',
-                disabled:true,
-                col:[
-                    { title: "合同号", key: '合同号', width: 150 },
-                ],
-                data:[]
-
+                disabled: true,
+                col: [],
+                data: []
             },
-            mounted:function(){
+            mounted: function () {
                 var _self = this;
                 _.Ajax('SearchAlert', {
                     Data: { ID: @id }
                 }, function (data) {
-                    Vue.set(_self, "data",data.alert);
+                    var colList = [];
+
+                    for (var i = 0; i < data.alertCol.length; i++) {
+                        colList.push({
+                            title: data.alertCol[i].CHINAMC,
+                            key: data.alertCol[i].FIELDMC,
+                            width: parseInt(data.alertCol[i].WIDTH)
+                        });
+                    };
+                    Vue.set(_self, "col", colList);
+                    Vue.set(_self, "data", data.alertData);
+
                 });
             }
         });

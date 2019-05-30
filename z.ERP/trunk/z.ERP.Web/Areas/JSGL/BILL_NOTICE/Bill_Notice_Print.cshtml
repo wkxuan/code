@@ -10,6 +10,8 @@
 @{
     dynamic billNotice = ViewBag.billNotice;
     DataTable billNoticeItem = ViewBag.billNoticeItem;
+    dynamic MERCHANTACCOUNT = ViewBag.MERCHANTACCOUNT;
+    dynamic payable = ViewBag.payable;
 }
 
 @section content{
@@ -30,7 +32,7 @@
                     </tr>
                 </table>
             </td>
-       </tr>
+        </tr>
 
         <tr>
             <td colspan="3">
@@ -39,7 +41,7 @@
                         <td colspan="2">
                             单据编号：@billNotice.BILLID
                         </td>
-                        <td colspan="2" >
+                        <td colspan="2">
                             出账月份：@billNotice.NIANYUE
                         </td>
                     </tr>
@@ -49,7 +51,7 @@
                         </td>
                     </tr>
                     <tr style="line-height: 20px;">
-                        <td >
+                        <td>
                             缴费单位
                         </td>
                         <td colspan="3">
@@ -81,9 +83,9 @@
                             销售额（元）
                         </td>
                         <td>
-                          @{ 
-                              @billNotice.AMOUNT.ToString("N")
-                           }
+                            @{
+                                @billNotice.AMOUNT.ToString("N")
+                            }
                         </td>
                     </tr>
                     <tr>
@@ -91,16 +93,16 @@
                             固定租金（元）
                         </td>
                         <td>
-                          @{ 
-                               @billNotice.RENTS.ToString("N")
+                            @{
+                                @billNotice.RENTS.ToString("N")
                             }
                         </td>
                         <td>
                             扣率租金（元）
                         </td>
                         <td>
-                          @{  
-                              @billNotice.KLZJ.ToString("N")
+                            @{
+                                @billNotice.KLZJ.ToString("N")
                             }
                         </td>
                     </tr>
@@ -112,8 +114,8 @@
                 <table class="table" border="1" cellpadding="1" cellspacing="1" style="width: 90%;">
                     <thead>
                         <tr>
-                            <th style="width: 15%" >
-                                 
+                            <th style="width: 15%">
+
                             </th>
                             <th style="width: 15%">
                                 项目
@@ -121,7 +123,7 @@
                             <th style="width: 15%">
                                 所属期间
                             </th>
-                            <th style="width: 20%" >
+                            <th style="width: 20%">
                                 账单金额
                             </th>
                             <th style="width: 20%">
@@ -142,11 +144,11 @@
                                         </td>
                                     }
 
-                               @*     <td>@dr["BILLTYPE"].ToString()</td> *@
+                                    @*     <td>@dr["BILLTYPE"].ToString()</td> *@
                                     <td>@dr["TERMMC"].ToString()</td>
                                     <td>@dr["FYQJ"].ToString()</td>
                                     <td>
-                                        @float.Parse(@dr["MUST_MONEY"].ToString()).ToString("N")                                    
+                                        @float.Parse(@dr["MUST_MONEY"].ToString()).ToString("N")
                                     </td>
                                     <td>
                                         @float.Parse(@dr["NOTICE_MONEY"].ToString()).ToString("N")
@@ -173,8 +175,26 @@
                                     @{
                                         @billNotice.NOTICE_MONEY.ToString("N")
                                     }
-                                
+
                                 </span>
+                            </td>
+                        </tr>
+                        <tr style="line-height: 20px;">
+                            <td style="text-align: center">
+                                商户预收款余额
+                            </td>
+                            <td style="text-align: center" colspan="2">
+                                @{
+                                    @MERCHANTACCOUNT.ToString("N")
+                                }
+                            </td>
+                            <td style="text-align: center">
+                                应付合计
+                            </td>
+                            <td style="text-align: center">
+                                @{
+                                    @payable.ToString("N")
+                                }
                             </td>
                         </tr>
                         <tr>
@@ -184,7 +204,7 @@
                             <td>
                                 单位名称
                             </td>
-                            <td  colspan="3">
+                            <td colspan="3">
                                 @billNotice.PRINTNAME
                             </td>
                         </tr>
@@ -200,7 +220,7 @@
                             <td>
                                 银行账号
                             </td>
-                            <td  colspan="3">
+                            <td colspan="3">
                                 @billNotice.ACCOUNT
                             </td>
                         </tr>
@@ -210,30 +230,30 @@
         </tr>
         <tfoot>
 
-     <tr>
-        <td colspan="4">
-            <table style="width: 90%;">
-                <tr>
-                    <td style="text-align: left; width: 60%; padding-right: 10px; font-size: 11px">
-                        @billNotice.ADDRESS1
-                        <br />
-                        @billNotice.ADDRESS2
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="4">
-            <table style="width: 90%;">
-                <tr>
-                    <td style="text-align: right; width: 60%; padding-right: 10px;" font-size: 9px">
-                        打印时间：<span>@ViewBag.CurrentDate</span>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
+            <tr>
+                <td colspan="4">
+                    <table style="width: 90%;">
+                        <tr>
+                            <td style="text-align: left; width: 60%; padding-right: 10px; font-size: 11px">
+                                @billNotice.ADDRESS1
+                                <br />
+                                @billNotice.ADDRESS2
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <table style="width: 90%;">
+                        <tr>
+                            <td style="text-align: right; width: 60%; padding-right: 10px;" font-size 9px">
+                                打印时间：<span>@ViewBag.CurrentDate</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
         </tfoot>
     </table>
 }
