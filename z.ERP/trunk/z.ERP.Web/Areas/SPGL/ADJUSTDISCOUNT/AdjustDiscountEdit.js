@@ -255,6 +255,18 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请确认商品明细!");
         return false;
     };
+    //判断是否超上限，下限
+    for (var i = 0; editDetail.dataParam.ADJUSTDISCOUNTITEM.length > i;i++){
+        if (editDetail.dataParam.ADJUSTDISCOUNTITEM[i].DISCOUNT_LOWER != 0 && editDetail.dataParam.ADJUSTDISCOUNTITEM[i].DISCOUNT_DROP_POINTS > editDetail.dataParam.ADJUSTDISCOUNTITEM[i].DISCOUNT_LOWER)
+        {
+            iview.Message.info("商品编码：" + editDetail.dataParam.ADJUSTDISCOUNTITEM[i].GOODSDM + ",折扣降点不能大于折扣下限!");
+            return false;
+        }
+        if (editDetail.dataParam.ADJUSTDISCOUNTITEM[i].DISCOUNT_CEILING != 0 && editDetail.dataParam.ADJUSTDISCOUNTITEM[i].DISCOUNT_RISE_POINTS > editDetail.dataParam.ADJUSTDISCOUNTITEM[i].DISCOUNT_CEILING) {
+            iview.Message.info("商品编码：" + editDetail.dataParam.ADJUSTDISCOUNTITEM[i].GOODSDM + ",折扣升点不能大于折扣上限!");
+            return false;
+        }
+    };
 
     return true;
 }
