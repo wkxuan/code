@@ -205,6 +205,49 @@ namespace z.ERP.Services
             }
             return mer.MERCHANTID;
         }
-
+        /// <summary>
+        /// 商户预收款余额
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult GetMerchantAccount(SearchItem item)
+        {
+            string sql = @"SELECT M.*,A.NAME MERCHANTNAME,F.NAME FEE_ACCOUNTNAME,B.NAME BRANCHNAME,B.ID BRANCHID from MERCHANT_ACCOUNT M ,MERCHANT A,FEE_ACCOUNT F,BRANCH B,CONTRACT C
+                        WHERE M.MERCHANTID=A.MERCHANTID AND M.FEE_ACCOUNT_ID=F.ID AND M.MERCHANTID=C.MERCHANTID AND C.BRANCHID=B.ID ";
+            item.HasKey("BRANCHID", a => sql += $" and B.ID = {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and A.NAME  LIKE '%{a}%'");
+            item.HasKey("FEE_ACCOUNT_ID", a => sql += $" and F.ID  LIKE '%{a}%'");
+            sql += " ORDER BY  M.MERCHANTID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        /// <summary>
+        /// 商户预收款余额明细查询
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult GetMerchantAccountDetail(SearchItem item)
+        {
+            string sql = @"SELECT M.*,A.NAME MERCHANTNAME,F.NAME FEE_ACCOUNTNAME,B.NAME BRANCHNAME,B.ID BRANCHID,D.CHANGE_TIME,D.REFERTYPE,D.REFERID, 
+                (CASE D.REFERTYPE WHEN 1 THEN	D.SAVE_MONEY	ELSE	D.USE_MONEY END ) MONEY,D.BALANCE ACCOUNT 
+	            from MERCHANT_ACCOUNT M ,MERCHANT_ACCOUNT_RECORD D, MERCHANT A,FEE_ACCOUNT F,BRANCH B,CONTRACT C 
+                WHERE M.MERCHANTID=A.MERCHANTID AND M.FEE_ACCOUNT_ID=F.ID AND M.MERCHANTID=C.MERCHANTID 
+                AND C.BRANCHID=B.ID AND D.MERCHANTID=M.MERCHANTID AND M.FEE_ACCOUNT_ID=D.FEE_ACCOUNT_ID ";
+            item.HasKey("BRANCHID", a => sql += $" and B.ID = {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and A.NAME  LIKE '%{a}%'");
+            item.HasKey("FEE_ACCOUNT_ID", a => sql += $" and F.ID  = {a}");
+            item.HasKey("REFERTYPE", a => sql += $" and D.REFERTYPE  = {a}");
+            item.HasKey("REFERID", a => sql += $" and D.REFERID  = {a}");
+            item.HasDateKey("STARTTIME", a => sql += $" and trunc(D.CHANGE_TIME) >= {a}");
+            item.HasDateKey("ENDTIME", a => sql += $" and trunc(D.CHANGE_TIME) <= {a}");
+            sql += " ORDER BY D.MERCHANTID,D.FEE_ACCOUNT_ID,D.CHANGE_TIME DESC ";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<收款类型>("REFERTYPE", "REFERTYPENAME");
+            return new DataGridResult(dt, count);
+        }
     }
 }

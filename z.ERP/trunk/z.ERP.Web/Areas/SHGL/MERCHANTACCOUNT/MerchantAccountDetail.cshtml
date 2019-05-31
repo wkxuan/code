@@ -1,0 +1,120 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Srch;
+@using z.ERP.Entities.Enum;
+@inherits SrchViewBase
+@section conditionParam{
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelMerchant",
+                    Text = "商户",
+                    Enable = true,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTID",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="4" class="RowTitle">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTNAME",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            收费单位
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.FEE_ACCOUNT_ID",
+                    ServiceMothod = m => m.feeAccount()
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            收款类型
+        </i-col>
+        <i-col span="6" class="RowTitle">
+            @{
+                RenderControl(new EnumDropDownListRender<收款类型>()
+                {
+                    vModel = "searchParam.REFERTYPE",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            变更日期
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.STARTTIME"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.ENDTIME"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">单号</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.REFERID"
+                });
+            }
+        </i-col>
+    </row>
+
+}
+
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopMerchant",
+                    Caption = "选择商户",
+                    Width = "900",
+                    Src = "screenParam.srcPopMerchant"
+                });
+            }
+        </i-col>
+    </row>
+}
