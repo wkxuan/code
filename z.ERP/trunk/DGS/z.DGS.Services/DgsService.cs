@@ -66,6 +66,21 @@ namespace z.DGS.Services
                 j++;
             }
 
+            try
+            {
+                using (var Tran = DbHelper.BeginTransaction())
+                {
+                    DbHelper.ExecuteNonQuery(sqlarr);
+                    Tran.Commit();
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception("写数据发生异常:" + e);
+            }
+
+
         }
     }
 }
