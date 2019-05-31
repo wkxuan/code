@@ -107,6 +107,7 @@
     <Compile Include="FREESHOPEntity.cs" />
     <Compile Include="OPENBUSINESSEntity.cs" />
     <Compile Include="Service\Pos\Address.cs" />
+    <Compile Include="Service\Pos\PasswordInfo.cs" />
     <Compile Include="Service\Pos\PayRecord.cs" />
     <Compile Include="Service\Pos\PosUMSConfig.cs" />
     <Compile Include="Service\Pos\PosWFTConfig.cs" />

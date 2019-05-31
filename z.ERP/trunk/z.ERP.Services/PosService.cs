@@ -7,7 +7,8 @@ using System.Linq;
 using z.ERP.API.PosServiceAPI;
 using z.ServiceHelper;
 using System.Diagnostics;
-using z.DBHelper.DBDomain;
+using z.Encryption;
+using z.ERP.Entities;
 
 namespace z.ERP.Services
 {
@@ -15,6 +16,8 @@ namespace z.ERP.Services
 
     public class PosService : ServiceBase
     {
+
+        protected const string LoginSalt = "z.SSO.LoginSalt.1";
 
         internal PosService()
         {
@@ -55,6 +58,7 @@ namespace z.ERP.Services
                 TicketInfo ticket = new TicketInfo();
                 ticket.tickethead = ConfigExtension.GetConfig("TicketHead");
                 ticket.tickettail = ConfigExtension.GetConfig("TicketTail");
+                ticket.printCount = ConfigExtension.GetConfig("PrintCount");
                 lgi.ticketInfo = ticket;
                 lgi.posWFTConfig = DbHelper.ExecuteOneObject<PosWFTConfig>(sqlWFT);
                 lgi.posUMSConfig = DbHelper.ExecuteOneObject<PosUMSConfig>(sqlUMS);
@@ -91,15 +95,33 @@ namespace z.ERP.Services
             }
          }
 
-        /// <summary>
-        /// 修改密码
-        /// </summary>
-        public void ChangePassword()
+        public void ChangePassword(PasswordInfo passw)
         {
+            if (string.IsNullOrEmpty(passw.oldPassword))
+                throw new Exception("原密码不能为空");
 
+            if (string.IsNullOrEmpty(passw.newPassword))
+                throw new Exception("新密码不能为空");
+
+
+            SYSUSEREntity sysuser = DbHelper.Select(new SYSUSEREntity() { USERID = employee.Id });
+
+            if (sysuser.PASSWORD == salt(sysuser.USERID, passw.oldPassword))  //原密码验证
+            {
+                sysuser.PASSWORD = salt(sysuser.USERID, passw.newPassword);  //修改为新密码
+                DbHelper.Save(sysuser);
+            }
+            else
+            {
+                throw new Exception("原密码验证失败,修改密码失败");
+            }
         }
 
-
+        //密码加密
+        string salt(string userid, string pass)
+        {
+            return MD5Encryption.Encrypt(userid + LoginSalt + pass);
+        }
 
         public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
         {

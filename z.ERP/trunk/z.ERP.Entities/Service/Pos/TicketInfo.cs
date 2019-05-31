@@ -13,5 +13,12 @@
             get;
             set;
         }
+
+        public string printCount
+        {
+            get;
+            set;
+        }
+
     }
 }
