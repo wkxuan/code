@@ -7,6 +7,7 @@ using System.Linq;
 using z.ERP.API.PosServiceAPI;
 using z.ServiceHelper;
 using System.Diagnostics;
+using z.DBHelper.DBDomain;
 
 namespace z.ERP.Services
 {
@@ -89,6 +90,14 @@ namespace z.ERP.Services
                 throw new Exception("绑定MAC地址出错:" + e.ToString());
             }
          }
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        public void ChangePassword()
+        {
+
+        }
 
 
 
@@ -207,8 +216,8 @@ namespace z.ERP.Services
             string sqlClerk = $"select sheetid,clerkid from {strTable}sale_clerk";
             sqlClerk += $" where posno='{posNo}' and dealid={filter.dealid}";
 
-            string sqlPayRecord = $"select inx,payid,cardno,bank,bankid,amount,serialno,refno,opertime from payrecord";
-            sqlPayRecord += $" where posno='{posNo}' and dealid={filter.dealid}";
+            string sqlPayRecord = $"select a.inx,a.payid,a.cardno,a.bank,a.bankid,a.amount,a.serialno,a.refno,a.opertime,b.type paytype from payrecord a,pay b";
+            sqlPayRecord += $" where a.payid=b.payid and a.posno='{posNo}' and a.dealid={filter.dealid}";
 
             DataTable saleDt = DbHelper.ExecuteTable(sqlSale);
             //   List<SaleRequest> saleList = DbHelper.ExecuteObject<SaleRequest>(sqlSale);
@@ -2943,7 +2952,7 @@ namespace z.ERP.Services
             }
 
 
-            string jdMsg = "";
+          //  string jdMsg = "";
             //3.2:开始保存
             Stopwatch st = new Stopwatch();
             try
@@ -2990,7 +2999,12 @@ namespace z.ERP.Services
                  //sale
                  saleReq.posno = posNo;
                  saleReq.dealid = transId;
-                 saleReq.member_cardid = member.MemberId.ToString();
+
+                if (PromniDealID == "") //入参outorder 记录第三方CRM卡号 猫酷会员卡号
+                    saleReq.member_cardid = member.MemberId.ToString();
+                else
+                    saleReq.member_cardid = PromniDealID;
+
                  saleReq.crm_recordid = CrmBillId;
                  saleReq.cashierid = iPerson;
 
@@ -3105,7 +3119,7 @@ namespace z.ERP.Services
                              msg = errorMessage.Message;
 
                          confirmResult.code = result;
-                         confirmResult.text = msg + jdMsg;
+                         confirmResult.text = msg;  // + jdMsg;
 
                          if (CrmMoneyCardTransID > 0)
                          {
@@ -3134,13 +3148,7 @@ namespace z.ERP.Services
                 if (result == 0)
                 {
                     MemberCard tempMemberCard = new MemberCard();
-                    try
-                    {
-                        //  GetReqStr(vipcard.Hello, ref tempMemberCard);
-                    }
-                    catch (Exception e)
-                    {
-                    }
+
                     //if ((bCheckMember) && (vipcard.name != null))
                     if (vipcard.name != null)
                     {
@@ -3180,12 +3188,22 @@ namespace z.ERP.Services
 
 
 
-                    // CommonUtils.WriteSKTLog(1, posNo, "保存销售<3.2>数据保存完成,准备返回");
+                    string sSaleTime;
 
-                    UniConfirmDealResult(posNo, result, transId, CrmBillId, "",
+                    try
+                    {
+                        sSaleTime = DbHelper.ExecuteTable($"select to_char(sale_time,'yyyy-mm-dd HH24:MI:SS') from sale where posno='{posNo}' and dealid={transId}").Rows[0][0].ToString();
+                    }
+                    catch (Exception)
+                    {
+
+                        sSaleTime = "";
+                    }
+
+                    UniConfirmDealResult(posNo, result, transId, CrmBillId, sSaleTime, //sSaleTime原为"",成功时记本次交易时间
                       MemberInfo, GoodList, ReturnCouponList, CanReturnCouponList, out confirmResult);
 
-                    confirmResult.text = confirmResult.text + jdMsg;
+                   // confirmResult.text = confirmResult.text + jdMsg;
 
                     //SendMsgTranOk
 
@@ -3206,7 +3224,7 @@ namespace z.ERP.Services
                     result = -1;
                     msg = "保存销售:失败：" + msg;
                     confirmResult.code = result;
-                    confirmResult.text = msg + jdMsg;
+                    confirmResult.text = msg; //+ jdMsg;
                     throw new Exception(msg);
                 }
 
@@ -4994,7 +5012,19 @@ namespace z.ERP.Services
                         MemberInfo.totalCent = TotalCent.ToString(); 
                     }
 
-                    UniConfirmBackDealResult(result, transId, CrmBillId, "",
+                    string sSaleTime;
+
+                    try
+                    {
+                       sSaleTime = DbHelper.ExecuteTable($"select to_char(sale_time,'yyyy-mm-dd HH24:MI:SS') from sale where posno='{posNo}' and dealid={transId}").Rows[0][0].ToString();
+                    }
+                    catch (Exception)
+                    {
+
+                        sSaleTime = "";
+                    }
+                   
+                    UniConfirmBackDealResult(result, transId, CrmBillId, sSaleTime,  //sSaleTime原为"",成功时记本次交易时间
                       MemberInfo, GoodList, ReturnCouponList, CanReturnCouponList, out confirmResult);
 
                 }
