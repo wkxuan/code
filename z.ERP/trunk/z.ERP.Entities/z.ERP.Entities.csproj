@@ -106,6 +106,7 @@
     <Compile Include="BILL_RETURNEntity.cs" />
     <Compile Include="FREESHOPEntity.cs" />
     <Compile Include="OPENBUSINESSEntity.cs" />
+    <Compile Include="SPLCEntity.cs" />
     <Compile Include="Service\Pos\Address.cs" />
     <Compile Include="Service\Pos\PasswordInfo.cs" />
     <Compile Include="Service\Pos\PayRecord.cs" />

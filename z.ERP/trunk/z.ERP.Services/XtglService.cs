@@ -876,7 +876,8 @@ namespace z.ERP.Services
         }
 
 
-        public Tuple<DataTable, DataTable> GetSplc(SPLCDEFDEntity Data)
+
+        public Tuple<DataTable, DataTable> GetSplc(SPLCEntity Data)
         {
 
             //找当前应该是那个节点数据

@@ -107,10 +107,7 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-        public string JLBH
-        {
-            get; set;
-        }
+
 
     }
 }

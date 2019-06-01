@@ -114,7 +114,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         }
 
         //返回节点数据，并且返回当前节点要面临的操作步骤
-        public UIResult Srchsplc(SPLCDEFDEntity Data)
+        public UIResult Srchsplc(SPLCEntity Data)
         {
             var res = service.XtglService.GetSplc(Data);
             return new UIResult(
