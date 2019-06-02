@@ -299,10 +299,10 @@ var splc = new Vue({
                 iview.Message.info("请先单击选择流程节点!");
                 return;
             };
-            if (this.JDTYPESelect == 3) {
-                iview.Message.info("节点类型为结束节点不需要定义节点步骤!");
-                return;
-            };
+            //if (this.JDTYPESelect == 3) {
+            //    iview.Message.info("节点类型为结束节点不需要定义节点步骤!");
+            //    return;
+            //};
             this.spjdjgDrawer = true;
         },
         sureSpjdjg: function () {

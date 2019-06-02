@@ -478,9 +478,9 @@
                    var _self = this;
                    //找审批流程节点
                     _.Ajax('Srchsplc', {
-                        Data: { 
+                        Data: {
                            MENUID: "10600200",
-                           JLBH:@contract.CONTRACTID
+                           JLBH:@contract.CONTRACTID,
                         }
                     }, function (data) {
                         _self.BZ="";
