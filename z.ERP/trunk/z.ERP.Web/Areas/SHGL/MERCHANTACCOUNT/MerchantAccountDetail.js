@@ -6,7 +6,8 @@
         { title: '单号', key: 'REFERID', width: 80 },
         { title: '类型', key: 'REFERTYPENAME', width: 120 },
         { title: '变更时间', key: 'CHANGE_TIME', width: 150 },
-        { title: '变更金额', key: 'MONEY', width: 120, align: "right" },
+        { title: '收款金额', key: 'SAVE_MONEY', width: 100, align: "right" },
+        { title: '付款金额', key: 'USE_MONEY', width: 100, align: "right" },
         { title: '变更后余额', key: 'ACCOUNT', width: 120, align: "right" },
     ];
     srch.screenParam.colDef = col;
