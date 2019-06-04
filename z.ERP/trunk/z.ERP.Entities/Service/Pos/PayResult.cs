@@ -19,5 +19,17 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
+        public string payname
+        {
+            get;
+            set;
+        }
+
+        public int paytype
+        {
+            get;
+            set;
+        }
+
     }
 }
