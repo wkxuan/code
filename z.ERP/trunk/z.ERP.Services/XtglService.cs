@@ -402,8 +402,9 @@ namespace z.ERP.Services
             v.Require(a => a.IP);
             v.IsUnique(a => a.IP);
 
-            //    if (DefineSave.Encryption.IsEmpty())
-            //        DefineSave.Encryption = MD5Encryption.Encrypt($"z.DGS.LoginSalt{DefineSave.STATIONBH }");
+            //生成终端密钥，调用销售数据采集接口时用
+            if (DefineSave.Encryption.IsEmpty())
+                DefineSave.Encryption = MD5Encryption.Encrypt($"z.DGS.LoginSalt{DefineSave.STATIONBH }");
 
 
             DefineSave.STATION_PAY?.ForEach(sdb =>
