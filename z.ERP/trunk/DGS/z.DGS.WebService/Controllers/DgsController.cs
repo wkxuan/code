@@ -12,12 +12,6 @@ namespace z.DGS.WebService.Controllers
           
         }
 
-        [ServiceAble("Test")]
-        public string  Test()
-        {
-            return service.DgsService.Test();
-        }
-
         /// <summary>
         /// 销售采集接口
         /// </summary>

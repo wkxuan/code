@@ -18,36 +18,30 @@ namespace z.DGS.Services
 
         }
 
-        public string Test()
-        {
-            return DbHelper.ExecuteTable("select Ip from STATION where TYPE=3  and STATIONBH= {{code}}", new zParameter("code", employee.Id)).Rows[0][0].ToString();
-        }
-
-
 
         public void SaleGather(SaleGatherReq req)
         {
             double sumPayAmount = req.payList.Sum(a => a.payAmount);
 
-            if(sumPayAmount != req.amount)
+            if(Math.Abs(sumPayAmount - req.amount)>=0.01)
             {
                 throw new Exception("销售金额不等于支付明细合计");
             }
 
 
-            string sql = $"select 1 from salegather where POSNO='{employee.PlatformId}' and DEALID={req.dealId} ";
+            string sql = $"select 1 from salegather where POSNO='{employee.Id}' and DEALID={req.dealId} ";
 
             DataTable Dt = DbHelper.ExecuteTable(sql);
 
             if (Dt.IsNotNull())
             {
-                throw new Exception("小票号[" + req.dealId.ToString() + "]已存在");
+                throw new Exception("交易号[" + req.dealId.ToString() + "]已存在");
             }
 
             string[] sqlarr = new string[1 + req.payList.Count];
 
             sqlarr[0] =  "  insert into salegather(posno,dealid,saletime,amount)";
-            sqlarr[0] += $" values('{employee.PlatformId}',{req.dealId},";
+            sqlarr[0] += $" values('{employee.Id}',{req.dealId},";
 
             if (!String.IsNullOrEmpty(req.saleTime))
                 sqlarr[0] += $"to_date('{req.saleTime}','yyyy-mm-dd HH24:MI:SS'),";
@@ -61,7 +55,7 @@ namespace z.DGS.Services
             for (int i = 1; i <= req.payList.Count; i++)
             {
                 sqlarr[i] = "insert into salegather_pay(posno,dealid,paytype,payamount)";
-                sqlarr[i] += $"values('{employee.PlatformId}',{req.dealId},{req.payList[j].payType},";
+                sqlarr[i] += $"values('{employee.Id}',{req.dealId},{req.payList[j].payType},";
                 sqlarr[i] += $"{req.payList[j].payAmount})";
                 j++;
             }
