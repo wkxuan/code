@@ -64,5 +64,8 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+        //附加字段
+        public string IsChecked { get; set; }
     }
 }

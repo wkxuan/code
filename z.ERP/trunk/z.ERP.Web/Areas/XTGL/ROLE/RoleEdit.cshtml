@@ -60,11 +60,7 @@
     </row>
     <row>
         <i-col span="8">菜单权限
-            <i-table size="small" :border="true" height="370"
-                     :columns="screenParam.colDef_Menu" :data="screenParam.USERMODULE"
-                     v-on:on-select="screenParam.selectData"
-                     v-on:on-select-all="screenParam.selectDataAll"
-                     v-on:on-select-cancel="screenParam.selectCancel"></i-table>
+            <Tree :data="screenParam.USERMODULE" show-checkbox></Tree>
         </i-col>
 
         <i-col span="4">费用项目

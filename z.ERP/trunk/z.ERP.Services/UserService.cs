@@ -79,7 +79,7 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public Tuple<dynamic, DataTable, DataTable, DataTable, DataTable, TreeModel[]> GetRoleElement(ROLEEntity Data)
+        public Tuple<dynamic, DataTable, TreeModel[], DataTable, DataTable, TreeModel[]> GetRoleElement(ROLEEntity Data)
         {
             string sql = $@"SELECT A.*,B.ORGIDCASCADER  FROM ROLE A,ORG B  WHERE A.ORGID=B.ORGID ";
             if (!Data.ROLEID.IsEmpty())
@@ -87,10 +87,26 @@ namespace z.ERP.Services
             DataTable role = DbHelper.ExecuteTable(sql);
 
 
-            string sqlMenu = $@" SELECT MODULECODE,MENUID FROM ROLE_MENU WHERE 1=1";
-            if (!Data.ROLEID.IsEmpty())
-                sqlMenu += (" AND ROLEID= " + Data.ROLEID);
-            DataTable module = DbHelper.ExecuteTable(sqlMenu);
+            //string sqlMenu = $@" SELECT MODULECODE,MENUID FROM ROLE_MENU WHERE 1=1";
+            //if (!Data.ROLEID.IsEmpty())
+            //    sqlMenu += (" AND ROLEID= " + Data.ROLEID);
+            //DataTable module = DbHelper.ExecuteTable(sqlMenu);
+            //更改权限列表为树 by：DZK
+            string sql1 = @" SELECT NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,R.ROLEID IsChecked FROM USERMODULE U
+                    LEFT JOIN ROLE_MENU R ON U.MODULECODE=R.MODULECODE  AND U.MENUID=R.MENUID AND R.ROLEID = " + Data.ROLEID + @"
+                    WHERE  U.MODULECODE LIKE '02%' 
+	                    ORDER BY U.MODULECODE";
+            List<USERMODULEEntity> um = DbHelper.ExecuteTable(sql1).ToList<USERMODULEEntity>(); ;
+            var module = TreeModel.Create(um,
+                a => a.MODULECODE,
+                a => new TreeModel()
+                {
+                    value = a.MENUID,
+                    @checked = !a.IsChecked.IsNullValue(),
+                    code = a.MODULECODE,
+                    title = a.MODULENAME,
+                    expand = false
+                })?.ToArray();
 
 
             string sqlFee = $@" SELECT TRIMID FROM  ROLE_FEE WHERE 1=1";
@@ -128,23 +144,41 @@ namespace z.ERP.Services
                     expand = false
                 })?.ToArray();
 
-            return new Tuple<dynamic, DataTable, DataTable, DataTable, DataTable, TreeModel[]>(role.ToOneLine(), fee, module, yt, region, ytTreeData);
+            return new Tuple<dynamic, DataTable, TreeModel[], DataTable, DataTable, TreeModel[]>(role.ToOneLine(), fee, module, yt, region, ytTreeData);
         }
 
 
-        public Tuple<dynamic, DataTable, DataTable, TreeModel[], DataTable> GetRoleInit()
+        public Tuple<dynamic, DataTable, TreeModel[], TreeModel[], DataTable> GetRoleInit()
         {
 
             var org = DataService.GetTreeOrg();
 
-            string sql1 = $@"SELECT * FROM ( ";
-            sql1 += " SELECT MENUID,MODULECODE,MODULENAME MENUNAME,'' AS BUTONNAME";
-            sql1 += " FROM USERMODULE WHERE NOT MENUID IS NULL AND LENGTH(MODULECODE)=6 ";
-            sql1 += " UNION";
-            sql1 += " SELECT MENUID,MODULECODE,'' AS MENUNAME,MODULENAME AS BUTONNAME";
-            sql1 += " FROM USERMODULE WHERE NOT MENUID IS NULL AND LENGTH(MODULECODE) = 8 ";
-            sql1 += " ) ORDER BY MODULECODE ";
-            DataTable module = DbHelper.ExecuteTable(sql1);
+            //string sql1 = $@"SELECT * FROM ( ";
+            //sql1 += " SELECT MENUID,MODULECODE,MODULENAME MENUNAME,'' AS BUTONNAME";
+            //sql1 += " FROM USERMODULE WHERE NOT MENUID IS NULL AND LENGTH(MODULECODE)=6 ";
+            //sql1 += " UNION";
+            //sql1 += " SELECT MENUID,MODULECODE,'' AS MENUNAME,MODULENAME AS BUTONNAME";
+            //sql1 += " FROM USERMODULE WHERE NOT MENUID IS NULL AND LENGTH(MODULECODE) = 8 ";
+            //sql1 += " ) ORDER BY MODULECODE ";
+            //DataTable module = DbHelper.ExecuteTable(sql1);
+
+            //更改权限列表为树 by：DZK
+            string sql1 = @" (select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME FROM USERMODULE U,MENU M
+                        WHERE U.MENUID=M.ID  AND M.PLATFORMID =1
+                        UNION ALL 
+                        select  NVL(MENUID,0),MODULECODE,MODULENAME FROM USERMODULE 
+                        WHERE MENUID is null ) 
+	                        ORDER BY MODULECODE";
+            List<USERMODULEEntity> um = DbHelper.ExecuteTable(sql1).ToList<USERMODULEEntity>(); ;
+            var module = TreeModel.Create(um,
+                a => a.MODULECODE,
+                a => new TreeModel()
+                {
+                    value = a.MENUID,
+                    code = a.MODULECODE,
+                    title = a.MODULENAME,
+                    expand = false
+                })?.ToArray();
 
 
             string sqlitem2 = $@"select A.TRIMID,A.NAME from FEESUBJECT A  order by A.TRIMID";
@@ -164,7 +198,7 @@ namespace z.ERP.Services
                     expand = false
                 })?.ToArray();
 
-            return new Tuple<dynamic, DataTable, DataTable, TreeModel[], DataTable>(org.Item1, fee, module, ytTreeData, region);
+            return new Tuple<dynamic, DataTable, TreeModel[], TreeModel[], DataTable>(org.Item1, fee, module, ytTreeData, region);
         }
 
 
