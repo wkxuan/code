@@ -1,4 +1,5 @@
-﻿editDetail.beforeVue = function () {
+﻿var spins;
+editDetail.beforeVue = function () {
     editDetail.others = false;
     editDetail.branchid = false;
     editDetail.service = "UserService";
@@ -161,6 +162,7 @@ editDetail.showOne = function (data, callback) {
                
                 editDetail.screenParam.ytTreeData = data.ytTreeData;                
             };
+            editDetail.otherMethods.spin();
         });
     });
     callback && callback();
@@ -230,6 +232,10 @@ editDetail.otherMethods = {
         }
         editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx?personid=" + editDetail.dataParam.ROLECODE;
         editDetail.screenParam.showPopCrmRole = true;
+    },
+    spin:function(){
+        spins = document.getElementById("spin");
+        spins.parentNode.removeChild(spins);
     }
 }
 
@@ -261,6 +267,9 @@ editDetail.mountedInit = function () {
         Vue.set(editDetail.screenParam, "fee", data.fee);
         Vue.set(editDetail.screenParam, "ytTreeData", data.ytTree);
         Vue.set(editDetail.screenParam, "region", data.region);
+        if (editDetail.Id == "" || editDetail.Id == undefined) {
+            editDetail.otherMethods.spin();
+        }
     });
 }
 
