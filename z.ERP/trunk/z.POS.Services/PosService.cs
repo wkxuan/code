@@ -29,8 +29,9 @@ namespace z.POS.Services
 
             string sql = "select b.fdbh BRANCHID,d.MDDM CRMSTORECODE,a.shopid,c.SHOPDM shopcode,c.SHOPMC shopname,"
                        + " UPPER(trim(e.NETWORK_NODE_ADDRESS)) MACADDRESS,'' pid,'' key,'' ENCRYPTION,'' KEY_PUB"
-                       + "  from RYXX a,SKT b,WY_SHOPDEF c,SKTCRMCFG d,STATION e"
+                       + "  from RYXX a,SKT b,WY_SHOPDEF c,SKTCRMCFG d,STATION e,XTCZY f"
                        + " where b.sktno=e.station_id and a.shopid= c.shopid(+) and b.sktno=d.sktno(+)"
+                       + "   and f.person_id = a.person_id and f.OPER_STATION = b.sktno"
                       + $"   and a.person_id={employee.Id} and b.sktno='{employee.PlatformId}'";
 
             LoginConfigInfo lgi = DbHelper.ExecuteOneObject<LoginConfigInfo>(sql);

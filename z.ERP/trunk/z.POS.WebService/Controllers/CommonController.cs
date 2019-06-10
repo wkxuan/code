@@ -90,7 +90,7 @@ namespace z.POS.WebService.Controllers
                     res.UserName = null;
                     res.SecretKey = null;
                     res.Success = false;
-                    res.ErrorMsg = "终端未定义";
+                    res.ErrorMsg = "终端[" + employee.PlatformId + "]未定义或操作员无权限";
                 }
                 else
                     res.ConfigInfo = lgi.ToJson();
