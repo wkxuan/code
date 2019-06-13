@@ -434,10 +434,10 @@ namespace z.POS.Entities.Pos
             set { memberDiscount = value; }
         }
 
-        int decreaseDiscount;//满百减折
+        double decreaseDiscount;//满百减折
 
 
-        public int DecreaseDiscount
+        public double DecreaseDiscount
         {
             get { return decreaseDiscount; }
             set { decreaseDiscount = value; }
