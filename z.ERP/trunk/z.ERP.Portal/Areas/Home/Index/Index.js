@@ -67,6 +67,13 @@
     });
     $('body').find('#make-small-nav').click(function (e) {
         $('#page-wrapper').toggleClass('nav-small');
+        var $item = $('#page-wrapper.nav-small #sidebar-nav > .nav-pills > .open');
+        if ($item.hasClass('open')) {
+            $item.find('.open .submenu').slideUp('fast');
+            $item.find('.open').removeClass('open');
+            $item.children('.submenu').slideUp('fast');
+        }
+        $item.removeClass('open');
     });
     $('body').find('.mobile-search').click(function (e) {
         e.preventDefault();
