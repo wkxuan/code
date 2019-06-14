@@ -15,9 +15,9 @@ $(function () {
         cleartext();
     };
     function cleartext(){
+        $("#msg").css("color", "red");
         window.setTimeout(function () {
-
-            document.getElementById('msg').innerHTML = " &nbsp;";;
+            document.getElementById('msg').innerHTML = " &nbsp;";
 
         }, 1500);
     }
@@ -86,10 +86,10 @@ $(function () {
         function (data) {
             switch (data) {
                 case "0": window.location.href = __PortalBaseUrl + "/HOME/Index/Index"; break;
-                case "1": document.getElementById('msg').innerHTML = "账号错误，请重试！"; $("#msg").css("color", "red"); cleartext(); $('.refreshIcon').click(); break;
-                case "2": document.getElementById('msg').innerHTML = "密码错误，请重试！"; $("#msg").css("color", "red"); cleartext(); $('.refreshIcon').click(); break;
-                case "3": document.getElementById('msg').innerHTML = "该账号已停用！"; $("#msg").css("color", "red"); cleartext(); $('.refreshIcon').click(); break;
-                default: document.getElementById('msg').innerHTML = "请联系管理员！"; $("#msg").css("color", "red"); cleartext(); $('.refreshIcon').click();
+                case "1": document.getElementById('msg').innerHTML = "账号错误，请重试！"; cleartext(); $('.refreshIcon').click(); break;
+                case "2": document.getElementById('msg').innerHTML = "密码错误，请重试！";cleartext(); $('.refreshIcon').click(); break;
+                case "3": document.getElementById('msg').innerHTML = "该账号已停用！";  cleartext(); $('.refreshIcon').click(); break;
+                default: document.getElementById('msg').innerHTML = "请联系管理员！"; cleartext(); $('.refreshIcon').click();
             }
         });
     }
