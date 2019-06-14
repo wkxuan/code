@@ -1,32 +1,53 @@
 ﻿
 $(function () {
-    $('.page-container form').submit(function () {
-        var username = $(this).find('.username').val();
-        var password = $(this).find('.password').val();
-        if (username == '') {
-            $(this).find('.error').fadeOut('fast', function () {
-                $(this).css('top', '27px');
-            });
-            $(this).find('.error').fadeIn('fast', function () {
-                $(this).parent().find('.username').focus();
-            });
-            return false;
-        }
-        if (password == '') {
-            $(this).find('.error').fadeOut('fast', function () {
-                $(this).css('top', '96px');
-            });
-            $(this).find('.error').fadeIn('fast', function () {
-                $(this).parent().find('.password').focus();
-            });
-            return false;
-        }
+    //滑动验证
+    jigsaw.init(document.getElementById('captcha'), imagesuccess, imagefail);
+    function imagesuccess() {
+        var username = $('.username').val();
+        var password = $('.password').val();
+        $("#msg").css("color","green");
+        document.getElementById('msg').innerHTML = "验证成功！";
         login(username, password);
         return false;
-    });
-    $('.page-container form .username, .page-container form .password').keyup(function () {
-        $(this).parent().find('.error').fadeOut('fast');
-    });
+    };
+    function imagefail() {
+        document.getElementById('msg').innerHTML = "验证错误，请重试！";
+        cleartext();
+    };
+    function cleartext(){
+        window.setTimeout(function () {
+
+            document.getElementById('msg').innerHTML = " &nbsp;";;
+
+        }, 1500);
+    }
+    //$('.page-container form').submit(function () {
+    //    var username = $(this).find('.username').val();
+    //    var password = $(this).find('.password').val();
+    //    if (username == '') {
+    //        $(this).find('.error').fadeOut('fast', function () {
+    //            $(this).css('top', '27px');
+    //        });
+    //        $(this).find('.error').fadeIn('fast', function () {
+    //            $(this).parent().find('.username').focus();
+    //        });
+    //        return false;
+    //    }
+    //    if (password == '') {
+    //        $(this).find('.error').fadeOut('fast', function () {
+    //            $(this).css('top', '96px');
+    //        });
+    //        $(this).find('.error').fadeIn('fast', function () {
+    //            $(this).parent().find('.password').focus();
+    //        });
+    //        return false;
+    //    }
+    //    login(username, password);
+    //    return false;
+    //});
+    //$('.page-container form .username, .page-container form .password').keyup(function () {
+    //    $(this).parent().find('.error').fadeOut('fast');
+    //});
 
     $.supersized({
 
@@ -58,12 +79,18 @@ $(function () {
 
     //登陆
     function login(username, password) {
-        _.Ajax("Start", {
+        _.Ajax("Starts", {
             LoginName: username,
             PassWord: password
         },
-        function () {
-            window.location.href = __PortalBaseUrl + "/HOME/Index/Index";
+        function (data) {
+            switch (data) {
+                case "0": window.location.href = __PortalBaseUrl + "/HOME/Index/Index"; break;
+                case "1": document.getElementById('msg').innerHTML = "账号错误，请重试！"; $("#msg").css("color", "red"); cleartext(); $('.refreshIcon').click(); break;
+                case "2": document.getElementById('msg').innerHTML = "密码错误，请重试！"; $("#msg").css("color", "red"); cleartext(); $('.refreshIcon').click(); break;
+                case "3": document.getElementById('msg').innerHTML = "该账号已停用！"; $("#msg").css("color", "red"); cleartext(); $('.refreshIcon').click(); break;
+                default: document.getElementById('msg').innerHTML = "请联系管理员！"; $("#msg").css("color", "red"); cleartext(); $('.refreshIcon').click();
+            }
         });
     }
 });

@@ -25,6 +25,11 @@ namespace z.SSO
             _userHelper.Login(username, password);
         }
 
+        public static int Logins(string username, string password)
+        {
+            return _userHelper.Logins(username, password);
+        }
+
         /// <summary>
         /// 登出
         /// </summary>

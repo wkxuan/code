@@ -242,6 +242,8 @@
     <Content Include="Content\Login\font-awesome.min.css" />
     <Content Include="Content\Login\img\backgrounds\loginimg.jpg" />
     <Content Include="Content\Login\img\progress.gif" />
+    <Content Include="Content\Login\jigsaw.css" />
+    <Content Include="Content\Login\jigsaw.js" />
     <Content Include="Content\Login\reset.css" />
     <Content Include="Content\Login\style.css" />
     <Content Include="Content\Login\supersized.3.2.7.min.js" />

@@ -74,6 +74,13 @@ namespace z.SSO
             ApplicationContextBase.GetContext().principal = new GenericPrincipal(new GenericIdentity(user.Id), null);
         }
 
+        public override int Logins(string username, string password)
+        {
+            Model.User user = service.GetUserByCode(username, password).ToObj(a => new User() { Id = a.Id, Name = a.Name });
+            ApplicationContextBase.GetContext().SetData(LoginKey + user.Id, user);
+            ApplicationContextBase.GetContext().principal = new GenericPrincipal(new GenericIdentity(user.Id), null);
+            return 0;
+        }
 
         public override void LogOut()
         {
