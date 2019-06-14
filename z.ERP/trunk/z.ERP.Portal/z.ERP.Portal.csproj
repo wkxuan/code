@@ -241,6 +241,7 @@
     <Content Include="Content\JsHelper.js" />
     <Content Include="Content\Login\font-awesome.min.css" />
     <Content Include="Content\Login\img\backgrounds\loginimg.jpg" />
+    <Content Include="Content\Login\img\icon_light.png" />
     <Content Include="Content\Login\img\progress.gif" />
     <Content Include="Content\Login\jigsaw.css" />
     <Content Include="Content\Login\jigsaw.js" />
