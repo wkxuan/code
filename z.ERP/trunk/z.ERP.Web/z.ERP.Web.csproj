@@ -442,7 +442,6 @@
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Areas\XTGL\TreeTest\List.js" />
     <Content Include="Content\components\common.js" />
-    <Content Include="Content\components\unEditTable.html" />
     <Content Include="Content\jquery-1.7.2.min.js" />
     <Content Include="Content\Maps\1.jpg" />
     <Content Include="Content\Maps\contextMenu.min.js" />
