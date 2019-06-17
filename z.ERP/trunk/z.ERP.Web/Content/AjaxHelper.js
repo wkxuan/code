@@ -134,6 +134,9 @@ zQuery.extend({
             },
             success: function (data) {
                 Options.Success && Options.Success(data);
+            },
+            error: function () {
+                Options.Error && Options.Error();
             }
         });
     },

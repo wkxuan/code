@@ -1,7 +1,7 @@
-﻿using System.Data;
-using z.MVC5.Results;
-using System;
+﻿using System;
+using System.Data;
 using z.Extensions;
+using z.MVC5.Results;
 using z.SSO.Model;
 
 namespace z.ERP.Services
@@ -1452,5 +1452,97 @@ namespace z.ERP.Services
             }
             return SqlyTQx;
         }
+
+        #region 商户应交已付报表
+        /// <summary>
+        /// 商户应交已付报表查询
+        /// </summary>
+        public DataGridResult MerchantPayable(SearchItem item)
+        {
+            string sqlParam = "";
+            string sqlSfxm = " select distinct b.termid,f.name" +
+                       " from bill b,merchant m,feesubject f" +
+                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID";
+
+            item.HasKey("BRANCHID", a => sqlParam += $" and b.BRANCHID ={a}");
+            item.HasKey("MERCHANTID", a => sqlParam += $" and b.MERCHANTID ={a}");
+            item.HasKey("NIANYUE", a => sqlParam += $" and b.NIANYUE ={a}");
+            item.HasKey("YEARMONTH", a => sqlParam += $" and b.YEARMONTH ={a}");
+            item.HasKey("SFXMLX", a => sqlParam += $" and f.TYPE ={a}");
+            item.HasKey("SFXM", a => sqlParam += $" and b.TERMID ={a}");
+        
+            sqlSfxm += sqlParam;
+            var resData = DbHelper.ExecuteTable(sqlSfxm);
+
+            string sqlMain = " select b.MERCHANTID,b.NIANYUE,b.YEARMONTH,";
+            for(var i = 0; i < resData.Rows.Count; i++)
+            {
+                sqlMain += String.Format(" sum(decode(b.termid, {0}, b.MUST_MONEY, 0))  MUST_MONEY{0}," +
+                                         " sum(decode(b.termid, {0}, b.RECEIVE_MONEY, 0))   RECEIVE_MONEY{0},", resData.Rows[i][0].ToString());
+            }
+            sqlMain += " sum(b.MUST_MONEY) MUST_MONEYsum,sum(b.RECEIVE_MONEY) RECEIVE_MONEYsum,";
+            sqlMain += " m.NAME MERCHANTNAME" +
+                       " from bill b,merchant m,feesubject f"+
+                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID ";
+            sqlMain += sqlParam;
+            sqlMain += " group by b.MERCHANTID,b.NIANYUE,b.YEARMONTH,b.MUST_MONEY,b.RECEIVE_MONEY,m.NAME";
+            int count;
+            var dt = DbHelper.ExecuteTable(sqlMain, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        /// <summary>
+        /// 商户应交已付报表导出
+        /// </summary>
+        public string MerchantPayableOutput(SearchItem item)
+        {
+            string sql = "";   
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "MerchantPayable";
+            return GetExport("商户应交已付报表", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+        public DataTable getData(SearchItem item)
+        {
+            string sqlParam = "";
+            string sqlSfxm = " select distinct b.termid,f.name" +
+                       " from bill b,merchant m,feesubject f" +
+                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID";
+
+            item.HasKey("BRANCHID", a => sqlParam += $" and b.BRANCHID ={a}");
+            item.HasKey("MERCHANTID", a => sqlParam += $" and b.MERCHANTID ={a}");
+            item.HasKey("NIANYUE", a => sqlParam += $" and b.NIANYUE ={a}");
+            item.HasKey("YEARMONTH", a => sqlParam += $" and b.YEARMONTH ={a}");
+            item.HasKey("SFXMLX", a => sqlParam += $" and f.TYPE ={a}");
+            item.HasKey("SFXM", a => sqlParam += $" and b.TERMID ={a}");
+
+            sqlSfxm += sqlParam;
+            DbHelper.ExecuteTable(sqlSfxm);
+            var resData = DbHelper.ExecuteTable(sqlSfxm);
+
+            string sqlMain = " select b.MERCHANTID,b.NIANYUE,b.YEARMONTH,";
+            for (var i = 0; i < resData.Rows.Count; i++)
+            {
+                sqlMain += String.Format(" sum(decode(b.termid, {0}, b.MUST_MONEY, 0))  MUST_MONEY{0}," +
+                                         " sum(decode(b.termid, {0}, b.RECEIVE_MONEY, 0))   RECEIVE_MONEY{0},", resData.Rows[i][0].ToString());
+            }
+            sqlMain += " sum(b.MUST_MONEY) MUST_MONEYsum,sum(b.RECEIVE_MONEY) RECEIVE_MONEYsum,";
+            sqlMain += " m.NAME MERCHANTNAME" +
+                       " from bill b,merchant m,feesubject f" +
+                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID ";
+            sqlMain += sqlParam;
+            sqlMain += " group by b.MERCHANTID,b.NIANYUE,b.YEARMONTH,b.MUST_MONEY,b.RECEIVE_MONEY,m.NAME";
+            return DbHelper.ExecuteTable(sqlMain);
+        }
+        /// <summary>
+        ///获取收费项目list
+        /// </summary>
+        public DataTable GetSfxmList()
+        {
+            string sql = "select * from feesubject";
+            return DbHelper.ExecuteTable(sql);
+        }
+        #endregion
     }
 }

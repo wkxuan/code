@@ -15,7 +15,6 @@
     @RenderSection("head", false)
 }
 
-
 <div id="search">
     <collapse v-model="panelName">
         <panel name="condition">
@@ -27,7 +26,8 @@
                         Click = "seach",
                         Text = "查询",
                         Enable = true,
-                        Type = "primary"
+                        Type = "primary",
+                        Icon= "md-search"
                     });
                 }
                 @{
@@ -36,28 +36,30 @@
                         Click = "clear",
                         Text = "清空",
                         Enable = true,
-                        Type = "primary"
+                        Type = "primary",
+                        Icon = "md-refresh"
                     });
                 }
 
                 @RenderSection("conditionBtn", false)
             </div>
-            <p slot="content" class="element">
+            <div slot="content" class="element">
                 @*查询条件*@
                 @RenderSection("conditionParam", true)
-            </p>
+            </div>
         </panel>
         <panel name="result">
             查询结果
             <div style="float: right; width: 400px ;text-align: right;z-index:99">
                  @{
-                    RenderControl(new ButtonRender()
-                   {
-                        Click = "exp",
-                        Text = "导出",
-                        Enable = true,
-                        Type = "primary"
-                    });
+                     RenderControl(new ButtonRender()
+                     {
+                         Click = "exp",
+                         Text = "导出",
+                         Enable = true,
+                         Type = "primary",
+                         Icon = "md-download"
+                     });
                 }
                 @{
                     RenderControl(new ButtonRender()
@@ -65,31 +67,28 @@
                         Click = "print",
                         Text = "打印",
                         Enable = true,
-                        Type = "primary"
+                        Type = "primary",
+                        Icon = "md-print"
                     });
                 }
                 @*增加结果按钮*@
                 @RenderSection("resultBtn", false)
             </div>
-            <p slot="content">
+            <div slot="content">
                  @*结果显示*@
-                    <i-table :highlight-row="true" size="small" :border="true"
-                             :columns="screenParam.colDef" :data="screenParamData.dataDef"
-                             v-on:on-row-dblclick="browse"  ref="selectData" id="TableData"></i-table>
-                    <page :total="pagedataCount" :page-size="pageSize" show-total
+                   <un-edit-table v-bind:options="options"></un-edit-table>
+                   <page :total="pagedataCount" :page-size="pageSize" show-total
                           v-on:on-change="changePageCount" :page-size-opts="arrPageSize"
                           show-sizer v-on:on-page-size-change ="changePageSizer"></page>
 
                 @RenderSection("resultOthers", false)
-            </p>
+            </div>
         </panel>
     </collapse>
     @RenderSection("hide", false)
     @RenderSection("pops", false)
-    
 </div>
 
 @section foot{
-    @RenderSection("foot", false)
-     
+    @RenderSection("foot", false)   
 }

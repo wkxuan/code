@@ -1,5 +1,5 @@
 ﻿.hide { display: none; }
-.RowTitle { text-align: right; font-size: small; height: 40px;line-height:30px;padding-right:10px }
+.RowTitle { text-align: right; font-size: small; height: 40px;line-height:30px;padding-right:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
 .RowText { text-align: center; font-size: small; }
 .elementcard .ivu-row { height: 50px; }
 .topbutton .ivu-btn { margin-left: 10px; }

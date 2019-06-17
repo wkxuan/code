@@ -94,6 +94,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -204,6 +207,7 @@
     <Compile Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetailController.cs" />
     <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
     <Compile Include="Areas\Report\MerchantBusinessStatus\MerchantBusinessStatusController.cs" />
+    <Compile Include="Areas\Report\MerchantPayable\MerchantPayable.cs" />
     <Compile Include="Areas\Report\MerchantPayCost\MerchantPayCostController.cs" />
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
     <Compile Include="Areas\Report\PayTypeSale\PayTypeSaleController.cs" />
@@ -366,6 +370,7 @@
     <Content Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetail.js" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.js" />
     <Content Include="Areas\Report\MerchantBusinessStatus\MerchantBusinessStatus.js" />
+    <Content Include="Areas\Report\MerchantPayable\MerchantPayable.js" />
     <Content Include="Areas\Report\MerchantPayCost\MerchantPayCost.js" />
     <Content Include="Areas\JSGL\Invoice\InvoiceEdit.js" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.js" />
@@ -436,6 +441,8 @@
     <Content Include="Areas\XTGL\STATION\Station.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Areas\XTGL\TreeTest\List.js" />
+    <Content Include="Content\components\common.js" />
+    <Content Include="Content\components\unEditTable.html" />
     <Content Include="Content\jquery-1.7.2.min.js" />
     <Content Include="Content\Maps\1.jpg" />
     <Content Include="Content\Maps\contextMenu.min.js" />
@@ -717,6 +724,7 @@
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintSHOther.cshtml" />
     <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccount.cshtml" />
     <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccountDetail.cshtml" />
+    <Content Include="Areas\Report\MerchantPayable\MerchantPayable.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
