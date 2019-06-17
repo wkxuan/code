@@ -22,5 +22,17 @@ namespace z.ERP.Portal.Areas.Home.Login
         {
             UserApplication.Login(LoginName, PassWord);
         }
+        /// <summary>
+        /// 0.登陆成功 1.账号错误 2.密码错误 。3.停用    by:dzk 20190614
+        /// </summary>
+        /// <param name="LoginName"></param>
+        /// <param name="PassWord"></param>
+        /// <returns></returns>
+        [IgnoreLogin]       
+        public int Starts(string LoginName, string PassWord)
+        {            
+            return UserApplication.Logins(LoginName, PassWord);
+        }
+
     }
 }

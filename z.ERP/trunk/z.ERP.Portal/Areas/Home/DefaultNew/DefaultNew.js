@@ -78,7 +78,8 @@
                 { title: '分店', key: 'BRANCHMC', width: 90, },
                 { title: '数量', key: 'COUNT', width: 50, }, ],
         boxDclrwdataDef:[],
-        tableH: 200
+        tableH: 200,
+        Switch:true
     },
     mounted: function () {
         var type = '1';   //初始化默认昨日数据

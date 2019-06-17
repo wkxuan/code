@@ -47,3 +47,9 @@
     padding:0px !important;
     padding-left:5px !important;
 }
+.ivu-switch {
+    border-color: #6CD3E7;
+    background-color: #6CD3E7;
+    margin-top: 10px;
+    margin-left: 10px;
+}

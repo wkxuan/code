@@ -68,6 +68,25 @@ namespace z.SSO
                 throw new NoLoginException();
         }
 
+        public override int Logins(string username, string password)
+        {
+            if (username.IsEmpty())
+            {
+                if (ConfigExtension.TestModel)//测试模式
+                {
+                    return -1;
+                }
+                throw new NoLoginException();
+            }
+            //------------这里接入验证登陆和权限配置
+            if (GetUserByKey<ServiceUser>(username) != null) {
+                ApplicationContextBase.GetContext().principal = new GenericPrincipal(new GenericIdentity(username), null);
+                return 1;
+            }
+            else
+                throw new NoLoginException();
+        }
+
         T GetUserByKey<T>(string key) where T : User
         {
             string UserJson;

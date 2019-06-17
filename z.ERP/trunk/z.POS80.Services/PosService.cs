@@ -29,8 +29,9 @@ namespace z.POS80.Services
 
             string sql = "select b.fdbh BRANCHID,d.MDDM CRMSTORECODE,a.shopid,c.SHOPDM shopcode,c.SHOPMC shopname,"
                        + " UPPER(trim(e.NETWORK_NODE_ADDRESS)) MACADDRESS,'' pid,'' key,'' ENCRYPTION,'' KEY_PUB"
-                       + "  from RYXX a,SKT b,WY_SHOPDEF c,SKTCRMCFG d,STATION e"
+                       + "  from RYXX a,SKT b,WY_SHOPDEF c,SKTCRMCFG d,STATION e,XTCZY f"
                        + " where b.sktno = e.station_id and a.shopid= c.shopid(+) and b.sktno=d.sktno(+)"
+                       + "   and f.person_id = a.person_id and f.OPER_STATION = b.sktno"
                       + $"   and a.person_id={employee.Id} and b.sktno='{employee.PlatformId}'";
 
             LoginConfigInfo lgi = DbHelper.ExecuteOneObject<LoginConfigInfo>(sql);
@@ -1485,10 +1486,9 @@ namespace z.POS80.Services
                     GoodsList[i].Discount = GetSPDisc(GoodsList[i]);
                 }
 
-               // int mTotalYQJE = 0;
+                int mTotalYQJE = 0;
+                bool bResult = false;
 
-
-                //  bool bResult = false;
                 //  if (sType.Equals(FullCut_ERP))
                 //      bResult = CalculateDecDisc_ERP(posNo, mTotalYQJE, ref GoodsList, out msg);
                 //2.5: 上传XSJL
@@ -1524,7 +1524,7 @@ namespace z.POS80.Services
 
                 //  CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<2.3.2> 准备计算CRM满减:类型[" + sType + "]");
                 //  if (sType.Equals(FullCut_CRM))
-                //      bResult = CalculateDecDisc_CRM(posNo, mTotalYQJE, CrmBillId, ref GoodsList, out msg);
+                      bResult = CalculateDecDisc_CRM(posNo, mTotalYQJE, CrmBillId, ref GoodsList, out msg);
 
                 //  CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<2.5.1> 查询返券:会员ID:" + vipcard.id);
                 if (vipcard.id > 0)
@@ -4454,6 +4454,7 @@ namespace z.POS80.Services
                     goods.FrontDiscount = req.goodsList[i].frontendOffAmount;
                     goods.MemberDiscount = req.goodsList[i].memberOff;
                     goods.BackDiscount = req.goodsList[i].backendOffAmount;
+                    goods.DecreaseDiscount = req.goodsList[i].fullCutOffAmount;
                     goods.Discount = GetSPDisc(goods);
 
                     if ((goods.Price == 0) && (req.goodsList[i].price != 0))
@@ -6757,6 +6758,126 @@ namespace z.POS80.Services
             //  CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.5> 处理完成");
             return result;
 
+        }
+
+        public bool CalculateDecDisc_CRM(string posid, int Yqje, int iCrmBillID, ref List<Goods> goodsList, out string msg)
+        {
+            msg = "";
+            bool result = false;
+            int i = 0;
+            double mTotal = 0;
+            List<Payment> ErpPays = new List<Payment>();
+
+            for (i = 0; i < goodsList.Count(); i++)
+            {
+                mTotal = mTotal + goodsList[i].SaleMoney - goodsList[i].Discount;
+            }
+
+            //  CommonUtils.WriteSKTLog(1, posid, "计算满减<1.1> 按CRM方式: 商品金额:" + mTotal);
+
+
+            Payment Item = new Payment();
+            Item.Id = 1;
+            Item.PayedMoney = mTotal;
+            ErpPays.Add(Item);
+
+            result = CalDecMoney(posid, iCrmBillID, ErpPays, ref goodsList, ref msg);
+
+            return result;
+        }
+
+        public bool CalDecMoney(string posId, int CrmBillId, List<Payment> ErpPayList,
+           ref List<Goods> GoodsList, ref string msg)
+        {
+            msg = "";
+            double decMoney = 0;
+            bool result = false, flag = false;
+            int i = 0, iCurLine = 0, iPayCount = ErpPayList.Count();
+            double mDec = 0;
+
+            //   CommonUtils.WriteSKTLog(1, posId, "CRM满减<1.1>:收款方式列表: " + iPayCount);
+
+            string CRMUSer = "CRMUSER", CRMPwd = "CRMUSER";
+
+
+            ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+            crmSoapHeader.UserId = CRMUSer;
+            crmSoapHeader.Password = CRMPwd;
+
+            //  CommonUtils.WriteSKTLog(1, posId, "CRM满减<1.2>:准备创建连接 ");
+            //  PosWebServiceSoapClient client = new PosWebServiceSoapClient();
+
+            //  CommonUtils.WriteSKTLog(1, posId, "CRM满减<1.3>:准备创建变量 ");
+
+            RSaleBillArticleDecMoney[] RSaleBillArticleDecMoneys;
+
+            //RSaleBillPayment[] CrmPayments = new RSaleBillPayment[iPayCount];
+
+            List<RSaleBillPayment> CrmPayments = new List<RSaleBillPayment>(); ;
+
+
+            // CommonUtils.WriteSKTLog(1, posId, "CRM满减<1.5>:iPayCount ");
+            for (i = 0; i < iPayCount; i++)
+            {
+                RSaleBillPayment CrmPayItem = new RSaleBillPayment();
+                //CrmPayItem.PayMoney = (double)(ErpPayList[i].PayedMoney / 100.0);//CommonUtils.MoneyToDouble(
+
+                CrmPayItem.PayMoney = MoneyToDouble(ErpPayList[i].PayedMoney);
+
+                CrmPayItem.PayTypeCode = ErpPayList[i].Id.ToString();
+
+                //   CommonUtils.WriteSKTLog(1, posId, "CRM满减<1.6.1>:付款方式ID: " + CrmPayItem.PayTypeCode +
+                //      " CRM金额:" + CrmPayItem.PayMoney.ToString() + " 付款金额:" + ErpPayList[i].PayedMoney.ToString());
+                CrmPayments.Add(CrmPayItem);
+            }
+
+
+
+            try
+            {
+                //  CommonUtils.WriteSKTLog(1, posId, "CRM满减<2.1>: 发送CRM请求");
+
+                CalcRSaleBillDecMoneyRequest req = new CalcRSaleBillDecMoneyRequest();
+                req.ABCSoapHeader = crmSoapHeader;
+                req.serverBillId = CrmBillId;
+                req.payments = CrmPayments.ToArray();
+
+                CalcRSaleBillDecMoneyResponse res = PosAPI.CalcRSaleBillDecMoney(req);
+                flag = res.CalcRSaleBillDecMoneyResult;
+
+
+                // flag = client.CalcRSaleBillDecMoney(crmSoapHeader, CrmBillId, CrmPayments.ToArray(), out msg,
+                //     out decMoney, out RSaleBillArticleDecMoneys);
+
+                //  CommonUtils.WriteSKTLog(1, posId, "CRM满减<2.2>: 结束CRM请求");
+                if (flag == true)
+                {
+                    // CommonUtils.WriteSKTLog(1, posId, "CRM满减<2.3.1>: 操作成功 共满减:" + decMoney);
+                    if (res.articleDecMoneys != null)
+                    {
+                        for (i = 0; i < res.articleDecMoneys.Count(); i++)
+                        {
+                            iCurLine = res.articleDecMoneys[i].ArticleInx;
+                            if ((iCurLine >= 0) && (iCurLine < GoodsList.Count))
+                            {
+                                mDec = res.articleDecMoneys[i].DecMoney;
+                                GoodsList[iCurLine].DecreaseDiscount = mDec;
+
+                                // CommonUtils.WriteSKTLog(1, posId, "CRM满减<2.3.2>: 商品:" + GoodsList[iCurLine].Code + " 满减:" + GoodsList[iCurLine].DecreaseDiscount);
+                            }
+                        }
+                    }
+                    // CommonUtils.WriteSKTLog(1, posId, "CRM满减<2.5>: 操作成功");
+                }
+            }
+            catch (Exception e)
+            {
+                msg = "CRM报错: " + e.Message.ToString() + "" + msg;
+                //   CommonUtils.WriteSKTLog(2, posId, "CRM满减<4.1> " + msg);
+                flag = false;
+            }
+
+            return result;
         }
 
 
