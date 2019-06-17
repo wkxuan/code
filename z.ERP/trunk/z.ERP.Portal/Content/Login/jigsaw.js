@@ -22,9 +22,9 @@
     img.crossOrigin = "Anonymous"
     img.onload = onload
     img.onerror = () => {
-      img.src = getRandomImg()
+        img.src = getRandomImgLocal()
     }
-    img.src = getRandomImg()
+    img.src = getRandomImgLocal()
     return img
   }
   
@@ -48,6 +48,10 @@
   
   function getRandomImg() {
     return 'https://picsum.photos/300/150/?image=' + getRandomNumberByRange(0, 100)
+  }
+    //图片加载失败加载本地图片
+  function getRandomImgLocal() {
+      return '/Content/Login/Images/image' + getRandomNumberByRange(0, 10)+'.jpg';
   }
 
   function draw(ctx, operation, x, y) {
@@ -242,7 +246,7 @@
       this.block.style.left = 0
       this.sliderMask.style.width = 0
       this.clean()
-      this.img.src = getRandomImg()
+      this.img.src = getRandomImgLocal()
       this.draw()
     }
 
