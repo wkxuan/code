@@ -16,7 +16,7 @@
 }
 
 <div id="def_Main">
-    <row class="topbutton" >
+    <row class="topbutton">
 
         @{
             RenderControl(new ButtonRender()
@@ -24,23 +24,24 @@
                 Click = "seachList",
                 Text = "查询",
                 Enable = true,
-                Type= "primary",
-                Invisible = (Model?.Invisible_Srch).GetValueOrDefault()
-
+                Type = "primary",
+                Invisible = (Model?.Invisible_Srch).GetValueOrDefault(),
+                Icon = "md-search"
             });
         }
 
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "add",
-                    Text = "新增",
-                    Enable = true,
-                    Type = "primary",
-                    Invisible = (Model?.Invisible_Add).GetValueOrDefault(),
-                    PermissionKey = Model?.Permission_Add
-                });
-            }
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "add",
+                Text = "新增",
+                Enable = true,
+                Type = "primary",
+                Invisible = (Model?.Invisible_Add).GetValueOrDefault(),
+                PermissionKey = Model?.Permission_Add,
+                Icon = "md-add"
+            });
+        }
         <span v-show="topbtnModVisible">
             @{
                 RenderControl(new ButtonRender()
@@ -49,62 +50,67 @@
                     Text = "修改",
                     Enable = true,
                     Type = "primary",
-                    PermissionKey = Model?.Permission_Mod
+                    PermissionKey = Model?.Permission_Mod,
+                    Icon = "md-create"
                 });
             }
         </span>
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "save",
-                    Text = "存档",
-                    Enable = false,
-                    Type = "primary",
-                    //    PermissionKey =Model?.Permission_Save
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "quit",
-                    Text = "放弃",
-                    Enable = false,
-                    Type = "warning"
-                });
-            }
-            @*@{
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "save",
+                Text = "存档",
+                Enable = false,
+                Type = "primary",
+                //PermissionKey =Model?.Permission_Save,
+                Icon = "md-checkmark-circle"
+            });
+        }
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "quit",
+                Text = "放弃",
+                Enable = false,
+                Type = "warning",
+                Icon = "md-close"
+            });
+        }
+        @*@{
                 RenderControl(new ButtonRender()
                 {
                     Click = "del",
                     Text = "删除",
                     Enable= true,
-                    Type = "error"
+                    Type = "error",
+                    Icon = "md-trash"
                 });
             }*@
-            <span v-show="topbtnChkVisible">
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "chk",
-                        Text = "审核",
-                        Enable = true,
-                        Type = "primary",
-                        Invisible = (Model?.Invisible_Chk).GetValueOrDefault(),
-                        PermissionKey = Model?.Permission_Chk
-                    });
-                }
-            </span>
-</row>
+        <span v-show="topbtnChkVisible">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "chk",
+                    Text = "审核",
+                    Enable = true,
+                    Type = "primary",
+                    Invisible = (Model?.Invisible_Chk).GetValueOrDefault(),
+                    PermissionKey = Model?.Permission_Chk,
+                    Icon = "md-checkmark"
+                });
+            }
+        </span>
+    </row>
     <row>
         <i-col span="8">
             <div ref="tableHeight">
                 <card style="height:100%">
                     @*<p slot="title">列表信息</p>*@
-                    <div style="height:8%">      
+                    <div style="height:8%">
                         @RenderSection("search", false)
                     </div>
-                    <i-table :highlight-row="true" size="small" :border="true"  :height="tableH"
-                             :columns="screenParam.colDef" :data="screenParam.dataDef"
+                    <i-table highlight-row="true" size="small" border="true" height="tableH"
+                             columns="screenParam.colDef" data="screenParam.dataDef"
                              v-on:on-current-change="showlist"></i-table>
                 </card>
             </div>
@@ -121,7 +127,7 @@
 
     <div class="hide">
         @RenderSection("hide", false)
-        @RenderSection("pops", false)        
+        @RenderSection("pops", false)
     </div>
 </div>
 
