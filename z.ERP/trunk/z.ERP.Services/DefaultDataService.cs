@@ -71,7 +71,7 @@ namespace z.ERP.Services
                              from CONTRACT_SUMMARY A,SHOP B
                              WHERE A.SHOPID=B.SHOPID AND TO_CHAR(RQ,'yyyy-MM-dd')=TO_CHAR(SYSDATE-1,'yyyy-MM-dd')
                              GROUP BY B.NAME,B.AREA_RENTABLE) Z
-                             WHERE ROWNUM <=10";
+                             WHERE ROWNUM <=15";
             }
             else if (type == "2")
             {
@@ -80,7 +80,7 @@ namespace z.ERP.Services
                              from CONTRACT_SUMMARY A,SHOP B
                              WHERE A.SHOPID=B.SHOPID AND TO_CHAR(RQ,'yyyy-MM')=TO_CHAR(SYSDATE,'yyyy-MM')
                              GROUP BY B.NAME,B.AREA_RENTABLE) Z
-                             WHERE ROWNUM <=10";
+                             WHERE ROWNUM <=15";
             }
             else if (type == "3")
             {    //
@@ -88,7 +88,7 @@ namespace z.ERP.Services
                              from CONTRACT_SUMMARY A, SHOP B
                              WHERE A.SHOPID = B.SHOPID AND TO_CHAR(RQ, 'yyyy-MM') = TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'yyyy-MM')
                              GROUP BY B.NAME, B.AREA_RENTABLE) Z
-                              WHERE ROWNUM <= 10";
+                              WHERE ROWNUM <= 15";
             }
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;

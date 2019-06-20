@@ -141,7 +141,7 @@
             echart1.setOption({
                 title: {
                     text: '商户经营榜',
-                    subtext: '昨日销售额前10名',
+                    subtext: '昨日销售额前15名',
                     x: 'center'
                 },
                 tooltip: {
@@ -169,7 +169,19 @@
                     {
                         name: '金额',
                         type: 'bar',
-                        itemStyle: { normal: { label: { show: true, position: 'inside' } } },
+                        itemStyle: {
+                            normal: {
+                                color: function (params) {
+                                    var colorList = [
+                                      '#26C0C0', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
+                                       '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
+                                       '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#C1232B'
+                                    ];
+                                    return colorList[params.dataIndex]
+                                },
+                                label: { show: true, position: 'inside' }
+                            }
+                        },
                         data: this.Echart1Xdata
                     }
                 ]
