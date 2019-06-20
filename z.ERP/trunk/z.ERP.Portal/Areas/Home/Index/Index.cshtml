@@ -14,6 +14,9 @@
                     "Content/ui/js/framework-ui.js",
                     "Content/ui/js/indextab.js",
                     "Content/ui/js/loading/pace.min.js",
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js",
                     "Content/zBase.js",
                     "Content/AjaxHelper.js",
                     "Content/JsHelper.js",
@@ -35,9 +38,12 @@
         html,body{
             overflow:hidden;
         }
+        .ivu-badge {
+            margin: 15px 0px;
+        }
     </style>
     @InitFiles(WebFiles)
-    @InitThisJs()
+    
 </head>
 <body data-root="">
     <div id="ajax-loader" style="cursor: progress; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #fff; z-index: 10000; overflow: hidden;">
@@ -89,6 +95,13 @@
                                 </ul>
                             </li>
                         </ul>
+                        <div class="nav navbar-nav pull-right" id="Badge" style="height:50px;width:40px">
+                            <Badge :count="BadgeNO">
+                                <a v-on:click="Badgeclick">
+                                    <Icon type="ios-notifications-outline" size="26"></Icon>
+                                </a>
+                            </Badge>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -139,6 +152,10 @@
                 </div>
             </div>
         </div>
+        @*抽屉*@
+        <Drawer title="通知" :closable="true" width="30" v-model="DrawerModel">
+
+        </Drawer>
     </div>
     <div id="loadingPage" style="display: none;">
         <div class="loading-shade"></div>
@@ -147,3 +164,4 @@
 </body>
 
 </html>
+@InitThisJs()

@@ -551,6 +551,7 @@
     <Content Include="Areas\Home\Index\Index.cshtml" />
     <Content Include="Areas\Home\Default\Default.cshtml" />
     <Content Include="Areas\Home\DefaultNew\DefaultNew.cshtml" />
+    <Content Include="Content\VUE\styles\fonts\ionicons.woff2" />
     <None Include="Properties\PublishProfiles\laj.pubxml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
     <None Include="Properties\PublishProfiles\zgy.pubxml" />

@@ -103,7 +103,6 @@
             DefaultNew.Echart2Numberdata = data.Echart2Numberdata;
             DefaultNew.Echart3Xdata = data.Echart3Xdata;
             DefaultNew.Echart3Ydata = data.Echart3Ydata;
-            debugger
             DefaultNew.createEchart();    //获取数据后再注册echart
         });
         
