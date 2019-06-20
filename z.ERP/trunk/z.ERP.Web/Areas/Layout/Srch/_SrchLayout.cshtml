@@ -43,14 +43,14 @@
 
                 @RenderSection("conditionBtn", false)
             </div>
-            <div slot="content" class="element">
+            <div slot="content" class="srchParamContent">
                 @*查询条件*@
                 @RenderSection("conditionParam", true)
             </div>
         </panel>
         <panel name="result">
             查询结果
-            <div style="float: right; width: 400px ;text-align: right;z-index:99">
+            <div style="float: right; width: 400px ;text-align: right;">
                  @{
                      RenderControl(new ButtonRender()
                      {

@@ -7,30 +7,30 @@ using z.DBHelper.DBDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("ADJUSTDISCOUNTITEM", "折扣调整子表")]
-    public partial class ADJUSTDISCOUNTITEMEntity:TableEntityBase
+    [DbTable("RATE_ADJUST_ITEM", "折扣调整明细表")]
+    public partial class RATE_ADJUST_ITEMEntity:TableEntityBase
     {
-        public ADJUSTDISCOUNTITEMEntity() {
+        public RATE_ADJUST_ITEMEntity() {
         }
-        public ADJUSTDISCOUNTITEMEntity(string adid,string phase,string goodsid) {
-            ADID = adid;
-            PHASE = phase;
+        public RATE_ADJUST_ITEMEntity(string id,string sheetid,string goodsid) {
+            ID = id;
+            SHEETID = sheetid;
             GOODSID = goodsid;
         }
         /// <summary>
         /// 主键id
         /// </summary>
         [PrimaryKey]
-        [Field("ADID")]
-        public string ADID
+        [Field("ID")]
+        public string ID
         {
             get; set;
         }
         /// <summary>
         /// 分单号预留
         /// </summary>
-        [Field("分单号（预留）")]
-        public string PHASE
+        [Field("分单号")]
+        public string SHEETID
         {
             get; set;
         }
@@ -42,53 +42,60 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-        /// <summary>
-        /// 折扣下限
-        /// </summary>
-        [Field("折扣下限")]
-        public string DISCOUNT_LOWER
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 折扣上限
-        /// </summary>
-        [Field("折扣上限")]
-        public string DISCOUNT_CEILING
-        {
-            get; set;
-        }
+
         /// <summary>
         /// 折扣降点
         /// </summary>
         [Field("折扣降点")]
-        public string DISCOUNT_DROP_POINTS
+        public string DOWN_RATE
         {
             get; set;
         }
+
+        /// <summary>
+        /// 折扣升点
+        /// </summary>
+        [Field("折扣升点")]
+        public string UP_RATE
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 折扣上限
+        /// </summary>
+        [Field("折扣上限")]
+        public string LIMIT_UP
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// 折扣下限
+        /// </summary>
+        [Field("折扣下限")]
+        public string LIMIT_DOWN
+        {
+            get; set;
+        }
+
+
         /// <summary>
         /// 旧折扣率
         /// </summary>
-        [Field("旧折扣率")]
-        public string OLD_DISCOUNT
+        [Field("原扣率")]
+        public string RATE_OLD
         {
             get; set;
         }
         /// <summary>
         /// 新折扣率
         /// </summary>
-        [Field("新折扣率")]
-        public string NEW_DISCOUNT
+        [Field("新扣率")]
+        public string RATE_NEW
         {
             get; set;
         }
-        /// <summary>
-        /// 折扣升点
-        /// </summary>
-        [Field("折扣升点")]
-        public string DISCOUNT_RISE_POINTS
-        {
-            get; set;
-        }
+
     }
 }

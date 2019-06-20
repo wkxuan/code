@@ -5,16 +5,16 @@
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">单号</i-col>
-        <i-col span="6" class="RowTitle">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.ADID"
+                    vModel = "searchParam.ID"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">分店</i-col>
-        <i-col span="6" class="RowTitle">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -26,7 +26,7 @@
         <i-col span="2" class="RowTitle">
             状态
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<普通单据状态>()
                 {
@@ -39,7 +39,7 @@
         <i-col span="2" class="RowTitle">
             调整时间
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -47,7 +47,7 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -72,7 +72,7 @@
         <i-col span="2" class="RowTitle">
             登记时间
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -80,7 +80,7 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -105,7 +105,7 @@
         <i-col span="2" class="RowTitle">
             审核时间
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -113,7 +113,7 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {

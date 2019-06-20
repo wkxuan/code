@@ -8,10 +8,10 @@ using z.DBHelper.DBDomain;
 
 namespace z.ERP.Entities
 {
-    public partial class ADJUSTDISCOUNTEntity
+    public partial class RATE_ADJUSTEntity
     {
-        [ForeignKey(nameof(ADID), nameof(ADJUSTDISCOUNTEntity.ADID))]
-        public List<ADJUSTDISCOUNTITEMEntity> ADJUSTDISCOUNTITEM
+        [ForeignKey(nameof(ID), nameof(RATE_ADJUSTEntity.ID))]
+        public List<RATE_ADJUST_ITEMEntity> RATE_ADJUST_ITEM
         {
             get;
             set;
