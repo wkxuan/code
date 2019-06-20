@@ -140,7 +140,7 @@
                         ve.options.data = data.rows;
                     }
                     else {
-                        mess.$Message.info("没有满足当前查询条件的结果!");
+                        ve.$Message.info("没有满足当前查询条件的结果!");
                     }
                 },
                 Error: function () {

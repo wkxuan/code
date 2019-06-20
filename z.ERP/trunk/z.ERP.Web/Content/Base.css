@@ -9,3 +9,36 @@
 .mustElement {color: red; height: 40px;position: relative;}
 .leftRow {width: 80px; text-align:right;padding-left:10px}
 .rightRow {width: 20%; padding-left:5px}
+
+.ivu-modal-body{
+    padding:0 !important;
+}
+.ivu-modal-header{
+    padding:12px !important;
+    background-color:#0099ff;
+}
+.ivu-modal-close{
+    top:4px !important;
+}
+.ivu-modal-close .ivu-icon-ios-close{
+     color:#fff !important;
+}
+ .ivu-collapse-content{
+    width: 100%;
+    height:100%;
+    overflow:hidden !important;
+    padding:0 !important;
+}
+ .ivu-collapse-content>.ivu-collapse-content-box{
+     padding:0 !important;
+}
+
+ .ivu-collapse-header{
+     height:30px  !important;
+     line-height:30px !important;
+ }
+.ivu-btn{
+     padding:0 5px !important;
+ }
+.srchParamContent{margin-top:10px;}
+.popParamContent {margin-top:10px;}

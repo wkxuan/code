@@ -17,7 +17,9 @@ Vue.component('un-edit-table', {
             tooltipTheme: "dark",
             visibleCols: [],
             columns: [],
-            columnsDef:[]
+            columnsDef: [],
+            selectData: [],
+            currentRow: null            
         }
     },
     mounted() {
@@ -36,9 +38,12 @@ Vue.component('un-edit-table', {
     watch: {
         "options.columns": {
             handler: function (nv, ov) {
+                this.colsList = nv;
                 this.columnsDef = this.initCols(nv);
-                this.columns = nv;
-                this.visibleCols = $.map(nv, item=> {
+                this.columns = nv.filter(item=> {
+                    return item.type != "selection";
+                });;
+                this.visibleCols = $.map(this.columns, item=> {
                     return item.title;
                 });
             },
@@ -57,6 +62,7 @@ Vue.component('un-edit-table', {
             let data = $.map(cols, item=> {
                 item.ellipsis = item.ellipsis || true;
                 item.tooltip = item.tooltip || true;
+                item.minWidth = item.minWidth || 120;
                 return item;
             });
             return data;
@@ -64,8 +70,8 @@ Vue.component('un-edit-table', {
         //列显示隐藏控制checkBox chang事件
         checkBoxChange(val) {
             this.visibleCols = val;
-            this.columnsDef = this.columns.filter(item=> {
-                return this.visibleCols.indexOf(item.title) > -1;
+            this.columnsDef = this.colsList.filter(item=> {
+                return this.visibleCols.indexOf(item.title) > -1 || item.type == "selection";
             });
         },
         //拖拽排序松开时触发，返回置换的两行数据索引
@@ -76,11 +82,20 @@ Vue.component('un-edit-table', {
         //双击某一行时触发
         rowDblClick(row, index) { },
         //开启 highlight-row 后有效，当表格的当前行发生变化的时候会触发
-        currentChange(currentRow, oldCurrentRow) { },
+        currentChange(currentRow, oldCurrentRow) {
+            this.currentRow = currentRow;
+        },
         //排序时有效，当点击排序时触发
         sortChange(column, key, order) { },
         //单击某一行时触发
-        rowClick(row, index) { }
+        rowClick(row, index) { },
+        //在多选模式下有效，只要选中项发生变化时就会触发
+        onSelectionChange(data) {
+            this.selectData = data;
+        },
+        getSelectData() {
+            return this.selectData;
+        }
     }
 });
 

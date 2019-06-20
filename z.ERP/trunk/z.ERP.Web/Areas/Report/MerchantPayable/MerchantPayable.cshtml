@@ -43,30 +43,10 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelMerchant",
-                    Text = "商户",
-                    Enable = true,
-                });
-            }
+            商户
         </i-col>
-        <i-col span="2" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTID",
-                });
-            }
-        </i-col>
-        <i-col span="4" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTNAME",
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME"  v-on:on-click="SelMerchant"/>
         </i-col>
         <i-col span="2" class="RowTitle">
             收费项目

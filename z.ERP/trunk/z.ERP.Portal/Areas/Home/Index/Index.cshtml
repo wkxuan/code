@@ -20,10 +20,7 @@
                     "Content/PageBase.js",
                 };
 }
-
-
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -34,10 +31,15 @@
         __CommonControllerUrl = '@ViewBag.CommonControllerUrl';
         __PortalBaseUrl = '@ViewBag.BaseUrl';
     </script>
+    <style type="text/css">
+        html,body{
+            overflow:hidden;
+        }
+    </style>
     @InitFiles(WebFiles)
     @InitThisJs()
 </head>
-<body style="overflow: hidden;" data-root="">
+<body data-root="">
     <div id="ajax-loader" style="cursor: progress; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #fff; z-index: 10000; overflow: hidden;">
         <img src="~/Content/ui/img/ajax-loader.gif" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" />
     </div>

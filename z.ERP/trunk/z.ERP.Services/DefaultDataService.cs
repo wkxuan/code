@@ -71,7 +71,7 @@ namespace z.ERP.Services
                              from CONTRACT_SUMMARY A,SHOP B
                              WHERE A.SHOPID=B.SHOPID AND TO_CHAR(RQ,'yyyy-MM-dd')=TO_CHAR(SYSDATE-1,'yyyy-MM-dd')
                              GROUP BY B.NAME,B.AREA_RENTABLE) Z
-                             WHERE ROWNUM <=10";
+                             WHERE ROWNUM <=15";
             }
             else if (type == "2")
             {
@@ -80,7 +80,7 @@ namespace z.ERP.Services
                              from CONTRACT_SUMMARY A,SHOP B
                              WHERE A.SHOPID=B.SHOPID AND TO_CHAR(RQ,'yyyy-MM')=TO_CHAR(SYSDATE,'yyyy-MM')
                              GROUP BY B.NAME,B.AREA_RENTABLE) Z
-                             WHERE ROWNUM <=10";
+                             WHERE ROWNUM <=15";
             }
             else if (type == "3")
             {    //
@@ -88,7 +88,7 @@ namespace z.ERP.Services
                              from CONTRACT_SUMMARY A, SHOP B
                              WHERE A.SHOPID = B.SHOPID AND TO_CHAR(RQ, 'yyyy-MM') = TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'yyyy-MM')
                              GROUP BY B.NAME, B.AREA_RENTABLE) Z
-                              WHERE ROWNUM <= 10";
+                              WHERE ROWNUM <= 15";
             }
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
@@ -137,6 +137,32 @@ namespace z.ERP.Services
                 "  where B.MENUID=M.ID and B.BRABCHID =C.ID" +
                 " and exists (select 1 from USER_ROLE U,ROLE_MENU N where U.ROLEID = N.ROLEID and N.MENUID = M.ID and U.USERID =  " + employee.Id +") "+ 
                 "  group by B.MENUID,M.NAME,C.NAME,B.URL ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+        public DataTable EchartData(DataTable data,string value,string value1) {
+            DataTable dt = new DataTable();
+            if (data.Rows.Count > 0)
+            {
+                dt.Columns.Add("value", typeof(string));
+                dt.Columns.Add("name", typeof(string));
+                foreach (DataRow item in data.Rows)
+                {
+                    DataRow dr = dt.NewRow();
+                    dr["name"] = item[value];
+                    dr["value"] = item[value1];
+                    dt.Rows.Add(dr);
+                }
+            }
+            else {
+                dt = data;
+            }
+            return dt;
+        }
+
+        public DataTable Echart3Data() {
+            string sql = @" SELECT to_char(RQ, 'yyyy-MM-dd') TIME, SUM(NVL(AMOUNT,0)) AMOUNT FROM  CONTRACT_SUMMARY WHERE TRUNC(RQ)<TRUNC(SYSDATE) and TRUNC(RQ)>=TRUNC(SYSDATE-30)  GROUP BY RQ ORDER by RQ";
+
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
