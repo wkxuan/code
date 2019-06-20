@@ -19,7 +19,7 @@ namespace z.IOC.Simple
         {
             return (T)Activator.CreateInstance(
                                  _mrs.FirstOrDefault(a => a.BaseOn<T>()) ?? typeof(T),
-                                 BindingFlags.Instance | BindingFlags.NonPublic,
+                                 BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
                                  null,
                                  new object[] { },
                                  null);
@@ -28,7 +28,7 @@ namespace z.IOC.Simple
         {
             return Activator.CreateInstance(
                                  _mrs.FirstOrDefault(a => a.BaseOn(t)) ?? t,
-                                 BindingFlags.Instance | BindingFlags.NonPublic,
+                                 BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
                                  null,
                                  new object[] { },
                                  null);
