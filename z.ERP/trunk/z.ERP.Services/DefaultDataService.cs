@@ -140,5 +140,31 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
+        public DataTable EchartData(DataTable data,string value,string value1) {
+            DataTable dt = new DataTable();
+            if (data.Rows.Count > 0)
+            {
+                dt.Columns.Add("value", typeof(string));
+                dt.Columns.Add("name", typeof(string));
+                foreach (DataRow item in data.Rows)
+                {
+                    DataRow dr = dt.NewRow();
+                    dr["name"] = item[value];
+                    dr["value"] = item[value1];
+                    dt.Rows.Add(dr);
+                }
+            }
+            else {
+                dt = data;
+            }
+            return dt;
+        }
+
+        public DataTable Echart3Data() {
+            string sql = @" SELECT to_char(RQ, 'yyyy-MM-dd') TIME, SUM(NVL(AMOUNT,0)) AMOUNT FROM  CONTRACT_SUMMARY WHERE TRUNC(RQ)<TRUNC(SYSDATE) and TRUNC(RQ)>=TRUNC(SYSDATE-30)  GROUP BY RQ ORDER by RQ";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
     }
 }

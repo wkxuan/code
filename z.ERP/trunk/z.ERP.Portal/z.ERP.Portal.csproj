@@ -260,6 +260,7 @@
     <Content Include="Content\Login\style.css" />
     <Content Include="Content\Login\supersized.3.2.7.min.js" />
     <Content Include="Content\Login\supersized.css" />
+    <Content Include="Content\macarons.js" />
     <Content Include="Content\PageBase.js" />
     <Content Include="Content\ui\bootstrap.css" />
     <Content Include="Content\ui\bootstrap.min.css" />
