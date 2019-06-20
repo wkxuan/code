@@ -15,7 +15,8 @@
     "Content/VUE/styles/iview.css",
     "Content/VUE/vue.js",
     "Content/VUE/iview.js",
-    "/Content/echarts.js"
+    "/Content/echarts.js",
+    "Content/macarons.js"
     };
 }
 
@@ -41,7 +42,7 @@
             <span slot="open">图表</span>
             <span slot="close">数据</span>
         </i-Switch>
-        <div id="tablelist" v-if="!Switch">
+        <div id="tablelist" v-show="!Switch">
             <Row style="background:#eee;padding:10px;height:260px">
                 <i-col span="6">
                     <div id="box1">
@@ -117,8 +118,26 @@
                 </i-col>
             </Row>
         </div>
-        <div id="echarts" v-if="Switch">
-            
+        <div id="echarts" v-show="Switch">
+            <Row style="background:#eee;padding:10px;height:520px" >
+                <i-col span="10">
+                    <div id="echart1" style="height:520px"></div>
+                </i-col>
+                <i-col span="13" offset="1">
+                    <div>
+                        <Row style="padding:10px;">
+                            <i-col span="24">
+                                <div id="echart2" style="height:260px"></div>
+                            </i-col>
+                        </Row>
+                        <Row style="padding:10px;">
+                            <i-col span="24">
+                                <div id="echart3" style="height:260px"></div>
+                            </i-col>
+                        </Row>
+                    </div>
+                </i-col>
+            </Row>
         </div>
     </div>
 </body>
