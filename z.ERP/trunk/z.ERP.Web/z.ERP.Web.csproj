@@ -241,7 +241,7 @@
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\PPGL\BRAND\BrandController.cs" />
-    <Compile Include="Areas\SPGL\ADJUSTDISCOUNT\AdjustDiscountController.cs" />
+    <Compile Include="Areas\SPGL\RATE_ADJUST\Rate_AdjustController.cs" />
     <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\SPGL\SALEBILL\SaleBillController.cs" />
     <Compile Include="Areas\WLGL\WLCheck\WLCheckController.cs" />
@@ -381,8 +381,8 @@
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
-    <Content Include="Areas\SPGL\ADJUSTDISCOUNT\AdjustDiscountEdit.js" />
-    <Content Include="Areas\SPGL\ADJUSTDISCOUNT\AdjustDiscountList.js" />
+    <Content Include="Areas\SPGL\RATE_ADJUST\Rate_AdjustEdit.js" />
+    <Content Include="Areas\SPGL\RATE_ADJUST\Rate_AdjustList.js" />
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.js" />
     <Content Include="Areas\SPGL\GOODS\GoodsList.js" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillEdit.js" />
@@ -717,8 +717,8 @@
     <Content Include="Areas\Pop\Pop\PopInvoiceList.cshtml" />
     <Content Include="Content\VUE\styles\fonts\ionicons.woff2" />
     <Content Include="Areas\Share\Table.cshtml" />
-    <Content Include="Areas\SPGL\ADJUSTDISCOUNT\AdjustDiscountList.cshtml" />
-    <Content Include="Areas\SPGL\ADJUSTDISCOUNT\AdjustDiscountEdit.cshtml" />
+    <Content Include="Areas\SPGL\RATE_ADJUST\Rate_AdjustList.cshtml" />
+    <Content Include="Areas\SPGL\RATE_ADJUST\Rate_AdjustEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintSH.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintSHOther.cshtml" />
     <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccount.cshtml" />

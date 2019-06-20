@@ -40,9 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ADJUSTDISCOUNTEntity.cs" />
-    <Compile Include="Auto\ADJUSTDISCOUNTEntity.cs" />
-    <Compile Include="Auto\ADJUSTDISCOUNTITEMEntity.cs" />
+    <Compile Include="RATE_ADJUSTEntity.cs" />
+    <Compile Include="Auto\RATE_ADJUSTEntity.cs" />
+    <Compile Include="Auto\RATE_ADJUST_ITEMEntity.cs" />
     <Compile Include="Auto\BILLSTATUSEntity.cs" />
     <Compile Include="Auto\MERCHANT_ACCOUNTEntity.cs" />
     <Compile Include="Auto\SPLCJG_MENUEntity.cs" />

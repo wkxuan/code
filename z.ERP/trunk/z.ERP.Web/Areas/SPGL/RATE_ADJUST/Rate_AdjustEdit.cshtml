@@ -71,7 +71,7 @@
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "screenParam.DISCOUNT",
+                    vModel = "screenParam.RATE",
                     type="number",
                 });
             }
@@ -80,18 +80,8 @@
             @{
                 RenderControl(new ButtonRender()
                 {
-                    Click = "cDISCOUNT_LOWER",
-                    Text = "批量设置折扣下限",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }      
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "cDISCOUNT_CEILING",
-                    Text = "批量设置折扣上限",
+                    Click = "cDOWN_RATE",
+                    Text = "批量设置扣率降点",
                     Enable = true,
                     Type = "primary",
                     Icon = "plus-circled"
@@ -100,8 +90,8 @@
             @{
                 RenderControl(new ButtonRender()
                 {
-                    Click = "cDISCOUNT_DROP_POINTS",
-                    Text = "批量设置折扣降点",
+                    Click = "cUP_RATE",
+                    Text = "批量设置扣率升点",
                     Enable = true,
                     Type = "primary",
                     Icon = "plus-circled"
@@ -110,8 +100,18 @@
             @{
                 RenderControl(new ButtonRender()
                 {
-                    Click = "cDISCOUNT_RISE_POINTS",
-                    Text = "批量设置折扣升点",
+                    Click = "cLIMIT_DOWN",
+                    Text = "批量设置扣率下限",
+                    Enable = true,
+                    Type = "primary",
+                    Icon = "plus-circled"
+                });
+            }
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "cLIMIT_UP",
+                    Text = "批量设置扣率上限",
                     Enable = true,
                     Type = "primary",
                     Icon = "plus-circled"
@@ -132,7 +132,7 @@
     <row>
         <i-col span="24">
             <i-table size="small" :border="true"
-                     :columns="screenParam.colDef" :data="dataParam.ADJUSTDISCOUNTITEM"></i-table>
+                     :columns="screenParam.colDef" :data="dataParam.RATE_ADJUST_ITEM"></i-table>
         </i-col>
     </row>
 

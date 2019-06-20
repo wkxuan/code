@@ -684,7 +684,7 @@ namespace z.ERP.Services
                        + "   AND S.FLOORID = F.ID AND C.CONTRACTID = CB.CONTRACTID"
                        + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
                        + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
-                       + "   AND C.HTLX=1 AND C.STATUS !=5";
+                       + "   AND C.HTLX=1 ";  //AND C.STATUS !=5
 
             item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
@@ -727,7 +727,7 @@ namespace z.ERP.Services
                        + "   AND S.FLOORID = F.ID AND C.CONTRACTID = CB.CONTRACTID"
                        + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
                        + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
-                       + "   AND C.HTLX=1 AND C.STATUS !=5";
+                       + "   AND C.HTLX=1 ";  //AND C.STATUS !=5
 
             item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");

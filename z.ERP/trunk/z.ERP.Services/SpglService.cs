@@ -408,11 +408,11 @@ namespace z.ERP.Services
             return mer.BILLID;
         }
         #region 扣率调整单
-        public DataGridResult GetAdjustDiscountList(SearchItem item)
+        public DataGridResult GetRateAdjustList(SearchItem item)
         {
-            string sql = @"SELECT A.*,B.NAME BRANCHNAME FROM ADJUSTDISCOUNT A,BRANCH B
+            string sql = @"SELECT A.*,B.NAME BRANCHNAME FROM RATE_ADJUST A,BRANCH B
                     WHERE A.BRANCHID=B.ID ";
-            item.HasKey("ADID", a => sql += $" and A.ADID = {a}");
+            item.HasKey("ADID", a => sql += $" and A.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID={a}");           
             item.HasDateKey("DATE_START", a => sql += $" and A.STARTTIME>={a}");
             item.HasDateKey("DATE_END", a => sql += $" and A.ENDTIME<={a}");
@@ -423,47 +423,47 @@ namespace z.ERP.Services
             item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
             item.HasDateKey("VERIFY_TIME_START", a => sql += $" and A.VERIFY_TIME>={a}");
             item.HasDateKey("VERIFY_TIME_END", a => sql += $" and A.VERIFY_TIME<={a}");
-            sql += " ORDER BY  ADID DESC";
+            sql += " ORDER BY A.ID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
 
-        public object ShowOneAdjustDiscountEdit(ADJUSTDISCOUNTEntity Data)
+        public object ShowOneRateAdjustEdit(RATE_ADJUSTEntity Data)
         {
-            string sql = @"SELECT A.*,B.NAME BRANCHNAME FROM ADJUSTDISCOUNT A,BRANCH B
+            string sql = @"SELECT A.*,B.NAME BRANCHNAME FROM RATE_ADJUST A,BRANCH B
                     WHERE A.BRANCHID=B.ID ";
-            if (!Data.ADID.IsEmpty())
-                sql += (" and A.ADID= " + Data.ADID);
+            if (!Data.ID.IsEmpty())
+                sql += (" and A.ID= " + Data.ID);
             DataTable dt = DbHelper.ExecuteTable(sql);
 
-            string sqlsale = @"SELECT A.*,G.GOODSDM,G.NAME FROM ADJUSTDISCOUNTITEM A,GOODS G
+            string sqlitem = @"SELECT A.*,G.GOODSDM,G.NAME FROM RATE_ADJUST_ITEM A,GOODS G
                     WHERE A.GOODSID=G.GOODSID";
-            if (!Data.ADID.IsEmpty())
-                sqlsale += (" and A.ADID= " + Data.ADID);
-            DataTable dtsale = DbHelper.ExecuteTable(sqlsale);
+            if (!Data.ID.IsEmpty())
+                sqlitem += (" and A.ID= " + Data.ID);
+            DataTable dtitem = DbHelper.ExecuteTable(sqlitem);
 
             var result = new
             {
-                AdjustDiscount = dt,
-                AdjustDiscountItem = new dynamic[] {
-                   dtsale
+                RATE_ADJUST = dt,
+                RATE_ADJUST_ITEM = new dynamic[] {
+                   dtitem
                 }
             };
             return result;
         }
-        public string SaveAdjustDiscount(ADJUSTDISCOUNTEntity SaveData)
+        public string SaveRateAdjust(RATE_ADJUSTEntity SaveData)
         {
             var v = GetVerify(SaveData);
-            if (SaveData.ADID.IsEmpty())
-                SaveData.ADID = NewINC("ADJUSTDISCOUNT");
+            if (SaveData.ID.IsEmpty())
+                SaveData.ID = NewINC("RATE_ADJUST");
             SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
             SaveData.VERIFY = employee.Id;
-            v.Require(a => a.ADID);
+            v.Require(a => a.ID);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.STARTTIME);
             v.Require(a => a.ENDTIME);
@@ -471,25 +471,25 @@ namespace z.ERP.Services
 
             using (var Tran = DbHelper.BeginTransaction())
             {
-                SaveData.ADJUSTDISCOUNTITEM?.ForEach(item =>
+                SaveData.RATE_ADJUST_ITEM?.ForEach(item =>
                 {
-                    item.PHASE = "1";
+                    item.SHEETID = "1";
                     GetVerify(item).Require(a => a.GOODSID);
-                    GetVerify(item).Require(a => a.NEW_DISCOUNT);
+                    GetVerify(item).Require(a => a.RATE_NEW);
                 });
                 DbHelper.Save(SaveData);
                 Tran.Commit();
             }
-            return SaveData.ADID;
+            return SaveData.ID;
         }
-        public void DeleteAdjustDiscount(List<ADJUSTDISCOUNTEntity> DeleteData)
+        public void DeleteRateAdjust(List<RATE_ADJUSTEntity> DeleteData)
         {
             foreach (var con in DeleteData)
             {
-                ADJUSTDISCOUNTEntity Data = DbHelper.Select(con);
+                RATE_ADJUSTEntity Data = DbHelper.Select(con);
                 if (Data.STATUS != ((int)普通单据状态.未审核).ToString())
                 {
-                    throw new LogicException($"租约({Data.ADID})已经不是未审核不能删除!");
+                    throw new LogicException($"租约({Data.ID})已经不是未审核不能删除!");
                 }
             }
             using (var Tran = DbHelper.BeginTransaction())
