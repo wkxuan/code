@@ -25,7 +25,8 @@
                 Text = "新增",
                 Enable = true,
                 Type = "primary",
-                PermissionKey= Model.Permission_Add
+                PermissionKey= Model.Permission_Add,
+                Icon= "md-add"
             });
         }
 
@@ -36,13 +37,12 @@
                 Text = "存档",
                 Enable = true,
                 Type = "primary",
-                PermissionKey = Model.Permission_Save 
+                PermissionKey = Model.Permission_Save,
+                Icon = "md-checkmark-circle"
             });
         }
         @RenderSection("Btn", false)
     </row>
-    <br />
-
     <row>
         <i-col span="2" class="RowTitle">
             编号
@@ -73,7 +73,6 @@
     </row>
     @RenderSection("baseParam", false)
     @RenderSection("detailParam", false)
-
     <div class="hide">
         @RenderSection("hide", false)
         @RenderSection("pops", false)

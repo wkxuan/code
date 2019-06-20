@@ -81,7 +81,8 @@
                         Click = "seach",
                         Text = "查询",
                         Enable = true,
-                        Type = "primary"
+                        Type = "primary",
+                        Icon = "md-search"
                     });
                 }
                 @{
@@ -90,7 +91,8 @@
                         Click = "clear",
                         Text = "清空",
                         Enable = true,
-                        Type = "primary"
+                        Type = "primary",
+                        Icon = "md-refresh"
                     });
                 }
 
@@ -101,7 +103,8 @@
                         Text = "新增",
                         Enable = true,
                         Type = "primary",
-                        PermissionKey = Model?.Permission_Add
+                        PermissionKey = Model?.Permission_Add,
+                        Icon = "md-add"
                     });
                 }
 
@@ -112,16 +115,17 @@
                         Text = "删除",
                         Enable = true,
                         Type = "error",
-                        PermissionKey = Model?.Permission_Del
+                        PermissionKey = Model?.Permission_Del,
+                        Icon = "md-trash"
                     });
                 }
 
                 @RenderSection("conditionBtn", false)
             </div>
-            <p slot="content" class="element">
+            <div slot="content" class="element">
                 @*查询条件*@
                 @RenderSection("conditionParam", true)
-            </p>
+            </div>
         </panel>
         <panel name="result">
             查询结果
@@ -132,7 +136,8 @@
                         Click = "exp",
                         Text = "导出",
                         Enable = true,
-                        Type = "primary"
+                        Type = "primary",
+                        Icon = "md-download"
                     });
                 }
                 @{
@@ -141,13 +146,14 @@
                         Click = "print",
                         Text = "打印",
                         Enable = true,
-                        Type = "primary"
+                        Type = "primary",
+                        Icon = "md-print"
                     });
                 }
                 @*增加结果按钮*@
                 @RenderSection("resultBtn", false)
             </div>
-            <p slot="content">
+            <div slot="content">
                  @*结果显示*@
                     <i-table :highlight-row="true" size="small" :border="true" 
                              :columns="screenParam.colDef" :data="screenParamData.dataDef"
@@ -157,7 +163,7 @@
                 <!--show-sizer v-on:on-page-size-change ="changePageSizer"-->
 
                 @RenderSection("resultOthers", false)
-            </p>
+            </div>
         </panel>
     </collapse>
     @RenderSection("hide", false)
