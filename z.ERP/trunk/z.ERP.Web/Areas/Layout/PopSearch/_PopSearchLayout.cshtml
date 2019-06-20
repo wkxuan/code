@@ -18,7 +18,7 @@
     <collapse v-model="panelName">
         <panel name="condition">
             查询条件
-            <div style="float: right; width: 400px ;text-align: right;z-index:99">
+            <div style="float: right; width: 400px ;text-align: right;">
                 @{
                     RenderControl(new ButtonRender()
                     {
@@ -51,25 +51,22 @@
                 }
                 @RenderSection("conditionBtn", false)
             </div>
-            <div slot="content" class="element">
+            <div slot="content" class="popParamContent">
                 @*查询条件*@
                 @RenderSection("conditionParam", true)
             </div>
         </panel>
         <panel name="result">
             查询结果
-            <div style="float: right; width: 400px ;text-align: right;z-index:99">
+            <div style="float: right; width: 400px ;text-align: right;">
                 @*增加结果按钮*@
                 @RenderSection("resultBtn", false)
             </div>
-            <p slot="content">
+            <div slot="content">
                  @*结果显示*@
-                    <i-table :highlight-row="true" size="small" :border="true" height="240"
-                             :columns="screenParam.colDef" :data="screenParamData.dataDef"
-                             ref="selectData"></i-table>
-
+                <un-edit-table v-bind:options="options" ref="selectData"></un-edit-table>              
                 @RenderSection("resultOthers", false)
-            </p>
+            </div>
         </panel>
     </collapse>
     @RenderSection("hide", false)

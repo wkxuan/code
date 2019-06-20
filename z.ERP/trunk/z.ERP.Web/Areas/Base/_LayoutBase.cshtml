@@ -52,7 +52,8 @@
                          v-on:on-current-change="currentChange"
                          v-on:on-sort-change="sortChange"
                          v-on:on-row-click="rowClick"
-                         v-on:on-row-dblclick="rowDblClick">
+                         v-on:on-row-dblclick="rowDblClick"
+                         v-on:on-selection-change="onSelectionChange">
                 </i-table>
             </div>
             <div style="width:0;height:100%;float:right;" v-if="columns.length>0">
