@@ -462,7 +462,6 @@ namespace z.ERP.Services
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            SaveData.VERIFY = employee.Id;
             v.Require(a => a.ID);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.STARTTIME);
