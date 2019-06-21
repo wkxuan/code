@@ -99,9 +99,13 @@ Vue.component('un-edit-table', {
     }
 });
 
-Vue.component('edit-table', {
+Vue.component('yx-input', {
     props: ['options'],
-    template: "#editTable",
+    template: '<Poptip v-model="visible">'+
+              '<div slot="content">'+
+              
+              '</div>'+
+              '</Poptip>',
     data() {
         return {
             stripe: true,
