@@ -135,3 +135,19 @@ function GetLoadNav(systemid) {
         };
     });
 }
+//添加vue模块
+var Index = new Vue({
+    el: '#theme-wrapper',
+    data: {
+        DrawerModel: false,
+        BadgeNO:0
+    },
+    mounted: function () {
+        this.BadgeNO = 999
+    },
+    methods: {
+        Badgeclick: function () {
+            Index.DrawerModel = true;
+        }
+    }
+})

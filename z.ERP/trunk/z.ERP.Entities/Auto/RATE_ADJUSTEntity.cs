@@ -8,22 +8,22 @@ using z.DBHelper.DBDomain;
 
 namespace z.ERP.Entities
 {
-    [DbTable("ADJUSTDISCOUNT", "折扣调整")]
-    public partial class ADJUSTDISCOUNTEntity:TableEntityBase
+    [DbTable("RATE_ADJUST", "扣率调整单")]
+    public partial class RATE_ADJUSTEntity:TableEntityBase
     {
-        public ADJUSTDISCOUNTEntity() {
+        public RATE_ADJUSTEntity() {
 
         }
-        public ADJUSTDISCOUNTEntity(string adid)
+        public RATE_ADJUSTEntity(string id)
         {
-            ADID = adid;
+            ID = id;
         }
         /// <summary>
         /// 主键id
         /// </summary>
         [PrimaryKey]
-        [Field("ADID")]
-        public string ADID
+        [Field("ID")]
+        public string ID
         {
             get; set;
         }

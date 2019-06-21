@@ -1,6 +1,6 @@
 ﻿search.beforeVue = function () {
     var col = [
-        { title: "单据编号", key: "ADID", width: 100 },
+        { title: "单据编号", key: "ID", width: 100 },
         { title: "调整开始时间", key: "STARTTIME", width: 150 },
         { title: "调整结束时间", key: "ENDTIME", width: 150 },
         { title: "状态", key: "STATUSMC", width: 100 },
@@ -13,7 +13,7 @@
     ];
     search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "SpglService";
-    search.method = "GetAdjustDiscountList";
+    search.method = "GetRateAdjustList";
 
 }
 
@@ -34,7 +34,7 @@ search.modHref = function (row, index) {
         _.OpenPage({
             id: 105004,
             title: '编辑扣率调整单',
-            url: "SPGL/AdjustDiscount/AdjustDiscountEdit/" + row.ADID
+            url: "SPGL/RATE_ADJUST/Rate_AdjustEdit/" + row.ID
         })
     } else {
         iview.Message.info('当前销售补录单已审核,不能编辑!');
@@ -46,7 +46,7 @@ search.addHref = function (row) {
     _.OpenPage({
         id: 105004,
         title: '新增扣率调整单',
-        url: "SPGL/AdjustDiscount/AdjustDiscountEdit/"
+        url: "SPGL/RATE_ADJUST/Rate_AdjustEdit/"
     })
 }
 
