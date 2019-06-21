@@ -122,14 +122,14 @@
 
                 @RenderSection("conditionBtn", false)
             </div>
-            <div slot="content" class="element">
+            <div slot="content" class="searchParamContent">
                 @*查询条件*@
                 @RenderSection("conditionParam", true)
             </div>
         </panel>
         <panel name="result">
             查询结果
-            <div style="float: right; width: 400px ;text-align: right;z-index:99">
+            <div style="float: right; width: 400px ;text-align: right;">
                  @{
                     RenderControl(new ButtonRender()
                    {
@@ -160,8 +160,6 @@
                              v-on:on-row-dblclick="browse"  ref="selectData"></i-table>
                     <page :total="pagedataCount" :page-size="pageSize" show-total 
                           v-on:on-change="changePageCount" ></page>
-                <!--show-sizer v-on:on-page-size-change ="changePageSizer"-->
-
                 @RenderSection("resultOthers", false)
             </div>
         </panel>

@@ -109,8 +109,8 @@
                     <div style="height:8%">
                         @RenderSection("search", false)
                     </div>
-                    <i-table highlight-row="true" size="small" border="true" height="tableH"
-                             columns="screenParam.colDef" data="screenParam.dataDef"
+                    <i-table v-bind:highlight-row="true" size="small" v-bind:border="true" v-bind:height="tableH"
+                             v-bind:columns="screenParam.colDef" v-bind:data="screenParam.dataDef"
                              v-on:on-current-change="showlist"></i-table>
                 </card>
             </div>
