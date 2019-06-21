@@ -137,17 +137,59 @@ function GetLoadNav(systemid) {
 }
 //添加vue模块
 var Index = new Vue({
-    el: '#theme-wrapper',
+    el: '#Badge',
     data: {
         DrawerModel: false,
-        BadgeNO:0
+        BadgeNO: 0,
+        dclrw: (h) => {
+            return h('div', [
+                h('span', '待处理任务'),
+                h('Badge', {
+                    props: {
+                        count: 0
+                    }
+                })
+            ])
+        },
+        dclrwcolDef: [
+                { title: '菜单号', key: 'MENUID'},
+                { title: '菜单名称', key: 'NAME'},
+                { title: '分店', key: 'BRANCHMC'},
+                { title: '数量', key: 'COUNT' }],
+        dclrwdataDef: [],
     },
     mounted: function () {
-        this.BadgeNO = 999
+        //_.Ajax('AllTopData', function (data) {
+        //    debugger
+        //    this.BadgeNO = data.dclrwcount;
+        //    this.dclrw = (h) => {
+        //        return h('div', [
+        //            h('span', '待处理任务'),
+        //            h('Badge', {
+        //                props: {
+        //                    count: data.dclrwcount
+        //                }
+        //            })
+        //        ])
+        //    };
+        //    this.dclrwdataDef = data.dclrwdata;
+        //    Vue.set(this, 'BadgeNO', data.dclrwcount);
+        //});
+        this.BadgeNO = 10;
+        this.dclrw = (h) => {
+            return h('div', [
+                h('span', '待处理任务'),
+                h('Badge', {
+                    props: {
+                        count: 10
+                    }
+                })
+            ])
+        };
     },
     methods: {
         Badgeclick: function () {
             Index.DrawerModel = true;
-        }
-    }
+        },
+    },
 })
