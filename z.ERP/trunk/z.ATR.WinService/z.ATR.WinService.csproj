@@ -65,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Settings.Json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="卸载服务.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

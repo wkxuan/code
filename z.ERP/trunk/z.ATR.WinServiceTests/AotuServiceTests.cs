@@ -15,7 +15,7 @@ namespace z.ATR.WinService.Tests
         public void testTest()
         {
             AotuService a = new AotuService();
-            a.test();
+            a.Do();
         }
     }
 }

@@ -31,13 +31,6 @@ namespace z.ATR.WinService
         {
             get
             {
-                return new LogWriter("Service");
-            }
-        }
-        protected LogWriter InfoLog
-        {
-            get
-            {
                 return new LogWriter("Info");
             }
         }
@@ -57,14 +50,17 @@ namespace z.ATR.WinService
             }
         }
 
-        public void test()
-        {
-            OnStart(null);
-        }
-
+        Thread t;
         protected override void OnStart(string[] args)
         {
             Log.Info("服务开始");
+            t = new Thread(Do);
+            t.IsBackground = true;
+            t.Start();
+        }
+
+        public void Do()
+        {
             while (true)
             {
                 try
@@ -90,7 +86,7 @@ namespace z.ATR.WinService
                                     throw new Exception($"找不到方法{set.MethodName}");
                                 m.Invoke(sb.AutoService, null);
                                 set.LastRunTime = DateTime.Now;
-                                InfoLog.Info($"已执行{set.Name}");
+                                Log.Info($"已执行{set.Name}");
                                 hasRun = true;
                             }
                             catch (Exception ex)

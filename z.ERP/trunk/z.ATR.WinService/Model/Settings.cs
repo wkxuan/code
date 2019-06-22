@@ -16,6 +16,10 @@ namespace z.ATR.WinService.Model
             set;
         }
 
+        /// <summary>
+        /// 循环类型
+        /// 1:每多少秒执行一次,秒数输在Pram参数中   ,2:每天执行一次,格式HHMMSS,例如要每天早上九点半执行就输093000  输在Pram中
+        /// </summary>
         public LoopType Type
         {
             get;
@@ -26,6 +30,10 @@ namespace z.ATR.WinService.Model
             get;
             set;
         }
+
+        /// <summary>
+        /// 要执行的方法名称
+        /// </summary>
         public string MethodName
         {
             get;

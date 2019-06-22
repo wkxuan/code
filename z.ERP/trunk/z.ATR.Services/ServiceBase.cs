@@ -71,22 +71,11 @@ namespace z.ATR.Services
 
 
         #region 属性
-        /// <summary>
-        /// 当前登录对象
-        /// </summary>
-        protected Employee employee
-        {
-            get
-            {
-                return UserApplication.GetUser<Employee>();
-            }
-        }
-
         protected LogWriter Log
         {
             get
             {
-                return new LogWriter("Controller");
+                return new LogWriter("ATR");
             }
         }
 
