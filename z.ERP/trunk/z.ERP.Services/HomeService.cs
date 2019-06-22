@@ -239,5 +239,13 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
             }
             return data.USERID;
         }
+        public DataTable DclrwData()
+        {
+            var sql = @" select B.MENUID,M.NAME,C.NAME BRANCHMC ,B.URL ,BILLID,P.ID PLATFORMID ,P.DOMAIN DOMAIN  from BILLSTATUS B,MENU M,BRANCH C,PLATFORM P 
+                 where B.MENUID=M.ID and B.BRABCHID =C.ID AND P.ID=M.PLATFORMID  
+                and exists (select 1 from USER_ROLE U,ROLE_MENU N where U.ROLEID = N.ROLEID and N.MENUID = M.ID and U.USERID = " + employee.Id + ") ORDER BY MENUID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
     }
 }

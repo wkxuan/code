@@ -98,6 +98,11 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "发票";
             return View();
         }
+        public ActionResult PopPayList()
+        {
+            ViewBag.Title = "收款方式";
+            return View();
+        }
         //public UIResult SearchFloorMapData(FLOORMAPEntity Data)
         //{
         //    var res = service.DpglService.GetFLOORMAPDATA(Data);

@@ -1,6 +1,6 @@
 ﻿.hide { display: none; }
-.RowTitle { text-align: right; font-size: small; height: 40px;line-height:30px;padding-right:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
-.RowText { text-align: center; font-size: small; }
+.RowTitle { text-align: right; font-size: small; height: 40px;line-height:30px;padding-right:10px; }
+.RowText { text-align: left; font-size: small; }
 .elementcard .ivu-row { height: 50px; }
 .topbutton .ivu-btn { margin-left: 10px; }
 .ivu-collapse-content{overflow:unset !important;color:#495060;padding:0 16px;background-color:#fff}
@@ -26,7 +26,6 @@
  .ivu-collapse-content{
     width: 100%;
     height:100%;
-    overflow:hidden !important;
     padding:0 !important;
 }
  .ivu-collapse-content>.ivu-collapse-content-box{
@@ -40,5 +39,8 @@
 .ivu-btn{
      padding:0 5px !important;
  }
-.srchParamContent{margin-top:10px;}
-.popParamContent {margin-top:10px;}
+.srchParamContent{padding-top:10px;}
+.popParamContent {padding-top:10px;}
+.searchParamContent{padding-top:10px;}
+.tableBtnDiv{background-color:#ccc;}
+.topMenuBtn{text-align:center;margin-bottom:10px;background-color:#ccc;}

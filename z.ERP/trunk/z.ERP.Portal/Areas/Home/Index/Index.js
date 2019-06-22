@@ -137,17 +137,60 @@ function GetLoadNav(systemid) {
 }
 //添加vue模块
 var Index = new Vue({
-    el: '#theme-wrapper',
+    el: '#Badge',
     data: {
         DrawerModel: false,
-        BadgeNO:0
+        BadgeNO: 0,
+        dclrw: (h) => {
+            return h('div', [
+                h('span', '待处理任务'),
+                h('Badge', {
+                    props: {
+                        count: 0
+                    }
+                })
+            ])
+        },
+        dclrwcolDef: [
+                { title: '菜单名称', key: 'NAME'},
+                { title: '单据号', key: 'BILLID'},
+                { title: '分店', key: 'BRANCHMC'}],
+        dclrwdataDef: [],
+    },
+    created: function () {
+        this.AllTopData();    //加载数据不能放到mounted里，会和加载目录异步方法冲突
     },
     mounted: function () {
-        this.BadgeNO = 999
     },
     methods: {
         Badgeclick: function () {
+            this.AllTopData();
             Index.DrawerModel = true;
-        }
-    }
+        },
+        AllTopData: function () {
+            let _Index = this;
+            _.AjaxT('AllTopData', { 1: 1 }, function (data) {     //为防止与目录加载冲突，用同步加载   AjaxT
+                _Index.BadgeNO = data.dclrwcount;
+                _Index.dclrw = (h) => {
+                    return h('div', [
+                        h('span', '待处理任务'),
+                        h('Badge', {
+                            props: {
+                                count: data.dclrwcount
+                            }
+                        })
+                    ])
+                };
+                _Index.dclrwdataDef = data.dclrwdata;
+            });
+        },
+        dclrwClick: function (event) {
+            Index.DrawerModel = false;   //先关闭抽屉在打开tab
+            _.OpenPage({
+                id: event.MENUID,
+                title: '浏览销售补录单',
+                url: event.DOMAIN+event.URL + event.BILLID
+            })
+        },
+    },
 })

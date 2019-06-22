@@ -344,6 +344,7 @@
     <Content Include="Areas\Pop\PopBrand.js" />
     <Content Include="Areas\Pop\PopMerchant.js" />
     <Content Include="Areas\Pop\PopContract.js" />
+    <Content Include="Areas\Pop\Pop\PopPayList.js" />
     <Content Include="Areas\Pop\Pop\PopBrandList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.js" />
@@ -723,6 +724,7 @@
     <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccount.cshtml" />
     <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccountDetail.cshtml" />
     <Content Include="Areas\Report\MerchantPayable\MerchantPayable.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopPayList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

@@ -297,8 +297,14 @@ namespace z.ERP.Services
             CONFIGEntity configBzybj = new CONFIGEntity();
             configBzybj = DbHelper.Select(new CONFIGEntity() { ID = "1004" });
 
+            if (!"012".Contains(configBzybj.CUR_VAL))
+                throw new LogicException("参数1004(不足月时月金额算法)设置有误");
+
             CONFIGEntity configBzyts = new CONFIGEntity();
             configBzyts = DbHelper.Select(new CONFIGEntity() { ID = "1003" });
+
+            if (configBzyts.CUR_VAL.ToInt() <= 0)
+                throw new LogicException("参数1003(不足月天数设定)设置有误");
 
             foreach (var ydfj in Data)
             {
@@ -334,18 +340,24 @@ namespace z.ERP.Services
                     zjfj.INX = ydfj.INX;
                     var je = Convert.ToDouble(ydfj.RENTS);
 
-                    if (zjfjTs != allTs)
+                    if (zjfjTs != allTs) //不足月时金额算法
                     {
-                        if (configBzybj.CUR_VAL.ToInt() == 0)
+                        if (configBzybj.CUR_VAL.ToInt() == 0)   //0(月金额 / 当月总天数) * 实际天数;
                         {
-                            zjfj.RENTS = (Math.Round(je / allTs * zjfjTs, 0,
+                            zjfj.RENTS = (Math.Round(je / allTs * zjfjTs, 2,
                                 MidpointRounding.AwayFromZero)).ToString();
                         }
-                        else
+                        else if(configBzybj.CUR_VAL.ToInt() == 1)  //1:(月金额 / 1003参数设置的天数)*实际天数;
                         {
                             zjfj.RENTS = (Math.Round(je / (configBzyts.CUR_VAL).ToDouble() * zjfjTs,
-                                0, MidpointRounding.AwayFromZero)).ToString();
+                                2, MidpointRounding.AwayFromZero)).ToString();
                         }
+                        else  //2:(月金额 * 12 / 365) * 实际天数
+                        {
+                            zjfj.RENTS = (Math.Round((je * 12 / 365) * zjfjTs,
+                                2, MidpointRounding.AwayFromZero)).ToString();
+                        }
+                       
                     }
                     else
                     {
@@ -370,8 +382,15 @@ namespace z.ERP.Services
             CONFIGEntity configBzybj = new CONFIGEntity();
             configBzybj = DbHelper.Select(new CONFIGEntity() { ID = "1004" });
 
+            if(!"012".Contains(configBzybj.CUR_VAL))
+              throw new LogicException("参数1004(不足月时月金额算法)设置有误");
+
             CONFIGEntity configBzyts = new CONFIGEntity();
             configBzyts = DbHelper.Select(new CONFIGEntity() { ID = "1003" });
+
+            if(configBzyts.CUR_VAL.ToInt() <=0 )
+                throw new LogicException("参数1003(不足月天数设定)设置有误");
+
 
             //PAY_CYCLE缴费周期
             //ADVANCE_CYCLE 提前周期
@@ -558,18 +577,24 @@ namespace z.ERP.Services
                             zjfj.RENTS = Math.Round(je * zjfjTs, 2, MidpointRounding.AwayFromZero).ToString();
                             break;
                         case 2://月租金
-                            if (zjfjTs != zts)
+                            if (zjfjTs != zts) //不足月时金额算法
                             {
-                                //30后期增加系统参数去处理
-                                if (configBzybj.CUR_VAL.ToInt() == 0)
+                             
+                                if (configBzybj.CUR_VAL.ToInt() == 0)   //0(月金额/当月总天数)*实际天数;
                                 {
-                                    zjfj.RENTS = (Math.Round(je / zts * zjfjTs, 0,
+                                    zjfj.RENTS = (Math.Round(je / zts * zjfjTs, 2,
                                         MidpointRounding.AwayFromZero)).ToString();
                                 }
-                                else
+                                else if(configBzybj.CUR_VAL.ToInt() == 1)  //1:(月金额/1003参数设置的天数)*实际天数;
                                 {
                                     zjfj.RENTS = (Math.Round(je / (configBzyts.CUR_VAL).ToDouble() * zjfjTs,
-                                        0, MidpointRounding.AwayFromZero)).ToString();
+                                        2, MidpointRounding.AwayFromZero)).ToString();
+                                }
+                                else       //2:(月金额*12/365)*实际天数
+                                {
+                                    zjfj.RENTS = (Math.Round((je * 12 / 365) * zjfjTs,
+                                        2, MidpointRounding.AwayFromZero)).ToString();
+
                                 }
 
                             }
