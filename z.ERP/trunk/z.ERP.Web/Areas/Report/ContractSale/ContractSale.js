@@ -15,7 +15,7 @@
    // { title: '分类编码', key: 'KINDCODE', width: 100 },
    // { title: '分类名称', key: 'KINDNAME', width: 100 },
     { title: '业态', key: 'CATEGORYNAME', width: 100 },
-    { title: '楼层', key: 'FLOORCODE', width: 60 },
+    { title: '楼层', key: 'FLOORCODE', width: 100 },
     { title: '品牌', key: 'BRANDNAME', width: 100 },
     { title: '销售金额', key: 'AMOUNT', width: 120, align: "right" },
     { title: '销售成本', key: 'COST', width: 120, align: "right" },

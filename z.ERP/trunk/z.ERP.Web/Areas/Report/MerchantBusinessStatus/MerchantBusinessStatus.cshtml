@@ -7,7 +7,7 @@
         <i-col span="2" class="RowTitle">
             查询类型
         </i-col>
-        <i-col span="6" class="RowTitle">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<租金收取方式>()
                 {
@@ -20,7 +20,7 @@
         <i-col span="2" class="RowTitle">
             门店
         </i-col>
-        <i-col span="6" class="RowTitle">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -29,72 +29,10 @@
                 });
             }
         </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelMerchant",
-                    Text = "商户",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTID",
-                    Enable = true
-                });
-            }
-        </i-col>
-        <i-col span="4" class="RowTitle">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTNAME",
-                    Enable = true
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelBrand",
-                    Text = "品牌",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.BRANDID",
-                    Enable = true
-                });
-            }
-        </i-col>
-        <i-col span="4" class="RowTitle">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.BRANDNAME",
-                    Enable = true
-                });
-            }
-        </i-col>
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
             债权发生月
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new YearMonthBoxRender()
                 {
@@ -102,13 +40,27 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new YearMonthBoxRender()
                 {
                     vModel = "searchParam.YEARMONTH_END"
                 });
             }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            商户
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            品牌
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.BRANDNAME" v-on:on-click="SelBrand" />
         </i-col>
     </row>
 }
