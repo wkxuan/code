@@ -51,8 +51,7 @@ namespace z.DGS.WebService.Controllers
                     Context = ""
                 };
             }
-            Log.Info($"{(UserApplication.HasLogin ? employee.Id : "未登录")}:{dto.ServiceName}", dto, res);
-            //Log.Info($"{(UserApplication.HasLogin ? employee.Id : "未登录")}:{dto.ServiceName}", dto.Context, res);
+            Log.Info($"{(UserApplication.HasLogin ? employee.Id : "未登录")}:{dto.ServiceName}", dto.Context, res);
             return res;
         }
 
