@@ -14,13 +14,13 @@
                     "Content/ui/js/framework-ui.js",
                     "Content/ui/js/indextab.js",
                     "Content/ui/js/loading/pace.min.js",
-                    "Content/VUE/styles/iview.css",
-                    "Content/VUE/vue.js",
-                    "Content/VUE/iview.js",
                     "Content/zBase.js",
                     "Content/AjaxHelper.js",
                     "Content/JsHelper.js",
                     "Content/PageBase.js",
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js",
                 };
 }
 <!DOCTYPE html>
@@ -37,9 +37,6 @@
     <style type="text/css">
         html,body{
             overflow:hidden;
-        }
-        .ivu-badge {
-            margin: 15px 0px;
         }
     </style>
     @InitFiles(WebFiles)
@@ -96,11 +93,22 @@
                             </li>
                         </ul>
                         <div class="nav navbar-nav pull-right" id="Badge" style="height:50px;width:40px">
-                            <Badge :count="BadgeNO">
+                            <Badge :count="BadgeNO" style="margin: 15px 0px;">
                                 <a v-on:click="Badgeclick">
                                     <Icon type="ios-notifications-outline" size="26"></Icon>
                                 </a>
                             </Badge>
+                            @*抽屉*@
+                            <Drawer title="" :closable="true" width="30" :draggable="true" v-model="DrawerModel">
+                                <Tabs value="notices">
+                                    <Tab-Pane label="通知公告" name="notices">通知公告</Tab-Pane>
+                                    <Tab-Pane :label="dclrw" name="dclrw">
+                                        <i-table size="small"
+                                                 :columns="dclrwcolDef" :data="dclrwdataDef"></i-table>
+                                    </Tab-Pane>
+                                    <Tab-Pane label="预警" name="warning">预警</Tab-Pane>
+                                </Tabs>
+                            </Drawer>
                         </div>
                     </div>
                 </div>
@@ -151,11 +159,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        @*抽屉*@
-        <Drawer title="通知" :closable="true" width="30" v-model="DrawerModel">
-
-        </Drawer>
+        </div>       
     </div>
     <div id="loadingPage" style="display: none;">
         <div class="loading-shade"></div>
