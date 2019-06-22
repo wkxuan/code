@@ -175,21 +175,30 @@ var Index = new Vue({
         //    this.dclrwdataDef = data.dclrwdata;
         //    Vue.set(this, 'BadgeNO', data.dclrwcount);
         //});
-        this.BadgeNO = 10;
+        this.BadgeNO = 3;
         this.dclrw = (h) => {
             return h('div', [
                 h('span', '待处理任务'),
                 h('Badge', {
                     props: {
-                        count: 10
+                        count: 3
                     }
                 })
             ])
         };
+        this.dclrwdataDef = [{ "MENUID": 10600302, "NAME": "退铺单_审核", "BRANCHMC": "MOMOPARK", "URL": "HTGL/FREESHOP/FreeShopDetail/", "COUNT": 1.0, "BILLID": 10100032.0, "PLATFORMID": 1.0, "DOMAIN": "http://113.133.162.90:8001/" }, { "MENUID": 10600202, "NAME": "租赁合同维护_审核", "BRANCHMC": "MOMOPARK", "URL": "HTGL/ZLHT/HtDetail/", "COUNT": 3.0, "BILLID": 10100020.0, "PLATFORMID": 1.0, "DOMAIN": "http://113.133.162.90:8001/" }, { "MENUID": 10500402, "NAME": "销售补录单_审核", "BRANCHMC": "MOMOPARK", "URL": "SPGL/SALEBILL/SaleBillDetail/", "COUNT": 1.0, "BILLID": 416.0, "PLATFORMID": 1.0, "DOMAIN": "http://113.133.162.90:8001/" }]
     },
     methods: {
         Badgeclick: function () {
             Index.DrawerModel = true;
+        },
+        dclrwClick: function (event) {
+            Index.DrawerModel = false;   //先关闭抽屉在打开tab
+            _.OpenPage({
+                id: event.MENUID,
+                title: '浏览销售补录单',
+                url: event.DOMAIN+event.URL + event.BILLID
+            })
         },
     },
 })

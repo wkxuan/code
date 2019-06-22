@@ -104,7 +104,7 @@
                                     <Tab-Pane label="通知公告" name="notices">通知公告</Tab-Pane>
                                     <Tab-Pane :label="dclrw" name="dclrw">
                                         <i-table size="small"
-                                                 :columns="dclrwcolDef" :data="dclrwdataDef"></i-table>
+                                                 :columns="dclrwcolDef" :data="dclrwdataDef" v-on:on-row-dblclick="dclrwClick"></i-table>
                                     </Tab-Pane>
                                     <Tab-Pane label="预警" name="warning">预警</Tab-Pane>
                                 </Tabs>
