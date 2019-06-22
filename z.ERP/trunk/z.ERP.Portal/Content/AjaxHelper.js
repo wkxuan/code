@@ -111,6 +111,63 @@ zQuery.extend({
             }
         });
     },
+    //同步    复制异步ajax，临时用
+    AjaxT: function (options) {
+        if (arguments.length == 1) {
+            if (!options.action && !options.url) {
+                alert("请求没有action");
+                debugger;
+                return;
+            }
+        }
+        if (arguments.length > 1) {
+            options = {
+                action: arguments[0],
+                data: arguments[1],
+                success: arguments.length >= 2 ? arguments[2] : null,
+                error: arguments.length >= 3 ? arguments[3] : null
+            }
+        }
+        //if (typeof options.data == 'object')
+        //    $.each(options.data, function (inx, obj) {
+        //        if (typeof obj == 'object')
+        //            options.data[inx] = JSON.stringify(obj);
+        //    });
+        var options_default = {
+            type: "Post",
+            url: _.AjaxUrl + options.action,
+            data: null,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+
+            },
+            error: function () {
+
+            }
+        }
+        options = $.extend(options_default, options);//处理参数
+        $.ajax({
+            type: options.type,
+            url: options.url,
+            data: options.data,
+            async: options.async,
+            cache: options.cache,
+            dataType: options.dataType,
+            success: function (retdata) {
+                _.doResult(retdata, function (obj, flag, msg) {
+                    options.success && options.success(obj, flag, msg);
+                }, function (obj, flag, msg) {
+                    options.error && options.error(obj, flag, msg);
+                });
+            },
+            error: function (retdata) {
+                alert("请求出错:" + retdata.status);
+                options.error && options.error(retdata, -1, '');
+            }
+        });
+    },
     Search: function (Options) {
         if (!Options.Service || !Options.Method) {
             alert("必要的参数Service,Method");

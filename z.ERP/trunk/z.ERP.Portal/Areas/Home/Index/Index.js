@@ -152,10 +152,9 @@ var Index = new Vue({
             ])
         },
         dclrwcolDef: [
-                { title: '菜单号', key: 'MENUID'},
                 { title: '菜单名称', key: 'NAME'},
-                { title: '分店', key: 'BRANCHMC'},
-                { title: '数量', key: 'COUNT' }],
+                { title: '单据号', key: 'BILLID'},
+                { title: '分店', key: 'BRANCHMC'}],
         dclrwdataDef: [],
     },
     created: function () {
@@ -164,13 +163,15 @@ var Index = new Vue({
     mounted: function () {
     },
     methods: {
-        Badgeclick: function () {           
+        Badgeclick: function () {
+            this.AllTopData();
             Index.DrawerModel = true;
         },
         AllTopData: function () {
-            _.Ajax('AllTopData', { 1: 1 }, function (data) {
-                Index.BadgeNO = data.dclrwcount;
-                Index.dclrw = (h) => {
+            let _Index = this;
+            _.AjaxT('AllTopData', { 1: 1 }, function (data) {     //为防止与目录加载冲突，用同步加载   AjaxT
+                _Index.BadgeNO = data.dclrwcount;
+                _Index.dclrw = (h) => {
                     return h('div', [
                         h('span', '待处理任务'),
                         h('Badge', {
@@ -180,7 +181,7 @@ var Index = new Vue({
                         })
                     ])
                 };
-                Index.dclrwdataDef = data.dclrwdata;
+                _Index.dclrwdataDef = data.dclrwdata;
             });
         },
         dclrwClick: function (event) {
