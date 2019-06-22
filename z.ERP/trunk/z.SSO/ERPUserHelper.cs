@@ -87,7 +87,13 @@ namespace z.SSO
                 FormsAuthentication.SignOut();
             }
         }
-
+        public override int Logins(string username, string password) {
+            Model.User user = service.GetUserByCode(username, password).ToObj(a => new User() { Id = a.Id, Name = a.Name });
+            ApplicationContextBase.GetContext().SetData(LoginKey + user.Id, user);
+            ApplicationContextBase.GetContext().principal = new GenericPrincipal(new GenericIdentity(user.Id), null);
+            FormsAuthentication.SetAuthCookie(user.Id, true);
+            return 0;
+        }
         bool HasPermission(string UserId, string Key, PermissionType Type = PermissionType.Menu)
         {
             log.Info("ERPHasPermission", UserId, Key, Type);

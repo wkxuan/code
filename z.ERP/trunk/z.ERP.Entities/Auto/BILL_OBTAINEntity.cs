@@ -162,5 +162,13 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        /// <summary>
+        /// 核销单位代码
+        /// <summary>
+        [Field("核销单位代码")]
+        public string FEE_ACCOUNT_ID
+        {
+            get; set;
+        }
     }
 }

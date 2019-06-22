@@ -77,12 +77,22 @@
 </row>
     }
 @section resultLeft{
-<row>
-    <i-col>
-        <i-table height="600" highlight-row size="small" 
-                 :columns="screenParam.colDef" :data="screenParam.FLOORCATEGERY"></i-table>
-    </i-col>
-    </row>
+<Collapse simple accordion v-model="screenParam.FXWD">
+    <Panel name="YTFB">
+        业态分布
+        <p slot="content">
+        <i-table height="500" highlight-row size="small"
+         :columns="screenParam.colDef" :data="screenParam.FLOORCATEGERY"></i-table>
+        </p>
+    </Panel>
+    <Panel name="PWZT">
+        铺位状态
+        <p slot="content">
+            <i-table height="500" highlight-row size="small"
+                     :columns="screenParam.colDef1" :data="screenParam.shopRentStatus"></i-table>
+        </p>
+    </Panel>
+</Collapse>
 }
 @section resultRight{
     <i-col span="18">

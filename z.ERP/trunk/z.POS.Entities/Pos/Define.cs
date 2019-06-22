@@ -1,11 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using z.ERP.API.PosServiceAPI;
+using z.POS.API.PosServiceAPI2;
 using System.Text;
 
 namespace z.POS.Entities.Pos
 {
+
+    public enum DicountType
+    {
+
+        XSZKTYPE_NONE,   //0未折扣
+        XSZKTYPE_QTZK,   //1前台折扣
+        XSZKTYPE_VIPZK,  //2贵宾卡折扣
+        XSZKTYPE_HTZK,   //3后台折扣
+        XSZKTYPE_MBJZ,   //4满佰减折
+        XSZKTYPE_YHKZK,  //5银行卡折扣
+        XSZKTYPE_SLZK,   //6舍零折扣
+        XSZKTYPE_ZSZZK,  //7折上折折扣 
+        XSZKTYPE_GHSZK,  //8供货商折扣
+        XSZKTYPE_JSLBZK  //9加水量变
+    }
+
+
     public class TableInfo
     {
         string tblName;
@@ -417,10 +434,10 @@ namespace z.POS.Entities.Pos
             set { memberDiscount = value; }
         }
 
-        int decreaseDiscount;//满百减折
+        double decreaseDiscount;//满百减折
 
 
-        public int DecreaseDiscount
+        public double DecreaseDiscount
         {
             get { return decreaseDiscount; }
             set { decreaseDiscount = value; }

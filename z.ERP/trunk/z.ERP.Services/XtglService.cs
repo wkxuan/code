@@ -10,6 +10,7 @@ using z.Exceptions;
 using z.Extensions;
 using z.Extensions;
 using z.MVC5.Results;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -21,7 +22,29 @@ namespace z.ERP.Services
 
         public DataGridResult GetBrandData(SearchItem item)
         {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( C.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or C.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
             string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME,B.ID BRANDID FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("ID", a => sql += $" and B.ID = '{a}'");
             item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
@@ -199,10 +222,34 @@ namespace z.ERP.Services
         }
         public DataGridResult GetShop(SearchItem item)
         {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( B.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or B.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
             string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME " +
                    "  FROM SHOP A,CATEGORY B,ORG C,BRANCH D,FLOOR F "
                    + " WHERE  A.CATEGORYID = B.CATEGORYID(+) and A.ORGID=C.ORGID(+)"
+                   + " and F.REGIONID in (" + GetPermissionSql(PermissionType.Region) + " )"
                    + " and  A.BRANCHID = D.ID and A.FLOORID=F.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
+
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
@@ -214,9 +261,31 @@ namespace z.ERP.Services
         }
         public DataGridResult GetShopElement(SearchItem item)
         {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( B.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or B.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
             string sql = $@"SELECT  A.*,B.CATEGORYCODE,B.CATEGORYNAME,B.CATEGORYIDCASCADER,A.AREA_BUILD AREA,C.ORGIDCASCADER " +
                    "  FROM SHOP A,CATEGORY B,ORG C WHERE  A.CATEGORYID = B.CATEGORYID(+) "
                    + " and A.ORGID=C.ORGID(+)";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("SHOPID", a => sql += $" and A.SHOPID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -264,7 +333,7 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable> GetStaionElement(STATIONEntity Data)
         {
-            string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID from STATION S where 1=1 ";
+            string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID,S.NETWORK_NODE_ADDRESS from STATION S where 1=1 ";
 
             if (!Data.STATIONBH.IsEmpty())
                 sql += $" and S.STATIONBH = '{ Data.STATIONBH}'";
@@ -333,8 +402,9 @@ namespace z.ERP.Services
             v.Require(a => a.IP);
             v.IsUnique(a => a.IP);
 
-            //    if (DefineSave.Encryption.IsEmpty())
-            //        DefineSave.Encryption = MD5Encryption.Encrypt($"z.DGS.LoginSalt{DefineSave.STATIONBH }");
+            //生成终端密钥，调用销售数据采集接口时用
+            if (DefineSave.Encryption.IsEmpty())
+                DefineSave.Encryption = MD5Encryption.Encrypt($"z.DGS.LoginSalt{DefineSave.STATIONBH }");
 
 
             DefineSave.STATION_PAY?.ForEach(sdb =>
@@ -576,6 +646,28 @@ namespace z.ERP.Services
 
 
 
+
+        public Tuple<dynamic, DataTable> GetAlertElement(DEF_ALERTEntity Data)
+        {
+            string sql = $@"select ID,MC,XSSX,SQLSTR FROM DEF_ALERT where 1=1";
+            if (!Data.ID.IsEmpty())
+            {
+                sql += " and ID = " + Data.ID;
+            }
+            DataTable defalert = DbHelper.ExecuteTable(sql);
+
+
+            string sqlItem = $@"select FIELDMC,CHINAMC,WIDTH from ALERT_FIELD where 1=1";
+            if (!Data.ID.IsEmpty())
+            {
+                sqlItem += " and ID = " + Data.ID;
+            }
+            DataTable defalertItem = DbHelper.ExecuteTable(sqlItem);
+            return new Tuple<dynamic, DataTable>(defalert.ToOneLine(), defalertItem);
+        }
+
+
+
         public string SaveAlert(DEF_ALERTEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
@@ -592,7 +684,9 @@ namespace z.ERP.Services
             v.Verify();
             if (DefineSave.ID.IsEmpty())
                 DefineSave.ID = CommonService.NewINC("DEF_ALERT");
-            CommonService.CommonSave(DefineSave);
+
+            DbHelper.Save(DefineSave);
+
             return DefineSave.ID;
         }
 
@@ -612,13 +706,232 @@ namespace z.ERP.Services
         }
 
 
-        public Tuple<DataTable> GetAlertSql(DEF_ALERTEntity Data)
+        public Tuple<DataTable, DataTable> GetAlertSql(DEF_ALERTEntity Data)
         {
             DEF_ALERTEntity alert = new DEF_ALERTEntity();
             alert = DbHelper.Select(new DEF_ALERTEntity() { ID = Data.ID });
             DataTable alertSql = DbHelper.ExecuteTable(alert.SQLSTR);
-            return new Tuple<DataTable>(alertSql);
+
+            string sqlItem = $@"select FIELDMC,CHINAMC,WIDTH from ALERT_FIELD where 1=1";
+            if (!Data.ID.IsEmpty())
+            {
+                sqlItem += " and ID = " + Data.ID;
+            }
+            DataTable alertCol = DbHelper.ExecuteTable(sqlItem);
+            return new Tuple<DataTable, DataTable>(alertSql, alertCol);
         }
+
+
+
+        public string SaveSplc(SPLCDEFDEntity SPLCDEFD,
+            List<SPLCJDEntity> SPLCJD, List<SPLCJGEntity> SPLCJG)
+        {
+            var v = GetVerify(SPLCDEFD);
+            v.Require(a => a.MENUID);
+            if (SPLCDEFD.BILLID.IsEmpty())
+            {
+                SPLCDEFD.BILLID = NewINC("SPLCDEFD");
+                SPLCDEFD.STATUS = ((int)审批单状态.未审核).ToString();
+            }
+            else
+            {
+                SPLCDEFDEntity con = DbHelper.Select(SPLCDEFD);
+                if (con.STATUS != ((int)审批单状态.未审核).ToString())
+                {
+                    throw new LogicException($"审批单({SPLCDEFD.BILLID})已经不是未审核状态!");
+                }
+                SPLCDEFD.VERIFY = con.VERIFY;
+                SPLCDEFD.VERIFY_NAME = con.VERIFY_NAME;
+                SPLCDEFD.VERIFY_TIME = con.VERIFY_TIME;
+            }
+
+            SPLCDEFD.REPORTER = employee.Id;
+            SPLCDEFD.REPORTER_NAME = employee.Name;
+            SPLCDEFD.REPORTER_TIME = DateTime.Now.ToString();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var splcjd in SPLCJD)
+                {
+                    splcjd.BILLID = SPLCDEFD.BILLID;
+                    DbHelper.Save(splcjd);
+                }
+                foreach (var splcjg in SPLCJG)
+                {
+                    splcjg.BILLID = SPLCDEFD.BILLID;
+                    DbHelper.Save(splcjg);
+                }
+                DbHelper.Save(SPLCDEFD);
+                Tran.Commit();
+            }
+            return SPLCDEFD.BILLID;
+        }
+        public void DeleteSplc(SPLCDEFDEntity Data)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                List<SPLCJDEntity> lcjd = new List<SPLCJDEntity>();
+                lcjd = DbHelper.SelectList(new SPLCJDEntity()).
+                    Where(a => (a.BILLID == Data.BILLID)).ToList();
+
+                foreach (var item in lcjd)
+                {
+                    DbHelper.Delete(item);
+                };
+                List<SPLCJGEntity> lcjg = new List<SPLCJGEntity>();
+                lcjg = DbHelper.SelectList(new SPLCJGEntity()).
+                    Where(a => (a.BILLID == Data.BILLID)).ToList();
+
+                foreach (var item in lcjg)
+                {
+                    DbHelper.Delete(item);
+                };
+                DbHelper.Delete(Data);
+                Tran.Commit();
+            }
+        }
+
+        public Tuple<dynamic, DataTable, DataTable> GetSplcdefdElement(SPLCDEFDEntity Data)
+        {
+            if (Data.BILLID.IsEmpty())
+            {
+                throw new LogicException("请确认单号!");
+            }
+            string sql = $@"SELECT A.* ";
+            sql += " from SPLCDEFD A where 1=1 ";
+            sql += (" AND A.BILLID= " + Data.BILLID);
+            DataTable spd = DbHelper.ExecuteTable(sql);
+            if (!spd.IsNotNull())
+            {
+                throw new LogicException("找不到审批单!");
+            }
+            spd.NewEnumColumns<审批单状态>("STATUS", "STATUSMC");
+
+
+            string sqlspjd = $@"SELECT A.JDID,JDNAME,JDTYPE,A.ROLEID,A.JDINX,B.ROLENAME  " +
+                             " FROM SPLCJD A,ROLE B WHERE A.ROLEID=B.ROLEID ";
+            sqlspjd += (" and A.BILLID= " + Data.BILLID);
+            sqlspjd += " ORDER BY A.JDINX";
+
+            DataTable spjd = DbHelper.ExecuteTable(sqlspjd);
+
+            spjd.NewEnumColumns<审批流程节点类型>("JDTYPE", "JDTYPENAME");
+
+            string sqlspjg = $@"SELECT B.JDID,B.JGID,B.TJMC,B.JGTYPE,B.JGMC,A.JDNAME JDNAMEXS,A.JDTYPE" +
+                           " FROM SPLCJD A,SPLCJG B" +
+                           " WHERE A.BILLID=B.BILLID AND A.JDID=B.JDID";
+
+            sqlspjg += (" and A.BILLID= " + Data.BILLID);
+            DataTable spjg = DbHelper.ExecuteTable(sqlspjg);
+            spjg.NewEnumColumns<审批结果类型>("JGTYPE", "JGTYPENAME");
+
+            return new Tuple<dynamic, DataTable, DataTable>(
+                spd.ToOneLine(),
+                spjd,
+                spjg
+            );
+        }
+
+        public string ExecSplc(SPLCDEFDEntity Data)
+        {
+            var v = GetVerify(Data);
+            v.Require(a => a.BILLID);
+            SPLCDEFDEntity con = DbHelper.Select(Data);
+            if (con.STATUS != ((int)审批单状态.未审核).ToString())
+            {
+                throw new LogicException($"审批单({Data.BILLID})已经不是未审核状态!");
+            }
+            con.VERIFY = employee.Id;
+            con.VERIFY_NAME = employee.Name;
+            con.VERIFY_TIME = DateTime.Now.ToString();
+            con.STATUS = ((int)审批单状态.审核).ToString();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(con);
+                Tran.Commit();
+            }
+            return con.BILLID;
+        }
+
+        public string OverSplc(SPLCDEFDEntity Data)
+        {
+            var v = GetVerify(Data);
+            v.Require(a => a.BILLID);
+            SPLCDEFDEntity con = DbHelper.Select(Data);
+            if (con.STATUS != ((int)审批单状态.审核).ToString())
+            {
+                throw new LogicException($"审批单({Data.BILLID})已经不是审核状态!");
+            }
+            con.TERMINATE = employee.Id;
+            con.TERMINATE_NAME = employee.Name;
+            con.TERMINATE_TIME = DateTime.Now.ToString();
+            con.STATUS = ((int)审批单状态.终止).ToString();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(con);
+                Tran.Commit();
+            }
+            return con.BILLID;
+        }
+
+
+
+        public Tuple<DataTable, DataTable> GetSplc(SPLCEntity Data)
+        {
+
+            //找当前应该是那个节点数据
+
+            if (Data.MENUID.IsEmpty())
+            {
+                throw new LogicException("请确认查找审批流程的菜单号信息!");
+            }
+            string sql = $@"select JDID,JDNAME from";
+            sql += " SPLCDEFD A,SPLCJD B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+            sql += (" AND A.MENUID= " + Data.MENUID);
+            DataTable splc = DbHelper.ExecuteTable(sql);
+
+            //找最后一个审批数据
+            var i = 1;
+
+            string sql1 = $@"select JDID from";
+            sql1 += " SPLCJG_MENU WHERE 1=1 ";
+            sql1 += (" AND MENUID= " + Data.MENUID);
+            sql1 += (" AND BILLID= " + Data.JLBH);
+            sql1 += " order by CLSJ desc";
+            DataTable spBillJg = DbHelper.ExecuteTable(sql1);
+            if (spBillJg.Rows.Count > 0)
+            {
+                i = spBillJg.Rows[0][0].ToString().ToInt();
+            }
+
+
+            string sqlxz = $@"select JDID,JGID,JGTYPE,JGMC from";
+            sqlxz += " SPLCDEFD A,SPLCJG B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+            sqlxz += (" AND A.MENUID= " + Data.MENUID);
+            sqlxz += (" AND B.JDID= " + i);
+            DataTable splxz = DbHelper.ExecuteTable(sqlxz);
+            splxz.NewEnumColumns<审批结果类型>("JGTYPE", "JGTYPENAME");
+
+            return new Tuple<DataTable, DataTable>(
+                 splc,
+                 splxz
+            );
+        }
+
+        public void ExecMenuSplc(SPLCJG_MENUEntity Data)
+        {
+            var v = GetVerify(Data);
+            v.Require(a => a.BILLID);
+            v.Require(a => a.MENUID);
+            v.Require(a => a.JDID);
+            v.Require(a => a.BZ);
+            Data.CLSJ = DateTime.Now.ToString();
+            Data.XH = NewINC("SPLCJG_MENUE");
+            DbHelper.Save(Data);
+        }
+
     }
 
 }

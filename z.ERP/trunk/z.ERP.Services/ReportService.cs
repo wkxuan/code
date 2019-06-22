@@ -1,7 +1,8 @@
-﻿using System.Data;
-using z.MVC5.Results;
-using System;
+﻿using System;
+using System.Data;
 using z.Extensions;
+using z.MVC5.Results;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -13,10 +14,17 @@ namespace z.ERP.Services
 
         public DataGridResult ContractSale(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("G");
+
             string sql = $"SELECT C.*,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID and S.FLOORID=F.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
+            
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
@@ -41,6 +49,10 @@ namespace z.ERP.Services
                 sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
                 sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
                 sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+                if (SqlyTQx != "")
+                {
+                    sql += " and " + SqlyTQx;
+                }
                 item.HasKey("CATEGORYCODE", a => sqlsum += $" and G.CATEGORYCODE LIKE '{a}%'");
                 item.HasKey("FLOORID", a => sqlsum += $" and F.ID = {a}");
                 item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID = {a}");
@@ -69,12 +81,17 @@ namespace z.ERP.Services
 
         public DataGridResult ContractSaleM(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("G");
             string sql = $"SELECT C.YEARMONTH,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
             sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,";
             sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
@@ -100,6 +117,10 @@ namespace z.ERP.Services
                 sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F ";
                 sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
                 sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+                if (SqlyTQx != "")
+                {
+                    sqlsum += " and " + SqlyTQx;
+                }
                 item.HasKey("CATEGORYCODE", a => sqlsum += $" and G.CATEGORYCODE LIKE '{a}%'");
                 item.HasKey("FLOORID", a => sqlsum += $" and F.ID = {a}");
                 item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID = {a}");
@@ -127,12 +148,17 @@ namespace z.ERP.Services
         }
         public string ContractSaleOutput(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("G");
             string sql = $"SELECT  to_char(C.RQ,'yyyy-mm-dd') RQ,C.AMOUNT,C.COST,C.DIS_AMOUNT,C.PER_AMOUNT,C.MERCHANTID,C.CONTRACTID,";
             sql += "  M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME, ";
             sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F  ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
@@ -159,12 +185,17 @@ namespace z.ERP.Services
 
         public string ContractSaleMOutput(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("G");
             string sql = $"SELECT C.YEARMONTH RQ,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
             sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME, ";
             sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F  ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
@@ -192,11 +223,16 @@ namespace z.ERP.Services
 
         public DataGridResult GoodsSale(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("C");
             string sql = $"SELECT D.RQ,D.AMOUNT,D.COST,D.DIS_AMOUNT,D.PER_AMOUNT,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
             sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
-            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
-            sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
+            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
+            sql += " WHERE G.MERCHANTID=M.MERCHANTID and B.CATEGORYID=C.CATEGORYID";
             sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
@@ -211,7 +247,6 @@ namespace z.ERP.Services
             item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
             item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
 
-
             sql += " ORDER BY  D.RQ,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -219,9 +254,14 @@ namespace z.ERP.Services
             if (count > 0)
             {
                 string sqlsum = $"SELECT SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT";
-                sqlsum += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
+                sqlsum += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
                 sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
                 sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+                sqlsum += "  and B.CATEGORYID=C.CATEGORYID";
+                if (SqlyTQx != "")
+                {
+                    sqlsum += " and " + SqlyTQx;
+                }
                 item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
                 item.HasKey("GOODSDM", a => sqlsum += $" and G.GOODSDM = '{a}'");
                 item.HasKey("GOODSNAME", a => sqlsum += $" and G.NAME LIKE '%{a}%'");
@@ -250,12 +290,18 @@ namespace z.ERP.Services
 
         public DataGridResult GoodsSaleM(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("C");
             string sql = $"SELECT D.YEARMONTH,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
             sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME,";
             sql += " sum(D.AMOUNT) AMOUNT,sum(D.COST) COST,sum(D.DIS_AMOUNT) DIS_AMOUNT,sum(D.PER_AMOUNT) PER_AMOUNT";
-            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
+            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
             sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
             sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+            sql += "  and B.CATEGORYID=C.CATEGORYID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
@@ -280,9 +326,14 @@ namespace z.ERP.Services
             if (count > 0)
             {
                 string sqlsum = $"SELECT SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT";
-                sqlsum += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
+                sqlsum += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
                 sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
                 sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+                sqlsum += "  and B.CATEGORYID=C.CATEGORYID";
+                if (SqlyTQx != "")
+                {
+                    sqlsum += " and " + SqlyTQx;
+                }
                 item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
                 item.HasKey("GOODSDM", a => sqlsum += $" and G.GOODSDM = '{a}'");
                 item.HasKey("GOODSNAME", a => sqlsum += $" and G.NAME LIKE '%{a}%'");
@@ -311,12 +362,18 @@ namespace z.ERP.Services
 
         public string GoodsSaleOutput(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("C");
             string sql = $"SELECT to_char(D.RQ,'yyyy-mm-dd') RQ,D.AMOUNT,D.COST,D.DIS_AMOUNT,D.PER_AMOUNT,";
             sql += " M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
             sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
-            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
+            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C  ";
             sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
             sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+            sql += "  and B.CATEGORYID=C.CATEGORYID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
@@ -341,12 +398,18 @@ namespace z.ERP.Services
         }
         public string GoodsSaleMOutput(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("C");
             string sql = $"SELECT D.YEARMONTH RQ,SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT,";
             sql += " M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
             sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
-            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K ";
+            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C  ";
             sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
             sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+            sql += "  and B.CATEGORYID=C.CATEGORYID";
+            if (SqlyTQx != "")
+            {
+                sql += " and " + SqlyTQx;
+            }
             item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
@@ -621,7 +684,7 @@ namespace z.ERP.Services
                        + "   AND S.FLOORID = F.ID AND C.CONTRACTID = CB.CONTRACTID"
                        + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
                        + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
-                       + "   AND C.HTLX=1 AND C.STATUS !=5";
+                       + "   AND C.HTLX=1 ";  //AND C.STATUS !=5
 
             item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
@@ -664,7 +727,7 @@ namespace z.ERP.Services
                        + "   AND S.FLOORID = F.ID AND C.CONTRACTID = CB.CONTRACTID"
                        + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
                        + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
-                       + "   AND C.HTLX=1 AND C.STATUS !=5";
+                       + "   AND C.HTLX=1 ";  //AND C.STATUS !=5
 
             item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
@@ -1365,6 +1428,120 @@ namespace z.ERP.Services
             {
                 a.SetTable(dt);
             });
+        }
+        #endregion
+
+        private string GetYtQx(string B) {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( "+ B +".CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or " + B + ".CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
+            return SqlyTQx;
+        }
+
+        #region 商户应交已付报表
+        /// <summary>
+        /// 商户应交已付报表查询
+        /// </summary>
+        public DataGridResult MerchantPayable(SearchItem item)
+        {
+            string sqlParam = "";
+            string sqlSfxm = " select distinct b.termid,f.name" +
+                       " from bill b,merchant m,feesubject f" +
+                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID";
+
+            item.HasKey("BRANCHID", a => sqlParam += $" and b.BRANCHID ={a}");
+            item.HasKey("MERCHANTID", a => sqlParam += $" and b.MERCHANTID ={a}");
+            item.HasKey("NIANYUE", a => sqlParam += $" and b.NIANYUE ={a}");
+            item.HasKey("YEARMONTH", a => sqlParam += $" and b.YEARMONTH ={a}");
+            item.HasKey("SFXMLX", a => sqlParam += $" and f.TYPE ={a}");
+            item.HasKey("SFXM", a => sqlParam += $" and b.TERMID ={a}");
+        
+            sqlSfxm += sqlParam;
+            var resData = DbHelper.ExecuteTable(sqlSfxm);
+
+            string sqlMain = " select b.MERCHANTID,b.NIANYUE,b.YEARMONTH,";
+            for(var i = 0; i < resData.Rows.Count; i++)
+            {
+                sqlMain += String.Format(" sum(decode(b.termid, {0}, b.MUST_MONEY, 0))  MUST_MONEY{0}," +
+                                         " sum(decode(b.termid, {0}, b.RECEIVE_MONEY, 0))   RECEIVE_MONEY{0},", resData.Rows[i][0].ToString());
+            }
+            sqlMain += " sum(b.MUST_MONEY) MUST_MONEYsum,sum(b.RECEIVE_MONEY) RECEIVE_MONEYsum,";
+            sqlMain += " m.NAME MERCHANTNAME" +
+                       " from bill b,merchant m,feesubject f"+
+                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID ";
+            sqlMain += sqlParam;
+            sqlMain += " group by b.MERCHANTID,b.NIANYUE,b.YEARMONTH,b.MUST_MONEY,b.RECEIVE_MONEY,m.NAME";
+            int count;
+            var dt = DbHelper.ExecuteTable(sqlMain, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        /// <summary>
+        /// 商户应交已付报表导出
+        /// </summary>
+        public string MerchantPayableOutput(SearchItem item)
+        {
+            string sql = "";   
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.TableName = "MerchantPayable";
+            return GetExport("商户应交已付报表", a =>
+            {
+                a.SetTable(dt);
+            });
+        }
+        public DataTable getData(SearchItem item)
+        {
+            string sqlParam = "";
+            string sqlSfxm = " select distinct b.termid,f.name" +
+                       " from bill b,merchant m,feesubject f" +
+                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID";
+
+            item.HasKey("BRANCHID", a => sqlParam += $" and b.BRANCHID ={a}");
+            item.HasKey("MERCHANTID", a => sqlParam += $" and b.MERCHANTID ={a}");
+            item.HasKey("NIANYUE", a => sqlParam += $" and b.NIANYUE ={a}");
+            item.HasKey("YEARMONTH", a => sqlParam += $" and b.YEARMONTH ={a}");
+            item.HasKey("SFXMLX", a => sqlParam += $" and f.TYPE ={a}");
+            item.HasKey("SFXM", a => sqlParam += $" and b.TERMID ={a}");
+
+            sqlSfxm += sqlParam;
+            DbHelper.ExecuteTable(sqlSfxm);
+            var resData = DbHelper.ExecuteTable(sqlSfxm);
+
+            string sqlMain = " select b.MERCHANTID,b.NIANYUE,b.YEARMONTH,";
+            for (var i = 0; i < resData.Rows.Count; i++)
+            {
+                sqlMain += String.Format(" sum(decode(b.termid, {0}, b.MUST_MONEY, 0))  MUST_MONEY{0}," +
+                                         " sum(decode(b.termid, {0}, b.RECEIVE_MONEY, 0))   RECEIVE_MONEY{0},", resData.Rows[i][0].ToString());
+            }
+            sqlMain += " sum(b.MUST_MONEY) MUST_MONEYsum,sum(b.RECEIVE_MONEY) RECEIVE_MONEYsum,";
+            sqlMain += " m.NAME MERCHANTNAME" +
+                       " from bill b,merchant m,feesubject f" +
+                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID ";
+            sqlMain += sqlParam;
+            sqlMain += " group by b.MERCHANTID,b.NIANYUE,b.YEARMONTH,b.MUST_MONEY,b.RECEIVE_MONEY,m.NAME";
+            return DbHelper.ExecuteTable(sqlMain);
+        }
+        /// <summary>
+        ///获取收费项目list
+        /// </summary>
+        public DataTable GetSfxmList()
+        {
+            string sql = "select * from feesubject";
+            return DbHelper.ExecuteTable(sql);
         }
         #endregion
     }

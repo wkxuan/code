@@ -94,6 +94,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -172,6 +175,7 @@
     <Compile Include="Areas\HTGL\LYHT_BG\LyHt_BgController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT_BG\ZlHt_BgController.cs" />
+    <Compile Include="Areas\JSGL\Invoice\InvoiceController.cs" />
     <Compile Include="Areas\JSGL\VOUCHER\VoucherController.cs" />
     <Compile Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustController.cs" />
     <Compile Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeController.cs" />
@@ -203,12 +207,15 @@
     <Compile Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetailController.cs" />
     <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
     <Compile Include="Areas\Report\MerchantBusinessStatus\MerchantBusinessStatusController.cs" />
+    <Compile Include="Areas\Report\MerchantPayable\MerchantPayable.cs" />
     <Compile Include="Areas\Report\MerchantPayCost\MerchantPayCostController.cs" />
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
     <Compile Include="Areas\Report\PayTypeSale\PayTypeSaleController.cs" />
     <Compile Include="Areas\Report\SaleRecord\SaleRecordController.cs" />
+    <Compile Include="Areas\Share\Render\TableRender.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
+    <Compile Include="Areas\Share\Render\DrawerRender.cs" />
     <Compile Include="Areas\Share\Render\UploadRender.cs" />
     <Compile Include="Areas\Share\Render\DropDownListsRender.cs" />
     <Compile Include="Areas\Share\Render\PopRender.cs" />
@@ -216,6 +223,7 @@
     <Compile Include="Areas\Share\Render\ViewDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\ViewEnumDropDownListRender.cs" />
     <Compile Include="Areas\Share\Render\YearMonthBoxRender.cs" />
+    <Compile Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccountController.cs" />
     <Compile Include="Areas\SHGL\MERCHANT\MerchantController.cs" />
     <Compile Include="Areas\Share\ControlViewBase.cs" />
     <Compile Include="Areas\Share\Render\WindowButtonRender.cs" />
@@ -233,6 +241,7 @@
     <Compile Include="Areas\Share\Render\DropDownListRender.cs" />
     <Compile Include="Areas\Share\ShareController.cs" />
     <Compile Include="Areas\PPGL\BRAND\BrandController.cs" />
+    <Compile Include="Areas\SPGL\RATE_ADJUST\Rate_AdjustController.cs" />
     <Compile Include="Areas\SPGL\GOODS\GoodsController.cs" />
     <Compile Include="Areas\SPGL\SALEBILL\SaleBillController.cs" />
     <Compile Include="Areas\WLGL\WLCheck\WLCheckController.cs" />
@@ -249,6 +258,8 @@
     <Compile Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterController.cs" />
     <Compile Include="Areas\WYGL\MARCHINAREAR\MarchinArearController.cs" />
     <Compile Include="Areas\WYGL\OPENBUSINESS\OpenBusinessController.cs" />
+    <Compile Include="Areas\XTGL\SPLC\SPLCController.cs" />
+    <Compile Include="Areas\XTGL\AlertShow\AlertShowController.cs" />
     <Compile Include="Areas\XTGL\ALERT\ALERTController.cs" />
     <Compile Include="Areas\XTGL\BRANCH\BranchController.cs" />
     <Compile Include="Areas\XTGL\ENERGYFILES\EnergyFilesController.cs" />
@@ -303,6 +314,7 @@
     <Content Include="Areas\HTGL\ZLHT\HtEdit.js" />
     <Content Include="Areas\HTGL\ZLHT\HtList.js" />
     <Content Include="Areas\HTGL\ZLHT_BG\ZlHt_BgEdit.js" />
+    <Content Include="Areas\JSGL\Invoice\InvoiceList.js" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.js" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherList.js" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustEdit.js" />
@@ -336,6 +348,7 @@
     <Content Include="Areas\Pop\Pop\PopBrandList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.js" />
+    <Content Include="Areas\Pop\Pop\PopInvoiceList.js" />
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.js" />
     <Content Include="Areas\Pop\Pop\PopFloorMapShow.js" />
     <Content Include="Areas\Pop\Pop\PopStationList.js" />
@@ -357,13 +370,19 @@
     <Content Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetail.js" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.js" />
     <Content Include="Areas\Report\MerchantBusinessStatus\MerchantBusinessStatus.js" />
+    <Content Include="Areas\Report\MerchantPayable\MerchantPayable.js" />
     <Content Include="Areas\Report\MerchantPayCost\MerchantPayCost.js" />
+    <Content Include="Areas\JSGL\Invoice\InvoiceEdit.js" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.js" />
     <Content Include="Areas\Report\PayTypeSale\PayTypeSale.js" />
     <Content Include="Areas\Report\SaleRecord\SaleRecord.js" />
+    <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccount.js" />
+    <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccountDetail.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.js" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandList.js" />
+    <Content Include="Areas\SPGL\RATE_ADJUST\Rate_AdjustEdit.js" />
+    <Content Include="Areas\SPGL\RATE_ADJUST\Rate_AdjustList.js" />
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.js" />
     <Content Include="Areas\SPGL\GOODS\GoodsList.js" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillEdit.js" />
@@ -393,6 +412,7 @@
     <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearList.js" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessEdit.js" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessList.js" />
+    <Content Include="Areas\XTGL\SPLC\SPLC.js" />
     <Content Include="Areas\XTGL\ALERT\ALERT.js" />
     <Content Include="Areas\XTGL\BRANCH\Branch.js" />
     <Content Include="Areas\XTGL\FEEACCOUNT\FeeAccount.js" />
@@ -421,6 +441,7 @@
     <Content Include="Areas\XTGL\STATION\Station.js" />
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Areas\XTGL\TreeTest\List.js" />
+    <Content Include="Content\components\common.js" />
     <Content Include="Content\jquery-1.7.2.min.js" />
     <Content Include="Content\Maps\1.jpg" />
     <Content Include="Content\Maps\contextMenu.min.js" />
@@ -687,6 +708,22 @@
     <Content Include="File\Template\商品销售明细导出.xlsx" />
     <Content Include="Areas\XTGL\POSUMSCONFIG\POSUMSCONFIG.cshtml" />
     <Content Include="Areas\Pop\Pop\PopStationList.cshtml" />
+    <Content Include="Areas\JSGL\Invoice\InvoiceList.cshtml" />
+    <Content Include="Areas\JSGL\Invoice\InvoiceEdit.cshtml" />
+    <Content Include="Areas\JSGL\Invoice\InvoiceDetail.cshtml" />
+    <Content Include="Areas\XTGL\AlertShow\AlertShow.cshtml" />
+    <Content Include="Areas\XTGL\SPLC\SPLC.cshtml" />
+    <Content Include="Areas\Share\Drawer.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopInvoiceList.cshtml" />
+    <Content Include="Content\VUE\styles\fonts\ionicons.woff2" />
+    <Content Include="Areas\Share\Table.cshtml" />
+    <Content Include="Areas\SPGL\RATE_ADJUST\Rate_AdjustList.cshtml" />
+    <Content Include="Areas\SPGL\RATE_ADJUST\Rate_AdjustEdit.cshtml" />
+    <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintSH.cshtml" />
+    <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintSHOther.cshtml" />
+    <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccount.cshtml" />
+    <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccountDetail.cshtml" />
+    <Content Include="Areas\Report\MerchantPayable\MerchantPayable.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
@@ -694,6 +731,7 @@
     <Folder Include="Areas\Home\" />
     <Folder Include="Areas\XTGL\Views\PosO2OWftCfg\" />
     <Folder Include="Areas\XTGL\Views\Tree\" />
+    <Folder Include="BackMap\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

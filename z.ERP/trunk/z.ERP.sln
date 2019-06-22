@@ -88,6 +88,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.ATR.WinService", "z.ATR.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.ATR.WinServiceTests", "z.ATR.WinServiceTests\z.ATR.WinServiceTests.csproj", "{08E587F8-0237-4A74-83E7-81F5558CF3E3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "POS80", "POS80", "{30E2E0B8-6C58-421D-8655-F78A66BDA354}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.POS80.API", "z.POS80.API\z.POS80.API.csproj", "{ADD41D4B-4453-433E-9D0D-5AA71D19B88A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.POS80.Entities", "z.POS80.Entities\z.POS80.Entities.csproj", "{0C065F82-FF7E-471E-8DB3-D3F09A1135B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.POS80.Services", "z.POS80.Services\z.POS80.Services.csproj", "{290C2654-B5DD-4325-813F-2BBA73BC619B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "z.POS80.WebService", "z.POS80.WebService\z.POS80.WebService.csproj", "{1E02849C-E66F-4716-827E-78B92BDA64DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

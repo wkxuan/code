@@ -31,11 +31,41 @@
                 });
             }
         }
+
+      
+
     }
 }
 
 @section content{
+    <row>
+        <Steps :current="current">
+            <Step v-for="splc in splcs" :title="splc.JDNAME"></Step>
+        </Steps>
+    </row>
 
+    <br />
+    <br />
+   <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            结果选择
+        </i-col>
+        <i-col span="4">
+            <i-select v-model="JDID" style="width:100%">
+                <i-option v-for="item in splcjg" :value="item.JGID" :key="item.JGID">{{ item.JGTYPENAME }}</i-option>
+        </i-select>
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            描述
+        </i-col>
+        <i-col span="10">
+            <i-input v-model="BZ"></i-input>
+        </i-col>
+    </row>
+    <br />
+    <br />
     <row>
         <i-col span="2" class="RowText">租约号</i-col>
         <i-col span="4">
@@ -369,8 +399,15 @@
                     { title: '结束日期', key: 'ENDDATE',width: 150,},
                     {title: "比例", key: 'KL', width: 120},
                 ],
-                CONTRACT_PAY:[]
+                CONTRACT_PAY:[],
 
+                current:-1,
+                disRecall:true,
+                splcs:[],
+                splcjg:[],
+                JDID:"",
+                BZ:"",
+                JGTYPE:-1,
             },
             mounted:function(){
                 var _self = this;
@@ -388,19 +425,77 @@
                     _self.CONTRACT_COST = data.contractCost;
                     _self.CONTRACT_PAY = data.contractPay;
                 });
+
+                _self.srchsplc();
             },
             methods: {
                 exec: function (event) {
                     event.stopPropagation();
                     var _self = this;
-                    _.Ajax('ExecData', {
-                        Data: {CONTRACTID: @contract.CONTRACTID},
-                    }, function (data) {
-                        _self.$Message.info("审核成功");
-                        setTimeout(function () {
+
+                    for (var i=0;i<=_self.splcjg.length-1;i++){
+                        if(_self.JDID==_self.splcjg[i].JGID){
+                           _self.JGTYPE=_self.splcjg[i].JGTYPE;
+                        }
+                    }
+
+
+                    if (_self.current!=-1){
+                        _.Ajax('ExecSplc', {
+                           Data: {
+                              BILLID: @contract.CONTRACTID,
+                              MENUID: "10600200",
+                              JDID:_self.JDID,
+                              BZ:_self.BZ,
+                              JGTYPE:_self.JGTYPE
+                           },
+                        }, function (data) {
+                           _self.srchsplc();
+                            _self.$Message.info("审批成功");
+                        });
+                    }
+                    else
+                    {
+                    //正常不走审批流
+                       _.Ajax('ExecData', {
+                           Data: {CONTRACTID: @contract.CONTRACTID},
+                        }, function (data) {
+                           _self.$Message.info("审核成功");
+                           setTimeout(function () {
                             window.location.reload();
-                        }, 100);
-                    });
+                           }, 100);
+                        });
+                    }
+                  
+                },
+                recall:function(event){
+                    event.stopPropagation();
+                    var _self = this;
+
+                    _self.srchsplc();
+                },
+                srchsplc:function(){
+                   var _self = this;
+                   //找审批流程节点
+                    _.Ajax('Srchsplc', {
+                        Data: {
+                           MENUID: "10600200",
+                           JLBH:@contract.CONTRACTID,
+                        }
+                    }, function (data) {
+                        _self.BZ="";
+                        _self.splcs=data.splc;
+                        if(data.splc.length>0){
+                          _self.disRecall=false;
+                        }
+                        _self.splcjg=data.splxz;
+                        for (var i=0;i<=data.splxz.length-1;i++){
+                            if (i==0){
+                              _self.current=data.splxz[0].JDID-1;
+                              break;
+                            }
+                        }
+                    });  
                 }
             }
         });

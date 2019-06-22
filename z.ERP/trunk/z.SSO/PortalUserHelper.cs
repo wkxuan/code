@@ -104,6 +104,41 @@ namespace z.SSO
                 }
             }
         }
+        // by:dzk
+        public override int Logins(string username, string password)
+        {
+            List<SYSUSEREntity> users = _db.SelectList(new SYSUSEREntity()
+            {
+                USERCODE = username
+            });
+            if (users.IsEmpty())
+            {
+                return 1;
+                throw new Exception("找不到用户");
+            }
+            else if (users.Where(a => a.USER_FLAG.ToInt() == (int)用户标记.正常).IsEmpty())
+            {
+                return 3;
+                throw new Exception($"用户已{users.First().USER_FLAG.ToEnum<用户标记>() }");
+            }
+            else
+            {
+                SYSUSEREntity user = users.First();
+                if (Verify(user, password))
+                {
+                    Employee e = GetUser(user.USERID);
+                    ApplicationContextBase.GetContext().SetData(LoginKey + e.Id, users);
+                    ApplicationContextBase.GetContext().principal = new GenericPrincipal(new GenericIdentity(e.Id), null);
+                    FormsAuthentication.SetAuthCookie(e.Id, true);
+                    return 0;
+                }
+                else
+                {
+                    return 2;
+                    throw new Exception("密码错误");
+                }
+            }
+        }
 
         bool Verify(SYSUSEREntity user, string password)
         {

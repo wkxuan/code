@@ -14,30 +14,38 @@
                     "Content/ui/js/framework-ui.js",
                     "Content/ui/js/indextab.js",
                     "Content/ui/js/loading/pace.min.js",
+                    "Content/VUE/styles/iview.css",
+                    "Content/VUE/vue.js",
+                    "Content/VUE/iview.js",
                     "Content/zBase.js",
                     "Content/AjaxHelper.js",
                     "Content/JsHelper.js",
                     "Content/PageBase.js",
                 };
 }
-
-
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>YiXunMall</title>
+    <title>云商管理平台</title>
     <script type="text/javascript">
         document.domain = '@ViewBag.Domain';
         __ControllerUrl = '@ViewBag.ControllerUrl';
         __CommonControllerUrl = '@ViewBag.CommonControllerUrl';
         __PortalBaseUrl = '@ViewBag.BaseUrl';
     </script>
+    <style type="text/css">
+        html,body{
+            overflow:hidden;
+        }
+        .ivu-badge {
+            margin: 15px 0px;
+        }
+    </style>
     @InitFiles(WebFiles)
-    @InitThisJs()
+    
 </head>
-<body style="overflow: hidden;" data-root="">
+<body data-root="">
     <div id="ajax-loader" style="cursor: progress; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #fff; z-index: 10000; overflow: hidden;">
         <img src="~/Content/ui/img/ajax-loader.gif" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" />
     </div>
@@ -54,7 +62,7 @@
                         </ul>
                     </div>
 
-                    <div class="nav-no-collapse navbar-left pull-right hidden-sm hidden-xs">
+                    <div class="nav-no-collapse navbar-left pull-left hidden-sm hidden-xs">
                         <ul class="nav navbar-nav pull-left" style="color:aqua">
                             <li>
                                 <a class="btn" id="make-small-nav_mallerp" onclick="GetLoadNav(1)">业务系统<i class="hidden-xs"></i></a>
@@ -68,28 +76,32 @@
                         </ul>
                     </div>
 
-                    <div class="nav-no-collapse pull-left" id="header-nav">
+                    <div class="nav-no-collapse pull-right" id="header-nav">
                         <ul class="nav navbar-nav pull-right">
                             <li style="padding-top:7px;padding-right:5px;display:none" id="liSelShop">
                                 <select id="selShop" class="form-control" style="width:300px"></select>
                             </li>
                             <li class="dropdown profile-dropdown">
-                                <a>
+                                @*<a>
                                     <span>您好!@employee.Name</span>
+                                </a>*@
+                                <a href="#" class="dropdown" data-toggle="dropdown">
+                                    <span class="hidden-xs">欢迎您! @employee.Name</span>
                                 </a>
-                                @*<a href="#" class="dropdown" data-toggle="dropdown">*@
-                                @*<i class="fa fa-ellipsis-h"></i>*@
-                                @*<span class="hidden-xs">欢迎登录!</span>*@
-                                @*</a>*@
                                 <ul class="dropdown-menu pull-right">
                                     <li><a class="menuItem" href="@ViewBag.BaseUrl/HOME/ChangePassword/ChangePassword"><i class="fa fa-cog"></i>修改密码</a></li>
                                     <li class="divider"></li>
                                     <li><a href="~/HOME/Login/Login"><i class="ace-icon fa fa-power-off"></i>安全退出</a></li>
-
-
                                 </ul>
                             </li>
                         </ul>
+                        <div class="nav navbar-nav pull-right" id="Badge" style="height:50px;width:40px">
+                            <Badge :count="BadgeNO">
+                                <a v-on:click="Badgeclick">
+                                    <Icon type="ios-notifications-outline" size="26"></Icon>
+                                </a>
+                            </Badge>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -140,6 +152,10 @@
                 </div>
             </div>
         </div>
+        @*抽屉*@
+        <Drawer title="通知" :closable="true" width="30" v-model="DrawerModel">
+
+        </Drawer>
     </div>
     <div id="loadingPage" style="display: none;">
         <div class="loading-shade"></div>
@@ -148,3 +164,4 @@
 </body>
 
 </html>
+@InitThisJs()

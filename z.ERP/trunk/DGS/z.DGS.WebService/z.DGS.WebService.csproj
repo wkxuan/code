@@ -70,6 +70,7 @@
     <Content Include="Ashx\Login.ashx" />
     <Content Include="packages.config" />
     <Content Include="Ashx\Do.ashx" />
+    <None Include="Properties\PublishProfiles\wangkx.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

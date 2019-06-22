@@ -33,7 +33,7 @@ h1 {
     text-shadow: 0 1px 4px rgba(0,0,0,.2);
 }
 
-form{position: relative;z-index: 2;text-align:left;background-color:#ebeff0;padding: 50px;border-radius: 5px;box-shadow: 0 0 10px rgba(0,0,0,.1);}
+form{position: relative;z-index: 2;text-align:left;background-color:#ebeff0;padding: 50px 50px 10px;border-radius: 5px;box-shadow: 0 0 10px rgba(0,0,0,.1);}
 form input{font-size: 14px;outline: 0;border: 1px solid rgba(255, 255, 255, 0.4);background-color: #fff;width: 300px;border-radius: 5px;padding: 12px 15px;margin-bottom:20px;display: block;text-align: left;color: #929191;-webkit-transition-duration: 0.25s;transition-duration: 0.25s;font-weight: 300;}
 form .row{position: relative;overflow:hidden;}
 form i{color: #cbcbcb;top: 13px;right: 6px;z-index: 99;position: absolute;display: block;width: 30px;height: 30px;text-align: center;font-size: 18px !important;}
@@ -201,5 +201,15 @@ button:active {
 
 .connect a:hover { background-position: center bottom; }
 
-
+#msg {
+      width: 100%;
+      line-height: 40px;
+      font-size: 14px;
+      text-align: center;
+      color:red;
+    }
+    /*a:link,a:visited,a:hover,a:active {
+      margin-left: 100px;
+      color: #0366D6;
+    }*/
 

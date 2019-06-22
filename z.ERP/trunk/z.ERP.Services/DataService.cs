@@ -9,6 +9,7 @@ using z.MVC5.Results;
 using z.Results;
 using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
+using z.ERP.Entities.Auto;
 
 namespace z.ERP.Services
 {
@@ -387,6 +388,17 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
+        public DataGridResult GetGoodsList(SearchItem item)
+        {
+            string sql = @"SELECT G.*,C.JSKL,B.NAME BRANDMC FROM GOODS G, CONTRACT_GROUP C ,BRAND B WHERE  G.STATUS=2 AND G.CONTRACTID=C.CONTRACTID AND G.JSKL_GROUP=C.GROUPNO AND G.BRANDID=B.ID ";
+            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+            item.HasKey("NAME", a => sql += $" and G.NAME like '%{a}%'");
+            sql += " ORDER BY  G.GOODSDM";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
         public object GetPay(PAYEntity Data)
         {
             string sql = " SELECT  * FROM " +
@@ -419,6 +431,31 @@ namespace z.ERP.Services
             string sql = "select id,name from fee_account order by id ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("id", "name");
+        }
+        //商户收费单位余额
+        public object GetBalance(MERCHANT_ACCOUNTEntity Data)
+        {
+            string sql = @" SELECT * FROM MERCHANT_ACCOUNT WHERE 1=1";
+            if (!Data.MERCHANTID.IsEmpty())
+                sql += " AND MERCHANTID='" + Data.MERCHANTID + "'";
+            if (!Data.FEE_ACCOUNT_ID.IsEmpty())
+                sql += " AND FEE_ACCOUNT_ID='" + Data.FEE_ACCOUNT_ID + "'";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt.ToOneLine()
+            };
+        }
+        //获取打印地址
+        public DataTable GetPrintUrl(string menuid,string printtype)
+        {
+            string sql = @" SELECT * FROM PRINTDEF WHERE  USED=1 ";
+            if (!menuid.IsEmpty())
+                sql += " AND MENUID='" + menuid + "'";
+            if (!printtype.IsEmpty())
+                sql += " AND PRINTTYPE='" + printtype + "'";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
         }
 
     }

@@ -7,6 +7,8 @@ using System.Linq;
 using z.ERP.API.PosServiceAPI;
 using z.ServiceHelper;
 using System.Diagnostics;
+using z.Encryption;
+using z.ERP.Entities;
 
 namespace z.ERP.Services
 {
@@ -14,6 +16,8 @@ namespace z.ERP.Services
 
     public class PosService : ServiceBase
     {
+
+        protected const string LoginSalt = "z.SSO.LoginSalt.1";
 
         internal PosService()
         {
@@ -28,7 +32,7 @@ namespace z.ERP.Services
 
         public LoginConfigInfo GetConfig()
         {
-            string sql = " select S.BRANCHID,B.CRMSTORECODE,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME"
+            string sql = " select S.BRANCHID,B.CRMSTORECODE,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,UPPER(trim(S.NETWORK_NODE_ADDRESS)) MACADDRESS"
                        + " from BRANCH B,STATION S,SHOP P,SYSUSER R"
                        + " where B.ID= S.BRANCHID and S.SHOPID=R.SHOPID"
                        + "  AND R.USER_TYPE in (1,2) "
@@ -54,6 +58,7 @@ namespace z.ERP.Services
                 TicketInfo ticket = new TicketInfo();
                 ticket.tickethead = ConfigExtension.GetConfig("TicketHead");
                 ticket.tickettail = ConfigExtension.GetConfig("TicketTail");
+                ticket.printCount = ConfigExtension.GetConfig("PrintCount");
                 lgi.ticketInfo = ticket;
                 lgi.posWFTConfig = DbHelper.ExecuteOneObject<PosWFTConfig>(sqlWFT);
                 lgi.posUMSConfig = DbHelper.ExecuteOneObject<PosUMSConfig>(sqlUMS);
@@ -64,7 +69,59 @@ namespace z.ERP.Services
 
         }
 
+        public void BindAddress(Address ads)
+        {
+            if (ads.address.IsEmpty())
+            {
+                throw new Exception("MAC地址为空！");
+            }
 
+            string address = ads.address;
+
+            string sql = $"update STATION set NETWORK_NODE_ADDRESS=UPPER(trim('{address}')) where STATIONBH = '{employee.PlatformId}' and trim(NETWORK_NODE_ADDRESS) is null";
+
+            try
+            {
+                int icount = DbHelper.ExecuteNonQuery(sql);
+
+                if (icount == 0)
+                {
+                    throw new Exception("该终端已绑定MAC地址,不能重复绑定！");
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception("绑定MAC地址出错:" + e.ToString());
+            }
+         }
+
+        public void ChangePassword(PasswordInfo passw)
+        {
+            if (string.IsNullOrEmpty(passw.oldPassword))
+                throw new Exception("原密码不能为空");
+
+            if (string.IsNullOrEmpty(passw.newPassword))
+                throw new Exception("新密码不能为空");
+
+
+            SYSUSEREntity sysuser = DbHelper.Select(new SYSUSEREntity() { USERID = employee.Id });
+
+            if (sysuser.PASSWORD == salt(sysuser.USERID, passw.oldPassword))  //原密码验证
+            {
+                sysuser.PASSWORD = salt(sysuser.USERID, passw.newPassword);  //修改为新密码
+                DbHelper.Save(sysuser);
+            }
+            else
+            {
+                throw new Exception("原密码验证失败,修改密码失败");
+            }
+        }
+
+        //密码加密
+        string salt(string userid, string pass)
+        {
+            return MD5Encryption.Encrypt(userid + LoginSalt + pass);
+        }
 
         public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
         {
@@ -175,14 +232,14 @@ namespace z.ERP.Services
             sqlGoods += $" sale_amount,discount_amount,coupon_amount from {strTable}sale_goods";
             sqlGoods += $" where posno='{posNo}' and dealid={filter.dealid}";
 
-            string sqlPay = $"select payid,amount from {strTable}sale_pay";
-            sqlPay += $" where posno='{posNo}' and dealid={filter.dealid}";
+            string sqlPay = $"select a.payid,a.amount,b.name payname,b.type paytype from {strTable}sale_pay a,pay b";
+            sqlPay += $" where a.payid=b.payid and a.posno='{posNo}' and a.dealid={filter.dealid}";
 
             string sqlClerk = $"select sheetid,clerkid from {strTable}sale_clerk";
             sqlClerk += $" where posno='{posNo}' and dealid={filter.dealid}";
 
-            string sqlPayRecord = $"select inx,payid,cardno,bank,bankid,amount,serialno,refno,opertime from payrecord";
-            sqlPayRecord += $" where posno='{posNo}' and dealid={filter.dealid}";
+            string sqlPayRecord = $"select a.inx,a.payid,a.cardno,a.bank,a.bankid,a.amount,a.serialno,a.refno,a.opertime,b.type paytype from payrecord a,pay b";
+            sqlPayRecord += $" where a.payid=b.payid and a.posno='{posNo}' and a.dealid={filter.dealid}";
 
             DataTable saleDt = DbHelper.ExecuteTable(sqlSale);
             //   List<SaleRequest> saleList = DbHelper.ExecuteObject<SaleRequest>(sqlSale);
@@ -768,9 +825,7 @@ namespace z.ERP.Services
                 }
 
                 int mTotalYQJE = 0;
-
-
-                //  bool bResult = false;
+                bool bResult = false;
                 //  if (sType.Equals(FullCut_ERP))
                 //      bResult = CalculateDecDisc_ERP(posNo, mTotalYQJE, ref GoodsList, out msg);
                 //2.5: 上传XSJL
@@ -806,7 +861,7 @@ namespace z.ERP.Services
 
                 //  CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<2.3.2> 准备计算CRM满减:类型[" + sType + "]");
                 //  if (sType.Equals(FullCut_CRM))
-                //      bResult = CalculateDecDisc_CRM(posNo, mTotalYQJE, CrmBillId, ref GoodsList, out msg);
+                     bResult = CalculateDecDisc_CRM(posNo, mTotalYQJE, CrmBillId, ref GoodsList, out msg);
 
                 //  CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<2.5.1> 查询返券:会员ID:" + vipcard.id);
                 if (vipcard.id > 0)
@@ -2917,7 +2972,7 @@ namespace z.ERP.Services
             }
 
 
-            string jdMsg = "";
+          //  string jdMsg = "";
             //3.2:开始保存
             Stopwatch st = new Stopwatch();
             try
@@ -2964,7 +3019,12 @@ namespace z.ERP.Services
                  //sale
                  saleReq.posno = posNo;
                  saleReq.dealid = transId;
-                 saleReq.member_cardid = member.MemberId.ToString();
+
+                if (PromniDealID == "") //入参outorder 记录第三方CRM卡号 猫酷会员卡号
+                    saleReq.member_cardid = member.MemberId.ToString();
+                else
+                    saleReq.member_cardid = PromniDealID;
+
                  saleReq.crm_recordid = CrmBillId;
                  saleReq.cashierid = iPerson;
 
@@ -2982,35 +3042,35 @@ namespace z.ERP.Services
 
                  //sale_goods
                  List<GoodsResult> goodsLst = new List<GoodsResult>();
-                 GoodsResult goodsOne = new GoodsResult();
 
                  for (int g = 0; g <= GoodList.Count - 1; g++)
                  {
-                     goodsOne.sheetid = 0;
-                     goodsOne.inx = g;
-                     goodsOne.goodsid = GoodList[g].Id;
-                     goodsOne.goodscode = GoodList[g].Code;
-                     goodsOne.price = decimal.Parse(GoodList[g].Price.ToString());
-                     goodsOne.quantity = float.Parse(GoodList[g].SaleCount.ToString());
-                     goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney).ToString()); //-GoodList[g].Discount
-                    //wangkx  扣折暂时记为0
+                    GoodsResult goodsOne = new GoodsResult();
+                    goodsOne.sheetid = 0;
+                    goodsOne.inx = g;
+                    goodsOne.goodsid = GoodList[g].Id;
+                    goodsOne.goodscode = GoodList[g].Code;
+                    goodsOne.price = decimal.Parse(GoodList[g].Price.ToString());
+                    goodsOne.quantity = float.Parse(GoodList[g].SaleCount.ToString());
+                    goodsOne.sale_amount = decimal.Parse((GoodList[g].SaleMoney).ToString()); //-GoodList[g].Discount
+                //wangkx  扣折暂时记为0
                     goodsOne.discount_amount = 0; //decimal.Parse(GoodList[g].Discount.ToString());
-                     goodsOne.coupon_amount = decimal.Parse((GoodList[g].PreferentialMoney + GoodList[g].DecreasePreferential).ToString());
-                     goodsOne.shopid = GoodList[g].ShopId;
-                     goodsLst.Add(goodsOne);
+                    goodsOne.coupon_amount = decimal.Parse((GoodList[g].PreferentialMoney + GoodList[g].DecreasePreferential).ToString());
+                    goodsOne.shopid = GoodList[g].ShopId;
+                    goodsLst.Add(goodsOne);
                  }
 
                  saleReq.goodslist = goodsLst;
 
                  //sale_pay
                  List<PayResult> payLst = new List<PayResult>();
-                 PayResult payOne = new PayResult();
 
                  for (int p = 0; p <= PayList.Count - 1; p++)
                  {
-                     payOne.payid = PayList[p].Id;
-                     payOne.amount = decimal.Parse(PayList[p].PayedMoney.ToString());
-                     payLst.Add(payOne);
+                    PayResult payOne = new PayResult();
+                    payOne.payid = PayList[p].Id;
+                    payOne.amount = decimal.Parse(PayList[p].PayedMoney.ToString());
+                    payLst.Add(payOne);
                  }
 
                  saleReq.paylist = payLst;
@@ -3030,10 +3090,10 @@ namespace z.ERP.Services
                 if (!ReqConfirm.creditDetailList.IsEmpty())
                 {
                     List<PayRecord> payRcd = new List<PayRecord>();
-                    PayRecord payRcdOne = new PayRecord();
 
                     for (int p = 0; p <= ReqConfirm.creditDetailList.Count - 1; p++)
                     {
+                        PayRecord payRcdOne = new PayRecord();
                         payRcdOne.inx = ReqConfirm.creditDetailList[p].inx;
                         payRcdOne.payid = ReqConfirm.creditDetailList[p].payid;
                         payRcdOne.cardno = ReqConfirm.creditDetailList[p].cardno;
@@ -3079,7 +3139,7 @@ namespace z.ERP.Services
                              msg = errorMessage.Message;
 
                          confirmResult.code = result;
-                         confirmResult.text = msg + jdMsg;
+                         confirmResult.text = msg;  // + jdMsg;
 
                          if (CrmMoneyCardTransID > 0)
                          {
@@ -3108,13 +3168,7 @@ namespace z.ERP.Services
                 if (result == 0)
                 {
                     MemberCard tempMemberCard = new MemberCard();
-                    try
-                    {
-                        //  GetReqStr(vipcard.Hello, ref tempMemberCard);
-                    }
-                    catch (Exception e)
-                    {
-                    }
+
                     //if ((bCheckMember) && (vipcard.name != null))
                     if (vipcard.name != null)
                     {
@@ -3154,12 +3208,22 @@ namespace z.ERP.Services
 
 
 
-                    // CommonUtils.WriteSKTLog(1, posNo, "保存销售<3.2>数据保存完成,准备返回");
+                    string sSaleTime;
 
-                    UniConfirmDealResult(posNo, result, transId, CrmBillId, "",
+                    try
+                    {
+                        sSaleTime = DbHelper.ExecuteTable($"select to_char(sale_time,'yyyy-mm-dd HH24:MI:SS') from sale where posno='{posNo}' and dealid={transId}").Rows[0][0].ToString();
+                    }
+                    catch (Exception)
+                    {
+
+                        sSaleTime = "";
+                    }
+
+                    UniConfirmDealResult(posNo, result, transId, CrmBillId, sSaleTime, //sSaleTime原为"",成功时记本次交易时间
                       MemberInfo, GoodList, ReturnCouponList, CanReturnCouponList, out confirmResult);
 
-                    confirmResult.text = confirmResult.text + jdMsg;
+                   // confirmResult.text = confirmResult.text + jdMsg;
 
                     //SendMsgTranOk
 
@@ -3180,7 +3244,7 @@ namespace z.ERP.Services
                     result = -1;
                     msg = "保存销售:失败：" + msg;
                     confirmResult.code = result;
-                    confirmResult.text = msg + jdMsg;
+                    confirmResult.text = msg; //+ jdMsg;
                     throw new Exception(msg);
                 }
 
@@ -4147,6 +4211,7 @@ namespace z.ERP.Services
                     goods.FrontDiscount = req.goodsList[i].frontendOffAmount;
                     goods.MemberDiscount = req.goodsList[i].memberOff;
                     goods.BackDiscount = req.goodsList[i].backendOffAmount;
+                    goods.DecreaseDiscount = req.goodsList[i].fullCutOffAmount;
                     goods.Discount = GetSPDisc(goods);
 
                     if ((goods.Price == 0) && (req.goodsList[i].price != 0))
@@ -4968,7 +5033,19 @@ namespace z.ERP.Services
                         MemberInfo.totalCent = TotalCent.ToString(); 
                     }
 
-                    UniConfirmBackDealResult(result, transId, CrmBillId, "",
+                    string sSaleTime;
+
+                    try
+                    {
+                       sSaleTime = DbHelper.ExecuteTable($"select to_char(sale_time,'yyyy-mm-dd HH24:MI:SS') from sale where posno='{posNo}' and dealid={transId}").Rows[0][0].ToString();
+                    }
+                    catch (Exception)
+                    {
+
+                        sSaleTime = "";
+                    }
+                   
+                    UniConfirmBackDealResult(result, transId, CrmBillId, sSaleTime,  //sSaleTime原为"",成功时记本次交易时间
                       MemberInfo, GoodList, ReturnCouponList, CanReturnCouponList, out confirmResult);
 
                 }
@@ -5367,10 +5444,10 @@ namespace z.ERP.Services
 
                 //sale_goods
                 List<GoodsResult> goodsLst = new List<GoodsResult>();
-                GoodsResult goodsOne = new GoodsResult();
 
                 for (int g = 0; g <= goodsList.Count - 1; g++)
                 {
+                    GoodsResult goodsOne = new GoodsResult();
                     goodsOne.sheetid = 0;
                     goodsOne.inx = g;
                     goodsOne.goodsid = goodsList[g].Id;
@@ -5389,10 +5466,10 @@ namespace z.ERP.Services
 
                 //sale_pay
                 List<PayResult> payLst = new List<PayResult>();
-                PayResult payOne = new PayResult();
 
                 for (int p = 0; p <= pays.Count - 1; p++)
                 {
+                    PayResult payOne = new PayResult();
                     payOne.payid = pays[p].Id;
                     payOne.amount = decimal.Parse(pays[p].PayedMoney.ToString());
                     payLst.Add(payOne);
@@ -5415,10 +5492,10 @@ namespace z.ERP.Services
                 if (!creditList.IsEmpty())
                 {
                     List<PayRecord> payRcd = new List<PayRecord>();
-                    PayRecord payRcdOne = new PayRecord();
 
                     for (int p = 0; p <= creditList.Count - 1; p++)
                     {
+                        PayRecord payRcdOne = new PayRecord();
                         payRcdOne.inx = creditList[p].inx;
                         payRcdOne.payid = creditList[p].payid;
                         payRcdOne.cardno = creditList[p].cardno;
@@ -6217,8 +6294,6 @@ namespace z.ERP.Services
             }
         }
 
-
-
         public int GetGoodsShopId(int goodsid)
         {
             string sql = $"select shopid from goods_shop where goodsid={goodsid}";
@@ -6229,6 +6304,127 @@ namespace z.ERP.Services
                 return dt.Rows[0][0].ToString().ToInt();
             else
                 return 0;
+        }
+
+
+        public bool CalculateDecDisc_CRM(string posid, int Yqje, int iCrmBillID, ref List<Goods> goodsList, out string msg)
+        {
+            msg = "";
+            bool result = false;
+            int i = 0;
+            double mTotal = 0;
+            List<Payment> ErpPays = new List<Payment>();
+
+            for (i = 0; i < goodsList.Count(); i++)
+            {
+                mTotal = mTotal + goodsList[i].SaleMoney - goodsList[i].Discount;
+            }
+
+            //  CommonUtils.WriteSKTLog(1, posid, "计算满减<1.1> 按CRM方式: 商品金额:" + mTotal);
+
+
+            Payment Item = new Payment();
+            Item.Id = 1;
+            Item.PayedMoney = mTotal;
+            ErpPays.Add(Item);
+
+            result = CalDecMoney(posid, iCrmBillID, ErpPays, ref goodsList, ref msg);
+
+            return result;
+        }
+
+        public bool CalDecMoney(string posId, int CrmBillId, List<Payment> ErpPayList,
+           ref List<Goods> GoodsList, ref string msg)
+        {
+            msg = "";
+            double decMoney = 0;
+            bool result = false, flag = false;
+            int i = 0, iCurLine = 0, iPayCount = ErpPayList.Count();
+            double mDec = 0;
+
+            //   CommonUtils.WriteSKTLog(1, posId, "CRM满减<1.1>:收款方式列表: " + iPayCount);
+
+            string CRMUSer = "CRMUSER", CRMPwd = "CRMUSER";
+
+
+            ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+            crmSoapHeader.UserId = CRMUSer;
+            crmSoapHeader.Password = CRMPwd;
+
+            //  CommonUtils.WriteSKTLog(1, posId, "CRM满减<1.2>:准备创建连接 ");
+            //  PosWebServiceSoapClient client = new PosWebServiceSoapClient();
+
+            //  CommonUtils.WriteSKTLog(1, posId, "CRM满减<1.3>:准备创建变量 ");
+
+            RSaleBillArticleDecMoney[] RSaleBillArticleDecMoneys;
+
+            //RSaleBillPayment[] CrmPayments = new RSaleBillPayment[iPayCount];
+
+            List<RSaleBillPayment> CrmPayments = new List<RSaleBillPayment>(); ;
+
+
+            // CommonUtils.WriteSKTLog(1, posId, "CRM满减<1.5>:iPayCount ");
+            for (i = 0; i < iPayCount; i++)
+            {
+                RSaleBillPayment CrmPayItem = new RSaleBillPayment();
+                //CrmPayItem.PayMoney = (double)(ErpPayList[i].PayedMoney / 100.0);//CommonUtils.MoneyToDouble(
+
+                CrmPayItem.PayMoney = MoneyToDouble(ErpPayList[i].PayedMoney);
+
+                CrmPayItem.PayTypeCode = ErpPayList[i].Id.ToString();
+
+                //   CommonUtils.WriteSKTLog(1, posId, "CRM满减<1.6.1>:付款方式ID: " + CrmPayItem.PayTypeCode +
+                //      " CRM金额:" + CrmPayItem.PayMoney.ToString() + " 付款金额:" + ErpPayList[i].PayedMoney.ToString());
+                CrmPayments.Add(CrmPayItem);
+            }
+
+
+
+            try
+            {
+                //  CommonUtils.WriteSKTLog(1, posId, "CRM满减<2.1>: 发送CRM请求");
+
+                CalcRSaleBillDecMoneyRequest req = new CalcRSaleBillDecMoneyRequest();
+                req.ABCSoapHeader = crmSoapHeader;
+                req.serverBillId = CrmBillId;
+                req.payments = CrmPayments.ToArray();
+
+                CalcRSaleBillDecMoneyResponse res = PosAPI.CalcRSaleBillDecMoney(req);
+                flag = res.CalcRSaleBillDecMoneyResult;
+
+
+                // flag = client.CalcRSaleBillDecMoney(crmSoapHeader, CrmBillId, CrmPayments.ToArray(), out msg,
+                //     out decMoney, out RSaleBillArticleDecMoneys);
+
+                //  CommonUtils.WriteSKTLog(1, posId, "CRM满减<2.2>: 结束CRM请求");
+                if (flag == true)
+                {
+                    // CommonUtils.WriteSKTLog(1, posId, "CRM满减<2.3.1>: 操作成功 共满减:" + decMoney);
+                    if (res.articleDecMoneys != null)
+                    {
+                        for (i = 0; i < res.articleDecMoneys.Count(); i++)
+                        {
+                            iCurLine = res.articleDecMoneys[i].ArticleInx;
+                            if ((iCurLine >= 0) && (iCurLine < GoodsList.Count))
+                            {
+                                mDec = res.articleDecMoneys[i].DecMoney;
+                                GoodsList[iCurLine].DecreaseDiscount = mDec;
+
+                                // CommonUtils.WriteSKTLog(1, posId, "CRM满减<2.3.2>: 商品:" + GoodsList[iCurLine].Code + " 满减:" + GoodsList[iCurLine].DecreaseDiscount);
+                            }
+                        }
+                    }
+                    // CommonUtils.WriteSKTLog(1, posId, "CRM满减<2.5>: 操作成功");
+                }
+            }
+            catch (Exception e)
+            {
+                msg = "CRM报错: " + e.Message.ToString() + "" + msg;
+                //   CommonUtils.WriteSKTLog(2, posId, "CRM满减<4.1> " + msg);
+                flag = false;
+            }
+
+            return result;
         }
 
 

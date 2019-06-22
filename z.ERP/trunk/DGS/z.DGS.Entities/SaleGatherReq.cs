@@ -14,6 +14,11 @@ namespace z.DGS.Entities
             get; set;
         }
 
+        public int dealId
+        {
+            get; set;
+        }
+
         public double amount
         {
             get; set;

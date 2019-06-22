@@ -25,7 +25,8 @@
                 Text = "新增",
                 Enable = true,
                 Type = "primary",
-                 PermissionKey =Model.Permission_Add
+                PermissionKey =Model.Permission_Add,
+                Icon = "md-add"
             });
         }
 
@@ -36,7 +37,8 @@
                 Text = "存档",
                 Enable = true,
                 Type = "primary",
-                PermissionKey = Model.Permission_Save
+                PermissionKey = Model.Permission_Save,
+                Icon = "md-checkmark-circle"
             });
         }
         @RenderSection("Btn", false)

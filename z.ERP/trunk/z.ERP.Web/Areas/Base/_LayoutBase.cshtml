@@ -12,7 +12,8 @@
             "Content/PageBase.js",
             "Content/VUE/styles/iview.css",
             "Content/VUE/vue.js",
-            "Content/VUE/iview.js"
+            "Content/VUE/iview.js",
+            "Content/components/common.js"
         };
 }
 <!DOCTYPE html>
@@ -30,6 +31,45 @@
     @InitFiles(WebFiles)
     @RenderSection("head", false)
     <title>@ViewBag.Title</title>
+
+    <script id="unEditTable" type="x-template">
+        <div style="width:100%;height:100%;">
+            <div style="width:100%;height:100%;float:left;">
+                <i-table v-bind:columns="columnsDef"
+                         v-bind:data="data"
+                         v-bind:stripe="stripe"
+                         v-bind:show-header="showHeader"
+                         v-bind:border="border"
+                         v-bind:width="width"
+                         v-bind:height="height"
+                         v-bind:max-height="maxHeight"
+                         v-bind:loading="loading"
+                         v-bind:highlight-row="highlightRow"
+                         v-bind:size="size"
+                         v-bind:draggable="draggable"
+                         v-bind:tooltipTheme="tooltipTheme"
+                         v-on:on-drag-drop="onDragDrop"
+                         v-on:on-current-change="currentChange"
+                         v-on:on-sort-change="sortChange"
+                         v-on:on-row-click="rowClick"
+                         v-on:on-row-dblclick="rowDblClick"
+                         v-on:on-selection-change="onSelectionChange">
+                </i-table>
+            </div>
+            <div style="width:0;height:100%;float:right;" v-if="columns.length>0">
+                <Poptip placement="left" trigger="hover" style="margin-left:-20px;margin-top:5px;">
+                    <Icon type="md-settings" />
+                    <div slot="content">
+                        <CheckboxGroup v-model="visibleCols" v-on:on-change="checkBoxChange">
+                            <ul style="text-align: left;">
+                                <li v-for="(i,k) in columns" key="k"><Checkbox v-bind:label="i.title">{{i.title}}</Checkbox></li>
+                            </ul>
+                        </CheckboxGroup>
+                    </div>
+                </Poptip>
+            </div>
+        </div>
+    </script>
 </head>
 <body>
     @RenderBody()

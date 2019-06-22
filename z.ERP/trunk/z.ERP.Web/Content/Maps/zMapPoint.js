@@ -188,8 +188,8 @@
                         return false;
                     });
                     function mouseUp(e) {
-                        window.parent.mapShow.screenParam.shopCode = e.delegateTarget.id;
-                        window.parent.mapShow.screenParam.showPopShop = true;
+                        window.mapShow.screenParam.shopCode = e.delegateTarget.id;
+                        window.mapShow.screenParam.showPopShop = true;
                     }
                 }
                 bindmouseUp($(value)[0]);

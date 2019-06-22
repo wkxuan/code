@@ -9,11 +9,13 @@
               @"Content/Login/style.css",
               @"Content/Login/supersized.css",
               @"Content/Login/font-awesome.min.css",
+                @"Content/Login/jigsaw.css",
                      "Content/jquery.min.js",
                     "Content/zBase.js",
                     "Content/AjaxHelper.js",
                     "Content/JsHelper.js",
                     "Content/PageBase.js",
+                    @"Content/Login/jigsaw.js",
                      @"Content/Login/supersized.3.2.7.min.js",
                 };
 }
@@ -23,7 +25,7 @@
 <head >
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <title>登录</title>
+    <title>云商登录</title>
     <script type="text/javascript">
         __ControllerUrl = '@ViewBag.ControllerUrl';
         __CommonControllerUrl = '@ViewBag.CommonControllerUrl';
@@ -45,12 +47,9 @@
                     <i class="fa fa-key"></i>
                     <input type="password" name="password" class="password" placeholder="密码" />
                 </div>
-                <button id="btn_login" type="submit">登录</button>
-                <div class="error"><span>+</span></div>
+                <div id="captcha" style="position: relative"></div>
+                <div id="msg"> &nbsp;</div>
             </form>
-        @*<div class="connect">
-            <p>测试库</p>
-        </div>*@
     </div>
 </body>
 </html>

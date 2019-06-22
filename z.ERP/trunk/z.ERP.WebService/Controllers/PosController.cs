@@ -48,6 +48,22 @@ namespace z.ERP.WebService.Controllers
             return service.PosService.GetConfig();
         }
 
+        [ServiceAble("BindAddress")]
+        public void BindAddress(Address ads)
+        {
+             service.PosService.BindAddress(ads);
+        }
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="passw"></param>
+        [ServiceAble("ChangePassword")]
+        public void ChangePassword(PasswordInfo passw)
+        {
+            service.PosService.ChangePassword(passw);
+        }
+
         [ServiceAble("GetClerkShop")]
         public UserYYYResult GetClerkShop(PersonInfo req)
         {

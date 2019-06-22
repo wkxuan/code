@@ -27,7 +27,7 @@ namespace z.ERP.Web.Areas.Share
             if (render.Invisible)    //不可见
                 render.HasPermission = false;
             else
-            { 
+            {
                 if (!render.PermissionKey.IsEmpty())
                     render.HasPermission = employee.HasPermission(render.PermissionKey);
                 else
@@ -114,6 +114,16 @@ namespace z.ERP.Web.Areas.Share
         /// <param name="render"></param>
         /// <returns></returns>
         public ActionResult Upload(UploadRender render)
+        {
+            return View(render);
+        }
+
+        public ActionResult Drawer(DrawerRender render)
+        {
+            return View(render);
+        }
+
+        public ActionResult Table(TableRender render)
         {
             return View(render);
         }

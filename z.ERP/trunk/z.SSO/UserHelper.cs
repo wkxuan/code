@@ -28,7 +28,7 @@ namespace z.SSO
         /// <param name="username"></param>
         /// <param name="password"></param>
         public abstract void Login(string username, string password);
-
+        public abstract int Logins(string username, string password);
         /// <summary>
         /// 登出
         /// </summary>

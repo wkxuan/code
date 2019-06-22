@@ -1,0 +1,89 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Srch;
+@using z.ERP.Entities.Enum;
+@inherits SrchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            收费项目类型
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<收费项目类型>()
+                {
+                    vModel = "searchParam.SFXMLX"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            债权发生月
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    Id = "zqfsy",
+                    vModel = "searchParam.NIANYUE",
+                    type = "number"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            商户
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME"  v-on:on-click="SelMerchant"/>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            收费项目
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.SFXM",
+                    ServiceMothod = m => m.feesubject(),
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            收付实现月
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    Id = "sfsxy",
+                    vModel = "searchParam.YEARMONTH",
+                    type = "number"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section pops{
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopMerchant",
+            Caption = "选择商户",
+            Width = "900",
+            Src = "screenParam.srcPopMerchant"
+        });
+    }
+}

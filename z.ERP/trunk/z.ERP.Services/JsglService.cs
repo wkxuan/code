@@ -8,6 +8,7 @@ using z.ERP.Entities.Enum;
 using z.Exceptions;
 using z.SSO.Model;
 using z.ERP.Entities.Procedures;
+using z.ERP.Entities.Auto;
 
 namespace z.ERP.Services
 {
@@ -371,6 +372,11 @@ namespace z.ERP.Services
                 {
                     GetVerify(item).Require(a => a.FINAL_BILLID);
                 });
+                //账单发票保存
+                SaveData.BILL_OBTAIN_INVOICE?.ForEach(item =>
+                {
+                    GetVerify(item).Require(a => a.INVOICEID);
+                });
                 DbHelper.Save(SaveData);
 
                 Tran.Commit();
@@ -378,12 +384,12 @@ namespace z.ERP.Services
             return SaveData.BILLID;
         }
 
-        public Tuple<dynamic, DataTable> GetBillObtainElement(BILL_OBTAINEntity Data)
+        public Tuple<dynamic, DataTable, DataTable> GetBillObtainElement(BILL_OBTAINEntity Data)
         {
-            string sql = $@"SELECT A.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME,D.NAME FKFSNAME "
-                        + "FROM BILL_OBTAIN A,BRANCH B,MERCHANT C,FKFS D "
-                        + "WHERE A.BRANCHID=B.ID and A.MERCHANTID = C.MERCHANTID(+)"
-                        + " AND A.FKFSID=D.ID(+)";
+            string sql = $@"SELECT A.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME,D.NAME FKFSNAME ,F.NAME FEE_ACCOUNT_NAME "
+                        + "FROM BILL_OBTAIN A,BRANCH B,MERCHANT C,FKFS D ,FEE_ACCOUNT F "
+                        + "WHERE A.BRANCHID=B.ID and A.MERCHANTID = C.MERCHANTID(+) "
+                        + " AND A.FKFSID=D.ID(+) AND A.FEE_ACCOUNT_ID=F.ID(+)";
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billObtain = DbHelper.ExecuteTable(sql);
@@ -396,7 +402,15 @@ namespace z.ERP.Services
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
 
-            return new Tuple<dynamic, DataTable>(billObtain.ToOneLine(), billObtainItem);
+            //发票数据
+            string sqlinvoice = @"SELECT B.BILLID,B.TYPE BTYPE,M.NAME MERCHANTNAME,I.* FROM BILL_OBTAIN_INVOICE B,INVOICE I,MERCHANT M
+                    WHERE B.INVOICEID=I.INVOICEID AND I.MERCHANTID=M.MERCHANTID";
+            if (!Data.BILLID.IsEmpty())
+                sqlinvoice += (" and B.BILLID= " + Data.BILLID);
+            DataTable billObtainInvoice = DbHelper.ExecuteTable(sqlinvoice);
+            billObtainInvoice.NewEnumColumns<发票类型>("TYPE", "TYPENAME");
+
+            return new Tuple<dynamic, DataTable, DataTable>(billObtain.ToOneLine(), billObtainItem, billObtainInvoice);
         }
 
         /// <summary>
@@ -524,7 +538,7 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);
         }
-        public Tuple<dynamic, DataTable> GetBillNoticePrint(BILL_NOTICEEntity Data)
+        public Tuple<dynamic, DataTable, DataTable> GetBillNoticePrint(BILL_NOTICEEntity Data)
         {
             string sql = $@"SELECT A.*,TO_CHAR(A.VERIFY_TIME,'YYYYMM') CZNY,B.NAME BRANCHNAME,'('||D.MERCHANTID||')'||D.NAME MERCHANTNAME,"
                  + " F.NAME PRINTNAME,F.BANK,F.ACCOUNT,"
@@ -555,7 +569,14 @@ namespace z.ERP.Services
             sqlitem += " ORDER BY 2";
             DataTable billNoticeItem = DbHelper.ExecuteTable(sqlitem);
 
-            return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);
+            //添加预收款余额明细 by：Dzk
+            string sqlaccount = @"SELECT M.BALANCE  FROM MERCHANT_ACCOUNT M ,CONTRACT C,BILL_NOTICE B
+									WHERE  C.MERCHANTID=M.MERCHANTID AND B.CONTRACTID=C.CONTRACTID AND M.FEE_ACCOUNT_ID=B.FEE_ACCOUNTID";
+            if (!Data.BILLID.IsEmpty())
+                sqlaccount += (" AND B.BILLID= " + Data.BILLID);
+            DataTable DTA = DbHelper.ExecuteTable(sqlaccount);
+
+            return new Tuple<dynamic, DataTable, DataTable>(billNotice.ToOneLine(), billNoticeItem,DTA);
         }
         /// <summary>
         /// 缴费通知单审核
@@ -685,5 +706,58 @@ namespace z.ERP.Services
 
             return result;
         }
+        #region 发票管理
+        public DataGridResult GetInvoiceList(SearchItem item)
+        {
+            string sql = @"SELECT I.*,M.NAME MERCHANTNAME,1 STATUS FROM INVOICE I,MERCHANT M
+                    WHERE I.MERCHANTID=M.MERCHANTID ";
+            item.HasKey("INVOICEID", a => sql += $" and I.INVOICEID = {a}");
+            item.HasKey("INVOICENUMBER", a => sql += $" and I.INVOICENUMBER = {a}");
+            item.HasKey("TYPE", a => sql += $" and I.TYPE={a}");
+            item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
+            item.HasDateKey("INVOICEDATE", a => sql += $" and I.INVOICEDATE={a}");
+            sql += " ORDER BY  I.CREATEDATE DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<发票类型>("TYPE", "TYPENAME");
+            return new DataGridResult(dt, count);
         }
+        public string SaveInvoice(InvoiceEntity SaveData) {
+            var v = GetVerify(SaveData);
+            if (SaveData.INVOICEID.IsEmpty()) {
+                SaveData.INVOICEID = NewINC("INVOICE");
+                SaveData.NOVATAMOUNT = (Convert.ToDecimal(SaveData.INVOICEAMOUNT) - Convert.ToDecimal(SaveData.VATAMOUNT)).ToString();
+                SaveData.CREATEUSERID= employee.Id;
+                SaveData.CREATENAME = employee.Name;
+                SaveData.CREATEDATE = DateTime.Now.ToString();
+                v.Require(a => a.INVOICEID);
+                v.Verify();
+            }
+            DbHelper.Save(SaveData);
+            return SaveData.INVOICEID;
+        }
+        public void DeleteInvoice(List<InvoiceEntity> DeleteData) {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    DbHelper.Delete(item);
+                }
+                Tran.Commit();
+            }
+        }
+        public Tuple<dynamic, DataTable> ShowOneInvoiceEdit(InvoiceEntity Data) {
+            string sql = @"SELECT I.*,M.NAME MERCHANTNAME FROM INVOICE I,MERCHANT M
+                    WHERE I.MERCHANTID=M.MERCHANTID ";
+            if (!Data.INVOICEID.IsEmpty())
+                sql += (" and I.INVOICEID= " + Data.INVOICEID);
+            if (!Data.INVOICENUMBER.IsEmpty())
+                sql += (" and I.INVOICENUMBER= " + Data.INVOICENUMBER);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<发票类型>("TYPE", "TYPENAME");
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(),dt);
+        }
+        #endregion
+    }
 }

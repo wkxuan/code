@@ -5,7 +5,8 @@
     if (Model.HasPermission)
     {
         <i-button id="@Model.Id"
-                  icon="@Model.Icon" v-on:click="@Model.Click"                  
+                  icon="@Model.Icon" v-on:click="@Model.Click"  
+                  type="@Model.Type"                
                   :disabled="@(Model.Enable?"!disabled":"disabled")"
                   :size="@Model.Size" 
                   >@Model.Text</i-button>

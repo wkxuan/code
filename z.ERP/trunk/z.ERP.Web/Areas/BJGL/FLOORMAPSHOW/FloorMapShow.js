@@ -19,8 +19,10 @@
     mapShow.screenParam.BRANCHID = 0;
     mapShow.screenParam.REGIONID = 0;
     mapShow.screenParam.FLOORID = 0;
+    mapShow.screenParam.FXWD = '';
 
     mapShow.screenParam.FLOORCATEGERY = [];
+    mapShow.screenParam.shopRentStatus = [];
     mapShow.screenParam.shopData = [];
     mapShow.screenParam.shopDataInfo = [];
     mapShow.screenParam.colDef = [
@@ -45,6 +47,25 @@
                     }
                 },
     { title: ' ', key: 'CATEGORYNAME', width: 150 }
+
+    ];
+    mapShow.screenParam.colDef1 = [
+                {
+                    title: ' ',
+                    key: 'action',
+                    width: 50,
+                    align: 'center',
+                    render: function (h, params) {
+                        return h('div',
+                            [
+                            h('Button', {
+                                props: { type: 'primary', size: 'small', disabled: false, shape: "circle" },
+                                style: { marginRight: '50px', background: mapShow.screenParam.shopRentStatus[params.index].COLOR },
+                            }, mapShow.screenParam.shopRentStatus[params.index].STATUSNAME.substr(0, 1))
+                            ]);
+                    }
+                },
+    { title: ' ', key: 'STATUSNAME', width: 150 }
 
     ];
     mapShow.GetHtml = function (data) {
@@ -217,14 +238,16 @@ SearchFloorMap: function (data) {
         };
 
     _.Ajax('SearchFloorShowMapData', {
-        Data: { FLOORID: mapShow.screenParam.FLOORID }
+        Data: { FLOORID: mapShow.searchParam.FLOORID, YEARMONTH: mapShow.searchParam.YEARMONTH }
     }, function (data) {
         mapShow.screenParam.mapid = data.floormap.MAPID;
         mapShow.screenParam.mappath = '../../../BackMap/' + data.floormap.FILENAME;
         mapShow.screenParam.widths = data.floormap.WIDTHS;
         mapShow.screenParam.lengths = data.floormap.LENGTHS;
         mapShow.screenParam.FLOORCATEGERY = data.floorcategory;
-        mapShow.screenParam.shopDataInfo = data.floorshopdata;
+        mapShow.screenParam.shopRentStatus = data.floorshoprent_status;
+        mapShow.screenParam.shopDataInfo = data.floorshopdata;        
+        mapShow.screenParam.FXWD = 'YTFB';
 
         for (var i = 0; i < data.floorshopdata.length; i++) {
             mapShow.screenParam.shopData.push({

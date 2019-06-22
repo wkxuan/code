@@ -1,0 +1,8 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@inherits z.ERP.Web.Areas.Share.ControlViewBase<TableRender>
+
+@{
+    <i-table height="@Model.Height" size="@Model.Size" :border="@Model.Border"
+             :columns="@Model.Columns" :highlight-row="@Model.Highlight" v-on:on-current-change="@Model.SelectOne"
+             :data="@Model.Data" ref="@Model.Ref"></i-table>
+}

@@ -67,6 +67,13 @@
     });
     $('body').find('#make-small-nav').click(function (e) {
         $('#page-wrapper').toggleClass('nav-small');
+        var $item = $('#page-wrapper.nav-small #sidebar-nav > .nav-pills > .open');
+        if ($item.hasClass('open')) {
+            $item.find('.open .submenu').slideUp('fast');
+            $item.find('.open').removeClass('open');
+            $item.children('.submenu').slideUp('fast');
+        }
+        $item.removeClass('open');
     });
     $('body').find('.mobile-search').click(function (e) {
         e.preventDefault();
@@ -128,3 +135,19 @@ function GetLoadNav(systemid) {
         };
     });
 }
+//添加vue模块
+var Index = new Vue({
+    el: '#theme-wrapper',
+    data: {
+        DrawerModel: false,
+        BadgeNO:0
+    },
+    mounted: function () {
+        this.BadgeNO = 999
+    },
+    methods: {
+        Badgeclick: function () {
+            Index.DrawerModel = true;
+        }
+    }
+})

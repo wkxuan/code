@@ -11,12 +11,16 @@
     this.IsValidSrch = function () {
         return true;
     }
+
     this.canEdit = function (mess) {
         return true;
     }
+
     this.popInitParam = function (data) { }
 
     this.popCallBack = function (data) { };
+
+    this.mountedInit = function () { }
 
     this.vue = function VueOperate() {
         var options = {
@@ -25,22 +29,33 @@
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 panelName: 'condition',
-                disabled: _this.enabled(true),
-
-                screenParamData: {
-                    dataDef: []
+                disabled: _this.enabled(true),             
+                options: {
+                    columns: [],
+                    data: [],
+                    maxHeight: 240,
                 }
             },
             mounted: function () {
+                _this.mountedInit();
+            },
+            watch: {
+                "screenParam.colDef": {
+                    handler: function (nv, ov) {
+                        this.options.columns = nv;
+                    },
+                    immediate: true,
+                    deep: true
+                }
             },
             methods: {
                 seach: function (event) {
                     event.stopPropagation();
-                    var mess = this;
+                    let _self = this;
 
                     if (!_this.IsValidSrch())
                         return;
-                    Vue.set(ve.screenParamData, "dataDef", []);
+                    this.options.data = [];
                     //父页面是单据
                     if (window.parent.editDetail != undefined)
                         _this.popInitParam(window.parent.editDetail.screenParam.popParam);
@@ -53,71 +68,59 @@
                         //父页面是简单定义
                     else if (window.parent.define != undefined)
                         _this.popInitParam(window.parent.define.screenParam.popParam);
-                    showList(function (data) {
-                        if (_this.screenParam.dataDef.length > 0) {
-                            ve.panelName = 'result';
-                            Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
-                        }
-                        else {
-                            mess.$Message.info("没有满足当前查询条件的结果!");
+
+                    _self.searchParam = _this.searchParam;
+                    _.Search({
+                        Service: _this.service,
+                        Method: _this.method,
+                        Data: _self.searchParam,
+                        Success: function (data) {
+                            if (data.rows.length > 0) {
+                                _self.panelName = 'result';
+                                _self.options.data = data.rows;
+                            }
+                            else {
+                                _self.$Message.info("没有满足当前查询条件的结果!");
+                            }
                         }
                     });
                 },
                 qr: function (event) {
                     event.stopPropagation();
-                    var data = {};
-                    data.sj = this.$refs.selectData.getSelection();
-                    this.Data = [];
-                    this.$refs.selectData.makeObjData();
-                    //this.$emit('setdialog', data)
+                    let data = {};
+                    data.sj = this.$refs.selectData.getSelectData();
+                    if (!data.sj.length) {
+                        this.$Message.info("请选择数据!");
+                        return;
+                    }
                     if (window.parent.editDetail != undefined)
                         window.parent.editDetail.popCallBack(data)
                     else if (window.parent.srch != undefined)
                         window.parent.srch.popCallBack(data)
                     else if (window.parent.search != undefined)
                         window.parent.search.popCallBack(data)
-                    
                     else if (window.parent.define != undefined)
                         window.parent.define.popCallBack(data);
-                    //清空查询结果
-                    Vue.set(ve.screenParamData, "dataDef",[]);
-                    //localStorage.setItem("relt", data);
-                    //var site = localStorage.getItem("relt");
+                    else if (window.parent.splc != undefined)
+                        window.parent.splc.popCallBack(data);
+                    this.options.data = [];
                 },
                 clear: function (event) {
                     event.stopPropagation();
                     _this.searchParam = {};
-                    ve.searchParam = _this.searchParam;
-                    ve.screenParamData.dataDef = [];
-                    ve.panelName = 'condition';
+                    this.searchParam = _this.searchParam;
+                    this.options.data = [];
+                    this.panelName = 'condition';
                     _this.newCondition();
                 }
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
         var ve = new Vue(options);
-        function showList(callback) {
-            ve.searchParam = _this.searchParam;
-            _.Search({
-                Service: _this.service,
-                Method: _this.method,
-                Data: ve.searchParam,
-                Success: function (data) {
-                    _this.screenParam.dataDef = data.rows;
-                    callback && callback();
-                }
-            })
-        };
         function notExistsData() {
-            return (!ve.screenParamData.dataDef) || (ve.screenParamData.dataDef.length == 0)
+            return (!ve.options.data) || (ve.options.data.length == 0)
         }
     }
-
-    this.addHref = function () { }
-
-    this.modHref = function (row, index) { }
-
-    this.browseHref = function (row, index) { }
 
     this.colDefInit = function () {
         _this.colMul = [{

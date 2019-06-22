@@ -257,6 +257,24 @@ namespace z.ERP.Services
             e.Process();
             return "/File/Output/" + newname;
         }
+        /// <summary>
+        /// 待处理任务
+        /// </summary>
+        /// <param name="billStatus"></param>
+        public void InsertDclRw(BILLSTATUSEntity billStatus)
+        {
+            var v = GetVerify(billStatus);
+            v.Require(a => a.BILLID);
+            v.Require(a => a.MENUID);
+            v.Require(a => a.BRABCHID);
+            v.Require(a => a.URL);
+            DbHelper.Save(billStatus);
+        }
+        public void DelDclRw(BILLSTATUSEntity billStatus)
+        {
+            var v = GetVerify(billStatus);
+            DbHelper.Delete(billStatus);
+        }
         #endregion
 
         #region 权限
@@ -325,7 +343,25 @@ namespace z.ERP.Services
                         SqlFeesubject += "and A1.ROLEID = B1.ROLEID and B1.TRIMID = A.TRIMID )";
                     }
                     return SqlFeesubject;
-
+                case PermissionType.Region:
+                    string SqlRegion = "";
+                    SqlRegion = " select REGIONID from REGION where 1=1 ";
+                    if (!employee.Id.IsEmpty() && employee.Id != "-1")
+                    {
+                        SqlRegion += " and exists(select 1 from USER_ROLE, ROLE_REGION where USER_ROLE.USERID = " + employee.Id;
+                        SqlRegion += " and USER_ROLE.ROLEID = ROLE_REGION.ROLEID and ROLE_REGION.REGIONID = REGION.REGIONID ) ";
+                    }
+                    return SqlRegion;
+                case PermissionType.Category:
+                    string SqlCategory = "";
+                    SqlCategory = " select CATEGORYCODE from CATEGORY where 1=1  ";
+                    if (!employee.Id.IsEmpty() && employee.Id != "-1")
+                    {
+                        SqlCategory += " and exists(select 1 from USER_ROLE, ROLE_YT where USER_ROLE.USERID = " + employee.Id;
+                        SqlCategory += " and USER_ROLE.ROLEID = ROLE_YT.ROLEID and ROLE_YT.YTID = CATEGORY.CATEGORYID ) ";
+                    }
+                    SqlCategory += " order by CATEGORYCODE";
+                    return SqlCategory;
                 default:
                     throw new Exception("无效的权限类型");
             }

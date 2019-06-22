@@ -20,11 +20,11 @@ namespace z.DGS.Services
 
         public User GetUserByCode(string code, string password)
         {
-            bool b = DbHelper.ExecuteTable("select count(1) from STATION where TYPE=3  and STATIONBH= {{code}}", new zParameter("code", code)).Rows.Count > 0;
+            bool b = DbHelper.ExecuteTable("select 1 from STATION where TYPE=3  and STATIONBH= {{code}}", new zParameter("code", code)).Rows.Count > 0;
             if (!b)
-                throw new Exception($"款台{code}不存在");
+                throw new Exception($"终端{code}不存在或类型不匹配");
             if (password != MD5Encryption.Encrypt($"z.DGS.LoginSalt{code}"))
-                throw new Exception($"款台{code}给定的密钥不正确");
+                throw new Exception($"终端{code}的密钥不正确");
             return new User()
             {
                 Code = code,
