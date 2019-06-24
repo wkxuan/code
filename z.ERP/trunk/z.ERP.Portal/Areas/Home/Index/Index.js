@@ -188,7 +188,7 @@ var Index = new Vue({
             Index.DrawerModel = false;   //先关闭抽屉在打开tab
             _.OpenPage({
                 id: event.MENUID,
-                title: '浏览销售补录单',
+                title: event.NAME,
                 url: event.DOMAIN+event.URL + event.BILLID
             })
         },
