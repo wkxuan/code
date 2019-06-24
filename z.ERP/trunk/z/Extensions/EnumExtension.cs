@@ -86,6 +86,23 @@ namespace z.Extensions
         {
             return e.ToString();
         }
-        
+        /// <summary>
+        /// 转换为枚举
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static T ToEnum<T>(this object obj) where T : struct
+        {
+            T t;
+            if (obj is string)
+                Enum.TryParse(obj.ToString(), out t);
+            else if (obj is int)
+                Enum.TryParse(obj.ToString(), out t);
+            else
+                throw new Exception($"不支持类型{obj.GetType().Name }的转换");
+            return t;
+        }
+
     }
 }

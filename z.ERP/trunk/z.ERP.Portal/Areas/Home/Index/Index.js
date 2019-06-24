@@ -152,44 +152,45 @@ var Index = new Vue({
             ])
         },
         dclrwcolDef: [
-                { title: '菜单号', key: 'MENUID'},
                 { title: '菜单名称', key: 'NAME'},
-                { title: '分店', key: 'BRANCHMC'},
-                { title: '数量', key: 'COUNT' }],
+                { title: '单据号', key: 'BILLID'},
+                { title: '分店', key: 'BRANCHMC'}],
         dclrwdataDef: [],
     },
+    created: function () {
+        this.AllTopData();    //加载数据不能放到mounted里，会和加载目录异步方法冲突
+    },
     mounted: function () {
-        //_.Ajax('AllTopData', function (data) {
-        //    debugger
-        //    this.BadgeNO = data.dclrwcount;
-        //    this.dclrw = (h) => {
-        //        return h('div', [
-        //            h('span', '待处理任务'),
-        //            h('Badge', {
-        //                props: {
-        //                    count: data.dclrwcount
-        //                }
-        //            })
-        //        ])
-        //    };
-        //    this.dclrwdataDef = data.dclrwdata;
-        //    Vue.set(this, 'BadgeNO', data.dclrwcount);
-        //});
-        this.BadgeNO = 10;
-        this.dclrw = (h) => {
-            return h('div', [
-                h('span', '待处理任务'),
-                h('Badge', {
-                    props: {
-                        count: 10
-                    }
-                })
-            ])
-        };
     },
     methods: {
         Badgeclick: function () {
+            this.AllTopData();
             Index.DrawerModel = true;
+        },
+        AllTopData: function () {
+            let _Index = this;
+            _.AjaxT('AllTopData', { 1: 1 }, function (data) {     //为防止与目录加载冲突，用同步加载   AjaxT
+                _Index.BadgeNO = data.dclrwcount;
+                _Index.dclrw = (h) => {
+                    return h('div', [
+                        h('span', '待处理任务'),
+                        h('Badge', {
+                            props: {
+                                count: data.dclrwcount
+                            }
+                        })
+                    ])
+                };
+                _Index.dclrwdataDef = data.dclrwdata;
+            });
+        },
+        dclrwClick: function (event) {
+            Index.DrawerModel = false;   //先关闭抽屉在打开tab
+            _.OpenPage({
+                id: event.MENUID,
+                title: event.NAME,
+                url: event.DOMAIN+event.URL + event.BILLID
+            })
         },
     },
 })

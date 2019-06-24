@@ -25,12 +25,12 @@ namespace z.ERP.Web.Areas.Home.Index
         }
         public UIResult AllTopData()
         {           
-            var boxDclrwdata = service.DefaultDataService.BoxDclrwData();  //待处理任务            
+            var Dclrwdata = service.HomeService.DclrwData();  //待处理任务            
             return new UIResult(
                 new
                 {
-                    dclrwdata = boxDclrwdata,
-                    dclrwcount= boxDclrwdata.Rows.Count>0 ? boxDclrwdata.Rows.Count:0,
+                    dclrwdata = Dclrwdata,
+                    dclrwcount= Dclrwdata.Rows.Count>0 ? Dclrwdata.Rows.Count:0,
                 }
                 );
         }

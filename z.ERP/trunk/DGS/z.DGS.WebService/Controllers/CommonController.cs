@@ -79,6 +79,7 @@ namespace z.DGS.WebService.Controllers
                     };
                 }
             }
+            Log.Info($"Login", dto, res);
             return res;
         }
     }

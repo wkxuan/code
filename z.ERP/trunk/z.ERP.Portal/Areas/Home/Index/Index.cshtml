@@ -38,6 +38,19 @@
         html,body{
             overflow:hidden;
         }
+        /* 抽屉table*/
+        #TabsList .ivu-table-wrapper {
+            border:0;
+        }
+        #TabsList .ivu-table:before {
+            background-color:#fff;
+        }
+        #TabsList .ivu-table td, .ivu-table th {
+            border:0;
+        }
+        #TabsList .ivu-table:after {
+            background-color:#fff;
+        }
     </style>
     @InitFiles(WebFiles)
     
@@ -100,11 +113,11 @@
                             </Badge>
                             @*抽屉*@
                             <Drawer title="" :closable="true" width="30" :draggable="true" v-model="DrawerModel">
-                                <Tabs value="notices">
+                                <Tabs value="notices" id="TabsList">
                                     <Tab-Pane label="通知公告" name="notices">通知公告</Tab-Pane>
                                     <Tab-Pane :label="dclrw" name="dclrw">
                                         <i-table size="small"
-                                                 :columns="dclrwcolDef" :data="dclrwdataDef"></i-table>
+                                                 :columns="dclrwcolDef" :data="dclrwdataDef" v-on:on-row-dblclick="dclrwClick"></i-table>
                                     </Tab-Pane>
                                     <Tab-Pane label="预警" name="warning">预警</Tab-Pane>
                                 </Tabs>

@@ -133,10 +133,10 @@ namespace z.ERP.Services
 
         public DataTable BoxDclrwData()
         {
-            var sql = " select B.MENUID,M.NAME,C.NAME BRANCHMC ,B.URL,count(*) COUNT,min(BILLID) BILLID  from BILLSTATUS B,MENU M,BRANCH C" +
-                "  where B.MENUID=M.ID and B.BRABCHID =C.ID" +
-                " and exists (select 1 from USER_ROLE U,ROLE_MENU N where U.ROLEID = N.ROLEID and N.MENUID = M.ID and U.USERID =  " + employee.Id +") "+ 
-                "  group by B.MENUID,M.NAME,C.NAME,B.URL ";
+            var sql = " select B.MENUID,M.NAME,C.NAME BRANCHMC ,B.URL,count(*) COUNT,min(BILLID) BILLID,P.ID PLATFORMID ,P.DOMAIN DOMAIN  from BILLSTATUS B,MENU M,BRANCH C,PLATFORM P " +
+                "  where B.MENUID=M.ID and B.BRABCHID =C.ID AND P.ID=M.PLATFORMID " +
+                " and exists (select 1 from USER_ROLE U,ROLE_MENU N where U.ROLEID = N.ROLEID and N.MENUID = M.ID and U.USERID =  " + employee.Id +") "+
+                "  group by B.MENUID,M.NAME,C.NAME,B.URL,P.ID,P.DOMAIN ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
