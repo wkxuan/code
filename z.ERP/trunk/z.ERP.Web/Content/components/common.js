@@ -135,25 +135,75 @@ Vue.component('un-edit-table', {
 });
 
 Vue.component('yx-input', {
-    //props: [''],
-    template: ``,
+    props: ['value', 'type', 'size', 'disabled', 'readonly', 'validate', 'maxlength', 'pacement'],
+    template: ` <Poptip class="yxInputClass" style="width:100%;" :placement="curPacement" v-model="visible" :disabled="tipDisabled">` +
+              `   <i-input :id="id" v-model="curValue" :type="curType" :size="curSize" :disabled="curDisabled"` +
+              `            :readonly="curReadonly" :maxlength="curMaxlength" clearable />` +
+              `   <div slot="content">{{msgText}}</div>` +
+              ` </Poptip  >`,
     data() {
         return {
-          
+            id: Guid(),
+            curValue: this.value,
+            msgText: "",
+            curType: "text",
+            curSize: "default",
+            curReadonly: false,
+            curMaxlength: null,
+            visible: false,
+            curPacement: "right",
+            tipDisabled: true
+        }
+    },
+    computed:{
+        curDisabled() {
+            return this.disabled;
         }
     },
     mounted() {
-     
+        curType = this.type;
+        curSize = this.size;
+        curReadonly = this.readonly;
+        curMaxlength = this.maxlength;
+        curPacement = this.pacement;
     },
     watch: {
-      
-    },
-    computed: {
-        data() {
-            return this.options.data || [];
+        curValue: {
+             handler: function (nv, ov) {
+                 let _self = this;
+                 _self.tipDisabled = false;
+                 _self.$emit('input', nv);
+                 _self.validateFun();
+            },
+            immediate: false,
+            deep: true
         }
     },
     methods: {
-    
+        validateFun() {
+            let _self = this;
+            let list = _self.validate || [];
+            for (let i = 0, len = list.length; i < len; i++) {
+                _self.visible = false;
+                if (typeof list[i].validate == "string") {
+                    switch (list[i].validate) {
+                        case "required":
+                            if (_self.curValue == undefined || _self.curValue == null || _self.curValue == "") {
+                                _self.visible = true;
+                                _self.msgText = "不能为空！";
+                            }
+                            break;
+                    }
+                } else if (typeof list[i].validate == "function") {
+                    if (!list[i].validate(_self.curValue)) {
+                        _self.visible = true;
+                        _self.msgText = list[i].msg;
+                    }
+                }
+                if (_self.visible) {
+                    break;
+                }
+            }
+        }
     }
 });
