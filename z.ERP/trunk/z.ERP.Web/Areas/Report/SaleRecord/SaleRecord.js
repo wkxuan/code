@@ -53,17 +53,21 @@ srch.otherMethods = {
 srch.popCallBack = function (data) {
     if (srch.screenParam.showPopMerchant) {
         srch.screenParam.showPopMerchant = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
-        }
+        srch.searchParam.MERCHANTID = $.map(data.sj, item => {
+            return item.MERCHANTID
+        }).join(',');
+        srch.searchParam.MERCHANTNAME = $.map(data.sj, item => {
+            return item.NAME
+        }).join(',');
     }
+    debugger
     if (srch.screenParam.showPopShop) {
         srch.screenParam.showPopShop = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.SHOPID = data.sj[i].SHOPID;
-            srch.searchParam.SHOPCODE = data.sj[i].SHOPCODE;
-            srch.searchParam.SHOPNAME = data.sj[i].NAME;
-        }
+        srch.searchParam.SHOPID = $.map(data.sj, item => {
+            return item.SHOPID
+        }).join(',');
+        srch.searchParam.SHOPNAME = $.map(data.sj, item => {
+            return item.NAME
+        }).join(',');
     }
 } 
