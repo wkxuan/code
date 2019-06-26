@@ -735,7 +735,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Home\" />
     <Folder Include="Areas\XTGL\Views\PosO2OWftCfg\" />
     <Folder Include="Areas\XTGL\Views\Tree\" />
     <Folder Include="BackMap\" />

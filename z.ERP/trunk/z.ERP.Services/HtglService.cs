@@ -306,6 +306,9 @@ namespace z.ERP.Services
             if (configBzyts.CUR_VAL.ToInt() <= 0)
                 throw new LogicException("参数1003(不足月天数设定)设置有误");
 
+            CONFIGEntity configBlxsw = new CONFIGEntity();
+            configBlxsw = DbHelper.Select(new CONFIGEntity() { ID = "1002" });
+
             foreach (var ydfj in Data)
             {
                 List<PERIODEntity> Period = new List<PERIODEntity>();
@@ -344,18 +347,18 @@ namespace z.ERP.Services
                     {
                         if (configBzybj.CUR_VAL.ToInt() == 0)   //0(月金额 / 当月总天数) * 实际天数;
                         {
-                            zjfj.RENTS = (Math.Round(je / allTs * zjfjTs, 2,
+                            zjfj.RENTS = (Math.Round(je / allTs * zjfjTs, configBlxsw.CUR_VAL.ToInt(),
                                 MidpointRounding.AwayFromZero)).ToString();
                         }
                         else if(configBzybj.CUR_VAL.ToInt() == 1)  //1:(月金额 / 1003参数设置的天数)*实际天数;
                         {
                             zjfj.RENTS = (Math.Round(je / (configBzyts.CUR_VAL).ToDouble() * zjfjTs,
-                                2, MidpointRounding.AwayFromZero)).ToString();
+                            configBlxsw.CUR_VAL.ToInt(), MidpointRounding.AwayFromZero)).ToString();
                         }
                         else  //2:(月金额 * 12 / 365) * 实际天数
                         {
                             zjfj.RENTS = (Math.Round((je * 12 / 365) * zjfjTs,
-                                2, MidpointRounding.AwayFromZero)).ToString();
+                            configBlxsw.CUR_VAL.ToInt(), MidpointRounding.AwayFromZero)).ToString();
                         }
                        
                     }
@@ -390,6 +393,9 @@ namespace z.ERP.Services
 
             if(configBzyts.CUR_VAL.ToInt() <=0 )
                 throw new LogicException("参数1003(不足月天数设定)设置有误");
+
+            CONFIGEntity configBlxsw = new CONFIGEntity();
+            configBlxsw = DbHelper.Select(new CONFIGEntity() { ID = "1002" });
 
 
             //PAY_CYCLE缴费周期
@@ -574,7 +580,7 @@ namespace z.ERP.Services
                     switch (ydfj.DJLX.ToInt())
                     {
                         case 1://日租金
-                            zjfj.RENTS = Math.Round(je * zjfjTs, 2, MidpointRounding.AwayFromZero).ToString();
+                            zjfj.RENTS = Math.Round(je * zjfjTs, configBlxsw.CUR_VAL.ToInt(), MidpointRounding.AwayFromZero).ToString();
                             break;
                         case 2://月租金
                             if (zjfjTs != zts) //不足月时金额算法
@@ -582,18 +588,18 @@ namespace z.ERP.Services
                              
                                 if (configBzybj.CUR_VAL.ToInt() == 0)   //0(月金额/当月总天数)*实际天数;
                                 {
-                                    zjfj.RENTS = (Math.Round(je / zts * zjfjTs, 2,
+                                    zjfj.RENTS = (Math.Round(je / zts * zjfjTs, configBlxsw.CUR_VAL.ToInt(),
                                         MidpointRounding.AwayFromZero)).ToString();
                                 }
                                 else if(configBzybj.CUR_VAL.ToInt() == 1)  //1:(月金额/1003参数设置的天数)*实际天数;
                                 {
                                     zjfj.RENTS = (Math.Round(je / (configBzyts.CUR_VAL).ToDouble() * zjfjTs,
-                                        2, MidpointRounding.AwayFromZero)).ToString();
+                                        configBlxsw.CUR_VAL.ToInt(), MidpointRounding.AwayFromZero)).ToString();
                                 }
                                 else       //2:(月金额*12/365)*实际天数
                                 {
                                     zjfj.RENTS = (Math.Round((je * 12 / 365) * zjfjTs,
-                                        2, MidpointRounding.AwayFromZero)).ToString();
+                                        configBlxsw.CUR_VAL.ToInt(), MidpointRounding.AwayFromZero)).ToString();
 
                                 }
 
