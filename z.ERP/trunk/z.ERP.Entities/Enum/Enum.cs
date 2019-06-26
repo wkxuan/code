@@ -411,4 +411,9 @@ namespace z.ERP.Entities.Enum
         审核 = 2,
         终止 = 3
     }
+    public enum 通知状态
+    {
+        草稿状态 = 1,
+        发布状态 = 2
+    }
 }

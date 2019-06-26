@@ -1,0 +1,94 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+
+@section head{
+    <style>
+        .ivu-table-tip {
+            overflow-x: hidden;
+        }
+
+        .ivu-table-overflowX {
+            overflow-x: hidden;
+        }
+
+    </style>
+    @InitFiles(new string[] {
+        "Content/Editor/wangEditor.css",
+        "Content/Editor/wangEditor.js",
+})
+}
+@section search{
+    <row>
+        <i-col span="5" class="RowTitle">通知标题</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.TITLE"
+                });
+            }
+        </i-col>
+        <i-col span="5" class="RowTitle">通知状态</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new EnumDropDownListRender<通知状态>()
+                {
+                    vModel = "searchParam.STATUS"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section element{
+
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            通知编号
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ID",
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            通知状态
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<通知状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            通知标题
+        </i-col>
+        <i-col span="16" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.TITLE",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <yx-editor :content="dataParam.CONTENT" :disabled="disabled" v-on:change="editorChange"></yx-editor>
+    </row>
+
+}

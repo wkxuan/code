@@ -207,3 +207,63 @@ Vue.component('yx-input', {
         }
     }
 });
+
+Vue.component('yx-editor', {
+    template: `<div >`+
+              `<div id="editor" style="text-align:left" ></div>` +
+              `</div>`,
+    model: {
+        prop: "content",
+        event: "change"
+    },
+    props: ["content", "disabled"],
+    data() {
+        return {
+            editorObj: null,
+        }
+    },
+    computed: {
+        curDisabled() {
+            return this.disabled;
+        }
+    },
+    mounted() {
+        /*实例化*/
+        var E = window.wangEditor;
+        this.editorObj = new E('#editor');
+        /*设置BASE64图片*/
+        this.editorObj.customConfig.uploadImgShowBase64 = true
+        //黏贴样式不过滤
+        this.editorObj.customConfig.pasteFilterStyle = false
+        /*绑定回馈事件*/
+        this.editorObj.customConfig.onchange = html => {
+            this.$emit("change", html);
+        };
+        this.editorObj.customConfig.zIndex = 100;
+        /*创建编辑器*/
+        this.editorObj.create();
+        this.editorObj.$textElem.attr('contenteditable', !this.disabled);
+        /*初始内容*/
+        //this.editorObj.txt.html("");
+    },
+    watch: {
+        content: {
+            handler: function (nv, ov) {
+                this.editorObj.txt.html(nv);
+            },
+            immediate: false,
+            deep: true
+        },
+        disabled: {
+            handler: function (nv, ov) {
+                if (nv) {
+                    this.editorObj.$textElem.attr('contenteditable', false)
+                } else {
+                    this.editorObj.$textElem.attr('contenteditable', true)
+                }
+            },
+            immediate: false,
+            deep: true
+        }
+    },
+});
