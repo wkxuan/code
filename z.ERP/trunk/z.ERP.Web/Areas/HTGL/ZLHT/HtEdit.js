@@ -279,7 +279,8 @@
             render: function (h, params) {
                 return h('DatePicker', {
                     props: {
-                        value: params.row.ENDDATE
+                        value: params.row.ENDDATE,
+                        transfer: true
                     },
                     on: {
                         'on-change': function (event) {
@@ -295,7 +296,8 @@
             render: function (h, params) {
                 return h('Select', {
                     props: {
-                        value: params.row.DJLX
+                        value: params.row.DJLX,
+                        transfer: true
                     },
                     on: {
                         'on-change': function (event) {
@@ -405,7 +407,8 @@
             render: function (h, params) {
                 return h('DatePicker', {
                     props: {
-                        value: params.row.CREATEDATE
+                        value: params.row.CREATEDATE,
+                        transfer: true
                     },
                     on: {
                         'on-change': function (event) {
@@ -431,7 +434,8 @@
             render: function (h, params) {
                 return h('Select', {
                     props: {
-                        value: params.row.QSBJ
+                        value: params.row.QSBJ,
+                        transfer: true
                     },
                     on: {
                         'on-change': function (event) {
@@ -461,7 +465,8 @@
             render: function (h, params) {
                 return h('Select', {
                     props: {
-                        value: params.row.QJQSBJ
+                        value: params.row.QJQSBJ,
+                        transfer: true
                     },
                     on: {
                         'on-change': function (event) {
@@ -525,7 +530,8 @@
             render: function (h, params) {
                 return h('DatePicker', {
                     props: {
-                        value: params.row.STARTDATE
+                        value: params.row.STARTDATE,
+                        transfer: true
                     },
                     on: {
                         'on-change': function (event) {
@@ -542,7 +548,8 @@
             render: function (h, params) {
                 return h('DatePicker', {
                     props: {
-                        value: params.row.ENDDATE
+                        value: params.row.ENDDATE,
+                        transfer: true
                     },
                     on: {
                         'on-change': function (event) {
@@ -558,7 +565,8 @@
                 return h('Select',
                     {
                         props: {
-                            value: params.row.SFFS
+                            value: params.row.SFFS,
+                            transfer: true
                         },
                         on: {
                             'on-change': function (event) {
@@ -638,7 +646,8 @@
                 return h('Select',
                     {
                         props: {
-                            value: params.row.FEERULEID
+                            value: params.row.FEERULEID,
+                            transfer: true
                         },
                         on: {
                             'on-change': function (event) {
@@ -667,7 +676,8 @@
                 return h('Select',
                     {
                         props: {
-                            value: params.row.ZNGZID
+                            value: params.row.ZNGZID,
+                            transfer: true
                         },
                         on: {
                             'on-change': function (event) {
@@ -686,7 +696,8 @@
                 return h('Select',
                     {
                         props: {
-                            value: params.row.IF_RENT_FEERULE
+                            value: params.row.IF_RENT_FEERULE,
+                            transfer: true
                         },
                         on: {
                             'on-change': function (event) {
@@ -743,7 +754,8 @@
             render: function (h, params) {
                 return h('DatePicker', {
                     props: {
-                        value: params.row.STARTDATE
+                        value: params.row.STARTDATE,
+                        transfer:true
                     },
                     on: {
                         'on-change': function (event) {
@@ -760,7 +772,8 @@
             render: function (h, params) {
                 return h('DatePicker', {
                     props: {
-                        value: params.row.ENDDATE
+                        value: params.row.ENDDATE,
+                        transfer: true
                     },
                     on: {
                         'on-change': function (event) {

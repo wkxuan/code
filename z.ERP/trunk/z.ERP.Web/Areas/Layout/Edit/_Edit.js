@@ -21,6 +21,7 @@
                 screenParam: _this.screenParam,
                 branchid: _this.branchid,
                 disabled: _this.enabled(true),
+                collapseValue: [1, 2]
             },
             mounted: function () {
                 _this.mountedInit();

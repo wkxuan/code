@@ -35,7 +35,7 @@
     data: function () {
         return {
             MERCHANTID: '',
-            NAME: '',
+            MERCHANTNAME: '',
             Column: [
                 { type: 'selection', width: 60, align: 'center' },
                 { title: '商户代码', key: 'MERCHANTID', width: 150 },
