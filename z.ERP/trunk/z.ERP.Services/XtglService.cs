@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using z.Encryption;
 using z.ERP.Entities;
+using z.ERP.Entities.Auto;
 using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
 using z.Exceptions;
@@ -931,7 +932,41 @@ namespace z.ERP.Services
             Data.XH = NewINC("SPLCJG_MENUE");
             DbHelper.Save(Data);
         }
-
+        //通知消息列表
+        public DataGridResult GetNOTICE(SearchItem item)
+        {
+            string sql = @"select * from NOTICE where 1=1 ";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            item.HasKey("TITLE", a => sql += $" and TITLE LIKE '%{a}%'");
+            item.HasKey("STATUS", a => sql += $" and STATUS = '{a}'");
+            sql += " order by ID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<通知状态>("STATUS", "STATUSNAME");
+            return new DataGridResult(dt, count);
+        }
+        public string SaveNotice(NOTICEEntity DefineSave)
+        {
+            var v = GetVerify(DefineSave);
+            if (DefineSave.ID.IsEmpty())
+                DefineSave.ID = NewINC("NOTICE");
+            //如果状态为2，保存 发布人信息
+            if (DefineSave.STATUS=="2") {
+                DefineSave.VERIFY = employee.Id;
+                DefineSave.VERIFY_NAME = employee.Name;
+                DefineSave.VERIFY_TIME = DateTime.Now.ToString();
+            }
+            DefineSave.REPORTER = employee.Id;
+            DefineSave.REPORTER_NAME = employee.Name;
+            DefineSave.REPORTER_TIME = DateTime.Now.ToString();
+            v.Require(a => a.ID);
+            v.Require(a => a.TITLE);
+            v.Require(a => a.STATUS);
+            v.Require(a => a.CONTENT);
+            v.Verify();
+            DbHelper.Save(DefineSave);           
+            return DefineSave.ID;
+        }
     }
 
 }
