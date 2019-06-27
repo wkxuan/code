@@ -948,7 +948,7 @@ namespace z.ERP.Services
         //消息详情
         public DataTable GetNOTICEInfo(string id)
         {
-            string sql = @"select * from NOTICE where STATUS=2 ";
+            string sql = @"select N.*,TO_CHAR(N.VERIFY_TIME,'yyyy-MM-dd') release_time from NOTICE N where STATUS=2 ";
             if (!string.IsNullOrEmpty(id)) {
                 sql += @" and id="+id+"";
             }

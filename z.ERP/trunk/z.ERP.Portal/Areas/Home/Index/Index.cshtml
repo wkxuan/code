@@ -116,16 +116,16 @@
                                 <Tabs value="notices" id="TabsList">
                                     <Tab-Pane :label="notices" name="notices">
                                         <Card style="width:100%" :bordered="false" dis-hover>
-                                            <p slot="title">
-                                                <Icon type="ios-list" size="20"></Icon>
-                                                未读消息列表
-                                            </p>
-                                            <a href="#" slot="extra" v-on:click="noticemore">
-                                                <Tooltip content="更多通知公告..." placement="left-start">
-                                                    <Icon type="ios-more" size="20"></Icon>
-                                                </Tooltip>                                                                                                  
-                                            </a>
-                                            
+                                            <div style="padding-bottom: 10px;font-size:16px;font-weight:900">
+                                                <a href="#" v-on:click="noticeisread(1)">
+                                                    <Icon type="md-reorder" size="25" color="black"></Icon>
+                                                    未读消息列表
+                                                </a>
+                                                <a href="#" v-on:click="noticeisread(2)" style="float:right">
+                                                    <Icon type="md-reorder" size="25" color="black"></Icon>
+                                                    已读消息列表
+                                                </a>
+                                            </div>
                                             <ul>
                                                 <li v-for="item in noticesdata">
                                                     <a href="#" v-on:click="noticeinfo(item.ID)">

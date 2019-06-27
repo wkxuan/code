@@ -25,7 +25,7 @@ namespace z.ERP.Web.Areas.Home.Index
         }
         public UIResult AllTopData()
         {   
-            var Noticedata= service.HomeService.NoticeData();   //通知公告
+            var Noticedata= service.HomeService.NoticeData(1);   //通知公告
             var Dclrwdata = service.HomeService.DclrwData();  //待处理任务            
             return new UIResult(
                 new
@@ -44,6 +44,16 @@ namespace z.ERP.Web.Areas.Home.Index
         //消息已读
         public void NoticeRead(string id) {
             service.XtglService.NoticeRead(id);
+        }
+        //消息，已读，未读
+        public UIResult GetNoticeData(int type)
+        {
+            var Noticedata = service.HomeService.NoticeData(type);   //通知公告
+            return new UIResult(
+                new {
+                    noticedata = Noticedata
+                }
+                );
         }
     }
 }

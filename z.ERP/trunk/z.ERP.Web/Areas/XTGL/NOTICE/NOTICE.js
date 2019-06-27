@@ -1,10 +1,10 @@
 ﻿define.beforeVue = function () {
 
     define.screenParam.colDef = [
-    { title: '编号', key: 'ID', width: 60 },
-    { title: '通知标题', key: 'TITLE', width: 300 },
+    { title: '编号', key: 'ID', width: 80 },
+    { title: '通知标题', key: 'TITLE',tooltip :true},
     {
-        title: '通知状态', key: 'STATUS',
+        title: '通知状态', key: 'STATUS',tooltip :true,
         
         render: (h, params) => {
         const row = params.row;

@@ -223,9 +223,9 @@ var Index = new Vue({
             }, function (data) {
                 _Index.$Modal.info({     //打开消息
                     title: data["0"].TITLE,
-                    content: data["0"].CONTENT,
+                    content: "<p style='text-align: right;'><em>发布时间："+data["0"].RELEASE_TIME+"</em></p>"+data["0"].CONTENT,
                     width: 50,
-                    scrollable: false,
+                    scrollable: true,
                     //closable: true,    //是否显示右上关闭按钮
                     onOk: function () {
                         Index.noticeRead(id);
@@ -242,14 +242,14 @@ var Index = new Vue({
                 _Index.AllTopData();
             });
         },
-        //更多消息
-        noticemore: function () {
-            //Index.DrawerModel = false;   //先关闭抽屉在打开tab
-            //_.OpenPage({
-            //    id: event.MENUID,
-            //    title: event.NAME,
-            //    url: event.DOMAIN + event.URL + event.BILLID
-            //})
-        }
+        //已读未读
+        noticeisread: function (type) {
+            let _Index = this;
+            _.Ajax('GetNoticeData', {
+                type: type
+            }, function (data) {
+                _Index.noticesdata = data.noticedata;
+            });
+        },
     },
 })
