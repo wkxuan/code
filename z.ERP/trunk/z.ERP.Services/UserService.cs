@@ -93,8 +93,7 @@ namespace z.ERP.Services
             //DataTable module = DbHelper.ExecuteTable(sqlMenu);
             //更改权限列表为树 by：DZK
             string sql1 = @" SELECT NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,R.ROLEID IsChecked FROM USERMODULE U
-                    LEFT JOIN ROLE_MENU R ON U.MODULECODE=R.MODULECODE  AND U.MENUID=R.MENUID AND R.ROLEID = " + Data.ROLEID + @"
-                    WHERE  U.MODULECODE LIKE '02%' 
+                    LEFT JOIN ROLE_MENU R ON U.MODULECODE=R.MODULECODE  AND U.MENUID=R.MENUID AND R.ROLEID = " + Data.ROLEID + @"                    
 	                    ORDER BY U.MODULECODE";
             List<USERMODULEEntity> um = DbHelper.ExecuteTable(sql1).ToList<USERMODULEEntity>(); ;
             var module = TreeModel.Create(um,
@@ -164,10 +163,10 @@ namespace z.ERP.Services
 
             //更改权限列表为树 by：DZK
             string sql1 = @" (select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME FROM USERMODULE U,MENU M
-                        WHERE U.MENUID=M.ID  AND M.PLATFORMID =1
+                        WHERE U.MENUID=M.ID 
                         UNION ALL 
                         select  NVL(MENUID,0),MODULECODE,MODULENAME FROM USERMODULE 
-                        WHERE MENUID is null ) 
+                        WHERE MENUID is null or MENUID =0) 
 	                        ORDER BY MODULECODE";
             List<USERMODULEEntity> um = DbHelper.ExecuteTable(sql1).ToList<USERMODULEEntity>(); ;
             var module = TreeModel.Create(um,
