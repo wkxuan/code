@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto\NOTICEEntity.cs" />
+    <Compile Include="Auto\READNOTOCELOGEntity.cs" />
     <Compile Include="RATE_ADJUSTEntity.cs" />
     <Compile Include="Auto\RATE_ADJUSTEntity.cs" />
     <Compile Include="Auto\RATE_ADJUST_ITEMEntity.cs" />

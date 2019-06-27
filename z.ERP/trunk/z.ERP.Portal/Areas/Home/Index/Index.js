@@ -141,6 +141,16 @@ var Index = new Vue({
     data: {
         DrawerModel: false,
         BadgeNO: 0,
+        notices: (h) => {
+            return h('div', [
+                h('span', '通知公告'),
+                h('Badge', {
+                    props: {
+                        count: 0
+                    }
+                })
+            ])
+        },
         dclrw: (h) => {
             return h('div', [
                 h('span', '待处理任务'),
@@ -156,6 +166,7 @@ var Index = new Vue({
                 { title: '单据号', key: 'BILLID'},
                 { title: '分店', key: 'BRANCHMC'}],
         dclrwdataDef: [],
+        noticesdata:[]
     },
     created: function () {
         this.AllTopData();    //加载数据不能放到mounted里，会和加载目录异步方法冲突
@@ -170,7 +181,7 @@ var Index = new Vue({
         AllTopData: function () {
             let _Index = this;
             _.AjaxT('AllTopData', { 1: 1 }, function (data) {     //为防止与目录加载冲突，用同步加载   AjaxT
-                _Index.BadgeNO = data.dclrwcount;
+                _Index.BadgeNO = parseInt(data.noticecount) + parseInt(data.dclrwcount);
                 _Index.dclrw = (h) => {
                     return h('div', [
                         h('span', '待处理任务'),
@@ -182,6 +193,17 @@ var Index = new Vue({
                     ])
                 };
                 _Index.dclrwdataDef = data.dclrwdata;
+                _Index.notices = (h) => {
+                    return h('div', [
+                        h('span', '通知公告'),
+                        h('Badge', {
+                            props: {
+                                count: data.noticecount
+                            }
+                        })
+                    ])
+                };
+                _Index.noticesdata = data.noticedata;
             });
         },
         dclrwClick: function (event) {
@@ -192,5 +214,42 @@ var Index = new Vue({
                 url: event.DOMAIN+event.URL + event.BILLID
             })
         },
+        //消息详情
+        noticeinfo: function (id) {
+            let _Index = this;
+            Index.DrawerModel = false;   //先关闭抽屉在打开tab            
+            _.Ajax('GetNoticeInfo', {
+                 id:id
+            }, function (data) {
+                _Index.$Modal.info({     //打开消息
+                    title: data["0"].TITLE,
+                    content: data["0"].CONTENT,
+                    width: 50,
+                    scrollable: false,
+                    //closable: true,    //是否显示右上关闭按钮
+                    onOk: function () {
+                        Index.noticeRead(id);
+                    }
+                });
+            });
+        },
+        //消息已读,并更新消息
+        noticeRead: function (id) {
+            let _Index = this;
+            _.Ajax('NoticeRead', {
+                id: id
+            }, function (data) {
+                _Index.AllTopData();
+            });
+        },
+        //更多消息
+        noticemore: function () {
+            //Index.DrawerModel = false;   //先关闭抽屉在打开tab
+            //_.OpenPage({
+            //    id: event.MENUID,
+            //    title: event.NAME,
+            //    url: event.DOMAIN + event.URL + event.BILLID
+            //})
+        }
     },
 })
