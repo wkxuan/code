@@ -177,8 +177,12 @@ editDetail.IsValidSave = function () {
     };
     //菜单权限数据
     editDetail.screenParam.localMenu = [];
-    for (var i = 0; i < editDetail.screenParam.USERMODULE[0].children.length; i++) { //循环1级菜单
+    for (var i = 0; i < editDetail.screenParam.USERMODULE[0].children.length; i++) { //循环erp级菜单
         var itemdata = editDetail.screenParam.USERMODULE[0].children[i].children;
+        InsertTreeMenu(itemdata);
+    };
+    for (var i = 0; i < editDetail.screenParam.USERMODULE[1].children.length; i++) { //循环crm菜单
+        var itemdata = editDetail.screenParam.USERMODULE[1].children[i].children;
         InsertTreeMenu(itemdata);
     };
     Vue.set(editDetail.dataParam, 'ROLE_MENU', editDetail.screenParam.localMenu);
