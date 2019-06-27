@@ -224,7 +224,7 @@ var Index = new Vue({
                 _Index.$Modal.info({     //打开消息
                     title: data["0"].TITLE,
                     content: "<p style='text-align: right;'><em>发布时间："+data["0"].RELEASE_TIME+"</em></p>"+data["0"].CONTENT,
-                    width: 50,
+                    width: 60,
                     scrollable: true,
                     //closable: true,    //是否显示右上关闭按钮
                     onOk: function () {
