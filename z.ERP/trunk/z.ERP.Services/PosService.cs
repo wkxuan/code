@@ -972,7 +972,7 @@ namespace z.ERP.Services
             desc.cardId = sour.CardId;
             desc.cardNo = sour.CardCode;
             desc.cardTypeId = sour.CardTypeId;
-            desc.amount = Convert.ToInt32(sour.Balance * 100); //Convert.ToInt32(sour.Balance * 100);
+            desc.amount = sour.Balance;
             desc.useMoney = 0;
             desc.payID = -1;
             return true;
@@ -3548,11 +3548,11 @@ namespace z.ERP.Services
                 {
                     return false;
                 }
-                // CZK 消费暂不处理  wangkx
-                /* if (!ProcCRM.ProcCRMFunc.SaveMoneyCard(sShop, posNo, iJlbh, CrmBillId, cards, out CrmMoneyCardTransId, out msg))
+             
+                 if (!SaveMoneyCard(sShop, posNo, iJlbh, CrmBillId, cards, out CrmMoneyCardTransId, out msg))
                  {
                      return false;
-                 } */
+                 }
 
                 if (!SaveCoupons(posNo, CrmBillId, Coupons, out CrmCouponTransId, out msg))
                     return false;
@@ -6304,6 +6304,119 @@ namespace z.ERP.Services
                 return dt.Rows[0][0].ToString().ToInt();
             else
                 return 0;
+        }
+
+        public bool SaveMoneyCard(string storeCode, string posNo, int iJlbh, int CrmBillId, List<CashCardDetails> cards,
+            out int CrmMoneyCardTransId, out string msg)
+        {
+            CrmMoneyCardTransId = 0;
+            msg = "";
+            string error = "";
+
+            string sPersonCode = "";
+            DateTime accountDate = DateTime.Now.Date;
+
+            try
+            {
+                if (!CancelMoneyCard(posNo, out msg))
+                {
+                    msg = "存在储值卡冲正信息，请处理后再进行储值卡交易！";
+                    return false;
+                }
+
+                ABCSoapHeader crmSoapHeader = new ABCSoapHeader();
+                crmSoapHeader.UserId = "CRMUSER";
+                crmSoapHeader.Password = "CRMUSER";
+
+
+                //  PosWebServiceSoapClient client;
+                //  client = new PosWebServiceSoapClient();
+
+
+                List<CashCardPayment> moneyCardList = new List<CashCardPayment>();
+                double totalMoney = 0;
+
+
+                for (int j = 0; j < cards.Count; j++)
+                {
+                    CashCardPayment payment = new CashCardPayment();
+                    payment.PayMoney = cards[j].useMoney;
+                    payment.CardId = cards[j].cardId;
+                    moneyCardList.Add(payment);
+                    totalMoney += payment.PayMoney;
+                }
+
+                if (moneyCardList.Count == 0)
+                {
+                    return true;
+                }
+                CashCardPayment[] cashCardPayments = new CashCardPayment[moneyCardList.Count];
+                moneyCardList.CopyTo(cashCardPayments);
+                int transId;
+                bool result;
+
+                //CRM预提交
+                //  result = client.PrepareTransCashCardPayment2(crmSoapHeader, storeCode, posNo, iJlbh, sPersonCode, accountDate, cashCardPayments, out msg, out transId);
+
+                PrepareTransCashCardPayment2Request req = new PrepareTransCashCardPayment2Request();
+
+                req.ABCSoapHeader = crmSoapHeader;
+                req.storeCode = storeCode;
+                req.posId = posNo;
+                req.billId = iJlbh;
+                req.cashier = sPersonCode;
+                req.accountDate = accountDate;
+                req.payments = cashCardPayments;
+
+                PrepareTransCashCardPayment2Response res = PosAPI.PrepareTransCashCardPayment2(req);
+
+                result = res.PrepareTransCashCardPayment2Result;
+                msg = res.msg;
+                transId = res.transId;
+
+                if (result)
+                {
+
+                    //写冲正文件
+                    if (!WriteCancelFile(posNo, transId, 0, totalMoney, 1, out msg))
+                    {
+                        Cancel(posNo, 1, transId, CrmBillId, totalMoney, out msg);
+                        return false;
+                    }
+
+                    //提交
+                    // result = client.ConfirmTransCashCardPayment(crmSoapHeader, transId, 0, totalMoney, out msg);
+
+                    ConfirmTransCashCardPaymentRequest reqC = new ConfirmTransCashCardPaymentRequest();
+                    reqC.ABCSoapHeader = crmSoapHeader;
+                    reqC.transId = transId;
+                    reqC.serverBillId = 0;
+                    reqC.transMoney = totalMoney;
+
+                    ConfirmTransCashCardPaymentResponse resC = PosAPI.ConfirmTransCashCardPayment(reqC);
+                    result = resC.ConfirmTransCashCardPaymentResult;
+                    msg = resC.msg;
+
+                    if (!result)
+                    {
+                        //保存CZK失败 冲正
+                        Cancel(posNo, 1, transId, CrmBillId, totalMoney, out error);
+                        return false;
+                    }
+                    CrmMoneyCardTransId = transId;
+                }
+                else
+                {
+                    // 保存CZK失败
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                msg = e.Message.ToString();
+                return false;
+            }
+            return true;
         }
 
 
