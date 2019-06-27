@@ -939,12 +939,27 @@ namespace z.ERP.Services
             item.HasKey("ID", a => sql += $" and ID = '{a}'");
             item.HasKey("TITLE", a => sql += $" and TITLE LIKE '%{a}%'");
             item.HasKey("STATUS", a => sql += $" and STATUS = '{a}'");
-            sql += " order by ID";
+            sql += " order by ID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<通知状态>("STATUS", "STATUSNAME");
             return new DataGridResult(dt, count);
         }
+        //消息详情
+        public DataTable GetNOTICEInfo(string id)
+        {
+            string sql = @"select * from NOTICE where STATUS=2 ";
+            if (!string.IsNullOrEmpty(id)) {
+                sql += @" and id="+id+"";
+            }
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+        /// <summary>
+        /// 保存通知消息
+        /// </summary>
+        /// <param name="DefineSave"></param>
+        /// <returns></returns>
         public string SaveNotice(NOTICEEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
@@ -966,6 +981,16 @@ namespace z.ERP.Services
             v.Verify();
             DbHelper.Save(DefineSave);           
             return DefineSave.ID;
+        }
+        public void NoticeRead(string noticeid) {
+            READNOTOCELOGEntity rnl = new READNOTOCELOGEntity();
+            rnl.NOTICEID = noticeid;
+            rnl.USERID = employee.Id;
+            var v = GetVerify(rnl);
+            v.Require(a => a.NOTICEID);
+            v.Require(a => a.USERID);
+            v.Verify();
+            DbHelper.Save(rnl);
         }
     }
 

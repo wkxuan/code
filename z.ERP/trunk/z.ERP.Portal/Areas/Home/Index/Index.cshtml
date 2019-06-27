@@ -114,7 +114,32 @@
                             @*抽屉*@
                             <Drawer title="" :closable="true" width="30" :draggable="true" v-model="DrawerModel">
                                 <Tabs value="notices" id="TabsList">
-                                    <Tab-Pane label="通知公告" name="notices">通知公告</Tab-Pane>
+                                    <Tab-Pane :label="notices" name="notices">
+                                        <Card style="width:100%" :bordered="false" dis-hover>
+                                            <p slot="title">
+                                                <Icon type="ios-list" size="20"></Icon>
+                                                未读消息列表
+                                            </p>
+                                            <a href="#" slot="extra" v-on:click="noticemore">
+                                                <Tooltip content="更多通知公告..." placement="left-start">
+                                                    <Icon type="ios-more" size="20"></Icon>
+                                                </Tooltip>                                                                                                  
+                                            </a>
+                                            
+                                            <ul>
+                                                <li v-for="item in noticesdata">
+                                                    <a href="#" v-on:click="noticeinfo(item.ID)">
+                                                        <i-col span="18" style="white-space: nowrap; overflow:hidden;text-overflow: ellipsis;">
+                                                            {{ item.TITLE }}
+                                                        </i-col>
+                                                        <i-col span="5" style="text-align:right;overflow:hidden;white-space: nowrap;color:black">
+                                                            {{ item.RELEASE_TIME }}
+                                                        </i-col>
+                                                    </a>                                                                                                                                                     
+                                                </li>
+                                            </ul>
+                                        </Card>
+                                    </Tab-Pane>
                                     <Tab-Pane :label="dclrw" name="dclrw">
                                         <i-table size="small"
                                                  :columns="dclrwcolDef" :data="dclrwdataDef" v-on:on-row-dblclick="dclrwClick"></i-table>
