@@ -120,15 +120,11 @@
                                 <Tabs value="notices" id="TabsList">
                                     <Tab-Pane :label="notices" name="notices">
                                         <Card style="width:100%" :bordered="false" dis-hover>
-                                            <div style="padding-bottom: 10px;font-size:16px;font-weight:900">
-                                                <a href="#" v-on:click="noticeisread(1)">
-                                                    <Icon type="md-reorder" size="25" color="black"></Icon>
-                                                    未读消息列表
-                                                </a>
-                                                <a href="#" v-on:click="noticeisread(2)" style="float:right">
-                                                    <Icon type="md-reorder" size="25" color="black"></Icon>
-                                                    已读消息列表
-                                                </a>
+                                            <div style="padding-bottom: 10px">                                                
+                                                <i-button icon="md-mail" v-on:click="noticeisread(1)"
+                                                          type="primary" >未读消息列表</i-button>
+                                                <i-button icon="md-mail-open" v-on:click="noticeisread(2)" style="float:right"
+                                                          type="primary" >历史消息列表</i-button>
                                             </div>
                                             <ul>
                                                 <li v-for="item in noticesdata">
