@@ -136,10 +136,10 @@
         //echart模型
         createEchart: function () {
             //业态经营榜
-            var echart1 = echarts.init(document.getElementById('echart1'));
+            var echart1 = echarts.init(document.getElementById('echart1'), 'macarons');
             echart1.setOption({
                 title: {
-                    text: '商户经营榜',
+                    text: '品牌经营榜',
                     subtext: '昨日销售额前15名',
                     x: 'center'
                 },
@@ -155,7 +155,7 @@
                 ],
                 yAxis: [
                     {
-                        name:'商铺名称',
+                        name:'品牌名称',
                         type: 'category',
                         data: this.Echart1Ydata,
                         axisLabel: {

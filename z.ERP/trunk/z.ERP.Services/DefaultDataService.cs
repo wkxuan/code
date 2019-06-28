@@ -49,7 +49,7 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataTable Box2Data()
         {
-            string sql = @"SELECT (CASE RENT_STATUS  WHEN 1 THEN '正在经营' WHEN 2 THEN '闲置招租' end)TYPE,COUNT(1) NUMBERS,SUM(A.AREA_RENTABLE) AREA
+            string sql = @"SELECT (CASE RENT_STATUS  WHEN 2 THEN '正在经营' WHEN 1 THEN '闲置招租' end)TYPE,COUNT(1) NUMBERS,SUM(A.AREA_RENTABLE) AREA
                               FROM SHOP A
                               GROUP BY RENT_STATUS";
 
@@ -67,26 +67,26 @@ namespace z.ERP.Services
             if (type == "1")
             {
                 sql = @"SELECT * FROM (
-                            select row_number() over(order by SUM(AMOUNT) desc) NO,B.NAME SHOPNAME,B.AREA_RENTABLE AREA,SUM(AMOUNT) AMOUNT
-                             from CONTRACT_SUMMARY A,SHOP B
-                             WHERE A.SHOPID=B.SHOPID AND TO_CHAR(RQ,'yyyy-MM-dd')=TO_CHAR(SYSDATE-1,'yyyy-MM-dd')
-                             GROUP BY B.NAME,B.AREA_RENTABLE) Z
+                            select row_number() over(order by SUM(AMOUNT) desc) NO,B.NAME SHOPNAME,S.AREA_RENTABLE AREA,SUM(AMOUNT) AMOUNT
+                             from CONTRACT_SUMMARY A,BRAND B,SHOP S
+                             WHERE A.BRANDID=B.ID AND A.SHOPID=S.SHOPID AND TO_CHAR(RQ,'yyyy-MM-dd')=TO_CHAR(SYSDATE-1,'yyyy-MM-dd')
+                             GROUP BY B.NAME,S.AREA_RENTABLE) Z
                              WHERE ROWNUM <=15";
             }
             else if (type == "2")
             {
                 sql = @"SELECT * FROM (
-                            select row_number() over(order by SUM(AMOUNT) desc) NO,B.NAME SHOPNAME,B.AREA_RENTABLE AREA,SUM(AMOUNT) AMOUNT
-                             from CONTRACT_SUMMARY A,SHOP B
-                             WHERE A.SHOPID=B.SHOPID AND TO_CHAR(RQ,'yyyy-MM')=TO_CHAR(SYSDATE,'yyyy-MM')
-                             GROUP BY B.NAME,B.AREA_RENTABLE) Z
+                            select row_number() over(order by SUM(AMOUNT) desc) NO,B.NAME SHOPNAME,S.AREA_RENTABLE AREA,SUM(AMOUNT) AMOUNT
+                             from CONTRACT_SUMMARY A,BRAND B,SHOP S
+                             WHERE A.BRANDID=B.ID AND A.SHOPID=S.SHOPID AND TO_CHAR(RQ,'yyyy-MM-dd')=TO_CHAR(SYSDATE,'yyyy-MM-dd')
+                             GROUP BY B.NAME,S.AREA_RENTABLE) Z
                              WHERE ROWNUM <=15";
             }
             else if (type == "3")
             {    //
-                sql = @"SELECT* FROM (select row_number() over(order by SUM(AMOUNT) desc) NO, B.NAME SHOPNAME, B.AREA_RENTABLE AREA, SUM(AMOUNT) AMOUNT
-                             from CONTRACT_SUMMARY A, SHOP B
-                             WHERE A.SHOPID = B.SHOPID AND TO_CHAR(RQ, 'yyyy-MM') = TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'yyyy-MM')
+                sql = @"SELECT* FROM (select row_number() over(order by SUM(AMOUNT) desc) NO, B.NAME SHOPNAME, S.AREA_RENTABLE AREA, SUM(AMOUNT) AMOUNT
+                             from CONTRACT_SUMMARY A, BRAND B,SHOP S
+                             WHERE A.BRANDID=B.ID AND A.SHOPID=S.SHOPID AND TO_CHAR(RQ, 'yyyy-MM') = TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'yyyy-MM')
                              GROUP BY B.NAME, B.AREA_RENTABLE) Z
                               WHERE ROWNUM <= 15";
             }
