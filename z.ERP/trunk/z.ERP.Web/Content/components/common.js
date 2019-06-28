@@ -239,6 +239,7 @@ Vue.component('yx-editor', {
         this.editorObj.customConfig.onchange = html => {
             this.$emit("change", html);
         };
+        this.editorObj.customConfig.uploadImgMaxSize= 1 * 1024 * 1024,
         this.editorObj.customConfig.zIndex = 100;
         /*创建编辑器*/
         this.editorObj.create();
