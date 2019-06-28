@@ -38,7 +38,7 @@
         box2dataDef: [],
         box3colDef: [
                 { title: ' ', key: 'NO', width: 50, },
-                { title: '商铺名称', key: 'SHOPNAME', width: 150, },
+                { title: '品牌名称', key: 'SHOPNAME', width: 150, },
                 {
                     title: '租赁面积(m²)', key: 'AREA', width: 100,
                     render: function (h, params) {
