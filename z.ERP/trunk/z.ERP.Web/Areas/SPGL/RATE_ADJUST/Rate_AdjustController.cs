@@ -39,6 +39,17 @@ namespace z.ERP.Web.Areas.SPGL.RATE_ADJUST
         {
             service.SpglService.DeleteRateAdjust(DeleteData);
         }
+
+        public string ExecData(RATE_ADJUSTEntity SaveData)
+        {
+            return service.SpglService.ExecRateAdjust(SaveData);
+        }
+
+        public string StopData(RATE_ADJUSTEntity SaveData)
+        {
+            return service.SpglService.StopRateAdjust(SaveData);
+        }
+
     }
     
 }

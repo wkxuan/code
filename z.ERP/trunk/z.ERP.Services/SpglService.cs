@@ -385,7 +385,7 @@ namespace z.ERP.Services
             SALEBILLEntity mer = DbHelper.Select(Data);
             if (mer.STATUS == ((int)普通单据状态.审核).ToString())
             {
-                throw new LogicException("商品(" + Data.BILLID + ")已经审核不能再次审核!");
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
@@ -479,6 +479,20 @@ namespace z.ERP.Services
                 DbHelper.Save(SaveData);
                 Tran.Commit();
             }
+
+            //增加审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.ID,
+                MENUID = "10500702",
+                BRABCHID = SaveData.BRANCHID,
+                URL = " SPGL/RATE_ADJUST/Rate_AdjustEdit/"    //暂无浏览界面
+            };
+
+            InsertDclRw(dcl);
+
+
+
             return SaveData.ID;
         }
         public void DeleteRateAdjust(List<RATE_ADJUSTEntity> DeleteData)
@@ -488,7 +502,7 @@ namespace z.ERP.Services
                 RATE_ADJUSTEntity Data = DbHelper.Select(con);
                 if (Data.STATUS != ((int)普通单据状态.未审核).ToString())
                 {
-                    throw new LogicException($"租约({Data.ID})已经不是未审核不能删除!");
+                    throw new LogicException($"单据({Data.ID})不是未审核状态,不能执行删除操作!");
                 }
             }
             using (var Tran = DbHelper.BeginTransaction())
@@ -501,7 +515,80 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var AD in DeleteData)
+                {
+                    var dcl = new BILLSTATUSEntity
+                    {
+                        BILLID = AD.ID,
+                        MENUID = "10500702",
+                        BRABCHID = AD.BRANCHID,
+                        URL = " SPGL/RATE_ADJUST/Rate_AdjustEdit/"    //暂无浏览界面
+                    };
+                    DelDclRw(dcl);
+
+                }
+                Tran.Commit();
+            }
         }
+
+        public string ExecRateAdjust(RATE_ADJUSTEntity Data)
+        {
+            RATE_ADJUSTEntity ra = DbHelper.Select(Data);
+            if (ra.STATUS != ((int)普通单据状态.未审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.ID + ")不是未审核状态,不能执行审核操作!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                EXEC_RATE_ADJUST proExec = new EXEC_RATE_ADJUST()
+                {
+                    in_ID = Data.ID,
+                    in_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(proExec);
+                Tran.Commit();
+            }
+
+            //删除审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.ID,
+                MENUID = "10500702",
+                BRABCHID = Data.BRANCHID,
+                URL = " SPGL/RATE_ADJUST/Rate_AdjustEdit/"    //暂无浏览界面
+            };
+            DelDclRw(dcl);
+
+
+            return ra.ID;
+        }
+
+        public string StopRateAdjust(RATE_ADJUSTEntity Data)
+        {
+            RATE_ADJUSTEntity ra = DbHelper.Select(Data);
+            if (ra.STATUS != ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.ID + ")不是审核状态,不能执行终止操作!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                STOP_RATE_ADJUST proStop = new STOP_RATE_ADJUST()
+                {
+                    in_ID = Data.ID,
+                    in_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(proStop);
+                Tran.Commit();
+            }
+
+            return ra.ID;
+        }
+
+
         #endregion
     }
 }
