@@ -9,10 +9,11 @@ namespace z.ERP.Web.Areas.XTGL.SPLC
 {
     public class SPLCController : BaseController
     {
-        public ActionResult SPLC()
+        public ActionResult SPLC(string ID)
         {
 
             ViewBag.Title = "审批流程定义";
+            ViewBag.BILLID = ID;
             return View();
         }
         public string Save(SPLCDEFDEntity SPLCDEFD, List<SPLCJDEntity> SPLCJD, List<SPLCJGEntity> SPLCJG)

@@ -63,6 +63,9 @@ var splc = new Vue({
     },
     mounted: function () {
         this.ButtonEnable(false, true, true, true);
+        if (@BILLID){
+            this.srch(@BILLID);
+        }
     },
     methods: {
         billEnter: function () {

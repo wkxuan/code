@@ -1,0 +1,69 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="3" class="RowTitle">菜单号</i-col>
+        <i-col span="5" class="RowText">
+            @{
+                //未来为了方便可以用一个初始化表设置,为了控制可以用枚举类型处理，暂定枚举类型
+                RenderControl(new EnumDropDownListRender<审批流程菜单号>()
+                {
+                    vModel = "searchParam.MENUID",
+                    Enable = false
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">审批状态</i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<审批单状态>()
+                {
+                    vModel = "searchParam.STATUS"
+                });
+            }
+        </i-col>
+    </row>
+
+
+    <row>
+        <i-col span="3" class="RowTitle">
+            登记人
+        </i-col>
+        <i-col span="5" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.REPORTER_NAME" v-on:on-click="SelSigner" />
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            审核人
+        </i-col>
+        <i-col span="5" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
+        </i-col>
+
+        <i-col span="3" class="RowTitle">
+            终止人
+        </i-col>
+        <i-col span="5" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.TERMINATE_NAME" v-on:on-click="SelTerm" />
+        </i-col>
+    </row>
+
+
+}
+@section pops{
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopSysuser",
+                    Src = "screenParam.srcPopSysuser",
+                    Caption = "选择人员",
+                    Width = "800"
+                });
+            }
+        </i-col>
+    </row>
+}

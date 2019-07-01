@@ -746,6 +746,17 @@ namespace z.ERP.Services
                 SPLCDEFD.VERIFY_TIME = con.VERIFY_TIME;
             }
 
+            //在这里查询有没有未终止的当前菜单号的审批流程,有的话给提示
+            string sql = $@"select min(BILLID) BILLID from SPLCDEFD where";
+            sql += " MENUID = " + SPLCDEFD.MENUID + " and BILLID<> " + SPLCDEFD.BILLID + " and STATUS<>" + 审批单状态.终止 + "";
+
+            DataTable billid = DbHelper.ExecuteTable(sql);
+
+            if (billid.Rows.Count != 0)
+            {
+                throw new LogicException($"当前菜单号有未终止的审批流程!");
+            }
+
             SPLCDEFD.REPORTER = employee.Id;
             SPLCDEFD.REPORTER_NAME = employee.Name;
             SPLCDEFD.REPORTER_TIME = DateTime.Now.ToString();
@@ -842,6 +853,17 @@ namespace z.ERP.Services
             {
                 throw new LogicException($"审批单({Data.BILLID})已经不是未审核状态!");
             }
+
+            string sql = $@"select min(BILLID) BILLID from SPLCDEFD where";
+            sql += " MENUID = " + Data.MENUID + " and BILLID<> " + Data.BILLID + " and STATUS<>" + 审批单状态.终止 + "";
+
+            DataTable billid = DbHelper.ExecuteTable(sql);
+
+            if (billid.Rows.Count != 0)
+            {
+                throw new LogicException($"当前菜单号有未终止的审批流程!");
+            }
+
             con.VERIFY = employee.Id;
             con.VERIFY_NAME = employee.Name;
             con.VERIFY_TIME = DateTime.Now.ToString();
@@ -949,8 +971,9 @@ namespace z.ERP.Services
         public DataTable GetNOTICEInfo(string id)
         {
             string sql = @"select N.*,TO_CHAR(N.VERIFY_TIME,'yyyy-MM-dd') release_time from NOTICE N where STATUS=2 ";
-            if (!string.IsNullOrEmpty(id)) {
-                sql += @" and id="+id+"";
+            if (!string.IsNullOrEmpty(id))
+            {
+                sql += @" and id=" + id + "";
             }
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
@@ -966,7 +989,8 @@ namespace z.ERP.Services
             if (DefineSave.ID.IsEmpty())
                 DefineSave.ID = NewINC("NOTICE");
             //如果状态为2，保存 发布人信息
-            if (DefineSave.STATUS=="2") {
+            if (DefineSave.STATUS == "2")
+            {
                 DefineSave.VERIFY = employee.Id;
                 DefineSave.VERIFY_NAME = employee.Name;
                 DefineSave.VERIFY_TIME = DateTime.Now.ToString();
@@ -979,10 +1003,11 @@ namespace z.ERP.Services
             v.Require(a => a.STATUS);
             v.Require(a => a.CONTENT);
             v.Verify();
-            DbHelper.Save(DefineSave);           
+            DbHelper.Save(DefineSave);
             return DefineSave.ID;
         }
-        public void NoticeRead(string noticeid) {
+        public void NoticeRead(string noticeid)
+        {
             READNOTOCELOGEntity rnl = new READNOTOCELOGEntity();
             rnl.NOTICEID = noticeid;
             rnl.USERID = employee.Id;
@@ -992,6 +1017,23 @@ namespace z.ERP.Services
             v.Verify();
             DbHelper.Save(rnl);
         }
+
+        public DataGridResult SrchSplc(SearchItem item)
+        {
+            string sql = @"select * from SPLCDEFD where 1=1 ";
+            item.HasKey("MENUID", a => sql += $" and MENUID = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and STATUS = '{a}'");
+            item.HasKey("REPORTER_NAME", a => sql += $" and REPORTER_NAME = '{a}'");
+            item.HasKey("VERIFY_NAME", a => sql += $" and VERIFY_NAME = '{a}'");
+            item.HasKey("TERMINATE_NAME", a => sql += $" and TERMINATE_NAME = '{a}'");
+            sql += " order by MENUID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<审批单状态>("STATUS", "STATUSNAME");
+            dt.NewEnumColumns<审批流程菜单号>("MENUID", "MENUIDMC");
+            return new DataGridResult(dt, count);
+        }
+
     }
 
 }
