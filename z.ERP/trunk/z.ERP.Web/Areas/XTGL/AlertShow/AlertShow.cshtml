@@ -13,9 +13,8 @@
 }
 @section content{
     <row>
-        <i-col span="24">
-            <i-table size="small" :border="true"
-                     :columns="col" :data="data"></i-table>
+        <i-col span="24">           
+            <un-edit-table v-bind:options="options"></un-edit-table>
         </i-col>
     </row>
 }
@@ -27,8 +26,10 @@
             data: {
                 Mainpanel: 'condition',
                 disabled: true,
-                col: [],
-                data: []
+                options:{
+                    columns: [],
+                    data:[],
+                },
             },
             mounted: function () {
                 var _self = this;
@@ -44,8 +45,8 @@
                             width: parseInt(data.alertCol[i].WIDTH)
                         });
                     };
-                    Vue.set(_self, "col", colList);
-                    Vue.set(_self, "data", data.alertData);
+                    Vue.set(_self.options, "columns", colList);
+                    Vue.set(_self.options, "data", data.alertData);
 
                 });
             }
