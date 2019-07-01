@@ -261,5 +261,18 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
+        public Tuple<dynamic, int> AlertData()
+        {
+            var sql = @" select DEF_ALERT.ID,MC,XSSX,SQLSTR, 0 COUNT,PLATFORM.DOMAIN FROM DEF_ALERT,PLATFORM WHERE PLATFORM.ID=1 ORDER BY XSSX ";
+            var count = 0;
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            foreach (DataRow item in dt.Rows) {
+                var sqlstr = item["SQLSTR"].ToString();
+                DataTable dtstr = DbHelper.ExecuteTable(sqlstr);
+                item["COUNT"] = dtstr.Rows.Count;
+                count += dtstr.Rows.Count;
+            }
+            return new Tuple<dynamic, int>(dt, count);
+        }
     }
 }

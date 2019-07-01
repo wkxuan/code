@@ -144,7 +144,10 @@
                                         <i-table size="small"
                                                  :columns="dclrwcolDef" :data="dclrwdataDef" v-on:on-row-dblclick="dclrwClick"></i-table>
                                     </Tab-Pane>
-                                    <Tab-Pane label="预警" name="warning">预警</Tab-Pane>
+                                    <Tab-Pane :label="alerts" name="alerts">
+                                        <i-table size="small"
+                                                 :columns="alertcolDef" :data="alertdataDef"></i-table>
+                                    </Tab-Pane>
                                 </Tabs>
                             </Drawer>
                         </div>

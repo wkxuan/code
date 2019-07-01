@@ -161,12 +161,56 @@ var Index = new Vue({
                 })
             ])
         },
+        alerts: (h) => {
+            return h('div', [
+                h('span', '预警'),
+                h('Badge', {
+                    props: {
+                        count: 0
+                    }
+                })
+            ])
+        },
         dclrwcolDef: [
                 { title: '菜单名称', key: 'NAME'},
                 { title: '单据号', key: 'BILLID'},
                 { title: '分店', key: 'BRANCHMC'}],
         dclrwdataDef: [],
-        noticesdata:[]
+        noticesdata: [],
+        alertcolDef: [
+                { title: '预警名称', key: 'MC' },
+                {
+                    title: '预警数量', key: 'COUNT',
+                    render: (h, params) => {
+                        const row = params.row;
+                        const color = row.COUNT ===0 ? 'success' : 'error';
+                        const text = row.COUNT;
+                        return h('Tag', {
+                            props: {
+                                type: 'dot',
+                                color: color
+                            }
+                        }, text);
+                    }
+                },
+                {
+                    title: ' ', key: '',
+                    render: (h, params) => {
+                        return h('div',
+                            [params.row.COUNT>0 && h('Button', {
+                                props: {
+                                    type: 'primary'
+                                },                                
+                                on: {
+                                    click: () => {
+                                        Index.AlertClick(params.row)
+                                    }
+                                }
+                            }, '浏览')
+                        ]);
+                    }
+                }],
+        alertdataDef: [],
     },
     created: function () {
         this.AllTopData();    //加载数据不能放到mounted里，会和加载目录异步方法冲突
@@ -181,7 +225,7 @@ var Index = new Vue({
         AllTopData: function () {
             let _Index = this;
             _.AjaxT('AllTopData', { 1: 1 }, function (data) {     //为防止与目录加载冲突，用同步加载   AjaxT
-                _Index.BadgeNO = parseInt(data.noticecount) + parseInt(data.dclrwcount);
+                _Index.BadgeNO = parseInt(data.noticecount) + parseInt(data.dclrwcount) + parseInt(data.alertcount);
                 _Index.dclrw = (h) => {
                     return h('div', [
                         h('span', '待处理任务'),
@@ -204,6 +248,17 @@ var Index = new Vue({
                     ])
                 };
                 _Index.noticesdata = data.noticedata;
+                _Index.alerts = (h) => {
+                    return h('div', [
+                        h('span', '预警'),
+                        h('Badge', {
+                            props: {
+                                count: data.alertcount
+                            }
+                        })
+                    ])
+                };
+                _Index.alertdataDef = data.alertdata;
             });
         },
         dclrwClick: function (event) {
@@ -223,7 +278,7 @@ var Index = new Vue({
             }, function (data) {
                 _Index.$Modal.info({     //打开消息
                     title: data["0"].TITLE,
-                    content: "<p style='text-align: right;'><em>发布时间："+data["0"].RELEASE_TIME+"</em></p>"+data["0"].CONTENT,
+                    content: "<p style='text-align: right;'><em>发布时间："+data["0"].RELEASE_TIME+"</em></p>"+data["0"].CONTENT,    //拼接发布时间在内容右上角
                     width: 60,
                     scrollable: true,
                     //closable: true,    //是否显示右上关闭按钮
@@ -250,6 +305,16 @@ var Index = new Vue({
             }, function (data) {
                 _Index.noticesdata = data.noticedata;
             });
+        },
+        //打开预警展示
+        AlertClick: function (event) {
+            Index.DrawerModel = false;   //先关闭抽屉在打开tab
+            _.OpenPage({
+                id: event.ID,
+                title: event.MC+ "浏览",
+                //url: event.DOMAIN + "XTGL/AlertShow/AlertShow/" + event.ID
+                url:"http://localhost:8000/XTGL/AlertShow/AlertShow/" + event.ID
+            })
         },
     },
 })

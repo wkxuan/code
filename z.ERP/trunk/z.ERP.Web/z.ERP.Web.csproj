@@ -413,6 +413,7 @@
     <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearList.js" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessEdit.js" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessList.js" />
+    <Content Include="Areas\XTGL\AlertShow\AlertShow.js" />
     <Content Include="Areas\XTGL\NOTICE\NOTICE.js" />
     <Content Include="Areas\XTGL\SPLC\SPLC.js" />
     <Content Include="Areas\XTGL\ALERT\ALERT.js" />

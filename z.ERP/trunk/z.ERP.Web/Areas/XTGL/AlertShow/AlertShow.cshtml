@@ -4,7 +4,9 @@
 
 @inherits DetailLayout<dynamic>
 
-@section Title{}
+@section Title{
+    @Html.Raw("预警详情")
+    }
 
 @{
     var id = ViewBag.id;

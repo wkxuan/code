@@ -11,7 +11,6 @@ namespace z.ERP.Web.Areas.XTGL.AlertShow
     {
         public ActionResult AlertShow(string Id)
         {
-            ViewBag.Title = "预警结果浏览";
             ViewBag.id = Id;
             return View();
         }
