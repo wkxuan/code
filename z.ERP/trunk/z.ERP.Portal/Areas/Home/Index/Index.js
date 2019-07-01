@@ -312,8 +312,7 @@ var Index = new Vue({
             _.OpenPage({
                 id: event.ID,
                 title: event.MC+ "浏览",
-                //url: event.DOMAIN + "XTGL/AlertShow/AlertShow/" + event.ID
-                url:"http://localhost:8000/XTGL/AlertShow/AlertShow/" + event.ID
+                url: event.DOMAIN + "XTGL/AlertShow/AlertShow/" + event.ID
             })
         },
     },
