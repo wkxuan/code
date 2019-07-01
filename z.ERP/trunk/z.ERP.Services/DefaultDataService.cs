@@ -94,11 +94,11 @@ namespace z.ERP.Services
             return dt;
         }
         /// <summary>
-        /// 模块6数据
+        /// 模块4数据
         /// </summary>
         /// <param name="type">数据日期 1.昨日2.本月3.上月</param>
         /// <returns></returns>
-        public DataTable Box6Data(string type)
+        public DataTable Box4Data(string type)
         {
             string sql = "";
             if (type == "1") {

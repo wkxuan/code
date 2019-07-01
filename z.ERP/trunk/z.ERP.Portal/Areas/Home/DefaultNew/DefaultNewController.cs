@@ -22,8 +22,7 @@ namespace z.ERP.Portal.Areas.Home.Default
             var box1data = service.DefaultDataService.Box1Data();   //经营总贶
             var box2data = service.DefaultDataService.Box2Data();   //店铺出租状态
             var box3data = service.DefaultDataService.Box3Data(type);   //店铺经营榜
-            var box6data = service.DefaultDataService.Box6Data(type);    //业态经营榜
-            var boxDclrwdata = service.DefaultDataService.BoxDclrwData();  //待处理任务
+            var box4data = service.DefaultDataService.Box4Data(type);    //业态经营榜
             //echartData
             var Echart1data = service.DefaultDataService.Box3Data("1");
             DataView dv = Echart1data.DefaultView;   //排行需要正序
@@ -38,8 +37,7 @@ namespace z.ERP.Portal.Areas.Home.Default
                     box1data = box1data,
                     box2data = box2data,
                     box3data = box3data,
-                    box6data = box6data,
-                    boxDclrwdata = boxDclrwdata,
+                    box6data = box4data,
                     //echartData
                     Echart1Xdata = Echart1data.AsEnumerable().Select<DataRow, decimal>(x => Convert.ToDecimal(x["AMOUNT"])).ToList<decimal>(),
                     Echart1Ydata = Echart1data.AsEnumerable().Select<DataRow, string>(x => Convert.ToString(x["SHOPNAME"])).ToList<string>(),
@@ -54,9 +52,9 @@ namespace z.ERP.Portal.Areas.Home.Default
         {
             return new UIResult(service.DefaultDataService.Box3Data(type));
         }
-        public UIResult Box6Data(string type)
+        public UIResult Box4Data(string type)
         {
-            return new UIResult(service.DefaultDataService.Box6Data(type));
+            return new UIResult(service.DefaultDataService.Box4Data(type));
         }
     }
 }

@@ -44,7 +44,7 @@
         </i-Switch>
         <div id="tablelist" v-show="!Switch">
             <Row style="background:#eee;padding:10px;height:260px">
-                <i-col span="6">
+                <i-col span="12">
                     <div id="box1">
                         <Card :bordered="false">
                             <p slot="title">经营总况</p>
@@ -52,18 +52,8 @@
                                      :columns="box1colDef" :data="box1dataDef"></i-table>
                         </Card>
                     </div>
-                </i-col>
-                <i-col span="6" offset="1">
-                    <div id="box2">
-                        <Card :bordered="false">
-                            <p slot="title">店铺状态</p>
-                            <i-table size="small" :height="tableH" :disabled-hover="true"
-                                     :columns="box2colDef" :data="box2dataDef">
-                            </i-table>
-                        </Card>
-                    </div>
-                </i-col>
-                <i-col span="10" offset="1">
+                </i-col>               
+                <i-col span="12" offset="1">
                     <div id="box3">
                         <Card :bordered="false">
                             <p slot="title">
@@ -82,36 +72,29 @@
                 </i-col>
             </Row>
             <Row style="background:#eee;padding:10px;height:260px">
-                <i-col span="6">
+                <i-col span="12">
+                    <div id="box2">
+                        <Card :bordered="false">
+                            <p slot="title">店铺状态</p>
+                            <i-table size="small" :height="tableH" :disabled-hover="true"
+                                     :columns="box2colDef" :data="box2dataDef">
+                            </i-table>
+                        </Card>
+                    </div>
+                </i-col>
+                <i-col span="12" offset="1">
                     <div id="box4">
-                        <Card :bordered="false">
-                            <p slot="title">待处理任务</p>
-                            <i-table size="small" :height="tableH" 
-                                     :columns="boxDclrwcolDef" :data="boxDclrwdataDef"
-                                     v-on:on-row-dblclick="dclrwClick"></i-table>
-                        </Card>
-                    </div>
-                </i-col>
-                <i-col span="6" offset="1">
-                    <div id="box5">
-                        <Card :bordered="false">
-                            <p slot="title">预警</p>
-                        </Card>
-                    </div>
-                </i-col>
-                <i-col span="10" offset="1">
-                    <div id="box6">
                         <Card :bordered="false">
                             <p slot="title">
                                 业态经营榜
-                                <i-Select style="width:100px;float:right" size="small" v-on:on-change="box6datechange" placeholder="昨日">
+                                <i-Select style="width:100px;float:right" size="small" v-on:on-change="box4datechange" placeholder="昨日">
                                     <i-Option value="1" selected="selected">昨日</i-Option>
                                     <i-Option value="2">本月</i-Option>
                                     <i-Option value="3">上月</i-Option>
                                 </i-Select>
                             </p>
                             <i-table size="small" :height="tableH" :disabled-hover="true"
-                                     :columns="box6colDef" :data="box6dataDef">
+                                     :columns="box4colDef" :data="box4dataDef">
                             </i-table>
                         </Card>
                     </div>

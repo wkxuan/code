@@ -35,10 +35,10 @@
     height:100px;
 }
 .ivu-col-offset-1 {
-    margin-left: 1.16666667% !important;
+    margin-left: 2% !important;
 }
-.ivu-col-span-6 {
-    width:28% !important;
+.ivu-col-span-12 {
+    width:49% !important;
 }
 .ivu-card-head {
     padding:8px 16px !important;
