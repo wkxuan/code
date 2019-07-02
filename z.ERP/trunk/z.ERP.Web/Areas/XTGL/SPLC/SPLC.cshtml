@@ -19,7 +19,7 @@
 }
 
 @{
-    var BILLID = ViewBag.BILLID;
+    var billid = ViewBag.BILLID;
 }
 
 @section btn{
@@ -464,8 +464,8 @@
             },
             mounted: function () {
                 var _self = this;
-                      if (@BILLID != "") {
-                        _self.srch(@BILLID);
+                      if (@billid != "-1") {
+                        _self.srch(@billid);
                     };  
 
             },
@@ -507,8 +507,7 @@
                     if (!that.isValidSave()) {
                         return;
                     };
-                    //先将保存置灰避免重复提交
-                    that.ButtonEnable(false, false, false, true);
+              
                     _.Ajax('Save', {
                         SPLCDEFD: { MENUID: this.MENUID },
                         SPLCJD: this.SPLCJD,
@@ -517,6 +516,8 @@
                         that.BILLID = data;
                         that.srch(that.BILLID);
                         iview.Message.info("保存成功!");
+
+                        that.ButtonEnable(false, false, false, true);
                     });
                 },
                 srch: function (billid) {

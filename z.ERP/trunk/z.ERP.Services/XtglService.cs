@@ -748,7 +748,7 @@ namespace z.ERP.Services
 
             //在这里查询有没有未终止的当前菜单号的审批流程,有的话给提示
             string sql = $@"select min(BILLID) BILLID from SPLCDEFD where";
-            sql += " MENUID = " + SPLCDEFD.MENUID + " and BILLID<> " + SPLCDEFD.BILLID + " and STATUS<>" + 审批单状态.终止 + "";
+            sql += " MENUID = " + SPLCDEFD.MENUID + " and BILLID<> " + SPLCDEFD.BILLID + " and STATUS<>2";
 
             DataTable billid = DbHelper.ExecuteTable(sql);
 
@@ -855,7 +855,7 @@ namespace z.ERP.Services
             }
 
             string sql = $@"select min(BILLID) BILLID from SPLCDEFD where";
-            sql += " MENUID = " + Data.MENUID + " and BILLID<> " + Data.BILLID + " and STATUS<>" + 审批单状态.终止 + "";
+            sql += " MENUID = " + Data.MENUID + " and BILLID<> " + Data.BILLID + " and STATUS<>2";
 
             DataTable billid = DbHelper.ExecuteTable(sql);
 

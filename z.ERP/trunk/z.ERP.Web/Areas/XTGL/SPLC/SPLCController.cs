@@ -13,7 +13,15 @@ namespace z.ERP.Web.Areas.XTGL.SPLC
         {
 
             ViewBag.Title = "审批流程定义";
-            ViewBag.BILLID = ID;
+            if (ID == null)
+            {
+                ViewBag.BILLID = "-1";
+            }
+            else
+            {
+                ViewBag.BILLID = ID;
+            }
+
             return View();
         }
         public string Save(SPLCDEFDEntity SPLCDEFD, List<SPLCJDEntity> SPLCJD, List<SPLCJGEntity> SPLCJG)
