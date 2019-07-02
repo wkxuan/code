@@ -104,11 +104,11 @@
 function GetLoadNav(systemid) {
     //erp crm
     if (systemid == 1) {
-        $(".mallerp").css({ "background-color": "#34495E", "font-size": "16px", "color": "#fff" });
-        $(".mallcrm").css({ "background-color": "", "font-size": "", "color": "" });
+        $(".mallerp").css({ "border-bottom": "3px solid #2D8CF0", "font-size": "16px", "color": "#2D8CF0" });
+        $(".mallcrm").css({ "border-bottom": "", "font-size": "", "color": "" });
     } else {
-        $(".mallcrm").css({ "background-color": "#34495E", "font-size": "16px", "color": "#fff" });
-        $(".mallerp").css({ "background-color": "", "font-size": "", "color": "" });
+        $(".mallcrm").css({ "border-bottom": "3px solid #2D8CF0", "font-size": "16px", "color": "#2D8CF0" });
+        $(".mallerp").css({ "border-bottom": "", "font-size": "", "color": "" });
     }
 
 
