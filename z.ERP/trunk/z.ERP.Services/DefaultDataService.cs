@@ -78,7 +78,7 @@ namespace z.ERP.Services
                 sql = @"SELECT * FROM (
                             select row_number() over(order by SUM(AMOUNT) desc) NO,B.NAME SHOPNAME,S.AREA_RENTABLE AREA,SUM(AMOUNT) AMOUNT
                              from CONTRACT_SUMMARY A,BRAND B,SHOP S
-                             WHERE A.BRANDID=B.ID AND A.SHOPID=S.SHOPID AND TO_CHAR(RQ,'yyyy-MM-dd')=TO_CHAR(SYSDATE,'yyyy-MM-dd')
+                             WHERE A.BRANDID=B.ID AND A.SHOPID=S.SHOPID AND TO_CHAR(RQ,'yyyy-MM')=TO_CHAR(SYSDATE,'yyyy-MM')
                              GROUP BY B.NAME,S.AREA_RENTABLE) Z
                              WHERE ROWNUM <=15";
             }
@@ -87,7 +87,7 @@ namespace z.ERP.Services
                 sql = @"SELECT* FROM (select row_number() over(order by SUM(AMOUNT) desc) NO, B.NAME SHOPNAME, S.AREA_RENTABLE AREA, SUM(AMOUNT) AMOUNT
                              from CONTRACT_SUMMARY A, BRAND B,SHOP S
                              WHERE A.BRANDID=B.ID AND A.SHOPID=S.SHOPID AND TO_CHAR(RQ, 'yyyy-MM') = TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'yyyy-MM')
-                             GROUP BY B.NAME, B.AREA_RENTABLE) Z
+                             GROUP BY B.NAME, S.AREA_RENTABLE) Z
                               WHERE ROWNUM <= 15";
             }
             DataTable dt = DbHelper.ExecuteTable(sql);

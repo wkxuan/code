@@ -102,6 +102,15 @@
     });
 });
 function GetLoadNav(systemid) {
+    //erp crm
+    if (systemid == 1) {
+        $(".mallerp").css({ "background-color": "#34495E", "font-size": "16px", "color": "#fff" });
+        $(".mallcrm").css({ "background-color": "", "font-size": "", "color": "" });
+    } else {
+        $(".mallcrm").css({ "background-color": "#34495E", "font-size": "16px", "color": "#fff" });
+        $(".mallerp").css({ "background-color": "", "font-size": "", "color": "" });
+    }
+
 
     _.Ajax('GetMenu', {
         Data: {

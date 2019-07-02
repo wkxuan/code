@@ -1,4 +1,7 @@
-﻿var DefaultNew = new Vue({
+﻿var echart1;
+var echart2;
+var echart3;
+var DefaultNew = new Vue({
     el: '#main',
     data: {
         box1colDef: [
@@ -101,6 +104,12 @@
         
     },
     methods: {
+        //切换重新加载数据，并动画展示
+        SwitchChange: function (status) {
+            if(status){
+                window.location.reload();
+            }
+        },
         //根据日期筛选数据
         box3datechange: function (event) {
             var type = event;
@@ -121,12 +130,15 @@
         //echart模型
         createEchart: function () {
             //业态经营榜
-            var echart1 = echarts.init(document.getElementById('echart1'), 'macarons');
+            echart1 = echarts.init(document.getElementById('echart1'), 'macarons');
             echart1.setOption({
                 title: {
                     text: '品牌经营榜',
                     subtext: '昨日销售额前15名',
                     x: 'center'
+                },
+                grid: {
+                    left: "16%"
                 },
                 tooltip: {
                     trigger: 'axis'
@@ -143,6 +155,7 @@
                         name:'品牌名称',
                         type: 'category',
                         data: this.Echart1Ydata,
+                        nameGap: 100,
                         axisLabel: {
                             interval: 0, 
                             rotate: "45",
@@ -168,10 +181,14 @@
                         },
                         data: this.Echart1Xdata
                     }
-                ]
-            });
+                ],
+                //动画效果
+                animationDuration: 4000,
+                animationDurationUpdate: 1000,
+                animationEasing: "bounceInOut"
+            }); 
             //店铺状态，饼图
-            var echart2 = echarts.init(document.getElementById('echart2'), 'macarons');
+            echart2 = echarts.init(document.getElementById('echart2'), 'macarons');
             echart2.setOption({
                 title: {
                     text: '店铺状态',
@@ -208,11 +225,15 @@
                         sort: 'ascending',     // for funnel
                         data: this.Echart2Areadata
                     }
-                ]
+                ],
+                //动画效果
+                animationDuration: 4000,
+                animationDurationUpdate: 1000,
+                animationEasing: "backIn"
             });
 
             //经营总况
-            var echart3 = echarts.init(document.getElementById('echart3'), 'macarons');
+            echart3 = echarts.init(document.getElementById('echart3'), 'macarons');
             echart3.setOption({
                 title: {
                     text: '经营总况',
@@ -249,7 +270,11 @@
                         itemStyle: { normal: { areaStyle: { type: 'default' } } },
                         data: this.Echart3Ydata
                     }
-                ]
+                ],
+                //动画效果
+                animationDuration: 4000,
+                animationDurationUpdate: 1000,
+                animationEasing: "bounceIn"
             });
         },
         

@@ -37,7 +37,7 @@ namespace z.ERP.Portal.Areas.Home.Default
                     box1data = box1data,
                     box2data = box2data,
                     box3data = box3data,
-                    box6data = box4data,
+                    box4data = box4data,
                     //echartData
                     Echart1Xdata = Echart1data.AsEnumerable().Select<DataRow, decimal>(x => Convert.ToDecimal(x["AMOUNT"])).ToList<decimal>(),
                     Echart1Ydata = Echart1data.AsEnumerable().Select<DataRow, string>(x => Convert.ToString(x["SHOPNAME"])).ToList<string>(),
