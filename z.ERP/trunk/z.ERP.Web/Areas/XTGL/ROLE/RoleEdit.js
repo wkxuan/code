@@ -13,11 +13,6 @@ editDetail.beforeVue = function () {
     editDetail.screenParam.region = editDetail.screenParam.region || [];
     editDetail.screenParam.localYt = [];
     editDetail.screenParam.localMenu = [];
-    //editDetail.screenParam.colDef_Menu = [
-    //    { type: 'selection', width: 60, align: 'center' },
-    //    { title: '菜单名称', key: 'MENUNAME', width: 150 },
-    //    { title: '按钮名称', key: 'BUTONNAME', width: 190 }
-    //];
 
     editDetail.screenParam.colDef_Menufee = [
         { type: 'selection', width: 60, align: 'center' },
@@ -27,18 +22,6 @@ editDetail.beforeVue = function () {
         { type: 'selection', width: 60, align: 'center' },
         { title: '区域名称', key: 'NAME', width: 150 }
     ];
-
-    //editDetail.screenParam.selectData = function (selection, row) {
-    //    editDetail.checkSysUserGroupMenu(selection);
-    //};
-
-    //editDetail.screenParam.selectDataAll = function (selection) {
-    //    editDetail.checkSysUserGroupMenu(selection);
-    //};
-    //editDetail.screenParam.selectCancel = function (selection) {
-    //    editDetail.checkSysUserGroupMenu(selection)
-    //};
-
 
     editDetail.screenParam.selectDatafee = function (selection, row) {
         editDetail.checkfee(selection);
@@ -63,17 +46,7 @@ editDetail.beforeVue = function () {
     };
 
 };
-//editDetail.checkSysUserGroupMenu = function (selection) {
-//    editDetail.dataParam.ROLE_MENU = [];
-//    var localData = [];
-//    for (var i = 0; i < selection.length; i++) {
-//        localData.push({
-//            MENUID: selection[i].MENUID,
-//            MODULECODE: selection[i].MODULECODE
-//        });
-//    };
-//    Vue.set(editDetail.dataParam, 'ROLE_MENU', localData);
-//}
+
 editDetail.newRecord = function () {
     editDetail.dataParam.VOID_FLAG = "2";
 };
@@ -104,30 +77,12 @@ editDetail.showOne = function (data, callback) {
         }, function (data) {
             if (data.role != null) {
                 $.extend(editDetail.dataParam, data.role);
-                debugger
                 editDetail.dataParam.BILLID = data.role.ROLEID;
                 if (editDetail.dataParam.ORGIDCASCADER != null) {
                     editDetail.dataParam.ORGIDCASCADER = editDetail.dataParam.ORGIDCASCADER.split(",")
                 } else {
                     editDetail.dataParam.ORGIDCASCADER = null;
                 }
-                
-                //var localMenu = [];
-                //for (var j = 0; j < editDetail.screenParam.USERMODULE.length; j++) {
-                //    Vue.set(editDetail.screenParam.USERMODULE[j], '_checked', false);
-
-                //    for (var i = 0; i < data.module.length; i++) {
-                //        if ((data.module[i].MENUID == editDetail.screenParam.USERMODULE[j].MENUID) && (
-                //           data.module[i].MODULECODE == editDetail.screenParam.USERMODULE[j].MODULECODE)) {
-                //            Vue.set(editDetail.screenParam.USERMODULE[j], '_checked', true);
-                //            localMenu.push({
-                //                MENUID: data.module[i].MENUID,
-                //                MODULECODE: data.module[i].MODULECODE
-                //            });
-                //        }
-                //    }
-                //    Vue.set(editDetail.dataParam, 'ROLE_MENU', localMenu);
-                //};
                 editDetail.screenParam.USERMODULE = data.module;
 
                 var localFee = [];
