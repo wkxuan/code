@@ -460,7 +460,8 @@
                 CanSpjdDef: true,
                 CanSpjdJg: true,
                 CanBillid: false,
-                srcPopRole: __BaseUrl + "/" + "Pop/Pop/PopRoleList/"
+                srcPopRole: __BaseUrl + "/" + "Pop/Pop/PopRoleList/",
+                OldBillid:""
             },
             mounted: function () {
                 var _self = this;
@@ -480,12 +481,19 @@
                     this.CanSpjdDef = false;
                     this.CanSpjdJg = false;
                     this.CanBillid = true;
+                    if (this.BILLID!=""){
+                       this.OldBillid=this.BILLID;
+                    };
+                    this.BILLID="";
                 },
                 mod: function () {
                     this.ButtonEnable(true, true, true, true);
                     this.CanSpjdDef = false;
                     this.CanSpjdJg = false;
                     this.CanBillid = true;
+                    if (this.BILLID!=""){
+                       this.OldBillid=this.BILLID;
+                    };
                 },
                 isValidSave: function () {
                     if (this.MENUID == "") {
@@ -562,6 +570,9 @@
                     });
                 },
                 quit: function () {
+                    if (this.OldBillid!=""){
+                        this.srch(this.OldBillid);
+                    };
                     if (this.BILLID != "")
                         this.ButtonEnable(false, false, false, true);
                     else

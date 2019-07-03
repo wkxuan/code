@@ -747,12 +747,13 @@ namespace z.ERP.Services
             }
 
             //在这里查询有没有未终止的当前菜单号的审批流程,有的话给提示
-            string sql = $@"select min(BILLID) BILLID from SPLCDEFD where";
-            sql += " MENUID = " + SPLCDEFD.MENUID + " and BILLID<> " + SPLCDEFD.BILLID + " and STATUS<>2";
+            string sql = $@"select nvl(min(BILLID),0) BILLID from SPLCDEFD where";
+            sql += " MENUID = " + SPLCDEFD.MENUID + " and BILLID<> " + SPLCDEFD.BILLID + " and STATUS<>3";
 
             DataTable billid = DbHelper.ExecuteTable(sql);
 
-            if (billid.Rows.Count != 0)
+
+            if (billid.Rows[0][0].ToString().ToInt() != 0)
             {
                 throw new LogicException($"当前菜单号有未终止的审批流程!");
             }
@@ -854,12 +855,14 @@ namespace z.ERP.Services
                 throw new LogicException($"审批单({Data.BILLID})已经不是未审核状态!");
             }
 
-            string sql = $@"select min(BILLID) BILLID from SPLCDEFD where";
-            sql += " MENUID = " + Data.MENUID + " and BILLID<> " + Data.BILLID + " and STATUS<>2";
+            //在这里查询有没有未终止的当前菜单号的审批流程,有的话给提示
+            string sql = $@"select nvl(min(BILLID),0) BILLID from SPLCDEFD where";
+            sql += " MENUID = " + con.MENUID + " and BILLID<> " + con.BILLID + " and STATUS<>3";
 
             DataTable billid = DbHelper.ExecuteTable(sql);
 
-            if (billid.Rows.Count != 0)
+
+            if (billid.Rows[0][0].ToString().ToInt() != 0)
             {
                 throw new LogicException($"当前菜单号有未终止的审批流程!");
             }
