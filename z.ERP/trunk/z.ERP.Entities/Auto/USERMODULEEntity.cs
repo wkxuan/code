@@ -67,5 +67,6 @@ namespace z.ERP.Entities
 
         //附加字段
         public string IsChecked { get; set; }
+        public string PARENTID { get; set; }
     }
 }

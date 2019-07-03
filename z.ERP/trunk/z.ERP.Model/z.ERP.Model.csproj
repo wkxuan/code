@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tree\ToTrees.cs" />
+    <Compile Include="Tree\TreeEntity.cs" />
     <Compile Include="Vue\TreeModel.cs" />
   </ItemGroup>
   <ItemGroup>
