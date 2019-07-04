@@ -1,6 +1,6 @@
 ﻿editDetail.beforeVue = function () {
     editDetail.others = true;
-    editDetail.branchid = false;
+    editDetail.branchid = true;
     editDetail.Key = 'BILLID';
     //初始化弹窗所要传递参数
     
@@ -40,8 +40,12 @@ editDetail.showOne = function (data, callback) {
 ///html中绑定方法
 editDetail.otherMethods = {
     SelContract: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info("请先选择门店!");
+            return false;
+        }
         editDetail.screenParam.showPopContract = true;
-        editDetail.screenParam.popParam = { YXHTBJ: 1, FREESHOPBJ:1 };
+        editDetail.screenParam.popParam = { YXHTBJ: 1, FREESHOPBJ: 1, BRANCHID: editDetail.dataParam.BRANCHID };
     },
 }
 
@@ -56,7 +60,7 @@ editDetail.popCallBack = function (data) {
         }, function (data) {
             if (data.contract.length > 0) {
                 editDetail.dataParam.MERCHANTID = data.contract[0].MERCHANTID;
-                editDetail.dataParam.BRANCHID = data.contract[0].BRANCHID;
+             //   editDetail.dataParam.BRANCHID = data.contract[0].BRANCHID;
                 editDetail.dataParam.STYLE = data.contract[0].STYLE;
                 editDetail.dataParam.STYLEMC = data.contract[0].STYLEMC;
                 editDetail.dataParam.SHMC = data.contract[0].SHMC;
@@ -72,6 +76,7 @@ editDetail.popCallBack = function (data) {
 
 editDetail.clearKey = function () {
     editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.BRANCHID = null;
     editDetail.dataParam.CONTRACTID = null;
     editDetail.dataParam.FREEDATE = null;    
     editDetail.dataParam.MERCHANTID = null;
@@ -81,6 +86,12 @@ editDetail.clearKey = function () {
 }
 
 editDetail.IsValidSave = function () {
+
+    if (!editDetail.dataParam.BRANCHID)
+    {
+        iview.Message.info("请选择门店!");
+        return false;
+    }
 
     if (!editDetail.dataParam.CONTRACTID) {
         iview.Message.info("请选择租约!");
