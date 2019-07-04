@@ -58,43 +58,47 @@
             }
         </i-col>
     </row>
-    <row>
-        <i-col span="6">菜单权限
+    
+    <Tabs type="card" value="name1">
+        <Tab-Pane label="菜单权限" name="name1">
             <Tree :data="screenParam.USERMODULE" show-checkbox></Tree>
-        </i-col>
-        <i-col span="4">
-            门店
-            <i-table size="small" :border="true" height="370"
-                     :columns="screenParam.colDef_BRANCH" :data="screenParam.BRANCH"
-                     v-on:on-select="screenParam.selectDataBRANCH"
-                     v-on:on-select-all="screenParam.selectDataAllBRANCH"
-                     v-on:on-select-all-cancel="screenParam.selectAllCancelBRANCH" 
-                     v-on:on-select-cancel="screenParam.selectCancelBRANCH"></i-table>
-        </i-col>           
-        <i-col span="4">区域
-            <i-table size="small" :border="true" height="370"
-                        :columns="screenParam.colDef_Menuregion" :data="screenParam.region"
-                        v-on:on-select="screenParam.selectDataregion"
-                        v-on:on-select-all="screenParam.selectDataAllregion"
-                        v-on:on-select-all-cancel="screenParam.selectAllCancelregion" 
-                        v-on:on-select-cancel="screenParam.selectCancelregion"></i-table>
-        </i-col>
-        
-        <i-col span="4">
-            业态
+        </Tab-Pane>
+        <Tab-Pane label="门店权限" name="name2">
+            <i-table size="small" :border="true" height="370" width="400"
+             :columns="screenParam.colDef_BRANCH" :data="screenParam.BRANCH"
+             v-on:on-select="screenParam.selectDataBRANCH"
+             v-on:on-select-all="screenParam.selectDataAllBRANCH"
+             v-on:on-select-all-cancel="screenParam.selectAllCancelBRANCH"
+             v-on:on-select-cancel="screenParam.selectCancelBRANCH"></i-table>
+        </Tab-Pane>
+        <Tab-Pane label="区域权限" name="name3">
+            <i-table size="small" :border="true" height="370" width="400"
+                     :columns="screenParam.colDef_Menuregion" :data="screenParam.region"
+                     v-on:on-select="screenParam.selectDataregion"
+                     v-on:on-select-all="screenParam.selectDataAllregion"
+                     v-on:on-select-all-cancel="screenParam.selectAllCancelregion"
+                     v-on:on-select-cancel="screenParam.selectCancelregion"></i-table>
+        </Tab-Pane>
+        <Tab-Pane label="业态权限" name="name4">
             <Tree :data="screenParam.ytTreeData" show-checkbox></Tree>
-        </i-col> 
-        <i-col span="4">
-            费用项目
-            <i-table size="small" :border="true" height="370"
+        </Tab-Pane>
+        <Tab-Pane label="预警权限" name="name5">
+            <i-table size="small" :border="true" height="370" width="400"
+                     :columns="screenParam.colDef_Menufee" :data="screenParam.Alert"
+                     v-on:on-select="screenParam.selectDataAlert"
+                     v-on:on-select-all="screenParam.selectDataAllAlert"
+                     v-on:on-select-all-cancel="screenParam.selectAllCancelAlert"
+                     v-on:on-select-cancel="screenParam.selectCancelAlert"></i-table>
+        </Tab-Pane>
+        <Tab-Pane label="费用项目" name="name6">
+            <i-table size="small" :border="true" height="370" width="400"
                      :columns="screenParam.colDef_Menufee" :data="screenParam.fee"
                      v-on:on-select="screenParam.selectDatafee"
                      v-on:on-select-all="screenParam.selectDataAllfee"
-                     v-on:on-select-all-cancel="screenParam.selectAllCancelfee" 
+                     v-on:on-select-all-cancel="screenParam.selectAllCancelfee"
                      v-on:on-select-cancel="screenParam.selectCancelfee"></i-table>
-        </i-col>
-        <i-col span="2">
-            其他权限
+        </Tab-Pane>
+        <Tab-Pane label="其他权限" name="name7">
             <row>
                 <i-col>
                     @{
@@ -108,9 +112,8 @@
                     }
                 </i-col>
             </row>
-        </i-col>
-        <Spin size="large" fix id="spin"></Spin>        
-    </row>
+        </Tab-Pane>
+    </Tabs>              
 }
 
 @section pops{

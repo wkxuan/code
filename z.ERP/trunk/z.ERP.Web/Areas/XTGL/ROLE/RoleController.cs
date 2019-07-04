@@ -39,7 +39,8 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                     module = res.Item3,
                     ytTreeData = res.Item6,
                     region = res.Item5,
-                    branch = res.Item7
+                    branch = res.Item7,
+                    alert = res.Item4
                 }
             );
         }
@@ -68,7 +69,8 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                     module = res.Item3,
                     ytTree = res.Item4,
                     region = res.Item5,
-                    branch=res.Item6
+                    branch=res.Item6,
+                    alert = res.Item7
                 }
             );
         }

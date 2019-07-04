@@ -42,5 +42,11 @@ namespace z.ERP.Entities
             get;
             set;
         }
+        [ForeignKey(nameof(ROLEID), nameof(ROLE_ALERTEntity.ROLEID))]
+        public List<ROLE_ALERTEntity> ROLE_ALERT
+        {
+            get;
+            set;
+        }
     }
 }

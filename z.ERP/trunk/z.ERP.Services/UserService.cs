@@ -147,11 +147,17 @@ namespace z.ERP.Services
                 sqlFee += (" AND ROLEID= " + Data.ROLEID);
             DataTable branch = DbHelper.ExecuteTable(sqlbranch);
 
-            return new Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, DataTable, TreeModel[], DataTable>(role.ToOneLine(), fee, module, yt, region, ytTreeData, branch);
+            //预警
+            string sqlalert = $@"select B.ID ALERTID,B.MC NAME from DEF_ALERT B,ROLE_ALERT R WHERE B.ID=R.ALERTID";
+            if (!Data.ROLEID.IsEmpty())
+                sqlFee += (" AND ROLEID= " + Data.ROLEID);
+            DataTable alert = DbHelper.ExecuteTable(sqlalert);
+
+            return new Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, DataTable, TreeModel[], DataTable>(role.ToOneLine(), fee, module, alert, region, ytTreeData, branch);
         }
 
 
-        public Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable, DataTable> GetRoleInit()
+        public Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable, DataTable, DataTable> GetRoleInit()
         {
 
             var org = DataService.GetTreeOrg();
@@ -197,8 +203,10 @@ namespace z.ERP.Services
             //门店
             string sqlbranch = $@"select B.ID BRANCHID,B.NAME from BRANCH B  order by B.ID";
             DataTable branch = DbHelper.ExecuteTable(sqlbranch);
-
-            return new Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable, DataTable>(org.Item1, fee, module, ytTreeData, region, branch);
+            //预警
+            string sqlalert = $@"select B.ID ALERTID,B.MC NAME from DEF_ALERT B  order by B.ID";
+            DataTable alert = DbHelper.ExecuteTable(sqlalert);
+            return new Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable, DataTable, DataTable>(org.Item1, fee, module, ytTreeData, region, branch, alert);
         }
 
 

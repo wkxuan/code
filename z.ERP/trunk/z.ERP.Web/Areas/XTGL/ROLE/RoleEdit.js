@@ -1,4 +1,4 @@
-﻿var spins;
+﻿
 editDetail.beforeVue = function () {
     editDetail.others = false;
     editDetail.branchid = false;
@@ -14,6 +14,7 @@ editDetail.beforeVue = function () {
     editDetail.screenParam.localYt = [];
     editDetail.screenParam.localMenu = [];
     editDetail.screenParam.BRANCH = editDetail.screenParam.BRANCH || [];
+    editDetail.screenParam.Alert = editDetail.screenParam.Alert || [];
 
     editDetail.screenParam.colDef_Menufee = [
         { type: 'selection', width: 60, align: 'center' },
@@ -27,6 +28,24 @@ editDetail.beforeVue = function () {
         { type: 'selection', width: 60, align: 'center' },
         { title: '门店名称', key: 'NAME' }
     ];
+    editDetail.screenParam.colDef_Alert = [
+        { type: 'selection', width: 60, align: 'center' },
+        { title: '预警项目', key: 'NAME' }
+    ];
+    //门店
+    editDetail.screenParam.selectDataAlert = function (selection, row) {
+        editDetail.checkAlert(selection);
+    };
+
+    editDetail.screenParam.selectDataAllAlert = function (selection) {
+        editDetail.checkAlert(selection);
+    };
+    editDetail.screenParam.selectCancelAlert = function (selection) {
+        editDetail.checkAlert(selection);
+    };
+    editDetail.screenParam.selectAllCancelAlert = function (selection) {
+        editDetail.checkAlert(selection);
+    }
     //门店
     editDetail.screenParam.selectDataBRANCH = function (selection, row) {
         editDetail.checkBRANCH(selection);
@@ -94,6 +113,7 @@ editDetail.showOne = function (data, callback) {
         Vue.set(editDetail.screenParam, "ytTreeData", datainit.ytTree);
         Vue.set(editDetail.screenParam, "region", datainit.region);
         Vue.set(editDetail.screenParam, "BRANCH", datainit.branch);
+        Vue.set(editDetail.screenParam, "Alert", datainit.alert);
 
         _.Ajax('SearchRole', {
             Data: { ROLEID: data }
@@ -137,6 +157,21 @@ editDetail.showOne = function (data, callback) {
                     }
                     Vue.set(editDetail.dataParam, 'ROLE_BRANCH', localBRANCH);
                 };
+                //预警
+                var localALERT = [];
+                for (var j = 0; j < editDetail.screenParam.Alert.length; j++) {
+                    Vue.set(editDetail.screenParam.Alert[j], '_checked', false);
+
+                    for (var i = 0; i < data.alert.length; i++) {
+                        if (data.alert[i].ALERTID == editDetail.screenParam.Alert[j].ALERTID) {
+                            Vue.set(editDetail.screenParam.Alert[j], '_checked', true);
+                            localALERT.push({
+                                ALERTID: data.alert[i].ALERTID
+                            });
+                        }
+                    }
+                    Vue.set(editDetail.dataParam, 'ROLE_ALERT', localALERT);
+                };
 
                 var localRegion = [];
                 for (var j = 0; j < editDetail.screenParam.region.length; j++) {
@@ -155,7 +190,6 @@ editDetail.showOne = function (data, callback) {
                
                 editDetail.screenParam.ytTreeData = data.ytTreeData;                
             };
-            editDetail.otherMethods.spin();
         });
     });
     callback && callback();
@@ -230,10 +264,6 @@ editDetail.otherMethods = {
         editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx?personid=" + editDetail.dataParam.ROLECODE;
         editDetail.screenParam.showPopCrmRole = true;
     },
-    spin:function(){
-        spins = document.getElementById("spin");
-        spins.parentNode.removeChild(spins);
-    }
 }
 
 editDetail.checkfee = function (selection) {
@@ -262,7 +292,15 @@ editDetail.checkBRANCH = function (selection) {
     };
     Vue.set(editDetail.dataParam, 'ROLE_BRANCH', localData);
 }
-
+//预警选中方法
+editDetail.checkAlert = function (selection) {
+    editDetail.dataParam.ROLE_ALERT = [];
+    var localData = [];
+    for (var i = 0; i < selection.length; i++) {
+        localData.push({ ALERTID: selection[i].ALERTID });
+    };
+    Vue.set(editDetail.dataParam, 'ROLE_ALERT', localData);
+}
 editDetail.mountedInit = function () {
 
     _.Ajax('SearchInit', {
@@ -274,9 +312,7 @@ editDetail.mountedInit = function () {
         Vue.set(editDetail.screenParam, "ytTreeData", data.ytTree);
         Vue.set(editDetail.screenParam, "region", data.region);
         Vue.set(editDetail.screenParam, "BRANCH", data.branch);
-        if (editDetail.Id == "" || editDetail.Id == undefined) {
-            editDetail.otherMethods.spin();
-        }
+        Vue.set(editDetail.screenParam, "Alert", data.alert);
     });
 }
 
