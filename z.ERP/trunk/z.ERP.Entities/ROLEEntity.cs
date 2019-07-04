@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using z.DBHelper.DBDomain;
+using z.ERP.Entities.Auto;
 
 namespace z.ERP.Entities
 {
@@ -31,6 +32,12 @@ namespace z.ERP.Entities
 
         [ForeignKey(nameof(ROLEID), nameof(ROLE_FEEEntity.ROLEID))]
         public List<ROLE_YTEntity> ROLE_YT
+        {
+            get;
+            set;
+        }
+        [ForeignKey(nameof(ROLEID), nameof(ROLE_BRANCHEntity.ROLEID))]
+        public List<ROLE_BRANCHEntity> ROLE_BRANCH
         {
             get;
             set;
