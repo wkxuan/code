@@ -80,18 +80,13 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, DataTable, TreeModel[]> GetRoleElement(ROLEEntity Data)
+        public Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, DataTable, TreeModel[], DataTable> GetRoleElement(ROLEEntity Data)
         {
             string sql = $@"SELECT A.*,B.ORGIDCASCADER  FROM ROLE A,ORG B  WHERE A.ORGID=B.ORGID ";
             if (!Data.ROLEID.IsEmpty())
                 sql += (" AND ROLEID= " + Data.ROLEID);
             DataTable role = DbHelper.ExecuteTable(sql);
 
-
-            //string sqlMenu = $@" SELECT MODULECODE,MENUID FROM ROLE_MENU WHERE 1=1";
-            //if (!Data.ROLEID.IsEmpty())
-            //    sqlMenu += (" AND ROLEID= " + Data.ROLEID);
-            //DataTable module = DbHelper.ExecuteTable(sqlMenu);
             //更改权限列表为树 by：DZK
             string sql1 = @" SELECT NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(U.MODULECODE,0,LENGTH(U.MODULECODE)-2),0) parentid,R.ROLEID IsChecked FROM USERMODULE U
                     LEFT JOIN ROLE_MENU R ON U.MODULECODE=R.MODULECODE  AND U.MENUID=R.MENUID AND R.ROLEID = " + Data.ROLEID + @"
@@ -112,26 +107,25 @@ namespace z.ERP.Services
             }
             var module = treeList.ToTree();
 
-
+            //费用
             string sqlFee = $@" SELECT TRIMID FROM  ROLE_FEE WHERE 1=1";
             if (!Data.ROLEID.IsEmpty())
                 sqlFee += (" AND ROLEID= " + Data.ROLEID);
             DataTable fee = DbHelper.ExecuteTable(sqlFee);
 
 
-
+            //业态
             string sqlYt = $@" SELECT YTID ID FROM  ROLE_YT WHERE 1=1";
             if (!Data.ROLEID.IsEmpty())
                 sqlYt += (" AND ROLEID= " + Data.ROLEID);
             DataTable yt = DbHelper.ExecuteTable(sqlYt);
 
-
+            //区域
             string sqlRegion = $@" SELECT REGIONID FROM  ROLE_REGION WHERE 1=1";
             if (!Data.ROLEID.IsEmpty())
                 sqlRegion += (" AND ROLEID= " + Data.ROLEID);
             DataTable region = DbHelper.ExecuteTable(sqlRegion);
-
-            //List<GOODS_KINDEntity> p = DbHelper.SelectList(new GOODS_KINDEntity()).OrderBy(a => a.CODE).ToList();
+            //业态
             string sqlYt2 = "select G.CATEGORYID,G.CATEGORYCODE,G.CATEGORYNAME,Y.YTID LEVEL_LAST from CATEGORY G,ROLE_YT Y where G.CATEGORYID =Y.YTID(+) ";
             sqlYt2 += (" AND Y.ROLEID(+)= " + Data.ROLEID);
 
@@ -147,24 +141,20 @@ namespace z.ERP.Services
                     title = a.CATEGORYCODE + " " + a.CATEGORYNAME,
                     expand = false
                 })?.ToArray();
+            //门店
+            string sqlbranch = $@"select B.ID BRANCHID,B.NAME from BRANCH B,ROLE_BRANCH R WHERE B.ID=R.BRANCHID ";
+            if (!Data.ROLEID.IsEmpty())
+                sqlFee += (" AND ROLEID= " + Data.ROLEID);
+            DataTable branch = DbHelper.ExecuteTable(sqlbranch);
 
-            return new Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, DataTable, TreeModel[]>(role.ToOneLine(), fee, module, yt, region, ytTreeData);
+            return new Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, DataTable, TreeModel[], DataTable>(role.ToOneLine(), fee, module, yt, region, ytTreeData, branch);
         }
 
 
-        public Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable> GetRoleInit()
+        public Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable, DataTable> GetRoleInit()
         {
 
             var org = DataService.GetTreeOrg();
-
-            //string sql1 = $@"SELECT * FROM ( ";
-            //sql1 += " SELECT MENUID,MODULECODE,MODULENAME MENUNAME,'' AS BUTONNAME";
-            //sql1 += " FROM USERMODULE WHERE NOT MENUID IS NULL AND LENGTH(MODULECODE)=6 ";
-            //sql1 += " UNION";
-            //sql1 += " SELECT MENUID,MODULECODE,'' AS MENUNAME,MODULENAME AS BUTONNAME";
-            //sql1 += " FROM USERMODULE WHERE NOT MENUID IS NULL AND LENGTH(MODULECODE) = 8 ";
-            //sql1 += " ) ORDER BY MODULECODE ";
-            //DataTable module = DbHelper.ExecuteTable(sql1);
 
             //更改权限列表为树 by：DZK
             string sql1 = @" (select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  FROM USERMODULE U,MENU M 
@@ -186,14 +176,13 @@ namespace z.ERP.Services
                 treeList.Add(node);
             }
             var module=treeList.ToTree();
-
-
+            //费用
             string sqlitem2 = $@"select A.TRIMID,A.NAME from FEESUBJECT A  order by A.TRIMID";
             DataTable fee = DbHelper.ExecuteTable(sqlitem2);
-
+            //区域
             string sqlitemRegion = $@"select A.REGIONID,A.NAME from REGION A  order by A.REGIONID";
             DataTable region = DbHelper.ExecuteTable(sqlitemRegion);
-
+            //业态树
             List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
             var ytTreeData = TreeModel.Create(p,
                 a => a.CATEGORYCODE,
@@ -205,7 +194,11 @@ namespace z.ERP.Services
                     expand = false
                 })?.ToArray();
 
-            return new Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable>(org.Item1, fee, module, ytTreeData, region);
+            //门店
+            string sqlbranch = $@"select B.ID BRANCHID,B.NAME from BRANCH B  order by B.ID";
+            DataTable branch = DbHelper.ExecuteTable(sqlbranch);
+
+            return new Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable, DataTable>(org.Item1, fee, module, ytTreeData, region, branch);
         }
 
 

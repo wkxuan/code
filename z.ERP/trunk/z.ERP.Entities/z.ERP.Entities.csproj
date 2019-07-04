@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Auto\NOTICEEntity.cs" />
     <Compile Include="Auto\READNOTOCELOGEntity.cs" />
+    <Compile Include="Auto\ROLE_BRANCHEntity.cs" />
     <Compile Include="Procedures\EXEC_RATE_ADJUST.cs" />
     <Compile Include="Procedures\STOP_RATE_ADJUST.cs" />
     <Compile Include="RATE_ADJUSTEntity.cs" />

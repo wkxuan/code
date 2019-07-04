@@ -13,27 +13,48 @@ editDetail.beforeVue = function () {
     editDetail.screenParam.region = editDetail.screenParam.region || [];
     editDetail.screenParam.localYt = [];
     editDetail.screenParam.localMenu = [];
+    editDetail.screenParam.BRANCH = editDetail.screenParam.BRANCH || [];
 
     editDetail.screenParam.colDef_Menufee = [
         { type: 'selection', width: 60, align: 'center' },
-        { title: '费用项目名称', key: 'NAME', width: 150 }
+        { title: '费用项目名称', key: 'NAME' }
     ];
     editDetail.screenParam.colDef_Menuregion = [
         { type: 'selection', width: 60, align: 'center' },
-        { title: '区域名称', key: 'NAME', width: 150 }
+        { title: '区域名称', key: 'NAME' }
     ];
+    editDetail.screenParam.colDef_BRANCH = [
+        { type: 'selection', width: 60, align: 'center' },
+        { title: '门店名称', key: 'NAME' }
+    ];
+    //门店
+    editDetail.screenParam.selectDataBRANCH = function (selection, row) {
+        editDetail.checkBRANCH(selection);
+    };
 
+    editDetail.screenParam.selectDataAllBRANCH = function (selection) {
+        editDetail.checkBRANCH(selection);
+    };
+    editDetail.screenParam.selectCancelBRANCH = function (selection) {
+        editDetail.checkBRANCH(selection);
+    };
+    editDetail.screenParam.selectAllCancelBRANCH = function (selection) {
+        editDetail.checkBRANCH(selection);
+    }
+    //费用
     editDetail.screenParam.selectDatafee = function (selection, row) {
         editDetail.checkfee(selection);
     };
-
     editDetail.screenParam.selectDataAllfee = function (selection) {
         editDetail.checkfee(selection);
     };
     editDetail.screenParam.selectCancelfee = function (selection) {
         editDetail.checkfee(selection);
     };
-
+    editDetail.screenParam.selectAllCancelfee = function (selection) {
+        editDetail.checkfee(selection);
+    }
+    //区域
     editDetail.screenParam.selectDataregion = function (selection, row) {
         editDetail.checkregion(selection);
     };
@@ -44,7 +65,9 @@ editDetail.beforeVue = function () {
     editDetail.screenParam.selectCancelregion = function (selection) {
         editDetail.checkregion(selection);
     };
-
+    editDetail.screenParam.selectAllCancelregion = function (selection) {
+        editDetail.checkregion(selection);
+    }
 };
 
 editDetail.newRecord = function () {
@@ -70,7 +93,7 @@ editDetail.showOne = function (data, callback) {
         Vue.set(editDetail.screenParam, "fee", datainit.fee);
         Vue.set(editDetail.screenParam, "ytTreeData", datainit.ytTree);
         Vue.set(editDetail.screenParam, "region", datainit.region);
-
+        Vue.set(editDetail.screenParam, "BRANCH", datainit.branch);
 
         _.Ajax('SearchRole', {
             Data: { ROLEID: data }
@@ -98,6 +121,21 @@ editDetail.showOne = function (data, callback) {
                         }
                     }
                     Vue.set(editDetail.dataParam, 'ROLE_FEE', localFee);
+                };
+                //门店
+                var localBRANCH = [];
+                for (var j = 0; j < editDetail.screenParam.BRANCH.length; j++) {
+                    Vue.set(editDetail.screenParam.BRANCH[j], '_checked', false);
+
+                    for (var i = 0; i < data.branch.length; i++) {
+                        if (data.branch[i].BRANCHID == editDetail.screenParam.BRANCH[j].BRANCHID) {
+                            Vue.set(editDetail.screenParam.BRANCH[j], '_checked', true);
+                            localBRANCH.push({
+                                BRANCHID: data.branch[i].BRANCHID
+                            });
+                        }
+                    }
+                    Vue.set(editDetail.dataParam, 'ROLE_BRANCH', localBRANCH);
                 };
 
                 var localRegion = [];
@@ -215,6 +253,15 @@ editDetail.checkregion = function (selection) {
     };
     Vue.set(editDetail.dataParam, 'ROLE_REGION', localData);
 }
+//门店选中方法
+editDetail.checkBRANCH = function (selection) {
+    editDetail.dataParam.ROLE_BRANCH = [];
+    var localData = [];
+    for (var i = 0; i < selection.length; i++) {
+        localData.push({ BRANCHID: selection[i].BRANCHID });
+    };
+    Vue.set(editDetail.dataParam, 'ROLE_BRANCH', localData);
+}
 
 editDetail.mountedInit = function () {
 
@@ -226,6 +273,7 @@ editDetail.mountedInit = function () {
         Vue.set(editDetail.screenParam, "fee", data.fee);
         Vue.set(editDetail.screenParam, "ytTreeData", data.ytTree);
         Vue.set(editDetail.screenParam, "region", data.region);
+        Vue.set(editDetail.screenParam, "BRANCH", data.branch);
         if (editDetail.Id == "" || editDetail.Id == undefined) {
             editDetail.otherMethods.spin();
         }
