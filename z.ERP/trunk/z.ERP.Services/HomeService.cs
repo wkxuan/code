@@ -113,12 +113,15 @@ namespace z.ERP.Services
                                 and aa.modulecode like  '" + menuGr.ID + "%'";
                     if (int.Parse(employee.Id) > 0)
                     {
+                        //因菜单树型权限 按扭权限不全选时 对应菜单未保存到ROLE_MENU  
+                        //暂改成 由按扭权单id截取6位关联菜单id   by wangkx 20190705
+                        //b.menuid 改为 to_number(substr( to_char(b.menuid),1,6))  
                         sql += @" and aa.menuid in (
                                                    select a.id
                                                      from menu a,
-                                                           ROLE_MENU     b,
+                                                           ROLE_MENU b,
                                                            USER_ROLE c
-                                                    where a.id = b.menuid
+                                                    where a.id = to_number(substr( to_char(b.menuid),1,6))  
                                                       and b.roleid = c.roleid
                                                       and c.userid = " + employee.Id + @" or
                                     aa.menuid is null)";
