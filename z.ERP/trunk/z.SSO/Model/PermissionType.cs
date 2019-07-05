@@ -39,6 +39,10 @@ namespace z.SSO.Model
         /// <summary>
         /// 业态
         /// </summary>
-        Category = 7            
+        Category = 7,
+        /// <summary>
+        /// 预警项目
+        /// </summary>
+        Alert = 8
     }
 }

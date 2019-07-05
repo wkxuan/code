@@ -309,11 +309,11 @@ namespace z.ERP.Services
                     return SqlDepartment;
                 case PermissionType.Branch:
                     String SqlBranch = "";
-                    SqlBranch = "SELECT A.ID FROM BRANCH A,ORG Bwhere A.ORGID = B.ORGID";
+                    SqlBranch = "SELECT A.ID FROM BRANCH A where 1=1";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
-                        SqlBranch += " and exists(select 1 from USER_ROLE A1, ROLE B1, ORG C1 where A1.USERID = " + employee.Id;
-                        SqlBranch += " and A1.ROLEID = B1.ROLEID and B1.ORGID = C1.ORGID and B.ORGCODE like C1.ORGCODE || '%' )";
+                        SqlBranch += " and exists(select 1 from USER_ROLE A1, ROLE_BRANCH B1 where A1.USERID = " + employee.Id;
+                        SqlBranch += " and A1.ROLEID = B1.ROLEID and A.ID=B1.BRANCHID )";
                     }
                     return SqlBranch;
                 case PermissionType.Floor:
@@ -362,6 +362,17 @@ namespace z.ERP.Services
                     }
                     SqlCategory += " order by CATEGORYCODE";
                     return SqlCategory;
+                case PermissionType.Alert:
+                    String SqlAlert = "";
+                    SqlAlert = "SELECT A.ID FROM DEF_ALERT A where 1=1";
+                    if (!employee.Id.IsEmpty() && employee.Id != "-1")
+                    {
+                        SqlAlert += " and exists(select 1 from USER_ROLE A1, ROLE_ALERT B1 where A1.USERID = " + employee.Id;
+                        SqlAlert += " and A1.ROLEID = B1.ROLEID and A.ID=B1.ALERTID )";
+                    }
+                    return SqlAlert;
+
+
                 default:
                     throw new Exception("无效的权限类型");
             }
