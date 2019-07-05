@@ -27,7 +27,7 @@
                         Text = "查询",
                         Enable = true,
                         Type = "primary",
-                        Icon= "md-search"
+                        Icon = "md-search"
                     });
                 }
                 @{
@@ -51,15 +51,15 @@
         <panel name="result">
             查询结果
             <div style="float: right; width: 400px ;text-align: right;">
-                 @{
-                     RenderControl(new ButtonRender()
-                     {
-                         Click = "exp",
-                         Text = "导出",
-                         Enable = true,
-                         Type = "primary",
-                         Icon = "md-download"
-                     });
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "exp",
+                        Text = "导出",
+                        Enable = true,
+                        Type = "primary",
+                        Icon = "md-download"
+                    });
                 }
                 @{
                     RenderControl(new ButtonRender()
@@ -75,11 +75,11 @@
                 @RenderSection("resultBtn", false)
             </div>
             <div slot="content">
-                 @*结果显示*@
-                   <un-edit-table v-bind:options="options"></un-edit-table>
-                   <page :total="pagedataCount" :page-size="pageSize" show-total
-                          v-on:on-change="changePageCount" :page-size-opts="arrPageSize"
-                          show-sizer v-on:on-page-size-change ="changePageSizer"></page>
+                @*结果显示*@
+                <yx-table v-bind:columns="columns" v-bind:data="data"></yx-table>
+                <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total
+                      v-on:on-change="changePageCount" v-bind:page-size-opts="arrPageSize"
+                      show-sizer v-on:on-page-size-change="changePageSizer"></page>
 
                 @RenderSection("resultOthers", false)
             </div>
@@ -90,5 +90,5 @@
 </div>
 
 @section foot{
-    @RenderSection("foot", false)   
+    @RenderSection("foot", false)
 }

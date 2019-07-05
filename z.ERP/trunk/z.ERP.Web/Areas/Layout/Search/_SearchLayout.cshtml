@@ -16,46 +16,6 @@
 }
 
 @{
-    if ( Model!=null&& !Model.Permission_Edit.IsEmpty() && employee.HasPermission(Model.Permission_Edit))
-    {
-        <script type="text/javascript">
-            var CanEdit = true;
-        </script>
-    }
-    else
-    {
-        <script type="text/javascript">
-            var CanEdit = false;
-        </script>
-    }
-
-    if (Model != null && !Model.Permission_Browse.IsEmpty() && employee.HasPermission(Model.Permission_Browse))
-    {
-        <script type="text/javascript">
-            var CanBrowse = true;
-        </script>
-    }
-    else
-    {
-        <script type="text/javascript">
-            var CanBrowse = false;
-        </script>
-    }
-
-    if (Model != null && !Model.Permission_Exec.IsEmpty() && employee.HasPermission(Model.Permission_Exec))
-    {
-        <script type="text/javascript">
-            var CanExec = true;
-        </script>
-    }
-    else
-    {
-        <script type="text/javascript">
-            var CanExec = false;
-        </script>
-    }
-
-
     if (Model != null && !Model.Permission_Bg.IsEmpty() && employee.HasPermission(Model.Permission_Bg))
     {
         <script type="text/javascript">
@@ -130,9 +90,9 @@
         <panel name="result">
             查询结果
             <div style="float: right; width: 400px ;text-align: right;">
-                 @{
+                @{
                     RenderControl(new ButtonRender()
-                   {
+                    {
                         Click = "exp",
                         Text = "导出",
                         Enable = true,
@@ -154,22 +114,23 @@
                 @RenderSection("resultBtn", false)
             </div>
             <div slot="content">
-                 @*结果显示*@
-                    <i-table :highlight-row="true" size="small" :border="true" 
-                             :columns="screenParam.colDef" :data="screenParamData.dataDef"
-                             v-on:on-row-dblclick="browse"  ref="selectData"></i-table>
-                    <page :total="pagedataCount" :page-size="pageSize" show-total 
-                          v-on:on-change="changePageCount" ></page>
+                @*结果显示*@
+                <yx-table v-bind:columns="columns" selection=true
+                          v-bind:data="data" ref="selectData">
+                </yx-table>
+                <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total
+                      v-on:on-change="changePageCount"></page>
+
                 @RenderSection("resultOthers", false)
             </div>
         </panel>
     </collapse>
     @RenderSection("hide", false)
     @RenderSection("pops", false)
-    
+
 </div>
 
 @section foot{
     @RenderSection("foot", false)
-     
+
 }

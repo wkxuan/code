@@ -29,12 +29,10 @@
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 panelName: 'condition',
-                disabled: _this.enabled(true),             
-                options: {
-                    columns: [],
-                    data: [],
-                    maxHeight: 240,
-                }
+                disabled: _this.enabled(true),
+                columns: [],
+                data: [],
+                maxHeight: 240,
             },
             mounted: function () {
                 _this.mountedInit();
@@ -42,7 +40,7 @@
             watch: {
                 "screenParam.colDef": {
                     handler: function (nv, ov) {
-                        this.options.columns = nv;
+                        this.columns = nv;
                     },
                     immediate: true,
                     deep: true
@@ -55,7 +53,7 @@
 
                     if (!_this.IsValidSrch())
                         return;
-                    this.options.data = [];
+                    this.data = [];
                     //父页面是单据
                     if (window.parent.editDetail != undefined)
                         _this.popInitParam(window.parent.editDetail.screenParam.popParam);
@@ -77,7 +75,7 @@
                         Success: function (data) {
                             if (data.rows.length > 0) {
                                 _self.panelName = 'result';
-                                _self.options.data = data.rows;
+                                _self.data = data.rows;
                             }
                             else {
                                 _self.$Message.info("没有满足当前查询条件的结果!");
@@ -88,7 +86,7 @@
                 qr: function (event) {
                     event.stopPropagation();
                     let data = {};
-                    data.sj = this.$refs.selectData.getSelectData();
+                    data.sj = this.$refs.selectData.getSelection();
                     if (!data.sj.length) {
                         this.$Message.info("请选择数据!");
                         return;
@@ -103,13 +101,13 @@
                         window.parent.define.popCallBack(data);
                     else if (window.parent.splc != undefined)
                         window.parent.splc.popCallBack(data);
-                    this.options.data = [];
+                    this.data = [];
                 },
                 clear: function (event) {
                     event.stopPropagation();
                     _this.searchParam = {};
                     this.searchParam = _this.searchParam;
-                    this.options.data = [];
+                    this.data = [];
                     this.panelName = 'condition';
                     _this.newCondition();
                 }
@@ -118,7 +116,7 @@
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
         var ve = new Vue(options);
         function notExistsData() {
-            return (!ve.options.data) || (ve.options.data.length == 0)
+            return (!ve.data) || (ve.data.length == 0)
         }
     }
 

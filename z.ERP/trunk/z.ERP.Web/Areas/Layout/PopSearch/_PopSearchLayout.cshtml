@@ -63,16 +63,17 @@
                 @RenderSection("resultBtn", false)
             </div>
             <div slot="content">
-                 @*结果显示*@
-                <un-edit-table v-bind:options="options" ref="selectData"></un-edit-table>              
+                @*结果显示*@
+                <yx-table v-bind:columns="columns" v-bind:data="data" v-bind:height="240" ref="selectData" selection=true>
+                </yx-table>
                 @RenderSection("resultOthers", false)
             </div>
         </panel>
     </collapse>
     @RenderSection("hide", false)
-    @RenderSection("pops", false) 
+    @RenderSection("pops", false)
 </div>
 
 @section foot{
-    @RenderSection("foot", false)     
+    @RenderSection("foot", false)
 }

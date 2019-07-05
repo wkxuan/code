@@ -16,33 +16,11 @@
     @RenderSection("head", false)
 }
 
-<div id="EditDetail">
+<div id="EditDetail" style="overflow:hidden;">
     <row>
         <div class="topMenuBtn">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "add",
-                    Text = "新增",
-                    Enable = true,
-                    Type = "text",
-                    PermissionKey = Model.Permission_Add,
-                    Icon = "md-add"
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "save",
-                    Text = "存档",
-                    Enable = true,
-                    Type = "text",
-                    PermissionKey = Model.Permission_Save,
-                    Icon = "md-checkmark-circle"
-                });
-            }
-            @RenderSection("Btn", false)
-        </div> 
+            <yx-tool-bar v-bind:list="list" v-bind:disabled="disabled" v-bind:domdata="dataParam"></yx-tool-bar>
+        </div>
     </row>
     <Collapse v-model="collapseValue">
         <Panel name="1">

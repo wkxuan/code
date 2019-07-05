@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Web.Mvc;
-using z.Context;
 using z.DBHelper.DBDomain;
-using z.DBHelper.Helper;
 using z.ERP.Services;
-using z.Extensions;
 using z.LogFactory;
+using z.MVC5.Results;
 using z.SSO;
 using z.SSO.Model;
 using z.Verify;
+using z.DBHelper.Helper;
 
 namespace z.ERP.Web.Areas.Base
 {
@@ -105,6 +102,35 @@ namespace z.ERP.Web.Areas.Base
             {
                 return new LogWriter("Controller");
             }
+        }
+        //验证功能按钮权限
+        public UIResult checkMenu(List<MenuAuthority> MenuAuthority)
+        {
+            var data = new List<MenuAuthority>();
+            for (var i = 0; i < MenuAuthority.Count; i++)
+            {
+                var obj = new MenuAuthority();
+                obj.id = MenuAuthority[i].id;
+                obj.authority = MenuAuthority[i].authority;
+                if (MenuAuthority[i].authority != null &&
+                    MenuAuthority[i].authority.ToString().Trim() != "" &&
+                    employee.HasPermission(MenuAuthority[i].authority))
+                {
+                    obj.enable = true;
+                }
+                else
+                {
+                    obj.enable = false;
+                }
+                data.Add(obj);
+            }
+            return new UIResult(data);
+        }
+        public class MenuAuthority
+        {
+            public string id { set; get; }
+            public string authority { set; get; }
+            public bool enable { set; get; }
         }
     }
 }

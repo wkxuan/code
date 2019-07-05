@@ -23,24 +23,22 @@
             data: {
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
-                pageInfo:_this.pageInfo,
+                pageInfo: _this.pageInfo,
                 panelName: 'condition',
                 disabled: _this.enabled(true),
-                options:{
-                    columns: [],
-                    data:[],
-                },
-                arrPageSize:[10,20,50,100],
+                columns: [],
+                data: [],
+                arrPageSize: [10, 20, 50, 100],
                 pagedataCount: 0,
                 pageSize: 10
             },
             mounted: function () {
-                _this.mountedInit();        
+                _this.mountedInit();
             },
             watch: {
                 "screenParam.colDef": {
                     handler: function (nv, ov) {
-                        this.options.columns = nv;
+                        this.columns = nv;
                     },
                     immediate: true,
                     deep: true
@@ -61,7 +59,7 @@
                     event.stopPropagation();
                     _this.searchParam = {};
                     ve.searchParam = _this.searchParam;
-                    this.options.data = [];
+                    this.data = [];
                     ve.panelName = 'condition';
                     _this.newCondition();
                 },
@@ -72,8 +70,8 @@
                     _.Ajax('Output', {
                         Values: _this.searchParam
                     }, function (data) {
-                        window.open(__BaseUrl+data);
-                    });  
+                        window.open(__BaseUrl + data);
+                    });
 
                     /*   if (notExistsData()) {
                         this.$Message.error("没有要导出的数据!");
@@ -82,7 +80,7 @@
                                this.$refs.selectData.exportCsv({
                                    filename: (new Date()).toString()
                             });
-                    } */ 
+                    } */
                 },
                 //打印待完善
                 print: function (event) {
@@ -95,7 +93,7 @@
                         //根据div标签ID拿到div中的局部内容
                         var TableData = window.document.getElementById("TableData").innerHTML;
                         //把获取的 局部div内容赋给body标签
-                        window.document.body.innerHTML=TableData; 
+                        window.document.body.innerHTML = TableData;
                         window.print();
                         // 将原来窗口body的html值回填展示
                         window.document.body.innerHTML = oldhtml;
@@ -116,40 +114,40 @@
                     this.pageSize = value;
                     _this.pageInfo.PageSize = value;
                     showList();
-                } 
+                }
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
         var ve = new Vue(options);
-        function showList(callback) {
+        function showList() {
             ve.searchParam = _this.searchParam;
-            ve.pageInfo=_this.pageInfo;
-            ve.options.data = [];
+            ve.pageInfo = _this.pageInfo;
+            ve.data = [];
             ve.$Spin.show();
             _.Search({
                 Service: _this.service,
                 Method: _this.method,
                 Data: ve.searchParam,
-                PageInfo:ve.pageInfo,
+                PageInfo: ve.pageInfo,
                 Success: function (data) {
                     ve.$Spin.hide();
                     if (data.rows.length > 0) {
                         _this.afterResult(data);
                         ve.panelName = 'result';
                         ve.pagedataCount = data.total;
-                        ve.options.data = data.rows;
+                        ve.data = data.rows;
                     }
                     else {
                         ve.$Message.info("没有满足当前查询条件的结果!");
                     }
                 },
                 Error: function () {
-                   ve.$Spin.hide();
+                    ve.$Spin.hide();
                 }
             })
         };
         function notExistsData() {
-            return (!ve.options.data) || (ve.options.data.length == 0)
+            return (!ve.data) || (ve.data.length == 0)
         }
     }
 
