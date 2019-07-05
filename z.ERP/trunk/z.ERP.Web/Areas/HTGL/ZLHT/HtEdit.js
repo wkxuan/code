@@ -8,10 +8,7 @@
     editDetail.dataParam.XXSL = 0;
     editDetail.dataParam.STANDARD = 1;
 
-
     editDetail.screenParam.TQFKR = [];
-
-
 
     //初始化返款日信息
     //转换为string 是为了保持从后台返回后一致，来显示
