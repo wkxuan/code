@@ -3,7 +3,7 @@
 .RowText { text-align: left; font-size: small; }
 .elementcard .ivu-row { height: 50px; }
 .topbutton .ivu-btn { margin-left: 10px; }
-.ivu-collapse-content{overflow:unset !important;color:#495060;padding:0 16px;background-color:#fff}
+/*.ivu-collapse-content{overflow:unset !important;color:#495060;padding:0 16px;background-color:#fff}*/
 .ivu-date-picker {display: inline-block;line-height: normal;width: 100%;}
 .Rowline { text-align: left; font-size: small; height: 40px;line-height:30px }
 .mustElement {color: red; height: 40px;position: relative;}
@@ -11,7 +11,7 @@
 .rightRow {width: 20%; padding-left:5px}
 
 .ivu-modal-body{
-    padding:0 !important;
+    padding:5px !important;
 }
 .ivu-modal-header{
     padding:12px !important;
@@ -29,10 +29,7 @@
     padding:0 !important;
 }
  .ivu-collapse-content>.ivu-collapse-content-box{
-     padding: 0 !important;
-}
-  .ivu-collapse-content>.ivu-collapse-content-box .ivu-row{
-     padding:5px 0 0 0 !important;
+     padding: 1px !important;
 }
  .ivu-collapse-header{
      height:35px  !important;

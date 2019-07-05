@@ -109,6 +109,24 @@
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
-    }
+    };
+    //对象深拷贝方法
+    DeepClone = function (obj) {
+        let objClone = Array.isArray(obj) ? [] : {};
+        if (obj && typeof obj === "object") {
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    //判断ojb子元素是否为对象，如果是，递归复制
+                    if (obj[key] && typeof obj[key] === "object") {
+                        objClone[key] = DeepClone(obj[key]);
+                    } else {
+                        //如果不是，简单复制
+                        objClone[key] = obj[key];
+                    }
+                }
+            }
+        }
+        return objClone;
+    };
 })(window);
 

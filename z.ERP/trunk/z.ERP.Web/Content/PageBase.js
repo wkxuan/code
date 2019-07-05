@@ -46,5 +46,33 @@ zQuery.extend({
             window.opener.WindowClose(data);
             window.close();
         }
+    },
+    MessageBox: function (content, okFun, cancelFun) {
+        return {
+            render: h=> {
+                return h('div', {
+                    style: {
+                        'table-layout': 'fixed',
+                        'word-break': 'break-all',
+                        'overflow': 'hidden',
+                        'margin': '0 20px'
+                    }
+                }, content);
+            },
+            title: "提示",
+            width: 350,
+            okText: "确定",
+            cancelText: "取消",
+            onOk: function () {
+                if (typeof okFun == "function") {
+                    okFun();
+                }
+            },
+            onCancel: function () {
+                if (typeof cancelFun == "function") {
+                    cancelFun();
+                }
+            }
+        }
     }
 });
