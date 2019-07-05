@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using z.Extensions;
 using System;
 using z.ERP.Entities.Enum;
-using z.Context;
-using z.SSO;
 using z.SSO.Model;
 using System.Linq;
 using z.Encryption;
@@ -263,8 +261,9 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
         }
         public Tuple<dynamic, int> AlertData()
         {
-            var sql = @" select DEF_ALERT.ID,MC,XSSX,SQLSTR, 0 COUNT,PLATFORM.DOMAIN FROM DEF_ALERT A,PLATFORM 
-                          where PLATFORM.ID=1 and A.ID in (" + GetPermissionSql(PermissionType.Alert) + ") ORDER BY XSSX ";
+            var sql = @" select DEF_ALERT.ID,MC,XSSX,SQLSTR, 0 COUNT,PLATFORM.DOMAIN FROM DEF_ALERT,PLATFORM 
+                          where PLATFORM.ID=1 and DEF_ALERT.ID in ("+ GetPermissionSql(PermissionType.Alert) + ") ORDER BY XSSX ";
+
             var count = 0;
             DataTable dt = DbHelper.ExecuteTable(sql);
             foreach (DataRow item in dt.Rows) {

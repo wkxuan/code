@@ -309,11 +309,11 @@ namespace z.ERP.Services
                     return SqlDepartment;
                 case PermissionType.Branch:
                     String SqlBranch = "";
-                    SqlBranch = "SELECT A.ID FROM BRANCH A where 1=1";
+                    SqlBranch = "SELECT ID FROM BRANCH where 1=1";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
                         SqlBranch += " and exists(select 1 from USER_ROLE A1, ROLE_BRANCH B1 where A1.USERID = " + employee.Id;
-                        SqlBranch += " and A1.ROLEID = B1.ROLEID and A.ID=B1.BRANCHID )";
+                        SqlBranch += " and A1.ROLEID = B1.ROLEID and BRANCH.ID=B1.BRANCHID )";
                     }
                     return SqlBranch;
                 case PermissionType.Floor:
@@ -364,11 +364,11 @@ namespace z.ERP.Services
                     return SqlCategory;
                 case PermissionType.Alert:
                     String SqlAlert = "";
-                    SqlAlert = "SELECT A.ID FROM DEF_ALERT A where 1=1";
+                    SqlAlert = "SELECT ID FROM DEF_ALERT where 1=1";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
                         SqlAlert += " and exists(select 1 from USER_ROLE A1, ROLE_ALERT B1 where A1.USERID = " + employee.Id;
-                        SqlAlert += " and A1.ROLEID = B1.ROLEID and A.ID=B1.ALERTID )";
+                        SqlAlert += " and A1.ROLEID = B1.ROLEID and DEF_ALERT.ID=B1.ALERTID )";
                     }
                     return SqlAlert;
 
