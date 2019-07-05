@@ -204,14 +204,13 @@ editDetail.IsValidSave = function () {
     };
     //菜单权限数据
     editDetail.screenParam.localMenu = [];
-    for (var i = 0; i < editDetail.screenParam.USERMODULE[0].children.length; i++) { //循环erp级菜单
-        var itemdata = editDetail.screenParam.USERMODULE[0].children[i].children;
-        InsertTreeMenu(itemdata);
+    for (var j = 0; j < editDetail.screenParam.USERMODULE.length; j++) { 
+        for (var i = 0; i < editDetail.screenParam.USERMODULE[j].children.length; i++) { //循环菜单
+            var itemdata = editDetail.screenParam.USERMODULE[j].children[i].children;
+            InsertTreeMenu(itemdata);
+        };
     };
-    for (var i = 0; i < editDetail.screenParam.USERMODULE[1].children.length; i++) { //循环crm菜单
-        var itemdata = editDetail.screenParam.USERMODULE[1].children[i].children;
-        InsertTreeMenu(itemdata);
-    };
+
     Vue.set(editDetail.dataParam, 'ROLE_MENU', editDetail.screenParam.localMenu);
     return true;
 }

@@ -144,13 +144,13 @@ namespace z.ERP.Services
             //门店
             string sqlbranch = $@"select B.ID BRANCHID,B.NAME from BRANCH B,ROLE_BRANCH R WHERE B.ID=R.BRANCHID ";
             if (!Data.ROLEID.IsEmpty())
-                sqlFee += (" AND ROLEID= " + Data.ROLEID);
+                sqlbranch += (" AND ROLEID= " + Data.ROLEID);
             DataTable branch = DbHelper.ExecuteTable(sqlbranch);
 
             //预警
             string sqlalert = $@"select B.ID ALERTID,B.MC NAME from DEF_ALERT B,ROLE_ALERT R WHERE B.ID=R.ALERTID";
             if (!Data.ROLEID.IsEmpty())
-                sqlFee += (" AND ROLEID= " + Data.ROLEID);
+                sqlalert += (" AND ROLEID= " + Data.ROLEID);
             DataTable alert = DbHelper.ExecuteTable(sqlalert);
 
             return new Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, DataTable, TreeModel[], DataTable>(role.ToOneLine(), fee, module, alert, region, ytTreeData, branch);
