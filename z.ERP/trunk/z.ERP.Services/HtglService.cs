@@ -9,7 +9,7 @@ using z.Exceptions;
 using System.Linq;
 using z.Extensions;
 using z.ERP.Entities.Procedures;
-
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -24,7 +24,7 @@ namespace z.ERP.Services
                 " FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_SHOPXX D,CONTRACT_BRANDXX E " +
                 " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=D.CONTRACTID" +
                 " AND A.CONTRACTID=E.CONTRACTID(+) ";
-
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";    //分店权限 by：DZK
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
@@ -50,7 +50,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,D.SHOPDM,E.BRANDNAME,to_char(A.REPORTER_TIME,'yyyy-mm-dd') DJRQ,to_char(A.VERIFY_TIME,'yyyy-mm-dd') SHRQ"
                          + " FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_SHOPXX D,CONTRACT_BRANDXX E "
                          + " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=D.CONTRACTID AND A.CONTRACTID=E.CONTRACTID ";
-
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";    //分店权限 by：DZK
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
@@ -172,6 +172,7 @@ namespace z.ERP.Services
             sql += " F.NAME AS OPERATERULENAME  FROM CONTRACT A,MERCHANT B,";
             sql += "   BRANCH C, ORG D,CONTRACT_UPDATE E,OPERATIONRULE F WHERE A.MERCHANTID=B.MERCHANTID AND A.CONTRACTID=E.CONTRACTID(+) ";
             sql += " AND A.BRANCHID=C.ID AND A.ORGID=D.ORGID AND A.OPERATERULE=F.ID ";
+            sql += " AND C.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             sql += (" AND A.CONTRACTID= " + Data.CONTRACTID);
             DataTable contract = DbHelper.ExecuteTable(sql);
             if (!contract.IsNotNull())
@@ -258,6 +259,7 @@ namespace z.ERP.Services
             sql += " F.NAME AS OPERATERULENAME  FROM CONTRACT A,MERCHANT B,";
             sql += "   BRANCH C, ORG D,CONTRACT_UPDATE E,OPERATIONRULE F WHERE A.MERCHANTID=B.MERCHANTID AND A.CONTRACTID=E.CONTRACTID(+) ";
             sql += " AND A.BRANCHID=C.ID AND A.ORGID=D.ORGID(+) AND A.OPERATERULE=F.ID(+) ";
+            sql += " AND C.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             sql += (" AND A.CONTRACTID= " + Data.CONTRACTID);
             DataTable contract = DbHelper.ExecuteTable(sql);
             if (!contract.IsNotNull())
@@ -703,6 +705,7 @@ namespace z.ERP.Services
                 " from FREESHOP L,BRANCH B,CONTRACT C,MERCHANT M " +
                 "  where L.BRANCHID =B.ID and L.CONTRACTID=C.CONTRACTID " +
                 "  and C.MERCHANTID=M.MERCHANTID";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";    //分店权限 by：DZK
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID={a}");
             item.HasKey("MERCHANTID", a => sql += $" and L.MERCHANTID={a}");
@@ -805,6 +808,7 @@ namespace z.ERP.Services
             string sql = $@" SELECT L.*,M.MERCHANTID,M.NAME SHMC,B.NAME BRANCHNAME " +
                 " FROM FREESHOP L,CONTRACT C,MERCHANT M,BRANCH B ";
             sql += "  where L.CONTRACTID=C.CONTRACTID and C.MERCHANTID=M.MERCHANTID and C.BRANCHID=B.ID ";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";    //分店权限 by：DZK
             if (!Data.BILLID.IsEmpty())
                 sql += (" and L.BILLID= " + Data.BILLID);
             DataTable dt = DbHelper.ExecuteTable(sql);
