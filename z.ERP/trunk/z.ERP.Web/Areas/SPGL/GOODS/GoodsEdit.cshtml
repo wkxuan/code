@@ -1,43 +1,30 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities.Enum
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
 
-@section head{
-
-    @InitFiles(new string[] {
-    "/Areas/Pop/PopMerchant.js",
-    });
-}
+@section head{}
 
 @section baseParam{
     <row>
-        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             商品代码
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.GOODSDM",
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.GOODSDM" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             商品条码
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.BARCODE",
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.BARCODE" v-bind:disabled="!disabled" />
         </i-col>
-        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             类型
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<商品类型>
                 {
@@ -47,284 +34,162 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             名称
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NAME",
-                    Change = "Getpym"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.NAME" v-bind:disabled="!disabled" v-on:on-change="getpym" />
         </i-col>
         <i-col span="2" class="RowTitle">
             拼音码
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.PYM",
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-model="dataParam.PYM" v-bind:disabled="!disabled" />
         </i-col>
-        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             经营方式
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.STYLEMC",
-                    Readonly = "true"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-model="dataParam.STYLEMC" v-bind:disabled="!disabled" />
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelContract",
-                    Text = "租约",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            租约
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CONTRACTID",
-                    Enter = "htChange"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.CONTRACTID" v-on:on-click="srchContract" v-bind:disabled="!disabled" />
         </i-col>
-
         <i-col span="2" class="RowTitle">
             商户
         </i-col>
-        <i-col span="2">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.MERCHANTID",
-                    Readonly = "true"
-                });
-            }
-        </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.SHMC",
-                    Readonly = "true"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-model="dataParam.SHMC" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             进项税率
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.JXSL",
-                  //  Readonly = "true"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.JXSL" v-bind:disabled="!disabled" />
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelBrand",
-                    Text = "品牌",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            品牌
         </i-col>
-
-        <i-col span="2">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.BRANDID",
-                    Readonly = "true"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.BRANDMC" v-on:on-click="srchBrand" v-bind:disabled="!disabled" />
         </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.BRANDMC",
-                    Readonly = "true"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             商品分类
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new CascaderRender()
                 {
                     vModel = "dataParam.PKIND_ID",
-                    Data= "screenParam.dataKind",
-                    Change= "changeKind"
+                    Data = "screenParam.dataKind",
+                    Change = "changeKind"
                 });
             }
         </i-col>
         <i-col span="2" class="RowTitle">
             销项税率
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.XXSL",
-                  //  Readonly = "true"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.XXSL" v-bind:disabled="!disabled" />
         </i-col>
-
     </row>
     <row>
-        <i-col span="3" class="RowTitle"><span class="mustElement">*</span>
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelJsklGroup",
-                    Text = "结算扣率组",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            结算扣率组
         </i-col>
-        <i-col span="5">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.JSKL_GROUP",
-                    Readonly = "true"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.JSKL_GROUP" v-on:on-click="srchJsklGroup" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             单价
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.PRICE",
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.PRICE" v-bind:disabled="!disabled" />
         </i-col>
-
         <i-col span="2" class="RowTitle">
             会员单价
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.MEMBER_PRICE",
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.MEMBER_PRICE" v-bind:disabled="!disabled" />
         </i-col>
     </row>
-
     <row>
         <i-col span="2" class="RowTitle">
             描述
         </i-col>
-        <i-col span="14">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.DESCRIPTION",
-                });
-            }
-        </i-col>   
+        <i-col span="14" class="RowText">
+            <i-input v-model="dataParam.DESCRIPTION" v-bind:disabled="!disabled" />
+        </i-col>
         <i-col span="2" class="RowTitle">
             地区
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.REGION",
-                });
-            }
-        </i-col>            
-    </row>
-    <row>
-        <i-col span="12">商铺</i-col>
-        <i-col span="12">扣率组</i-col>
-    </row>
-    <row>        
-        <i-col span="12">
-            <i-table size="small" :border="true"
-                 :columns="screenParam.colDef" :data="dataParam.GOODS_SHOP"></i-table>
-        </i-col>
-        <i-col span="12">
-             <i-table size="small" :border="true"
-                 :columns="screenParam.colDefGroup" :data="dataParam.GOODS_GROUP"></i-table>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.REGION" v-bind:disabled="!disabled" />
         </i-col>
     </row>
 }
-
 @section detailParam{
-
+    <row>
+        <i-col span="12">
+            <Card v-bind:padding=0>
+                <p slot="title">商铺</p>
+                <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300"
+                          v-bind:data="dataParam.GOODS_SHOP" v-bind:disabled="!disabled" ref="refShop">
+                </yx-table>
+            </Card>
+        </i-col>
+        <i-col span="12">
+            <Card v-bind:padding=0>
+                <p slot="title">扣率信息</p>
+                <yx-table v-bind:columns="screenParam.colDefGroup" v-bind:height="300"
+                          v-bind:data="dataParam.GOODS_GROUP" v-bind:disabled="!disabled" ref="refGroup">
+                </yx-table>
+            </Card>
+        </i-col>
+    </row>
 }
-
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopJsklGroup",
-                    Caption = "选择扣率组",
-                    Width = "900",
-                    Src = "screenParam.srcPopJsklGroup"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopContract",
-                    Caption = "选择租约",
-                    Width = "900",
-                    Src = "screenParam.srcPopContract"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopBrand",
-                    Caption = "选择品牌",
-                    Width = "900",
-                    Src = "screenParam.srcPopBrand"
-                });
-            }
-        </i-col>
-    </row>
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopJsklGroup",
+            Caption = "选择扣率组",
+            Width = "900",
+            Src = "screenParam.srcPopJsklGroup"
+        });
+    }
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopContract",
+            Caption = "选择租约",
+            Width = "900",
+            Src = "screenParam.srcPopContract"
+        });
+    }
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopBrand",
+            Caption = "选择品牌",
+            Width = "900",
+            Src = "screenParam.srcPopBrand"
+        });
+    }
 }

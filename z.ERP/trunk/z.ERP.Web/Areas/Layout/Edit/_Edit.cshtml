@@ -57,7 +57,7 @@
                 @RenderSection("baseParam", false)
             </div>
         </Panel>
-        <Panel name="2">
+        <Panel name="2" v-if="otherPanel">
             其它信息
             <div slot="content">
                 @RenderSection("detailParam", false)

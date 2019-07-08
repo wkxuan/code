@@ -15,8 +15,6 @@ zQuery.extend({
             }
         }
 
-
-
         var options_default = {
             id: '',
             title: '',

@@ -8,6 +8,8 @@
     this.IsValidSave = function () {
         return true;
     }
+    //是否显示其它信息折叠面板
+    this.otherPanel = true;
     //弹窗返回数据回调函数
     this.popCallBack = function (data) { };
     this.enabled = function (val) { return val; }
@@ -25,11 +27,13 @@
                 disabled: _this.enabled(false),
                 collapseValue: [1, 2],
                 toolBtnList: [],
+                otherPanel: _this.otherPanel
             },
             mounted: function () {
                 _this.mountedInit();
                 this.initBtn();
             },
+            watch: {},
             computed: {
                 list() {
                     return this.toolBtnList || [];
@@ -57,7 +61,7 @@
                             _self.edit();
                         },
                         enabled: function (disabled, data) {
-                            if (!disabled && data.BILLID.length > 0 && data.STATUS < 2) {
+                            if (!disabled && data.STATUS < 2) {
                                 return true;
                             } else {
                                 return false;
@@ -71,7 +75,7 @@
                             _self.del();
                         },
                         enabled: function (disabled, data) {
-                            if (!disabled && data.BILLID.length > 0 && data.STATUS < 2) {
+                            if (!disabled && data.STATUS < 2) {
                                 return true;
                             } else {
                                 return false;
@@ -130,7 +134,7 @@
                     _self.disabled = true;
                     _self.setObjItemEmpty(_self.dataParam);
                     _this.clearKey();
-                    _this.newRecord();
+                    _this.newRecord();                 
                 },
                 //编辑
                 edit: function () {
@@ -142,12 +146,12 @@
                 del: function () {
                     let _self = this;
                     _self.$Modal.confirm(_.MessageBox("确认删除当前内容？", () => {
-                        //_.Ajax('Delete', {
-                        //    DeleteData: selectton
-                        //}, function (data) {
-                        //    _self.setObjItemEmpty(_self.dataParam);
-                        //    _self.$Message.info("删除成功");                          
-                        //});
+                        _.Ajax('Delete', {
+                            DeleteData: [_self.dataParam]
+                        }, function (data) {
+                            _self.setObjItemEmpty(_self.dataParam);
+                            _self.$Message.info("删除成功");                          
+                        });
                     }, () => {
                     }));
                 },
@@ -177,18 +181,19 @@
                     _self.disabled = true;
                     if (!_this.IsValidSave())
                         return;
-                    //_.Ajax('Save', {
-                    //    SaveData: veObj.dataParam
-                    //}, function (data) {
-                    //    _this.showOne(data, function () {
-                    //        veObj.dataParam = _this.dataParam;
-                    //        _self.$Message.info("保存成功");
-                    //    });
-                    //});
+                    _.Ajax('Save', {
+                        SaveData: _this.veObj.dataParam
+                    }, function (data) {
+                        _self.disabled = false;
+                        _self.$Message.info("保存成功");
+                    });
                 },
             }
         };
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
+        _this.otherComputed && $.extend(options.computed, _this.otherComputed);
+        _this.otherWatch && $.extend(options.watch, _this.otherWatch);
+
         _this.veObj = new Vue(options);
     }
 
@@ -210,6 +215,8 @@
         _this.vue();
         if (editDetail.Id) {
             editDetail.showOne(editDetail.Id);
+        } else {
+            _this.veObj.disabled = true;
         }
     }, 200);
 }

@@ -90,7 +90,7 @@
         <panel name="result">
             查询结果
             <div style="float: right; width: 400px ;text-align: right;">
-                @{
+                @*@{
                     RenderControl(new ButtonRender()
                     {
                         Click = "exp",
@@ -109,7 +109,7 @@
                         Type = "primary",
                         Icon = "md-print"
                     });
-                }
+                }*@
                 @*增加结果按钮*@
                 @RenderSection("resultBtn", false)
             </div>
