@@ -46,7 +46,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             ViewBag.Title = "商户列表信息";
             return View(new SearchRender()
             {
-                //Permission_Browse = "10200100",
+                Permission_Browse = "10200100",
                 Permission_Add = "10200101",
                 // Permission_Del = "10200101",
                 Permission_Edit = "10200101",
