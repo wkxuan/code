@@ -7,6 +7,7 @@ using System;
 using z.ERP.Entities.Enum;
 using z.Exceptions;
 using z.ERP.Entities.Procedures;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -19,6 +20,7 @@ namespace z.ERP.Services
         public DataGridResult SearchRegion(SearchItem item)
         {
             string sql = $@"SELECT A.REGIONID,A.CODE,A.NAME FROM REGION A WHERE 1=1";
+            sql += " and A.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+")"; //门店权限
             item.HasKey("REGIONID,", a => sql += $" and A.REGIONID = {a}");
             item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
             item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
@@ -32,6 +34,7 @@ namespace z.ERP.Services
         public Tuple<dynamic, DataTable> GetRegion(REGIONEntity Data)
         {
             string sql = "select A.*,B.ORGIDCASCADER from REGION A,ORG B where A.ORGID=B.ORGID(+)";
+            sql += " and A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" AND A.BRANCHID = " + Data.BRANCHID);
             if (!Data.REGIONID.IsEmpty())
@@ -47,6 +50,7 @@ namespace z.ERP.Services
         public DataGridResult SearchFloor(SearchItem item)
         {
             string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
+            sql += " and A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("ID,", a => sql += $" and A.ID = {a}");
             item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
             item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
@@ -67,6 +71,7 @@ namespace z.ERP.Services
         public Tuple<dynamic,DataTable> GetFloor(FLOOREntity Data)
         {
             string sql = $@"select A.*,B.ORGIDCASCADER from FLOOR A,ORG B where A.ORGID=B.ORGID(+) ";
+            sql += " and A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             if (!Data.ID.IsEmpty())
                 sql += (" AND A.ID= " + Data.ID);
             if (!Data.CODE.IsEmpty())
@@ -82,7 +87,8 @@ namespace z.ERP.Services
             string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME " +
                    "  FROM SHOP A,CATEGORY B,ORG C,BRANCH D,FLOOR F "
                    + " WHERE  A.CATEGORYID = B.CATEGORYID(+) and A.ORGID=C.ORGID(+)"
-                   + " and  A.BRANCHID = D.ID and A.FLOORID=F.ID";
+                   + " and A.BRANCHID = D.ID and A.FLOORID=F.ID"
+                   + " and D.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
@@ -100,9 +106,10 @@ namespace z.ERP.Services
         /// <returns></returns>
         public Tuple<dynamic, DataTable> GetShop(SHOPEntity Data)
         {
-            string sql = $@"SELECT  A.*,B.CATEGORYCODE,B.CATEGORYNAME,B.CATEGORYIDCASCADER,A.AREA_BUILD AREA,C.ORGIDCASCADER " +
-                   "  FROM SHOP A,CATEGORY B,ORG C WHERE  A.CATEGORYID = B.CATEGORYID(+) "
-                   + " and A.ORGID=C.ORGID(+)";
+            string sql = $@"SELECT  A.*,B.CATEGORYCODE,B.CATEGORYNAME,B.CATEGORYIDCASCADER,A.AREA_BUILD AREA,C.ORGIDCASCADER "
+                   + "  FROM SHOP A,CATEGORY B,ORG C WHERE  A.CATEGORYID = B.CATEGORYID(+) "
+                   + " and A.ORGID=C.ORGID(+)"
+                   + " and A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             if (!Data.SHOPID.IsEmpty())
                 sql += (" AND A.SHOPID= " + Data.SHOPID);
             if (!Data.CODE.IsEmpty())
@@ -126,7 +133,9 @@ namespace z.ERP.Services
         }
         public DataGridResult GetAssetChangeList(SearchItem item)
         {
-            string sql = $@"SELECT A.*,B.NAME BRANCHNAME FROM ASSETCHANGE A,BRANCH B WHERE A.BRANCHID=B.ID ";
+            string sql = $@"SELECT A.*,B.NAME BRANCHNAME FROM ASSETCHANGE A,BRANCH B "
+                         + " WHERE A.BRANCHID=B.ID "
+                         + "   AND B.ID  IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("CHANGE_TYPE", a => sql += $" and CHANGE_TYPE = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID  = '{a}'");
@@ -189,7 +198,9 @@ namespace z.ERP.Services
         public Tuple<dynamic, DataTable, DataTable> GetAssetChangeElement(ASSETCHANGEEntity Data)
         {
             //此处校验一次只能查询一个单号,校验单号必须存在
-            string sql = $@"SELECT A.*,B.NAME BRANCHNAME FROM ASSETCHANGE A,BRANCH B  WHERE A.BRANCHID=B.ID ";
+            string sql = $@"SELECT A.*,B.NAME BRANCHNAME FROM ASSETCHANGE A,BRANCH B  "
+                      + "    WHERE A.BRANCHID=B.ID "
+                      +"       AND B.ID  IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND BILLID= " + Data.BILLID);
             DataTable assetchange = DbHelper.ExecuteTable(sql);
@@ -277,7 +288,8 @@ namespace z.ERP.Services
                             , A.TZBJ,D.NAME BRANCHNAME,C.NAME REGIONNAME,B.NAME as FLOORNAME 
                     from FLOORMAP A,FLOOR B,REGION C,BRANCH D 
                     where NVL(A.TZBJ,0)=0 AND A.FLOORID=B.ID AND B.REGIONID=C.REGIONID "
-                + " AND C.BRANCHID=D.ID ";
+                + " AND C.BRANCHID=D.ID "
+                + " AND D.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("MAPID", a => sql += $" and A.MAPID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
@@ -301,7 +313,8 @@ namespace z.ERP.Services
                     , A.FILENAME, A.TZBJ,D.NAME BRANCHNAME,C.NAME REGIONNAME,B.NAME as FLOORNAME 
                     from FLOORMAP A,FLOOR B,REGION C,BRANCH D 
                     where (A.TZBJ=1 OR (NVL(A.TZBJ,0)=0 AND A.STATUS=3 ))  AND A.FLOORID=B.ID AND B.REGIONID=C.REGIONID "
-                + " AND C.BRANCHID=D.ID ";
+                + " AND C.BRANCHID=D.ID "
+                + " AND D.ID  IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("MAPID", a => sql += $" and A.MAPID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
@@ -351,7 +364,10 @@ namespace z.ERP.Services
             {
                 throw new LogicException("请确认图纸编号!");
             }
-            string sql = $@"SELECT P.*,R.REGIONID,R.NAME FLOORNAME,N.BRANCHID,N.NAME REGIONNAME,H.NAME BRANCHNAME FROM FLOORMAP P,FLOOR R,REGION N ,BRANCH H WHERE P.FLOORID=R.ID AND R.REGIONID=N.REGIONID AND N.BRANCHID=H.ID ";
+            string sql = $@"SELECT P.*,R.REGIONID,R.NAME FLOORNAME,N.BRANCHID,N.NAME REGIONNAME,H.NAME BRANCHNAME "
+                      + "     FROM FLOORMAP P,FLOOR R,REGION N ,BRANCH H "
+                      + "    WHERE P.FLOORID=R.ID AND R.REGIONID=N.REGIONID AND N.BRANCHID=H.ID "
+                      + "      AND H.ID  IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             if (!Data.MAPID.IsEmpty())
                 sql += (" AND MAPID= " + Data.MAPID);
             DataTable floormap = DbHelper.ExecuteTable(sql);
@@ -380,8 +396,11 @@ namespace z.ERP.Services
                             , A.REPORTER_NAME, A.REPORTER_TIME, A.VERIFY, A.VERIFY_NAME, A.VERIFY_TIME, A.INITINATE, A.INITINATE_NAME
                             , A.INITINATE_TIME, A.TERMINATE, A.TERMINATE_NAME, A.TERMINATE_TIME                            
                             , A.FILENAME, A.TZBJ,R.REGIONID,R.NAME FLOORNAME,N.BRANCHID,N.NAME REGIONNAME,H.NAME BRANCHNAME 
-                            FROM FLOORMAP A,FLOOR R,REGION N ,BRANCH H WHERE A.FLOORID=R.ID AND R.REGIONID=N.REGIONID 
-                            AND N.BRANCHID=H.ID ";
+                            FROM FLOORMAP A,FLOOR R,REGION N ,BRANCH H 
+                           WHERE A.FLOORID=R.ID AND R.REGIONID=N.REGIONID 
+                             AND N.BRANCHID=H.ID 
+                             AND H.ID  IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
+
             if (!Data.MAPID.IsEmpty())
                 sql += (" AND A.MAPID= " + Data.MAPID);
             DataTable floormap = DbHelper.ExecuteTable(sql);
@@ -398,8 +417,9 @@ namespace z.ERP.Services
         }
         public Tuple<dynamic, DataTable> GetFloorShowMap(FLOORMAPSHOWEntity Data)
         {
-            string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE TO_NUMBER(to_char(NVL(P.INITINATE_TIME,P.VERIFY_TIME),'YYYYMM'))<=" + Data.YEARMONTH
-               + @" AND TO_NUMBER(to_char(NVL(P.TERMINATE_TIME,SYSDATE),'YYYYMM'))>= " + Data.YEARMONTH;
+            string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P 
+                             WHERE TO_NUMBER(to_char(NVL(P.INITINATE_TIME,P.VERIFY_TIME),'YYYYMM'))<=" + Data.YEARMONTH
+                          + @" AND TO_NUMBER(to_char(NVL(P.TERMINATE_TIME,SYSDATE),'YYYYMM'))>= " + Data.YEARMONTH;
             sql += " AND FLOORID= " + Data.FLOORID;
             DataTable dtmapid = DbHelper.ExecuteTable(sql);
             int mapid = Convert.ToInt32(dtmapid.Rows[0]["MAPID"].ToString());

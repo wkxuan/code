@@ -10,6 +10,7 @@ using z.Results;
 using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
 using z.ERP.Entities.Auto;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -51,13 +52,17 @@ namespace z.ERP.Services
 
         public List<SelectItem> branch()
         {
-            string sql = $@"SELECT A.ID,A.NAME FROM BRANCH A WHERE 1=1 ORDER BY  A.ID ";
+            string sql = $@"SELECT A.ID,A.NAME FROM BRANCH A WHERE 1=1"
+                           + " and A.ID in ("+GetPermissionSql(PermissionType.Branch)+")"  //门店权限
+                         + " ORDER BY  A.ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
         public List<SelectItem> floor()
         {
-            string sql = $@"SELECT A.ID,A.NAME FROM FLOOR A WHERE 1=1 ORDER BY  A.ID ";
+            string sql = $@"SELECT A.ID,A.NAME FROM FLOOR A  WHERE 1=1 "
+                       + "     and A.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+ ")"  //门店权限
+                       + "   ORDER BY  A.ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
@@ -140,9 +145,10 @@ namespace z.ERP.Services
 
         public object GetShop(SHOPEntity Data)
         {
-            string sql = " SELECT  A.SHOPID,A.CODE,B.CATEGORYID,B.CATEGORYCODE,B.CATEGORYNAME,A.AREA_BUILD,A.AREA_RENTABLE FROM " +
-                "  SHOP A,CATEGORY B " +
-                "  WHERE  A.CATEGORYID = B.CATEGORYID ";
+            string sql = " SELECT  A.SHOPID,A.CODE,B.CATEGORYID,B.CATEGORYCODE,B.CATEGORYNAME,A.AREA_BUILD,A.AREA_RENTABLE " +
+                          "  FROM SHOP A,CATEGORY B " +
+                          " WHERE  A.CATEGORYID = B.CATEGORYID " +
+                          "   AND  A.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             if (!Data.CODE.IsEmpty())
                 sql += " AND A.CODE='"+ Data.CODE + "'";
             if (!Data.BRANCHID.IsEmpty())
@@ -171,10 +177,12 @@ namespace z.ERP.Services
         //和下面重名
         public object GetBill_Bak(BILLEntity Data)
         {
-            string sql = " SELECT  A.BILLID,A.BRANCHID,A.MERCHANTID,A.CONTRACTID,A.TERMID,A.NIANYUE,A.YEARMONTH,A.MUST_MONEY "
-                +" ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION,B.NAME FEENAME"
-                       + " FROM BILL A,FeeSubject B " +
-                "  WHERE  A.TRIMID= B.TRIMID";
+            string sql = " SELECT  A.BILLID,A.BRANCHID,A.MERCHANTID,A.CONTRACTID,A.TERMID,A.NIANYUE,A.YEARMONTH,A.MUST_MONEY, "
+                       + "         A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION,B.NAME FEENAME"
+                       + "   FROM BILL A,FeeSubject B "
+                       + "  WHERE  A.TRIMID= B.TRIMID "
+                       + "    AND A.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+") ";  //门店权限
+
             if (!Data.BILLID.IsEmpty())
                 sql += " AND A.BILLID='" + Data.BILLID + "'";
             if (!Data.BRANCHID.IsEmpty())
@@ -196,8 +204,9 @@ namespace z.ERP.Services
             string sql = " SELECT  A.BILLID,A.BRANCHID,A.MERCHANTID,A.CONTRACTID,A.TERMID,A.NIANYUE,A.YEARMONTH,A.MUST_MONEY "
                 + " ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION,B.NAME BRANCHNAME "
                 + " ,A.REPORTER_NAME,A.REPORTER_TIME,F.NAME TERMMC,A.MUST_MONEY - A.RECEIVE_MONEY UNPAID_MONEY"
-                + " FROM BILL A,BRANCH B,FEESUBJECT F " +
-                "  WHERE  A.BRANCHID=B.ID  and A.TERMID =F.TRIMID";
+                + "   FROM BILL A,BRANCH B,FEESUBJECT F "
+                + "  WHERE A.BRANCHID=B.ID  and A.TERMID =F.TRIMID"
+                + "    and B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
             item.HasKey("BILLID", a => sql += $" and A.BILLID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID = {a}");
@@ -233,8 +242,9 @@ namespace z.ERP.Services
             string sql = " SELECT  A.BILLID,A.BRANCHID,A.MERCHANTID,A.CONTRACTID,A.TERMID,A.NIANYUE,A.YEARMONTH,A.MUST_MONEY "
                 + " ,A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION,B.NAME BRANCHNAME "
                 + " ,A.REPORTER_NAME,A.REPORTER_TIME,F.NAME TERMMC,A.MUST_MONEY - A.RECEIVE_MONEY UNPAID_MONEY"
-                + " FROM BILL A,BRANCH B,FEESUBJECT F " +
-                "  WHERE  A.BRANCHID=B.ID  and A.TERMID =F.TRIMID and A.STATUS IN (2,3) and A.TYPE IN (1,2) ";
+                + "   FROM BILL A,BRANCH B,FEESUBJECT F "
+                + "  WHERE  A.BRANCHID=B.ID  and A.TERMID =F.TRIMID and A.STATUS IN (2,3) and A.TYPE IN (1,2) "
+                + "    AND B.ID IN ("+GetPermissionSql(PermissionType.Branch)+") ";   //门店权限
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
             item.HasKey("BILLID", a => sql += $" and A.BILLID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID = {a}");
@@ -284,7 +294,8 @@ namespace z.ERP.Services
 
         public object GetBranch(BRANCHEntity Data)
         {
-            string sql = $@"SELECT A.ID,A.NAME FROM BRANCH A WHERE 1=1";
+            string sql = $@"SELECT A.ID,A.NAME FROM BRANCH A WHERE 1=1"
+                  + " A.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             if (!Data.ID.IsEmpty())
                 sql += (" and A.ID= " + Data.ID);
             sql += " and STATUS = 1";
@@ -297,7 +308,8 @@ namespace z.ERP.Services
 
         public object GetRegion(REGIONEntity Data)
         {
-            string sql = $@"SELECT A.REGIONID,A.CODE,A.NAME FROM REGION A WHERE 1=1";
+            string sql = $@"SELECT A.REGIONID,A.CODE,A.NAME FROM REGION A WHERE 1=1"
+                  + " A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
             sql += " AND A.STATUS = 1 ORDER BY A.CODE";
@@ -310,7 +322,8 @@ namespace z.ERP.Services
         }
         public object GetFloor(FLOOREntity Data)
         {
-            string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
+            string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1"
+                 + " A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
             if (!Data.REGIONID.IsEmpty())
@@ -350,10 +363,10 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult GetContract(SearchItem item)
         {
-            string sql = " SELECT  A.* "
-                + " ,B.NAME MERCHANTNAME,C.NAME BRANCHNAME "
-                       + " FROM CONTRACT A,MERCHANT B,BRANCH C " +
-                "  WHERE  A.MERCHANTID=B.MERCHANTID AND A.BRANCHID=C.ID";
+            string sql = " SELECT  A.*  ,B.NAME MERCHANTNAME,C.NAME BRANCHNAME "
+                + "   FROM CONTRACT A,MERCHANT B,BRANCH C "
+                + "  WHERE A.MERCHANTID=B.MERCHANTID AND A.BRANCHID=C.ID"
+                + "    AND C.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID like '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
@@ -372,10 +385,11 @@ namespace z.ERP.Services
 
         public DataGridResult GetGoodsShopList(SearchItem item)
         {
-            string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE KINDDM,C.NAME KINDMC,S.CODE,S.NAME SPMC,P.SHOPID " +
-                "from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D ,GOODS_SHOP P,SHOP S" +
-                "  where G.MERCHANTID=M.MERCHANTID  AND G.KINDID=C.ID and G.BRANDID =D.ID and G.GOODSID = P.GOODSID  and P.SHOPID=S.SHOPID";
-
+            string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE KINDDM,C.NAME KINDMC,S.CODE,S.NAME SPMC,P.SHOPID "
+              + "   from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D ,GOODS_SHOP P,SHOP S,CONTRACT T"
+              + "  where G.MERCHANTID=M.MERCHANTID  AND G.KINDID=C.ID and G.BRANDID =D.ID "
+              + "    and G.GOODSID = P.GOODSID  and P.SHOPID=S.SHOPID AND G.CONTRACTID=T.CONTRACTID"
+              + "    and T.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and G.STATUS IN ({a})");
@@ -390,7 +404,11 @@ namespace z.ERP.Services
 
         public DataGridResult GetGoodsList(SearchItem item)
         {
-            string sql = @"SELECT G.*,C.JSKL,B.NAME BRANDMC FROM GOODS G, CONTRACT_GROUP C ,BRAND B WHERE  G.STATUS=2 AND G.CONTRACTID=C.CONTRACTID AND G.JSKL_GROUP=C.GROUPNO AND G.BRANDID=B.ID ";
+            string sql = @"SELECT G.*,C.JSKL,B.NAME BRANDMC "
+                      + "    FROM GOODS G, CONTRACT_GROUP C ,BRAND B,CONTRACT T "
+                      + "   WHERE G.STATUS=2 AND G.CONTRACTID=C.CONTRACTID AND G.JSKL_GROUP=C.GROUPNO "
+                      + "     AND G.BRANDID=B.ID AND G.CONTRACTID=T.CONTRACTID "
+                      + "     AND T.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("NAME", a => sql += $" and G.NAME like '%{a}%'");
             sql += " ORDER BY  G.GOODSDM";

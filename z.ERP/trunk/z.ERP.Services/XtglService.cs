@@ -165,7 +165,7 @@ namespace z.ERP.Services
         {
             string sql = $@"select * from OPERATIONRULE where 1=1 ";
             item.HasKey("ID", a => sql += $" and ID = '{a}'");
-            sql += "order by ID";
+            sql += " order by ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -201,6 +201,7 @@ namespace z.ERP.Services
         public DataGridResult GetFloor(SearchItem item)
         {
             string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
+            sql += " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("ID,", a => sql += $" and A.ID = {a}");
             item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
             item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
@@ -214,6 +215,7 @@ namespace z.ERP.Services
         public DataGridResult GetFloorElement(SearchItem item)
         {
             string sql = $@"select A.*,B.ORGIDCASCADER from FLOOR A,ORG B where A.ORGID=B.ORGID(+) ";
+            sql += " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("ID", a => sql += $" and A.ID = {a}");
             item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
             item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
@@ -325,6 +327,7 @@ namespace z.ERP.Services
         public DataGridResult GetStaion(SearchItem item)
         {
             string sql = $@"select S.*,P.CODE SHOPCODE from STATION S,SHOP P where S.SHOPID=P.SHOPID(+) ";
+            sql += " AND S.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH = '{a}'");
             sql += "order by STATIONBH";
             int count;
@@ -335,7 +338,7 @@ namespace z.ERP.Services
         public Tuple<dynamic, DataTable> GetStaionElement(STATIONEntity Data)
         {
             string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID,S.NETWORK_NODE_ADDRESS from STATION S where 1=1 ";
-
+            sql += " AND S.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.STATIONBH.IsEmpty())
                 sql += $" and S.STATIONBH = '{ Data.STATIONBH}'";
 
@@ -583,7 +586,8 @@ namespace z.ERP.Services
 
         public DataGridResult GetPosO2OWftCfg(SearchItem item)
         {
-            string sql = $@"select * from POSO2OWFTCFG where 1=1 ";
+            string sql = $@"select * from POSO2OWFTCFG P,STATION S where P.POSNO=S.STATIONBH ";
+            sql += " AND S.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("POSNO", a => sql += $" and POSNO = '{a}'");
             sql += " order by POSNO";
             int count;
@@ -593,9 +597,10 @@ namespace z.ERP.Services
 
         public DataGridResult GetFeeAccount(SearchItem item)
         {
-            string sql = $@"select * from fee_account where 1=1 ";
-            item.HasKey("ID", a => sql += $" and ID = '{a}'");
-            sql += " order by ID";
+            string sql = $@"select * from fee_account F where 1=1 ";
+            sql += " AND F.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
+            item.HasKey("ID", a => sql += $" and F.ID = '{a}'");
+            sql += " order by F.ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -612,7 +617,8 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult GetPOSUMSCONFIG(SearchItem item)
         {
-            string sql = $@"select * from POSUMSCONFIG where 1=1 ";
+            string sql = $@"select * from POSUMSCONFIG P,STATION S WHERE P.POSNO=S.STATIONBH ";
+            sql += " AND S.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("POSNO", a => sql += $" and POSNO = '{a}'");
             sql += " order by POSNO";
             int count;
@@ -622,6 +628,7 @@ namespace z.ERP.Services
         public DataGridResult GetStationList(SearchItem item)
         {
             string sql = @"select STATION.STATIONBH POSNO, STATION.TYPE,BRANCH.NAME BRANCHNAME from STATION ,BRANCH WHERE BRANCH.ID=STATION.BRANCHID ";
+            sql += " AND BRANCH.ID IN (" + GetPermissionSql(PermissionType.Branch)+")";    //分店权限 by：DZK
             item.HasKey("BRANCHID", a => sql += $" and STATION.BRANCHID= '{a}'");
             item.HasKey("POSNO", a => sql += $" and STATION.STATIONBH LIKE '%{a}%'");
             item.HasKey("POSTYPE", a => sql += $" and STATION.TYPE = '{a}'");

@@ -113,12 +113,15 @@ namespace z.ERP.Services
                                 and aa.modulecode like  '" + menuGr.ID + "%'";
                     if (int.Parse(employee.Id) > 0)
                     {
+                        //因菜单树型权限 按扭权限不全选时 对应菜单未保存到ROLE_MENU  
+                        //暂改成 由按扭权单id截取6位关联菜单id   by wangkx 20190705
+                        //b.menuid 改为 to_number(substr( to_char(b.menuid),1,6))  
                         sql += @" and aa.menuid in (
                                                    select a.id
                                                      from menu a,
-                                                           ROLE_MENU     b,
+                                                           ROLE_MENU b,
                                                            USER_ROLE c
-                                                    where a.id = b.menuid
+                                                    where a.id = to_number(substr( to_char(b.menuid),1,6))  
                                                       and b.roleid = c.roleid
                                                       and c.userid = " + employee.Id + @" or
                                     aa.menuid is null)";
@@ -239,9 +242,12 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
         }
         public DataTable DclrwData()
         {
-            var sql = @" select B.MENUID,M.NAME,C.NAME BRANCHMC ,B.URL ,BILLID,P.ID PLATFORMID ,P.DOMAIN DOMAIN  from BILLSTATUS B,MENU M,BRANCH C,PLATFORM P 
-                 where B.MENUID=M.ID and B.BRABCHID =C.ID AND P.ID=M.PLATFORMID  
-                and exists (select 1 from USER_ROLE U,ROLE_MENU N where U.ROLEID = N.ROLEID and N.MENUID = M.ID and U.USERID = " + employee.Id + ") ORDER BY MENUID ";
+            var sql = @" select B.MENUID,M.NAME,C.NAME BRANCHMC ,B.URL ,BILLID,P.ID PLATFORMID ,P.DOMAIN DOMAIN  "
+                     + "   from BILLSTATUS B,MENU M,BRANCH C,PLATFORM P "
+                     + "  where B.MENUID=M.ID and B.BRABCHID =C.ID AND P.ID=M.PLATFORMID " 
+                     + "    and M.ID in (" + GetPermissionSql(PermissionType.Menu) + ")"      //菜单权限
+                     + "    and C.ID in (" + GetPermissionSql(PermissionType.Branch) + ")"    //门店权限
+                     + "  order by  B.MENUID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
