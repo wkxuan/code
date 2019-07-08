@@ -87,3 +87,13 @@ search.browseHref = function (row, index) {
         url: "XTGL/SPLC/SPLC/" + row.BILLID
     })
 };
+
+
+search.addHref = function (row) {
+    _.OpenPage({
+        id: 101018,
+        title: '审批流程定义',
+        url: "XTGL/SPLC/SPLC/"
+    });
+
+}

@@ -38,7 +38,7 @@
 }
 
 @section content{
-    <row>
+    <row v-if="showsplc">
         <Steps :current="current">
             <Step v-for="splc in splcs" :title="splc.JDNAME"></Step>
         </Steps>
@@ -46,7 +46,7 @@
 
     <br />
     <br />
-   <row>
+   <row v-if="showsplc">
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
             结果选择
@@ -408,6 +408,7 @@
                 JDID:"",
                 BZ:"",
                 JGTYPE:-1,
+                showsplc:false
             },
             mounted:function(){
                 var _self = this;
@@ -484,17 +485,21 @@
                         }
                     }, function (data) {
                         _self.BZ="";
-                        _self.splcs=data.splc;
+                      
                         if(data.splc.length>0){
-                          _self.disRecall=false;
-                        }
-                        _self.splcjg=data.splxz;
-                        for (var i=0;i<=data.splxz.length-1;i++){
-                            if (i==0){
-                              _self.current=data.splxz[0].JDID-1;
-                              break;
+                            _self.splcs=data.splc;
+                            _self.disRecall=false;
+                            _self.showsplc=true;
+                        };
+                        if (data.splxz.length>0){
+                            _self.splcjg=data.splxz;
+                            for (var i=0;i<=data.splxz.length-1;i++){
+                                if (i==0){
+                                   _self.current=data.splxz[0].JDID-1;
+                                   break;
+                                }
                             }
-                        }
+                        };
                     });  
                 }
             }
