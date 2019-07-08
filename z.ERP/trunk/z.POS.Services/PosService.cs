@@ -1075,7 +1075,7 @@ namespace z.POS.Services
                 //2.2储值相关
                 desc.CashCard.cardId = sourCashCard.cardId;
                 desc.CashCard.cardNo = sourCashCard.cardNo;
-                desc.CashCard.amount = sourCashCard.amount * 1;
+                desc.CashCard.amount = sourCashCard.amount;
                 desc.CashCard.useMoney = 0;
                 desc.CashCard.payID = sourCashCard.payID;
             }
