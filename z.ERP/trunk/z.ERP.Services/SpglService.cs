@@ -9,6 +9,7 @@ using z.ERP.Model.Vue;
 using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -21,8 +22,10 @@ namespace z.ERP.Services
 
         public DataGridResult GetGoods(SearchItem item)
         {
-            string sql = $@"SELECT G.*,K.CODE KINDCODE,K.NAME KINDNAME,M.NAME MERCHANTNAME FROM GOODS G,GOODS_KIND K,MERCHANT M";
-            sql += " WHERE G.MERCHANTID=M.MERCHANTID(+) AND G.KINDID=K.ID(+)";
+            string sql = $@"SELECT G.*,K.CODE KINDCODE,K.NAME KINDNAME,M.NAME MERCHANTNAME ";
+                   sql += "   FROM GOODS G,GOODS_KIND K,MERCHANT M,CONTRACT C";
+            sql += " WHERE G.CONTRACTID = C.CONTRACTID and G.MERCHANTID=M.MERCHANTID(+) AND G.KINDID=K.ID(+)";
+            sql += "   and C.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("BARCODE", a => sql += $" and G.BARCODE={a}");
             item.HasKey("NAME", a => sql += $" and G.NAME  LIKE '%{a}%'");
@@ -169,7 +172,9 @@ namespace z.ERP.Services
 
         public object GetContract(CONTRACTEntity Data)
         {
-            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.JXSL*100 JXSL,T.XXSL*100 XXSL from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
+            string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.JXSL*100 JXSL,T.XXSL*100 XXSL ";
+            sql += "from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
+            sql += " and T.BRANCHID in ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             if (!Data.CONTRACTID.IsEmpty())
                 sql += (" and T.CONTRACTID= " + Data.CONTRACTID);
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -244,8 +249,10 @@ namespace z.ERP.Services
         }        
         public DataGridResult GetSaleBillList(SearchItem item)
         {
-            string sql = $@"SELECT L.*,B.NAME BRANCHMC,S1.USERNAME SYYMC,S2.USERNAME YYYMC  FROM SALEBILL L,BRANCH B,SYSUSER S1,SYSUSER S2" +
-                " where L.BRANCHID = B.ID  and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID  ";
+            string sql = $@"SELECT L.*,B.NAME BRANCHMC,S1.USERNAME SYYMC,S2.USERNAME YYYMC "
+               + "  FROM SALEBILL L,BRANCH B,SYSUSER S1,SYSUSER S2"
+               + " where L.BRANCHID = B.ID  and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID  " 
+               + "   and  B.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and L.BRANCHID={a}");
             item.HasKey("MERCHANTID", a => sql += $" and  exists(select 1 from CONTRACT_SHOP S,CONTRACT C where S.CONTRACTID=C.CONTRACTID and S.SHOPID=S2.SHOPID and C.MERCHANTID={a})");
@@ -311,7 +318,8 @@ namespace z.ERP.Services
         {
             string sql = $@" SELECT L.*,B.NAME BRANCHMC,S1.USERNAME SYYMC,S2.USERNAME YYYMC" +
                 "   FROM SALEBILL L,BRANCH B,SYSUSER S1,SYSUSER S2 " +
-                "  where L.BRANCHID = B.ID and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID ";
+                "  where L.BRANCHID = B.ID and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID " +
+                "    and B.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             if (!Data.BILLID.IsEmpty())
                 sql += (" and L.BILLID= " + Data.BILLID);
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -410,8 +418,10 @@ namespace z.ERP.Services
         #region 扣率调整单
         public DataGridResult GetRateAdjustList(SearchItem item)
         {
-            string sql = @"SELECT A.*,B.NAME BRANCHNAME FROM RATE_ADJUST A,BRANCH B
-                    WHERE A.BRANCHID=B.ID ";
+            string sql = @"SELECT A.*,B.NAME BRANCHNAME "
+                        + "  FROM RATE_ADJUST A,BRANCH B "
+                        + " WHERE A.BRANCHID=B.ID "
+                        + "   AND B.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";   //门店权限
             item.HasKey("ADID", a => sql += $" and A.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID={a}");           
             item.HasDateKey("DATE_START", a => sql += $" and A.STARTTIME>={a}");
