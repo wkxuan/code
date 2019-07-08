@@ -24,6 +24,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT L.*,B.NAME BRANCHNAME,T.NAME MERCHANTNAME " +
                 " FROM JOIN_BILL L,BRANCH B ,MERCHANT T " +
                 "  WHERE L.BRANCHID = B.ID AND L.MERCHANTID = T.MERCHANTID";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID={a}");
             item.HasKey("MERCHANTID", a => sql += $" and L.MERCHANTID={a}");
@@ -47,6 +48,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT L.*,B.NAME BRANCHNAME,D.MERCHANTID,D.NAME MERCHANTNAME " +
                 " FROM BILL_RETURN L,BRANCH B ,CONTRACT C,MERCHANT D " +
                 "  WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID = D.MERCHANTID(+) ";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
@@ -119,6 +121,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT A.*,B.NAME BRANCHNAME,D.NAME MERCHANTNAME "
                         +"FROM BILL_RETURN A,BRANCH B,CONTRACT C,MERCHANT D " 
                         + "WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID = D.MERCHANTID(+) ";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND BILLID= " + Data.BILLID);
             DataTable billReturn = DbHelper.ExecuteTable(sql);
@@ -166,6 +169,7 @@ namespace z.ERP.Services
               " nvl(L.JE_16,0)+nvl(L.JE_10,0)+nvl(L.JE_QT,0) + nvl(L.ZZSJE_16,0)+nvl(L.ZZSJE_10,0)+nvl(L.ZZSJE_QT,0)-nvl(L.KKJE,0) SJFKJE" +
               " FROM JOIN_BILL L,BRANCH B ,MERCHANT T " +
               "  WHERE L.BRANCHID = B.ID AND L.MERCHANTID = T.MERCHANTID";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.BILLID.IsEmpty())
                 sql += (" and L.BILLID= " + Data.BILLID);
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -199,6 +203,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT L.*,B.NAME BRANCHNAME " +
                 " FROM BILL_ADJUST L,BRANCH B " +
                 "  WHERE L.BRANCHID = B.ID  ";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
@@ -267,6 +272,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT A.*,B.NAME BRANCHNAME "
                         + "FROM BILL_ADJUST A,BRANCH B "
                         + "WHERE A.BRANCHID=B.ID ";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billAdjust = DbHelper.ExecuteTable(sql);
@@ -312,6 +318,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT L.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME " +
                 " FROM BILL_OBTAIN L,BRANCH B,MERCHANT C " +
                 "  WHERE L.BRANCHID = B.ID and L.MERCHANTID=C.MERCHANTID(+)  ";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("TYPE", a => sql += $" and L.TYPE = {a}");
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
@@ -390,6 +397,7 @@ namespace z.ERP.Services
                         + "FROM BILL_OBTAIN A,BRANCH B,MERCHANT C,FKFS D ,FEE_ACCOUNT F "
                         + "WHERE A.BRANCHID=B.ID and A.MERCHANTID = C.MERCHANTID(+) "
                         + " AND A.FKFSID=D.ID(+) AND A.FEE_ACCOUNT_ID=F.ID(+)";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billObtain = DbHelper.ExecuteTable(sql);
@@ -444,7 +452,7 @@ namespace z.ERP.Services
                 "  FROM BILL_NOTICE L,BRANCH B,CONTRACT C,MERCHANT D,FEE_ACCOUNT F " +
                 " WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)  "+
                 "   AND L.FEE_ACCOUNTID = F.ID(+)";
-
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID= {a}");
             item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID = {a}");
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
@@ -523,6 +531,7 @@ namespace z.ERP.Services
                         + " FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D,FEE_ACCOUNT F "
                         + "WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)"
                         + "  AND A.FEE_ACCOUNTID=F.ID";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billNotice = DbHelper.ExecuteTable(sql);
@@ -554,6 +563,7 @@ namespace z.ERP.Services
                  + " FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D,FEE_ACCOUNT F "
                  + " WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) "
                  + "   and C.MERCHANTID=D.MERCHANTID(+) and A.FEE_ACCOUNTID=F.ID(+)";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billNotice = DbHelper.ExecuteTable(sql);
@@ -611,6 +621,7 @@ namespace z.ERP.Services
                           " nvl(L.JE_16,0)+nvl(L.JE_10,0)+nvl(L.JE_QT,0) + nvl(L.ZZSJE_16,0)+nvl(L.ZZSJE_10,0)+nvl(L.ZZSJE_QT,0)-nvl(L.KKJE,0) SJFKJE" +
                           " FROM JOIN_BILL L,BRANCH B ,MERCHANT T " +
                           "  WHERE L.BRANCHID = B.ID AND L.MERCHANTID = T.MERCHANTID";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.BILLID.IsEmpty())
                 sql += (" and L.BILLID= " + Data.BILLID);
 
@@ -676,6 +687,7 @@ namespace z.ERP.Services
                         + " FROM BILL_OBTAIN A,BRANCH B,MERCHANT C,FKFS F "
                         + " WHERE A.BRANCHID=B.ID and A.MERCHANTID = C.MERCHANTID(+) "
                         + "and A.FKFSID =F.ID ";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);
             DataTable billObtain = DbHelper.ExecuteTable(sql);

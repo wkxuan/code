@@ -9,6 +9,7 @@ using z.Exceptions;
 using System.Linq;
 using z.ERP.Model.Vue;
 using z.Extensions;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -214,6 +215,7 @@ namespace z.ERP.Services
         {
             string sql = @"SELECT M.*,A.NAME MERCHANTNAME,F.NAME FEE_ACCOUNTNAME,B.NAME BRANCHNAME,B.ID BRANCHID from MERCHANT_ACCOUNT M ,MERCHANT A,FEE_ACCOUNT F,BRANCH B,CONTRACT C
                         WHERE M.MERCHANTID=A.MERCHANTID AND M.FEE_ACCOUNT_ID=F.ID AND M.MERCHANTID=C.MERCHANTID AND C.BRANCHID=B.ID ";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("BRANCHID", a => sql += $" and B.ID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and A.NAME  LIKE '%{a}%'");
@@ -235,6 +237,7 @@ namespace z.ERP.Services
 	            from MERCHANT_ACCOUNT M ,MERCHANT_ACCOUNT_RECORD D, MERCHANT A,FEE_ACCOUNT F,BRANCH B,CONTRACT C 
                 WHERE M.MERCHANTID=A.MERCHANTID AND M.FEE_ACCOUNT_ID=F.ID AND M.MERCHANTID=C.MERCHANTID 
                 AND C.BRANCHID=B.ID AND D.MERCHANTID=M.MERCHANTID AND M.FEE_ACCOUNT_ID=D.FEE_ACCOUNT_ID ";
+            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("BRANCHID", a => sql += $" and B.ID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and A.NAME  LIKE '%{a}%'");
