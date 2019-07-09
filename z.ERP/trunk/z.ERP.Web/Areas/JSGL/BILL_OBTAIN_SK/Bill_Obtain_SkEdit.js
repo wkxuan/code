@@ -265,22 +265,47 @@ editDetail.popCallBack = function (data) {
         }
     }
 }
-
-editDetail.clearKey = function () {
-    editDetail.dataParam.BILLID = null;
-    editDetail.dataParam.YEARMONTH = null;
-    editDetail.dataParam.PAYID = null;
-    editDetail.dataParam.PAYNAME = null;
-    editDetail.dataParam.MERCHANTID = null;
-    editDetail.dataParam.MERCHANTNAME = null;
-    editDetail.dataParam.DESCRIPTION = null;
-    editDetail.dataParam.MERCHANT_MONEY = 0;
-    editDetail.dataParam.ALL_MONEY = 0;
-    editDetail.dataParam.ADVANCE_MONEY = 0;
-    editDetail.dataParam.BILL_OBTAIN_ITEM = [];
-    editDetail.dataParam.BILL_OBTAIN_INVOICE = [];
-}
-
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10700701"
+    }, {
+        id: "edit",
+        authority: "10700701"
+    }, {
+        id: "del",
+        authority: "10700701"
+    }, {
+        id: "save",
+        authority: "10700701"
+    }, {
+        id: "abandon",
+        authority: "10700701"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10700702",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};
 editDetail.IsValidSave = function () {
 
 
