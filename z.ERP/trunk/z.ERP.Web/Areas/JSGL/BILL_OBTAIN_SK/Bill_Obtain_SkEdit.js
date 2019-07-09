@@ -304,6 +304,26 @@ editDetail.mountedInit = function () {
             }
         },
         isNewAdd: true
+    }, {
+        id: "print",
+        name: "打印",
+        icon: "md-print",
+        authority: "10700200",
+        fun: function () {
+            _.OpenPage({
+                id: 10700200,
+                title: '打印',
+                url: "JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkPrint/" + editDetail.dataParam.BILLID,
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS == 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
     }];
 };
 editDetail.IsValidSave = function () {
