@@ -88,6 +88,24 @@
         </i-col>
     </row>
     <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            通知门店
+        </i-col>
+        <i-col span="16" class="RowText">
+            @{
+                RenderControl(new ServiceCheckBoxListRender()
+                {
+                    ServiceMothod = m => m.branch(),
+                    vModel = "searchParam.BRANCHID",
+                    MultiSelect = true,
+                    Change= "CheckBoxChange",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
         <yx-editor :content="dataParam.CONTENT" :disabled="disabled" v-on:change="editorChange"></yx-editor>
     </row>
 

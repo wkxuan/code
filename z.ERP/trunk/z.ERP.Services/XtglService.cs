@@ -977,6 +977,23 @@ namespace z.ERP.Services
             dt.NewEnumColumns<通知状态>("STATUS", "STATUSNAME");
             return new DataGridResult(dt, count);
         }
+        //通知消息列表
+        public Tuple<dynamic, DataTable> GetNOTICEElement(NOTICEEntity item)
+        {
+            string sql = @"select * from NOTICE where 1=1 ";
+            if (!string.IsNullOrEmpty(item.ID)) {
+                sql += $" and ID ="+ item.ID + " ";
+            }
+            sql += " order by ID DESC";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            string sql1 = @" select B.ID,B.NAME from NOTICE_BRANCH N,BRANCH B where B.ID=N.BRANCHID  ";
+            if (!string.IsNullOrEmpty(item.ID))
+            {
+                sql1 += $" and N.NOTICEID =" + item.ID + " ";
+            }
+            DataTable branch = DbHelper.ExecuteTable(sql1);
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), branch);
+        }
         //消息详情
         public DataTable GetNOTICEInfo(string id)
         {
@@ -1013,7 +1030,11 @@ namespace z.ERP.Services
             v.Require(a => a.STATUS);
             v.Require(a => a.CONTENT);
             v.Verify();
-            DbHelper.Save(DefineSave);
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(DefineSave);
+                Tran.Commit();
+            }
             return DefineSave.ID;
         }
         public void NoticeRead(string noticeid)

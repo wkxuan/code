@@ -19,6 +19,8 @@
         }, text);
     }}
     ];
+    define.dataParam.NOTICE_BRANCH = [];
+    define.screenParam.BRANCHID = [];
     define.screenParam.dataDef = [];
     define.service = "XtglService";
     define.method = "GetNOTICE";
@@ -29,11 +31,44 @@
 define.otherMethods = {
     editorChange(val) {
         define.dataParam.CONTENT = val;
+    },
+    CheckBoxChange(data){
+        define.dataParam.BRANCHID = [];
+        let localData = [];
+        for (var i = 0; i < data.length; i++) {
+            localData.push({ BRANCHID: data[i]});
+        };
+        Vue.set(define.dataParam, 'NOTICE_BRANCH', localData);
     }
+}
+
+define.showone = function (data, callback) {
+    _.Ajax('SearchNOTICE', {
+        Data: { ID: data }
+    }, function (data) {
+        define.dataParam = data.notice;
+        Vue.set(define.dataParam, data.notice);       
+        let s = $.map(data.branch, item=> {
+            return item.ID+"";
+        });
+        define.screenParam.BRANCHID = [];
+        define.screenParam.BRANCHID = s;
+        Vue.set(define.screenParam, 'BRANCHID', s);
+        let localData = [];
+        if (data.branch.length > 0) {
+            for (var i = 0; i < data.branch.length; i++) {
+                localData.push({ BRANCHID: data.branch[i].ID });
+            };
+        }
+        Vue.set(define.dataParam, 'NOTICE_BRANCH', localData);
+        callback && callback();
+    });
 }
 
 define.newRecord = function () {
     define.dataParam.CONTENT = "";
+    define.dataParam.NOTICE_BRANCH = [];
+    define.screenParam.BRANCHID = [];
 }
 
 define.IsValidSave = function () {
@@ -48,6 +83,10 @@ define.IsValidSave = function () {
     if (!define.dataParam.CONTENT) {
         iview.Message.info("通知内容不能为空!");
         return false;
-    }  
+    }
+    if (define.dataParam.NOTICE_BRANCH.length===0) {
+        iview.Message.info("通知门店不能为空!");
+        return false;
+    }
     return true;
 }

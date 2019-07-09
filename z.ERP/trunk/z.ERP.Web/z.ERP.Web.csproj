@@ -211,6 +211,7 @@
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
     <Compile Include="Areas\Report\PayTypeSale\PayTypeSaleController.cs" />
     <Compile Include="Areas\Report\SaleRecord\SaleRecordController.cs" />
+    <Compile Include="Areas\Share\Render\ServiceCheckBoxListRender.cs" />
     <Compile Include="Areas\Share\Render\TableRender.cs" />
     <Compile Include="Areas\Share\Render\CascaderRender.cs" />
     <Compile Include="Areas\Share\Render\CommonWindow.cs" />
