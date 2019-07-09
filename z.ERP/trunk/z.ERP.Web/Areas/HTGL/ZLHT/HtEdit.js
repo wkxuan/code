@@ -1,6 +1,4 @@
 ﻿editDetail.beforeVue = function () {
-    editDetail.btnList = [];
-
     editDetail.branchid = true;
     editDetail.service = "HtglService";
     editDetail.method = "GetContract";
@@ -125,19 +123,34 @@
             title: '时间段', key: 'INX', sortable: true, cellType: "input", cellDataType: "number",
             onChange: function (index, row, data) {
                 let rent = editDetail.dataParam.CONTRACT_RENT;
-                for (let i = 0; i < rent.length; i++) {
-                    if (row.INX == rent[i].INX) {
-                        row.STARTDATE = rent[i].STARTDATE;
-                        row.ENDDATE = rent[i].ENDDATE;
-                        break;
-                    }
-                    else {
-                        row.INX = null;
-                    }
-                };
+                let dataf = rent.filter(item=> {
+                    return item.INX == row.INX;
+                });
+                if (dataf.length) {
+                    row.STARTDATE = dataf[0].STARTDATE;
+                    row.ENDDATE = dataf[0].ENDDATE;
+                    row.SALES_START = 0;
+                    row.SALES_END = 999999999;
+                } else {
+                    row.STARTDATE = null;
+                    row.ENDDATE = null;
+                }              
             }
         },
-        { title: '扣点序号', key: 'GROUPNO', sortable: true, cellType: "input", cellDataType: "number" },
+        {
+            title: '扣点序号', key: 'GROUPNO', sortable: true, cellType: "input", cellDataType: "number",
+            onChange: function (index, row, data) {
+                let contract = editDetail.dataParam.CONTRACT_GROUP;
+                let dataf = contract.filter(item=> {
+                    return item.GROUPNO == row.GROUPNO;
+                });
+                if (dataf.length) {
+                    row.JSKL = dataf[0].JSKL;
+                } else {
+                    row.JSKL = null;
+                }
+            }
+        },
         { title: '开始日期', key: 'STARTDATE', sortable: true, cellType: "date" },
         { title: '结束日期', key: 'ENDDATE', cellType: "date" },
         { title: "起始金额", key: 'SALES_START', cellType: "input", cellDataType: "number" },
@@ -154,6 +167,7 @@
                if (data.length > index + 1) {
                    data[index + 1].STARTDATE = new Date((addDate(row.ENDDATE))).Format('yyyy-MM-dd');
                }
+               upDataJskl();
            }
        },
        {
@@ -289,6 +303,20 @@
             if (editDetail.dataParam.CONTRACT_SHOP[i].SHOPID) {
                 editDetail.dataParam.AREA_BUILD += editDetail.dataParam.CONTRACT_SHOP[i].AREA;
                 editDetail.dataParam.AREAR += editDetail.dataParam.CONTRACT_SHOP[i].AREA_RENTABLE;
+            }
+        }
+    }
+    //更新扣率信息时间
+    upDataJskl = function () {
+        let contjskl = editDetail.dataParam.CONTJSKL;
+        let contractRent = editDetail.dataParam.CONTRACT_RENT;
+        let contractGroup = editDetail.dataParam.CONTRACT_GROUP;
+        for (let i = 0; i < contjskl.length; i++) {
+            for (let j = 0; j < contractRent.length; j++) {
+                if (contjskl[i].INX = contractRent[i].INX) {
+                    contjskl[i].STARTDATE = contractRent[i].STARTDATE;
+                    contjskl[i].ENDDATE = contractRent[i].ENDDATE;
+                }
             }
         }
     }
@@ -565,17 +593,28 @@ editDetail.otherMethods = {
                 return;
             }
             for (let i = 0; i < selection.length; i++) {
-                //if (selection[i].STARTDATE == (editDetail.dataParam.CONT_START)) {
-                //    iview.Message.info("开始日期和租约开始日期相同不能删除!");
-                //    return;
-                //}
                 for (let j = 0; j < temp.length; j++) {
-                    if (temp[j].INX == selection[i].INX) {
+                    if (temp[j].INX == selection[i].INX) {                     
                         temp.splice(j, 1);
-                        calculateArea();
                     }
                 }
             }
+            let contjskl = [];
+            for (let i = 0; i < selection.length; i++) {
+                let jskl = editDetail.dataParam.CONTJSKL.filter(item=> {
+                    if (item.INX != selection[i].INX) {
+                        return true;
+                    }
+                });
+                contjskl = contjskl.concat(jskl);
+                //debugger
+                //for (let j = 0; j < contjskl.length; j++) {
+                //    if (selection[i].INX == contjskl[j].INX) {
+                //        contjskl.splice(j, 1);
+                //    }
+                //}
+            }
+            editDetail.dataParam.CONTJSKL = contjskl;
         }
     },
     //按年度分解
@@ -735,7 +774,7 @@ editDetail.otherMethods = {
         });
         temp.push(loc);
         for (let i = 0; i < temp.length; i++) {
-            temp[i].INX = i + 1;
+            temp[i].GROUPNO = i + 1;
         }
     },
     //删除扣率组
@@ -746,20 +785,26 @@ editDetail.otherMethods = {
         } else {
             let temp = editDetail.dataParam.CONTRACT_GROUP;
             for (let i = 0; i < selection.length; i++) {
+                let contjskl = editDetail.dataParam.CONTJSKL;
+                for (let j = 0; j < contjskl.length; j++) {
+                    if (selection[i].GROUPNO == contjskl[j].GROUPNO) {
+                        contjskl.splice(j, 1)
+                    }
+                }
                 for (let j = 0; j < temp.length; j++) {
-                    if (temp[j].INX == selection[i].INX) {
+                    if (temp[j].GROUPNO == selection[i].GROUPNO) {
                         temp.splice(j, 1);
                     }
                 }
             }
             for (let i = 0; i < temp.length; i++) {
-                temp[i].INX = i + 1;
+                temp[i].GROUPNO = i + 1;
             }
         }
     },
     //自动生成扣率信息
     autoMakeGroup: function () {
-        let contractJskl = editDetail.dataParam.CONTJSKL;
+        let contractJskl = editDetail.dataParam.CONTJSKL = [];
         let contractRent = editDetail.dataParam.CONTRACT_RENT;
         let contractGroup = editDetail.dataParam.CONTRACT_GROUP;
 
@@ -782,7 +827,6 @@ editDetail.otherMethods = {
             }
         }
         //先循环时间段信息,再循环扣点组信息
-        contractJskl = [];
         for (let i = 0; i < contractRent.length; i++) {
             for (j = 0; j < contractGroup.length; j++) {
                 contractJskl.push({
@@ -799,6 +843,27 @@ editDetail.otherMethods = {
     },
     //添加一行扣率信息
     addCONTJSKL: function () {
+        let contractRent = editDetail.dataParam.CONTRACT_RENT;
+        let contractGroup = editDetail.dataParam.CONTRACT_GROUP;
+
+        if (contractRent.length == 0) {
+            iview.Message.info("请先维护时间段信息!");
+            return;
+        }
+        if (contractGroup.length == 0) {
+            iview.Message.info("请先维护扣点组信息!");
+            return;
+        }
+        for (let i = 0; i < contractRent.length; i++) {
+            if (!contractRent[i].STARTDATE) {
+                iview.Message.info(`请先维护时间段${contractRent[i].INX}的开始日期!`);
+                return;
+            }
+            if (!contractRent[i].ENDDATE) {
+                iview.Message.info(`请先维护时间段${contractRent[i].INX}的结束日期!`);
+                return;
+            }
+        }
         let temp = editDetail.dataParam.CONTJSKL || [];
         let loc = {};
         editDetail.screenParam.colDefJskl.forEach(item=> {
@@ -808,15 +873,16 @@ editDetail.otherMethods = {
     },
     //删除扣率信息
     delCONTJSKL: function () {
-        let selections = this.$refs.refJskl.getSelection();
-        if (selections.length == 0) {
+        let selection = this.$refs.refJskl.getSelection();
+        if (selection.length == 0) {
             iview.Message.info("请选中要删除的扣率信息!");
         } else {
             let temp = editDetail.dataParam.CONTJSKL;
             for (let i = 0; i < selection.length; i++) {
                 for (let j = 0; j < temp.length; j++) {
-                    if (selection[i] == temp[j]) {
+                    if (selection[i].INX == temp[j].INX && selection[i].GROUPNO == temp[j].GROUPNO) {
                         temp.splice(j, 1);
+                        break;
                     }
                 }
             }
@@ -1172,7 +1238,7 @@ editDetail.mountedInit = function () {
         fun: function () {
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.BILLID.length > 0 && data.STATUS < 2) {
+            if (!disabled && data.STATUS < 2) {
                 return true;
             } else {
                 return false;
@@ -1189,7 +1255,7 @@ editDetail.mountedInit = function () {
             editDetail.veObj.disabled = true;
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.BILLID.length > 0 && data.STATUS == 2) {
+            if (!disabled && data.STATUS == 2) {
                 return true;
             } else {
                 return false;

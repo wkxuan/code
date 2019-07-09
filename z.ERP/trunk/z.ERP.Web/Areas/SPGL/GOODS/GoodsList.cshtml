@@ -8,58 +8,43 @@
         <i-col span="2" class="RowTitle">
             商品名称
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.NAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.NAME" />
         </i-col>
         <i-col span="2" class="RowTitle">
             商品代码
         </i-col>
-        <i-col span="6">
-
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.GOODSDM"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.GOODSDM" />
         </i-col>
         <i-col span="2" class="RowTitle">
             商品条码
         </i-col>
-        <i-col span="6">            
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.BARCODE"
-                });
-            }
+        <i-col span="6" class="RowText">  
+            <i-input v-model="searchParam.BARCODE" />          
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
             拼音码
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.PYM"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.PYM" /> 
         </i-col>
         <i-col span="2" class="RowTitle">
             商户号
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.MERCHANTID" /> 
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            类型
+        </i-col>
+        <i-col span="6" class="RowText">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new EnumDropDownListRender<商品类型>
                 {
-                    vModel = "searchParam.MERCHANTID"
+                    vModel = "searchParam.TYPE",
                 });
             }
         </i-col>
@@ -68,36 +53,15 @@
         <i-col span="2" class="RowTitle">
             租约号
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.CONTRACTID"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.CONTRACTID" /> 
         </i-col>
         <i-col span="2" class="RowTitle">
             商品分类
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.KINDID"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            类型
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumDropDownListRender<商品类型>
-                {
-                    vModel = "searchParam.TYPE",
-                });
-            }
-        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.KINDID" /> 
+        </i-col>      
     </row>
 
 }
