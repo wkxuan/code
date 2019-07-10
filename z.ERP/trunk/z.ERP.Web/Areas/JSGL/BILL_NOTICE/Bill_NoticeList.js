@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: "单据编号", key: "BILLID", width: 105, sortable: true },
         { title: "年月", key: "NIANYUE", width: 100 },
         { title: "状态", key: "STATUSMC", width: 100 },
@@ -13,9 +13,17 @@
         { title: "登记人", key: "REPORTER_NAME", width: 90 },
         { title: "登记时间", key: "REPORTER_TIME", width: 150, sortable: true },
         { title: "审核人", key: "VERIFY_NAME", width: 90 },
-        { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true }
+        { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true },
+        {
+            title: '操作', key: 'operate', onClick: function (index, row, data) {
+                _.OpenPage({
+                    id: 10700501,
+                    title: '商户缴费通知单',
+                    url: "JSGL/BILL_NOTICE/Bill_NoticeEdit/" + row.BILLID
+                });
+            }
+        }
     ];
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "JsglService";
     search.method = "GetBillNoticeList";
 
@@ -33,26 +41,11 @@
     search.screenParam.popParam = {};
 }
 
-search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 107005,
-        title: '浏览商户缴费通知单',
-        url: "JSGL/BILL_NOTICE/Bill_NoticeDetail/" + row.BILLID
-    });
-}
-
 search.addHref = function (row) {
     _.OpenPage({
-        id: 107005,
-        title: '新增商户缴费通知单',
+        id: 10700501,
+        title: '商户缴费通知单',
         url: "JSGL/BILL_NOTICE/Bill_NoticeEdit/"
-    });
-}
-search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 107005,
-        title: '编辑商户缴费通知单',
-        url: "JSGL/BILL_NOTICE/Bill_NoticeEdit/" + row.BILLID
     });
 }
 

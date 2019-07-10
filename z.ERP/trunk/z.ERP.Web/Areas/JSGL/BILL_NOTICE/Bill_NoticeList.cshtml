@@ -5,16 +5,11 @@
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">单号</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.BILLID"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.BILLID" />
         </i-col>
         <i-col span="2" class="RowTitle">分店</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -26,7 +21,7 @@
         <i-col span="2" class="RowTitle">
             状态
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<普通单据状态>()
                 {
@@ -37,55 +32,23 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelMerchant",
-                    Text = "商户",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            商户
         </i-col>
-        <i-col span="2">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTID"
-                });
-            }
-        </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTNAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
         </i-col>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelContract",
-                    Text = "租约",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            租约
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.CONTRACTID"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.CONTRACTID" v-on:on-click="SelContract" />
         </i-col>
         <i-col span="2" class="RowTitle">
             类型
         </i-col>
-        <i-col span="6">
+        <i-col span="6"  class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<通知单类型>()
                 {
@@ -96,28 +59,16 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelSysuser",
-                    Text = "登记人",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            登记人
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.REPORTERNAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.REPORTERNAME" v-on:on-click="SelSysuser" />
         </i-col>
         <i-col span="2" class="RowTitle">
             登记时间
         </i-col>
-        <i-col span="3">
+        <i-col span="3"  class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -125,7 +76,7 @@
                 });
             }
         </i-col>
-        <i-col span="3">
+        <i-col span="3"  class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -136,40 +87,22 @@
         <i-col span="2" class="RowTitle">
             年月
         </i-col>
-        <i-col span="6">
-
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.NIANYUE"
-                });
-            }
+        <i-col span="6"  class="RowText">
+            <i-input v-model="searchParam.NIANYEU" />
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelSysuser_sh",
-                    Text = "审核人",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            审核人
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.VERIFYNAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.VERIFYNAME" v-on:on-click="SelSysuser_sh" />
         </i-col>
         <i-col span="2" class="RowTitle">
             审核时间
         </i-col>
-        <i-col span="3">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -177,7 +110,7 @@
                 });
             }
         </i-col>
-        <i-col span="3">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -186,23 +119,9 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            备注
-        </i-col>
-        <i-col span="6">
-
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.DESCRIPTION"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
             收费单位
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {

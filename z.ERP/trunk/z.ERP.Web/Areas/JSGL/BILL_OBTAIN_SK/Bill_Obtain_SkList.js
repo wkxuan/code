@@ -14,8 +14,8 @@
         {
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
-                    id: 105002,
-                    title: '商品信息',
+                    id: 107007,
+                    title: '租赁核销单',
                     url: "JSGL/Bill_Obtain_Sk/Bill_Obtain_SkEdit/" + row.BILLID
                 });
             }
@@ -25,13 +25,58 @@
     search.method = "GetBillObtainList";
     //账单收款
     search.searchParam.TYPE = 3;
+    search.screenParam.showPopMerchant = false;
+    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+    search.screenParam.showPopSysuser = false;
+    search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
 }
 search.addHref = function (row) {
     _.OpenPage({
         id: 107007,
-        title: '新增租赁核销单',
+        title: '租赁核销单',
         url: "JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkEdit/"
     });
 }
+search.otherMethods = {
+    SelMerchant: function () {
+        if (!search.searchParam.BRANCHID) {
+            iview.Message.info("请选择分店!");
+            return;
+        };
+        search.screenParam.showPopMerchant = true;
+    },
+    SelSysuser: function () {
+        search.screenParam.showPopSysuser = true;
+        btnFlag = "REPORTER";
+    },
+    SelSysuser_sh: function () {
+        search.screenParam.showPopSysuser = true;
+        btnFlag = "VERIFY";
+    },
+}
+//接收子页面返回值
+search.popCallBack = function (data) {
+    if (search.screenParam.showPopMerchant) {
+        search.screenParam.showPopMerchant = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+        }
+    }
+    if (search.screenParam.showPopSysuser) {
+        search.screenParam.showPopSysuser = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            if (btnFlag == "REPORTER") {
+                search.searchParam.REPORTER = data.sj[i].USERID;
+                search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+            }
+            else if (btnFlag == "VERIFY") {
+                search.searchParam.VERIFY = data.sj[i].USERID;
+                search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
+            }
+
+        };
+    }
+};
 
 

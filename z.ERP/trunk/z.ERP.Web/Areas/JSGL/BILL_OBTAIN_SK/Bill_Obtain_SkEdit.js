@@ -308,7 +308,7 @@ editDetail.mountedInit = function () {
         id: "print",
         name: "打印",
         icon: "md-print",
-        authority: "10700200",
+        authority: "10700700",
         fun: function () {
             _.OpenPage({
                 id: 10700200,
