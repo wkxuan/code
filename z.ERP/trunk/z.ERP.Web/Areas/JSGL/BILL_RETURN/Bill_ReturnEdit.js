@@ -1,106 +1,32 @@
 ﻿editDetail.beforeVue = function () {
-    editDetail.others = true;
-    editDetail.branchid = true;
     editDetail.service = "JsglService";
     editDetail.method = "GetBillReturn";
-    editDetail.Key = 'BILLID';
 
     editDetail.screenParam.showPopBill = false;
     editDetail.screenParam.showPopContract = false;
-    editDetail.screenParam.srcPopBill = __BaseUrl + "/" + "Pop/Pop/PopBillList/";
-    editDetail.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
+    editDetail.screenParam.srcPopBill = __BaseUrl + "/Pop/Pop/PopBillList/";
+    editDetail.screenParam.srcPopContract = __BaseUrl + "/Pop/Pop/PopContractList/";
     editDetail.screenParam.popParam = {};
-    editDetail.dataParam.BILL_RETURN_ITEM = [];
-
 
     editDetail.screenParam.colDef = [
     {
-        title: "账单号", key: 'FINAL_BILLID', width: 160,
-        render: function (h, params) {
-            return h('div',
-                [
-            h('Input', {
-                props: {
-                    value: params.row.FINAL_BILLID
-                },
-                style: { marginRight: '5px', width: '80px' },
-                on: {
-                    'on-enter': function (event) {
-                        _self = this;
-                        editDetail.dataParam.BILL_RETURN_ITEM[params.index].FINAL_BILLID = event.target.value;
-                        _.Ajax('GetBill', {
-                            Data: { FINAL_BILLID: event.target.value }
-                        }, function (data) {
-                            Vue.set(editDetail.dataParam.BILL_RETURN_ITEM[params.index], 'MUST_MONEY', data.dt.MUST_MONEY),
-                            Vue.set(editDetail.dataParam.BILL_RETURN_ITEM[params.index], 'RECEIVE_MONEY', data.dt.RECEIVE_MONEY)
-                        });
-                    }
-                },
-            }),
-            //h('Button', {
-            //    props: { type: 'primary', size: 'small', disabled: false },
-
-            //    style: { marginRight: '5px', width: '30px' },
-            //    on: {
-            //        click: editDetail.screenParam.openPop
-            //    },
-            //}, '...'),
-                ])
-        },
+        title: "账单号", key: 'FINAL_BILLID', width: 160
     },
     { title: '应收金额', key: 'MUST_MONEY', width: 100 },
     { title: '已收金额', key: 'RECEIVE_MONEY', width: 100 },
     {
         title: "返还金额", key: 'RETURN_MONEY', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.RETURN_MONEY
-                },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.BILL_RETURN_ITEM[params.index].RETURN_MONEY = event.target.value;
-                    }
-                },
-            })
-        },
-    },
-      {
-          title: '操作',
-          key: 'action',
-          width: 80,
-          align: 'center',
-          render: function (h, params) {
-              return h('div',
-                  [
-                  h('Button', {
-                      props: { type: 'primary', size: 'small', disabled: false },
-
-                      style: { marginRight: '50px' },
-                      on: {
-                          click: function (event) {
-                              editDetail.dataParam.BILL_RETURN_ITEM.splice(params.index, 1);
-                          }
-                      },
-                  }, '删除')
-                  ]);
-          }
-      }
-    ];
-    if (!editDetail.dataParam.BILL_RETURN_ITEM) {
-        editDetail.dataParam.BILL_RETURN_ITEM = [{
-            FINAL_BILLID: "",
-            RETURN_MONEY: "",
-            RECEIVE_MONEY: "",
-            MUST_MONEY: "",
-        }]
-    }
-    editDetail.screenParam.addCol = function () {
-        var temp = editDetail.dataParam.BILL_RETURN_ITEM || [];
-        temp.push({});
-        editDetail.dataParam.BILL_RETURN_ITEM = temp;
-    }
+        cellType: "input", cellDataType: "number",
+        onChange: function (index, row, data) {
+            if (Number(row.RETURN_MONEY) > Number(row.MUST_MONEY)) {
+                row.RETURN_MONEY = null;
+                iview.Message.info("此账单的返还金额不能大于应收金额!");
+                return;
+            }
+        }
+    }];
 }
+
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchBill_Return', {
         Data: { BILLID: data }
@@ -109,21 +35,30 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILL_RETURN_ITEM = data.billReturnItem;
         callback && callback(data);
     });
-}
+};
 
+editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.NIANYUE = null;
+    editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.MERCHANTNAME = null;
+    editDetail.dataParam.CONTRACTID = null;
+    editDetail.dataParam.DESCRIPTION = null; 
+    editDetail.dataParam.BILL_RETURN_ITEM = [];
+};
 ///html中绑定方法
 editDetail.otherMethods = {
     ///选择合同
-    SelContract: function () {
+    selContract: function () {
         if (!editDetail.dataParam.BRANCHID) {
             iview.Message.info("请选择分店!");
             return;
         };
+        editDetail.dataParam.BILL_RETURN_ITEM = [];
         editDetail.screenParam.showPopContract = true;
         editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
-        editDetail.dataParam.BILL_RETURN_ITEM = [];
     },
-    SelBill: function () {
+    selBill: function () {
         if (!editDetail.dataParam.CONTRACTID) {
             iview.Message.info("请选择租约!");
             return;
@@ -135,36 +70,44 @@ editDetail.otherMethods = {
             FTYPE: "1",    //保证金类型
             RRETURNFLAG: "1"  //返还标记 暂时判断 RECEIVE_MONEY <> 0 的记录
         };
+    },
+    delBill: function () {
+        let selection = this.$refs.refZd.getSelection();
+        if (selection.length == 0) {
+            iview.Message.info("请选中要删除的账单!");
+        } else {
+            for (let i = 0; i < selection.length; i++) {
+                let temp = editDetail.dataParam.BILL_RETURN_ITEM;
+                for (let j = 0; j < temp.length; j++) {
+                    if (temp[j].FINAL_BILLID == selection[i].FINAL_BILLID) {
+                        temp.splice(j, 1);
+                        break;
+                    }
+                }
+            }
+        }
     }
-}
-
+};
 ///接收弹窗返回参数
 editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopContract) {
         editDetail.screenParam.showPopContract = false;
-        //接收选中的数据
-
-        editDetail.dataParam.CONTRACTID = data.sj[0].CONTRACTID;
-        editDetail.dataParam.MERCHANTID = data.sj[0].MERCHANTID;
-        editDetail.dataParam.MERCHANTNAME = data.sj[0].MERCHANTNAME;
+        editDetail.dataParam.BILL_RETURN_ITEM = [];
+        for (var i = 0; i < data.sj.length; i++) {
+            editDetail.dataParam.CONTRACTID = data.sj[i].CONTRACTID;
+            editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
+            editDetail.dataParam.MERCHANTNAME = data.sj[i].MERCHANTNAME;
+        }
     };
     if (editDetail.screenParam.showPopBill) {
         editDetail.screenParam.showPopBill = false;
-
-        //删除空行
-        if (editDetail.dataParam.BILL_RETURN_ITEM.length > 0) {
-            if (!editDetail.dataParam.BILL_RETURN_ITEM[0].FINAL_BILLID) {
-                editDetail.dataParam.BILL_RETURN_ITEM.splice(0, 1);
-            }
-        }
+        let itemData = editDetail.dataParam.BILL_RETURN_ITEM;
         //接收选中的数据
         for (var i = 0; i < data.sj.length; i++) {
-            if ((editDetail.dataParam.BILL_RETURN_ITEM.length === 0)
-                || (editDetail.dataParam.BILL_RETURN_ITEM.length > 0
-                && editDetail.dataParam.BILL_RETURN_ITEM.filter(function (item) {
-                return parseInt(item.FINAL_BILLID) === data.sj[i].BILLID;
-            }).length === 0))
-                editDetail.dataParam.BILL_RETURN_ITEM.push({
+            if (!itemData.length|| (itemData.length && !itemData.filter(function (item) {
+                return item.FINAL_BILLID == data.sj[i].BILLID;
+            }).length))
+                itemData.push({
                     FINAL_BILLID: data.sj[i].BILLID,
                     TERMMC: data.sj[i].TERMMC,
                     MUST_MONEY: data.sj[i].MUST_MONEY,
@@ -173,25 +116,55 @@ editDetail.popCallBack = function (data) {
                 });
         }
     }
-}
+};
 
-editDetail.clearKey = function () {
-    editDetail.dataParam.BILLID = null;
-    editDetail.dataParam.NIANYUE = null;
-    editDetail.dataParam.MERCHANTID = null;
-    editDetail.dataParam.CONTRACTID = null;
-    editDetail.dataParam.DESCRIPTION = null;
-    editDetail.dataParam.BILL_RETURN_ITEM = [];
-}
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10700101"
+    }, {
+        id: "edit",
+        authority: "10700101"
+    }, {
+        id: "del",
+        authority: "10700101"
+    }, {
+        id: "save",
+        authority: "10700101"
+    }, {
+        id: "abandon",
+        authority: "10700101"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10700102",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};
 
 editDetail.IsValidSave = function () {
-
-
     if (!editDetail.dataParam.BRANCHID) {
         iview.Message.info("请选择分店!");
         return false;
     };
-
     if (!editDetail.dataParam.CONTRACTID) {
         iview.Message.info("请选择租约!");
         return false;
@@ -200,18 +173,17 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请输入债权发年月!");
         return false;
     }
-
-    if (editDetail.dataParam.BILL_RETURN_ITEM.length == 0) {
-        iview.Message.info("请选择账单!");
+    let itemData = editDetail.dataParam.BILL_RETURN_ITEM;
+    if (itemData.length == 0) {
+        iview.Message.info("请录入保证金付款信息!");
         return false;
     }
-    else {
-        for (var i = 0; i < editDetail.dataParam.BILL_RETURN_ITEM.length; i++) {
-            if (!editDetail.dataParam.BILL_RETURN_ITEM[i].RETURN_MONEY) {
-                iview.Message.info("请录入返还金额!");
-                return false;
-            }
-        }
-    }
+    for (var i = 0; i < itemData.length; i++) {
+        if (!itemData[i].RETURN_MONEY) {
+            iview.Message.info(`请录入账单号为${itemData[i].FINAL_BILLID}的返还金额!`);
+            return false;
+        };
+    };
+
     return true;
-}
+};

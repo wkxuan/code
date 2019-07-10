@@ -2,19 +2,15 @@
 @using z.ERP.Entities.Enum
 @using z.ERP.Web.Areas.Layout.Search;
 @inherits SearchViewBase
+
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">单号</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.BILLID"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.BILLID" clearable />
         </i-col>
         <i-col span="2" class="RowTitle">分店</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -26,7 +22,7 @@
         <i-col span="2" class="RowTitle">
             状态
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<普通单据状态>()
                 {
@@ -39,52 +35,32 @@
         <i-col span="2" class="RowTitle">
             商户
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTID"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input icon="md-search"
+                     v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
         </i-col>
         <i-col span="2" class="RowTitle">
             权债发生月
         </i-col>
-        <i-col span="6">
-
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.NIANYEU"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="searchParam.NIANYUE" clearable/>
         </i-col>
         <i-col span="2" class="RowTitle">备注</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.DESCRIPTION"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.DESCRIPTION" clearable />
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
             登记人
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.REPORTER"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.REPORTER" clearable />
         </i-col>
         <i-col span="2" class="RowTitle">
             登记时间_起
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -95,7 +71,7 @@
         <i-col span="2" class="RowTitle">
             登记时间_止
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -108,18 +84,13 @@
         <i-col span="2" class="RowTitle">
             审核人
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.VERIFY"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.VERIFY" clearable />
         </i-col>
         <i-col span="2" class="RowTitle">
             审核时间_起
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -130,7 +101,7 @@
         <i-col span="2" class="RowTitle">
             审核时间_止
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -139,4 +110,16 @@
             }
         </i-col>
     </row>
+}
+
+@section pops{
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopMerchant",
+            Caption = "选择商户",
+            Width = "900",
+            Src = "screenParam.srcPopMerchant"
+        });
+    }
 }

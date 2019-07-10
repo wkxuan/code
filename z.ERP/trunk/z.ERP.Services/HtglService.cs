@@ -352,7 +352,7 @@ namespace z.ERP.Services
                             zjfj.RENTS = (Math.Round(je / allTs * zjfjTs, configBlxsw.CUR_VAL.ToInt(),
                                 MidpointRounding.AwayFromZero)).ToString();
                         }
-                        else if(configBzybj.CUR_VAL.ToInt() == 1)  //1:(月金额 / 1003参数设置的天数)*实际天数;
+                        else if (configBzybj.CUR_VAL.ToInt() == 1)  //1:(月金额 / 1003参数设置的天数)*实际天数;
                         {
                             zjfj.RENTS = (Math.Round(je / (configBzyts.CUR_VAL).ToDouble() * zjfjTs,
                             configBlxsw.CUR_VAL.ToInt(), MidpointRounding.AwayFromZero)).ToString();
@@ -362,7 +362,7 @@ namespace z.ERP.Services
                             zjfj.RENTS = (Math.Round((je * 12 / 365) * zjfjTs,
                             configBlxsw.CUR_VAL.ToInt(), MidpointRounding.AwayFromZero)).ToString();
                         }
-                       
+
                     }
                     else
                     {
@@ -387,13 +387,13 @@ namespace z.ERP.Services
             CONFIGEntity configBzybj = new CONFIGEntity();
             configBzybj = DbHelper.Select(new CONFIGEntity() { ID = "1004" });
 
-            if(!"012".Contains(configBzybj.CUR_VAL))
-              throw new LogicException("参数1004(不足月时月金额算法)设置有误");
+            if (!"012".Contains(configBzybj.CUR_VAL))
+                throw new LogicException("参数1004(不足月时月金额算法)设置有误");
 
             CONFIGEntity configBzyts = new CONFIGEntity();
             configBzyts = DbHelper.Select(new CONFIGEntity() { ID = "1003" });
 
-            if(configBzyts.CUR_VAL.ToInt() <=0 )
+            if (configBzyts.CUR_VAL.ToInt() <= 0)
                 throw new LogicException("参数1003(不足月天数设定)设置有误");
 
             CONFIGEntity configBlxsw = new CONFIGEntity();
@@ -587,13 +587,13 @@ namespace z.ERP.Services
                         case 2://月租金
                             if (zjfjTs != zts) //不足月时金额算法
                             {
-                             
+
                                 if (configBzybj.CUR_VAL.ToInt() == 0)   //0(月金额/当月总天数)*实际天数;
                                 {
                                     zjfj.RENTS = (Math.Round(je / zts * zjfjTs, configBlxsw.CUR_VAL.ToInt(),
                                         MidpointRounding.AwayFromZero)).ToString();
                                 }
-                                else if(configBzybj.CUR_VAL.ToInt() == 1)  //1:(月金额/1003参数设置的天数)*实际天数;
+                                else if (configBzybj.CUR_VAL.ToInt() == 1)  //1:(月金额/1003参数设置的天数)*实际天数;
                                 {
                                     zjfj.RENTS = (Math.Round(je / (configBzyts.CUR_VAL).ToDouble() * zjfjTs,
                                         configBlxsw.CUR_VAL.ToInt(), MidpointRounding.AwayFromZero)).ToString();
@@ -750,7 +750,25 @@ namespace z.ERP.Services
             }
             return SaveData.BILLID;
         }
-
+        public void DeleteFreeShop(List<FREESHOPEntity> DeleteData)
+        {
+            foreach (var item in DeleteData)
+            {
+                FREESHOPEntity Data = DbHelper.Select(item);
+                if (Data.STATUS == ((int)退铺单状态.审核).ToString())
+                {
+                    throw new LogicException("已经审核不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    DbHelper.Delete(item);
+                }
+                Tran.Commit();
+            }
+        }
         public object GetContractList(CONTRACTEntity Data)
         {
             string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.BRANCHID,  "
@@ -864,7 +882,5 @@ namespace z.ERP.Services
             }
             return freeShop.BILLID;
         }
-
-
     }
 }

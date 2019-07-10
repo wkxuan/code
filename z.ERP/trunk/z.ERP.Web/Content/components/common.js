@@ -63,7 +63,10 @@ Vue.component('yx-table', {
                 if (!nv || !nv.length)
                     return;
                 this.colsList = nv.filter(item => {
-                    return item.type != "selection";
+                    if (item.type && item.type == "selection") {
+                        return false;
+                    }
+                    return true;
                 });
                 this.list = this.colsList;
                 this.curColumns = this.initCols();
@@ -79,6 +82,7 @@ Vue.component('yx-table', {
                 if (nv != ov) {
                     this.curColumns = this.initCols();
                 }
+                this.curDraggable = nv;
             },
             immediate: true,
             deep: true

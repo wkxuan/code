@@ -132,8 +132,8 @@
                     let _self = this;
                     _this.backData = DeepClone(_self.dataParam);
                     _self.disabled = true;
-                    _self.setObjItemEmpty(_self.dataParam);
                     _this.clearKey();
+                    _this.dataParam.BILLID = null;
                     _this.newRecord();                 
                 },
                 //编辑
@@ -149,28 +149,25 @@
                         _.Ajax('Delete', {
                             DeleteData: [_self.dataParam]
                         }, function (data) {
-                            _self.setObjItemEmpty(_self.dataParam);
-                            _self.$Message.info("删除成功");                          
+                            _self.$Message.info("删除成功");
+
+                            setTimeout(function () {
+                                let win = window.location;
+                                let pathnameArr = win.pathname.split("/");
+                                pathnameArr[pathnameArr.length - 1] = null;
+                                window.location.replace(pathnameArr.join("/"));
+                            }, 200);                          
                         });
-                    }, () => {
                     }));
-                },
-                //清空对象属性的值
-                setObjItemEmpty(obj) {
-                    for (let item in obj) {
-                        if (Array.isArray(obj[item])) {
-                            obj[item] = [];
-                        } else {
-                            obj[item] = null;
-                        }
-                    }
                 },
                 //放弃
                 abandon: function () {
                     let _self = this;
                     _self.$Modal.confirm(_.MessageBox("确认放弃正在编辑的内容？", () => {
                         _self.disabled = false;
-                        _self.dataParam = _this.backData;
+                        for (let item in _this.backData) {
+                            _self.dataParam[item] = _this.backData[item];
+                        }
                     }, () => {
                         _self.disabled = true;
                     }));
@@ -178,14 +175,19 @@
                 //存档
                 save: function (event) {
                     let _self = this;
-                    _self.disabled = true;
                     if (!_this.IsValidSave())
                         return;
                     _.Ajax('Save', {
                         SaveData: _this.veObj.dataParam
                     }, function (data) {
-                        _self.disabled = false;
                         _self.$Message.info("保存成功");
+
+                        setTimeout(function () {
+                            let win = window.location;
+                            let pathnameArr = win.pathname.split("/");
+                            pathnameArr[pathnameArr.length - 1] = data;
+                            window.location.replace(pathnameArr.join("/"));
+                        }, 200);
                     });
                 },
             }
@@ -211,6 +213,7 @@
 
     setTimeout(function () {
         _this.vueInit();
+        _this.clearKey();
         _this.beforeVue();
         _this.vue();
         if (editDetail.Id) {

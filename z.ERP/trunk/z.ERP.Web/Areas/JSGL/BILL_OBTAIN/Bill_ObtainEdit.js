@@ -1,7 +1,4 @@
 ﻿editDetail.beforeVue = function () {
-    editDetail.others = true;
-    editDetail.branchid = true;
-    editDetail.Key = 'BILLID';
     //保证金收款
     editDetail.dataParam.TYPE = 2;
     //初始化弹窗所要传递参数
@@ -9,9 +6,7 @@
     editDetail.screenParam.showPopMerchant = false;
     editDetail.screenParam.srcPopBill = __BaseUrl + "/" + "Pop/Pop/PopBillList/";
     editDetail.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-
     editDetail.screenParam.popParam = {};
-    editDetail.dataParam.BILL_OBTAIN_ITEM = [];
 
     editDetail.screenParam.colDef = [
     { title: '账单号', key: 'FINAL_BILLID', width: 100 },
@@ -22,55 +17,18 @@
     { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
     {
         title: "付款金额", key: 'RECEIVE_MONEY', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.RECEIVE_MONEY
-                },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.BILL_OBTAIN_ITEM[params.index].RECEIVE_MONEY = event.target.value;
-                    }
-                },
-            })
-        },
-    },
-    {
-        title: '操作',
-        key: 'action',
-        width: 80,
-        align: 'center',
-        render: function (h, params) {
-            return h('div',
-                [
-                h('Button', {
-                    props: { type: 'primary', size: 'small', disabled: false },
-
-                    style: { marginRight: '50px' },
-                    on: {
-                        click: function (event) {
-                            editDetail.dataParam.BILL_OBTAIN_ITEM.splice(params.index, 1);
-                        }
-                    },
-                }, '删除')
-                ]);
+        cellType: "input", cellDataType: "number",
+        onChange: function (index, row, data) {
+            if (Number(row.RECEIVE_MONEY) > Number(row.UNPAID_MONEY)) {
+                row.RECEIVE_MONEY = null;
+                iview.Message.info("此账单的付款金额不能大于未付金额!");
+                return;
+            }
+            editDetail.veObj.computeAllmoney();
         }
-    }
-    ];
+    }];
+};
 
-    if (!editDetail.dataParam.BILL_OBTAIN_ITEM) {
-        editDetail.dataParam.BILL_OBTAIN_ITEM = [{
-            FINAL_BILLID: "",
-            RECEIVE_MONEY: "",
-            MUST_MONEY: "",
-        }]
-    }
-    editDetail.screenParam.addCol = function () {
-        var temp = editDetail.dataParam.BILL_OBTAIN_ITEM || [];
-        temp.push({});
-        editDetail.dataParam.BILL_OBTAIN_ITEM = temp;
-    }
-}
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchBill_Obtain', {
         Data: { BILLID: data }
@@ -79,11 +37,10 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILL_OBTAIN_ITEM = data.billObtainItem;
         callback && callback(data);
     });
-}
-
+};
 ///html中绑定方法
 editDetail.otherMethods = {
-    SelMerchant: function () {
+    selMerchant: function () {
         if (!editDetail.dataParam.BRANCHID) {
             iview.Message.info("请选择分店!");
             return;
@@ -91,7 +48,7 @@ editDetail.otherMethods = {
         editDetail.screenParam.showPopMerchant = true;
         editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
     },
-    SelBill: function () {
+    selBill: function () {
         if (!editDetail.dataParam.MERCHANTID) {
             iview.Message.info("请选择商户!");
             return;
@@ -102,43 +59,79 @@ editDetail.otherMethods = {
             MERCHANTID: editDetail.dataParam.MERCHANTID,
             FTYPE: "1"    //保证金类型
         };
+    },
+    delBill: function () {
+        let selection = this.$refs.refZd.getSelection();
+        if (selection.length == 0) {
+            iview.Message.info("请选中要删除的账单!");
+        } else {
+            for (let i = 0; i < selection.length; i++) {
+                let temp = editDetail.dataParam.BILL_OBTAIN_ITEM;
+                for (let j = 0; j < temp.length; j++) {
+                    if (temp[j].FINAL_BILLID == selection[i].FINAL_BILLID) {
+                        temp.splice(j, 1);
+                        break;
+                    }
+                }
+            }
+            editDetail.veObj.computeAllmoney();
+        }
+    },
+    //计算收款金额
+    computeAllmoney: function () {
+        let itemData = editDetail.dataParam.BILL_OBTAIN_ITEM;
+        let sum = 0;
+        for (let i = 0; i < itemData.length; i++) {
+            sum += Number(itemData[i].RECEIVE_MONEY);
+        }
+        editDetail.dataParam.ALL_MONEY = sum;
     }
-}
-
+};
 ///接收弹窗返回参数
 editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopBill) {
         editDetail.screenParam.showPopBill = false;
+        let itemData = editDetail.dataParam.BILL_OBTAIN_ITEM;
+        //接收选中的数据
         for (var i = 0; i < data.sj.length; i++) {
-            data.sj[i].FINAL_BILLID = data.sj[i].BILLID;
-            editDetail.dataParam.BILL_OBTAIN_ITEM.push(data.sj[i]);
-            
+            if (!itemData.length || (itemData.length && !itemData.filter(function (item) {
+                return item.FINAL_BILLID == data.sj[i].BILLID;
+            }).length))
+                itemData.push({
+                    FINAL_BILLID: data.sj[i].BILLID,
+                    YEARMONTH: data.sj[i].YEARMONTH,
+                    CONTRACTID: data.sj[i].CONTRACTID,
+                    TERMMC: data.sj[i].TERMMC,
+                    MUST_MONEY: data.sj[i].MUST_MONEY,
+                    UNPAID_MONEY: data.sj[i].UNPAID_MONEY,
+                    TYPE: data.sj[i].TYPE,
+                    RECEIVE_MONEY: data.sj[i].RECEIVE_MONEY,
+                });
         }
     }
-    else if (editDetail.screenParam.showPopMerchant) {
+    if (editDetail.screenParam.showPopMerchant) {
         editDetail.screenParam.showPopMerchant = false;
+        editDetail.dataParam.BILL_OBTAIN_ITEM = [];
         for (var i = 0; i < data.sj.length; i++) {
             editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
             editDetail.dataParam.MERCHANTNAME = data.sj[i].NAME;
         }
-        editDetail.dataParam.BILL_OBTAIN_ITEM = [];   //重新选择商户时清空账单明细
     }
-}
+};
 
 editDetail.clearKey = function () {
     editDetail.dataParam.BILLID = null;
     editDetail.dataParam.YEARMONTH = null;
+    editDetail.dataParam.ALL_MONEY = null;
     editDetail.dataParam.PAYID = null;
     editDetail.dataParam.PAYNAME = null;
     editDetail.dataParam.MERCHANTID = null;
     editDetail.dataParam.MERCHANTNAME = null;
     editDetail.dataParam.DESCRIPTION = null;
     editDetail.dataParam.BILL_OBTAIN_ITEM = [];
-}
+};
 
 editDetail.IsValidSave = function () {
-
-
     if (!editDetail.dataParam.BRANCHID) {
         iview.Message.info("请选择分店!");
         return false;
@@ -155,17 +148,59 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请选择收款年月!");
         return false;
     };
-    if (editDetail.dataParam.BILL_OBTAIN_ITEM.length == 0) {
+    let itemData = editDetail.dataParam.BILL_OBTAIN_ITEM;
+    if (itemData.length == 0) {
         iview.Message.info("请录入保证金付款信息!");
         return false;
-    } else {
-        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
-            if (!editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY) {
-                iview.Message.info("请录入付款金额!");
-                return false;
-            };
+    }
+    for (var i = 0; i < itemData.length; i++) {
+        if (!itemData[i].RECEIVE_MONEY) {
+            iview.Message.info(`请录入账单号为${itemData[i].FINAL_BILLID}的付款金额!`);
+            return false;
         };
     };
 
     return true;
-}
+};
+
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10700301"
+    }, {
+        id: "edit",
+        authority: "10700301"
+    }, {
+        id: "del",
+        authority: "10700301"
+    }, {
+        id: "save",
+        authority: "10700301"
+    }, {
+        id: "abandon",
+        authority: "10700301"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10700302",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};

@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: "单据编号", key: "BILLID", width: 105, sortable: true },
         { title: "租约号", key: "CONTRACTID", width: 100, sortable: true },
         { title: "商户代码", key: "MERCHANTID", width: 105, sortable: true },
@@ -10,9 +10,18 @@
         { title: "登记人", key: "REPORTER_NAME", width: 90 },
         { title: "登记时间", key: "REPORTER_TIME", width: 150, sortable: true },
         { title: "审核人", key: "VERIFY_NAME", width: 90 },
-        { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true }
+        { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true },
+        {
+            title: '操作', key: 'operate', onClick: function (index, row, data) {
+                _.OpenPage({
+                    id: 107001,
+                    title: '编辑保证金返还单',
+                    url: "JSGL/BILL_RETURN/Bill_ReturnEdit/" + row.BILLID
+                });
+            }
+        }
     ];
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
+     
     search.service = "JsglService";
     search.method = "GetBillReturnList";
 
@@ -30,14 +39,6 @@
     search.screenParam.popParam = {};
 }
 
-search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 107001,
-        title: '浏览保证金返还单',
-        url: "JSGL/BILL_RETURN/Bill_ReturnDetail/" + row.BILLID
-    });
-}
-
 search.addHref = function (row) {
     _.OpenPage({
         id: 107001,
@@ -45,14 +46,6 @@ search.addHref = function (row) {
         url: "JSGL/BILL_RETURN/Bill_ReturnEdit/"
     });
 }
-search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 107001,
-        title: '编辑保证金返还单',
-        url: "JSGL/BILL_RETURN/Bill_ReturnEdit/" + row.BILLID
-    });
-}
-
 
 search.otherMethods = {
     SelSysuser: function () {

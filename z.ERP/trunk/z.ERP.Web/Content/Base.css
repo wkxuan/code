@@ -63,3 +63,10 @@
 }
 .yxInputClass .ivu-poptip-rel{width:100%;}
 .ivu-tabs-bar{margin-bottom:5px !important;}
+
+.ivu-cascader-disabled{
+    background-color: #f3f3f3;
+    opacity: 1;
+    cursor: not-allowed;
+    color: #ccc;
+}

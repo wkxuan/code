@@ -1,9 +1,7 @@
 ﻿editDetail.beforeVue = function () {
     editDetail.service = "SpglService";
     editDetail.method = "GetGoodsElement";
-    editDetail.Key = 'GOODID';
     editDetail.branchid = false;
-    editDetail.dataParam.TYPE = 1;
     editDetail.screenParam.colDef = [
         { title: "商铺代码", key: "CODE", width: 150, },
         { title: '业态代码', key: 'CATEGORYCODE', width: 100 },
@@ -18,13 +16,39 @@
         { title: '结算扣率', key: 'JSKL', width: 100 },
 
     ];
-
+    editDetail.screenParam.spflData = [];
     editDetail.screenParam.showPopJsklGroup = false;
     editDetail.screenParam.srcPopJsklGroup = __BaseUrl + "/" + "Pop/Pop/PopJsklGroupList/";
     editDetail.screenParam.showPopContract = false;
     editDetail.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
     editDetail.screenParam.showPopBrand = false;
     editDetail.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
+};
+
+editDetail.clearKey = function () {
+    editDetail.dataParam.GOODSID = null;
+    editDetail.dataParam.NAME = "";
+    editDetail.dataParam.GOODSDM = null;
+    editDetail.dataParam.BARCODE = null;
+    editDetail.dataParam.TYPE = 1;
+    editDetail.dataParam.PYM = "";
+    editDetail.dataParam.STYLE = null;
+    editDetail.dataParam.STYLEMC = null;
+    editDetail.dataParam.CONTRACTID = null;
+    editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.JXSL = null;
+    editDetail.dataParam.SHMC = null;
+    editDetail.dataParam.BRANDID = null;
+    editDetail.dataParam.BRANDMC = null;
+    editDetail.dataParam.PKIND_ID = [];
+    editDetail.dataParam.XXSL = null;
+    editDetail.dataParam.JSKL_GROUP = null;
+    editDetail.dataParam.PRICE = null;
+    editDetail.dataParam.MEMBER_PRICE = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.REGION = null;
+    editDetail.dataParam.GOODS_GROUP = [];
+    editDetail.dataParam.GOODS_SHOP = [];
 };
 
 editDetail.showOne = function (data, callback) {
@@ -45,7 +69,7 @@ editDetail.mountedInit = function () {
     _.Ajax('SearchInit', {
         Data: {}
     }, function (data) {
-        Vue.set(editDetail.screenParam, "dataKind", data.treeorg.Obj);
+        editDetail.screenParam.spflData = data.treeorg.Obj;
     });
 
     editDetail.btnConfig = [{
@@ -79,7 +103,7 @@ editDetail.mountedInit = function () {
             });
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.STATUS < 2) {
+            if (!disabled && data.STATUS == 1) {
                 return true;
             } else {
                 return false;
@@ -112,9 +136,7 @@ editDetail.otherMethods = {
                 editDetail.dataParam.MERCHANTID = null;
                 editDetail.dataParam.SHMC = null;
             }
-
         })
-
     },
     srchContract: function () {
         editDetail.screenParam.showPopContract = true;
@@ -138,7 +160,7 @@ editDetail.otherMethods = {
     getpym: function () {
         editDetail.dataParam.PYM = editDetail.dataParam.NAME.toPYM().substr(0, 6);
     },
-    changeKind: function (value, selectedData) {
+    spflChange: function (value, selectedData) {
         editDetail.dataParam.KINDID = value[value.length - 1];
     },
 };
