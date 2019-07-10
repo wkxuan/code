@@ -80,6 +80,12 @@ namespace z.ERP.Web.Areas.Share
             render.Data = fun(service.DataService);
             return View("BaseDropDownList", render);
         }
+        public ActionResult ServiceCheckBoxList(ServiceCheckBoxListRender render)
+        {
+            var fun = render.ServiceMothod.Compile();
+            render.Data = fun(service.DataService);
+            return View("CheckBoxList", render);
+        }
         /// <summary>
         /// 加载html页面弹窗控件
         /// </summary>

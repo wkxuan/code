@@ -44,7 +44,17 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
             }
             return View(entity);
         }
-
+        public string Searchprinturl() {
+            var print = service.DataService.GetPrintUrl("107005", "2");
+            if (print.Rows.Count > 0)
+            {
+                return print.Rows[0]["PRINTURL"].ToString();
+            }
+            else
+            {
+                return "";
+            }
+        }
         public void Delete(List<BILL_NOTICEEntity> DeleteData)
         {
             service.JsglService.DeleteBillNotice(DeleteData);

@@ -26,7 +26,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
         }
         public ActionResult Bill_Obtain_SkEdit(string Id)
         {
-            ViewBag.Title = "编辑租赁核销单";            
+            ViewBag.Title = "租赁核销单";            
             return View("Bill_Obtain_SkEdit", (EditRender)Id);
         }
         public ActionResult Bill_Obtain_SkDetail(string Id)

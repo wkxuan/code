@@ -4,17 +4,17 @@
 
 @if (Model.MultiSelect)
 {
-    <checkbox-group v-model="@Model.vModel">
+    <checkbox-group v-model="@Model.vModel" v-on:on-change="@Model.Change">
         @{
             foreach (var item in Model.Data)
             {
                 if (Model.DisableValue.Has(item.Value))
                 {
-                    <checkbox label="@item.Key" :disabled="@(Model.Enable?"!disabled":"disabled")">@item.Value</checkbox>
+                    <checkbox v-bind:label="@item.Key" :disabled="@(Model.Enable?"!disabled":"disabled")">@item.Value</checkbox>
                 }
                 else
                 {
-                    <checkbox label="@item.Key" :disabled="@(Model.Enable?"!disabled":"disabled")">@item.Value</checkbox>
+                    <checkbox v-bind:label="@item.Key" :disabled="@(Model.Enable?"!disabled":"disabled")">@item.Value</checkbox>
                 }
             }
         }

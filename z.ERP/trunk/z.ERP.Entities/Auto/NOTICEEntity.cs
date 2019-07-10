@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using z.DBHelper.DBDomain;
 
-namespace z.ERP.Entities.Auto
+namespace z.ERP.Entities
 {
     [DbTable("NOTICE", "通知列表")]
     public partial class NOTICEEntity:TableEntityBase
