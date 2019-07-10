@@ -1,37 +1,26 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
 @section baseParam{
     <row>
-
         <i-col span="2" class="RowTitle">
             权债发生月
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NIANYUE"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.NIANYUE" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             收付实现月
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.YEARMONTH"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.YEARMONTH" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             状态
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<普通单据状态>()
                 {
@@ -47,7 +36,7 @@
         <i-col span="2" class="RowTitle">
             开始日期
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -58,7 +47,7 @@
         <i-col span="2" class="RowTitle">
             结束日期
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -69,7 +58,7 @@
         <i-col span="2" class="RowTitle">
             账单类型
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<账单类型>()
                 {
@@ -83,13 +72,8 @@
         <i-col span="2" class="RowTitle">
             备注
         </i-col>
-        <i-col span="22">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.DESCRIPTION"
-                });
-            }
+        <i-col span="22" class="RowText">
+            <i-input v-model="dataParam.DESCRIPTION" v-bind:disabled="!disabled" />
         </i-col>
     </row>
 }
@@ -104,27 +88,16 @@
                 Type = "primary"
             });
         }
-        @*@{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "delColCost",
-                    Text = "删除",
-                    Enable = true,
-                    Type = "error",
-                    Icon = "minus-circled"
-                });
-            }*@
     </row>
     <row>
         <i-col span="24">
-            <i-table size="small" border="true"
-                     :columns="screenParam.colDef" :data="dataParam.BILL_ADJUST_ITEM"></i-table>
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300"
+                      v-bind:data="dataParam.BILL_ADJUST_ITEM" v-bind:disabled="!disabled" ref="refGroup">
+            </yx-table>
         </i-col>
     </row>
 }
 @section pops{
-<row>
-    <i-col>
         @{
             RenderControl(new PopsRender()
             {
@@ -134,10 +107,6 @@
                 Src = "screenParam.srcPopFeeSubject"
             });
         }
-    </i-col>
-</row>
-<row>
-    <i-col>
         @{
             RenderControl(new PopsRender()
             {
@@ -147,9 +116,6 @@
                 Src = "screenParam.srcPopContract"
             });
         }
-    </i-col>
-</row>
-
 }
 
 

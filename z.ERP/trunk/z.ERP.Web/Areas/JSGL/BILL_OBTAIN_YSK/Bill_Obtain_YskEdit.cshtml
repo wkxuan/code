@@ -2,72 +2,44 @@
 @using z.ERP.Entities.Enum
 @using z.ERP.Web.Areas.Layout.Edit;
 @inherits EditViewBase<string>
-@*@inherits EditDetailViewBase<string>*@
 
 @section baseParam{
 
-<row>
-    <i-col span="2" class="RowTitle">
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "SelMerchant",
-                Text = "商户",
-                Enable = true,
-                Type = "primary"
-            });
-        }
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.MERCHANTID",
-                Enable = true
-            });
-        }
-    </i-col>
-    <i-col span="4" class="RowTitle">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.MERCHANTNAME",
-                Enable = true
-            });
-        }
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        权债发生月
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.NIANYUE"
-            });
-        }
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        状态
-    </i-col>
-    <i-col span="6">
-        @{
-            RenderControl(new EnumDropDownListRender<普通单据状态>()
-            {
-                vModel = "dataParam.STATUS",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
-
-
     <row>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            商户
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.MERCHANTNAME" v-on:on-click="SelMerchant" v-on:on-change="balance" v-bind:disabled="!disabled" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            权债发生月
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.NIANYUE" v-bind:disabled="!disabled" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             付款方式
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -80,7 +52,7 @@
             <span class="mustElement">*</span>
             收费单位
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -93,58 +65,39 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             收款金额
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ALL_MONEY"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ALL_MONEY" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             账户余额
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ALL_MONEY",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ALL_MONEY" disabled="disabled" />
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
             备注
         </i-col>
-        <i-col span="22">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.DESCRIPTION"
-                });
-            }
+        <i-col span="22" class="RowText">
+            <i-input v-model="dataParam.DESCRIPTION" v-bind:disabled="!disabled" />
         </i-col>
     </row>
 }
 
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "dataParam.showPopMerchant",
-                    Caption = "选择商户",
-                    Width = "900",
-                    Src = "dataParam.srcPopMerchant"
-                });
-            }
-        </i-col>
-    </row>
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "dataParam.showPopMerchant",
+            Caption = "选择商户",
+            Width = "900",
+            Src = "dataParam.srcPopMerchant"
+        });
+    }
 }
 
 
