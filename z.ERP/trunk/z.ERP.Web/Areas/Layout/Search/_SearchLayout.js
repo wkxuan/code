@@ -25,8 +25,9 @@
                 panelName: 'condition',
                 columns: [],
                 data: [],
+                arrPageSize: [10, 20, 50, 100],
                 pagedataCount: 0,
-                pageSize: 10,
+                pageSize: 10
             },
             watch: {
                 "screenParam.colDef": {
@@ -76,7 +77,6 @@
                     } else {
                         this.$Message.error("尚未提供打印方法!");
                     }
-
                 },
                 add: function (event) {
                     event.stopPropagation();
@@ -87,27 +87,17 @@
                     let _self = this;
                     let selectton = this.$refs.selectData.getSelection();
                     if (selectton.length == 0) {
-                        this.$Message.info("请选中要删除的数据!");
+                        iview.Message.info("请选中要删除的数据!");
                         return;
-                    }
-                    else {
-                        this.$Modal.confirm({
-                            title: '提示',
-                            content: '是否删除',
-                            onOk: function () {
-                                _.Ajax('Delete', {
-                                    DeleteData: selectton
-                                }, function (data) {
-                                    showList(function (data) {
-                                        Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
-                                        _self.$Message.info("删除成功");
-                                    });
-                                });
-                            },
-                            onCancel: function () {
-                                this.id = "关闭"
-                            }
-                        });
+                    } else {
+                        _self.$Modal.confirm(_.MessageBox("是否删除？", () => {
+                            _.Ajax('Delete', {
+                                DeleteData: selectton
+                            }, function (data) {
+                                iview.Message.info("删除成功");
+                                showList();
+                            });
+                        }));
                     }
                 },
                 changePageCount: function (index) {
@@ -116,6 +106,12 @@
                     _this.pageInfo.PageIndex = (index - 1);
                     showList();
                 },
+                changePageSizer: function (value) {
+                    let mess = this;
+                    this.pageSize = value;
+                    _this.pageInfo.PageSize = value;
+                    showList();
+                }
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
@@ -124,7 +120,6 @@
             ve.searchParam = _this.searchParam;
             ve.pageInfo = _this.pageInfo;
             ve.data = [];
-            ve.pagedataCount = 0;
             ve.$Spin.show();
             _.Search({
                 Service: _this.service,

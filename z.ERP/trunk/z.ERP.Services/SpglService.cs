@@ -140,6 +140,7 @@ namespace z.ERP.Services
             dt.Rows[0]["JXSL"] = dt.Rows[0]["JXSL"].ToString().ToDouble() * 100;
             dt.Rows[0]["XXSL"] = dt.Rows[0]["XXSL"].ToString().ToDouble() * 100;
             dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
             string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
                 "  FROM GOODS_SHOP G,SHOP S,CATEGORY Y  " +

@@ -15,21 +15,6 @@
     @RenderSection("head", false)
 }
 
-@{
-    if (Model != null && !Model.Permission_Bg.IsEmpty() && employee.HasPermission(Model.Permission_Bg))
-    {
-        <script type="text/javascript">
-            var CanBg = true;
-        </script>
-    }
-    else
-    {
-        <script type="text/javascript">
-            var CanBg = false;
-        </script>
-    }
-}
-
 <div id="search">
     <collapse v-model="panelName">
         <panel name="condition">
@@ -118,8 +103,10 @@
                 <yx-table v-bind:columns="columns" selection=true
                           v-bind:data="data" ref="selectData">
                 </yx-table>
+
                 <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total
-                      v-on:on-change="changePageCount"></page>
+                      v-on:on-change="changePageCount" v-bind:page-size-opts="arrPageSize"
+                      show-sizer v-on:on-page-size-change="changePageSizer"></page>
 
                 @RenderSection("resultOthers", false)
             </div>
@@ -132,5 +119,4 @@
 
 @section foot{
     @RenderSection("foot", false)
-
 }
