@@ -25,7 +25,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
         }
         public ActionResult Bill_AdjustEdit(string Id)
         {
-            ViewBag.Title = "费用调整单编辑";
+            ViewBag.Title = "费用调整单";
             return View("Bill_AdjustEdit", model: (EditRender)Id);
         }
         public ActionResult Bill_AdjustDetail(string Id)

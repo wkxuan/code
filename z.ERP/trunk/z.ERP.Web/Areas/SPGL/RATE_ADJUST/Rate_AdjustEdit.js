@@ -231,15 +231,47 @@ editDetail.popCallBack = function (data) {
     }
 }
 
-editDetail.clearKey = function () {
-    editDetail.dataParam.BILLID = null;
-    editDetail.dataParam.BRANCHID = null;
-    editDetail.dataParam.STARTTIME = null;
-    editDetail.dataParam.ENDTIME = null;
-    editDetail.dataParam.STATUS = null;
-    editDetail.dataParam.DESCRIPTION = null;
-    editDetail.dataParam.RATE_ADJUST_ITEM = [];
-}
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10500701"
+    }, {
+        id: "edit",
+        authority: "10500701"
+    }, {
+        id: "del",
+        authority: "10500701"
+    }, {
+        id: "save",
+        authority: "10500701"
+    }, {
+        id: "abandon",
+        authority: "10500701"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10500702",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};
 
 editDetail.IsValidSave = function () {
 

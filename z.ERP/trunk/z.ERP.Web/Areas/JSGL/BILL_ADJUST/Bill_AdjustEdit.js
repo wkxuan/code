@@ -233,20 +233,48 @@ editDetail.popCallBack = function (data) {
         }
     }
 }
-
-editDetail.clearKey = function () {
-    editDetail.dataParam.BILLID = null;
-    editDetail.dataParam.NIANYUE = null;
-    editDetail.dataParam.YEARMONTH = null;
-    editDetail.dataParam.START_DATE = null;
-    editDetail.dataParam.END_DATE = null;
-    editDetail.dataParam.DESCRIPTION = null;
-    editDetail.dataParam.BILL_ADJUST_ITEM = [];
-}
-
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10700201"
+    }, {
+        id: "edit",
+        authority: "10700201"
+    }, {
+        id: "del",
+        authority: "10700201"
+    }, {
+        id: "save",
+        authority: "10700201"
+    }, {
+        id: "abandon",
+        authority: "10700201"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10700202",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};
 editDetail.IsValidSave = function () {
-
-
     if (!editDetail.dataParam.BRANCHID) {
         iview.Message.info("请选择分店!");
         return false;
@@ -271,6 +299,5 @@ editDetail.IsValidSave = function () {
             };
         };
     };
-
     return true;
 }

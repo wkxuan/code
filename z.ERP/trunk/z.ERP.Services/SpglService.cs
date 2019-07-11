@@ -262,6 +262,8 @@ namespace z.ERP.Services
             item.HasDateKey("ACCOUNT_DATE_END", a => sql += $" and L.ACCOUNT_DATE<={a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
+            item.HasKey("REPORTER_NAME", a => sql += $" and L.REPORTER_NAME  LIKE '%{a}%'");
+            item.HasKey("VERIFY_NAME", a => sql += $" and L.VERIFY_NAME  LIKE '%{a}%'");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
             item.HasDateKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
             item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
@@ -429,9 +431,11 @@ namespace z.ERP.Services
             item.HasDateKey("DATE_END", a => sql += $" and A.ENDTIME<={a}");
             item.HasKey("STATUS", a => sql += $" and A.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and A.REPORTER={a}");
+            item.HasKey("REPORTER_NAME", a => sql += $" and A.REPORTER_NAME  LIKE '%{a}%'");
+            item.HasKey("VERIFY_NAME", a => sql += $" and A.VERIFY_NAME  LIKE '%{a}%'");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME>={a}");
             item.HasDateKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME<={a}");
-            item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
+            item.HasKey("VERIFY", a => sql += $" and A.VERIFY={a}");
             item.HasDateKey("VERIFY_TIME_START", a => sql += $" and A.VERIFY_TIME>={a}");
             item.HasDateKey("VERIFY_TIME_END", a => sql += $" and A.VERIFY_TIME<={a}");
             sql += " ORDER BY A.ID DESC";
