@@ -141,6 +141,48 @@ editDetail.otherMethods = {
     }
 }
 
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10500401"
+    }, {
+        id: "edit",
+        authority: "10500401"
+    }, {
+        id: "del",
+        authority: "10500401"
+    }, {
+        id: "save",
+        authority: "10500401"
+    }, {
+        id: "abandon",
+        authority: "10500401"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10500402",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};
+
 ///接收弹窗返回参数
 editDetail.popCallBack = function (data) {
 
@@ -176,18 +218,6 @@ editDetail.popCallBack = function (data) {
             });
         }
     }
-}
-
-editDetail.clearKey = function () {
-    editDetail.dataParam.BILLID = null;
-    editDetail.dataParam.BRANCHID = null;
-    editDetail.dataParam.POSNO = null;
-    editDetail.dataParam.ACCOUNT_DATE = null;
-    editDetail.dataParam.STATUS = null;
-    editDetail.dataParam.CASHIERID = null;
-    editDetail.dataParam.CLERKID = null;
-    editDetail.dataParam.DESCRIPTION = null;
-    editDetail.dataParam.SALEBILLITEM = [];
 }
 
 editDetail.IsValidSave = function () {
