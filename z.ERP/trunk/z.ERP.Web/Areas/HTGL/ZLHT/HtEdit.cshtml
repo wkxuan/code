@@ -13,7 +13,7 @@
             商户
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly icon="disabled? 'md-search':''"
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
                      v-model="dataParam.MERNAME" v-on:on-click="srchMerchant" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
@@ -23,20 +23,9 @@
             <i-input v-model="dataParam.CONTRACTID_PAPER" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="2" class="RowText">
-            @{
-                RenderControl(new EnumDropDownListRender<合同状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
             核算方式
         </i-col>
-        <i-col span="2" class="RowText">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<核算方式>()
                 {
@@ -72,7 +61,7 @@
             合同员
         </i-col>
         <i-col span="2" class="RowText">
-            <i-input readonly icon="disabled? 'md-search':''"
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
                      v-model="dataParam.SIGNER_NAME" v-on:on-click="srchSigner" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
@@ -231,10 +220,10 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">提前返款日</i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="22" class="RowText">
             <i-select v-model="screenParam.TQFKR" multiple v-bind:disabled="!disabled">
-                <i-option v-for="item in screenParam.fkrList" value="item.value"
-                          key="item.value">{{ item.label }}</i-option>
+                <i-option v-for="(i,k) in screenParam.fkrList" v-bind:value="i.value"
+                          v-bind:key="k">{{ i.label }}</i-option>
             </i-select>
         </i-col>
     </row>
@@ -294,8 +283,14 @@
                     <div class="tableBtnDiv" v-if="disabled">
                         <i-button type="primary" v-on:click="addColDefRENT">添加一行</i-button>
                         <i-button type="error" v-on:click="delColDefRENT">删除</i-button>
-                        <i-button type="primary" v-on:click="operPeriod">按年度分解</i-button>
-                        <i-button type="primary" v-on:click="decompose">分解月度数据</i-button>
+                        <i-button type="primary" v-bind:loading="screenParam.yearLoading" v-on:click="operPeriod">
+                            <span v-if="!screenParam.yearLoading">按年度分解</span>
+                            <span v-else>正在分解</span>
+                        </i-button>
+                        <i-button type="primary" v-bind:loading="screenParam.monthLoading" v-on:click="decompose">
+                            <span v-if="!screenParam.monthLoading">按月度分解</span>
+                            <span v-else>正在分解</span>
+                        </i-button>
                     </div>
                 </i-col>
                 <i-col span="24">

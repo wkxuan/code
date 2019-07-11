@@ -31,13 +31,7 @@
                         编号
                     </i-col>
                     <i-col span="6" class="RowText">
-                        @{
-                            RenderControl(new TextBoxRender()
-                            {
-                                vModel = "dataParam.BILLID",
-                                Enable = false
-                            });
-                        }
+                        <i-input v-model="dataParam.BILLID" disabled />
                     </i-col>
                     <span v-if="branchid">
                         <i-col span="2" class="RowTitle">
@@ -52,7 +46,15 @@
                                 });
                             }
                         </i-col>
-                    </span>                                
+                    </span> 
+                    <span v-if="dataParam.STATUSMC">
+                        <i-col span="2" class="RowTitle">
+                            状态
+                        </i-col>
+                        <i-col span="6" class="RowText">
+                            <i-input v-model="dataParam.STATUSMC" disabled/>
+                        </i-col>
+                    </span>                               
                 </row>
                 @RenderSection("baseParam", false)
             </div>

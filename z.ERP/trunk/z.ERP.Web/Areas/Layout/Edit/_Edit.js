@@ -15,6 +15,8 @@
     this.enabled = function (val) { return val; }
     this.clearKey = function () { }
     this.newRecord = function () { }
+    //取消成功后
+    this.afterAbandon = function () { }
     //功能按钮配置数组
     this.btnConfig = [];
     this.vue = function VueOperate() {
@@ -168,6 +170,7 @@
                         for (let item in _this.backData) {
                             _self.dataParam[item] = _this.backData[item];
                         }
+                        _this.afterAbandon();
                     }, () => {
                         _self.disabled = true;
                     }));

@@ -26,7 +26,6 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
 
             });
         }
-
         public ActionResult HtEdit(string Id)
         {
             ViewBag.Title = "租赁租约信息编辑";
@@ -50,7 +49,6 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             ViewBag.contractCost = entity.Item7;
             return View();
         }
-
         public UIResult SearchContract(CONTRACTEntity Data)
         {
             var res = service.HtglService.GetContractElement(Data);
@@ -67,7 +65,6 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                 }
             );
         }
-
         public UIResult GetBrand(BRANDEntity Data)
         {
             return new UIResult(service.DataService.GetBrand(Data));
@@ -84,7 +81,6 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         {
             return new UIResult(service.HtglService.zlYdFj(Data, ContractData));
         }
-
         public void Delete(List<CONTRACTEntity> DeleteData)
         {
             service.HtglService.DeleteContract(DeleteData);
@@ -94,25 +90,23 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         {
             service.HtglService.ExecData(Data);
         }
-
-
         public UIResult SearchInit()
         {
             SearchItem item = new SearchItem();
-            return service.XtglService.GetFeeRule(item);
+            var FeeRule = service.XtglService.GetFeeRule(item);
+            var LateFeeRule = service.XtglService.GetLateFeeRule(item);
+            return new UIResult(
+                new
+                {
+                    FeeRule = FeeRule,
+                    LateFeeRule = LateFeeRule
+                }
+            );
         }
-
-        public UIResult LateFeeRuleInit()
-        {
-            SearchItem item = new SearchItem();
-            return service.XtglService.GetLateFeeRule(item);
-        }
-
         public string Output(SearchItem item)
         {
             return service.HtglService.GetContractOutput(item);
         }
-
         //返回节点数据，并且返回当前节点要面临的操作步骤
         public UIResult Srchsplc(SPLCEntity Data)
         {
@@ -125,7 +119,6 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                 }
             );
         }
-
         public void ExecSplc(SPLCJG_MENUEntity Data)
         {
             if (Data.JGTYPE == ((int)审批流程节点类型.结束).ToString())
@@ -137,6 +130,5 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             else
                 service.XtglService.ExecMenuSplc(Data);
         }
-
     }
 }
