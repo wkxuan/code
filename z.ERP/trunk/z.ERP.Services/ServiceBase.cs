@@ -290,13 +290,14 @@ namespace z.ERP.Services
                     {
                         SqlMenu += " and exists(select 1 from USER_ROLE A1, ROLE_MENU B1,USERMODULE C1 where A1.USERID=" + employee.Id;
                         SqlMenu += " and A1.ROLEID = B1.ROLEID and C1.MODULECODE like B1.MODULECODE||'%' and C1.MENUID = A.MENUID ";
+                        SqlMenu += " ) ";
                     }
                     //可增加系统参数菜单权限控制是否要关联位置
                     if (1 != 1)
                     {
                         SqlMenu += " and C1.MODULECODE = A.MODULECODE ";
                     }
-                    SqlMenu += " ) ";
+                    //SqlMenu += " ) ";
                     return SqlMenu;
                 case PermissionType.Org:
                     String SqlDepartment = "";
