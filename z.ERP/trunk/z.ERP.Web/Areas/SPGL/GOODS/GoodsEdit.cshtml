@@ -61,8 +61,9 @@
             租约
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="dataParam.CONTRACTID" v-on:on-click="srchContract" v-bind:disabled="!disabled" />
+            <i-input v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.CONTRACTID" v-on:on-click="srchContract" 
+                     v-bind:disabled="!disabled" v-on:on-enter="contractEnter"/>
         </i-col>
         <i-col span="2" class="RowTitle">
             商户

@@ -55,11 +55,11 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('ShowOneEdit', {
         Data: { GOODSID: data }
     }, function (data) {
-        $.extend(editDetail.dataParam, data.goods[0]);
-        editDetail.dataParam.BILLID = data.goods[0].GOODSDM;
-        editDetail.dataParam.KINDID = data.goods[0].KINDID;
-        editDetail.dataParam.GOODS_SHOP = data.goods_shop[0];
-        editDetail.dataParam.GOODS_GROUP = data.goods_group[0];
+        $.extend(editDetail.dataParam, data.goods);
+        editDetail.dataParam.BILLID = data.goods.GOODSDM;
+        editDetail.dataParam.KINDID = data.goods.KINDID;
+        editDetail.dataParam.GOODS_SHOP = data.goods_shop;
+        editDetail.dataParam.GOODS_GROUP = data.goods_group;
         editDetail.dataParam.PKIND_ID = editDetail.dataParam.PKIND_ID.split(",");
         callback && callback(data);
     });
@@ -114,33 +114,15 @@ editDetail.mountedInit = function () {
 };
 
 editDetail.otherMethods = {
-    htChange: function () {
-        _.Ajax('GetContract', {
-            Data: { CONTRACTID: editDetail.dataParam.CONTRACTID }
-        }, function (data) {
-            if (data.contract.length > 0) {
-                editDetail.dataParam.MERCHANTID = data.contract[0].MERCHANTID;
-                editDetail.dataParam.STYLE = data.contract[0].STYLE;
-                editDetail.dataParam.STYLEMC = data.contract[0].STYLEMC;
-                editDetail.dataParam.SHMC = data.contract[0].SHMC;
-                editDetail.dataParam.JXSL = data.contract[0].JXSL;
-                editDetail.dataParam.XXSL = data.contract[0].XXSL;
-                editDetail.dataParam.GOODS_SHOP = data.shop;
-                if (data.jsklGroup) {
-                    editDetail.dataParam.JSKL_GROUP = data.jsklGroup[0].GROUPNO;
-                    editDetail.dataParam.GOODS_GROUP = data.jsklGroup;
-                }
-            }
-            else {
-                iview.Message.info("输入的租约号不存在!");
-                editDetail.dataParam.MERCHANTID = null;
-                editDetail.dataParam.SHMC = null;
-            }
-        })
+    //租约输入框回车查询
+    contractEnter: function () {
+        editDetail.veObj.getContract();
     },
+    //租约弹窗打开方法
     srchContract: function () {
         editDetail.screenParam.showPopContract = true;
     },
+    //扣率组弹窗打开方法
     srchJsklGroup: function () {
         if (!editDetail.dataParam.CONTRACTID) {
             iview.Message.info("请先选择租约!");
@@ -157,27 +139,32 @@ editDetail.otherMethods = {
         editDetail.screenParam.showPopBrand = true;
         editDetail.screenParam.popParam = { CONTRACTID: editDetail.dataParam.CONTRACTID };
     },
+    //拼音码生成
     getpym: function () {
         editDetail.dataParam.PYM = editDetail.dataParam.NAME.toPYM().substr(0, 6);
     },
+    //品类选择change
     spflChange: function (value, selectedData) {
         editDetail.dataParam.KINDID = value[value.length - 1];
     },
-};
+    //获取租约详情
+    getContract: function () {
+        editDetail.dataParam.MERCHANTID = null;
+        editDetail.dataParam.STYLE = null;
+        editDetail.dataParam.STYLEMC = null;
+        editDetail.dataParam.SHMC = null;
+        editDetail.dataParam.JXSL = null;
+        editDetail.dataParam.XXSL = null;
+        editDetail.dataParam.GOODS_SHOP = [];
+        editDetail.dataParam.JSKL_GROUP = null;
+        editDetail.dataParam.GOODS_GROUP = [];
 
-///接收弹窗返回参数
-editDetail.popCallBack = function (data) {
-    if (editDetail.screenParam.showPopJsklGroup) {
-        editDetail.screenParam.showPopJsklGroup = false;
-        editDetail.dataParam.JSKL_GROUP = data.sj[0].GROUPNO;
-    };
-    if (editDetail.screenParam.showPopContract) {
-        editDetail.dataParam.CONTRACTID = data.sj[0].CONTRACTID;
-        editDetail.screenParam.showPopContract = false;
         _.Ajax('GetContract', {
-            Data: { CONTRACTID: editDetail.dataParam.CONTRACTID }
+            Data: {
+                CONTRACTID: editDetail.dataParam.CONTRACTID
+            }
         }, function (data) {
-            if (data.contract.length > 0) {
+            if (data.contract.length) {
                 editDetail.dataParam.MERCHANTID = data.contract[0].MERCHANTID;
                 editDetail.dataParam.STYLE = data.contract[0].STYLE;
                 editDetail.dataParam.STYLEMC = data.contract[0].STYLEMC;
@@ -191,10 +178,22 @@ editDetail.popCallBack = function (data) {
                 }
             }
             else {
-                editDetail.dataParam.MERCHANTID = null;
-                editDetail.dataParam.SHMC = null;
+                iview.Message.info("输入的租约号不存在!");
             }
         })
+    }
+};
+
+///接收弹窗返回参数
+editDetail.popCallBack = function (data) {
+    if (editDetail.screenParam.showPopJsklGroup) {
+        editDetail.screenParam.showPopJsklGroup = false;
+        editDetail.dataParam.JSKL_GROUP = data.sj[0].GROUPNO;
+    };
+    if (editDetail.screenParam.showPopContract) {
+        editDetail.dataParam.CONTRACTID = data.sj[0].CONTRACTID;
+        editDetail.screenParam.showPopContract = false;
+        editDetail.veObj.getContract();
     };
     if (editDetail.screenParam.showPopBrand) {
         editDetail.screenParam.showPopBrand = false;

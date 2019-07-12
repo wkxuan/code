@@ -137,13 +137,15 @@
             进项税率
         </i-col>
         <i-col span="2" class="RowText">
-            <i-input type="number" v-model="dataParam.JXSL" v-bind:disabled="!disabled" />
+            <input-number v-bind:max="1" v-bind:min="0" v-bind:step="0.01" v-model="dataParam.JXSL" v-bind:disabled="!disabled">
+            </input-number>
         </i-col>
         <i-col span="2" class="RowTitle">
             销项税率
         </i-col>
         <i-col span="2" class="RowText">
-            <i-input type="number" v-model="dataParam.XXSL" v-bind:disabled="!disabled" />
+            <input-number v-bind:max="1" v-bind:min="0" v-bind:step="0.01" v-model="dataParam.XXSL" v-bind:disabled="!disabled" >
+            </input-number>
         </i-col>
     </row>
     <row>
@@ -348,7 +350,7 @@
                     </div>
                 </i-col>
                 <i-col span="24">
-                    <yx-table v-bind:columns="screenParam.colDefCOST" v-bind:height="200" selection=true
+                    <yx-table v-bind:columns="screenParam.colDefCOST" v-bind:height="300" selection=true
                               v-bind:data="dataParam.CONTRACT_COST" v-bind:disabled="!disabled" ref="refCost">
                     </yx-table>
                 </i-col>
@@ -363,7 +365,7 @@
                 </div>
             </i-col>
             <i-col span="24">
-                <yx-table v-bind:columns="screenParam.colDefPAY" v-bind:height="200" selection=true
+                <yx-table v-bind:columns="screenParam.colDefPAY" v-bind:height="300" selection=true
                           v-bind:data="dataParam.CONTRACT_PAY" v-bind:disabled="!disabled" ref="refPay">
                 </yx-table>
             </i-col>

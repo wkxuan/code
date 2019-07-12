@@ -193,7 +193,7 @@ Vue.component('yx-table', {
                                   "Select",
                                   {
                                       props: {
-                                          value: params.row[params.column.key],
+                                          value: params.row[params.column.key] + "",
                                           transfer: true
                                       },
                                       on: _self.initOn(params)
