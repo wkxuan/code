@@ -967,7 +967,7 @@ namespace z.ERP.Services
         //通知消息列表
         public DataGridResult GetNOTICE(SearchItem item)
         {
-            string sql = @"select * from NOTICE where 1=1 ";
+            string sql = @"select * from NOTICE N where exists(select 1 from NOTICE_BRANCH WHERE BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") AND N.ID=NOTICE_BRANCH.NOTICEID) ";
             item.HasKey("ID", a => sql += $" and ID = '{a}'");
             item.HasKey("TITLE", a => sql += $" and TITLE LIKE '%{a}%'");
             item.HasKey("STATUS", a => sql += $" and STATUS = '{a}'");
