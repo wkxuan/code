@@ -40,6 +40,7 @@
 
     editDetail.screenParam.showPopPay = false;
     editDetail.screenParam.srcPopPay = __BaseUrl + "/" + "Pop/Pop/PopPayList/";
+
     _.Ajax('SearchInit', {
         Data: {}
     }, function (data) {
@@ -61,10 +62,15 @@
             {
                 title: "费用项目", key: 'TERMID', cellType: "input",
                 onEnter: function (index, row, data) {
+                    let tbData = data;
                     _.Ajax('GetFeeSubject', {
                         Data: { TRIMID: row.TERMID }
                     }, function (data) {
                         if (data.dt) {
+                            if (tbData.filter(item=> { return data.dt.NAME == item.NAME }).length) {
+                                iview.Message.info('当前费用项目已存在!');
+                                return;
+                            }
                             row.NAME = data.dt.NAME;
                         } else {
                             row.TERMID = null;
@@ -75,32 +81,33 @@
                 }
             },
             { title: "费用项目名称", key: 'NAME' },
-            { title: '开始日期', key: 'STARTDATE', cellType: "date", enableCellEdit: true },
-            { title: '结束日期', key: 'ENDDATE', cellType: "date", enableCellEdit: true },
+            { title: '开始日期', key: 'STARTDATE', width: 150, cellType: "date", enableCellEdit: true },
+            { title: '结束日期', key: 'ENDDATE', width: 150, cellType: "date", enableCellEdit: true },
             {
-                title: '收费方式', key: 'SFFS', cellType: "select", enableCellEdit: true,
-                selectList: [{ label: "按日计算固定金额", value: '1' },
-                        { label: "按日计算月固定金额", value: '2' },
-                        { label: "按销售金额比例", value: '3' },
-                        { label: "月固定金额", value: '4' }]
+                title: '收费方式', key: 'SFFS', cellType: "select", width: 150, enableCellEdit: true,
+                selectList: [{ label: "按日计算固定金额", value: 1 },
+                        { label: "按日计算月固定金额", value: 2 },
+                        { label: "按销售金额比例", value: 3 },
+                        { label: "月固定金额", value: 4 }]
             },
             { title: "单价", key: 'PRICE', cellType: "input", cellDataType: "number" },
             { title: "金额", key: 'COST', cellType: "input", cellDataType: "number" },
             { title: "比例(%)", key: 'KL', cellType: "input", cellDataType: "number" },
             {
-                title: '收费规则', key: 'FEERULEID', cellType: "select", enableCellEdit: true,
+                title: '收费规则', key: 'FEERULEID', cellType: "select", width: 150, enableCellEdit: true,
                 selectList: FeeRule
             },
             {
-                title: '滞纳规则', key: 'ZNGZID', cellType: "select", enableCellEdit: true,
+                title: '滞纳规则', key: 'ZNGZID', cellType: "select", width: 150, enableCellEdit: true,
                 selectList: LateFeeRule
             },
             {
-                title: '生成日期是否和租金保持一致', key: 'IF_RENT_FEERULE', cellType: "select", enableCellEdit: true,
-                selectList: [{ label: "是", value: '1' }, { label: "否", value: '2' }]
+                title: '生成日期是否和租金保持一致', key: 'IF_RENT_FEERULE', width: 150, cellType: "select", enableCellEdit: true,
+                selectList: [{ label: "是", value: 1 }, { label: "否", value: 2 }]
             }
         ];
     });
+
     //品牌表格
     editDetail.screenParam.colDefPP = [
         {
@@ -112,10 +119,15 @@
                     }
                     return;
                 }
+                let tbData = data;
                 _.Ajax('GetBrand', {
                     Data: { ID: row.BRANDID }
                 }, function (data) {
                     if (data.dt) {
+                        if (tbData.filter(item=> { return data.dt.NAME == item.NAME }).length) {
+                            iview.Message.info('当前品牌代码已存在!');
+                            return;
+                        }
                         row.NAME = data.dt.NAME;
                     } else {
                         for (let item in row) {
@@ -136,10 +148,15 @@
                 if (!row.CODE) {
                     return;
                 }
+                let tbData = data;
                 _.Ajax('GetShop', {
                     Data: { CODE: row.CODE, BRANCHID: editDetail.dataParam.BRANCHID }
                 }, function (data) {
                     if (data.dt) {
+                        if (tbData.filter(item=> { return data.dt.SHOPID == item.SHOPID }).length) {
+                            iview.Message.info('当前商铺代码已存在!');
+                            return;
+                        }
                         row.SHOPID = data.dt.SHOPID;
                         row.CATEGORYID = data.dt.CATEGORYID;
                         row.CATEGORYCODE = data.dt.CATEGORYCODE;
@@ -217,13 +234,14 @@
                if (data.length > index + 1) {
                    data[index + 1].STARTDATE = new Date((addDate(row.ENDDATE))).Format('yyyy-MM-dd');
                }
+               row.SUMRENTS = 0;
                editDetail.dataParam.CONTRACT_RENTITEM = [];
                editDetail.veObj.upDataJskl();
            }
        },
        {
            title: '金额类型', key: 'DJLX', cellType: "select", enableCellEdit: true,
-           selectList: [{ label: "日金额", value: '1' }, { label: "月金额", value: '2' }],
+           selectList: [{ label: "日金额", value: 1 }, { label: "月金额", value: 2 }],
            onChange: function (index, row, data) {
                editDetail.dataParam.CONTRACT_RENTITEM = [];
            }
@@ -269,11 +287,11 @@
         { title: '生成日期', key: 'CREATEDATE', cellType: "date", enableCellEdit: true },
         {
             title: '月清算标记', key: 'QSBJ', cellType: "select", enableCellEdit: true,
-            selectList: [{ label: "是", value: '1' }, { label: "否", value: '2' }]
+            selectList: [{ label: "是", value: 1 }, { label: "否", value: 2 }]
         },
         {
             title: '区间清算标记', key: 'QJQSBJ', cellType: "select", enableCellEdit: true,
-            selectList: [{ label: "是", value: '1' }, { label: "否", value: '2' }]
+            selectList: [{ label: "是", value: 1 }, { label: "否", value: 2 }]
         },
     ];
     //收款方式手续费
@@ -301,16 +319,6 @@
         { title: '结束日期', key: 'ENDDATE', cellType: "date", enableCellEdit: true },
         { title: "比例(%)", key: 'KL', cellType: "input", cellDataType: "number" },
     ];
-
-    //表格数据初始化
-    editDetail.dataParam.CONTRACT_BRAND = editDetail.dataParam.CONTRACT_BRAND || [];
-    editDetail.dataParam.CONTRACT_SHOP = editDetail.dataParam.CONTRACT_SHOP || [];
-    editDetail.dataParam.CONTRACT_RENT = editDetail.dataParam.CONTRACT_RENT || [];
-    editDetail.dataParam.CONTRACT_RENTITEM = editDetail.dataParam.CONTRACT_RENTITEM || [];
-    editDetail.dataParam.CONTRACT_GROUP = editDetail.dataParam.CONTRACT_GROUP || [];
-    editDetail.dataParam.CONTJSKL = editDetail.dataParam.CONTJSKL || [];
-    editDetail.dataParam.CONTRACT_COST = editDetail.dataParam.CONTRACT_COST || [];
-    editDetail.dataParam.CONTRACT_PAY = editDetail.dataParam.CONTRACT_PAY || [];
 };
 
 editDetail.popCallBack = function (data) {
@@ -332,7 +340,7 @@ editDetail.popCallBack = function (data) {
         editDetail.screenParam.showPopBrand = false;
         let brand = editDetail.dataParam.CONTRACT_BRAND;
         for (let i = 0; i < data.sj.length; i++) {
-            if ($.map(brand, item=> { return (data.sj[i].BRANDID == item.BRANDID) }).length == 0) {
+            if (brand.filter(item=> { return (data.sj[i].BRANDID == item.BRANDID) }).length == 0) {
                 brand.push(data.sj[i]);
             }
         };
@@ -341,7 +349,7 @@ editDetail.popCallBack = function (data) {
         editDetail.screenParam.showPopShop = false;
         let shop = editDetail.dataParam.CONTRACT_SHOP;
         for (let i = 0; i < data.sj.length; i++) {
-            if ($.map(shop, item=> { return (data.sj[i].SHOPID == item.SHOPID) }).length == 0) {
+            if (shop.filter(item=> { return (data.sj[i].SHOPID == item.SHOPID) }).length == 0) {
                 shop.push(data.sj[i]);
             }
         };
@@ -349,35 +357,50 @@ editDetail.popCallBack = function (data) {
     }
     if (editDetail.screenParam.showPopFeeSubject) {
         editDetail.screenParam.showPopFeeSubject = false;
-        let cost = editDetail.dataParam.CONTRACT_COST;
-        for (let i = 0; i < data.sj.length; i++) {
-            if ($.map(cost, item=> { return (data.sj[i].TERMID == item.TERMID) }).length == 0) {
-                let loc = {};
-                editDetail.screenParam.colDefCOST.forEach(item=> {
-                    switch (item.key) {
-                        case "TERMID":
-                            loc[item.key] = data.sj[i].TERMID;
-                            break;
-                        case "NAME":
-                            loc[item.key] = data.sj[i].NAME;
-                            break;
-                        default:
-                            loc[item.key] = null;
-                            break;
+        if (editDetail.screenParam.payCost) {
+            let selection = editDetail.veObj.$refs.refPay.getSelection();
+            let pay = editDetail.dataParam.CONTRACT_PAY
+            for (let i = 0; i < selection.length; i++) {
+                for (let j = 0; j < pay.length; j++) {
+                    if (selection[i].PAYID == pay[j].PAYID) {
+                        pay[j].TERMID = data.sj[0].TERMID;
+                        pay[j].TERMNAME = data.sj[0].NAME;
                     }
-                });
-                cost.push(loc);
+                }
             }
-        };
-        for (let i = 0; i < cost.length; i++) {
-            cost[i].INX = i + 1;
+        } else {
+            let cost = editDetail.dataParam.CONTRACT_COST;
+            for (let i = 0; i < data.sj.length; i++) {
+                if (cost.filter(item=> { return (data.sj[i].TERMID == item.TERMID) }).length == 0) {
+                    let loc = {};
+                    editDetail.screenParam.colDefCOST.forEach(item=> {
+                        switch (item.key) {
+                            case "TERMID":
+                                loc[item.key] = data.sj[i].TERMID;
+                                break;
+                            case "NAME":
+                                loc[item.key] = data.sj[i].NAME;
+                                break;
+                            default:
+                                loc[item.key] = null;
+                                break;
+                        }
+                    });
+                    cost.push(loc);
+                }
+            };
+            for (let i = 0; i < cost.length; i++) {
+                cost[i].INX = i + 1;
+            }
         }
+
     }
     if (editDetail.screenParam.showPopPay) {
         editDetail.screenParam.showPopPay = false;
         let pay = editDetail.dataParam.CONTRACT_PAY;
         for (let i = 0; i < data.sj.length; i++) {
-            if ($.map(pay, item=> { return (data.sj[i].PAYID == item.PAYID) }).length == 0) {
+            let len = pay.filter(item=> { return data.sj[i].PAYID == item.PAYID });
+            if (!len.length) {
                 let loc = {};
                 editDetail.screenParam.colDefPAY.forEach(item=> {
                     switch (item.key) {
@@ -478,6 +501,7 @@ editDetail.otherMethods = {
     },
     //点击费用项目弹窗
     srchFeeSubject: function () {
+        editDetail.screenParam.payCost = false;
         Vue.set(editDetail.screenParam, "showPopFeeSubject", true);
     },
     //添加租约收费项目信息
@@ -521,6 +545,8 @@ editDetail.otherMethods = {
             iview.Message.info("请先添加收款方式并且选中收款方式!");
             return;
         };
+        editDetail.screenParam.payCost = true;
+        Vue.set(editDetail.screenParam, "showPopFeeSubject", true);
     },
     //删除收款方式手续费
     delPay: function () {
@@ -635,9 +661,10 @@ editDetail.otherMethods = {
             return;
         }
         editDetail.screenParam.yearLoading = true;
-
-        editDetail.dataParam.CONTRACT_RENT = [];
-
+        editDetail.dataParam.CONTRACT_RENTITEM = [];
+        let rent = editDetail.dataParam.CONTRACT_RENT;
+        rent = [];
+        debugger
         let yearsValue = getYears(new Date(editDetail.dataParam.CONT_START),
             new Date(editDetail.dataParam.CONT_END));
         let nestYear = null;
@@ -751,20 +778,19 @@ editDetail.otherMethods = {
         }, function (data) {
             let contractRent = editDetail.dataParam.CONTRACT_RENT;
             for (let i = 0; i < contractRent.length; i++) {
-                //let localItem = [];
                 let sumRents = 0;
                 for (let j = 0; j < data.length; j++) {
                     if (data[j].INX == contractRent[i].INX) {
                         sumRents += parseFloat(data[j].RENTS);
                         data[j].QSBJ = 1;
                         data[j].QJQSBJ = 2;
-                        //localItem.push(data[j]);
                     };
                 };
-                contractRent[i].SUMRENTS = sumRents;
-                //contractRent[i].CONTRACT_RENTITEM = localItem;
+                contractRent[i].SUMRENTS = sumRents.toFixed(2);
             };
             editDetail.dataParam.CONTRACT_RENTITEM = data;
+            editDetail.screenParam.monthLoading = false;
+        }, () => {
             editDetail.screenParam.monthLoading = false;
         });
     },
@@ -903,6 +929,13 @@ editDetail.otherMethods = {
         }
         editDetail.dataParam.AREA_BUILD = areaBuild;
         editDetail.dataParam.AREAR = arear;
+
+        let rent = editDetail.dataParam.CONTRACT_RENT;
+        for (var i = 0; i < rent.length; i++) {
+            rent[i].RENTS = (Number(rent[i].PRICE) * Number(editDetail.dataParam.AREAR)).toFixed(2);
+            rent[i].SUMRENTS = 0;
+        }
+        editDetail.dataParam.CONTRACT_RENTITEM = [];
     },
     //更新扣率信息时间
     upDataJskl: function () {
@@ -1173,23 +1206,30 @@ editDetail.IsValidSave = function () {
                 iview.Message.info("请选择收费项目中的收费规则!");
                 return false;
             };
+            if (!contract_cost[i].STARTDATE) {
+                iview.Message.info(`请确定收费项目中序号${contract_cost[i].INX}的起始日期!`);
+                return false;
+            };
+            if (!contract_cost[i].ENDDATE) {
+                iview.Message.info(`请确定收费项目中序号${contract_cost[i].INX}的结束日期!`);
+                return false;
+            };
+            if (new Date(contract_cost[i].STARTDATE).Format('yyyy-MM-dd') > new Date(contract_cost[i].ENDDATE).Format('yyyy-MM-dd')) {
+                iview.Message.info(`收费项目中序号${contract_cost[i].INX}的起始日期不能大于结束日期!`);
+                return false;
+            };
             if (!contract_cost[i].IF_RENT_FEERULE) {
                 iview.Message.info("请确定收费项目中的生成日期是否和租金保持一致!");
                 return false;
             };
 
-            if (((contract_cost[i].SFFS == 1)
-                || (contract_cost[i].SFFS == 2)
-                || (contract_cost[i].SFFS == 4))
-                && ((!contract_cost[i].COST) || (contract_cost[i].COST <= 0))
-                ) {
+            if (((contract_cost[i].SFFS == 1)|| (contract_cost[i].SFFS == 2)|| (contract_cost[i].SFFS == 4))
+                && ((!contract_cost[i].COST) || (contract_cost[i].COST <= 0))) {
                 iview.Message.info("请确定每月收费项目中的固定费用型收费方式对应的金额!");
                 return false;
             }
-            if ((contract_cost[i].SFFS == 3)
-                && ((!contract_cost[i].KL) || (contract_cost[i].KL <= 0))
-                ) {
-                iview.Message.info("请确定每月收费项目中正确的销售金额比例!");
+            if ((contract_cost[i].SFFS == 3) && ((Number(contract_cost[i].KL) <= 0) || (Number(contract_cost[i].KL) > 100))) {
+                iview.Message.info("请确定每月收费项目中正确的销售金额比例，且值大于0小于等于100!");
                 return false;
             }
         };
@@ -1198,29 +1238,36 @@ editDetail.IsValidSave = function () {
     let contract_pay = editDetail.dataParam.CONTRACT_PAY;
     if (contract_pay.length) {
         for (let i = 0; i < contract_pay.length; i++) {
-            if (!contract_pay[i].TERMID) {
-                iview.Message.info("请确定手续费对应的费用项目!");
-                return false;
-            };
             if (!contract_pay[i].PAYID) {
-                iview.Message.info("请确定手续费对应的收款方式!");
+                iview.Message.info(`请确定第${i + 1}行的收款方式!`);
                 return false;
             };
+            if (!contract_pay[i].TERMNAME) {
+                iview.Message.info(`请确定第${i + 1}行的费用项目!`);
+                return false;
+            };           
             if (!contract_pay[i].STARTDATE) {
-                iview.Message.info("请确定手续费对应的收款方式的起始日期!");
+                iview.Message.info(`请确定收款方式${contract_pay[i].NAME}的起始日期!`);
                 return false;
             };
             if (!contract_pay[i].ENDDATE) {
-                iview.Message.info("请确定手续费对应的收款方式的结束日期!");
+                iview.Message.info(`请确定收款方式${contract_pay[i].NAME}的结束日期!`);
                 return false;
             };
+            if (new Date(contract_pay[i].STARTDATE).Format('yyyy-MM-dd') > new Date(contract_pay[i].ENDDATE).Format('yyyy-MM-dd')) {
+                iview.Message.info(`收款方式${contract_pay[i].NAME}的起始日期不能大于结束日期!`);
+                return false;
+            };
+            if ((!contract_pay[i].KL) || (Number(contract_pay[i].KL) <= 0) || (Number(contract_pay[i].KL) > 100)) {
+                iview.Message.info(`收款方式${contract_pay[i].NAME}的比例应大于0且小于等于100!`);
+                return false;
+            }
         };
     };
 
     if (editDetail.screenParam.TQFKR.length != 0) {
         editDetail.dataParam.TQFKR = editDetail.screenParam.TQFKR.join(',');
     };
-    debugger
     return true;
 };
 

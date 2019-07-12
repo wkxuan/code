@@ -631,7 +631,6 @@ namespace z.ERP.Services
             return zjfjList;
         }
 
-
         public void DeleteContract(List<CONTRACTEntity> DeleteData)
         {
             foreach (var con in DeleteData)
@@ -673,9 +672,6 @@ namespace z.ERP.Services
 
             return con.CONTRACTID;
         }
-
-
-
         public string ExecHtBgData(CONTRACTEntity Data)
         {
             CONTRACTEntity con = DbHelper.Select(Data);
@@ -803,6 +799,11 @@ namespace z.ERP.Services
             if (!Data.BILLID.IsEmpty())
                 sql += (" and L.BILLID= " + Data.BILLID);
             DataTable dt = DbHelper.ExecuteTable(sql);
+            if (!dt.IsNotNull())
+            {
+                throw new LogicException("找不到此单据!");
+            }
+            dt.NewEnumColumns<退铺单状态>("STATUS", "STATUSMC");
 
             string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
                 "  FROM FREESHOPITEM G,SHOP S,CATEGORY Y  " +

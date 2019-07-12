@@ -130,13 +130,17 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
         }
-        public object ShowOneEdit(GOODSEntity Data)
+        public Tuple<dynamic, DataTable, DataTable> ShowOneEdit(GOODSEntity Data)
         {
             string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE,C.PKIND_ID from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D";
             sql += "  where G.MERCHANTID=M.MERCHANTID  AND G.KINDID=C.ID and G.BRANDID =D.ID ";
             if (!Data.GOODSID.IsEmpty())
                 sql += (" and G.GOODSID= " + Data.GOODSID);
             DataTable dt = DbHelper.ExecuteTable(sql);
+            if (!dt.IsNotNull())
+            {
+                throw new LogicException("此商品不存在！");
+            }
             dt.Rows[0]["JXSL"] = dt.Rows[0]["JXSL"].ToString().ToDouble() * 100;
             dt.Rows[0]["XXSL"] = dt.Rows[0]["XXSL"].ToString().ToDouble() * 100;
             dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
@@ -158,17 +162,7 @@ namespace z.ERP.Services
             sql_jsklGroup += "  order by GROUPNO";
             DataTable jsklGroup = DbHelper.ExecuteTable(sql_jsklGroup);
 
-            var result = new
-            {
-                goods = dt,
-                goods_shop = new dynamic[] {
-                   dtshop
-                },
-                goods_group = new dynamic[] {
-                   jsklGroup
-                }
-            };
-            return result;
+            return new Tuple<dynamic, DataTable, DataTable>(dt.ToOneLine(), dtshop, jsklGroup);
         }
 
         public object GetContract(CONTRACTEntity Data)

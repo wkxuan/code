@@ -53,7 +53,8 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
 
         public UIResult ShowOneEdit(GOODSEntity Data)
         {
-            return new UIResult(service.SpglService.ShowOneEdit(Data));
+            var res = service.SpglService.ShowOneEdit(Data);
+            return new UIResult( new { goods = res.Item1, goods_shop = res.Item2, goods_group = res.Item3 } );
         }
 
         public UIResult GetContract(CONTRACTEntity Data)
