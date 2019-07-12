@@ -18,18 +18,6 @@
         <i-col span="6" class="RowText">
             <i-input v-model="dataParam.MERCHANTNAME" disabled="disabled" />
         </i-col>
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="6" class="RowText">
-            @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                    Enable = false
-                });
-            }
-        </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
@@ -80,19 +68,13 @@
 
 }
 @section detailParam{
+    <row v-if="disabled">
+        <i-button type="primary" v-on:click="SelBill">选择</i-button>
+        <i-button type="error" v-on:click="delBill">删除</i-button>
+    </row>
     <row>
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "SelBill",
-                Text = "选择账单",
-                Enable = true,
-                Type = "primary",
-                Icon = "plus-circled"
-            });
-        }
         <i-col span="24">
-            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300"
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
                       v-bind:data="dataParam.BILL_NOTICE_ITEM" v-bind:disabled="!disabled" ref="refGroup">
             </yx-table>
         </i-col>

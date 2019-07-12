@@ -68,9 +68,8 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
         {
             return new UIResult(service.JsglService.GetContract(Data));
         }
-        //public UIResult GetBill(BILLEntity Data)
-        //{
-        //    return new UIResult(service.DataService.GetBill(Data));
-        //}
+        public UIResult GetFEESUBJECT() {
+            return new UIResult(service.DataService.feesubject());
+        }
     }
 }

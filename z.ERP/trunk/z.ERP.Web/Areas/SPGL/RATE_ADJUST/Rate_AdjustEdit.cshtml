@@ -21,18 +21,6 @@
             <date-picker type="datetime" format="yyyy-MM-dd HH:mm:ss" v-on:on-change="dataParam.ENDTIME=$event" v-bind:disabled="!disabled"
                          v-bind:value="dataParam.ENDTIME"></date-picker>
         </i-col>
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="6" class="RowText">
-            @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                    Enable = false
-                });
-            }
-        </i-col>
     </row>
 
     <row>
@@ -46,26 +34,18 @@
 
 }
 @section detailParam{
-    <row>
+    <row v-if="disabled">
         <i-col span="3">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "srchColGoods",
-                    Text = "选择商品",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
+            <i-button type="primary" v-on:click="srchColGoods">选择</i-button>
+            <i-button type="error" v-on:click="delColGoods">删除</i-button>
         </i-col>
-        <i-col span="1" class="RowTitle">
+        <i-col span="2" style="text-align:right">
             扣率(%):
         </i-col>
-        <i-col span="1" class="RowText">
-            <i-input v-model="screenParam.RATE" type="number" v-bind:disabled="!disabled" />
+        <i-col span="1">
+            <i-input v-model="screenParam.RATE" type="number" v-bind:disabled="!disabled" size="small"/>
         </i-col>
-        <i-col span="15">
+        <i-col span="16">
             @{
                 RenderControl(new ButtonRender()
                 {
@@ -120,7 +100,7 @@
     </row>
     <row>
         <i-col span="24">
-            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300"
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
                       v-bind:data="dataParam.RATE_ADJUST_ITEM" v-bind:disabled="!disabled" ref="refGroup">
             </yx-table>
         </i-col>

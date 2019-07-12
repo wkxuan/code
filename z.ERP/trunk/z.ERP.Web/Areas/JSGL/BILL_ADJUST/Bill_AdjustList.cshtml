@@ -29,88 +29,87 @@
                 });
             }
         </i-col>
-        </row>
-        <row>
-            <i-col span="2" class="RowTitle">
-                债权发生月
-            </i-col>
-            <i-col span="6" class="RowText">
-                <i-input v-model="searchParam.NIANYEU" />
-            </i-col>
-            <i-col span="2" class="RowTitle">
-                收付实现月
-            </i-col>
-            <i-col span="6" class="RowText">
-                <i-input v-model="searchParam.YEARMONTH" />
-            </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            债权发生月
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.NIANYEU" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            收付实现月
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.YEARMONTH" />
+        </i-col>
 
-            <i-col span="2" class="RowTitle">备注</i-col>
-            <i-col span="6" class="RowText">
-                <i-input v-model="searchParam.DESCRIPTION" />
-            </i-col>
-        </row>
-        <row>
-            <i-col span="2" class="RowTitle">
-                登记人
-            </i-col>
-            <i-col span="6" class="RowText">
-                <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                         v-model="searchParam.REPORTER_NAME" v-on:on-click="SelSysuser" />
-            </i-col>
-            <i-col span="2" class="RowTitle">
-                登记时间_起
-            </i-col>
-            <i-col span="6" class="RowText">
-                @{
-                    RenderControl(new DateBoxRender()
-                    {
-                        vModel = "searchParam.REPORTER_TIME_START"
-                    });
-                }
-            </i-col>
-            <i-col span="2" class="RowTitle">
-                登记时间_止
-            </i-col>
-            <i-col span="6" class="RowText">
-                @{
-                    RenderControl(new DateBoxRender()
-                    {
-                        vModel = "searchParam.REPORTER_TIME_END"
-                    });
-                }
-            </i-col>
-        </row>
-        <row>
-            <i-col span="2" class="RowTitle">
-                审核人
-            </i-col>
-            <i-col span="6" class="RowText">
-                <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                         v-model="searchParam.VERIFY_NAME" v-on:on-click="SelSysuser_sh" />
-            </i-col>
-            <i-col span="2" class="RowTitle">
-                审核时间_起
-            </i-col>
-            <i-col span="6" class="RowText">
-                @{
-                    RenderControl(new DateBoxRender()
-                    {
-                        vModel = "searchParam.VERIFY_TIME_START"
-                    });
-                }
-            </i-col>
-            <i-col span="2" class="RowTitle">
-                审核时间_止
-            </i-col>
-            <i-col span="6" class="RowText">
-                @{
-                    RenderControl(new DateBoxRender()
-                    {
-                        vModel = "searchParam.VERIFY_TIME_END"
-                    });
-                }
-            </i-col>
-        </row>
+        <i-col span="2" class="RowTitle">账单类型</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<账单类型>()
+                {
+                    vModel = "searchParam.TYPE",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            登记人
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.REPORTER_NAME" v-on:on-click="SelSysuser" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            登记时间
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_TIME_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_TIME_END"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            审核人
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.VERIFY_NAME" v-on:on-click="SelSysuser_sh" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            审核时间
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.VERIFY_TIME_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.VERIFY_TIME_END"
+                });
+            }
+        </i-col>
+    </row>
 }
 @section pops{
     @{

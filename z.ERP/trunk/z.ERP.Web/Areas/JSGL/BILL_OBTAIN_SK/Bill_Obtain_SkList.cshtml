@@ -44,9 +44,17 @@
         <i-col span="6" class="RowText">
             <i-input v-model="searchParam.NIANYEU" />
         </i-col>
-        <i-col span="2" class="RowTitle">备注</i-col>
+        <i-col span="2" class="RowTitle">
+            付款方式
+        </i-col>
         <i-col span="6" class="RowText">
-            <i-input v-model="searchParam.DESCRIPTION" />
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.FKFSID",
+                    ServiceMothod = m => m.fkfs(),
+                });
+            }
         </i-col>
     </row>
     <row>
@@ -58,9 +66,9 @@
                      v-model="searchParam.REPORTER_NAME" v-on:on-click="SelSysuser" />
         </i-col>
         <i-col span="2" class="RowTitle">
-            登记时间_起
+            登记时间
         </i-col>
-        <i-col span="6"  class="RowText">
+        <i-col span="3"  class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -68,10 +76,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            登记时间_止
-        </i-col>
-        <i-col span="6"  class="RowText">
+        <i-col span="3"  class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -89,9 +94,9 @@
                      v-model="searchParam.VERIFY_NAME" v-on:on-click="SelSysuser_sh" />
         </i-col>
         <i-col span="2" class="RowTitle">
-            审核时间_起
+            审核时间
         </i-col>
-        <i-col span="6"  class="RowText">
+        <i-col span="3"  class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -99,10 +104,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            审核时间_止
-        </i-col>
-        <i-col span="6"  class="RowText">
+        <i-col span="3"  class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {

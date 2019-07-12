@@ -5,7 +5,7 @@
         { title: "商户名称", key: "MERCHANTNAME", width: 200 },
         { title: "收款年月", key: "NIANYUE", width: 115, sortable: true },
         { title: "状态", key: "STATUSMC", width: 80 },
-        { title: "分店编号", key: "BRANCHID", width: 90 },
+        { title: "付款方式", key: "FKFSNAME", width: 80 },
         { title: "分店名称", key: "BRANCHNAME", width: 200 },
         { title: "登记人", key: "REPORTER_NAME", width: 90 },
         { title: "登记时间", key: "REPORTER_TIME", width: 150, sortable: true },

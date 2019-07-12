@@ -1,12 +1,12 @@
 ﻿search.beforeVue = function () {
     search.screenParam.colDef = [
         { title: "单据编号", key: "BILLID", width: 105, sortable: true },
-        { title: "债权发生月", key: "NIANYUE", width: 115,sortable: true},
+        { title: "债权发生月", key: "NIANYUE", width: 115, sortable: true },
         { title: "收付实现月", key: "YEARMONTH", width: 115, sortable: true },
-        { title: "开始日期", key: "START_DATE", width: 150},
-        { title: "结束日期", key: "END_DATE", width: 150},
+        { title: "账单类型", key: "TYPEMC", width: 100, sortable: true },
+        { title: "开始日期", key: "START_DATE", width: 150 },
+        { title: "结束日期", key: "END_DATE", width: 150 },
         { title: "状态", key: "STATUSMC", width: 80 },
-        { title: "分店编号", key: "BRANCHID", width: 90 },
         { title: "分店名称", key: "BRANCHNAME", width: 100 },
         { title: "登记人", key: "REPORTER_NAME", width: 90 },
         { title: "登记时间", key: "REPORTER_TIME", width: 150, sortable: true },

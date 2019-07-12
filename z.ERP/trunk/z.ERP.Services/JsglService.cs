@@ -207,6 +207,7 @@ namespace z.ERP.Services
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
+            item.HasKey("TYPE", a => sql += $" and L.TYPE={a}");
             item.HasKey("REPORTER_NAME", a => sql += $" and L.REPORTER_NAME  LIKE '%{a}%'");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
             item.HasDateKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
@@ -218,6 +219,7 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<账单类型>("TYPE", "TYPEMC");
             return new DataGridResult(dt, count);
         }
 
@@ -317,13 +319,14 @@ namespace z.ERP.Services
 
         public DataGridResult GetBillObtainList(SearchItem item)
         {
-            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME " +
-                " FROM BILL_OBTAIN L,BRANCH B,MERCHANT C " +
-                "  WHERE L.BRANCHID = B.ID and L.MERCHANTID=C.MERCHANTID(+)  ";
+            string sql = $@"SELECT L.*,B.NAME BRANCHNAME,C.NAME MERCHANTNAME ,D.NAME FKFSNAME" +
+                " FROM BILL_OBTAIN L,BRANCH B,MERCHANT C ,FKFS D" +
+                "  WHERE L.FKFSID=D.ID AND L.BRANCHID = B.ID and L.MERCHANTID=C.MERCHANTID(+)  ";
             sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("TYPE", a => sql += $" and L.TYPE = {a}");
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
+            item.HasKey("FKFSID", a => sql += $" and L.FKFSID={a}");
             item.HasKey("MERCHANTID", a => sql += $" and L.MERCHANTID={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
             item.HasKey("REPORTER_NAME", a => sql += $" and L.REPORTER_NAME  LIKE '%{a}%'");

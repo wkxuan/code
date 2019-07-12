@@ -12,123 +12,42 @@
     editDetail.screenParam.srcPopGoods = __BaseUrl + "/" + "Pop/Pop/PopGoodsList/";
 
     editDetail.screenParam.colDef = [
-        //{ title: '商品ID', key: 'GOODSID', width: 100 },
         { title: "商品代码", key: "GOODSDM", width: 100 },
         { title: '商品名称', key: 'NAME', width: 150 },
 
         {
-            title: '扣率降点(%)', key: 'DOWN_RATE', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.DOWN_RATE, type: 'number'
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            
-                            if (editDetail.dataParam.RATE_ADJUST_ITEM[params.index].DOWN_RATE != event.target.value) {
-                                editDetail.dataParam.RATE_ADJUST_ITEM[params.index].UP_RATE = 0;
-                                editDetail.dataParam.RATE_ADJUST_ITEM[params.index].DOWN_RATE = event.target.value == "" || event.target.value == undefined ? 0 : event.target.value;
-                                editDetail.dataParam.RATE_ADJUST_ITEM[params.index].RATE_NEW = parseFloat(editDetail.dataParam.RATE_ADJUST_ITEM[params.index].RATE_OLD) - parseFloat(editDetail.dataParam.RATE_ADJUST_ITEM[params.index].DOWN_RATE);
-                            }
-                           }
-                    },
-                })
-            },
+            title: '扣率降点(%)', key: 'DOWN_RATE', width: 120, cellType: "input", cellDataType: "number",
+            onChange: function (index, row, data) {
+                editDetail.dataParam.RATE_ADJUST_ITEM[index].UP_RATE = 0;
+                editDetail.dataParam.RATE_ADJUST_ITEM[index].DOWN_RATE = row.DOWN_RATE == "" || row.DOWN_RATE == undefined ? 0 : row.DOWN_RATE;
+                editDetail.dataParam.RATE_ADJUST_ITEM[index].RATE_NEW = parseFloat(editDetail.dataParam.RATE_ADJUST_ITEM[index].RATE_OLD) - parseFloat(editDetail.dataParam.RATE_ADJUST_ITEM[index].DOWN_RATE);
+            }
         },
         {
-            title: '扣率升点(%)', key: 'UP_RATE', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.UP_RATE, type: 'number'
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            if (editDetail.dataParam.RATE_ADJUST_ITEM[params.index].UP_RATE != event.target.value){
-                                editDetail.dataParam.RATE_ADJUST_ITEM[params.index].DOWN_RATE = 0;
-                                editDetail.dataParam.RATE_ADJUST_ITEM[params.index].UP_RATE = event.target.value == "" || event.target.value == undefined ? 0 : event.target.value;
-                                editDetail.dataParam.RATE_ADJUST_ITEM[params.index].RATE_NEW = parseFloat(editDetail.dataParam.RATE_ADJUST_ITEM[params.index].RATE_OLD) + parseFloat(editDetail.dataParam.RATE_ADJUST_ITEM[params.index].UP_RATE);
-                            }
-                     }
-                    },
-                })
-            },
+            title: '扣率升点(%)', key: 'UP_RATE', width: 120, cellType: "input", cellDataType: "number",
+            onChange: function (index, row, data) {
+                editDetail.dataParam.RATE_ADJUST_ITEM[index].DOWN_RATE = 0;
+                editDetail.dataParam.RATE_ADJUST_ITEM[index].UP_RATE = row.UP_RATE == "" || row.UP_RATE == undefined ? 0 : row.UP_RATE;
+                editDetail.dataParam.RATE_ADJUST_ITEM[index].RATE_NEW = parseFloat(editDetail.dataParam.RATE_ADJUST_ITEM[index].RATE_OLD) + parseFloat(editDetail.dataParam.RATE_ADJUST_ITEM[index].UP_RATE);
+            }
         },
         {
-            title: '扣率下限(%)', key: 'LIMIT_DOWN', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.LIMIT_DOWN, type: 'number'
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            //editDetail.dataParam.RATE_ADJUST_ITEM[params.index].LIMIT_DOWN = event.target.value;
-                            editDetail.dataParam.RATE_ADJUST_ITEM[params.index].LIMIT_DOWN = event.target.value == "" || event.target.value == undefined ? 0 : event.target.value;
-                        }
-                    },
-                })
-            },
+            title: '扣率下限(%)', key: 'LIMIT_DOWN', width: 120, cellType: "input", cellDataType: "number",
+            onChange: function (index, row, data) {
+                editDetail.dataParam.RATE_ADJUST_ITEM[index].LIMIT_DOWN = row.LIMIT_DOWN == "" || row.LIMIT_DOWN == undefined ? 0 : row.LIMIT_DOWN;
+            }
         },
         {
-            title: '扣率上限(%)', key: 'LIMIT_UP', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.LIMIT_UP, type: 'number'
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            //editDetail.dataParam.RATE_ADJUST_ITEM[params.index].LIMIT_UP = event.target.value;
-                            editDetail.dataParam.RATE_ADJUST_ITEM[params.index].LIMIT_UP = event.target.value == "" || event.target.value == undefined ? 0 : event.target.value;
-                        }
-                    },
-                })
-            },
+            title: '扣率上限(%)', key: 'LIMIT_UP', width: 120, cellType: "input", cellDataType: "number",
+            onChange: function (index, row, data) {
+                editDetail.dataParam.RATE_ADJUST_ITEM[index].LIMIT_UP = row.LIMIT_UP == "" || row.LIMIT_UP == undefined ? 0 : row.LIMIT_UP;
+            }
         },
-
-        //{
-        //    title: '新结算扣率(%)', key: 'RATE_NEW', width: 120,
-        //    render: function (h, params) {
-        //        return h('Input', {
-        //            props: {
-        //                value: params.row.RATE_NEW,type:'number'
-        //            },
-        //            on: {
-        //                'on-blur': function (event) {
-        //                    editDetail.dataParam.RATE_ADJUST_ITEM[params.index].RATE_NEW = event.target.value;
-        //                }
-        //            },
-        //        })
-        //    },
-        //},
         {
             title: '新扣率(%)', key: 'RATE_NEW', width: 120
         },
         {
             title: '原扣率(%)', key: 'RATE_OLD', width: 120
-        },
-        {
-            title: '操作',
-            key: 'action',
-            width: 80,
-            align: 'center',
-            render: function (h, params) {
-                return h('div',
-                    [
-                    h('Button', {
-                        props: { type: 'primary', size: 'small', disabled: false },
-
-                        style: { marginRight: '50px' },
-                        on: {
-                            click: function (event) {
-                                editDetail.dataParam.RATE_ADJUST_ITEM.splice(params.index, 1);
-                            }
-                        },
-                    }, '删除')
-                    ]);
-            }
         }
     ]
     if (!editDetail.dataParam.RATE_ADJUST_ITEM) {
@@ -153,7 +72,7 @@ editDetail.otherMethods = {
         editDetail.screenParam.showPopGoods = true;
     },
     delColGoods: function () {
-        var selectton = this.$refs.selectBrand.getSelection();
+        var selectton = this.$refs.refGroup.getSelection();
         if (selectton.length == 0) {
             iview.Message.info("请选中要删除的商品!");
         } else {
@@ -212,7 +131,6 @@ editDetail.otherMethods = {
 
 ///接收弹窗返回参数
 editDetail.popCallBack = function (data) {
-
     if (editDetail.screenParam.showPopGoods) {
         editDetail.screenParam.showPopGoods = false;       
         for (var i = 0; i < data.sj.length; i++) {
@@ -230,7 +148,17 @@ editDetail.popCallBack = function (data) {
         }
     }
 }
-
+//数据初始化
+editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.BRANCHID = null;
+    editDetail.dataParam.STARTTIME = null;
+    editDetail.dataParam.ENDTIME = null;
+    editDetail.dataParam.STATUS = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.RATE_ADJUST_ITEM = [];
+}
+//按钮初始化
 editDetail.mountedInit = function () {
     editDetail.btnConfig = [{
         id: "add",
@@ -254,7 +182,7 @@ editDetail.mountedInit = function () {
         authority: "10500702",
         fun: function () {
             _.Ajax('ExecData', {
-                Data: { BILLID: editDetail.dataParam.BILLID },
+                Data: { BILLID: editDetail.dataParam.ID },
             }, function (data) {
                 iview.Message.info("审核成功");
                 setTimeout(function () {
@@ -291,10 +219,6 @@ editDetail.IsValidSave = function () {
         iview.Message.info("结束时间不能小于开始时间！");
         return false;
     }
-
-
-
-
     if (editDetail.dataParam.RATE_ADJUST_ITEM.length == 0) {
         iview.Message.info("请录入商品明细!");
         return false;

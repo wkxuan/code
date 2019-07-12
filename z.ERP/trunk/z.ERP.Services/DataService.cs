@@ -417,18 +417,11 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
-        public object GetPay(PAYEntity Data)
+        public DataTable GetPay()
         {
-            string sql = " SELECT  * FROM " +
-                "  PAY A" +
-                "  WHERE  1 = 1 ";
-            if (!Data.PAYID.IsEmpty())
-                sql += " AND A.PAYID='" + Data.PAYID + "'";
+            string sql = $@"SELECT * FROM PAY WHERE VOID_FLAG=1 ORDER BY  PAYID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
-            return new
-            {
-                dt = dt.ToOneLine()
-            };
+            return dt;
         }
 
         public List<SelectItem> comPlainDept()

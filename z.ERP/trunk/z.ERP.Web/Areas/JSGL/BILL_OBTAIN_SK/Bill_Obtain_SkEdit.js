@@ -26,50 +26,15 @@
     { title: '应收金额', key: 'MUST_MONEY', width: 100 },
     { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
     {
-        title: "付款金额", key: 'RECEIVE_MONEY', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.RECEIVE_MONEY
-                },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.BILL_OBTAIN_ITEM[params.index].RECEIVE_MONEY = event.target.value;
-                        let sumJE = 0;
-                        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
-                            sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
-                        }
-                        editDetail.dataParam.ALL_MONEY = sumJE;
-                    }
-                },
-            })
-        },
-    },
-    {
-        title: '操作',
-        key: 'action',
-        width: 80,
-        align: 'center',
-        render: function (h, params) {
-            return h('div',
-                [
-                h('Button', {
-                    props: { type: 'primary', size: 'small', disabled: false },
-
-                    style: { marginRight: '50px' },
-                    on: {
-                        click: function (event) {
-                            editDetail.dataParam.BILL_OBTAIN_ITEM.splice(params.index, 1);
-                        let sumJE = 0;
-                        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
-                            sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
-                        }
-                        editDetail.dataParam.ALL_MONEY = sumJE;
-                        }
-                    },
-                }, '删除')
-                ]);
+        title: "付款金额", key: 'RECEIVE_MONEY', width: 100, cellType: "input", cellDataType: "number",
+        onChange: function (index, row, data) {
+            editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY = row.RECEIVE_MONEY;
+        let sumJE = 0;
+        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
+            sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
         }
+        editDetail.dataParam.ALL_MONEY = sumJE;
+    }
     }
     ];
 
@@ -87,28 +52,7 @@
         },
         { title: "不含税金额", key: "NOVATAMOUNT", width: 100 },
         { title: "增值税金额", key: "VATAMOUNT", width: 100 },
-        { title: "发票金额", key: "INVOICEAMOUNT", width: 100 },
-        {
-            title: '操作',
-            key: 'action',
-            width: 80,
-            align: 'center',
-            render: function (h, params) {
-                return h('div',
-                    [
-                    h('Button', {
-                        props: { type: 'primary', size: 'small', disabled: false },
-
-                        style: { marginRight: '50px' },
-                        on: {
-                            click: function (event) {
-                                editDetail.dataParam.BILL_OBTAIN_INVOICE.splice(params.index, 1);
-                            }
-                        },
-                    }, '删除')
-                    ]);
-            }
-        }
+        { title: "发票金额", key: "INVOICEAMOUNT", width: 100 }
     ];
 
 
@@ -144,6 +88,24 @@ editDetail.showOne = function (data, callback) {
         callback && callback(data);
     });
 }
+//新增初始化
+editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.BRANCHID = null;
+    editDetail.dataParam.STATUSMC = "未审核";
+    editDetail.dataParam.NIANYUE = null;
+    editDetail.dataParam.PAYID = null;
+    editDetail.dataParam.PAYNAME = null;
+    editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.FKFSID = null;
+    editDetail.dataParam.MERCHANTNAME = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.MERCHANT_MONEY = 0;
+    editDetail.dataParam.ALL_MONEY = 0;
+    editDetail.dataParam.ADVANCE_MONEY = 0;
+    editDetail.dataParam.BILL_OBTAIN_ITEM = [];
+    editDetail.dataParam.BILL_OBTAIN_INVOICE = [];
+}
 
 ///html中绑定方法
 editDetail.otherMethods = {
@@ -167,7 +129,25 @@ editDetail.otherMethods = {
         editDetail.screenParam.showPopBill = true;
         editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID, FEE_ACCOUNTID: editDetail.dataParam.FEE_ACCOUNT_ID, WFDJ: 1 };
     },
-
+    delBill: function () {
+        var selectton = this.$refs.refBill.getSelection();
+        if (selectton.length == 0) {
+            iview.Message.info("请选中要删除的数据!");
+        } else {
+            for (var i = 0; i < selectton.length; i++) {
+                for (var j = 0; j < editDetail.dataParam.BILL_OBTAIN_ITEM.length; j++) {
+                    if (editDetail.dataParam.BILL_OBTAIN_ITEM[j].FINAL_BILLID == selectton[i].FINAL_BILLID) {
+                        editDetail.dataParam.BILL_OBTAIN_ITEM.splice(j, 1);
+                    }
+                }
+            }
+            let sumJE = 0;
+            for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
+                sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
+            }
+            editDetail.dataParam.ALL_MONEY = sumJE;
+        }
+    },
     SelInvoice: function () {
         if (!editDetail.dataParam.BRANCHID) {
             iview.Message.info("请选择分店!");
@@ -179,7 +159,20 @@ editDetail.otherMethods = {
         };
         editDetail.screenParam.showPopInvoice = true;       
     },
-
+    delInvoice: function () {
+        var selectton = this.$refs.refINVOICE.getSelection();
+        if (selectton.length == 0) {
+            iview.Message.info("请选中要删除的数据!");
+        } else {
+            for (var i = 0; i < selectton.length; i++) {
+                for (var j = 0; j < editDetail.dataParam.BILL_OBTAIN_INVOICE.length; j++) {
+                    if (editDetail.dataParam.BILL_OBTAIN_INVOICE[j].INVOICENUMBER == selectton[i].INVOICENUMBER) {
+                        editDetail.dataParam.BILL_OBTAIN_INVOICE.splice(j, 1);
+                    }
+                }
+            }
+        }
+    },
     YfkChange: function () {
         if (parseFloat(editDetail.dataParam.ADVANCE_MONEY) > parseFloat(editDetail.dataParam.MERCHANT_MONEY)) {
             iview.Message.info("预付款金额不能大于商户余额!");
