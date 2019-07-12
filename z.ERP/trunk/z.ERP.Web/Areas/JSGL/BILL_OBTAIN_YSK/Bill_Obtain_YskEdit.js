@@ -36,6 +36,20 @@ editDetail.popCallBack = function (data) {
         }
     }
 };
+
+editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.BRANCHID = null;
+    editDetail.dataParam.STATUSMC = "未审核";
+    editDetail.dataParam.FKFSID = null;
+    editDetail.dataParam.FEE_ACCOUNT_ID = null;
+    editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.MERCHANTNAME = null;
+    editDetail.dataParam.NIANYUE = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.ALL_MONEY = 0;
+}
+
 editDetail.mountedInit = function () {
     editDetail.btnConfig = [{
         id: "add",

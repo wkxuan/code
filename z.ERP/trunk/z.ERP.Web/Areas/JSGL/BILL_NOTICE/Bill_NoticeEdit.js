@@ -20,42 +20,7 @@
     { title: '收费项目', key: 'TERMMC', width: 200 },
     { title: "应收金额", key: 'MUST_MONEY', width: 100 },
     { title: "未付金额", key: 'UNPAID_MONEY', width: 100 },
-    {
-        title: "通知金额", key: 'NOTICE_MONEY', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.NOTICE_MONEY
-                },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.BILL_NOTICE_ITEM[params.index].NOTICE_MONEY = event.target.value;
-                    }
-                },
-            })
-        },
-    },
-    {
-        title: '操作',
-        key: 'action',
-        width: 80,
-        align: 'center',
-        render: function (h, params) {
-            return h('div',
-                [
-                h('Button', {
-                    props: { type: 'primary', size: 'small', disabled: false },
-
-                    style: { marginRight: '50px' },
-                    on: {
-                        click: function (event) {
-                            editDetail.dataParam.BILL_NOTICE_ITEM.splice(params.index, 1);
-                        }
-                    },
-                }, '删除')
-                ]);
-        }
-    }
+    { title: "通知金额", key: 'NOTICE_MONEY', width: 100, cellType: "input", cellDataType: "number" }
     ];
     if (!editDetail.dataParam.BILL_NOTICE_ITEM) {
         editDetail.dataParam.BILL_NOTICE_ITEM = [{
@@ -132,7 +97,20 @@ editDetail.otherMethods = {
             FEE_ACCOUNTID: editDetail.dataParam.FEE_ACCOUNTID
         };
     },
-
+    delBill: function () {
+        var selectton = this.$refs.refGroup.getSelection();
+        if (selectton.length == 0) {
+            iview.Message.info("请选中要删除的数据!");
+        } else {
+            for (var i = 0; i < selectton.length; i++) {
+                for (var j = 0; j < editDetail.dataParam.BILL_NOTICE_ITEM.length; j++) {
+                    if (editDetail.dataParam.BILL_NOTICE_ITEM[j].FINAL_BILLID == selectton[i].FINAL_BILLID) {
+                        editDetail.dataParam.BILL_NOTICE_ITEM.splice(j, 1);
+                    }
+                }
+            }
+        }
+    },
     chgTYPE: function () {
         Vue.set(editDetail.dataParam, "BILL_NOTICE_ITEM", []);
     },
@@ -179,6 +157,21 @@ editDetail.popCallBack = function (data) {
         }
     }
 }
+//数据初始化
+editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.BRANCHID = null;
+    editDetail.dataParam.STATUSMC = "未审核";
+    editDetail.dataParam.NIANYUE = null;
+    editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.MERCHANTNAME = null;
+    editDetail.dataParam.FEE_ACCOUNTID = null;
+    editDetail.dataParam.TYPE = null;
+    editDetail.dataParam.CONTRACTID = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.BILL_NOTICE_ITEM = [];
+}
+//按钮初始化
 editDetail.mountedInit = function () {
     editDetail.btnConfig = [{
         id: "add",

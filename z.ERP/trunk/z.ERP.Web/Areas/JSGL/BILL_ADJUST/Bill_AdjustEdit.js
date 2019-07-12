@@ -8,167 +8,30 @@ editDetail.beforeVue = function () {
 
     //初始化弹窗所要传递参数
     editDetail.screenParam.ParentFeeSubject = {};
-    editDetail.screenParam.showPopBill = false;
     editDetail.screenParam.showPopFeeSubject = false;
     editDetail.screenParam.showPopContract = false;
-    editDetail.screenParam.srcPopBill = __BaseUrl + "/" + "Pop/Pop/PopBillList/";
     editDetail.screenParam.srcPopFeeSubject = __BaseUrl + "/" + "Pop/Pop/PopFeeSubjectList/";
     editDetail.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
     editDetail.screenParam.popParam = {};
 
     ///账单类型初始化默认给1
     editDetail.dataParam.TYPE = 1;
-    editDetail.screenParam.colDef = [
-                {
-                    title: '选择',
-                    key: 'action',
-                    width: 70,
-                    align: 'center',
-                    render: function (h, params) {
-                        return h('div', [
-                            h('Button', {
-                                props: {
-                                    type: 'primary',
-                                    size: 'small'
-                                },
-                                style: {
-                                    marginRight: '5px'
-                                },
-                                on: {
-                                    click: function (event) {
-                                        editDetail.screenParam.SelContract(params.index);
-                                    }
-                                }
-                            }, '...')
-                        ]);
-                    }
-                },
-                {
-                    title: "租约号", key: 'CONTRACTID', width: 150,
-                    render: function (h, params) {
-                        return h('Input', {
-                            props: {
-                                value: params.row.CONTRACTID
-                            },
-                            on: {
-                                //'on-blur': function (event) {
-                                //    editDetail.dataParam.BILL_ADJUST_ITEM[params.index].CONTRACTID = event.target.value;
-                                //}
-                                'on-enter': function (event) {
-                                    _self = this;
-                                    editDetail.dataParam.BILL_ADJUST_ITEM[params.index].CONTRACTID = event.target.value.replace(/\s+/g, "");
-                                    _.Ajax('GetContract', {
-                                        Data: { CONTRACTID: event.target.value.replace(/\s+/g, "") }
-                                    }, function (data) {
-                                        if (data.contract)
-                                        {
-                                            Vue.set(editDetail.dataParam.BILL_ADJUST_ITEM[params.index], 'MERCHANTNAME', data.contract[0].SHMC)
-                                        } else {
-                                            iview.Message.info('当前合同不存在!');
-                                        }
-                                    });
-                                }
-                            },
-                        })
-                    },
-                },
-    { title: "商户", key: 'MERCHANTNAME', width: 200 },
-        {
-            title: '选择',
-            key: 'action',
-            width: 70,
-            align: 'center',
-            render: function (h, params) {
-                return h('div', [
-                    h('Button', {
-                        props: {
-                            type: 'primary',
-                            size: 'small'
-                        },
-                        style: {
-                            marginRight: '5px'
-                        },
-                        on: {
-                            click: function (event) {
-                                editDetail.screenParam.SelFeeSubject(params.index);
-                            }
-                        }
-                    }, '...')
-                ]);
+    _.Ajax('GetFEESUBJECT', {
+        1: 1
+    }, function (data) {
+        let TERMList = $.map(data, item => {
+            return {
+                label: item.Value,
+                value: item.Key
             }
-        },
-    { title: "收费项目", key: 'TERMNAME', width: 150 },
-    {
-        title: "调整金额", key: 'MUST_MONEY', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.MUST_MONEY
-                },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.BILL_ADJUST_ITEM[params.index].MUST_MONEY = event.target.value;
-                    }
-                },
-            })
-        },
-    },
-      {
-          title: '操作',
-          key: 'action',
-          width: 80,
-          align: 'center',
-          render: function (h, params) {
-              return h('div',
-                  [
-                  h('Button', {
-                      props: { type: 'primary', size: 'small', disabled: false },
-
-                      style: { marginRight: '50px' },
-                      on: {
-                          click: function (event) {
-                              editDetail.dataParam.BILL_ADJUST_ITEM.splice(params.index, 1);
-                          }
-                      },
-                  }, '删除')
-                  ]);
-          }
-      }
-    ];
-    if (!editDetail.dataParam.BILL_ADJUST_ITEM) {
-        editDetail.dataParam.BILL_ADJUST_ITEM = [{
-            CONTRACTID: "",
-            MERCHANTNAME: "",
-            TERMID: "",
-            TERMNAME: "",
-            MUST_MONEY: "",
-        }]
-    }
-
-
-    /////////js中调用方法
-    ///添加一行
-    editDetail.screenParam.addCol = function () {
-        var temp = editDetail.dataParam.BILL_ADJUST_ITEM || [];
-        temp.push({
-            CONTRACTID: "",
-            MERCHANTNAME: "",
-            TERMID: "",
-            TERMNAME: "",
-            MUST_MONEY: "",
         });
-        editDetail.dataParam.BILL_ADJUST_ITEM = temp;
-    }
-    ///选择收费项目
-    editDetail.screenParam.SelFeeSubject = function (inx) {
-        index = inx;
-        editDetail.screenParam.showPopFeeSubject = true;
-    }
-    ///选择合同
-    editDetail.screenParam.SelContract = function (inx) {
-        index = inx;
-        editDetail.screenParam.showPopContract = true;
-    }
+        editDetail.screenParam.colDef = [
+            { title: "租约号", key: 'CONTRACTID', width: 150 },
+            { title: "商户名称", key: 'MERCHANTNAME', width: 150 },
+            { title: "收费项目", key: 'TERMID', width: 150, cellType: "select", enableCellEdit: true, selectList: TERMList },
+            { title: "调整金额", key: 'MUST_MONEY', width: 100, cellType: "input", cellDataType: "number" }
+        ];
+    });
 }
 
 editDetail.showOne = function (data, callback) {
@@ -183,56 +46,53 @@ editDetail.showOne = function (data, callback) {
 
 ///html中绑定方法
 editDetail.otherMethods = {
-    SelBill: function () {
-        editDetail.screenParam.showPopBill = true;
-        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
-    }
+    srchContract: function () {
+        editDetail.screenParam.showPopContract = true;
+    },
+    delContract: function () {
+        var selectton = this.$refs.refGroup.getSelection();
+        if (selectton.length == 0) {
+            iview.Message.info("请选中要删除的数据!");
+        } else {
+            for (var i = 0; i < selectton.length; i++) {
+                for (var j = 0; j < editDetail.dataParam.BILL_ADJUST_ITEM.length; j++) {
+                    if (editDetail.dataParam.BILL_ADJUST_ITEM[j].CONTRACTID == selectton[i].CONTRACTID && editDetail.dataParam.BILL_ADJUST_ITEM[j].TERMID == selectton[i].TERMID) {
+                        editDetail.dataParam.BILL_ADJUST_ITEM.splice(j, 1);
+                    }
+                }
+            }
+        }
+    },
 }
 
 ///接收弹窗返回参数
 editDetail.popCallBack = function (data) {
-    if (editDetail.screenParam.showPopBill) {
-        editDetail.screenParam.showPopBill = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            editDetail.dataParam.BILL_ADJUST_ITEM.push(data.sj[i]);
-        }
-    }
-    else if (editDetail.screenParam.showPopFeeSubject) {
-        editDetail.screenParam.showPopFeeSubject = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            //for (var i = 0; i < data.sj.length; i++) {
-                if ((editDetail.dataParam.BILL_ADJUST_ITEM.length == 0)
-                    || (editDetail.dataParam.BILL_ADJUST_ITEM.length > 0
-                    && editDetail.dataParam.BILL_ADJUST_ITEM.filter(function (item) {
-                    return parseInt(item.TERMID) == data.sj[i].TERMID
-                    && item.CONTRACTID == editDetail.dataParam.BILL_ADJUST_ITEM[index].CONTRACTID;
-                }).length == 0))
-                    if (i == 0)
-                    {
-                        editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMID = data.sj[i].TERMID;
-                        editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMNAME = data.sj[i].NAME;
-                    }
-                    else {                   
-                    editDetail.dataParam.BILL_ADJUST_ITEM.push({
-                        CONTRACTID: editDetail.dataParam.BILL_ADJUST_ITEM[index].CONTRACTID,
-                        MERCHANTNAME: editDetail.dataParam.BILL_ADJUST_ITEM[index].MERCHANTNAME,
-                        TERMID :data.sj[i].TERMID,
-                        TERMNAME : data.sj[i].NAME
-                    });
-                    }
-            //}
-            //editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMID = data.sj[i].TERMID;
-            //editDetail.dataParam.BILL_ADJUST_ITEM[index].TERMNAME = data.sj[i].NAME;
-        }
-    }
-    else if (editDetail.screenParam.showPopContract) {
+    if (editDetail.screenParam.showPopContract) {
         editDetail.screenParam.showPopContract = false;
         for (var i = 0; i < data.sj.length; i++) {
-            editDetail.dataParam.BILL_ADJUST_ITEM[index].CONTRACTID = data.sj[i].CONTRACTID;
-            editDetail.dataParam.BILL_ADJUST_ITEM[index].MERCHANTNAME = data.sj[i].MERCHANTNAME;
+            editDetail.dataParam.BILL_ADJUST_ITEM.push({
+                CONTRACTID: data.sj[i].CONTRACTID,
+                MERCHANTNAME: data.sj[i].MERCHANTNAME,
+                TERMID: "",
+                MUST_MONEY: 0,
+            });
         }
-    }
+    };
 }
+//数据初始化
+editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.NIANYUE = null;
+    editDetail.dataParam.BRANCHID = null;
+    editDetail.dataParam.STATUSMC = "未审核";
+    editDetail.dataParam.TYPE = null;
+    editDetail.dataParam.YEARMONTH = null;
+    editDetail.dataParam.START_DATE = null;
+    editDetail.dataParam.END_DATE = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.BILL_ADJUST_ITEM = [];
+}
+//按钮初始化
 editDetail.mountedInit = function () {
     editDetail.btnConfig = [{
         id: "add",

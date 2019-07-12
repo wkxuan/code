@@ -56,9 +56,9 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
         {
             service.SpglService.ExecSaleBillData(Data);
         }
-        public UIResult GetPay(PAYEntity Data)
+        public UIResult GetPay()
         {
-            return new UIResult(service.DataService.GetPay(Data));
+            return new UIResult(service.DataService.GetPay());
         }
 
         public UIResult SearchKind()

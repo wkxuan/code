@@ -20,74 +20,23 @@
     editDetail.dataParam.CASHIERID = null;
     editDetail.dataParam.CLERKID = null;
     editDetail.dataParam.DESCRIPTION = null;
-
-    editDetail.screenParam.colDef = [        
-        { title: "商品代码", key: "GOODSDM", width: 150, },
-        { title: '商品名称', key: 'NAME', width: 100 },
-        { title: '商铺代码', key: 'CODE', width: 100 },
-        {
-            title: '收款方式', key: 'PAYID', width: 100,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.PAYID
-                    },
-                    on: {
-                        'on-enter': function (event) {
-                            _self = this;
-                            editDetail.dataParam.SALEBILLITEM[params.index].PAYID = event.target.value;
-                            _.Ajax('GetPay', {
-                                Data: { PAYID: event.target.value }
-                            }, function (data) {
-                                if (data.dt) {
-                                    Vue.set(editDetail.dataParam.SALEBILLITEM[params.index], 'PAYNAME', data.dt.NAME);
-                                } else {
-                                    iview.Message.info('当前收款方式不存在!');
-                                }
-                            });
-                        }
-                    },
-                })
-            },
-        },
-        { title: '收款方式名称', key: 'PAYNAME', width: 100 },
-        {
-            title: '收款金额', key: 'AMOUNT', width: 100,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.AMOUNT
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            editDetail.dataParam.SALEBILLITEM[params.index].AMOUNT = event.target.value;
-                        }
-                    },
-                })
-            },
-        },
-        {
-            title: '操作',
-            key: 'action',
-            width: 80,
-            align: 'center',
-            render: function (h, params) {
-                return h('div',
-                    [
-                    h('Button', {
-                        props: { type: 'primary', size: 'small', disabled: false },
-
-                        style: { marginRight: '50px' },
-                        on: {
-                            click: function (event) {
-                                editDetail.dataParam.SALEBILLITEM.splice(params.index, 1);
-                            }
-                        },
-                    }, '删除')
-                    ]);
+    _.Ajax('GetPay', {
+        1:1
+    }, function (data) {
+        let payList = $.map(data, item => {
+            return {
+                label: item.NAME,
+                value: item.PAYID
             }
-        }
-    ]
+        });
+        editDetail.screenParam.colDef = [        
+            { title: "商品代码", key: "GOODSDM", width: 150, },
+            { title: '商品名称', key: 'NAME', width: 100 },
+            { title: '商铺代码', key: 'CODE', width: 100 },
+            { title: '收款方式', key: 'PAYID', width: 100,cellType: "select", enableCellEdit: true, selectList: payList},
+            { title: '收款金额', key: 'AMOUNT', width: 100, cellType: "input", cellDataType: "number"}
+        ]
+    });
     if (!editDetail.dataParam.SALEBILLITEM) {
         editDetail.dataParam.SALEBILLITEM = [{
         }]
@@ -126,7 +75,7 @@ editDetail.otherMethods = {
         editDetail.screenParam.popParam = { YYY: editDetail.dataParam.CLERKID, STATUS:"2"};
     },
     delColGoods: function () {
-        var selectton = this.$refs.selectBrand.getSelection();
+        var selectton = this.$refs.refGroup.getSelection();
         if (selectton.length == 0) {
             iview.Message.info("请选中要删除的商品!");
         } else {
@@ -140,7 +89,23 @@ editDetail.otherMethods = {
         }
     }
 }
-
+//数据初始化
+editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.BRANCHID = null;
+    editDetail.dataParam.POSNO = null;
+    editDetail.dataParam.ACCOUNT_DATE = null;
+    editDetail.dataParam.STATUS = null;
+    editDetail.dataParam.CASHIERID = null;
+    editDetail.dataParam.CLERKID = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.CASHIERID = null;
+    editDetail.dataParam.SYYMC = null;
+    editDetail.dataParam.CLERKID = null;
+    editDetail.dataParam.YYYMC = null;
+    editDetail.dataParam.SALEBILLITEM = [];
+}
+//按钮初始化
 editDetail.mountedInit = function () {
     editDetail.btnConfig = [{
         id: "add",
@@ -212,8 +177,7 @@ editDetail.popCallBack = function (data) {
                 CODE: data.sj[i].CODE,
                 SHOPID: data.sj[i].SHOPID,
                 QUANTITY: 1,
-                PAYID: 1,
-                PAYNAME: '现金',
+                PAYID: null,
                 AMOUNT:0
             });
         }

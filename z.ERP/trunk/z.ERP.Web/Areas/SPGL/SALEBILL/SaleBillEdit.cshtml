@@ -23,18 +23,6 @@
         <i-col span="6" class="RowText">
             <i-input v-model="dataParam.POSNO" disabled="disabled" placeholder="保存完自动写入，需要提前定义" />
         </i-col>
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="6" class="RowText">
-            @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                    Enable = true
-                });
-            }
-        </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
@@ -43,7 +31,7 @@
         </i-col>
         <i-col span="6" class="RowText">
             <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="dataParam.SYYMC" v-on:on-click="SelSyysuser" />
+                     v-model="dataParam.SYYMC" v-on:on-click="SelSyysuser" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
@@ -51,7 +39,7 @@
         </i-col>
         <i-col span="6" class="RowText">
             <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="dataParam.YYYMC" v-on:on-click="SelYyysuser" />
+                     v-model="dataParam.YYYMC" v-on:on-click="SelYyysuser" v-bind:disabled="!disabled" />
         </i-col>
     </row>
     <row>
@@ -65,56 +53,36 @@
 
 }
 @section detailParam{
-    <row>
-        <i-col span="24">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "srchColGoods",
-                    Text = "选择商品",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-        </i-col>
+    <row v-if="disabled">
+        <i-button type="primary" v-on:click="srchColGoods">选择</i-button>
+        <i-button type="error" v-on:click="delColGoods">删除</i-button>
     </row>
     <row>
         <i-col span="24">
-            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300"
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
                       v-bind:data="dataParam.SALEBILLITEM" v-bind:disabled="!disabled" ref="refGroup">
         </i-col>
     </row>
 
 }
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopSyyuser",
-                    Caption = "选择人员",
-                    Width = "800",
-                    Src = "screenParam.srcPopSyyuser",
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopGoods",
-                    Caption = "选择商品",
-                    Width = "900",
-                    Src = "screenParam.srcPopGoods"
-                });
-            }
-        </i-col>
-    </row>
-
-
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopSyyuser",
+            Caption = "选择人员",
+            Width = "800",
+            Src = "screenParam.srcPopSyyuser",
+        });
+    }
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopGoods",
+            Caption = "选择商品",
+            Width = "900",
+            Src = "screenParam.srcPopGoods"
+        });
+    }
 }
 
