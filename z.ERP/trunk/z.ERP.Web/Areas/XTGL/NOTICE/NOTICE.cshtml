@@ -21,6 +21,27 @@
 }
 @section search{
     <row>
+        <i-col span="5" class="RowTitle">通知分店</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+        <i-col span="5" class="RowTitle">通知编号</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.ID"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
         <i-col span="5" class="RowTitle">通知标题</i-col>
         <i-col span="6">
             @{

@@ -326,9 +326,10 @@ namespace z.ERP.Services
         }
         public DataGridResult GetStaion(SearchItem item)
         {
-            string sql = $@"select S.*,P.CODE SHOPCODE from STATION S,SHOP P where S.SHOPID=P.SHOPID(+) ";
+            string sql = $@"select S.*,P.CODE SHOPCODE ,B.NAME BRANCHNAME from STATION S,SHOP P,BRANCH B where S.BRANCHID=B.ID AND S.SHOPID=P.SHOPID(+) ";
             sql += " AND S.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH = '{a}'");
+            item.HasKey("BRANCHID",a=> sql += $" and S.BRANCHID = '{a}'");
             sql += "order by STATIONBH";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -971,6 +972,7 @@ namespace z.ERP.Services
             item.HasKey("ID", a => sql += $" and ID = '{a}'");
             item.HasKey("TITLE", a => sql += $" and TITLE LIKE '%{a}%'");
             item.HasKey("STATUS", a => sql += $" and STATUS = '{a}'");
+            item.HasKey("BRANCHID", a => sql += $"AND exists(select 1 from NOTICE_BRANCH WHERE BRANCHID ='{a}' AND N.ID=NOTICE_BRANCH.NOTICEID)");
             sql += " order by ID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
