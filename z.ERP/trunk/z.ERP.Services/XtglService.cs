@@ -598,9 +598,11 @@ namespace z.ERP.Services
 
         public DataGridResult GetFeeAccount(SearchItem item)
         {
-            string sql = $@"select * from fee_account F where 1=1 ";
+            string sql = $@"select F.*,B.NAME BRANCHNAME from fee_account F,BRANCH B where F.BRANCHID=B.ID ";
             sql += " AND F.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("ID", a => sql += $" and F.ID = '{a}'");
+            item.HasKey("BRANCHID", a => sql += $" and F.BRANCHID = '{a}'");
+            item.HasKey("NAME", a => sql += $" and F.NAME LIKE '%{a}%'");
             sql += " order by F.ID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

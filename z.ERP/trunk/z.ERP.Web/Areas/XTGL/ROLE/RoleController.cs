@@ -15,8 +15,8 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
             ViewBag.Title = "角色信息";
             return View(new SearchRender()
             {
-                Permission_Add = "10200701",
-                Permission_Del = "10200701",
+                Permission_Add = "10100701",
+                Permission_Del = "10100701",
                 Permission_Edit = "10100702",
 
             });
@@ -46,7 +46,7 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
         }
 
 
-        [Permission("102007")]
+        [Permission("101007")]
         public string Save(ROLEEntity SaveData)
         {
             return service.UserService.SaveRole(SaveData);
@@ -73,6 +73,9 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                     alert = res.Item7
                 }
             );
+        }
+        public UIResult SearchTreeOrg() {
+            return new UIResult(service.DataService.GetTreeOrg());
         }
     }
 }

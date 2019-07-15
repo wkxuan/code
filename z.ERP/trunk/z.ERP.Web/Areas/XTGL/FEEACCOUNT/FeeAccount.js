@@ -2,7 +2,9 @@
 
     define.screenParam.colDef = [
     { title: '单位编号', key: 'ID', width: 90 },
-    { title: '单位名称', key: 'NAME', width: 300 }
+    { title: '单位名称', key: 'NAME' },
+    { title: "分店", key: 'BRANCHNAME' }
+
     ];
 
     define.screenParam.dataDef = [];
@@ -14,10 +16,13 @@
 }
 
 define.IsValidSave = function () {
+    if (!define.dataParam.BRANCHID) {
+        iview.Message.info("分店不能为空!");
+        return false;
+    }
     if (!define.dataParam.NAME) {
         iview.Message.info("单位名称不能为空!");
         return false;
     }
-
     return true;
 }

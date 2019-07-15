@@ -96,7 +96,7 @@ editDetail.newRecord = function () {
 editDetail.clearKey = function () {
     editDetail.dataParam.ROLECODE = null;
     editDetail.dataParam.ROLENAME = null;
-    editDetail.dataParam.ORGIDCASCADER = null;
+    editDetail.dataParam.ORGIDCASCADER = [];
     editDetail.dataParam.VOID_FLAG = "2";
     editDetail.showOne(-1);
 };
@@ -320,6 +320,25 @@ editDetail.billchange = function () {
 //接收子页面返回值
 editDetail.popCallBack = function (data) {
     editDetail.screenParam.showPopCrmRole = false;
+};
+//按钮初始化
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10100701"
+    }, {
+        id: "edit",
+        authority: "10100701"
+    }, {
+        id: "del",
+        authority: "10100702"
+    }, {
+        id: "save",
+        authority: "10100701"
+    },{
+        id: "abandon",
+        authority: "10100701"
+    }]
 };
 
 
