@@ -73,6 +73,7 @@ define.showone = function (data, callback) {
     }, function (data) {
         $.extend(define.dataParam, data.regionelement);
         define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.toString().split(",");
+        define.dataParam.STATUS = data.regionelement.STATUS+""; //控件接受string类型
         callback && callback();
     });
 }

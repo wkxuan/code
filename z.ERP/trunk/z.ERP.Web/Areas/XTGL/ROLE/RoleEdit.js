@@ -120,6 +120,7 @@ editDetail.showOne = function (data, callback) {
         }, function (data) {
             if (data.role != null) {
                 $.extend(editDetail.dataParam, data.role);
+                editDetail.dataParam.VOID_FLAG = data.role.VOID_FLAG + "";  //控件接收string类型
                 editDetail.dataParam.BILLID = data.role.ROLEID;
                 if (editDetail.dataParam.ORGIDCASCADER != null) {
                     editDetail.dataParam.ORGIDCASCADER = editDetail.dataParam.ORGIDCASCADER.split(",")
@@ -328,10 +329,24 @@ editDetail.mountedInit = function () {
         authority: "10100701"
     }, {
         id: "edit",
-        authority: "10100701"
+        authority: "10100701",
+        enabled: function (disabled, data) {
+                            if (!disabled && data.BILLID != null) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
     }, {
         id: "del",
-        authority: "10100702"
+        authority: "10100702",
+        enabled: function (disabled, data) {
+        if (!disabled && data.BILLID != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     }, {
         id: "save",
         authority: "10100701"
@@ -341,6 +356,9 @@ editDetail.mountedInit = function () {
     }]
 };
 
-
+//取消保存后方法，原数据回复
+editDetail.afterAbandon = function () {
+    editDetail.showOne(editDetail.dataParam.BILLID);
+}
 
 
