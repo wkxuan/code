@@ -2,7 +2,7 @@
     search.searchParam.BILLID = "";
     CHANGE_TYPE = "";
     search.searchParam.TYPE = true;
-    var col = [
+    search.screenParam.colDef = [
         { title: "单据编号", key: 'BILLID', width: 105, sortable: true },
         { title: '门店编号', key: 'BRANCHID', width: 85 },
         { title: '门店名称', key: 'BRANCHNAME', width: 150 },
@@ -13,8 +13,16 @@
         { title: '审核人', key: 'VERIFY_NAME', width: 100 },
         { title: '审核时间', key: 'VERIFY_TIME', width: 150, sortable: true },
         { title: '备注', key: 'DESCRIPTION', width: 200 },
+        {
+            title: '操作', key: 'operate', onClick: function (index, row, data) {
+                _.OpenPage({
+                    id: 104001,
+                    title: '资产面积变更单',
+                    url: "DPGL/ASSETCHANGE/AssetChangeEdit/" + row.BILLID
+                });
+            }
+        }
     ];
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "DpglService";
     search.method = "GetAssetChangeList";
 }
@@ -22,25 +30,10 @@
 //searchParam.CHANGE_TYPE = ViewBag.Type;
 //浏览双击跳转页面
 
-search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 104001,
-        title: '浏览资产面积变更单',
-        url: "DPGL/ASSETCHANGE/AssetChangeDetail/" + row.BILLID
-    });
-}
-
 search.addHref = function (row) {
     _.OpenPage({
         id: 104001,
-        title: '新增资产面积变更单',
+        title: '资产面积变更单',
         url: "DPGL/ASSETCHANGE/AssetChangeEdit/"
-    });
-}
-search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 104001,
-        title: '编辑资产面积变更单',
-        url: "DPGL/ASSETCHANGE/AssetChangeEdit/" + row.BILLID
     });
 }

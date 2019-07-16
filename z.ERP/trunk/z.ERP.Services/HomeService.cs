@@ -255,12 +255,14 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
             string sql = "";
             if (type == 1)
             {
-                sql = @"SELECT N.ID,N.TITLE,N.STATUS,TO_CHAR(VERIFY_TIME,'yyyy-MM-dd') release_time FROM NOTICE N WHERE N.STATUS=2  
-                    AND not exists(select 1 from READNOTOCELOG   where READNOTOCELOG.NOTICEID=N.ID AND READNOTOCELOG.USERID=" + employee.Id + ") ORDER BY VERIFY_TIME DESC ";
+                sql = $@"SELECT N.ID,N.TITLE,N.STATUS,TO_CHAR(VERIFY_TIME,'yyyy-MM-dd') release_time FROM NOTICE N WHERE N.STATUS=2  
+                    AND exists(select 1 from NOTICE_BRANCH   where NOTICE_BRANCH.NOTICEID=N.ID AND NOTICE_BRANCH.BRANCHID IN 
+                    ("+ GetPermissionSql(PermissionType.Branch) + "))  AND not exists(select 1 from READNOTOCELOG   where READNOTOCELOG.NOTICEID=N.ID AND READNOTOCELOG.USERID=" + employee.Id + ") ORDER BY VERIFY_TIME DESC ";
             }
             else {
                 sql = @"SELECT N.ID,N.TITLE,N.STATUS,TO_CHAR(VERIFY_TIME,'yyyy-MM-dd') release_time FROM NOTICE N WHERE N.STATUS=2  
-                    AND exists(select 1 from READNOTOCELOG   where READNOTOCELOG.NOTICEID=N.ID AND READNOTOCELOG.USERID=" + employee.Id + ") ORDER BY VERIFY_TIME DESC ";
+                  AND exists(select 1 from NOTICE_BRANCH   where NOTICE_BRANCH.NOTICEID=N.ID AND NOTICE_BRANCH.BRANCHID IN 
+                    (" + GetPermissionSql(PermissionType.Branch) + "))   AND exists(select 1 from READNOTOCELOG   where READNOTOCELOG.NOTICEID=N.ID AND READNOTOCELOG.USERID=" + employee.Id + ") ORDER BY VERIFY_TIME DESC ";
             }
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;

@@ -360,7 +360,7 @@ Vue.component('yx-table', {
         },
         //开启 highlight-row 后有效，当表格的当前行发生变化的时候会触发
         currentChange(currentRow, oldCurrentRow) {
-            this.$emit("currentChange", currentRow, oldCurrentRow);
+            this.$emit("currentchange", currentRow, oldCurrentRow);
         },
         //排序时有效，当点击排序时触发
         sortChange(column, key, order) { },

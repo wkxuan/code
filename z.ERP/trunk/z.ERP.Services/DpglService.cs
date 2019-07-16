@@ -138,6 +138,7 @@ namespace z.ERP.Services
                          + "   AND B.ID  IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("CHANGE_TYPE", a => sql += $" and CHANGE_TYPE = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
+            item.HasKey("BILLID", a => sql += $" and A.BILLID = '{a}'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID  = '{a}'");
             item.HasKey("DISCRIPTION", a => sql += $" and A.DISCRIPTION  LIKE '%{a}%'");
             sql += " ORDER BY  BILLID DESC";
