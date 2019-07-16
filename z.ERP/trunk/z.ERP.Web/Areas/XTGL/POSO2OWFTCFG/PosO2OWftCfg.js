@@ -1,7 +1,8 @@
 ﻿define.beforeVue = function () {
 
     define.screenParam.colDef = [
-    { title: '终端号', key: 'POSNO', width: 400 }
+    { title: '终端号', key: 'POSNO'},
+    { title: '门店名称', key: 'BRANCHNAME'}
     ];
 
     define.screenParam.popParam = {};
@@ -31,6 +32,7 @@ define.popCallBack = function (data) {
         define.screenParam.showPopStation = false;
         for (var i = 0; i < data.sj.length; i++) {
             define.dataParam.POSNO = data.sj[i].POSNO;
+            define.dataParam.BRANCHNAME = data.sj[i].BRANCHNAME;
         }
     }
 };

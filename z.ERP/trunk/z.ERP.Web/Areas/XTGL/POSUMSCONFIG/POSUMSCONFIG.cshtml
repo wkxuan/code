@@ -17,8 +17,18 @@
 
 @section search{
     <row>
+        <i-col span="5" class="RowTitle">门店</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
         <i-col span="5" class="RowTitle">终端号</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -44,12 +54,26 @@
                 });
             }
         </i-col>
-        <i-col span="5" class="RowTitle">
+        <i-col span="5" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.POSNO",
-                    Enable = false
+                    Enable = false,
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+        <i-col span="4" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.BRANCHNAME",
+                    Enable = false,
+                    Readonly = "true"
                 });
             }
         </i-col>
@@ -60,7 +84,7 @@
             <span class="mustElement">*</span>
             IP
         </i-col>
-        <i-col span="15" class="RowTitle">
+        <i-col span="15" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -76,7 +100,7 @@
             <span class="mustElement">*</span>
             备用IP
         </i-col>
-        <i-col span="15" class="RowTitle">
+        <i-col span="15" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -92,7 +116,7 @@
             <span class="mustElement">*</span>
             端口
         </i-col>
-        <i-col span="5" class="RowTitle">
+        <i-col span="5" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -108,7 +132,7 @@
             <span class="mustElement">*</span>
             银联实体卡商户号
         </i-col>
-        <i-col span="15" class="RowTitle">
+        <i-col span="15" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -124,7 +148,7 @@
             <span class="mustElement">*</span>
             银联实体卡终端号
         </i-col>
-        <i-col span="15" class="RowTitle">
+        <i-col span="15" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -140,7 +164,7 @@
             <span class="mustElement">*</span>
             银行扫码商户名称
         </i-col>
-        <i-col span="15" class="RowTitle">
+        <i-col span="15" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -155,7 +179,7 @@
             <span class="mustElement">*</span>
             银行扫码商户号
         </i-col>
-        <i-col span="15" class="RowTitle">
+        <i-col span="15" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -172,7 +196,7 @@
             <span class="mustElement">*</span>
             银行扫码终端号
         </i-col>
-        <i-col span="15" class="RowTitle">
+        <i-col span="15"  class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -187,20 +211,15 @@
 
 }
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopStation",
-                    Caption = "选择终端号",
-                    Width = "900",
-                    Src = "screenParam.srcPopStation"
-                });
-            }
-        </i-col>
-    </row>
-
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopStation",
+            Caption = "选择终端号",
+            Width = "900",
+            Src = "screenParam.srcPopStation"
+        });
+    }
 }
 
 
