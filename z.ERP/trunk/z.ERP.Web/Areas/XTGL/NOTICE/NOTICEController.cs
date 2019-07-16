@@ -39,5 +39,8 @@ namespace z.ERP.Web.Areas.XTGL.NOTICE
                 }
             );
         }
+        public UIResult GetBRANCH() {
+            return new UIResult(service.DataService.branch());
+        }
     }
 }

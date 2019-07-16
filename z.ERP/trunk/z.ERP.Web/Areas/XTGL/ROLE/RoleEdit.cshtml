@@ -1,33 +1,23 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
 @section baseParam{
     <row>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
         角色代码
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ROLECODE",
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ROLECODE" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
         角色名称
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ROLENAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ROLENAME" v-bind:disabled="!disabled" />
         </i-col>
     </row>
     <row>
@@ -35,7 +25,7 @@
             <span class="mustElement">*</span>
         所属机构
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new CascaderRender()
                 {
@@ -48,7 +38,7 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">作废标记</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumCheckBoxListRender<标记>()
                 {
@@ -58,7 +48,8 @@
             }
         </i-col>
     </row>
-    
+    }
+@section detailParam{    
     <Tabs type="card" value="name1">
         <Tab-Pane label="菜单权限" name="name1">
             <Tree :data="screenParam.USERMODULE" show-checkbox></Tree>
@@ -117,17 +108,13 @@
 }
 
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopCrmRole",
-                    Src = "screenParam.srcPopCrmRole",
-                    Caption = "CRM权限",
-                    Width = "800"
-                });
-            }
-        </i-col>
-    </row>
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopCrmRole",
+            Src = "screenParam.srcPopCrmRole",
+            Caption = "CRM权限",
+            Width = "800"
+        });
+    }
 }

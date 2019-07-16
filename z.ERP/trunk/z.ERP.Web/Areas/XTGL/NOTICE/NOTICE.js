@@ -1,5 +1,15 @@
 ﻿define.beforeVue = function () {
-
+    _.Ajax('GetBRANCH', {
+        1: 1
+    }, function (data) {
+        let List = $.map(data, item => {
+            return {
+                label: item.Value,
+                value: item.Key
+            }
+        });
+        define.screenParam.BRANCHID = List;
+    });
     define.screenParam.colDef = [
     { title: '编号', key: 'ID', width: 80 },
     { title: '通知标题', key: 'TITLE',tooltip :true},
@@ -20,12 +30,12 @@
     }}
     ];
     define.dataParam.NOTICE_BRANCH = [];
-    define.screenParam.BRANCHID = [];
     define.screenParam.dataDef = [];
     define.service = "XtglService";
     define.method = "GetNOTICE";
     define.methodList = "GetNOTICE";
     define.Key = 'ID';
+
 }
 
 define.otherMethods = {
@@ -33,7 +43,6 @@ define.otherMethods = {
         define.dataParam.CONTENT = val;
     },
     CheckBoxChange(data){
-        define.dataParam.BRANCHID = [];
         let localData = [];
         for (var i = 0; i < data.length; i++) {
             localData.push({ BRANCHID: data[i]});
@@ -51,9 +60,7 @@ define.showone = function (data, callback) {
         let s = $.map(data.branch, item=> {
             return item.ID+"";
         });
-        define.screenParam.BRANCHID = [];
-        define.screenParam.BRANCHID = s;
-        Vue.set(define.screenParam, 'BRANCHID', s);
+        define.dataParam.BRANCHID = s;
         let localData = [];
         if (data.branch.length > 0) {
             for (var i = 0; i < data.branch.length; i++) {
@@ -68,7 +75,6 @@ define.showone = function (data, callback) {
 define.newRecord = function () {
     define.dataParam.CONTENT = "";
     define.dataParam.NOTICE_BRANCH = [];
-    define.screenParam.BRANCHID = [];
 }
 
 define.IsValidSave = function () {
@@ -84,7 +90,7 @@ define.IsValidSave = function () {
         iview.Message.info("通知内容不能为空!");
         return false;
     }
-    if (define.dataParam.NOTICE_BRANCH.length===0) {
+    if (define.dataParam.NOTICE_BRANCH.length==0) {
         iview.Message.info("通知门店不能为空!");
         return false;
     }

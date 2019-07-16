@@ -6,23 +6,32 @@
 @section head{
     <style>
         .ivu-table-tip {
-            overflow-x:hidden
+            overflow-x: hidden;
         }
 
         .ivu-table-overflowX {
-            overflow-x:hidden
+            overflow-x: hidden;
         }
     </style>
 }
-
 @section search{
     <row>
+        <i-col span="5" class="RowTitle">门店</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
         <i-col span="5" class="RowTitle">终端号</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.POSNO"
+                    vModel = "searchParam.POSNO",                 
                 });
             }
         </i-col>
@@ -31,70 +40,80 @@
 
 @section element{
 
-<row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "SelStation",
+                    Text = "终端号",
+                    Enable = false,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.POSNO",
+                    Enable = false,
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+        <i-col span="4" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.BRANCHNAME",
+                    Enable = false,
+                    Readonly = "true"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            服务地址
+        </i-col>
+        <i-col span="15" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.URL",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
 
-    <i-col span="4" class="RowTitle">
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "SelStation",
-                Text = "终端号",
-                Enable = false,
-                Type = "primary"
-            });
-        }
-    </i-col>
-    <i-col span="5" class="RowTitle">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.POSNO",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            商户号
+        </i-col>
+        <i-col span="15" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PID",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
 
-
-
-<row>
-    <i-col span="4" class="RowTitle">
-        <span class="mustElement">*</span>
-        服务地址
-    </i-col>
-    <i-col span="15" class="RowTitle">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.URL",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
-<row>
-    <i-col span="4" class="RowTitle">
-        <span class="mustElement">*</span>
-        商户号
-    </i-col>
-    <i-col span="15" class="RowTitle">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.PID",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
-<row>
+    <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             加密方式
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<加密方式>()
                 {
@@ -103,68 +122,62 @@
                 });
             }
         </i-col>
+    </row>
 
-</row>
-
-<row>
-    <i-col span="4" class="RowTitle">
-        密钥Key
-    </i-col>
-    <i-col span="15" class="RowTitle">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.KEY",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
-<row>
-    <i-col span="4" class="RowTitle">
-        公钥Key
-    </i-col>
-    <i-col span="15" class="RowTitle">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.KEY_PUB",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
-<row>
-    <i-col span="4" class="RowTitle">
-        日志路径
-    </i-col>
-    <i-col span="15" class="RowTitle">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.LOG",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
-}
-@section pops{
     <row>
-        <i-col>
+        <i-col span="4" class="RowTitle">
+            密钥Key
+        </i-col>
+        <i-col span="15" class="RowText">
             @{
-                RenderControl(new PopsRender()
+                RenderControl(new TextBoxRender()
                 {
-                    vModel = "screenParam.showPopStation",
-                    Caption = "选择终端号",
-                    Width = "900",
-                    Src = "screenParam.srcPopStation"
+                    vModel = "dataParam.KEY",
+                    Enable = false
                 });
             }
         </i-col>
     </row>
 
+    <row>
+        <i-col span="4" class="RowTitle">
+            公钥Key
+        </i-col>
+        <i-col span="15" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.KEY_PUB",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="4" class="RowTitle">
+            日志路径
+        </i-col>
+        <i-col span="15" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.LOG",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+}
+@section pops{
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopStation",
+            Caption = "选择终端号",
+            Width = "900",
+            Src = "screenParam.srcPopStation"
+        });
+    }
 }

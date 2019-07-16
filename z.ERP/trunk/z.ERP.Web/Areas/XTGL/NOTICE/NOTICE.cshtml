@@ -21,6 +21,27 @@
 }
 @section search{
     <row>
+        <i-col span="5" class="RowTitle">通知分店</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+        <i-col span="5" class="RowTitle">通知编号</i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.ID"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
         <i-col span="5" class="RowTitle">通知标题</i-col>
         <i-col span="6">
             @{
@@ -93,16 +114,11 @@
             通知门店
         </i-col>
         <i-col span="16" class="RowText">
-            @{
-                RenderControl(new ServiceCheckBoxListRender()
-                {
-                    ServiceMothod = m => m.branch(),
-                    vModel = "searchParam.BRANCHID",
-                    MultiSelect = true,
-                    Change= "CheckBoxChange",
-                    Enable = false
-                });
-            }
+            <Checkbox-Group v-model="dataParam.BRANCHID" v-on:on-change="CheckBoxChange" v-bind:disabled="!disabled">
+                <Checkbox v-for="item in screenParam.BRANCHID" v-bind:label="item.value" v-bind:key="item.value">
+                    <span>{{item.label}}</span>
+                </Checkbox>
+            </Checkbox-Group>
         </i-col>
     </row>
     <row>

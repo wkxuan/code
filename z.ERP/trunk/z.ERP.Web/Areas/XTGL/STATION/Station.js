@@ -1,8 +1,9 @@
 ﻿define.beforeVue = function () {
     define.dataParam.IP = "";
     define.screenParam.colDef = [
-    { title: "POS终端号", key: 'STATIONBH', width: 150 },
-    { title: "IP地址", key: 'IP', width: 150 }
+    { title: "POS终端号", key: 'STATIONBH'},
+    { title: "IP地址", key: 'IP' },
+    { title: "分店", key: 'BRANCHNAME' }
     ];
 
     define.screenParam.payColDef = [

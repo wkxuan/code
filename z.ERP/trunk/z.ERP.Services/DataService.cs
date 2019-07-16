@@ -295,7 +295,7 @@ namespace z.ERP.Services
         public object GetBranch(BRANCHEntity Data)
         {
             string sql = $@"SELECT A.ID,A.NAME FROM BRANCH A WHERE 1=1"
-                  + " A.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+                  + " AND A.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             if (!Data.ID.IsEmpty())
                 sql += (" and A.ID= " + Data.ID);
             sql += " and STATUS = 1";
