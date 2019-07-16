@@ -7,6 +7,36 @@
 @inherits EditViewBase<string>
 @section head{}
 
+@section topDivCon{
+    <Card v-bind:padding=0 v-if="screenParam.splcjg.length>0&&dataParam.STATUS==1&&!disabled">
+        <div style="margin:10px;">
+            <row>
+                <i-col span="22" offset="2">
+                    <Steps v-bind:current="screenParam.current">
+                        <Step v-for="(i,k) in screenParam.splcs" v-bind:title="i.JDNAME" v-bind:key="k"></Step>
+                    </Steps>
+                </i-col>
+            </row>
+        </div>
+        <row>
+            <i-col span="2" class="RowTitle">
+                结果选择
+            </i-col>
+            <i-col span="6" class="RowText">
+                <i-select v-model="screenParam.JDID">
+                    <i-option v-for="(i,k) in screenParam.splcjg" v-bind:value="i.JGID" v-bind:key="k">{{ i.JGTYPENAME }}</i-option>
+                </i-select>
+            </i-col>
+            <i-col span="2" class="RowTitle">
+                描述
+            </i-col>
+            <i-col span="14" class="RowText">
+                <i-input v-model="screenParam.BZ"></i-input>
+            </i-col>
+        </row>
+    </Card>
+}
+
 @section baseParam{
     <row>
         <i-col span="2" class="RowTitle">
@@ -144,7 +174,7 @@
             销项税率
         </i-col>
         <i-col span="2" class="RowText">
-            <input-number v-bind:max="1" v-bind:min="0" v-bind:step="0.01" v-model="dataParam.XXSL" v-bind:disabled="!disabled" >
+            <input-number v-bind:max="1" v-bind:min="0" v-bind:step="0.01" v-model="dataParam.XXSL" v-bind:disabled="!disabled">
             </input-number>
         </i-col>
     </row>
@@ -227,6 +257,20 @@
                 <i-option v-for="(i,k) in screenParam.fkrList" v-bind:value="i.value"
                           v-bind:key="k">{{ i.label }}</i-option>
             </i-select>
+        </i-col>
+    </row>
+    <row v-if="dataParam.CONTRACT_OLD">
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            变更日期
+        </i-col>
+        <i-col span="6">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.JHRQ",
+                });
+            }
         </i-col>
     </row>
     <row>

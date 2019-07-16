@@ -5,7 +5,6 @@
 
     editDetail.screenParam.popParam = {};
 
-
     editDetail.screenParam.colDef = [
         { title: "商铺代码", key: "CODE", width: 150, },
         { title: '业态代码', key: 'CATEGORYCODE', width: 100 },
@@ -128,7 +127,8 @@ editDetail.clearKey = function () {
     editDetail.dataParam.CONTRACTID = null;
     editDetail.dataParam.FREEDATE = null;
     editDetail.dataParam.MERCHANTID = null;
-    editDetail.dataParam.MERCHANTNAME = null;
+    editDetail.dataParam.SHMC = null;
+    editDetail.dataParam.STATUSMC = null;
     editDetail.dataParam.DESCRIPTION = null;
     editDetail.dataParam.FREESHOPITEM = [];
 }
