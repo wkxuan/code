@@ -5,7 +5,7 @@
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">门店</i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -15,37 +15,13 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelMerchant",
-                    Text = "商户",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            商户
         </i-col>
-        <i-col span="1">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTID"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
         </i-col>
-        <i-col span="3">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTNAME"
-                });
-            }
-        </i-col>
-
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">合同号</i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -53,8 +29,10 @@
                 });
             }
         </i-col>
+    </row>
+    <row>
         <i-col span="2" class="RowTitle">资产代码</i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -62,86 +40,37 @@
                 });
             }
         </i-col>
-
         <i-col span="2" class="RowTitle">
-            状态
+            登记人
         </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new EnumDropDownListRender<合同状态>()
-                {
-                    vModel = "searchParam.STATUS"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelReporter",
-                    Text = "登记人",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
-        </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.REPORTER_NAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.REPORTER_NAME" v-on:on-click="SelReporter" />
         </i-col>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelVerify",
-                    Text = "审核人",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            审核人
         </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.VERIFY_NAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify"/>
         </i-col>
     </row>
 }
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopMerchant",
-                    Caption = "选择商户",
-                    Width = "900",
-                    Src = "screenParam.srcPopMerchant"
-                });
-            }
-        </i-col>
-    </row>
-
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopSysuser",
-                    Src = "screenParam.srcPopSysuser",
-                    Caption = "选择人员",
-                    Width = "800"
-                });
-            }
-        </i-col>
-    </row>
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopMerchant",
+            Caption = "选择商户",
+            Width = "900",
+            Src = "screenParam.srcPopMerchant"
+        });
+    }
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopSysuser",
+            Src = "screenParam.srcPopSysuser",
+            Caption = "选择人员",
+            Width = "800"
+        });
+    }
 }

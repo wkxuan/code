@@ -1,14 +1,13 @@
-﻿using System.Data;
-using z.MVC5.Results;
-using z.ERP.Entities;
+﻿using System;
 using System.Collections.Generic;
-using z.Extensions;
-using System;
-using z.ERP.Entities.Enum;
-using z.Exceptions;
+using System.Data;
 using System.Linq;
-using z.Extensions;
+using z.ERP.Entities;
+using z.ERP.Entities.Enum;
 using z.ERP.Entities.Procedures;
+using z.Exceptions;
+using z.Extensions;
+using z.MVC5.Results;
 using z.SSO.Model;
 
 namespace z.ERP.Services
@@ -44,7 +43,6 @@ namespace z.ERP.Services
             dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
             return new DataGridResult(dt, count);
         }
-
         public string GetContractOutput(SearchItem item)
         {
             string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,D.SHOPDM,E.BRANDNAME,to_char(A.REPORTER_TIME,'yyyy-mm-dd') DJRQ,to_char(A.VERIFY_TIME,'yyyy-mm-dd') SHRQ"
@@ -75,7 +73,6 @@ namespace z.ERP.Services
                 a.SetTable(dt);
             });
         }
-
         public string SaveContract(CONTRACTEntity SaveData)
         {
             var v = GetVerify(SaveData);
@@ -156,8 +153,6 @@ namespace z.ERP.Services
             }
             return SaveData.CONTRACTID;
         }
-
-
         public Tuple<dynamic, DataTable, DataTable, CONTRACTEntity, CONTRACT_RENTEntity, DataTable, DataTable> GetContractElement(CONTRACTEntity Data)
         {
             //只显示本表数据的用module
@@ -170,25 +165,22 @@ namespace z.ERP.Services
             sql += " (select NAME from FEERULE L where L.ID=A.FEERULE_RENT) FEERULE_RENTNAME,";
             sql += " (select NAME from LATEFEERULE LA where LA.ID=A.ZNID_RENT) LATEFEERULENAME,";
             sql += " F.NAME AS OPERATERULENAME  FROM CONTRACT A,MERCHANT B,";
-            sql += "   BRANCH C, ORG D,CONTRACT_UPDATE E,OPERATIONRULE F WHERE A.MERCHANTID=B.MERCHANTID AND A.CONTRACTID=E.CONTRACTID(+) ";
+            sql += " BRANCH C, ORG D,CONTRACT_UPDATE E,OPERATIONRULE F WHERE A.MERCHANTID=B.MERCHANTID AND A.CONTRACTID=E.CONTRACTID(+) ";
             sql += " AND A.BRANCHID=C.ID AND A.ORGID=D.ORGID AND A.OPERATERULE=F.ID ";
             sql += " AND C.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
-            sql += (" AND A.CONTRACTID= " + Data.CONTRACTID);
+            sql += " AND A.CONTRACTID= " + Data.CONTRACTID;
             DataTable contract = DbHelper.ExecuteTable(sql);
             if (!contract.IsNotNull())
             {
                 throw new LogicException("找不到租约!");
             }
-
+            contract.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
             contract.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
             contract.NewEnumColumns<联营合同合作方式>("OPERATERULE", "OPERATERULEMC");
 
             contract.NewEnumColumns<起始日清算>("QS_START", "QS_STARTMC");
             contract.NewEnumColumns<销售额标记>("TAB_FLAG", "TAB_FLAGMC");
-
-
-
-
+   
             string sqlitem = $@"SELECT B.BRANDID,C.NAME " +
                              " FROM  CONTRACT A,CONTRACT_BRAND B,BRAND C " +
                              " where A.CONTRACTID = B.CONTRACTID AND B.BRANDID=C.ID  ";
@@ -202,12 +194,9 @@ namespace z.ERP.Services
             sqlshop += (" and A.CONTRACTID= " + Data.CONTRACTID);
             DataTable contract_shop = DbHelper.ExecuteTable(sqlshop);
 
-
             CONTRACTEntity ContractParm = new CONTRACTEntity();
-
             //全表查询,程序层面过滤
             //ContractParm.CONTRACT_GROUP = DbHelper.SelectList(new CONTRACT_GROUPEntity()).Where(a => a.CONTRACTID==Data.CONTRACTID).ToList();
-
             //查询数据库的时候已经参数过滤
             ContractParm.CONTRACT_GROUP = DbHelper.SelectList(new CONTRACT_GROUPEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
 
@@ -215,16 +204,13 @@ namespace z.ERP.Services
 
             ContractParm.CONTJSKL = DbHelper.SelectList(new CONTJSKLEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
 
-
             CONTRACT_RENTEntity ContractRentParm = new CONTRACT_RENTEntity();
             ContractRentParm.CONTRACT_RENTITEM = DbHelper.SelectList(new CONTRACT_RENTITEMEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
-
 
             string sqlPay = $@"SELECT A.*,B.NAME,C.NAME TERMNAME FROM CONTRACT_PAY A,PAY B,FEESUBJECT C WHERE A.PAYID=B.PAYID AND A.TERMID=C.TRIMID ";
             sqlPay += (" AND A.CONTRACTID= " + Data.CONTRACTID);
             sqlPay += " ORDER BY A.PAYID,A.STARTDATE";
             DataTable contract_pay = DbHelper.ExecuteTable(sqlPay);
-
 
             string sqlCost = $@"SELECT A.*,B.NAME,C.NAME FEERULENAME,D.NAME LATEFEERULENAME FROM CONTRACT_COST A,FEESUBJECT B,FEERULE C,LATEFEERULE D";
             sqlCost += " WHERE A.TERMID=B.TRIMID AND A.FEERULEID=C.ID(+) AND A.ZNGZID=D.ID(+) ";
@@ -233,7 +219,6 @@ namespace z.ERP.Services
             DataTable contract_cost = DbHelper.ExecuteTable(sqlCost);
 
             contract_cost.NewEnumColumns<月费用收费方式>("SFFS", "SFFSMC");
-
 
             return new Tuple<dynamic, DataTable, DataTable, CONTRACTEntity, CONTRACT_RENTEntity, DataTable, DataTable>(
                 contract.ToOneLine(),
@@ -245,8 +230,6 @@ namespace z.ERP.Services
                 contract_cost
                 );
         }
-
-
         public Tuple<dynamic, DataTable, DataTable> GetContractDjdwElement(CONTRACTEntity Data)
         {
             if (Data.CONTRACTID.IsEmpty())
@@ -289,7 +272,6 @@ namespace z.ERP.Services
                 contract_cost
                 );
         }
-
         public List<CONTRACT_RENTITEMEntity> LyYdfj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
         {
 
@@ -375,7 +357,6 @@ namespace z.ERP.Services
             };
             return zjfjList;
         }
-
         public List<CONTRACT_RENTITEMEntity> zlYdFj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
         {
             List<CONTRACT_RENTITEMEntity> zjfjList = new List<CONTRACT_RENTITEMEntity>();
@@ -630,7 +611,6 @@ namespace z.ERP.Services
             }
             return zjfjList;
         }
-
         public void DeleteContract(List<CONTRACTEntity> DeleteData)
         {
             foreach (var con in DeleteData)
@@ -650,7 +630,6 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
         }
-
         public string ExecData(CONTRACTEntity Data)
         {
             CONTRACTEntity con = DbHelper.Select(Data);
@@ -694,7 +673,6 @@ namespace z.ERP.Services
 
             return con.CONTRACTID;
         }
-
         public DataGridResult GetFreeShopList(SearchItem item)
         {
             string sql = $@"select L.* ,B.NAME BRANCHNAME,M.NAME MERCHANTNAME,M.MERCHANTID " +
@@ -791,7 +769,6 @@ namespace z.ERP.Services
 
             return result;
         }
-
         public object ShowOneFreeShopEdit(FREESHOPEntity Data)
         {
             string sql = $@" SELECT L.*,M.MERCHANTID,M.NAME SHMC FROM FREESHOP L,CONTRACT C,MERCHANT M";
@@ -821,7 +798,6 @@ namespace z.ERP.Services
             };
             return result;
         }
-
         public Tuple<dynamic, DataTable> GetFreeShopDetail(FREESHOPEntity Data)
         {
             string sql = $@" SELECT L.*,M.MERCHANTID,M.NAME SHMC,B.NAME BRANCHNAME " +

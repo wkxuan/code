@@ -5,109 +5,21 @@
 @using z.ERP.Model;
 @using z.Extensions;
 @inherits EditViewBase<string>
-@section head{
-    @InitFiles(new string[] {
-    "/Areas/Pop/PopMerchant.js",
-    "/Areas/Pop/PopShop.js",
-    "/Areas/Pop/PopFeeSubject.js",
-});
-}
+@section head{}
 
 @section baseParam{
     <row>
-        <i-col>
-            @{
-                RenderControl(new PopRender()
-                {
-                    vModel = "screenParam.PopMerchant",
-                    Caption = "商户查询",
-                    Width = "760",
-                    PopLx = "Merchant",
-                    CallBack = "MerchantBack",
-                    ParentObj = "screenParam.ParentMerchant"
-                });
-            }
-        </i-col>
-
-
-        <i-col>
-            @{
-                RenderControl(new PopRender()
-                {
-                    vModel = "screenParam.PopShop",
-                    Caption = "商铺查询",
-                    Width = "760",
-                    PopLx = "Shop",
-                    CallBack = "ShopBack",
-                    ParentObj = "screenParam.ParentShop"
-                });
-            }
-        </i-col>
-
-        <i-col>
-            @{
-                RenderControl(new PopRender()
-                {
-                    vModel = "screenParam.PopFeeSubject",
-                    Caption = "费用项目查询",
-                    Width = "760",
-                    PopLx = "FeeSubject",
-                    CallBack = "FeeSubjectBack",
-                    ParentObj = "screenParam.ParentFeeSubject"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "Merchant",
-                    Text = "商户",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            商户
         </i-col>
-        <i-col span="2">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.MERCHANTID"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.MERNAME" v-on:on-click="srchMerchant" v-bind:disabled="!disabled" />
         </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.MERNAME",
-                    Readonly = "true"
-                });
-            }
-        </i-col>
-
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="2">
-            @{
-                RenderControl(new EnumDropDownListRender<合同状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                    Enable = false
-                });
-            }
-        </i-col>
-
-    </row>
-
-    <row>
         <i-col span="2" class="RowTitle">
             开始日期
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -118,7 +30,7 @@
         <i-col span="2" class="RowTitle">
             结束日期
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -126,9 +38,21 @@
                 });
             }
         </i-col>
-
     </row>
-
+    <row>
+        <i-col span="2" class="RowTitle">
+            建筑面积
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-model="dataParam.AREA_BUILD" v-bind:disabled="!disabled" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            租用面积
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-model="dataParam.AREAR" v-bind:disabled="!disabled" />
+        </i-col>        
+    </row>
     <row>
         <i-col span="2" class="RowTitle">
             其他条款
@@ -139,7 +63,7 @@
                 {
                     vModel = "dataParam.DESCRIPTION",
                     type = "textarea",
-                    rows = "3"
+                    rows = "2"
                 });
             }
         </i-col>
@@ -148,76 +72,64 @@
 @section detailParam{
     <row>
         <i-col span="12">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "srchColSHOP",
-                    Text = "选择资产",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "addColSHOP",
-                    Text = "添加一行资产",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "delColSHOP",
-                    Text = "删除资产",
-                    Enable = true,
-                    Type = "error",
-                    Icon = "minus-circled"
-                });
-            }
-            <i-table height="300" size="small" :border="true"
-                     :columns="screenParam.colDefSHOP" :data="dataParam.CONTRACT_SHOP" ref="selectShop"></i-table>
+            <Card v-bind:padding=0>
+                <p slot="title">商铺</p>
+                <div slot="extra">
+                    <div class="tableBtnDiv" v-if="disabled">
+                        <i-button type="primary" v-on:click="srchShop">选择</i-button>
+                        <i-button type="primary" v-on:click="addRowShop">添加一行</i-button>
+                        <i-button type="error" v-on:click="delShop">删除</i-button>
+                    </div>
+                </div>
+                <yx-table v-bind:columns="screenParam.colDefSHOP" v-bind:height="300" selection=true
+                          v-bind:data="dataParam.CONTRACT_SHOP" v-bind:disabled="!disabled" ref="refShop">
+                </yx-table>
+            </Card>
         </i-col>
-
         <i-col span="12">
-
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "srchCost",
-                    Text = "选择费用项目",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "addColCost",
-                    Text = "添加一行",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "delColCost",
-                    Text = "删除",
-                    Enable = true,
-                    Type = "error",
-                    Icon = "minus-circled"
-                });
-            }
-
-            <i-table height="300" size="small" :border="true"
-                     :columns="screenParam.colDefCOST" :data="dataParam.CONTRACT_COST_DJDW" ref="selectCost"></i-table>
+            <Card v-bind:padding=0>
+                <p slot="title">费用项目</p>
+                <div slot="extra">
+                    <div class="tableBtnDiv" v-if="disabled">
+                        <i-button type="primary" v-on:click="srchCost">选择</i-button>
+                        <i-button type="primary" v-on:click="addRowCost">添加一行</i-button>
+                        <i-button type="error" v-on:click="delCost">删除</i-button>
+                    </div>
+                </div>
+                <yx-table v-bind:columns="screenParam.colDefCOST" v-bind:height="300" selection=true
+                          v-bind:data="dataParam.CONTRACT_COST_DJDW" v-bind:disabled="!disabled" ref="refCost">
+                </yx-table>
+            </Card>
         </i-col>
     </row>
+}
+
+@section pops{
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopMerchant",
+            Caption = "选择商户",
+            Width = "900",
+            Src = "screenParam.srcPopMerchant"
+        });
+    }
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopShop",
+            Caption = "选择商铺",
+            Width = "900",
+            Src = "screenParam.srcPopShop"
+        });
+    }
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopFeeSubject",
+            Caption = "选择费用项目",
+            Width = "900",
+            Src = "screenParam.srcPopFeeSubject"
+        });
+    }
 }

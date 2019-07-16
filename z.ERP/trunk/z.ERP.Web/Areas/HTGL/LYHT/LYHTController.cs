@@ -1,16 +1,11 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
+using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Attributes;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.HTGL.LYHT
 {
@@ -29,13 +24,11 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
                 Permission_Bg  = "10600103"
             });
         }
-
         public ActionResult HtEdit(string Id)
         {
             ViewBag.Title = "联营租约信息编辑";
             return View("HtEdit", (EditRender)Id);
         }
-
         public ActionResult HtDetail(string Id)
         {
             ViewBag.Title = "联营租约浏览";
@@ -80,20 +73,14 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         {
             return new UIResult(service.DataService.GetShop(Data));
         }
-
-
         public UIResult GetFeeSubject(FEESUBJECTEntity Data)
         {
             return new UIResult(service.DataService.GetFeeSubject(Data));
         }
-
-
         public UIResult lyYdFj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
         {
             return new UIResult(service.HtglService.LyYdfj(Data, ContractData));
         }
-
-
         public void Delete(List<CONTRACTEntity> DeleteData)
         {
             service.HtglService.DeleteContract(DeleteData);
@@ -101,8 +88,14 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         [Permission("10600102")]
         public void ExecData(CONTRACTEntity Data)
         {
-            service.HtglService.ExecData(Data);
+            if (string.IsNullOrWhiteSpace(Data.CONTRACT_OLD))
+            {
+                service.HtglService.ExecData(Data);
+            }
+            else
+            {
+                service.HtglService.ExecHtBgData(Data);
+            }
         }
-
     }
 }

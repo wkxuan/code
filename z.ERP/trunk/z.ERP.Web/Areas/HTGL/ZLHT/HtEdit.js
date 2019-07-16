@@ -169,7 +169,7 @@
                         }
                         iview.Message.info('当前单元代码不存在或者不属于当前分店卖场!');
                     }
-                    editDetail.veObj.calculateArea();
+                    editDetail.otherMethods.calculateArea();
                 });
             }
         },
@@ -236,7 +236,7 @@
                }
                row.SUMRENTS = 0;
                editDetail.dataParam.CONTRACT_RENTITEM = [];
-               editDetail.veObj.upDataJskl();
+               editDetail.otherMethods.upDataJskl();
            }
        },
        {
@@ -319,6 +319,13 @@
         { title: '结束日期', key: 'ENDDATE', cellType: "date", enableCellEdit: true },
         { title: "比例(%)", key: 'KL', cellType: "input", cellDataType: "number" },
     ];
+
+    editDetail.screenParam.splcs = [];
+    editDetail.screenParam.splcjg = [];
+    editDetail.screenParam.current = -1;
+    editDetail.screenParam.JDID = "";
+    editDetail.screenParam.BZ = "";
+    editDetail.screenParam.JGTYPE = -1;
 };
 
 editDetail.popCallBack = function (data) {
@@ -353,7 +360,7 @@ editDetail.popCallBack = function (data) {
                 shop.push(data.sj[i]);
             }
         };
-        editDetail.veObj.calculateArea();
+        editDetail.otherMethods.calculateArea();
     }
     if (editDetail.screenParam.showPopFeeSubject) {
         editDetail.screenParam.showPopFeeSubject = false;
@@ -422,6 +429,56 @@ editDetail.popCallBack = function (data) {
 };
 
 editDetail.otherMethods = {
+    //审核
+    exec: function () {
+        let _self = this;
+        for (let i = 0; i <= editDetail.screenParam.splcjg.length - 1; i++) {
+            if (editDetail.screenParam.JDID == editDetail.screenParam.splcjg[i].JGID) {
+                editDetail.screenParam.JGTYPE = editDetail.screenParam.splcjg[i].JGTYPE;
+                break;
+            }
+        }
+        if (editDetail.screenParam.current != -1) {
+            _.Ajax('ExecSplc', {
+                Data: {
+                    BILLID: editDetail.dataParam.CONTRACTID,
+                    MENUID: "10600200",
+                    JDID: editDetail.screenParam.JDID,
+                    BZ: editDetail.screenParam.BZ,
+                    JGTYPE: editDetail.screenParam.JGTYPE
+                },
+            }, function (data) {
+                _self.srchSplc();
+                iview.Message.info("审批成功");
+            });
+        }
+        else {
+            _.Ajax('ExecData', {
+                Data: { CONTRACTID: editDetail.dataParam.CONTRACTID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        }
+    },
+    //查询审批流程
+    srchSplc: function () {
+        //找审批流程节点
+        _.Ajax('Srchsplc', {
+            Data: {
+                MENUID: "10600200",
+                JLBH: editDetail.dataParam.CONTRACTID,
+            }
+        }, function (data) {
+            editDetail.screenParam.splcs = data.splc;
+            editDetail.screenParam.splcjg = data.splxz;
+            if (data.splxz.length) {
+                editDetail.screenParam.current = data.splxz[0].JDID - 1;
+            }
+        });
+    },
     //点击合同员
     srchSigner: function () {
         Vue.set(editDetail.screenParam, "showSysuser", true);
@@ -496,7 +553,7 @@ editDetail.otherMethods = {
                     }
                 }
             }
-            editDetail.veObj.calculateArea();
+            this.calculateArea();
         }
     },
     //点击费用项目弹窗
@@ -979,7 +1036,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.FEERULE_RENT = null;
     editDetail.dataParam.TAB_FLAG = null;
     editDetail.dataParam.QS_START = null;
-
+    editDetail.dataParam.JHRQ = null;
     editDetail.dataParam.DESCRIPTION = null;
     editDetail.dataParam.CONTRACT_BRAND = [];
     editDetail.dataParam.CONTRACT_SHOP = [];
@@ -995,10 +1052,27 @@ editDetail.clearKey = function () {
 };
 
 editDetail.afterAbandon = function () {
-    editDetail.screenParam.TQFKR = editDetail.dataParam.TQFKR.split(',');
+    if (editDetail.dataParam.TQFKR) {
+        editDetail.screenParam.TQFKR = editDetail.dataParam.TQFKR.split(',');
+    }
 };
 
 editDetail.IsValidSave = function () {
+    if (editDetail.dataParam.CONTRACT_OLD) {
+        if (!editDetail.dataParam.JHRQ) {
+            iview.Message.info("请维护变更日期!");
+            return false;
+        };
+        if (new Date(editDetail.dataParam.JHRQ).Format('yyyy-MM-dd') < new Date().Format('yyyy-MM-dd')) {
+            iview.Message.info("变更日期不能小于当前日期!");
+            return false;
+        };
+        editDetail.dataParam.CONTRACT_UPDATE = [];
+        editDetail.dataParam.CONTRACT_UPDATE.push({
+            CONTRACTID_OLD: editDetail.dataParam.CONTRACT_OLD,
+            JHRQ: editDetail.dataParam.JHRQ
+        });
+    }
     if (!editDetail.dataParam.BRANCHID) {
         iview.Message.info("请确认分店卖场!");
         return false;
@@ -1223,7 +1297,7 @@ editDetail.IsValidSave = function () {
                 return false;
             };
 
-            if (((contract_cost[i].SFFS == 1)|| (contract_cost[i].SFFS == 2)|| (contract_cost[i].SFFS == 4))
+            if (((contract_cost[i].SFFS == 1) || (contract_cost[i].SFFS == 2) || (contract_cost[i].SFFS == 4))
                 && ((!contract_cost[i].COST) || (contract_cost[i].COST <= 0))) {
                 iview.Message.info("请确定每月收费项目中的固定费用型收费方式对应的金额!");
                 return false;
@@ -1245,7 +1319,7 @@ editDetail.IsValidSave = function () {
             if (!contract_pay[i].TERMNAME) {
                 iview.Message.info(`请确定第${i + 1}行的费用项目!`);
                 return false;
-            };           
+            };
             if (!contract_pay[i].STARTDATE) {
                 iview.Message.info(`请确定收款方式${contract_pay[i].NAME}的起始日期!`);
                 return false;
@@ -1288,6 +1362,7 @@ editDetail.showOne = function (data) {
         if (data.contract.TQFKR) {
             Vue.set(editDetail.screenParam, "TQFKR", data.contract.TQFKR.split(',') || []);
         };
+        editDetail.otherMethods.srchSplc();
     });
 };
 
@@ -1313,6 +1388,11 @@ editDetail.mountedInit = function () {
         icon: "md-star",
         authority: "10600202",
         fun: function () {
+            if (!editDetail.screenParam.JDID) {
+                iview.Message.info("请确认结果选择!");
+                return;
+            }
+            editDetail.otherMethods.exec();
         },
         enabled: function (disabled, data) {
             if (!disabled && data.STATUS == 1) {
@@ -1330,6 +1410,9 @@ editDetail.mountedInit = function () {
         fun: function () {
             editDetail.backData = DeepClone(editDetail.dataParam);
             editDetail.veObj.disabled = true;
+            editDetail.dataParam.CONTRACT_OLD = editDetail.dataParam.BILLID;
+            editDetail.dataParam.BILLID = null;
+            editDetail.dataParam.CONTRACTID = null;
         },
         enabled: function (disabled, data) {
             if (!disabled && data.STATUS == 2) {

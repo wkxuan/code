@@ -1,237 +1,230 @@
 ﻿editDetail.beforeVue = function () {
-    editDetail.branchid = true;
     editDetail.service = "HtglService";
     editDetail.method = "GetContract";
+
     editDetail.dataParam.STATUS = 1;
     editDetail.dataParam.STYLE = 3;
     editDetail.dataParam.JXSL = 0;
     editDetail.dataParam.XXSL = 0;
     editDetail.dataParam.STANDARD = 1;
-
     editDetail.dataParam.OPERATERULE = 1;
 
-    //初始化弹窗所要传递参数
+    editDetail.screenParam.showPopMerchant = false;
+    editDetail.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+    editDetail.screenParam.showPopShop = false;
+    editDetail.screenParam.srcPopShop = __BaseUrl + "/Pop/Pop/PopShopList/";
+    editDetail.screenParam.showPopFeeSubject = false;
+    editDetail.screenParam.srcPopFeeSubject = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
 
-    editDetail.screenParam.ParentMerchant = {};
-    editDetail.screenParam.ParentShop = {};
-    editDetail.screenParam.ParentFeeSubject = {};
-
-    editDetail.screenParam.PopSysuser = false;
-    editDetail.screenParam.srcPopSigner = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
     editDetail.screenParam.popParam = {};
-
     //商铺表格
     editDetail.screenParam.colDefSHOP = [
-    { type: 'selection', width: 60, align: 'center' },
-    {
-        title: "商铺代码", key: 'CODE', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.CODE
-                },
-                on: {
-                    'on-enter': function (event) {
-                        _self = this;
-                        editDetail.dataParam.CONTRACT_SHOP[params.index].CODE = event.target.value;
-                        _.Ajax('GetShop', {
-                            Data: { CODE: event.target.value, BRANCHID: editDetail.dataParam.BRANCHID }
-                        }, function (data) {
-                            if (data.dt) {
-                                Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'SHOPID', data.dt.SHOPID);
-                                Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'CATEGORYID', data.dt.CATEGORYID);
-                                Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'CATEGORYCODE', data.dt.CATEGORYCODE);
-                                Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'CATEGORYNAME', data.dt.CATEGORYNAME);
-                                Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'AREA', data.dt.AREA_BUILD);
-                                Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'AREA_RENTABLE', data.dt.AREA_RENTABLE);
-                                calculateArea();
-                            }
-                            else {
-                                iview.Message.info('当前单元代码不存在或者不属于当前分店卖场!');
-                                Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'CODE', "");
-                                Vue.set(editDetail.dataParam.CONTRACT_SHOP[params.index], 'SHOPID', "");
-                            }
-                        });
-                    }
-                },
-            })
-        },
-    },
-    { title: '业态代码', key: 'CATEGORYCODE', width: 100 },
-    { title: '业态名称', key: 'CATEGORYNAME', width: 100 },
-    { title: '建筑面积', key: 'AREA', width: 100 },
-    { title: '租用面积', key: 'AREA_RENTABLE', width: 100 }
+       {
+           title: "商铺代码", key: 'CODE', cellType: "input",
+           onEnter: function (index, row, data) {
+               if (!row.CODE) {
+                   return;
+               }
+               let tbData = data;
+               _.Ajax('GetShop', {
+                   Data: { CODE: row.CODE, BRANCHID: editDetail.dataParam.BRANCHID }
+               }, function (data) {
+                   if (data.dt) {
+                       if (tbData.filter(item=> { return data.dt.SHOPID == item.SHOPID }).length) {
+                           iview.Message.info('当前商铺代码已存在!');
+                           return;
+                       }
+                       row.SHOPID = data.dt.SHOPID;
+                       row.CATEGORYID = data.dt.CATEGORYID;
+                       row.CATEGORYCODE = data.dt.CATEGORYCODE;
+                       row.CATEGORYNAME = data.dt.CATEGORYNAME;
+                       row.AREA = data.dt.AREA_BUILD;
+                       row.AREA_RENTABLE = data.dt.AREA_RENTABLE;
+                   } else {
+                       for (let item in row) {
+                           row[item] = null;
+                       }
+                       iview.Message.info('当前单元代码不存在或者不属于当前分店卖场!');
+                   }
+                   editDetail.veObj.calculateArea();
+               });
+           }
+       },
+       { title: '业态代码', key: 'CATEGORYCODE' },
+       { title: '业态名称', key: 'CATEGORYNAME' },
+       { title: '建筑面积', key: 'AREA' },
+       { title: '租用面积', key: 'AREA_RENTABLE' }
     ];
-
     //收费项目
     editDetail.screenParam.colDefCOST = [
-        { type: 'selection', width: 60, align: 'center', },
-        {
-            title: "费用项目", key: 'TREMID', width: 95,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.TREMID
-                    },
-                    on: {
-                        'on-enter': function (event) {
-                            _self = this;
-                            editDetail.dataParam.CONTRACT_COST_DJDW[params.index].TREMID = event.target.value;
-
-                            _.Ajax('GetFeeSubject', {
-                                Data: { TRIMID: event.target.value }
-                            }, function (data) {
-                                if (data.dt) {
-                                    Vue.set(editDetail.dataParam.CONTRACT_COST_DJDW[params.index], 'NAME', data.dt.NAME);
-                                } else {
-                                    iview.Message.info('当前费用项目不存在!');
-                                }
-                            });
-                        }
-                    },
-                })
-            },
-        },
-        { title: "费用项目名称", key: 'NAME', width: 120 },
-        {
-            title: "金额", key: 'COST', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.COST
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            editDetail.dataParam.CONTRACT_COST_DJDW[params.index].COST = event.target.value;
-                        }
-                    },
-                })
-            },
-        }
-    ]
-
-
-    //表格数据初始化
-    editDetail.dataParam.CONTRACT_SHOP = editDetail.dataParam.CONTRACT_SHOP || [];
-
-    editDetail.dataParam.CONTRACT_COST_DJDW = editDetail.dataParam.CONTRACT_COST_DJDW || [];
-
-    calculateArea = function () {
-        editDetail.dataParam.AREA_BUILD = 0;
-        editDetail.dataParam.AREAR = 0;
-        for (var i = 0; i < editDetail.dataParam.CONTRACT_SHOP.length; i++) {
-            if (editDetail.dataParam.CONTRACT_SHOP[i].SHOPID) {
-                editDetail.dataParam.AREA_BUILD += editDetail.dataParam.CONTRACT_SHOP[i].AREA;
-                editDetail.dataParam.AREAR += editDetail.dataParam.CONTRACT_SHOP[i].AREA_RENTABLE;
-            }
-        }
-    }
+       {
+           title: "费用项目", key: 'TREMID', cellType: "input",
+           onEnter: function (index, row, data) {
+               let tbData = data;
+               _.Ajax('GetFeeSubject', {
+                   Data: { TRIMID: row.TREMID }
+               }, function (data) {
+                   if (data.dt) {
+                       if (tbData.filter(item=> { return data.dt.NAME == item.NAME }).length) {
+                           iview.Message.info('当前费用项目已存在!');
+                           return;
+                       }
+                       row.NAME = data.dt.NAME;
+                   } else {
+                       row.TREMID = null;
+                       row.NAME = null;
+                       iview.Message.info('当前费用项目不存在!');
+                   }
+               });
+           }
+       },
+       { title: "费用项目名称", key: 'NAME' },
+       { title: "金额", key: 'COST', cellType: "input", cellDataType: "number" },
+    ];
 }
 
+editDetail.popCallBack = function (data) {
+    if (editDetail.screenParam.showPopMerchant) {
+        editDetail.screenParam.showPopMerchant = false;
+        for (let i = 0; i < data.sj.length; i++) {
+            editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
+            editDetail.dataParam.MERNAME = data.sj[i].NAME;
+        };
+    }
+    if (editDetail.screenParam.showPopShop) {
+        editDetail.screenParam.showPopShop = false;
+        let shop = editDetail.dataParam.CONTRACT_SHOP;
+        for (let i = 0; i < data.sj.length; i++) {
+            if (shop.filter(item=> { return (data.sj[i].SHOPID == item.SHOPID) }).length == 0) {
+                shop.push(data.sj[i]);
+            }
+        };
+        editDetail.veObj.calculateArea();
+    }
+    if (editDetail.screenParam.showPopFeeSubject) {
+        editDetail.screenParam.showPopFeeSubject = false;
+        let cost = editDetail.dataParam.CONTRACT_COST_DJDW;
+        for (let i = 0; i < data.sj.length; i++) {
+            if (cost.filter(item=> { return (data.sj[i].TERMID == item.TERMID) }).length == 0) {
+                let loc = {};
+                editDetail.screenParam.colDefCOST.forEach(item=> {
+                    switch (item.key) {
+                        case "TREMID":
+                            loc[item.key] = data.sj[i].TERMID;
+                            break;
+                        case "NAME":
+                            loc[item.key] = data.sj[i].NAME;
+                            break;
+                        default:
+                            loc[item.key] = null;
+                            break;
+                    }
+                });
+                cost.push(loc);
+            }
+        };
+    }
+};
 
 editDetail.otherMethods = {
-    //点击商户弹窗
-    Merchant: function () {
-        Vue.set(editDetail.screenParam, "PopMerchant", true);
-    },
-    //商户弹窗返回
-    MerchantBack: function (val) {
-        Vue.set(editDetail.screenParam, "PopMerchant", false);
-        editDetail.dataParam.MERCHANTID = val.sj[0].MERCHANTID;
-        editDetail.dataParam.MERNAME = val.sj[0].NAME;
-    },
-
-    //选择商铺弹窗
-    srchColSHOP: function () {
-        if (!editDetail.dataParam.BRANCHID) {
-            iview.Message.info("请确认分店卖场!");
-            return false;
-        } else {
-            Vue.set(editDetail.screenParam, "PopShop", true);
-            editDetail.screenParam.ParentShop = { BRANCHID: editDetail.dataParam.BRANCHID };
-        }
-    },
-    //商铺返回弹窗
-    ShopBack: function (val) {
-        Vue.set(editDetail.screenParam, "PopShop", false);
-        for (var i = 0; i < val.sj.length; i++) {
-            editDetail.dataParam.CONTRACT_SHOP.push(val.sj[i]);
-        };
-        calculateArea();
-    },
-
-    srchCost: function () {
-        Vue.set(editDetail.screenParam, "PopFeeSubject", true);
-    },
-
-    FeeSubjectBack: function (val) {
-        Vue.set(editDetail.screenParam, "PopFeeSubject", false);
-        var maxIndex = 1;
-        for (var i = 0; i < val.sj.length; i++) {
-            editDetail.dataParam.CONTRACT_COST_DJDW.push({
-                TREMID: val.sj[i].TERMID,
-                NAME: val.sj[i].NAME
-            });
-        };
-    },
-
-    //添加商铺
-    addColSHOP: function () {
+    srchMerchant: function () {
         if (!editDetail.dataParam.BRANCHID) {
             iview.Message.info('请先确认分店!');
             return;
         }
-        var temp = editDetail.dataParam.CONTRACT_SHOP || [];
-        temp.push({});
-        editDetail.dataParam.CONTRACT_SHOP = temp;
+        Vue.set(editDetail.screenParam, "showPopMerchant", true);
     },
-    //删除商铺
-    delColSHOP: function () {
-        var selectton = this.$refs.selectShop.getSelection();
-        if (selectton.length == 0) {
+    srchShop: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info('请先确认分店!');
+            return;
+        }
+        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
+        Vue.set(editDetail.screenParam, "showPopShop", true);
+    },
+    addRowShop: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info('请先确认分店!');
+            return;
+        }
+        let temp = editDetail.dataParam.CONTRACT_SHOP || [];
+        let loc = {};
+        editDetail.screenParam.colDefSHOP.forEach(item=> {
+            loc[item.key] = null;
+        });
+        temp.push(loc);
+    },
+    delShop: function () {
+        let selection = this.$refs.refShop.getSelection();
+        if (selection.length == 0) {
             iview.Message.info("请选中要删除的商铺!");
         } else {
-            for (var i = 0; i < selectton.length; i++) {
-                for (var j = 0; j < editDetail.dataParam.CONTRACT_SHOP.length; j++) {
-                    if (editDetail.dataParam.CONTRACT_SHOP[j].SHOPID == selectton[i].SHOPID) {
-                        editDetail.dataParam.CONTRACT_SHOP.splice(j, 1);
-                        calculateArea();
+            for (let i = 0; i < selection.length; i++) {
+                let temp = editDetail.dataParam.CONTRACT_SHOP;
+                for (let j = 0; j < temp.length; j++) {
+                    if (temp[j].SHOPID == selection[i].SHOPID) {
+                        temp.splice(j, 1);
+                        break;
                     }
                 }
             }
+            editDetail.veObj.calculateArea();
         }
     },
-
-    //添加租约收费项目信息
-    addColCost: function () {
-        var temp = editDetail.dataParam.CONTRACT_COST_DJDW || [];
-        temp.push({});
-        editDetail.dataParam.CONTRACT_COST_DJDW = temp;
+    srchCost: function () {
+        Vue.set(editDetail.screenParam, "showPopFeeSubject", true);
     },
-    //删除租约收费项目信息
-    delColCost: function () {
-        var selectton = this.$refs.selectCost.getSelection();
-        if (selectton.length == 0) {
+    addRowCost: function () {
+        let temp = editDetail.dataParam.CONTRACT_COST_DJDW || [];
+        let loc = {};
+        editDetail.screenParam.colDefCOST.forEach(item=> {
+            loc[item.key] = null;
+        });
+        temp.push(loc);
+    },
+    delCost: function () {
+        let selection = this.$refs.refCost.getSelection();
+        if (selection.length == 0) {
             iview.Message.info("请选中要删除的数据!");
         } else {
-            for (var i = 0; i < selectton.length; i++) {
-                for (var j = 0; j < editDetail.dataParam.CONTRACT_COST_DJDW.length; j++) {
-                    if (editDetail.dataParam.CONTRACT_COST_DJDW[j].TREMID == selectton[i].TREMID) {
-                        editDetail.dataParam.CONTRACT_COST_DJDW.splice(j, 1);
+            let temp = editDetail.dataParam.CONTRACT_COST_DJDW;
+            for (let i = 0; i < selection.length; i++) {
+                for (let j = 0; j < temp.length; j++) {
+                    if (temp[j].NAME == selection[i].NAME) {
+                        temp.splice(j, 1);
+                        break;
                     }
                 }
             }
         }
     },
-}
-
+    calculateArea: function () {
+        let shop = editDetail.dataParam.CONTRACT_SHOP;
+        let areaBuild = 0, arear = 0;
+        for (var i = 0; i < shop.length; i++) {
+            if (shop[i].SHOPID) {
+                areaBuild += shop[i].AREA;
+                arear += shop[i].AREA_RENTABLE;
+            }
+        }
+        editDetail.dataParam.AREA_BUILD = areaBuild;
+        editDetail.dataParam.AREAR = arear;
+    }
+};
 
 editDetail.clearKey = function () {
     editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.BRANCHID = null;
     editDetail.dataParam.CONTRACTID = null;
+    editDetail.dataParam.MERNAME = null;
+    editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.CONT_START = null;
+    editDetail.dataParam.CONT_END = null;
+    editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.STATUSMC = null;
     editDetail.dataParam.CONTRACT_SHOP = [];
     editDetail.dataParam.CONTRACT_COST_DJDW = [];
-}
+};
 
 editDetail.IsValidSave = function () {
     if (!editDetail.dataParam.BRANCHID) {
@@ -251,21 +244,32 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请维护结束日期!");
         return false;
     };
-
-    if (editDetail.dataParam.CONTRACT_SHOP.length == 0) {
-        iview.Message.info("请确定商铺!");
+    let shop = editDetail.dataParam.CONTRACT_SHOP;
+    if (shop.length == 0) {
+        iview.Message.info("商铺信息不能为空!");
         return false;
-    } else {
-        for (var i = 0; i < editDetail.dataParam.CONTRACT_SHOP.length; i++) {
-            if (!editDetail.dataParam.CONTRACT_SHOP[i].SHOPID) {
-                iview.Message.info("请确定商铺!");
+    }
+    for (let i = 0; i < shop.length; i++) {
+        if (!shop[i].SHOPID) {
+            iview.Message.info(`请确定商铺信息中第${i + 1}行的商铺!`);
+            return false;
+        };
+    };
+    let cost = editDetail.dataParam.CONTRACT_COST_DJDW;
+    if (cost.length) {
+        for (let i = 0; i < cost.length; i++) {
+            if (!cost[i].NAME) {
+                iview.Message.info(`请确定收费项目信息中第${i + 1}行的项目!`);
+                return false;
+            };
+            if (!cost[i].COST || Number(cost[i].COST) < 0) {
+                iview.Message.info(`请确定收费项目${cost[i].NAME}的金额,且大于0!`);
                 return false;
             };
         };
     };
     return true;
-}
-
+};
 
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchContract', {
@@ -277,4 +281,46 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.CONTRACT_COST_DJDW = data.contractCostDjdw;
         callback && callback(data);
     });
+};
+
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10600501"
+    }, {
+        id: "edit",
+        authority: "10600501"
+    }, {
+        id: "del",
+        authority: "10600501"
+    }, {
+        id: "save",
+        authority: "10600501"
+    }, {
+        id: "abandon",
+        authority: "10600501"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10600502",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { CONTRACTID: editDetail.dataParam.CONTRACTID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
 };

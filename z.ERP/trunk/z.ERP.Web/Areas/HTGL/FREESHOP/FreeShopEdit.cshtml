@@ -18,27 +18,14 @@
         <i-col span="6" class="RowText">
             <i-input readonly v-model="dataParam.SHMC"  v-bind:disabled="!disabled" />
         </i-col>
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
             退铺日期
         </i-col>
         <i-col span="6" class="RowText">
-           @{
-               RenderControl(new DateBoxRender()
-               {
-                   vModel = "dataParam.FREEDATE"
-               });
-        }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="6" class="RowText">
             @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                RenderControl(new DateBoxRender()
                 {
-                    vModel = "dataParam.STATUS",
+                    vModel = "dataParam.FREEDATE"
                 });
             }
         </i-col>

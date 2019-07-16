@@ -63,7 +63,7 @@
                             _self.edit();
                         },
                         enabled: function (disabled, data) {
-                            if (!disabled && data.STATUS < 2) {
+                            if (!disabled && data && data.BILLID && data.STATUS < 2) {
                                 return true;
                             } else {
                                 return false;
@@ -77,7 +77,7 @@
                             _self.del();
                         },
                         enabled: function (disabled, data) {
-                            if (!disabled && data.STATUS < 2) {
+                            if (!disabled && data && data.BILLID && data.STATUS < 2) {
                                 return true;
                             } else {
                                 return false;
