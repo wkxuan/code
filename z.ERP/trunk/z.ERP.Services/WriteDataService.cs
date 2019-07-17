@@ -27,9 +27,9 @@ namespace z.ERP.Services
 
             int m = DateTime.Now.Minute;    //获取当前时间的分钟部分
 
-            if (((h * 100 + m) < 2230) && (WRITEDATA.RQ.ToDateTime() == DateTime.Now.ToShortDateString().ToDateTime()))
+            if (((h * 100 + m) < 2359) && (WRITEDATA.RQ.ToDateTime() == DateTime.Now.ToShortDateString().ToDateTime()))
             {
-                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "请于22点30分后在做日结!");
+                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "请于23点59分后在做日结!");
                 return;
             }
             if (employee.Id.ToInt() < 0)
