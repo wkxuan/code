@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btn_rcl = new System.Windows.Forms.Button();
             this.WriteRq = new System.Windows.Forms.DateTimePicker();
             this.LogText = new System.Windows.Forms.RichTextBox();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // btn_rcl
@@ -58,6 +60,11 @@
             this.LogText.Text = "";
             this.LogText.TextChanged += new System.EventHandler(this.LogText_TextChanged);
             // 
+            // timer
+            // 
+            this.timer.Interval = 60000;
+            this.timer.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -78,5 +85,6 @@
         private System.Windows.Forms.Button btn_rcl;
         private System.Windows.Forms.DateTimePicker WriteRq;
         private System.Windows.Forms.RichTextBox LogText;
+        private System.Windows.Forms.Timer timer;
     }
 }
