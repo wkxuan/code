@@ -124,7 +124,7 @@ namespace z.ERP.Services
                         switch (data.STATUS.ToInt())
                         {
                             case 1:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]更新交易商品税率");
+                                LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]更新交易商品税率");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -149,11 +149,11 @@ namespace z.ERP.Services
                                 {
                                     DbHelper.Delete(host);
                                     errorProc = true;
-                                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
+                                    LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
                                 break;
                             case 2:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]汇总商品销售表");
+                                LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]汇总商品销售表");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -178,11 +178,11 @@ namespace z.ERP.Services
                                 {
                                     DbHelper.Delete(host);
                                     errorProc = true;
-                                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
+                                    LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
                                 break;
                             case 3:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]汇总统计维度表");
+                                LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]汇总统计维度表");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -207,12 +207,12 @@ namespace z.ERP.Services
                                 {
                                     DbHelper.Delete(host);
                                     errorProc = true;
-                                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
+                                    LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
 
                                 break;
                             case 4:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]汇总手续费表");
+                                LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]汇总手续费表");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -237,12 +237,12 @@ namespace z.ERP.Services
                                 {
                                     DbHelper.Delete(host);
                                     errorProc = true;
-                                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
+                                    LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
 
                                 break;
                             case 5:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]转移交易数据");
+                                LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]转移交易数据");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -266,12 +266,12 @@ namespace z.ERP.Services
                                 {
                                     DbHelper.Delete(host);
                                     errorProc = true;
-                                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
+                                    LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
 
                                 break;
                             case 6:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]生成租金每月收费项目账单");
+                                LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]生成租金每月收费项目账单");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -296,12 +296,12 @@ namespace z.ERP.Services
                                 {
                                     DbHelper.Delete(host);
                                     errorProc = true;
-                                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
+                                    LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
 
                                 break;
                             case 7:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]生成销售相关账单");
+                                LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]生成销售相关账单");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -326,12 +326,12 @@ namespace z.ERP.Services
                                 {
                                     DbHelper.Delete(host);
                                     errorProc = true;
-                                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
+                                    LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
 
                                 break;
                             case 8:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]租约变更启动 ");
+                                LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]租约变更启动 ");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -356,12 +356,12 @@ namespace z.ERP.Services
                                 {
                                     DbHelper.Delete(host);
                                     errorProc = true;
-                                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
+                                    LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
 
                                 break;
                             case 9:
-                                LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]生成缴费通知单");
+                                LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":[" + WRITEDATA.RQ + "]生成缴费通知单");
                                 try
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
@@ -386,7 +386,7 @@ namespace z.ERP.Services
                                 {
                                     DbHelper.Delete(host);
                                     errorProc = true;
-                                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
+                                    LogData.AppendText("\r\n" + "分店" + fd.NAME + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + e.Message);
                                 }
 
                                 break;
@@ -411,7 +411,7 @@ namespace z.ERP.Services
                         UpdateSatus(writedata);
                         Tran.Commit();
                     }
-                    LogData.AppendText(DateTime.Now.ToString("\r\n" + "yyyy-MM-dd HH:mm:ss") + ":分店[" + WRITEDATA.RQ + "]" + fd.ID + "成功结束!");
+                    LogData.AppendText(DateTime.Now.ToString("\r\n" + "分店" + fd.NAME + "yyyy-MM-dd HH:mm:ss") + ":分店[" + WRITEDATA.RQ + "]" + fd.ID + "成功结束!");
                 }
 
             }
@@ -426,7 +426,7 @@ namespace z.ERP.Services
 
             int m = DateTime.Now.Minute;    //获取当前时间的分钟部分
 
-            if (((h * 100 + m) < 2230) && (RCLDATA.RQ.ToDateTime() == DateTime.Now.ToShortDateString().ToDateTime()))
+            if (((h * 100 + m) < 2359) && (RCLDATA.RQ.ToDateTime() == DateTime.Now.ToShortDateString().ToDateTime()))
             {
                 LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "请于22点30分后在做日结!");
                 return;
