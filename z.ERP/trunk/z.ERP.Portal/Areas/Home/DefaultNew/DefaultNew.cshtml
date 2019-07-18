@@ -38,10 +38,15 @@
 </head>
 <body style="background: rgb(238, 238, 238)">
     <div id="main">
-        <i-Switch v-model="Switch" size="large">
-            <span slot="open">图表</span>
-            <span slot="close">数据</span>
-        </i-Switch>
+        <div id="top">
+            <i-Switch v-model="Switch" size="large">
+                <span slot="open">图表</span>
+                <span slot="close">数据</span>
+            </i-Switch>
+            <i-Select v-model="branchid" size="small" style="width:8%;float:right;margin: 8px 10px 0px;" v-on:on-change="branchchange">
+                <i-Option v-for="item in branchList" v-bind:value="item.Key" v-bind:key="item.Key">{{ item.Value }}</i-Option>
+            </i-Select>
+        </div>
         <div id="tablelist" v-show="!Switch">
             <Row style="background:#eee;padding:10px;height:260px">
                 <i-col span="10">
@@ -58,8 +63,8 @@
                         <Card :bordered="false">
                             <p slot="title">
                                 品牌经营榜
-                                <i-Select style="width:100px;float:right" size="small" v-on:on-change="box3datechange" placeholder="昨日">
-                                    <i-Option value="1" selected="selected">昨日</i-Option>
+                                <i-Select v-model="box3select" style="width:100px;float:right" size="small" v-on:on-change="box3datechange">
+                                    <i-Option value="1">昨日</i-Option>
                                     <i-Option value="2">本月</i-Option>
                                     <i-Option value="3">上月</i-Option>
                                 </i-Select>
@@ -87,8 +92,8 @@
                         <Card :bordered="false">
                             <p slot="title">
                                 业态经营榜
-                                <i-Select style="width:100px;float:right" size="small" v-on:on-change="box4datechange" placeholder="昨日">
-                                    <i-Option value="1" selected="selected">昨日</i-Option>
+                                <i-Select v-model="box4select" style="width:100px;float:right" size="small" v-on:on-change="box4datechange">
+                                    <i-Option value="1">昨日</i-Option>
                                     <i-Option value="2">本月</i-Option>
                                     <i-Option value="3">上月</i-Option>
                                 </i-Select>
