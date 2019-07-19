@@ -56,12 +56,7 @@
             核算方式
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new EnumDropDownListRender<核算方式>()
-                {
-                    vModel = "dataParam.STYLE",
-                });
-            }
+            <i-input v-model="dataParam.STYLEMC" disabled />
         </i-col>
     </row>
     <row>

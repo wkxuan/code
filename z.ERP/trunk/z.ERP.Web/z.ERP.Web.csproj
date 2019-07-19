@@ -334,11 +334,15 @@
     <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillList.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
+    <Content Include="Areas\Layout\Edit\EditStyle.css" />
     <Content Include="Areas\Layout\Edit\_Edit.js" />
     <Content Include="Areas\Layout\MapShow\MapShow.js" />
+    <Content Include="Areas\Layout\PopSearch\PopSearchStyle.css" />
     <Content Include="Areas\Layout\PopShow\_PopShowLayout.js" />
     <Content Include="Areas\Layout\PopSearch\_PopSearchLayout.js" />
+    <Content Include="Areas\Layout\Search\SearchStyle.css" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
+    <Content Include="Areas\Layout\Srch\SrchStyle.css" />
     <Content Include="Areas\Layout\Srch\_SrchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
     <Content Include="Areas\Pop\PopPay.js" />
@@ -447,6 +451,8 @@
     <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Areas\XTGL\TreeTest\List.js" />
     <Content Include="Content\components\common.js" />
+    <Content Include="Content\echarts-wordcloud.js" />
+    <Content Include="Content\echarts.js" />
     <Content Include="Content\Editor\wangEditor.css" />
     <Content Include="Content\Editor\wangEditor.js" />
     <Content Include="Content\jquery-1.7.2.min.js" />

@@ -19,6 +19,7 @@ Vue.component('yx-table', {
                     ` v-on:on-sort-change="sortChange" ` +
                     ` v-on:on-row-click="rowClick" ` +
                     ` v-on:on-row-dblclick="rowDblClick" ` +
+                    ` :row-class-name="rowClassName" ` +
                     ` v-on:on-selection-change="onSelectionChange"> ` +
                  ` </i-table> ` +
                  ` <div style="position: absolute;top:2px;right:-5px;" v-if="list.length>0"> ` +
@@ -43,7 +44,9 @@ Vue.component('yx-table', {
             curHighlightRow: true,
             curSize: "small",
             curDraggable: true,
-            curTooltipTheme: "dark",
+            curTooltipTheme: "light",
+            curStripe: null,
+            curBorder: null,
             visibleCols: [],
             list: [],
             colsList: [],
@@ -55,7 +58,9 @@ Vue.component('yx-table', {
     mounted() {
         this.curShowHeader = this.showHeader;
         this.curWidth = this.width;
-        this.curHeight = this.height;
+        this.curHeight = this.height || 438;
+        this.curStripe = this.stripe || true;
+        this.curBorder = this.border || true;
     },
     watch: {
         columns: {
@@ -82,19 +87,12 @@ Vue.component('yx-table', {
                 if (nv != ov) {
                     this.curColumns = this.initCols();
                 }
-                this.curDraggable = nv;
             },
             immediate: true,
             deep: true
         }
     },
     computed: {
-        curStripe() {
-            return this.stripe || true;
-        },
-        curBorder() {
-            return this.border || true;
-        },
         curData() {
             return this.data || [];
         },
@@ -103,6 +101,13 @@ Vue.component('yx-table', {
         }
     },
     methods: {
+        rowClassName (row, index) {
+            if (index % 2 == 0) {
+                return 'demo-table-info-row';
+            } else {
+                return 'demo-table-error-row';
+            }
+        },
         //初始化table列设置
         initCols() {
             let _self = this;
@@ -290,12 +295,6 @@ Vue.component('yx-table', {
                                 });
                             };
                             break;
-                        default:
-                            data[i].render = function (h, params) {
-                                return params.row[params.column.key];
-                            };
-                            break;
-
                     }
                 }
                 newData.push(data[i]);
@@ -356,21 +355,21 @@ Vue.component('yx-table', {
         },
         //双击某一行时触发
         rowDblClick(row, index) {
-            this.$emit("rowDblClick", row, index);
+            this.$emit("rowdblclick", row, index);
         },
         //开启 highlight-row 后有效，当表格的当前行发生变化的时候会触发
         currentChange(currentRow, oldCurrentRow) {
-            this.$emit("currentChange", currentRow, oldCurrentRow);
+            this.$emit("currentchange", currentRow, oldCurrentRow);
         },
         //排序时有效，当点击排序时触发
         sortChange(column, key, order) { },
         //单击某一行时触发
         rowClick(row, index) {
-            this.$emit("rowClick", row, index);
+            this.$emit("rowclick", row, index);
         },
         //在多选模式下有效，只要选中项发生变化时就会触发
         onSelectionChange(data) {
-            this.$emit("onSelectionChange", data);
+            this.$emit("onselectionchange", data);
         },
         //获取已选中的数据
         getSelection() {
@@ -519,7 +518,7 @@ Vue.component('yx-tool-bar', {
     props: ['list', 'disabled', 'domdata'],
     template: ` <div> ` +
               `   <span v-for="(i,k) in curList" v-bind:key="k">` +
-              `      <i-button type="text" v-bind:icon="i.icon" v-on:click="i.fun" >{{i.name}}</i-button>` +
+              `      <i-button type="text" v-bind:icon="i.icon" v-on:click="i.fun" shape="circle">{{i.name}}</i-button>` +
               `   </span>` +
               ` </div>`,
     data() {
@@ -595,5 +594,279 @@ Vue.component('yx-tool-bar', {
             }
             _self.toolList = _backdata;
         },
+    }
+});
+//echart柱状图组件
+Vue.component('yx-echart-bar', {
+    props: ['data', 'enumlist', 'value', 'sumlist'],
+    template: ` <div> ` +
+              `  <Card v-bind:padding=0>` +
+              `    <div slot="title">` +
+              `       <radio-group v-model="curValue" v-on:on-change="echartRadioChange">` +
+              `          <radio v-for="(i,k) in curEnumlist" v-bind:key="k" v-bind:label="i.value">` +
+              `             <span>{{i.label}}</span>` +
+              `          </radio>` +
+              `       </radio-group>` +
+              `    </div>` +
+              `    <div v-bind:id="id" style="width:100%;height:300%;"></div>` +
+              `  </Card>` +
+              ` </div>`,
+    data() {
+        return {
+            curValue: null,
+            legendData: [],
+            echartObj: null,
+            id: Guid()
+        }
+    },
+    mounted() {
+        this.curValue = this.value;
+        this.echartObj = echarts.init(document.getElementById(this.id));
+        this.initLegend();
+    },
+    computed: {
+        curEnumlist() {
+            return this.enumlist || [];
+        }
+    },
+    watch: {
+        data: {
+            handler: function (nv, ov) {
+                this.initEchart();
+            }
+        },
+        value: {
+            handler: function (nv, ov) {
+                if (nv == ov) {
+                    return;
+                }
+                this.curValue = nv;
+                debugger
+                this.initEchart();
+            },
+            deep: true
+        }
+    },
+    methods: {
+        initLegend() {
+            this.legendData = [];
+            for (let i = 0; i < this.sumlist.length; i++) {
+                this.legendData.push(this.sumlist[i].label);
+            }
+        },
+        echartRadioChange(value) {
+            this.initEchart();
+        },
+        initEchart () {
+            let _self = this;
+            let xData = [];
+            let data = _self.data;
+            let key = _self.curValue;
+            //查找data中不同项初始x轴数据
+            for (let i = 0; i < data.length; i++) {
+                let len = xData.filter(function (item) {
+                    if (!data[i][key] || item == data[i][key]) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
+                if (!len.length && data[i][key] != "合计") {
+                    xData.push(data[i][key]);
+                }
+            }
+            //构造series数据
+            let seriesData = [];
+            for (let i = 0; i < _self.sumlist.length; i++) {
+                let dataList = [];
+                for (let j = 0; j < xData.length; j++) {
+                    let list = data.filter(function (item) {
+                        if (item[key] == xData[j]) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                    let sum = 0;
+                    for (let k = 0; k < list.length; k++) {
+                        sum += list[k][_self.sumlist[i].value];
+                    }
+                    dataList.push(sum.toFixed(2));
+                }
+                seriesData.push({
+                    name: _self.sumlist[i].label,
+                    type: 'bar',
+                    data: dataList
+                });
+            }
+            //初始化echart图形
+            _self.echartObj.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: _self.legendData
+                },
+                dataZoom: [{
+                    show: true,
+                    realtime: true,
+                }],
+                toolbox: {
+                    show: true,
+                    //orient: 'vertical',
+                    right: 'auto',
+                    top: 'auto',
+                    width: 500,
+                    feature: {
+                        mark: { show: true },
+                        magicType: {
+                            show: true, type: ['line', 'bar', 'stack']
+                        },
+                        restore: {
+                            show: true
+                        },
+                        saveAsImage: {
+                            show: true
+                        }
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: xData,
+                    boundaryGap: ['30%', '30%']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: seriesData
+            });
+        }
+    }
+});
+//echart饼图组件
+Vue.component('yx-echart-pie', {
+    props: ['data', 'enumlist', 'value', 'sumkey'],
+    template: ` <div> ` +
+              `  <Card v-bind:padding=0>` +
+              `    <div slot="title">` +
+              `       <radio-group v-model="curValue" v-on:on-change="echartRadioChange">` +
+              `          <radio v-for="(i,k) in curEnumlist" v-bind:key="k" v-bind:label="i.value">` +
+              `             <span>{{i.label}}</span>` +
+              `          </radio>` +
+              `       </radio-group>` +
+              `    </div>` +
+              `    <div v-bind:id="id" style="width:100%;height:300%;"></div>` +
+              `  </Card>` +
+              ` </div>`,
+    data() {
+        return {
+            curValue: null,
+            legendData: [],
+            echartObj: null,
+            id: Guid()
+        }
+    },
+    mounted() {
+        this.curValue = this.value;
+        this.echartObj = echarts.init(document.getElementById(this.id));
+    },
+    computed: {
+        curEnumlist() {
+            return this.enumlist || [];
+        }
+    },
+    watch: {
+        data: {
+            handler: function (nv, ov) {
+                this.initEchart();
+            }
+        },
+        value: {
+            handler: function (nv, ov) {
+                if (nv == ov) {
+                    return;
+                }
+                this.curValue = nv;
+                this.initEchart();
+            },
+            deep: true
+        }
+    },
+    methods: {
+        echartRadioChange(value) {
+            this.initEchart();
+        },
+        initEchart () {
+            let _self = this;
+            let legendData = [];
+            let data = _self.data;
+            let key = _self.curValue;
+            //查找data中不同项初始x轴数据
+            for (let i = 0; i < data.length; i++) {
+                let len = legendData.filter(function (item) {
+                    if (!data[i][key] || item == data[i][key]) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
+                if (!len.length && data[i][key] != "合计") {
+                    legendData.push(data[i][key]);
+                }
+            }
+            //构造series数据
+            let seriesData = [];
+            for (let i = 0; i < legendData.length; i++) {
+                let list = data.filter(function (item) {
+                    if (item[key] == legendData[i]) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                let sum = 0;
+                for (let j = 0; j < list.length; j++) {
+                    sum += list[j][_self.sumkey];
+                }
+                seriesData.push({
+                    name: legendData[i],
+                    value: sum
+                });
+            }
+            //初始化echart图形
+            _self.echartObj.setOption({
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{b} : {c} ({d}%)"
+                },
+                legend: {
+                    type: 'scroll',
+                    orient: 'vertical',
+                    right: 10,
+                    top: 20,
+                    bottom: 20,
+                    data: legendData,
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['40%', '50%'],
+                        data: {
+                            legendData: legendData,
+                            seriesData: seriesData,
+                        },
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            });
+        }
     }
 });

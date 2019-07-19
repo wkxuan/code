@@ -7,7 +7,8 @@
 }
 @{
     WebFiles = new string[] {
-                    "Areas/Layout/Search/_SearchLayout.js"
+                    "Areas/Layout/Search/_SearchLayout.js",
+                    "Areas/Layout/Search/SearchStyle.css",
                 };
 }
 @section head{
@@ -101,7 +102,7 @@
             <div slot="content">
                 @*结果显示*@
                 <yx-table v-bind:columns="columns" selection=true
-                          v-bind:data="data" ref="selectData">
+                          v-bind:data="data" v-bind:loading="tbLoading" ref="selectData">
                 </yx-table>
 
                 <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total

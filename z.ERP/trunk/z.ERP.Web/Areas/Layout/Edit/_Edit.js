@@ -21,7 +21,7 @@
     this.btnConfig = [];
     this.vue = function VueOperate() {
         var options = {
-            el: '#EditDetail',
+            el: '#edit',
             data: {
                 dataParam: _this.dataParam,
                 screenParam: _this.screenParam,

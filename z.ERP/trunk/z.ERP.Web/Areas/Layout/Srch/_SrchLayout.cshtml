@@ -7,7 +7,9 @@
 }
 @{
     WebFiles = new string[] {
-                    "Areas/Layout/Srch/_SrchLayout.js"
+                    "/Content/echarts.js",
+                    "Areas/Layout/Srch/_SrchLayout.js",
+                    "Areas/Layout/Srch/SrchStyle.css",
                 };
 }
 @section head{
@@ -15,31 +17,13 @@
     @RenderSection("head", false)
 }
 
-<div id="search">
+<div id="srch">
     <collapse v-model="panelName">
         <panel name="condition">
             查询条件
             <div style="float: right; width: 400px ;text-align: right;z-index:99">
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "seach",
-                        Text = "查询",
-                        Enable = true,
-                        Type = "primary",
-                        Icon = "md-search"
-                    });
-                }
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "clear",
-                        Text = "清空",
-                        Enable = true,
-                        Type = "primary",
-                        Icon = "md-refresh"
-                    });
-                }
+                <i-button type="text" shape="circle" icon="md-search" v-on:click="seach">查询</i-button>
+                <i-button type="text" shape="circle" icon="md-refresh" v-on:click="clear">清空</i-button>
 
                 @RenderSection("conditionBtn", false)
             </div>
@@ -48,36 +32,25 @@
                 @RenderSection("conditionParam", true)
             </div>
         </panel>
+        <panel name="echart" v-if="echartResult">
+            可视化数据
+            <div slot="content">
+                @RenderSection("echartContent", false)
+            </div>
+        </panel>
         <panel name="result">
             查询结果
             <div style="float: right; width: 400px ;text-align: right;">
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "exp",
-                        Text = "导出",
-                        Enable = true,
-                        Type = "primary",
-                        Icon = "md-download"
-                    });
-                }
-                @*@{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "print",
-                        Text = "打印",
-                        Enable = true,
-                        Type = "primary",
-                        Icon = "md-print"
-                    });
-                }*@
+                <i-button type="text" shape="circle" icon="md-download" v-on:click="exp">导出</i-button>
+                @*<i-button type="text" shape="circle" icon="md-print" v-on:click="print">打印</i-button>*@
+
                 @*增加结果按钮*@
                 @RenderSection("resultBtn", false)
             </div>
             <div slot="content">
                 @*结果显示*@
-                <yx-table v-bind:columns="columns" v-bind:data="data"></yx-table>
-                <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total
+                <yx-table v-bind:columns="columns" v-bind:data="data" v-bind:loading="tbLoading"></yx-table>
+                <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total v-bind:current="currentPage"
                       v-on:on-change="changePageCount" v-bind:page-size-opts="arrPageSize"
                       show-sizer v-on:on-page-size-change="changePageSizer"></page>
 

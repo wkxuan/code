@@ -8,7 +8,7 @@
             查询类型
         </i-col>
         <i-col span="6" class="RowText">
-            @{ 
+            @{
                 RenderControl(new EnumDropDownListRender<查询类型>()
                 {
                     vModel = "searchParam.SrchTYPE",
@@ -119,46 +119,41 @@
         </i-col>
     </row>
 }
-
+@section echartContent{
+    <row>
+        <i-col span="24">
+            <yx-echart-bar v-bind:data="screenParam.echartData" v-bind:value="screenParam.echartRadioVal"
+                       v-bind:enumlist="screenParam.echartType" v-bind:sumlist="screenParam.dataSumTypeList" ref="echartRef">
+            </yx-echart-bar>    
+        </i-col>
+    </row>
+}
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopMerchant",
-                    Caption = "选择商户",
-                    Width = "900",
-                    Src = "screenParam.srcPopMerchant"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopContract",
-                    Caption = "选择租约",
-                    Width = "900",
-                    Src = "screenParam.srcPopContract"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopBrand",
-                    Caption = "选择品牌",
-                    Width = "900",
-                    Src = "screenParam.srcPopBrand"
-                });
-            }
-        </i-col>
-    </row>
-
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopMerchant",
+            Caption = "选择商户",
+            Width = "900",
+            Src = "screenParam.srcPopMerchant"
+        });
+    }
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopContract",
+            Caption = "选择租约",
+            Width = "900",
+            Src = "screenParam.srcPopContract"
+        });
+    }
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopBrand",
+            Caption = "选择品牌",
+            Width = "900",
+            Src = "screenParam.srcPopBrand"
+        });
+    }
 }

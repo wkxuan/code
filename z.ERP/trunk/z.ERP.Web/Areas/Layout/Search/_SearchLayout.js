@@ -25,6 +25,7 @@
                 panelName: 'condition',
                 columns: [],
                 data: [],
+                tbLoading: false,
                 arrPageSize: [10, 20, 50, 100],
                 pagedataCount: 0,
                 pageSize: 10
@@ -120,14 +121,14 @@
             ve.searchParam = _this.searchParam;
             ve.pageInfo = _this.pageInfo;
             ve.data = [];
-            ve.$Spin.show();
+            ve.tbLoading = true;
             _.Search({
                 Service: _this.service,
                 Method: _this.method,
                 Data: ve.searchParam,
                 PageInfo: ve.pageInfo,
                 Success: function (data) {
-                    ve.$Spin.hide();
+                    ve.tbLoading = false;
                     if (data.rows.length > 0) {
                         ve.panelName = 'result';
                         ve.data = data.rows;
@@ -138,7 +139,7 @@
                     }
                 },
                 Error: function () {
-                    ve.$Spin.hide();
+                    ve.tbLoading = false;
                 }
             })
         };

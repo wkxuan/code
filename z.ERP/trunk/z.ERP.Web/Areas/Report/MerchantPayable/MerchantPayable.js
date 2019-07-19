@@ -29,8 +29,8 @@ srch.newCondition = function () {
     srch.screenParam.colDef = cols;
 };
 srch.afterResult = function (data) {
-    if (data.rows.length) {
-        let obj = data.rows[0];
+    if (data.length) {
+        let obj = data[0];
         let sfxmList = [];
         for (let item in obj) {
             if (item.indexOf("MUST_MONEY") > -1) {

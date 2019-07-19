@@ -24,15 +24,16 @@
 
     this.vue = function VueOperate() {
         var options = {
-            el: '#search',
+            el: '#popSearch',
             data: {
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
-                panelName: 'condition',
+                panelName: ["condition", "result"],
                 disabled: _this.enabled(true),
                 columns: [],
                 data: [],
-                maxHeight: 240,
+                maxHeight: 280,
+                tbLoading: false
             },
             mounted: function () {
                 _this.mountedInit();
@@ -68,18 +69,24 @@
                         _this.popInitParam(window.parent.define.screenParam.popParam);
 
                     _self.searchParam = _this.searchParam;
+                    _self.tbLoading = true;
+
                     _.Search({
                         Service: _this.service,
                         Method: _this.method,
                         Data: _self.searchParam,
                         Success: function (data) {
+                            _self.tbLoading = false;
                             if (data.rows.length > 0) {
                                 _self.panelName = 'result';
-                                _self.data = data.rows;
+                                _self.data = data.rows;                               
                             }
                             else {
                                 _self.$Message.info("没有满足当前查询条件的结果!");
                             }
+                        },
+                        Error: function () {
+                            _self.tbLoading = false;
                         }
                     });
                 },
@@ -108,7 +115,7 @@
                     _this.searchParam = {};
                     this.searchParam = _this.searchParam;
                     this.data = [];
-                    this.panelName = 'condition';
+                    //this.panelName = 'condition';
                     _this.newCondition();
                 }
             }

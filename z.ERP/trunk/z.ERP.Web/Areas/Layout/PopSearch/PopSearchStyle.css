@@ -1,0 +1,53 @@
+﻿#popSearch {
+    overflow: hidden;
+}
+
+    #popSearch .ivu-table td {
+        height: 35px;
+    }
+
+    #popSearch .ivu-table th {
+        background: radial-gradient(yellow -24%, red 100%);
+        color: #fff;
+    }
+
+    #popSearch .ivu-collapse-header {
+        height: 35px !important;
+        line-height: 35px !important;
+        font-size: 12px;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(#b0aacac2 -24%, #000000a6 100%);
+    }
+
+        #popSearch .ivu-collapse-header .ivu-btn {
+            color: #fff;
+        }
+
+            #popSearch .ivu-collapse-header .ivu-btn:hover {
+                color: #000000;
+            }
+
+    #popSearch .popParamContent {
+        padding-top: 10px;
+        /*background: linear-gradient(#b0aacac2 -24%, #000000a6 100%);*/
+    }
+
+    /*#popSearch .RowTitle {
+        color: #fff;
+    }*/
+
+    #popSearch .ivu-table-tip td {
+        /*color: #fff;*/
+        /*background: linear-gradient(#b0aacac2 -24%, #000000a6 100%);*/
+    }
+
+    #popSearch .ivu-collapse-content {
+        width: 100%;
+        height: 100%;
+        padding: 0 !important;
+    }
+
+        #popSearch .ivu-collapse-content > .ivu-collapse-content-box {
+            padding: 1px !important;
+        }

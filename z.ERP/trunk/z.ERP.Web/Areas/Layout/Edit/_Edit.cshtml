@@ -8,7 +8,8 @@
 }
 @{
     WebFiles = new string[] {
-                    "Areas/Layout/Edit/_Edit.js"
+                    "Areas/Layout/Edit/_Edit.js",
+                    "Areas/Layout/Edit/EditStyle.css"
                 };
 }
 @section head{
@@ -16,16 +17,14 @@
     @RenderSection("head", false)
 }
 
-<div id="EditDetail" style="overflow:hidden;">
-    <row>
-        <div class="topMenuBtn">
-            <yx-tool-bar v-bind:list="list" v-bind:disabled="disabled" v-bind:domdata="dataParam"></yx-tool-bar>
-        </div>
-    </row>
+<div id="edit" style="overflow:hidden;">
+    <div class="topMenuBtn">
+        <yx-tool-bar v-bind:list="list" v-bind:disabled="disabled" v-bind:domdata="dataParam"></yx-tool-bar>
+    </div>
     <Collapse v-model="collapseValue">
         <Panel name="1">
             基本信息
-            <div slot="content">
+            <div slot="content" class="editParamContent">
                 @RenderSection("topDivCon", false)
                 <row>
                     <i-col span="2" class="RowTitle">

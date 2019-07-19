@@ -1,0 +1,70 @@
+﻿#edit {
+    overflow: hidden;
+}
+
+    #edit .topMenuBtn {
+        text-align: center;
+        background: radial-gradient(#0099ff -2%, #000000a6 100%);
+    }
+
+    #edit .topMenuBtn .ivu-btn {
+        color: #fff;
+    }
+
+        #edit .topMenuBtn .ivu-btn:hover {
+            color: #000000;
+        }
+
+    #edit .ivu-table .demo-table-info-row td {
+        height: 35px;
+    }
+
+    #edit .ivu-table .demo-table-error-row td {
+        height: 35px;
+    }
+
+    #edit .ivu-collapse-header .ivu-btn {
+        color: #fff;
+    }
+
+        #edit .ivu-collapse-header .ivu-btn:hover {
+            color: #000000;
+        }
+
+    #edit .ivu-table th {
+        background: radial-gradient(red -24%, yellow 100%);
+        color: #fff;
+    }
+
+    #edit .ivu-page {
+        color: #fff;
+        background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);
+        padding-left: 15px;
+    }
+
+    #edit .ivu-collapse-header {
+        height: 35px !important;
+        line-height: 35px !important;
+        font-size: 12px;
+        font-weight: bold;
+        color: #fff;
+        background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);
+    }
+
+    #edit .editParamContent {
+        padding-top: 5px;
+    }
+
+    #edit .ivu-collapse-content {
+        width: 100%;
+        height: 100%;
+        padding: 0 !important;
+    }
+
+        #edit .ivu-collapse-content > .ivu-collapse-content-box {
+            padding: 0 !important;
+        }
+
+    #edit .ivu-card-head {
+        padding: 12px;
+    }

@@ -97,7 +97,15 @@
         </i-col>
     </row>
 }
-
+@section echartContent{
+    <row>
+        <i-col span="24">
+            <yx-echart-bar v-bind:data="screenParam.echartData" v-bind:value="screenParam.echartRadioVal"
+                           v-bind:enumlist="screenParam.echartType" v-bind:sumlist="screenParam.dataSumTypeList" ref="echartRef">
+            </yx-echart-bar>         
+        </i-col>
+    </row>
+}
 @section pops{
     <row>
         <i-col>

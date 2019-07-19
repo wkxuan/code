@@ -16,12 +16,21 @@ var colSum = [
     { title: '收款方式', key: 'PAYNAME', width: 100 },
     { title: '销售金额', key: 'AMOUNT', width: 150, align: "right" },
 ];
+var echartTypeList1 = [{ label: "按商户", value: "NAME" },
+                     { label: "按终端号", value: "POSNO" },
+                     { label: "按交易时间", value: "SALE_TIME" },
+                     { label: "按品牌", value: "BRANDNAME" },
+                     { label: "按收款方式", value: "PAYNAME" }];
+
+var echartTypeList2 = [{ label: "按商户", value: "NAME" },
+                     { label: "按终端号", value: "POSNO" },
+                     { label: "按收款方式", value: "PAYNAME" }];
 
 srch.beforeVue = function () {
     srch.screenParam.colDef = colList;
     srch.service = "ReportService";
     srch.method = "PayTypeSale";
-
+    srch.echartResult = true;
     srch.screenParam.showPopMerchant = false;
     srch.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
     srch.screenParam.showPopBrand = false;
@@ -29,6 +38,20 @@ srch.beforeVue = function () {
 
     srch.screenParam.popParam = {};
     srch.searchParam.SrchTYPE = 1;
+
+    srch.screenParam.echartType = echartTypeList1;
+    srch.screenParam.echartRadioVal = "NAME";
+    srch.screenParam.dataSumTypeList = [{ label: "销售金额", value: "AMOUNT" }];
+    srch.screenParam.echartData = [];
+};
+
+srch.newCondition = function () {
+    srch.searchParam.SrchTYPE = 1;
+    srch.screenParam.echartData = [];
+};
+
+srch.echartInit = function (data) {
+    srch.screenParam.echartData = data;
 };
 
 srch.mountedInit = function () {
@@ -47,16 +70,22 @@ srch.otherMethods = {
         srch.screenParam.showPopBrand = true;
     },
     changeSrchType: function (value) {
+        srch.screenParam.echartData = [];
+        debugger
         if (value == 1) {
-            Vue.set(this.screenParamData, "dataDef", []);   //清空table
+            Vue.set(this, "data", []);   //清空table
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
             Vue.set(srch.screenParam, "colDef", colList);
             Vue.set(srch, "method", "PayTypeSale");
+            srch.screenParam.echartType = echartTypeList1;
+            srch.screenParam.echartRadioVal = "NAME";
         } else {
-            Vue.set(this.screenParamData, "dataDef", []); //清空table
+            Vue.set(this, "data", []); //清空table
             Vue.set(this, "pagedataCount", 0); //清空分页数据
             Vue.set(srch.screenParam, "colDef", colSum);
             Vue.set(srch, "method", "PayTypeSaleS");
+            srch.screenParam.echartType = echartTypeList2;
+            srch.screenParam.echartRadioVal = "PAYNAME";
         }
     }
 }

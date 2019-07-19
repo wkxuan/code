@@ -1,6 +1,7 @@
 ﻿function _Srch() {
 
     var _this = this;
+    this.vueObj;
 
     this.beforeVue = function () { }
 
@@ -12,25 +13,34 @@
         return true;
     }
     this.afterResult = function (data) { }
-
+    //echart初始化函数
+    this.echartInit = function (data) { }
+    
     this.canEdit = function (mess) {
         return true;
     }
+
     this.mountedInit = function () { }
+    //是否显示可视化数据折叠面板
+    this.echartResult = false;
+
     this.vue = function VueOperate() {
         var options = {
-            el: '#search',
+            el: '#srch',
             data: {
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 pageInfo: _this.pageInfo,
-                panelName: 'condition',
+                panelName: ["condition", "echart", "result"],
                 disabled: _this.enabled(true),
                 columns: [],
                 data: [],
+                tbLoading: false,
                 arrPageSize: [10, 20, 50, 100],
                 pagedataCount: 0,
-                pageSize: 10
+                pageSize: 10,
+                currentPage: 1,
+                echartResult: _this.echartResult
             },
             mounted: function () {
                 _this.mountedInit();
@@ -54,13 +64,13 @@
                     _this.pageInfo.PageIndex = 0;
                     showList();
                 },
-
                 clear: function (event) {
                     event.stopPropagation();
                     _this.searchParam = {};
-                    ve.searchParam = _this.searchParam;
+                    _this.vueObj.searchParam = _this.searchParam;
                     this.data = [];
-                    ve.panelName = 'condition';
+                    _this.vueObj.pagedataCount = 0;
+                    _this.vueObj.panelName = 'condition';
                     _this.newCondition();
                 },
                 //导出待完善
@@ -100,54 +110,58 @@
                         //刷新页面,否则无法点击
                         window.location.reload();
                     }
-
                 },
-
                 changePageCount: function (index) {
                     let mess = this;
                     _this.pageInfo.PageSize = mess.pageSize;
-                    _this.pageInfo.PageIndex = (index - 1);
+                    _this.pageInfo.PageIndex = index - 1;
+                    mess.currentPage = index;
                     showList();
                 },
                 changePageSizer: function (value) {
                     let mess = this;
                     this.pageSize = value;
                     _this.pageInfo.PageSize = value;
+                    mess.currentPage = 1;
                     showList();
                 }
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
-        var ve = new Vue(options);
+        _this.vueObj = new Vue(options);
         function showList() {
-            ve.searchParam = _this.searchParam;
-            ve.pageInfo = _this.pageInfo;
-            ve.data = [];
-            ve.$Spin.show();
+            _this.vueObj.searchParam = _this.searchParam;
+            _this.vueObj.pageInfo = _this.pageInfo;
+            _this.vueObj.data = [];
+            _this.vueObj.pagedataCount = 0;
+            _this.vueObj.tbLoading = true;
             _.Search({
                 Service: _this.service,
                 Method: _this.method,
-                Data: ve.searchParam,
-                PageInfo: ve.pageInfo,
+                Data: _this.vueObj.searchParam,
+                PageInfo: _this.vueObj.pageInfo,
                 Success: function (data) {
-                    ve.$Spin.hide();
+                    _this.vueObj.tbLoading = false;
                     if (data.rows.length > 0) {
-                        _this.afterResult(data);
-                        ve.panelName = 'result';
-                        ve.pagedataCount = data.total;
-                        ve.data = data.rows;
+                        _this.afterResult(data.rows);
+                        _this.vueObj.panelName = ["echart", "result"];
+                        _this.vueObj.pagedataCount = data.total;
+                        _this.vueObj.data = data.rows;    
                     }
                     else {
-                        ve.$Message.info("没有满足当前查询条件的结果!");
+                        _this.vueObj.$Message.info("没有满足当前查询条件的结果!");
+                    }
+                    if (_this.echartResult) {
+                        _this.echartInit(_this.vueObj.data);
                     }
                 },
                 Error: function () {
-                    ve.$Spin.hide();
+                    _this.vueObj.tbLoading = false;
                 }
             })
         };
         function notExistsData() {
-            return (!ve.data) || (ve.data.length == 0)
+            return (!_this.vueObj.data) || (_this.vueObj.data.length == 0)
         }
     }
 

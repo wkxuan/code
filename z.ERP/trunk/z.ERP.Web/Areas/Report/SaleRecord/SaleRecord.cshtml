@@ -51,14 +51,14 @@
             商户
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" /> 
+            <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
         </i-col>
         <i-col span="2" class="RowTitle">
             店铺
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly icon="md-search" v-model="searchParam.SHOPNAME" v-on:on-click="SelShop" />         
-        </i-col> 
+            <i-input readonly icon="md-search" v-model="searchParam.SHOPNAME" v-on:on-click="SelShop" />
+        </i-col>
         <i-col span="2" class="RowTitle">
             记账日期
         </i-col>
@@ -77,38 +77,36 @@
                     vModel = "searchParam.ACCOUNT_DATE_END"
                 });
             }
-        </i-col>                       
+        </i-col>
     </row>
 }
-
-@section pops{  
+@section echartContent{
     <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopShop",
-                    Src = "screenParam.srcPopShop",
-                    Caption = "选择店铺",
-                    Width = "800"
-                });
-            }
+        <i-col span="24">
+            <yx-echart-bar v-bind:data="screenParam.echartData" v-bind:value="screenParam.echartRadioVal" 
+                       v-bind:enumlist="screenParam.echartType" v-bind:sumlist="screenParam.dataSumTypeList" ref="echartRef">
+            </yx-echart-bar>         
         </i-col>
     </row>
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopMerchant",
-                    Caption = "选择商户",
-                    Width = "800",
-                    Src = "screenParam.srcPopMerchant"
-                });
-            }
-        </i-col>
-    </row>
-
-
+}
+@section pops{
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopShop",
+            Src = "screenParam.srcPopShop",
+            Caption = "选择店铺",
+            Width = "800"
+        });
+    }
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopMerchant",
+            Caption = "选择商户",
+            Width = "800",
+            Src = "screenParam.srcPopMerchant"
+        });
+    }
 
 }
