@@ -17,7 +17,7 @@ namespace z.ERP.Console
         {
             InitializeComponent();
 
-            this.WriteRq.Value = DateTime.Now;
+            this.WriteRq.Value = DateTime.Now.AddDays(-1);
             this.timer.Enabled = true;
 
             ButtonClick(btn_rcl, () =>
@@ -65,27 +65,37 @@ namespace z.ERP.Console
         private void timer_Tick(object sender, EventArgs e)
         {
             timer.Enabled = false;
-            this.WriteRq.Value = DateTime.Now;
+
+            if (this.WriteRq.Value < DateTime.Now.AddDays(-1))
+                this.WriteRq.Value = this.WriteRq.Value.AddDays(1);
+            else
+                this.WriteRq.Value = this.WriteRq.Value.AddDays(-1);
+
             try
-            {
-                //LogText.Clear();
-                LogText.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "开始");
+                {
+                    //LogText.Clear();
+                    LogText.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "日处理开始...");
 
-                WRITEDATAEntity WRITEDATA = new WRITEDATAEntity();
-                WRITEDATA.RQ = this.WriteRq.Value.ToShortDateString();
+                    WRITEDATAEntity WRITEDATA = new WRITEDATAEntity();
+                    WRITEDATA.RQ = this.WriteRq.Value.ToShortDateString();
 
-                RCLEntity rcldata = new RCLEntity();
-                rcldata.RQ = this.WriteRq.Value.ToShortDateString();
+                    RCLEntity rcldata = new RCLEntity();
+                    rcldata.RQ = this.WriteRq.Value.ToShortDateString();
 
-                // service.WriteDataService.CanHyRcl(rcldata, LogText);
-                service.WriteDataService.CanRcl(WRITEDATA, LogText);
-            }
-            finally
-            {
-                timer.Interval = 600000;        //10 min
+                    // service.WriteDataService.CanHyRcl(rcldata, LogText);
+                    service.WriteDataService.CanRcl(WRITEDATA, LogText);
+                }
+                finally
+                {
+                    timer.Interval = 3600000;        //60 min
 
-                timer.Enabled = true;
-            };
+                    timer.Enabled = true;
+                };
+        }
+
+        private void btn_rcl_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

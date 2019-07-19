@@ -38,6 +38,7 @@ namespace z.ERP.Entities
             get; set;
         }
 
+        [PrimaryKey]
         [Field("分店")]
         public string BRANCHID
         {
