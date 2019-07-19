@@ -23,7 +23,7 @@ namespace z.ERP.Console
             ButtonClick(btn_rcl, () =>
             {
                 //LogText.Clear();
-                LogText.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "开始");
+                LogText.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "日处理开始...");
                 var msg = string.Empty;
                 var e = employee;
                 WRITEDATAEntity WRITEDATA = new WRITEDATAEntity();
