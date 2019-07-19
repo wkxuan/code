@@ -49,6 +49,34 @@ namespace z.ERP.Console
             };
         }
 
+
+
+        protected void TimerTick(System.Windows.Forms.Timer timer, Action act, Action<Exception> error = null)
+        {
+            timer.Tick += (object sender, EventArgs e) =>
+            {
+                Thread t = new Thread(() =>
+                {
+                    timer.Enabled = false;
+                    try
+                    {
+                        act();
+                    }
+                    catch (Exception ex)
+                    {
+                        error?.Invoke(ex);
+                        MessageBox.Show(ex.InnerMessage());
+                    }
+                    finally
+                    {
+                        timer.Enabled = true;
+                    }
+                });
+                t.IsBackground = true;
+                t.Start();
+            };
+        }
+
         protected ServiceBase service
         {
             get;

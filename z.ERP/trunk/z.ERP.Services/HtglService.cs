@@ -381,6 +381,10 @@ namespace z.ERP.Services
             configBlxsw = DbHelper.Select(new CONFIGEntity() { ID = "1002" });
 
 
+            //季度分解日期生成
+            CONFIGEntity configJDFJGZ = new CONFIGEntity();
+            configJDFJGZ = DbHelper.Select(new CONFIGEntity() { ID = "1005" });
+
             //PAY_CYCLE缴费周期
             //ADVANCE_CYCLE 提前周期
             //FEE_DAY 出单日
@@ -388,76 +392,79 @@ namespace z.ERP.Services
             //先计算出来每个年月对应的生成日期
             DateTime dt = ContractData.CONT_START.ToDateTime();
             var ym = dt.Year * 100 + dt.Month;
-            switch (feeRule.PAY_CYCLE.ToInt())
+            if (configJDFJGZ.CUR_VAL.ToInt() == 0)        //添加月份生成参数 0，按自然季度 ，1 顺延季度    BY:DZK  20190717
             {
-                case 3:
-                    switch (dt.Month)
-                    {
-                        case 1:
-                        case 2:
-                        case 3:
-                            ym = dt.Year * 100 + 1;
-                            break;
-                        case 4:
-                        case 5:
-                        case 6:
-                            ym = dt.Year * 100 + 4;
-                            break;
-                        case 7:
-                        case 8:
-                        case 9:
-                            ym = dt.Year * 100 + 7;
-                            break;
-                        case 10:
-                        case 11:
-                        case 12:
-                            ym = dt.Year * 100 + 10;
-                            break;
-                    }
-                    break;
-                case 6:
-                    switch (dt.Month)
-                    {
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 5:
-                        case 6:
-                            ym = dt.Year * 100 + 1;
-                            break;
-                        case 7:
-                        case 8:
-                        case 9:
-                        case 10:
-                        case 11:
-                        case 12:
-                            ym = dt.Year * 100 + 7;
-                            break;
-                    }
-                    break;
-                case 12:
-                    switch (dt.Month)
-                    {
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 5:
-                        case 6:
-                        case 7:
-                        case 8:
-                        case 9:
-                        case 10:
-                        case 11:
-                        case 12:
-                            ym = dt.Year * 100 + 1;
-                            break;
-                    }
-                    break;
-                default:
-                    ym = dt.Year * 100 + dt.Month;
-                    break;
+                switch (feeRule.PAY_CYCLE.ToInt())
+                {
+                    case 3:
+                        switch (dt.Month)
+                        {
+                            case 1:
+                            case 2:
+                            case 3:
+                                ym = dt.Year * 100 + 1;
+                                break;
+                            case 4:
+                            case 5:
+                            case 6:
+                                ym = dt.Year * 100 + 4;
+                                break;
+                            case 7:
+                            case 8:
+                            case 9:
+                                ym = dt.Year * 100 + 7;
+                                break;
+                            case 10:
+                            case 11:
+                            case 12:
+                                ym = dt.Year * 100 + 10;
+                                break;
+                        }
+                        break;
+                    case 6:
+                        switch (dt.Month)
+                        {
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                            case 6:
+                                ym = dt.Year * 100 + 1;
+                                break;
+                            case 7:
+                            case 8:
+                            case 9:
+                            case 10:
+                            case 11:
+                            case 12:
+                                ym = dt.Year * 100 + 7;
+                                break;
+                        }
+                        break;
+                    case 12:
+                        switch (dt.Month)
+                        {
+                            case 1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                            case 6:
+                            case 7:
+                            case 8:
+                            case 9:
+                            case 10:
+                            case 11:
+                            case 12:
+                                ym = dt.Year * 100 + 1;
+                                break;
+                        }
+                        break;
+                    default:
+                        ym = dt.Year * 100 + dt.Month;
+                        break;
+                }
             }
 
 

@@ -77,44 +77,52 @@ var DefaultNew = new Vue({
         box4dataDef: [],
         tableH: 200,
         Switch: true,
+        box3select: "1", //下拉初始化为昨日
+        box4select: "1",//下拉初始化为昨日
         Echart1Ydata: [],
         Echart1Xdata: [],
         Echart2Numberdata: [],
         Echart2Areadata: [],
         Echart3Ydata: [],
         Echart3Xdata: [],
+        branchid: "",
+        branchList:[]
     },
-    mounted: function () {
-        var type = '1';   //初始化默认昨日数据
-        _.Ajax('BoxData', {
-            type:type
-        }, function (data) {
-            DefaultNew.box1dataDef = data.box1data;
-            DefaultNew.box2dataDef = data.box2data;
-            DefaultNew.box3dataDef = data.box3data;
-            DefaultNew.box4dataDef = data.box4data;
-            DefaultNew.Echart1Xdata = data.Echart1Xdata;
-            DefaultNew.Echart1Ydata = data.Echart1Ydata;
-            DefaultNew.Echart2Areadata = data.Echart2Areadata;
-            DefaultNew.Echart2Numberdata = data.Echart2Numberdata;
-            DefaultNew.Echart3Xdata = data.Echart3Xdata;
-            DefaultNew.Echart3Ydata = data.Echart3Ydata;
-            DefaultNew.createEchart();    //获取数据后再注册echart
-        });
-        
+    mounted: function () {       
+        this.InitData();
     },
     methods: {
-        //切换重新加载数据，并动画展示
-        SwitchChange: function (status) {
-            if(status){
-                window.location.reload();
-            }
+        //数据加载
+        InitData: function () {
+            _.Ajax('BoxData', {   
+                branchid: this.branchid
+            }, function (data) {
+                DefaultNew.branchid = data.branchid;    //默认第一个分店
+                DefaultNew.branchList = data.branchList;   //分店下拉
+                DefaultNew.box3select = "1";  //下拉选择框还原
+                DefaultNew.box4select = "1"; //下拉选择框还原
+                DefaultNew.box1dataDef = data.box1data;
+                DefaultNew.box2dataDef = data.box2data;
+                DefaultNew.box3dataDef = data.box3data;
+                DefaultNew.box4dataDef = data.box4data;
+                DefaultNew.Echart1Xdata = data.Echart1Xdata;
+                DefaultNew.Echart1Ydata = data.Echart1Ydata;
+                DefaultNew.Echart2Areadata = data.Echart2Areadata;
+                DefaultNew.Echart2Numberdata = data.Echart2Numberdata;
+                DefaultNew.Echart3Xdata = data.Echart3Xdata;
+                DefaultNew.Echart3Ydata = data.Echart3Ydata;
+                DefaultNew.createEchart();    //获取数据后再注册echart
+            });
+        },
+        //门店切换数据加载
+        branchchange:function(event){
+            DefaultNew.InitData();
         },
         //根据日期筛选数据
         box3datechange: function (event) {
             var type = event;
             _.Ajax('Box3Data', {
-                type: type
+                type: type, branchid: DefaultNew.branchid
             }, function (data) {
                 DefaultNew.box3dataDef = data;
             });
@@ -122,7 +130,7 @@ var DefaultNew = new Vue({
         box4datechange: function (event) {
             var type = event;
             _.Ajax('Box4Data', {
-                type: type
+                type: type, branchid: DefaultNew.branchid
             }, function (data) {
                 DefaultNew.box4dataDef = data;
             });

@@ -328,9 +328,9 @@ namespace z.ERP.Services
                 sqlarr[0] += $"{request.cashierid},{sumGoodsAmount},{request.change_amount},";
 
                 if (request.member_cardid.IsEmpty())
-                    sqlarr[0] += $"-1,";
+                    sqlarr[0] += $"'-1',";
                 else
-                    sqlarr[0] += $"{request.member_cardid},";
+                    sqlarr[0] += $"'{request.member_cardid}',";
                 if (request.crm_recordid.ToString().IsEmpty())
                     sqlarr[0] += $"-1,";
                 else

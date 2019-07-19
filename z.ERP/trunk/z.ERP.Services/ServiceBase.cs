@@ -11,6 +11,7 @@ using z.SSO;
 using z.SSO.Model;
 using z.Verify;
 using z.WSTools.Excel;
+using System.Data;
 
 namespace z.ERP.Services
 {
@@ -378,6 +379,33 @@ namespace z.ERP.Services
                     throw new Exception("无效的权限类型");
             }
         }
+
+        //业态权限
+        public string GetYtQx(string B)
+        {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( " + B + ".CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                else
+                {
+                    SqlyTQx += " or " + B + ".CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
+            return SqlyTQx;
+        }
+
+
+
         #endregion
 
         #region 属性

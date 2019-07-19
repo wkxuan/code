@@ -19,114 +19,29 @@
 
 
     editDetail.screenParam.colDef = [
-    //{
-    //    title: "店铺ID", key: 'ASSETID', width: 160,
-    //    render: function (h, params) {
-    //        return h('div',
-    //            [
-    //        h('Input', {
-    //            props: {
-    //                value: params.row.ASSETID
-    //            },
-    //            style: { marginRight: '5px', width: '80px' },
-
-    //            on: {
-    //                'on-enter': function (event) {
-    //                    _self = this;
-    //                    editDetail.dataParam.ASSETCHANGEITEM[params.index].ASSETID = event.target.value;
-    //                    _.Ajax('GetShop', {
-    //                        Data: { SHOPID: event.target.value }
-    //                    }, function (data) {
-    //                        Vue.set(editDetail.dataParam.ASSETCHANGEITEM[params.index], 'CODE', data.dt.CODE),
-    //                        Vue.set(editDetail.dataParam.ASSETCHANGEITEM[params.index], 'AREA_BUILD_OLD', data.dt.AREA_BUILD),
-    //                        Vue.set(editDetail.dataParam.ASSETCHANGEITEM[params.index], 'AREA_USABLE_OLD', data.dt.AREA_USABLE),
-    //                        Vue.set(editDetail.dataParam.ASSETCHANGEITEM[params.index], 'AREA_RENTABLE_OLD', data.dt.AREA_RENTABLE)
-    //                    });
-    //                }
-    //            },
-    //        }),
-    //        h('Button', {
-    //            props: { type: 'primary', size: 'small', disabled: false },
-
-    //            style: { marginRight: '5px', width: '30px' },
-    //            on: {
-    //                click: editDetail.screenParam.openPop
-    //            },
-    //        }, '...'),
-
-    //            ])
-    //    },
-    //},
     { title: '店铺代码', key: 'CODE', width: 100 },
     { title: '原建筑面积', key: 'AREA_BUILD_OLD', width: 100 },
     { title: '原使用面积', key: 'AREA_USABLE_OLD', width: 100 },
     { title: '原租赁面积', key: 'AREA_RENTABLE_OLD', width: 100 },
-   {
-       title: "新建筑面积", key: 'AREA_BUILD_NEW', width: 100,
-       render: function (h, params) {
-           return h('Input', {
-               props: {
-                   value: params.row.AREA_BUILD_NEW
-               },
-               on: {
-                   'on-blur': function (event) {
-                       editDetail.dataParam.ASSETCHANGEITEM[params.index].AREA_BUILD_NEW = event.target.value;
-                   }
-               },
-           })
-       },
-   },
     {
-        title: "新使用面积", key: 'AREA_USABLE_NEW', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.AREA_USABLE_NEW
-                },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.ASSETCHANGEITEM[params.index].AREA_USABLE_NEW = event.target.value;
-                    }
-                },
-            })
-        },
-    },
-    {
-        title: "新租赁面积", key: 'AREA_RENTABLE_NEW', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.AREA_RENTABLE_NEW
-                },
-                on: {
-                    'on-blur': function (event) {
-                        editDetail.dataParam.ASSETCHANGEITEM[params.index].AREA_RENTABLE_NEW = event.target.value;
-                    }
-                },
-            })
-        },
-    },
-
-    {
-        title: '操作',
-        key: 'action',
-        width: 80,
-        align: 'center',
-        render: function (h, params) {
-            return h('div',
-                [
-                h('Button', {
-                    props: { type: 'primary', size: 'small', disabled: false },
-
-                    style: { marginRight: '50px' },
-                    on: {
-                        click: function (event) {
-                            editDetail.dataParam.ASSETCHANGEITEM.splice(params.index, 1);
-                        }
-                    },
-                }, '删除')
-                ]);
+        title: "新建筑面积", key: 'AREA_BUILD_NEW', width: 100, cellType: "input", cellDataType: "number",
+        onBlur: function (index, row, data) {
+            editDetail.dataParam.ASSETCHANGEITEM[index].AREA_BUILD_NEW = row.AREA_BUILD_NEW;
         }
+    },
+    {
+        title: "新使用面积", key: 'AREA_USABLE_NEW', width: 100, cellType: "input", cellDataType: "number",
+        onBlur: function (index, row, data) {
+            editDetail.dataParam.ASSETCHANGEITEM[index].AREA_USABLE_NEW = row.AREA_USABLE_NEW;
+        }
+
+    },
+    {
+        title: "新租赁面积", key: 'AREA_RENTABLE_NEW', width: 100, cellType: "input", cellDataType: "number",
+        onBlur: function (index, row, data) {
+            editDetail.dataParam.ASSETCHANGEITEM[index].AREA_RENTABLE_NEW = row.AREA_RENTABLE_NEW;
+        }
+
     }
     ];
 
@@ -153,6 +68,20 @@ editDetail.otherMethods = {
         } else {
             editDetail.screenParam.showPopShop = true;
             editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, STATUS: "2" };
+        }
+    },
+    delShop: function () {
+        var selectton = this.$refs.refGroup.getSelection();
+        if (selectton.length == 0) {
+            iview.Message.info("请选中要删除的单元!");
+        } else {
+            for (var i = 0; i < selectton.length; i++) {
+                for (var j = 0; j < editDetail.dataParam.ASSETCHANGEITEM.length; j++) {
+                    if (editDetail.dataParam.ASSETCHANGEITEM[j].ASSETID == selectton[i].ASSETID) {
+                        editDetail.dataParam.ASSETCHANGEITEM.splice(j, 1);
+                    }
+                }
+            }
         }
     }
 }
@@ -193,9 +122,51 @@ editDetail.popCallBack = function (data) {
 
 editDetail.clearKey = function () {
     editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.BRANCHID = null;
+    editDetail.dataParam.STATUS = "未审核";
     editDetail.dataParam.DESCRIPTION = null;
     editDetail.dataParam.ASSETCHANGEITEM = [];
 }
+//按钮初始化
+editDetail.btnConfig = [{
+    id: "add",
+    authority: "10400101"
+}, {
+    id: "edit",
+    authority: "10400101"
+}, {
+    id: "del",
+    authority: "10400101"
+}, {
+    id: "save",
+    authority: "10400101"
+}, {
+    id: "abandon",
+    authority: "10400101"
+}, {
+    id: "confirm",
+    name: "审核",
+    icon: "md-star",
+    authority: "10400102",
+    fun: function () {
+        _.Ajax('ExecData', {
+            Data: { BILLID: editDetail.dataParam.BILLID },
+        }, function (data) {
+            iview.Message.info("审核成功");
+            setTimeout(function () {
+                window.location.reload();
+            }, 100);
+        });
+    },
+    enabled: function (disabled, data) {
+        if (!disabled && data.STATUS < 2) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    isNewAdd: true
+}];
 
 editDetail.IsValidSave = function () {
 

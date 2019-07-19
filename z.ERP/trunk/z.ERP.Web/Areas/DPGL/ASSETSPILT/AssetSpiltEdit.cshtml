@@ -1,93 +1,52 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
 @section baseParam{
     <row>
 
         <i-col span="2" class="RowTitle">
             备注
         </i-col>
-        <i-col span="14">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.DESCRIPTION"
-                });
-            }
+        <i-col span="22" class="RowText">
+            <i-input v-model="dataParam.DESCRIPTION" v-bind:disabled="!disabled" />
         </i-col>
-
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                    Enable = false
-                });
-            }
-        </i-col>
+    </row>
+}
+@section detailParam{
+    <row v-if="disabled">
+        <i-button type="primary" v-on:click="SelShop">选择单元</i-button>
+        <i-button type="error" v-on:click="delShop">删除</i-button>
     </row>
     <row>
         <i-col span="24">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelShop",
-                    Text = "选择单元",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            @*@{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "screenParam.addCol",
-                    Text = "添加一行",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }*@
-            <i-table height="160" highlight-row size="small" border="true"
-                     :columns="screenParam.colDef" :data="dataParam.ASSETCHANGEITEM"
-                     v-on:on-current-change="filter"></i-table>
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true v-on:currentchange="currentChange"
+                      v-bind:data="dataParam.ASSETCHANGEITEM" v-bind:disabled="!disabled" ref="refGroup">
         </i-col>
     </row>
+    <br>
+    <row v-if="disabled">
+        <i-button type="primary" v-on:click="addCol2">添加一行</i-button>
+        <i-button type="error" v-on:click="delCol2">删除</i-button>
+    </row>
     <row>
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "screenParam.addCol2",
-                Text = "添加一行",
-                Enable = true,
-                Type = "primary",
-                Icon = "plus-circled"
-            });
-        }
         <i-col span="24">
-            <i-table height="200" highlight-row size="small" border="true"
-                     :columns="screenParam.colDef2" :data="dataParam.ASSETCHANGEITEM2"></i-table>
+            <yx-table v-bind:columns="screenParam.colDef2" v-bind:height="300" selection=true
+                      v-bind:data="dataParam.ASSETCHANGEITEM2" v-bind:disabled="!disabled" ref="refCol2">
         </i-col>
     </row>
 }
 
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopShop",
-                    Src = "screenParam.srcPopShop",
-                    Caption = "选择单元",
-                    Width = "800"
-                });
-            }
-        </i-col>
-    </row>
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopShop",
+            Src = "screenParam.srcPopShop",
+            Caption = "选择单元",
+            Width = "800"
+        });
+    }
 }
 

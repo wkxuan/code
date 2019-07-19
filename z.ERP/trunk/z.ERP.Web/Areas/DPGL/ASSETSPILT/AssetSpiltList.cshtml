@@ -5,7 +5,7 @@
 @section conditionParam{
 <row>
     <i-col span="2" class="RowTitle">门店</i-col>
-    <i-col span="6">
+    <i-col span="6"  class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -38,7 +38,7 @@
     <i-col span="2" class="RowTitle">
         状态
     </i-col>
-    <i-col span="6">
+    <i-col span="6"  class="RowText">
         @{
             RenderControl(new EnumDropDownListRender<普通单据状态>()
             {
@@ -46,14 +46,15 @@
             });
         }
     </i-col>
-     <i-col span="2" class="RowTitle">备注</i-col>
-     <i-col span="6">
-         @{
-             RenderControl(new TextBoxRender()
-             {
-                 vModel = "searchParam.DESCRIPTION"
-             });
-         }
-     </i-col>
  </row>
+<row>
+    <i-col span="2" class="RowTitle">单据编号</i-col>
+    <i-col span="6" class="RowText">
+        <i-input v-model="searchParam.BILLID" />
+    </i-col>
+    <i-col span="2" class="RowTitle">备注</i-col>
+    <i-col span="6" class="RowText">
+        <i-input v-model="searchParam.DESCRIPTION" />
+    </i-col>
+</row>
 }

@@ -1,68 +1,42 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
 @section baseParam{
-<row>
-
-    <i-col span="2" class="RowTitle">
-        备注
-    </i-col>
-    <i-col span="14">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.DESCRIPTION"
-            });
-        }
-    </i-col>
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
-
     <row>
-        <i-col span="24">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelShop",
-                    Text = "选择单元",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            <i-table height="300" size="small" border="true"
-                     :columns="screenParam.colDef" :data="dataParam.ASSETCHANGEITEM"></i-table>
+
+        <i-col span="2" class="RowTitle">
+            备注
+        </i-col>
+        <i-col span="14" class="RowText">
+            <i-input v-model="dataParam.DESCRIPTION" v-bind:disabled="!disabled" />
         </i-col>
     </row>
 }
-
-@section pops{
+@section detailParam{
+    <row v-if="disabled">
+        <i-button type="primary" v-on:click="SelShop">选择</i-button>
+        <i-button type="error" v-on:click="delShop">删除</i-button>
+    </row>
     <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopShop",
-                    Src = "screenParam.srcPopShop",
-                    Caption = "选择单元",
-                    Width = "800"
-                });
-            }
+        <i-col span="24">
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
+                      v-bind:data="dataParam.ASSETCHANGEITEM" v-bind:disabled="!disabled" ref="refGroup">
         </i-col>
     </row>
+
+}
+@section pops{
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopShop",
+            Src = "screenParam.srcPopShop",
+            Caption = "选择单元",
+            Width = "800"
+        });
+    }
 }
 
 

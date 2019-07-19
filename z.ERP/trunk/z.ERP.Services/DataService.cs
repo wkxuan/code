@@ -309,7 +309,7 @@ namespace z.ERP.Services
         public object GetRegion(REGIONEntity Data)
         {
             string sql = $@"SELECT A.REGIONID,A.CODE,A.NAME FROM REGION A WHERE 1=1"
-                  + " A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                  + " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
             sql += " AND A.STATUS = 1 ORDER BY A.CODE";
@@ -323,7 +323,7 @@ namespace z.ERP.Services
         public object GetFloor(FLOOREntity Data)
         {
             string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1"
-                 + " A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                 + " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
             if (!Data.REGIONID.IsEmpty())
