@@ -20,10 +20,16 @@ namespace z.ERP.Services
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID and S.FLOORID=F.ID";
-            if (SqlyTQx != "")
+
+            sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "")  //业态权限
             {
                 sql += " and " + SqlyTQx;
             }
+
+
+            
             
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
@@ -49,7 +55,10 @@ namespace z.ERP.Services
                 sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
                 sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
                 sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
-                if (SqlyTQx != "")
+
+                sqlsum += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+                if (SqlyTQx != "")  //业态权限
                 {
                     sql += " and " + SqlyTQx;
                 }
@@ -88,7 +97,10 @@ namespace z.ERP.Services
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
-            if (SqlyTQx != "")
+
+            sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "")  //业态权限
             {
                 sql += " and " + SqlyTQx;
             }
@@ -117,10 +129,14 @@ namespace z.ERP.Services
                 sqlsum += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F ";
                 sqlsum += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
                 sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
-                if (SqlyTQx != "")
+
+                sqlsum += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+                if (SqlyTQx != "")  //业态权限
                 {
                     sqlsum += " and " + SqlyTQx;
                 }
+
                 item.HasKey("CATEGORYCODE", a => sqlsum += $" and G.CATEGORYCODE LIKE '{a}%'");
                 item.HasKey("FLOORID", a => sqlsum += $" and F.ID = {a}");
                 item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID = {a}");
@@ -155,10 +171,14 @@ namespace z.ERP.Services
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F  ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
-            if (SqlyTQx != "")
+
+            sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "") //业态权限
             {
                 sql += " and " + SqlyTQx;
             }
+
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
@@ -192,10 +212,14 @@ namespace z.ERP.Services
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F  ";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
-            if (SqlyTQx != "")
+
+            sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "")  //业态权限
             {
                 sql += " and " + SqlyTQx;
             }
+
             item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
@@ -224,15 +248,21 @@ namespace z.ERP.Services
         public DataGridResult GoodsSale(SearchItem item)
         {
             string SqlyTQx = GetYtQx("C");
+
             string sql = $"SELECT D.RQ,D.AMOUNT,D.COST,D.DIS_AMOUNT,D.PER_AMOUNT,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
             sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
             sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
             sql += " WHERE G.MERCHANTID=M.MERCHANTID and B.CATEGORYID=C.CATEGORYID";
             sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
-            if (SqlyTQx != "")
+
+            sql += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "")  //业态权限
             {
                 sql += " and " + SqlyTQx;
             }
+
+
             item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
@@ -258,10 +288,14 @@ namespace z.ERP.Services
                 sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
                 sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
                 sqlsum += "  and B.CATEGORYID=C.CATEGORYID";
-                if (SqlyTQx != "")
+
+                sqlsum += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+                if (SqlyTQx != "")  //业态权限
                 {
                     sqlsum += " and " + SqlyTQx;
                 }
+
                 item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
                 item.HasKey("GOODSDM", a => sqlsum += $" and G.GOODSDM = '{a}'");
                 item.HasKey("GOODSNAME", a => sqlsum += $" and G.NAME LIKE '%{a}%'");
@@ -298,7 +332,10 @@ namespace z.ERP.Services
             sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
             sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
             sql += "  and B.CATEGORYID=C.CATEGORYID";
-            if (SqlyTQx != "")
+
+            sql += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "")  //业态权限
             {
                 sql += " and " + SqlyTQx;
             }
@@ -330,7 +367,10 @@ namespace z.ERP.Services
                 sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
                 sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
                 sqlsum += "  and B.CATEGORYID=C.CATEGORYID";
-                if (SqlyTQx != "")
+
+                sqlsum += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+                if (SqlyTQx != "") //业态权限
                 {
                     sqlsum += " and " + SqlyTQx;
                 }
@@ -370,10 +410,14 @@ namespace z.ERP.Services
             sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
             sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
             sql += "  and B.CATEGORYID=C.CATEGORYID";
-            if (SqlyTQx != "")
+
+            sql += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "") //业态权限
             {
                 sql += " and " + SqlyTQx;
             }
+
             item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
@@ -406,10 +450,14 @@ namespace z.ERP.Services
             sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
             sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
             sql += "  and B.CATEGORYID=C.CATEGORYID";
-            if (SqlyTQx != "")
+
+            sql += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "") //业态权限
             {
                 sql += " and " + SqlyTQx;
             }
+
             item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
@@ -441,6 +489,9 @@ namespace z.ERP.Services
             sql += " S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
             sql += " FROM SALE S,SYSUSER U,STATION T";
             sql += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH";
+
+            sql += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
             item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
             item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
 
@@ -459,6 +510,9 @@ namespace z.ERP.Services
             sql += " S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
             sql += " FROM HIS_SALE S, SYSUSER U,STATION T";
             sql += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH";
+
+            sql += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
             item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
             item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
 
@@ -480,6 +534,9 @@ namespace z.ERP.Services
                 string sqlsum = $"SELECT nvl(sum(S.SALE_AMOUNT),0) SALE_AMOUNT";
                 sqlsum += " FROM SALE S, SYSUSER U,STATION T";
                 sqlsum += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
+
+                sql += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
                 item.HasKey("BRANCHID", a => sqlsum += $" and T.BRANCHID={a}");
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
 
@@ -497,6 +554,9 @@ namespace z.ERP.Services
                 sqlsum += " SELECT nvl(sum(S.SALE_AMOUNT),0) SALE_AMOUNT";
                 sqlsum += " FROM HIS_SALE S, SYSUSER U,STATION T";
                 sqlsum += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
+
+                sql += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
                 item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
 
@@ -527,6 +587,9 @@ namespace z.ERP.Services
             sql += " S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
             sql += " FROM SALE S, SYSUSER U,STATION T";
             sql += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH";
+
+            sql += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
             item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
             item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
 
@@ -546,6 +609,9 @@ namespace z.ERP.Services
             sql += " S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
             sql += " FROM HIS_SALE S, SYSUSER U,STATION T";
             sql += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
+
+            sql += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
             item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
             item.HasKey("POSNO", a => sql += $" and S.POSNO='{a}'");
 
@@ -569,6 +635,7 @@ namespace z.ERP.Services
 
         public DataGridResult MerchantRent(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("C");
             string sql = "select Z.*,(Z.TCRENTS-RENTS) CE,(case when (Z.TCRENTS-RENTS)>0 then (Z.TCRENTS-RENTS) else 0  end) YJT from ("
                             + "select Y.YEARMONTH,R.CODE FLOORCODE,P.CODE SHOPCODE,D.NAME BRANDNAME,Y.CONTRACTID,"
                             + "       C.CATEGORYCODE,C.CATEGORYNAME,Y.MERCHANTID,M.NAME MERCHANTNAME,Y.AMOUNT,"
@@ -588,7 +655,15 @@ namespace z.ERP.Services
                             + "  from CONTRACT_SUMMARY_YM Y, SHOP P,FLOOR R, BRAND D,CATEGORY C, MERCHANT M"
                             + " where Y.SHOPID = P.SHOPID and P.FLOORID = R.ID"
                             + "   and Y.BRANDID = D.ID and D.CATEGORYID = C.CATEGORYID"
-                            + "   and Y.MERCHANTID = M.MERCHANTID";
+                            + "   and Y.MERCHANTID = M.MERCHANTID"
+
+                            + "   and Y.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "") //业态权限
+            {
+                sql += " and " + SqlyTQx;
+            }
+
 
             item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and R.ID = {a}");
@@ -611,6 +686,7 @@ namespace z.ERP.Services
 
         public string MerchantRentOutput(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("C");
             string sql = "select Z.*,(Z.TCRENTS-RENTS) CE,(case when (Z.TCRENTS-RENTS)>0 then (Z.TCRENTS-RENTS) else 0  end) YJT from ("
                             + "select Y.YEARMONTH,R.CODE FLOORCODE,P.CODE SHOPCODE,D.NAME BRANDNAME,Y.CONTRACTID,"
                             + "       C.CATEGORYCODE,C.CATEGORYNAME,Y.MERCHANTID,M.NAME MERCHANTNAME,Y.AMOUNT,"
@@ -630,7 +706,13 @@ namespace z.ERP.Services
                             + "  from CONTRACT_SUMMARY_YM Y, SHOP P,FLOOR R, BRAND D,CATEGORY C, MERCHANT M"
                             + " where Y.SHOPID = P.SHOPID and P.FLOORID = R.ID"
                             + "   and Y.BRANDID = D.ID and D.CATEGORYID = C.CATEGORYID"
-                            + "   and Y.MERCHANTID = M.MERCHANTID";
+                            + "   and Y.MERCHANTID = M.MERCHANTID"
+                            + "   and Y.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "") //业态权限
+            {
+                sql += " and " + SqlyTQx;
+            }
 
             item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and R.ID = {a}");
@@ -656,6 +738,7 @@ namespace z.ERP.Services
 
         public DataGridResult ContractInfo(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("Y");
             string sql = " SELECT C.CONTRACTID,F.CODE FLOORCODE,S.CODE SHOPCODE,D.NAME BRANDNAME,"
                        + " M.MERCHANTID,M.NAME MERCHANTNAME, C.AREAR,to_char(C.CONT_START,'YYYY-MM-DD') CONT_START,"
                        + " to_char(C.CONT_END,'YYYY-MM-DD') CONT_END,O.NAME RENTWAY, CR.RENTPRICE,FR.NAME RENTRULE,"
@@ -678,7 +761,13 @@ namespace z.ERP.Services
                        + "   AND S.FLOORID = F.ID AND C.CONTRACTID = CB.CONTRACTID"
                        + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
                        + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
-                       + "   AND C.HTLX=1 ";  //AND C.STATUS !=5
+                       + "   AND C.HTLX=1 "  //AND C.STATUS !=5
+                       +"    AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "") //业态权限
+            {
+                sql += " and " + SqlyTQx;
+            }
 
             item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
@@ -699,6 +788,7 @@ namespace z.ERP.Services
 
         public string ContractInfoOutput(SearchItem item)
         {
+            string SqlyTQx = GetYtQx("Y");
             string sql = " SELECT C.CONTRACTID,F.CODE FLOORCODE,S.CODE SHOPCODE,D.NAME BRANDNAME,"
                        + " M.MERCHANTID,M.NAME MERCHANTNAME, C.AREAR,to_char(C.CONT_START,'YYYY-MM-DD') CONT_START,"
                        + " to_char(C.CONT_END,'YYYY-MM-DD') CONT_END,O.NAME RENTWAY, CR.RENTPRICE,FR.NAME RENTRULE,"
@@ -721,7 +811,14 @@ namespace z.ERP.Services
                        + "   AND S.FLOORID = F.ID AND C.CONTRACTID = CB.CONTRACTID"
                        + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
                        + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
-                       + "   AND C.HTLX=1 ";  //AND C.STATUS !=5
+                       + "   AND C.HTLX=1 "  //AND C.STATUS !=5
+                       +"    AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            if (SqlyTQx != "") //业态权限
+            {
+                sql += " and " + SqlyTQx;
+            }
+
 
             item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
@@ -761,7 +858,7 @@ namespace z.ERP.Services
 						LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
 						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
-                        ";
+                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
@@ -787,7 +884,7 @@ namespace z.ERP.Services
                         LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
 						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
-                        ";
+                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql1 += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql1 += $" and TRUNC(SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql1 += $" and TRUNC(SALE.SALE_TIME) <= {a}");
@@ -818,7 +915,7 @@ namespace z.ERP.Services
 						LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
 						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
-                        ";
+                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
                 item.HasKey("BRANCHID", a => sqlSum += $" and CONTRACT.BRANCHID = {a}");
                 item.HasDateKey("RQ_START", a => sqlSum += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
                 item.HasDateKey("RQ_END", a => sqlSum += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
@@ -842,7 +939,7 @@ namespace z.ERP.Services
 						LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
 						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
-                        ";
+                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
                 item.HasKey("BRANCHID", a => sqlSum1 += $" and CONTRACT.BRANCHID = {a}");
                 item.HasDateKey("RQ_START", a => sqlSum1 += $" and TRUNC(SALE.SALE_TIME) >= {a}");
                 item.HasDateKey("RQ_END", a => sqlSum1 += $" and TRUNC(SALE.SALE_TIME) <= {a}");
@@ -886,7 +983,8 @@ namespace z.ERP.Services
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
 						LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
 						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
-                        where 1=1 ";
+                        where 1=1 
+                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
@@ -908,7 +1006,8 @@ namespace z.ERP.Services
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
 						LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
 						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
-                        where 1=1";
+                        where 1=1
+                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql1 += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql1 += $" and TRUNC(SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql1 += $" and TRUNC(SALE.SALE_TIME) <= {a}");
@@ -962,7 +1061,7 @@ namespace z.ERP.Services
                         LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
 						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
-                        ";
+                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
@@ -986,7 +1085,7 @@ namespace z.ERP.Services
                         LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
 						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
                         where 1=1
-                        ";
+                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql1 += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql1 += $" and TRUNC(SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql1 += $" and TRUNC(SALE.SALE_TIME) <= {a}");
@@ -1025,7 +1124,8 @@ namespace z.ERP.Services
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
 						LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
 						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
-                        where 1=1 ";
+                        where 1=1 
+                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
@@ -1047,7 +1147,8 @@ namespace z.ERP.Services
                         LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
 						LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
 						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
-                        where 1=1";
+                        where 1=1
+                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql1 += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql1 += $" and TRUNC(SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql1 += $" and TRUNC(SALE.SALE_TIME) <= {a}");
@@ -1078,8 +1179,12 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult MerchantPayCost(SearchItem item)
         {
-            String sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BILL.NIANYUE,FEESUBJECT.NAME TRIMNAME,BRAND.NAME BRANDNAME,BILL.MUST_MONEY,BILL.RECEIVE_MONEY,BILL.MUST_MONEY-BILL.RECEIVE_MONEY UNPAID_MONEY from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
-                        WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID ";
+            String sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BILL.NIANYUE,FEESUBJECT.NAME TRIMNAME,BRAND.NAME BRANDNAME,
+                                  BILL.MUST_MONEY,BILL.RECEIVE_MONEY,BILL.MUST_MONEY-BILL.RECEIVE_MONEY UNPAID_MONEY 
+                             from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
+                            WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID 
+                              and MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID 
+                              and BILL.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
@@ -1113,8 +1218,13 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult MerchantPayCostS(SearchItem item)
         {
-            string sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,FEESUBJECT.NAME TRIMNAME,SUM(BILL.MUST_MONEY) MUST_MONEY,SUM(BILL.RECEIVE_MONEY) RECEIVE_MONEY,SUM(BILL.MUST_MONEY)-SUM(BILL.RECEIVE_MONEY) UNPAID_MONEY from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
-                        WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID ";
+            string sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,FEESUBJECT.NAME TRIMNAME,
+                                  SUM(BILL.MUST_MONEY) MUST_MONEY,SUM(BILL.RECEIVE_MONEY) RECEIVE_MONEY,
+                                  SUM(BILL.MUST_MONEY)-SUM(BILL.RECEIVE_MONEY) UNPAID_MONEY 
+                             from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
+                            where MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID 
+                              and MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID 
+                              and BILL.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
@@ -1149,8 +1259,13 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string MerchantPayCostOutput(SearchItem item)
         {
-            String sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BILL.NIANYUE,FEESUBJECT.NAME TRIMNAME,BRAND.NAME BRANDNAME,BILL.MUST_MONEY,BILL.RECEIVE_MONEY,BILL.MUST_MONEY-BILL.RECEIVE_MONEY UNPAID_MONEY from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
-                        WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID ";
+            String sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BILL.NIANYUE,FEESUBJECT.NAME TRIMNAME,BRAND.NAME BRANDNAME,
+                                  BILL.MUST_MONEY,BILL.RECEIVE_MONEY,BILL.MUST_MONEY-BILL.RECEIVE_MONEY UNPAID_MONEY 
+                             from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
+                            where MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID 
+                                  AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID 
+                                  AND BRAND.ID=MERCHANT_BRAND.BRANDID 
+                              and BILL.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
@@ -1188,8 +1303,13 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string MerchantPayCostSOutput(SearchItem item)
         {
-            string sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,FEESUBJECT.NAME TRIMNAME,SUM(BILL.MUST_MONEY) MUST_MONEY,SUM(BILL.RECEIVE_MONEY) RECEIVE_MONEY,SUM(BILL.MUST_MONEY)-SUM(BILL.RECEIVE_MONEY) UNPAID_MONEY from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
-                        WHERE MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID AND MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID ";
+            string sql = @"select MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,FEESUBJECT.NAME TRIMNAME,
+                                  SUM(BILL.MUST_MONEY) MUST_MONEY,SUM(BILL.RECEIVE_MONEY) RECEIVE_MONEY,
+                                  SUM(BILL.MUST_MONEY)-SUM(BILL.RECEIVE_MONEY) UNPAID_MONEY 
+                             from MERCHANT,BILL,FEESUBJECT,MERCHANT_BRAND,BRAND
+                            where MERCHANT.MERCHANTID=BILL.MERCHANTID AND FEESUBJECT.TRIMID=BILL.TERMID 
+                              and MERCHANT_BRAND.MERCHANTID=BILL.MERCHANTID AND BRAND.ID=MERCHANT_BRAND.BRANDID 
+                              and BILL.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
@@ -1230,11 +1350,19 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult MerchantBusinessStatus(SearchItem item)
         {
-            string sql = @"SELECT TC.* ,BILL.MUST_MONEY+TC.MUST_MONEY PAID_MONEY,ROUND(TC.AMOUNT/TC.AREA_RENTABLE,2) AMOUNT_AREA,ROUND((BILL.MUST_MONEY+TC.MUST_MONEY)/TC.AREA_RENTABLE,2) AREA_MONEY  FROM 
-                        (SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.CONTRACTID,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
-                        FROM BILL,CONTRACT_TCZJ,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
-                        WHERE BILL.CONTRACTID=CONTRACT_TCZJ.CONTRACTID AND BILL.NIANYUE=CONTRACT_TCZJ.YEARMONTH AND BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
-                        AND BILL.TERMID =1001 ";
+            string sql = @"SELECT TC.* ,BILL.MUST_MONEY+TC.MUST_MONEY PAID_MONEY,ROUND(TC.AMOUNT/TC.AREA_RENTABLE,2) AMOUNT_AREA,
+                                  ROUND((BILL.MUST_MONEY+TC.MUST_MONEY)/TC.AREA_RENTABLE,2) AREA_MONEY  
+                             FROM 
+                                  (SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,
+                                          BILL.CONTRACTID,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,
+                                          CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
+                                     FROM BILL,CONTRACT_TCZJ,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
+                                    WHERE BILL.CONTRACTID=CONTRACT_TCZJ.CONTRACTID AND BILL.NIANYUE=CONTRACT_TCZJ.YEARMONTH 
+                                      AND BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID 
+                                      AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID 
+                                      AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
+                                      AND BILL.TERMID =1001 
+                                      AND BILL.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
@@ -1242,10 +1370,13 @@ namespace z.ERP.Services
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sql += $" and BILL.NIANYUE >= {a}");
             item.HasKey("YEARMONTH_END", a => sql += $" and BILL.NIANYUE <= {a}");
-            sql += @" GROUP BY MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME,BILL.CONTRACTID,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
-                        ORDER by MERCHANTID,NIANYUE
-                        ) TC,BILL   WHERE TC.MERCHANTID=BILL.MERCHANTID AND TC.NIANYUE=BILL.NIANYUE AND BILL.CONTRACTID=TC.CONTRACTID AND BILL.TERMID=1000 
-                        ORDER BY TC.MERCHANTID,TC.NIANYUE";
+                          sql += @" GROUP BY MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME,BILL.CONTRACTID,BILL.NIANYUE,
+                                             CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
+                                    ORDER by MERCHANTID,NIANYUE ) TC,BILL 
+                            WHERE TC.MERCHANTID=BILL.MERCHANTID AND TC.NIANYUE=BILL.NIANYUE 
+                                  AND BILL.CONTRACTID=TC.CONTRACTID AND BILL.TERMID=1000 "
+                              + " AND BILL.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")"  //门店权限
+                              + " ORDER BY TC.MERCHANTID,TC.NIANYUE";
 
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -1258,11 +1389,16 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult MerchantBusinessStatusGD(SearchItem item)
         {
-            string sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_SUMMARY_YM.AMOUNT,
-                    ROUND(CONTRACT_SUMMARY_YM.AMOUNT/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AMOUNT_AREA,ROUND(BILL.MUST_MONEY/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AREA_MONEY
-                    FROM BILL,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
-                    WHERE  BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
-                    AND BILL.TERMID =1000";
+            string sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.NIANYUE,
+                                  CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_SUMMARY_YM.AMOUNT,
+                                  ROUND(CONTRACT_SUMMARY_YM.AMOUNT/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AMOUNT_AREA,
+                                  ROUND(BILL.MUST_MONEY/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AREA_MONEY
+                             FROM BILL,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
+                            WHERE BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID 
+                              AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID 
+                              AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
+                              AND BILL.TERMID =1000
+                              AND BILL.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
@@ -1283,11 +1419,19 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string MerchantBusinessStatusOutput(SearchItem item)
         {
-            string sql = @"SELECT TC.* ,BILL.MUST_MONEY+TC.MUST_MONEY PAID_MONEY,ROUND(TC.AMOUNT/TC.AREA_RENTABLE,2) AMOUNT_AREA,ROUND((BILL.MUST_MONEY+TC.MUST_MONEY)/TC.AREA_RENTABLE,2) AREA_MONEY  FROM 
-                        (SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.CONTRACTID,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
-                        FROM BILL,CONTRACT_TCZJ,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
-                        WHERE BILL.CONTRACTID=CONTRACT_TCZJ.CONTRACTID AND BILL.NIANYUE=CONTRACT_TCZJ.YEARMONTH AND BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
-                        AND BILL.TERMID =1001 ";
+            string sql = @"SELECT TC.* ,BILL.MUST_MONEY+TC.MUST_MONEY PAID_MONEY,ROUND(TC.AMOUNT/TC.AREA_RENTABLE,2) AMOUNT_AREA,
+                                  ROUND((BILL.MUST_MONEY+TC.MUST_MONEY)/TC.AREA_RENTABLE,2) AREA_MONEY  
+                             FROM 
+                                  (SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.CONTRACTID,
+                                          BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,
+                                          CONTRACT_SUMMARY_YM.AMOUNT
+                                     FROM BILL,CONTRACT_TCZJ,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
+                                    WHERE BILL.CONTRACTID=CONTRACT_TCZJ.CONTRACTID AND BILL.NIANYUE=CONTRACT_TCZJ.YEARMONTH 
+                                      AND BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID 
+                                      AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID 
+                                      AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
+                                      AND BILL.TERMID =1001 
+                                      AND BILL.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
@@ -1295,10 +1439,13 @@ namespace z.ERP.Services
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sql += $" and BILL.NIANYUE >= {a}");
             item.HasKey("YEARMONTH_END", a => sql += $" and BILL.NIANYUE <= {a}");
-            sql += @" GROUP BY MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME,BILL.CONTRACTID,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
-                        ORDER by MERCHANTID,NIANYUE
-                        ) TC,BILL   WHERE TC.MERCHANTID=BILL.MERCHANTID AND TC.NIANYUE=BILL.NIANYUE AND BILL.CONTRACTID=TC.CONTRACTID AND BILL.TERMID=1000 
-                        ORDER BY TC.MERCHANTID,TC.NIANYUE";
+                          sql += @" GROUP BY MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME,BILL.CONTRACTID,BILL.NIANYUE,
+                                             CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_TCZJ.TCZJ,CONTRACT_SUMMARY_YM.AMOUNT
+                                    ORDER by MERCHANTID,NIANYUE) TC,BILL 
+                              WHERE TC.MERCHANTID=BILL.MERCHANTID AND TC.NIANYUE=BILL.NIANYUE 
+                                AND BILL.CONTRACTID=TC.CONTRACTID AND BILL.TERMID=1000 "
+                          + "   AND BILL.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")"  //门店权限
+                          + " ORDER BY TC.MERCHANTID,TC.NIANYUE";
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.TableName = "MerchantBusinessStatus";
             return GetExport("商户租金经营状况导出", a =>
@@ -1313,11 +1460,16 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string MerchantBusinessStatusGDOutput(SearchItem item)
         {
-            string sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.NIANYUE,CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_SUMMARY_YM.AMOUNT,
-                    ROUND(CONTRACT_SUMMARY_YM.AMOUNT/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AMOUNT_AREA,ROUND(BILL.MUST_MONEY/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AREA_MONEY
-                    FROM BILL,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
-                    WHERE  BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
-                    AND BILL.TERMID =1000";
+            string sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME MERCHANTNAME,BRAND.NAME BRANDNAME,BILL.NIANYUE,
+                                  CONTRACT_SHOPAREA.AREA_RENTABLE,BILL.MUST_MONEY,CONTRACT_SUMMARY_YM.AMOUNT,
+                                  ROUND(CONTRACT_SUMMARY_YM.AMOUNT/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AMOUNT_AREA,
+                                  ROUND(BILL.MUST_MONEY/CONTRACT_SHOPAREA.AREA_RENTABLE,2) AREA_MONEY
+                             FROM BILL,MERCHANT,MERCHANT_BRAND,BRAND,CONTRACT_SHOPAREA,CONTRACT_SUMMARY_YM
+                            WHERE BILL.MERCHANTID=MERCHANT.MERCHANTID AND MERCHANT_BRAND.BRANDID=BRAND.ID 
+                              AND BILL.MERCHANTID=MERCHANT_BRAND.MERCHANTID AND CONTRACT_SHOPAREA.CONTRACTID=BILL.CONTRACTID 
+                              AND CONTRACT_SUMMARY_YM.YEARMONTH=BILL.NIANYUE AND CONTRACT_SUMMARY_YM.CONTRACTID=BILL.CONTRACTID
+                              AND BILL.TERMID =1000
+                              AND BILL.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BILL.BRANCHID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
@@ -1337,10 +1489,17 @@ namespace z.ERP.Services
 
         #region 商品销售明细查询
         public DataGridResult GoodsSaleDetail(SearchItem item) {
-            string sql = @" SELECT * FROM ( select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT, NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
-                        from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
-                        WHERE HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO AND HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
-                        ";
+            string sql = @" SELECT *
+                              FROM (select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,
+                                           GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT,
+                                           NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
+                                      from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
+                                     where HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO AND HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID 
+                                       AND HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID 
+                                       AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID 
+                                       AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
+                                       AND CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
@@ -1353,13 +1512,18 @@ namespace z.ERP.Services
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
 
-
             sql += @" UNION ALL ";
 
-            sql += @"select SALE.SALE_TIME,SALE.POSNO,SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,NVL(SALE.DEALID_OLD,0) DEALID_OLD
-                    from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
-                    WHERE SALE.POSNO=SALE_GOODS_PAY.POSNO AND SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
-                    ";
+            sql += @"select SALE.SALE_TIME,SALE.POSNO,SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,
+                            PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,
+                            NVL(SALE.DEALID_OLD,0) DEALID_OLD
+                       from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
+                      where SALE.POSNO=SALE_GOODS_PAY.POSNO AND SALE.DEALID=SALE_GOODS_PAY.DEALID 
+                        and SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND SALE_GOODS_PAY.PAYID=PAY.PAYID 
+                        and CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID 
+                        and CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
+                        and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and TRUNC(SALE.SALE_TIME) <= {a}");
@@ -1380,10 +1544,17 @@ namespace z.ERP.Services
         }
         public string GoodsSaleDetailOutput(SearchItem item) {
 
-            string sql = @" SELECT * FROM ( select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT, NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
-                        from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
-                        WHERE HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO AND HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
-                        ";
+            string sql = @" SELECT * 
+                              FROM (select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,
+                                           GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT,
+                                           NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
+                                      from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
+                                     where HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO AND HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID 
+                                       and HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID 
+                                       and CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID 
+                                       and CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
+                                       and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
@@ -1399,10 +1570,16 @@ namespace z.ERP.Services
 
             sql += @" UNION ALL ";
 
-            sql += @"select SALE.SALE_TIME,SALE.POSNO,SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,NVL(SALE.DEALID_OLD,0) DEALID_OLD
-                    from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
-                    WHERE SALE.POSNO=SALE_GOODS_PAY.POSNO AND SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND SALE_GOODS_PAY.PAYID=PAY.PAYID AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
-                    ";
+            sql += @"select SALE.SALE_TIME,SALE.POSNO,SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,
+                            PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,
+                            NVL(SALE.DEALID_OLD,0) DEALID_OLD
+                       from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
+                      where SALE.POSNO=SALE_GOODS_PAY.POSNO AND SALE.DEALID=SALE_GOODS_PAY.DEALID 
+                        and SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND SALE_GOODS_PAY.PAYID=PAY.PAYID 
+                        and CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID 
+                        and CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
+                        and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(SALE.SALE_TIME) >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and TRUNC(SALE.SALE_TIME) <= {a}");
@@ -1425,28 +1602,6 @@ namespace z.ERP.Services
         }
         #endregion
 
-        private string GetYtQx(string B) {
-            string SqlyTQx = "";
-            string yTQx = GetPermissionSql(PermissionType.Category);
-            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
-            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
-            {
-                if (i == 0)
-                {
-                    SqlyTQx = "( "+ B +".CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
-                }
-                else
-                {
-                    SqlyTQx += " or " + B + ".CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
-                }
-                if (i == yTdt.Rows.Count - 1)
-                {
-                    SqlyTQx += ")";
-                }
-            }
-            return SqlyTQx;
-        }
-
         #region 商户应交已付报表
         /// <summary>
         /// 商户应交已付报表查询
@@ -1455,8 +1610,9 @@ namespace z.ERP.Services
         {
             string sqlParam = "";
             string sqlSfxm = " select distinct b.termid,f.name" +
-                       " from bill b,merchant m,feesubject f" +
-                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID";
+                             "   from bill b,merchant m,feesubject f" +
+                             "  where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID" +
+                             "    and b.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
             item.HasKey("BRANCHID", a => sqlParam += $" and b.BRANCHID ={a}");
             item.HasKey("MERCHANTID", a => sqlParam += $" and b.MERCHANTID ={a}");
@@ -1474,10 +1630,10 @@ namespace z.ERP.Services
                 sqlMain += String.Format(" sum(decode(b.termid, {0}, b.MUST_MONEY, 0))  MUST_MONEY{0}," +
                                          " sum(decode(b.termid, {0}, b.RECEIVE_MONEY, 0))   RECEIVE_MONEY{0},", resData.Rows[i][0].ToString());
             }
-            sqlMain += " sum(b.MUST_MONEY) MUST_MONEYsum,sum(b.RECEIVE_MONEY) RECEIVE_MONEYsum,";
-            sqlMain += " m.NAME MERCHANTNAME" +
-                       " from bill b,merchant m,feesubject f"+
-                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID ";
+            sqlMain += "       sum(b.MUST_MONEY) MUST_MONEYsum,sum(b.RECEIVE_MONEY) RECEIVE_MONEYsum, m.NAME MERCHANTNAME"+
+                       "  from bill b,merchant m,feesubject f"+
+                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID " +
+                       "   and b.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             sqlMain += sqlParam;
             sqlMain += " group by b.MERCHANTID,b.NIANYUE,b.YEARMONTH,b.MUST_MONEY,b.RECEIVE_MONEY,m.NAME";
             int count;
@@ -1501,8 +1657,9 @@ namespace z.ERP.Services
         {
             string sqlParam = "";
             string sqlSfxm = " select distinct b.termid,f.name" +
-                       " from bill b,merchant m,feesubject f" +
-                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID";
+                             "   from bill b,merchant m,feesubject f" +
+                             "  where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID" +
+                             "    and b.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
             item.HasKey("BRANCHID", a => sqlParam += $" and b.BRANCHID ={a}");
             item.HasKey("MERCHANTID", a => sqlParam += $" and b.MERCHANTID ={a}");
@@ -1521,10 +1678,10 @@ namespace z.ERP.Services
                 sqlMain += String.Format(" sum(decode(b.termid, {0}, b.MUST_MONEY, 0))  MUST_MONEY{0}," +
                                          " sum(decode(b.termid, {0}, b.RECEIVE_MONEY, 0))   RECEIVE_MONEY{0},", resData.Rows[i][0].ToString());
             }
-            sqlMain += " sum(b.MUST_MONEY) MUST_MONEYsum,sum(b.RECEIVE_MONEY) RECEIVE_MONEYsum,";
-            sqlMain += " m.NAME MERCHANTNAME" +
-                       " from bill b,merchant m,feesubject f" +
-                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID ";
+            sqlMain += "       sum(b.MUST_MONEY) MUST_MONEYsum,sum(b.RECEIVE_MONEY) RECEIVE_MONEYsum,m.NAME MERCHANTNAME "+
+                       "  from bill b,merchant m,feesubject f" +
+                       " where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID "+
+                       "   and b.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             sqlMain += sqlParam;
             sqlMain += " group by b.MERCHANTID,b.NIANYUE,b.YEARMONTH,b.MUST_MONEY,b.RECEIVE_MONEY,m.NAME";
             return DbHelper.ExecuteTable(sqlMain);
