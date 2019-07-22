@@ -508,11 +508,11 @@ namespace z.ERP.Services
 
 
             sqlsum += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
-                          + "       p.payid,y.name payname, p.amount"
-                          + "  from sale s, sale_pay p,pay y"
-                          + " where s.posno = p.posno"
-                          + "   and s.dealid = p.dealid"
-                          + "   and p.payid = y.payid";
+                     + "       p.payid,y.name payname, p.amount"
+                     + "  from sale s, sale_pay p,pay y"
+                     + " where s.posno = p.posno"
+                     + "   and s.dealid = p.dealid"
+                     + "   and p.payid = y.payid";
             if (String.IsNullOrEmpty(filter.posno))
                 sqlsum += $" and s.posno = '{employee.PlatformId}'";
             else
@@ -535,11 +535,11 @@ namespace z.ERP.Services
             sqlsum += " union all ";
 
             sqlsum += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
-                  + "       p.payid,y.name payname, p.amount"
-                  + "  from his_sale s, his_sale_pay p,pay y"
-                  + " where s.posno = p.posno"
-                  + "   and s.dealid = p.dealid"
-                  + "   and p.payid = y.payid";
+                  + "          p.payid,y.name payname, p.amount"
+                  + "     from his_sale s, his_sale_pay p,pay y"
+                  + "    where s.posno = p.posno"
+                  + "      and s.dealid = p.dealid"
+                  + "      and p.payid = y.payid";
             if (String.IsNullOrEmpty(filter.posno))
                 sqlsum += $" and s.posno = '{employee.PlatformId}'";
             else
@@ -569,6 +569,142 @@ namespace z.ERP.Services
             {
                 saleamountsum = salesum,
                 saleamountreturn = salereturn,
+                paysumlist = sumlist,
+                paydetaillist = detaillist
+            };
+        }
+
+        public SaleCountSummaryResult GetSaleCountSummary(SaleSummaryFilter filter)
+        {
+            string sql = $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+                   + "       to_char(s.sale_time,'yyyy-mm-dd HH24:MI:SS') sale_time,p.payid,y.name payname,y.type paytype, p.amount"
+                   + "  from sale s, sale_pay p,pay y"
+                   + " where s.posno = p.posno"
+                   + "   and s.dealid = p.dealid"
+                   + "   and p.payid = y.payid";
+            if (String.IsNullOrEmpty(filter.posno))
+                sql += $" and s.posno = '{employee.PlatformId}'";
+            else
+                sql += $" and s.posno = '{filter.posno}'";
+
+            if (String.IsNullOrEmpty(filter.saledate_begin) && String.IsNullOrEmpty(filter.saledate_end))
+                sql += $" and trunc(s.sale_time) = trunc(sysdate)";
+            else
+            {
+                if (!String.IsNullOrEmpty(filter.saledate_begin))
+                    sql += $" and trunc(s.sale_time) >= to_date('{filter.saledate_begin.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sql += $" and trunc(s.sale_time) >= trunc(sysdate)";
+                if (!String.IsNullOrEmpty(filter.saledate_end))
+                    sql += $" and trunc(s.sale_time) <= to_date('{filter.saledate_end.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sql += $" and trunc(s.sale_time) <= trunc(sysdate)";
+            }
+
+            sql += " union all ";
+
+            sql += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+                  + "       to_char(s.sale_time,'yyyy-mm-dd HH24:MI:SS') sale_time,p.payid,y.name payname,y.type paytype, p.amount"
+                  + "  from his_sale s, his_sale_pay p,pay y"
+                  + " where s.posno = p.posno"
+                  + "   and s.dealid = p.dealid"
+                  + "   and p.payid = y.payid";
+            if (String.IsNullOrEmpty(filter.posno))
+                sql += $" and s.posno = '{employee.PlatformId}'";
+            else
+                sql += $" and s.posno = '{filter.posno}'";
+
+            if (String.IsNullOrEmpty(filter.saledate_begin) && String.IsNullOrEmpty(filter.saledate_end))
+                sql += $" and trunc(s.sale_time) = trunc(sysdate)";
+            else
+            {
+                if (!String.IsNullOrEmpty(filter.saledate_begin))
+                    sql += $" and trunc(s.sale_time) >= to_date('{filter.saledate_begin.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sql += $" and trunc(s.sale_time) >= trunc(sysdate)";
+                if (!String.IsNullOrEmpty(filter.saledate_end))
+                    sql += $" and trunc(s.sale_time) <= to_date('{filter.saledate_end.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sql += $" and trunc(s.sale_time) <= trunc(sysdate)";
+            }
+
+            sql += " order by 4 desc"; //按交易时间倒序排列
+
+            List<PayDetailResult> detaillist = DbHelper.ExecuteObject<PayDetailResult>(sql);
+
+            if (detaillist.Count <= 0)
+                throw new Exception("无销售记录");
+
+            string sqlsum = "select payid,payname,sum(returnflag * amount) amountreturn,sum(amount) amountsum,";
+
+                 sqlsum += " count(distinct(posno||dealid)) countsum   from(";
+
+
+
+            sqlsum += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+                     + "       p.payid,y.name payname, p.amount"
+                     + "  from sale s, sale_pay p,pay y"
+                     + " where s.posno = p.posno"
+                     + "   and s.dealid = p.dealid"
+                     + "   and p.payid = y.payid";
+            if (String.IsNullOrEmpty(filter.posno))
+                sqlsum += $" and s.posno = '{employee.PlatformId}'";
+            else
+                sqlsum += $" and s.posno = '{filter.posno}'";
+
+            if (String.IsNullOrEmpty(filter.saledate_begin) && String.IsNullOrEmpty(filter.saledate_end))
+                sqlsum += $" and trunc(s.sale_time) = trunc(sysdate)";
+            else
+            {
+                if (!String.IsNullOrEmpty(filter.saledate_begin))
+                    sqlsum += $" and trunc(s.sale_time) >= to_date('{filter.saledate_begin.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sqlsum += $" and trunc(s.sale_time) >= trunc(sysdate)";
+                if (!String.IsNullOrEmpty(filter.saledate_end))
+                    sqlsum += $" and trunc(s.sale_time) <= to_date('{filter.saledate_end.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sqlsum += $" and trunc(s.sale_time) <= trunc(sysdate)";
+            }
+
+            sqlsum += " union all ";
+
+            sqlsum += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+                  + "          p.payid,y.name payname, p.amount"
+                  + "     from his_sale s, his_sale_pay p,pay y"
+                  + "    where s.posno = p.posno"
+                  + "      and s.dealid = p.dealid"
+                  + "      and p.payid = y.payid";
+            if (String.IsNullOrEmpty(filter.posno))
+                sqlsum += $" and s.posno = '{employee.PlatformId}'";
+            else
+                sqlsum += $" and s.posno = '{filter.posno}'";
+
+            if (String.IsNullOrEmpty(filter.saledate_begin) && String.IsNullOrEmpty(filter.saledate_end))
+                sqlsum += $" and trunc(s.sale_time) = trunc(sysdate)";
+            else
+            {
+                if (!String.IsNullOrEmpty(filter.saledate_begin))
+                    sqlsum += $" and trunc(s.sale_time) >= to_date('{filter.saledate_begin.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sqlsum += $" and trunc(s.sale_time) >= trunc(sysdate)";
+                if (!String.IsNullOrEmpty(filter.saledate_end))
+                    sqlsum += $" and trunc(s.sale_time) <= to_date('{filter.saledate_end.ToDateTime().ToString("yyyy-MM-dd")}','yyyy-MM-dd')";
+                else
+                    sqlsum += $" and trunc(s.sale_time) <= trunc(sysdate)";
+            }
+
+            sqlsum += ") group by payid,payname";
+
+            List<PaySumCountResult> sumlist = DbHelper.ExecuteObject<PaySumCountResult>(sqlsum);
+            decimal salesum = detaillist.Sum(a => a.amount);
+            decimal salereturn = sumlist.Sum(a => a.amountreturn);
+            int countsum = sumlist.Sum(a => a.countsum);
+
+            return new SaleCountSummaryResult()
+            {
+                saleamountsum = salesum,
+                saleamountreturn = salereturn,
+                salecountsum = countsum,
                 paysumlist = sumlist,
                 paydetaillist = detaillist
             };

@@ -94,6 +94,12 @@ namespace z.ERP.WebService.Controllers
             return service.PosService.GetSaleSummary(filter);
         }
 
+        [ServiceAble("GetSaleCountSummary")]
+        public SaleCountSummaryResult GetSaleCountSummary(SaleSummaryFilter filter)
+        {
+            return service.PosService.GetSaleCountSummary(filter);
+        }
+
         [ServiceAble("GetMemberInfo")]
         public GetMemberCardDetailsResult GetMemberInfo(ReqMemberCard reqMC)
         {
