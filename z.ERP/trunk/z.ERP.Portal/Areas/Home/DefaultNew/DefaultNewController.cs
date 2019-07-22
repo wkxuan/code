@@ -20,19 +20,10 @@ namespace z.ERP.Portal.Areas.Home.Default
         public UIResult BoxData(string branchid)
         {
             var branch = service.DataService.branch();
-            var bid = "";
-            if (string.IsNullOrEmpty(branchid))
-            {
-                bid = branch.First<Results.SelectItem>().Key;
-            }
-            else
-            {
-                bid = branchid;
-            }
-            var box1data = service.DefaultDataService.Box1Data(bid);   //经营总贶
-            var box2data = service.DefaultDataService.Box2Data(bid);   //店铺出租状态
-            var box3data = service.DefaultDataService.Box3Data("1", bid);   //店铺经营榜    //type=1 初始化默认昨日数据
-            var box4data = service.DefaultDataService.Box4Data("1", bid);    //业态经营榜   //type=1 初始化默认昨日数据
+            var box1data = service.DefaultDataService.Box1Data(branchid);   //经营总贶
+            var box2data = service.DefaultDataService.Box2Data(branchid);   //店铺出租状态
+            var box3data = service.DefaultDataService.Box3Data("1", branchid);   //店铺经营榜    //type=1 初始化默认昨日数据
+            var box4data = service.DefaultDataService.Box4Data("1", branchid);    //业态经营榜   //type=1 初始化默认昨日数据
             //echartData
             var Echart1data = box3data;
             DataView dv = Echart1data.DefaultView;   //排行需要正序
@@ -40,11 +31,10 @@ namespace z.ERP.Portal.Areas.Home.Default
             Echart1data = dv.ToTable();
             var Echart2Numberdata = service.DefaultDataService.EchartData(box2data, "TYPE", "NUMBERS");
             var Echart2Areadata = service.DefaultDataService.EchartData(box2data, "TYPE", "AREA");
-            var Echart3data = service.DefaultDataService.Echart3Data(bid);
+            var Echart3data = service.DefaultDataService.Echart3Data(branchid);
             return new UIResult(
                 new
                 {
-                    branchid = bid,
                     branchList = branch,
                     box1data = box1data,
                     box2data = box2data,

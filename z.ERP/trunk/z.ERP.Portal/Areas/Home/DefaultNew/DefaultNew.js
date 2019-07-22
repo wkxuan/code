@@ -97,7 +97,6 @@ var DefaultNew = new Vue({
             _.Ajax('BoxData', {   
                 branchid: this.branchid
             }, function (data) {
-                DefaultNew.branchid = data.branchid;    //默认第一个分店
                 DefaultNew.branchList = data.branchList;   //分店下拉
                 DefaultNew.box3select = "1";  //下拉选择框还原
                 DefaultNew.box4select = "1"; //下拉选择框还原
