@@ -2,6 +2,7 @@
 
     editDetail.others = false;
     editDetail.branchid = false;
+    editDetail.otherPanel = false;
     editDetail.service = "DpglService";
     editDetail.method = "GetFloorMap";
     editDetail.Key = 'MAPID';
@@ -287,7 +288,7 @@ editDetail.otherMethods = {
                     editDetail.dataParam.FILENAME = data.Obj.uploadFileName;
                 }
             };
-            $.ajax(ajaxdata);            
+            $.ajax(ajaxdata);
             editDetail.screenParam.loadingStatus = false;
             iview.Message.success('上传成功');
         }, 1500);
@@ -342,6 +343,49 @@ editDetail.IsValidSave = function () {
 
     return true;
 }
+
+//按钮初始化
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "11010101"
+    }, {
+        id: "edit",
+        authority: "11010101"
+    }, {
+        id: "del",
+        authority: "11010104"
+    }, {
+        id: "save",
+        authority: "11010101"
+    }, {
+        id: "abandon",
+        authority: "11010101"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "11010103",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { MAPID: editDetail.dataParam.MAPID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};
 
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchFloorMap', {

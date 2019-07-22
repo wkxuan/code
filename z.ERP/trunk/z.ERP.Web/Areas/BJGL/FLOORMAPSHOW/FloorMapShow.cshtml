@@ -16,7 +16,7 @@
     "/Content/Maps/contextMenu.min.js",
     "/Content/Maps/zMapPoint.css",
     "/Content/Maps/zMapPoint.js"
-});
+})
 }
 @section conditionParam{
     <row>
@@ -30,7 +30,7 @@
             }
         </i-col>
         <i-col span="1" class="RowTitle">门店</i-col>
-        <i-col span="4">
+        <i-col span="4" class="RowTitle">
             @{
                 RenderControl(new DropDownListsRender()
                 {
@@ -42,7 +42,7 @@
             }
         </i-col>
         <i-col span="1" class="RowTitle">区域</i-col>
-        <i-col span="4">
+        <i-col span="4" class="RowTitle">
             @{
                 RenderControl(new DropDownListsRender()
                 {
@@ -56,7 +56,7 @@
 
         <i-col span="1" class="RowTitle">楼层</i-col>
         <span v-show="disabled">
-            <i-col span="4">
+            <i-col span="4" class="RowTitle">
                 @{
                     RenderControl(new DropDownListsRender()
                     {
