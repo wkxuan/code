@@ -302,11 +302,11 @@ namespace z.ERP.Services
                     return SqlMenu;
                 case PermissionType.Org:
                     String SqlDepartment = "";
-                    SqlDepartment = " select ORGID id from ORG A where 1=1";
+                    SqlDepartment = " select ORGID id from ORG where 1=1";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
                         SqlDepartment += " and exists(select 1 from USER_ROLE A1,ROLE B1,ORG C1 where A1.USERID=" + employee.Id;
-                        SqlDepartment += " and A1.ROLEID = B1.ROLEID and B1.ORGID = C1.ORGID and (C1.ORGCODE like A.ORGCODE || '%' or A.ORGCODE like C1.ORGCODE || '%'))";
+                        SqlDepartment += " and A1.ROLEID = B1.ROLEID and B1.ORGID = C1.ORGID and (C1.ORGCODE like ORG.ORGCODE || '%' or ORG.ORGCODE like C1.ORGCODE || '%'))";
                     }
                     return SqlDepartment;
                 case PermissionType.Branch:

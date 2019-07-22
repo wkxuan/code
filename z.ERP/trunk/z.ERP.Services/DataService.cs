@@ -277,7 +277,11 @@ namespace z.ERP.Services
         /// <returns></returns>
         public Tuple<dynamic> GetTreeOrg()
         {
-            List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
+            string sql = "select * from ORG where 1=1 and ORGID in (" + GetPermissionSql(PermissionType.Org) + ")"; //部门权限
+
+            List<ORGEntity> p = DbHelper.ExecuteObject<ORGEntity>(sql);
+
+          //  List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
             var treeOrg = new UIResult(TreeModel.Create(p,
                 a => a.ORGCODE,
                 a => new TreeModel()
@@ -309,7 +313,8 @@ namespace z.ERP.Services
         public object GetRegion(REGIONEntity Data)
         {
             string sql = $@"SELECT A.REGIONID,A.CODE,A.NAME FROM REGION A WHERE 1=1"
-                  + " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                  + " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"  //门店权限
+                  + " AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")";  //区域权限
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
             sql += " AND A.STATUS = 1 ORDER BY A.CODE";
@@ -323,7 +328,8 @@ namespace z.ERP.Services
         public object GetFloor(FLOOREntity Data)
         {
             string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1"
-                 + " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                 + " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"  //门店权限
+                 + " AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")"; //区域权限
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
             if (!Data.REGIONID.IsEmpty())
@@ -364,9 +370,9 @@ namespace z.ERP.Services
         public DataGridResult GetContract(SearchItem item)
         {
             string sql = " SELECT  A.*  ,B.NAME MERCHANTNAME,C.NAME BRANCHNAME "
-                + "   FROM CONTRACT A,MERCHANT B,BRANCH C "
-                + "  WHERE A.MERCHANTID=B.MERCHANTID AND A.BRANCHID=C.ID"
-                + "    AND C.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+                       + "   FROM CONTRACT A,MERCHANT B,BRANCH C "
+                       + "  WHERE A.MERCHANTID=B.MERCHANTID AND A.BRANCHID=C.ID"
+                       + "    AND C.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID like '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");

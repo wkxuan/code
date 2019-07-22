@@ -20,8 +20,9 @@ namespace z.ERP.Services
         public DataGridResult GetUser(SearchItem item)
         {
             string sql = $@"select A.USERID,A.USERCODE,A.USERNAME,A.SHOPID,A.USER_TYPE,B.ORGID,B.ORGCODE,B.ORGNAME,C.CODE SHOPCODE,C.NAME SHOPNAME
-             from SYSUSER A,ORG B,SHOP C 
-             where A.SHOPID=C.SHOPID(+) and A.ORGID=B.ORGID(+) ";  //and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";
+                              from SYSUSER A,ORG B,SHOP C 
+                             where A.SHOPID=C.SHOPID(+) and A.ORGID=B.ORGID(+) 
+                               and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";   //部门权限
             item.HasKey("USERCODE", a => sql += $" and A.USERCODE like '%{a}%'");
             item.HasKey("USERNAME", a => sql += $" and A.USERNAME like '%{a}%'");
             item.HasKey("USER_TYPE", a => sql += $" and A.USER_TYPE in ({a})");
