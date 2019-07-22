@@ -46,7 +46,7 @@
                             ]);
                     }
                 },
-    { title: ' ', key: 'CATEGORYNAME', width: 150 }
+    { title: ' ', key: 'CATEGORYNAME'}
 
     ];
     mapShow.screenParam.colDef1 = [
@@ -65,7 +65,7 @@
                             ]);
                     }
                 },
-    { title: ' ', key: 'STATUSNAME', width: 150 }
+    { title: ' ', key: 'STATUSNAME' }
 
     ];
     mapShow.GetHtml = function (data) {

@@ -43,7 +43,7 @@
                 <span slot="open">图表</span>
                 <span slot="close">数据</span>
             </i-Switch>
-            <i-Select v-model="branchid" size="small" style="width:8%;float:right;margin: 8px 10px 0px;" v-on:on-change="branchchange">
+            <i-Select v-model="branchid" size="small" style="width:8%;float:right;margin: 8px 10px 0px;" v-on:on-change="branchchange" placeholder="权限门店">
                 <i-Option v-for="item in branchList" v-bind:value="item.Key" v-bind:key="item.Key">{{ item.Value }}</i-Option>
             </i-Select>
         </div>
