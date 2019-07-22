@@ -64,7 +64,8 @@ namespace z.ERP.Services
         public DataGridResult GetRole(SearchItem item)
         {
             string sql = $@"select A.ROLEID,A.ROLECODE,A.ROLENAME,B.ORGID,B.ORGCODE,B.ORGNAME,1 STATUS 
-                         FROM ROLE A,ORG B WHERE A.ORGID=B.ORGID and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";
+                              FROM ROLE A,ORG B WHERE A.ORGID=B.ORGID 
+                               and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";  //部门权限
             item.HasKey("ROLECODE,", a => sql += $" and A.ROLECODE = '{a}'");
             item.HasKey("ROLENAME", a => sql += $" and A.ROLENAME like '%{a}%'");
             item.HasKey("ORGCODE,", a => sql += $" and B.ORGCODE in like '{a}%'");
@@ -164,11 +165,12 @@ namespace z.ERP.Services
             var org = DataService.GetTreeOrg();
 
             //更改权限列表为树 by：DZK
-            string sql1 = @" (select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  FROM USERMODULE U,MENU M 
-                        WHERE U.MENUID=M.ID  AND U.ENABLE_FLAG=1 
+            string sql1 = @" (select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  
+                                FROM USERMODULE U,MENU M 
+                               WHERE U.MENUID=M.ID  AND U.ENABLE_FLAG=1 
                         UNION ALL 
-                        select  NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid FROM USERMODULE 
-                        WHERE ENABLE_FLAG=1 and (MENUID is null or MENUID =0)) 
+                           select  NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid FROM USERMODULE 
+                            WHERE ENABLE_FLAG=1 and (MENUID is null or MENUID =0)) 
 	                        ORDER BY MODULECODE ";
             List<USERMODULEEntity> um = DbHelper.ExecuteTable(sql1).ToList<USERMODULEEntity>();
             List<TreeEntity> treeList = new List<TreeEntity>();
@@ -187,7 +189,9 @@ namespace z.ERP.Services
             string sqlitem2 = $@"select A.TRIMID,A.NAME from FEESUBJECT A  order by A.TRIMID";
             DataTable fee = DbHelper.ExecuteTable(sqlitem2);
             //区域
-            string sqlitemRegion = $@"select A.REGIONID,A.NAME from REGION A  order by A.REGIONID";
+            string sqlitemRegion = $@"select A.REGIONID,A.NAME from REGION A "
+                                  + "    and A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")"
+                                  + "  order by A.REGIONID";
             DataTable region = DbHelper.ExecuteTable(sqlitemRegion);
             //业态树
             List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
@@ -202,10 +206,14 @@ namespace z.ERP.Services
                 })?.ToArray();
 
             //门店
-            string sqlbranch = $@"select B.ID BRANCHID,B.NAME from BRANCH B  order by B.ID";
+            string sqlbranch = $@"select B.ID BRANCHID,B.NAME from BRANCH B where 1=1 "
+                               + "   and B.ID IN ("+GetPermissionSql(PermissionType.Branch)+")"                                   
+                               + " order by B.ID";
             DataTable branch = DbHelper.ExecuteTable(sqlbranch);
             //预警
-            string sqlalert = $@"select B.ID ALERTID,B.MC NAME from DEF_ALERT B  order by B.ID";
+            string sqlalert = $@"select B.ID ALERTID,B.MC NAME from DEF_ALERT B where 1=1 "
+                            + "     and B.ID IN (" + GetPermissionSql(PermissionType.Alert) + ")"
+                            + "   order by B.ID";
             DataTable alert = DbHelper.ExecuteTable(sqlalert);
             return new Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable, DataTable, DataTable>(org.Item1, fee, module, ytTreeData, region, branch, alert);
         }

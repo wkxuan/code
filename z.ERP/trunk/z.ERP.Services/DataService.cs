@@ -279,6 +279,8 @@ namespace z.ERP.Services
         {
             string sql = "select * from ORG where 1=1 and ORGID in (" + GetPermissionSql(PermissionType.Org) + ")"; //部门权限
 
+            sql += " order by ORGCODE";
+
             List<ORGEntity> p = DbHelper.ExecuteObject<ORGEntity>(sql);
 
           //  List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
