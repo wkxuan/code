@@ -277,7 +277,7 @@ namespace z.ERP.Services
         /// <returns></returns>
         public Tuple<dynamic> GetTreeOrg()
         {
-            string sql = "select * from ORG where 1=1 and ORGID in (" + GetPermissionSql(PermissionType.Org) + ")"; //部门权限
+            string sql = "select ORGID,ORGCODE,ORGNAME,ORG_TYPE,LEVEL_LAST,BRANCHID,VOID_FLAG from ORG where 1=1 and ORGID in (" + GetPermissionSql(PermissionType.Org) + ")"; //部门权限
 
             sql += " order by ORGCODE";
 
