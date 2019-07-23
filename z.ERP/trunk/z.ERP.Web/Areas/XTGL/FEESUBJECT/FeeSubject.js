@@ -3,11 +3,11 @@
     define.screenParam.colDef = [
         {
             title: "收费项目代码",
-            key: 'TRIMID', width: 150
+            key: 'TRIMID', width: 120
         },
         {
             title: '收费项目名称',
-            key: 'NAME', width: 250
+            key: 'NAME', width: 280
         }];
 
     define.screenParam.dataDef = [];

@@ -68,7 +68,7 @@ namespace z.ERP.Services
                                and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";  //部门权限
             item.HasKey("ROLECODE,", a => sql += $" and A.ROLECODE = '{a}'");
             item.HasKey("ROLENAME", a => sql += $" and A.ROLENAME like '%{a}%'");
-            item.HasKey("ORGCODE,", a => sql += $" and B.ORGCODE in like '{a}%'");
+            item.HasKey("ORGCODE", a => sql += $" and B.ORGCODE like '{a}%'");
             sql += " ORDER BY  A.ROLECODE ";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -189,7 +189,7 @@ namespace z.ERP.Services
             string sqlitem2 = $@"select A.TRIMID,A.NAME from FEESUBJECT A  order by A.TRIMID";
             DataTable fee = DbHelper.ExecuteTable(sqlitem2);
             //区域
-            string sqlitemRegion = $@"select A.REGIONID,A.NAME from REGION A "
+            string sqlitemRegion = $@"select A.REGIONID,A.NAME from REGION A where 1=1"
                                   + "    and A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")"
                                   + "  order by A.REGIONID";
             DataTable region = DbHelper.ExecuteTable(sqlitemRegion);
