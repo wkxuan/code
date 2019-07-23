@@ -22,6 +22,13 @@ namespace z.ERP.Entities.Service.Pos
             set;
         }
 
+        public int returncountsum
+        {
+            get;
+            set;
+        }
+
+
         public List<PaySumCountResult> paysumlist
         {
             get;

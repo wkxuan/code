@@ -32,5 +32,11 @@
             set;
         }
 
+        public int returncount
+        {
+            get;
+            set;
+        }
+
     }
 }

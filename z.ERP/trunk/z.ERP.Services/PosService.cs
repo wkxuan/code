@@ -637,11 +637,10 @@ namespace z.ERP.Services
 
             string sqlsum = "select payid,payname,sum(returnflag * amount) amountreturn,sum(amount) amountsum,";
 
-                 sqlsum += " count(distinct(posno||dealid)) countsum   from(";
+            sqlsum += " count(distinct(posno||dealid)) countsum,";   //统计交易笔数
+            sqlsum += " count(distinct decode(returnflag,1,posno||dealid,null)) returncount from(";    //统计退货笔数
 
-
-
-            sqlsum += $"select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
+            sqlsum +=  "select s.posno,s.dealid,decode(sign(s.sale_amount),0,0,1,0,-1,1) returnflag,"
                      + "       p.payid,y.name payname, p.amount"
                      + "  from sale s, sale_pay p,pay y"
                      + " where s.posno = p.posno"
@@ -699,12 +698,14 @@ namespace z.ERP.Services
             decimal salesum = detaillist.Sum(a => a.amount);
             decimal salereturn = sumlist.Sum(a => a.amountreturn);
             int countsum = sumlist.Sum(a => a.countsum);
+            int returncountsum = sumlist.Sum(a => a.returncount);
 
             return new SaleCountSummaryResult()
             {
                 saleamountsum = salesum,
                 saleamountreturn = salereturn,
                 salecountsum = countsum,
+                returncountsum = returncountsum,
                 paysumlist = sumlist,
                 paydetaillist = detaillist
             };
