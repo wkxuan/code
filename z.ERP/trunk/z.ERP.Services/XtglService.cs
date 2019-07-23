@@ -105,6 +105,7 @@ namespace z.ERP.Services
 
             item.HasKey("NAME", a => sql += $" and NAME LIKE '%{a}%'");
             item.HasKey("TRIMID", a => sql += $" and TRIMID LIKE '%{a}%'");
+            item.HasKey("SqlCondition", a => sql += $" and {a}");
             sql += " ORDER BY  TRIMID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -1070,7 +1071,27 @@ namespace z.ERP.Services
             dt.NewEnumColumns<审批流程菜单号>("MENUID", "MENUIDMC");
             return new DataGridResult(dt, count);
         }
+        public string SAVEFEESUBJECT_ACCOUNT(FEESUBJECT_ACCOUNTEntity data) {
+            var v = GetVerify(data);
+            v.Require(a => a.TERMID);
+            v.Require(a => a.FEE_ACCOUNTID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.NOTICE_CREATE_WAY);
+            v.Verify();
+            DbHelper.Save(data);
+            return data.TERMID;
+        }
+        public DataGridResult GetFEESUBJECT_ACCOUNT(SearchItem item)
+        {
+            string sql = $@"SELECT FA.*,B.NAME BRANCHNAME,F.NAME TERMNAME FROM FEESUBJECT_ACCOUNT FA,BRANCH B,FEESUBJECT F  WHERE FA.BRANCHID=B.ID AND FA.TERMID=F.TRIMID";
 
+            item.HasKey("BRANCHID", a => sql += $" and FA.BRANCHID LIKE '%{a}%'");
+            item.HasKey("TERMID", a => sql += $" and FA.TERMID LIKE '%{a}%'");
+            sql += " ORDER BY  FA.BRANCHID,FA.TERMID";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 
 }

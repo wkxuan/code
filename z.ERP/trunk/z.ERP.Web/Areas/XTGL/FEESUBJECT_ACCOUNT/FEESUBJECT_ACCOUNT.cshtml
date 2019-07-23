@@ -1,0 +1,113 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+
+@section search{
+    <row>
+        <i-col span="5" class="RowTitle">分店</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    Data = "screenParam.branchData",
+                    Change = "branchChange",
+                });
+            }
+        </i-col>
+
+        <i-col span="5" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.TRIMID",
+                });
+            }
+        </i-col>
+    </row>
+
+}
+
+@section element{
+    <row>
+        <i-col span="5" class="RowTitle">
+            <span class="mustElement">*</span>
+            @{
+                RenderControl(new ButtonRender()
+                {
+                    Click = "srchFeeSubject",
+                    Text = "费用项目",
+                    Enable = false,
+                    Type = "primary"
+                });
+            }
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.TERMNAME",
+                    Readonly = "true",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="5" class="RowTitle">
+            <span class="mustElement">*</span>
+            收费单位
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.FEE_ACCOUNTID",
+                    ServiceMothod = m => m.feeAccount(),
+                    Enable = false,
+                });
+            }
+
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="5" class="RowTitle"><span class="mustElement">*</span>通知单生成方式</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<通知单生成方式>()
+                {
+                    vModel = "dataParam.NOTICE_CREATE_WAY",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+
+
+}
+@section pops{
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopFeeSubject",
+            Caption = "选择费用项目",
+            Width = "900",
+            Src = "screenParam.srcPopFeeSubject"
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+

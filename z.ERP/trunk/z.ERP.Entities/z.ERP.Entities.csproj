@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\FEESUBJECT_ACCOUNTEntity.cs" />
     <Compile Include="Auto\NOTICEEntity.cs" />
     <Compile Include="Auto\NOTICE_BRANCHEntity.cs" />
     <Compile Include="Auto\READNOTOCELOGEntity.cs" />
