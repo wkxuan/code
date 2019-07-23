@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Layout.Define;
 using z.Extensions;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.XTGL.POSO2OWFTCFG
 {
@@ -35,6 +36,10 @@ namespace z.ERP.Web.Areas.XTGL.POSO2OWFTCFG
         {
             var v = GetVerify(DefineDelete);
             CommenDelete(DefineDelete);
+        }
+        public UIResult GetBranch(BRANCHEntity Data)
+        {
+            return new UIResult(service.DataService.GetBranch(Data));
         }
     }
 }

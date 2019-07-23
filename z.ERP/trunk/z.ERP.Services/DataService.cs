@@ -447,7 +447,7 @@ namespace z.ERP.Services
 
         public List<SelectItem> feeAccount()    //收费单位
         {
-            string sql = "select id,name from fee_account order by id ";
+            string sql = "select id,name from fee_account where BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") order by id ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("id", "name");
         }
@@ -476,6 +476,15 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
-
+        public List<SelectItem> feeAccount(FEE_ACCOUNTEntity data)    //收费单位
+        {
+            string sql = "select id,name from fee_account where BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";
+            if (!string.IsNullOrEmpty(data.BRANCHID)) {
+                sql += " AND BRANCHID= "+data.BRANCHID+" ";
+            }
+                sql+=" order by id ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("id", "name");
+        }
     }
 }

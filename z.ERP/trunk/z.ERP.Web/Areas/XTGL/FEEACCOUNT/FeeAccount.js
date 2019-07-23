@@ -14,8 +14,29 @@
     define.Key = 'ID';
 
 }
-
+define.mountedInit = function () {
+    _.Ajax('GetBranch', {
+        Data: { ID: "" }
+    }, function (data) {
+        if (data.dt) {
+            define.screenParam.branchData = [];
+            for (var i = 0; i < data.dt.length; i++) {
+                define.screenParam.branchData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
+            }
+            define.searchParam.BRANCHID = data.dt[0].ID;
+            Vue.set(define.dataParam, "BRANCHID", define.searchParam.BRANCHID);
+            define.showlist();
+        }
+    });
+}
+define.otherMethods = {
+    branchChange: function (value) {
+        define.dataParam.BRANCHID = define.searchParam.BRANCHID;
+        define.showlist();
+    },    
+};
 define.IsValidSave = function () {
+    define.dataParam.BRANCHID = define.searchParam.BRANCHID;
     if (!define.dataParam.BRANCHID) {
         iview.Message.info("分店不能为空!");
         return false;
