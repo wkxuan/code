@@ -916,45 +916,44 @@ namespace z.ERP.Services
 
 
 
-        public Tuple<DataTable, DataTable> GetSplc(SPLCEntity Data)
+        public Tuple<DataTable, DataTable, int> GetSplc(SPLCEntity Data)
         {
-
             //找当前应该是那个节点数据
-
             if (Data.MENUID.IsEmpty())
             {
                 throw new LogicException("请确认查找审批流程的菜单号信息!");
             }
+            //查找菜单对应的审批流程数据
             string sql = $@"select JDID,JDNAME from";
             sql += " SPLCDEFD A,SPLCJD B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
-            sql += (" AND A.MENUID= " + Data.MENUID);
-            DataTable splc = DbHelper.ExecuteTable(sql);
+            sql += " AND A.MENUID= " + Data.MENUID;
+            DataTable splcjd = DbHelper.ExecuteTable(sql);
 
+            //查找当前记录编号审批流程执行到哪个节点
             //找最后一个审批数据
-            var i = 1;
-
+            var curJdid = 1;
             string sql1 = $@"select JDID from";
             sql1 += " SPLCJG_MENU WHERE 1=1 ";
-            sql1 += (" AND MENUID= " + Data.MENUID);
-            sql1 += (" AND BILLID= " + Data.JLBH);
+            sql1 += " AND MENUID= " + Data.MENUID;
+            sql1 += " AND BILLID= " + Data.JLBH;
             sql1 += " order by CLSJ desc";
             DataTable spBillJg = DbHelper.ExecuteTable(sql1);
             if (spBillJg.Rows.Count > 0)
             {
-                i = spBillJg.Rows[0][0].ToString().ToInt();
+                curJdid = spBillJg.Rows[0][0].ToString().ToInt();
             }
-
-
+            //根据菜单号和单据编号查询审批流执行节点的结果
             string sqlxz = $@"select JDID,JGID,JGTYPE,JGMC from";
             sqlxz += " SPLCDEFD A,SPLCJG B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
-            sqlxz += (" AND A.MENUID= " + Data.MENUID);
-            sqlxz += (" AND B.JDID= " + i);
-            DataTable splxz = DbHelper.ExecuteTable(sqlxz);
-            splxz.NewEnumColumns<审批结果类型>("JGTYPE", "JGTYPENAME");
+            sqlxz += " AND A.MENUID= " + Data.MENUID;
+            sqlxz += " AND B.JDID= " + curJdid;
+            DataTable splcjg = DbHelper.ExecuteTable(sqlxz);
+            splcjg.NewEnumColumns<审批结果类型>("JGTYPE", "JGTYPENAME");
 
-            return new Tuple<DataTable, DataTable>(
-                 splc,
-                 splxz
+            return new Tuple<DataTable, DataTable,int>(
+                 splcjd,
+                 splcjg,
+                 curJdid
             );
         }
 

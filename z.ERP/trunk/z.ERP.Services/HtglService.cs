@@ -101,16 +101,28 @@ namespace z.ERP.Services
                     }
                 }
             }
+            //合同类型判断
             if (SaveData.CONTRACT_OLD.IsEmpty())
             {
                 SaveData.HTLX = ((int)合同类型.原始合同).ToString();
             }
             else
             {
+                const string sqlContract = "select CONTRACTID from CONTRACT where CONTRACT_OLD={0} and STATUS={1} and HTLX={2}";
+                var sql = string.Format(sqlContract, SaveData.CONTRACT_OLD, (int)合同状态.未审核, (int)合同类型.变更合同);
+                DataTable dtcount = DbHelper.ExecuteTable(sql);
+                if (dtcount.Rows.Count > 0)
+                {
+                    throw new LogicException(string.Format("已存在未审核的变更合同{0},不能再次变更!", dtcount.Rows[0][0].ToString()));
+                }
                 SaveData.HTLX = ((int)合同类型.变更合同).ToString();
-            }
 
-            if (SaveData.CONTRACTID.IsEmpty())    // 合同号规则:核算方式(1租赁2联营)+门店(2位)+5位流水  变更合同 9开头
+                SaveData.VERIFY = null;
+                SaveData.VERIFY_NAME = null;
+                SaveData.VERIFY_TIME = null;
+            }
+            // 合同号规则:核算方式(1租赁2联营)+门店(2位)+5位流水  变更合同 9开头
+            if (SaveData.CONTRACTID.IsEmpty())    
             {
                 string tblname;
                 int leadCode;
@@ -120,7 +132,6 @@ namespace z.ERP.Services
                     leadCode = ("9" + SaveData.BRANCHID.PadLeft(2, '0')).ToInt();
 
                 tblname = "CONTRACT_" + leadCode.ToString();
-
 
                 SaveData.CONTRACTID = (NewINC(tblname).ToInt() + leadCode * 100000).ToString();
                 SaveData.STATUS = ((int)合同状态.未审核).ToString();
@@ -133,14 +144,8 @@ namespace z.ERP.Services
                 {
                     throw new LogicException($"租约({SaveData.CONTRACTID})已经审核!");
                 }
-                SaveData.VERIFY = con.VERIFY;
-                SaveData.VERIFY_NAME = con.VERIFY_NAME;
-                SaveData.VERIFY_TIME = con.VERIFY_TIME;
             }
-
-
             SaveData.QZRQ = SaveData.CONT_START;
-
             SaveData.REPORTER = employee.Id;
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
@@ -643,38 +648,28 @@ namespace z.ERP.Services
 
             if (con.STATUS != ((int)普通单据状态.未审核).ToString())
             {
-                throw new LogicException($"租约({Data.CONTRACTID})已经不是未审核不能继续审核!");
+                throw new LogicException($"租约({Data.CONTRACTID})已经已审核不能重复审核!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-                EXEC_CONTRACT exec_contract = new EXEC_CONTRACT()
+                if(Data.HTLX == ((int)合同类型.变更合同).ToString())
                 {
-                    V_CONTRACTID = Data.CONTRACTID,
-                    V_USERID = employee.Id
-                };
-                DbHelper.ExecuteProcedure(exec_contract);
-                Tran.Commit();
-            }
-
-            return con.CONTRACTID;
-        }
-        public string ExecHtBgData(CONTRACTEntity Data)
-        {
-            CONTRACTEntity con = DbHelper.Select(Data);
-
-            if (con.STATUS != ((int)普通单据状态.未审核).ToString())
-            {
-                throw new LogicException($"租约({Data.CONTRACTID})已经不是未审核不能继续审核!");
-            }
-            using (var Tran = DbHelper.BeginTransaction())
-            {
-
-                EXEC_CONTRACT_UPDATE exec_contract = new EXEC_CONTRACT_UPDATE()
+                    EXEC_CONTRACT_UPDATE exec_contractbg = new EXEC_CONTRACT_UPDATE()
+                    {
+                        in_CONTRACTID = Data.CONTRACTID,
+                        in_USERID = employee.Id
+                    };
+                    DbHelper.ExecuteProcedure(exec_contractbg);
+                }
+                else
                 {
-                    in_CONTRACTID = Data.CONTRACTID,
-                    in_USERID = employee.Id
-                };
-                DbHelper.ExecuteProcedure(exec_contract);
+                    EXEC_CONTRACT exec_contract = new EXEC_CONTRACT()
+                    {
+                        V_CONTRACTID = Data.CONTRACTID,
+                        V_USERID = employee.Id
+                    };
+                    DbHelper.ExecuteProcedure(exec_contract);
+                }
                 Tran.Commit();
             }
 
@@ -804,26 +799,6 @@ namespace z.ERP.Services
                 }
             };
             return result;
-        }
-        public Tuple<dynamic, DataTable> GetFreeShopDetail(FREESHOPEntity Data)
-        {
-            string sql = $@" SELECT L.*,M.MERCHANTID,M.NAME SHMC,B.NAME BRANCHNAME " +
-                " FROM FREESHOP L,CONTRACT C,MERCHANT M,BRANCH B ";
-            sql += "  where L.CONTRACTID=C.CONTRACTID and C.MERCHANTID=M.MERCHANTID and C.BRANCHID=B.ID ";
-            sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";    //分店权限 by：DZK
-            if (!Data.BILLID.IsEmpty())
-                sql += (" and L.BILLID= " + Data.BILLID);
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.NewEnumColumns<退铺单状态>("STATUS", "STATUSMC");
-
-            string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
-                "  FROM FREESHOPITEM G,SHOP S,CATEGORY Y  " +
-                "  WHERE G.SHOPID=S.SHOPID AND S.CATEGORYID= Y.CATEGORYID";
-            if (!Data.BILLID.IsEmpty())
-                sqlshop += (" and G.BILLID= " + Data.BILLID);
-            DataTable dtshop = DbHelper.ExecuteTable(sqlshop);
-
-            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtshop);
         }
         public string ExecFreeShop(FREESHOPEntity Data)
         {

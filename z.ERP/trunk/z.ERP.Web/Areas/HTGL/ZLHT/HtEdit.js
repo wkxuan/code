@@ -320,9 +320,9 @@
         { title: "比例(%)", key: 'KL', cellType: "input", cellDataType: "number" },
     ];
 
-    editDetail.screenParam.splcs = [];
+    editDetail.screenParam.splcjd = [];
     editDetail.screenParam.splcjg = [];
-    editDetail.screenParam.current = -1;
+    editDetail.screenParam.curLcjd = -1;
     editDetail.screenParam.JDID = "";
     editDetail.screenParam.BZ = "";
     editDetail.screenParam.JGTYPE = -1;
@@ -438,7 +438,16 @@ editDetail.otherMethods = {
                 break;
             }
         }
-        if (editDetail.screenParam.current != -1) {
+        if (editDetail.screenParam.curLcjd != -1) {
+            if (!editDetail.screenParam.JDID) {
+                iview.Message.info("请确认结果选择!");
+                return;
+            }
+            if (!editDetail.screenParam.BZ) {
+                iview.Message.info("请确认描述信息!");
+                return;
+            }
+
             _.Ajax('ExecSplc', {
                 Data: {
                     BILLID: editDetail.dataParam.CONTRACTID,
@@ -448,13 +457,15 @@ editDetail.otherMethods = {
                     JGTYPE: editDetail.screenParam.JGTYPE
                 },
             }, function (data) {
-                _self.srchSplc();
                 iview.Message.info("审批成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
             });
         }
         else {
             _.Ajax('ExecData', {
-                Data: { CONTRACTID: editDetail.dataParam.CONTRACTID },
+                Data: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("审核成功");
                 setTimeout(function () {
@@ -472,10 +483,10 @@ editDetail.otherMethods = {
                 JLBH: editDetail.dataParam.CONTRACTID,
             }
         }, function (data) {
-            editDetail.screenParam.splcs = data.splc;
-            editDetail.screenParam.splcjg = data.splxz;
-            if (data.splxz.length) {
-                editDetail.screenParam.current = data.splxz[0].JDID - 1;
+            editDetail.screenParam.splcjd = data.splcjd;
+            editDetail.screenParam.splcjg = data.splcjg;
+            if (data.splcjg.length) {
+                editDetail.screenParam.curLcjd = data.curJdid - 1;
             }
         });
     },
@@ -1390,10 +1401,6 @@ editDetail.mountedInit = function () {
         icon: "md-star",
         authority: "10600202",
         fun: function () {
-            if (!editDetail.screenParam.JDID) {
-                iview.Message.info("请确认结果选择!");
-                return;
-            }
             editDetail.otherMethods.exec();
         },
         enabled: function (disabled, data) {
@@ -1417,7 +1424,7 @@ editDetail.mountedInit = function () {
             editDetail.dataParam.CONTRACTID = null;
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.STATUS == 2) {
+            if (!disabled && data.BILLID && data.STATUS == 2 && data.HTLX == 1) {
                 return true;
             } else {
                 return false;

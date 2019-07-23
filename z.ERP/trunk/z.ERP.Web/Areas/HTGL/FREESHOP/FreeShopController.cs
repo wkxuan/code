@@ -1,11 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Attributes;
 using z.MVC5.Results;
-using System.Collections.Generic;
 
 namespace z.ERP.Web.Areas.HTGL.FREESHOP
 {
@@ -26,14 +26,6 @@ namespace z.ERP.Web.Areas.HTGL.FREESHOP
         {
             ViewBag.Title = "编辑退铺信息";
             return View("FreeShopEdit", model: (EditRender)Id);
-        }
-        public ActionResult FreeShopDetail(string Id)
-        {
-            ViewBag.Title = "浏览退铺信息";
-            var entity = service.HtglService.GetFreeShopDetail(new FREESHOPEntity(Id));
-            ViewBag.freeshop = entity.Item1;
-            ViewBag.freeshopItem = entity.Item2;
-            return View(entity);            
         }
         [Permission("10600301")]
         public string Save(FREESHOPEntity SaveData)

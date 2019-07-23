@@ -1,11 +1,11 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Web.Areas.Layout.Search;
+using z.MVC5.Attributes;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.HTGL.DJDW
 {
@@ -34,16 +34,15 @@ namespace z.ERP.Web.Areas.HTGL.DJDW
         {
             return service.HtglService.SaveContract(SaveData);
         }
-        public ActionResult DjdwDetail(string Id)
+        public void Delete(List<CONTRACTEntity> DeleteData)
         {
-            ViewBag.Title = "多经点位租约浏览";
-            var entity = service.HtglService.GetContractDjdwElement(new CONTRACTEntity(Id));
-            ViewBag.contract = entity.Item1;
-            ViewBag.contractShop = entity.Item2;
-            ViewBag.contractCostDjdw = entity.Item3;
-            return View();
+            service.HtglService.DeleteContract(DeleteData);
         }
-
+        [Permission("10600502")]
+        public void ExecData(CONTRACTEntity Data)
+        {
+            service.HtglService.ExecData(Data);
+        }
         public UIResult SearchContract(CONTRACTEntity Data)
         {
             var res = service.HtglService.GetContractDjdwElement(Data);
@@ -56,7 +55,6 @@ namespace z.ERP.Web.Areas.HTGL.DJDW
                 }
             );
         }
-
         public UIResult GetShop(SHOPEntity Data)
         {
             return new UIResult(service.DataService.GetShop(Data));
@@ -64,16 +62,6 @@ namespace z.ERP.Web.Areas.HTGL.DJDW
         public UIResult GetFeeSubject(FEESUBJECTEntity Data)
         {
             return new UIResult(service.DataService.GetFeeSubject(Data));
-        }
-
-        public void Delete(List<CONTRACTEntity> DeleteData)
-        {
-            service.HtglService.DeleteContract(DeleteData);
-        }
-        [Permission("10600502")]
-        public void ExecData(CONTRACTEntity Data)
-        {
-            service.HtglService.ExecData(Data);
         }
     }
 }

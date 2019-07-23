@@ -172,9 +172,7 @@
     <Compile Include="Areas\HTGL\DJDW\DjdwController.cs" />
     <Compile Include="Areas\HTGL\FREESHOP\FreeShopController.cs" />
     <Compile Include="Areas\HTGL\LYHT\LYHTController.cs" />
-    <Compile Include="Areas\HTGL\LYHT_BG\LyHt_BgController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
-    <Compile Include="Areas\HTGL\ZLHT_BG\ZlHt_BgController.cs" />
     <Compile Include="Areas\JSGL\Invoice\InvoiceController.cs" />
     <Compile Include="Areas\JSGL\VOUCHER\VoucherController.cs" />
     <Compile Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustController.cs" />
@@ -312,10 +310,8 @@
     <Content Include="Areas\HTGL\FREESHOP\FreeShopList.js" />
     <Content Include="Areas\HTGL\LYHT\HtEdit.js" />
     <Content Include="Areas\HTGL\LYHT\HtList.js" />
-    <Content Include="Areas\HTGL\LYHT_BG\LyHt_BgEdit.js" />
     <Content Include="Areas\HTGL\ZLHT\HtEdit.js" />
     <Content Include="Areas\HTGL\ZLHT\HtList.js" />
-    <Content Include="Areas\HTGL\ZLHT_BG\ZlHt_BgEdit.js" />
     <Content Include="Areas\JSGL\Invoice\InvoiceList.js" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.js" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherList.js" />
@@ -562,7 +558,6 @@
     <Content Include="Areas\XTGL\CATEGORY\Category.cshtml" />
     <Content Include="Areas\XTGL\ORG\Org.cshtml" />
     <Content Include="Areas\HTGL\LYHT\HtList.cshtml" />
-    <Content Include="Areas\HTGL\LYHT\HtDetail.cshtml" />
     <Content Include="Areas\HTGL\LYHT\HtEdit.cshtml" />
     <Content Include="Areas\PPGL\BRAND\BrandDetail.cshtml" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.cshtml" />
@@ -572,7 +567,6 @@
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsList.cshtml" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.cshtml" />
-    <Content Include="Areas\HTGL\ZLHT\HtDetail.cshtml" />
     <Content Include="Areas\HTGL\ZLHT\HtEdit.cshtml" />
     <Content Include="Areas\HTGL\ZLHT\HtList.cshtml" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillDetail.cshtml" />
@@ -615,17 +609,12 @@
     </Content>
     <Content Include="Areas\Layout\Print\_PrintLayout.cshtml" />
     <Content Include="Areas\SHGL\MERCHANT\Print.cshtml" />
-    <Content Include="Areas\HTGL\LYHT_BG\LyHt_BgDetail.cshtml" />
-    <Content Include="Areas\HTGL\LYHT_BG\LyHt_BgEdit.cshtml" />
     <Content Include="Areas\Pop\Pop\PopSysuserList.cshtml" />
-    <Content Include="Areas\HTGL\ZLHT_BG\ZlHt_BgDetail.cshtml" />
-    <Content Include="Areas\HTGL\ZLHT_BG\ZlHt_BgEdit.cshtml" />
     <Content Include="Areas\Pop\Pop\PopJsklGroupList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopBrandList.cshtml" />
     <Content Include="Areas\Share\ViewDropDownList.cshtml" />
     <Content Include="Areas\HTGL\FREESHOP\FreeShopList.cshtml" />
     <Content Include="Areas\HTGL\FREESHOP\FreeShopEdit.cshtml" />
-    <Content Include="Areas\HTGL\FREESHOP\FreeShopDetail.cshtml" />
     <Content Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkPrint.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_Print.cshtml" />
     <Content Include="Areas\XTGL\RCL\RCL.cshtml" />
@@ -688,7 +677,6 @@
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessList.cshtml" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessEdit.cshtml" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessDetail.cshtml" />
-    <Content Include="Areas\HTGL\DJDW\DjdwDetail.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwEdit.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwList.cshtml" />
     <Content Include="File\Template\K3凭证.xlsx" />
