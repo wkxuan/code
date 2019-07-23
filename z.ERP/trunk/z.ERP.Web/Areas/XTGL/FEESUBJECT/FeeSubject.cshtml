@@ -9,7 +9,7 @@
         <i-col span="3" class="RowTitle">
             代码
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -21,7 +21,7 @@
             <span class="mustElement">*</span>
             名称
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -34,7 +34,7 @@
     </row>
     <row>
         <i-col span="3" class="RowTitle">拼音码</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -47,7 +47,7 @@
             <span class="mustElement">*</span>
             项目类型
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<收费项目类型>()
                 {
@@ -72,13 +72,11 @@
                 }
             </i-col>*@
 
-
-
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             现金货扣
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<收费项目现金货扣>()
                 {
@@ -87,23 +85,10 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">停用标记</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumCheckBoxListRender<停用标记>()
-                {
-                    vModel = "dataParam.VOID_FLAG",
-                    MultiSelect = false,
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
-    <row>
         <i-col span="3" class="RowTitle">
             科目代码
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -113,8 +98,10 @@
             }
         </i-col>
 
+    </row>
+    <row>
         <i-col span="3" class="RowTitle">通知单生成方式</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<通知单生成方式>()
                 {
@@ -123,25 +110,46 @@
                 });
             }
         </i-col>
-    </row>
 
-    <row>
-        <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>
-            收费单位
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new ServiceDropDownListRender()
+        <i-col span="3" class="RowTitle">使用标记</i-col>
+        <i-col span="6" class="RowText">
+            @*    @{
+                RenderControl(new EnumCheckBoxListRender<停用标记>()
                 {
-                    vModel = "dataParam.FEE_ACCOUNTID",
-                    ServiceMothod = m => m.feeAccount(),
-                    Enable = false,
+                    vModel = "dataParam.VOID_FLAG",
+                    MultiSelect = false,
+                    Enable = false
                 });
             }
-
+            *@
+            @{
+                RenderControl(new EnumDropDownListRender<停用标记>()
+                {
+                    vModel = "dataParam.VOID_FLAG",
+                    Enable = false
+                });
+            }
         </i-col>
-</row>
+    </row>
+
+    @*
+        <row>
+            <i-col span="3" class="RowTitle">
+                <span class="mustElement">*</span>
+                收费单位
+            </i-col>
+            <i-col span="6" class="RowText">
+                @{
+                    RenderControl(new ServiceDropDownListRender()
+                    {
+                        vModel = "dataParam.FEE_ACCOUNTID",
+                        ServiceMothod = m => m.feeAccount(),
+                        Enable = false,
+                    });
+                }
+
+            </i-col>
+    </row>  *@
 }
 
 
