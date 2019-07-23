@@ -306,7 +306,7 @@ editDetail.mountedInit = function () {
         authority: "10600502",
         fun: function () {
             _.Ajax('ExecData', {
-                Data: { CONTRACTID: editDetail.dataParam.CONTRACTID },
+                Data: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("审核成功");
                 setTimeout(function () {

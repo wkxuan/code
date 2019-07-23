@@ -35,18 +35,14 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         {
             return service.HtglService.SaveContract(SaveData);
         }
-        public ActionResult HtDetail(string Id)
+        public void Delete(List<CONTRACTEntity> DeleteData)
         {
-            ViewBag.Title = "租赁租约浏览";
-            var entity = service.HtglService.GetContractElement(new CONTRACTEntity(Id));
-            ViewBag.contract = entity.Item1;
-            ViewBag.contractBrand = entity.Item2;
-            ViewBag.contractShop = entity.Item3;
-            ViewBag.ContractParm = entity.Item4;
-            ViewBag.ContractRentParm = entity.Item5;
-            ViewBag.contractPay = entity.Item6;
-            ViewBag.contractCost = entity.Item7;
-            return View();
+            service.HtglService.DeleteContract(DeleteData);
+        }
+        [Permission("10600202")]
+        public void ExecData(CONTRACTEntity Data)
+        {
+            service.HtglService.ExecData(Data);
         }
         public UIResult SearchContract(CONTRACTEntity Data)
         {
@@ -80,15 +76,6 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         {
             return new UIResult(service.HtglService.zlYdFj(Data, ContractData));
         }
-        public void Delete(List<CONTRACTEntity> DeleteData)
-        {
-            service.HtglService.DeleteContract(DeleteData);
-        }
-        [Permission("10600202")]
-        public void ExecData(CONTRACTEntity Data)
-        {
-            service.HtglService.ExecData(Data);
-        }
         public UIResult SearchInit()
         {
             SearchItem item = new SearchItem();
@@ -113,8 +100,9 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             return new UIResult(
                 new
                 {
-                    splc = res.Item1,
-                    splxz = res.Item2
+                    splcjd = res.Item1,
+                    splcjg = res.Item2,
+                    curJdid = res.Item3
                 }
             );
         }
@@ -124,10 +112,15 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             {
                 var Data1 = new CONTRACTEntity();
                 Data1.CONTRACTID = Data.BILLID;
+                var res = service.HtglService.GetContractElement(Data1);
+                Data1.HTLX = res.Item1.HTLX;
+                Data1.STATUS = res.Item1.STATUS;
                 service.HtglService.ExecData(Data1);
             }
             else
+            {
                 service.XtglService.ExecMenuSplc(Data);
+            }   
         }
     }
 }

@@ -392,56 +392,6 @@ editDetail.popCallBack = function (data) {
 };
 
 editDetail.otherMethods = {
-    //审核
-    exec: function () {
-        let _self = this;
-        for (let i = 0; i <= editDetail.screenParam.splcjg.length - 1; i++) {
-            if (editDetail.screenParam.JDID == editDetail.screenParam.splcjg[i].JGID) {
-                editDetail.screenParam.JGTYPE = editDetail.screenParam.splcjg[i].JGTYPE;
-                break;
-            }
-        }
-        if (editDetail.screenParam.current != -1) {
-            _.Ajax('ExecSplc', {
-                Data: {
-                    BILLID: editDetail.dataParam.CONTRACTID,
-                    MENUID: "10600100",
-                    JDID: editDetail.screenParam.JDID,
-                    BZ: editDetail.screenParam.BZ,
-                    JGTYPE: editDetail.screenParam.JGTYPE
-                },
-            }, function (data) {
-                _self.srchSplc();
-                iview.Message.info("审批成功");
-            });
-        }
-        else {
-            _.Ajax('ExecData', {
-                Data: { CONTRACTID: editDetail.dataParam.CONTRACTID },
-            }, function (data) {
-                iview.Message.info("审核成功");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 100);
-            });
-        }
-    },
-    //查询审批流程
-    srchSplc: function () {
-        //找审批流程节点
-        _.Ajax('Srchsplc', {
-            Data: {
-                MENUID: "10600100",
-                JLBH: editDetail.dataParam.CONTRACTID,
-            }
-        }, function (data) {
-            editDetail.screenParam.splcs = data.splc;
-            editDetail.screenParam.splcjg = data.splxz;
-            if (data.splxz.length) {
-                editDetail.screenParam.current = data.splxz[0].JDID - 1;
-            }
-        });
-    },
     //点击合同员
     srchSigner: function () {
         Vue.set(editDetail.screenParam, "showSysuser", true);
@@ -1299,11 +1249,14 @@ editDetail.mountedInit = function () {
         icon: "md-star",
         authority: "10600102",
         fun: function () {
-            if (!editDetail.screenParam.JDID) {
-                iview.Message.info("请确认结果选择!");
-                return;
-            }
-            editDetail.otherMethods.exec();
+            _.Ajax('ExecData', {
+                Data: editDetail.dataParam,
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
         },
         enabled: function (disabled, data) {
             if (!disabled && data && data.BILLID && data.STATUS == 1) {
@@ -1326,7 +1279,7 @@ editDetail.mountedInit = function () {
             editDetail.dataParam.CONTRACTID = null;
         },
         enabled: function (disabled, data) {
-            if (!disabled && data && data.BILLID && data.STATUS == 2) {
+            if (!disabled && data && data.BILLID && data.STATUS == 2 && data.HTLX == 1) {
                 return true;
             } else {
                 return false;
