@@ -33,6 +33,7 @@ define.mountedInit=function(){
             }
             define.searchParam.BRANCHID = data.dt[0].ID;
             Vue.set(define.dataParam, "BRANCHID", define.searchParam.BRANCHID);
+            define.otherMethods.FEE_ACCOUNTDATA(define.searchParam.BRANCHID);
             define.showlist();
         }
     });
@@ -40,7 +41,18 @@ define.mountedInit=function(){
 define.otherMethods = {
     branchChange: function (value) {
         define.dataParam.BRANCHID = define.searchParam.BRANCHID;
+        this.FEE_ACCOUNTDATA(define.searchParam.BRANCHID);
         define.showlist();
+    },
+    FEE_ACCOUNTDATA:function(value){
+        _.Ajax('GetFEE_ACCOUNTDATA', {
+            Data: { BRANCHID: value }
+        }, function (data) {
+            define.screenParam.FEE_ACCOUNTData = [];
+            for (var i = 0; i < data.length; i++) {
+                define.screenParam.FEE_ACCOUNTData.push({ value: data[i].Key, label: data[i].Value })
+            }
+        });
     },
     //点击费用项目弹窗
     srchFeeSubject: function () {
@@ -53,11 +65,7 @@ define.otherMethods = {
 
 
 define.newRecord = function () {
-    if (define.searchParam.BRANCHID == 0) {
-        iview.Message.info("请选择门店!");
-        return;
-    };
-    define.dataParam.BRANCHID = null;
+    define.dataParam.BRANCHID = define.searchParam.BRANCHID;
     define.dataParam.TERMID = null;
     define.dataParam.TERMNAME = null;
     define.dataParam.FEE_ACCOUNTID = null;

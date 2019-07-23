@@ -12,6 +12,7 @@
                 {
                     vModel = "searchParam.BRANCHID",
                     Data = "screenParam.branchData",
+                    EmptyText="",
                     Change = "branchChange",
                 });
             }
@@ -64,10 +65,11 @@
         </i-col>
         <i-col span="6" class="RowText">
             @{
-                RenderControl(new ServiceDropDownListRender()
+                RenderControl(new DropDownListsRender()
                 {
                     vModel = "dataParam.FEE_ACCOUNTID",
-                    ServiceMothod = m => m.feeAccount(),
+                    Data = "screenParam.FEE_ACCOUNTData",
+                    EmptyText = "",
                     Enable = false,
                 });
             }
