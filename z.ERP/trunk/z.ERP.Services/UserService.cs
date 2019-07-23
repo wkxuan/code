@@ -66,7 +66,7 @@ namespace z.ERP.Services
             string sql = $@"select A.ROLEID,A.ROLECODE,A.ROLENAME,B.ORGID,B.ORGCODE,B.ORGNAME,1 STATUS 
                               FROM ROLE A,ORG B WHERE A.ORGID=B.ORGID 
                                and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";  //部门权限
-            item.HasKey("ROLECODE,", a => sql += $" and A.ROLECODE = '{a}'");
+            item.HasKey("ROLECODE", a => sql += $" and A.ROLECODE = '{a}'");
             item.HasKey("ROLENAME", a => sql += $" and A.ROLENAME like '%{a}%'");
             item.HasKey("ORGCODE", a => sql += $" and B.ORGCODE like '{a}%'");
             sql += " ORDER BY  A.ROLECODE ";
