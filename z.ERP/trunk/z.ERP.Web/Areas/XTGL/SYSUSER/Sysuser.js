@@ -7,7 +7,7 @@
         },
         {
             title: '名称',
-            key: 'USERNAME', width: 200
+            key: 'USERNAME', width: 250
         }];
     define.screenParam.colUserRoleDef = [
         {
