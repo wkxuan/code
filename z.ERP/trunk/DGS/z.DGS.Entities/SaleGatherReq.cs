@@ -8,6 +8,10 @@ namespace z.DGS.Entities
 {
     public class SaleGatherReq
     {
+        public string posNo
+        {
+            get; set;
+        }
 
         public string saleTime
         {
