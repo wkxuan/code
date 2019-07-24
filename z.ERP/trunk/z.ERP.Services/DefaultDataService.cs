@@ -21,21 +21,21 @@ namespace z.ERP.Services
         public DataTable Box1Data(string branchid) {
             string sql = "";
             if (branchid=="") {   //查询所有权限门店数据
-                sql = @"SELECT '昨日' TIME,NVL(AMOUNT,0) AMOUNT,NVL(AMOUNTTB,0) AMOUNTTB,NVL(AMOUNTHB,0) AMOUNTHB FROM (
+                sql = @"SELECT '昨日' TIME,NVL(SUM(AMOUNT),0) AMOUNT,NVL(SUM(AMOUNTTB),0) AMOUNTTB,NVL(SUM(AMOUNTHB),0) AMOUNTHB FROM (
                             SELECT distinct A.BRANCHID,A1.AMOUNT,ROUND(A1.AMOUNT/A2.AMOUNT,2) AMOUNTHB,ROUND(A1.AMOUNT/A3.AMOUNT,2) AMOUNTTB FROM CONTRACT_SUMMARY A 
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE TRUNC(RQ)=TRUNC(SYSDATE-1) AND BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + @") GROUP BY BRANCHID) A1 ON A.BRANCHID=A1.BRANCHID
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE TRUNC(RQ)=TRUNC(SYSDATE-2) AND BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + @") GROUP BY BRANCHID) A2 ON A.BRANCHID=A2.BRANCHID
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM-dd')= to_char(add_Months(sysdate-1, -12), 'yyyy-MM-dd') AND BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + @") GROUP BY BRANCHID) A3 ON A.BRANCHID=A3.BRANCHID
                             )
                             UNION ALL
-                            SELECT '本月' TIME,NVL(AMOUNT,0) AMOUNT,NVL(AMOUNTTB,0) AMOUNTTB,NVL(AMOUNTHB,0) AMOUNTHB FROM (
+                            SELECT '本月' TIME,NVL(SUM(AMOUNT),0) AMOUNT,NVL(SUM(AMOUNTTB),0) AMOUNTTB,NVL(SUM(AMOUNTHB),0) AMOUNTHB FROM (
                             SELECT distinct A.BRANCHID,A1.AMOUNT,ROUND(A1.AMOUNT/A2.AMOUNT,2) AMOUNTHB,ROUND(A1.AMOUNT/A3.AMOUNT,2) AMOUNTTB FROM CONTRACT_SUMMARY A 
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM')=to_char(sysdate, 'yyyy-MM') AND BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + @") GROUP BY BRANCHID) A1 ON A.BRANCHID=A1.BRANCHID
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM')=to_char(add_Months(sysdate, -1), 'yyyy-MM') AND BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + @") GROUP BY BRANCHID) A2 ON A.BRANCHID=A2.BRANCHID
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM')= to_char(add_Months(sysdate, -12), 'yyyy-MM') AND BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + @") GROUP BY BRANCHID) A3 ON A.BRANCHID=A3.BRANCHID
                             )
                             UNION ALL
-                            SELECT '上月' TIME,NVL(AMOUNT,0) AMOUNT,NVL(AMOUNTTB,0) AMOUNTTB,NVL(AMOUNTHB,0) AMOUNTHB FROM (
+                            SELECT '上月' TIME,NVL(SUM(AMOUNT),0) AMOUNT,NVL(SUM(AMOUNTTB),0) AMOUNTTB,NVL(SUM(AMOUNTHB),0) AMOUNTHB FROM (
                             SELECT distinct A.BRANCHID,A1.AMOUNT,ROUND(A1.AMOUNT/A2.AMOUNT,2) AMOUNTHB,ROUND(A1.AMOUNT/A3.AMOUNT,2) AMOUNTTB FROM CONTRACT_SUMMARY A 
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM')=to_char(add_Months(sysdate, -1), 'yyyy-MM') AND BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + @") GROUP BY BRANCHID) A1 ON A.BRANCHID=A1.BRANCHID
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM')=to_char(add_Months(sysdate, -2), 'yyyy-MM') AND BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + @") GROUP BY BRANCHID) A2 ON A.BRANCHID=A2.BRANCHID
@@ -44,21 +44,21 @@ namespace z.ERP.Services
                             ";
             }
             else { 
-                sql = @"SELECT '昨日' TIME,NVL(AMOUNT,0) AMOUNT,NVL(AMOUNTTB,0) AMOUNTTB,NVL(AMOUNTHB,0) AMOUNTHB FROM (
+                sql = @"SELECT '昨日' TIME,NVL(SUM(AMOUNT),0) AMOUNT,NVL(SUM(AMOUNTTB),0) AMOUNTTB,NVL(SUM(AMOUNTHB),0) AMOUNTHB FROM (
                             SELECT distinct A.BRANCHID,A1.AMOUNT,ROUND(A1.AMOUNT/A2.AMOUNT,2) AMOUNTHB,ROUND(A1.AMOUNT/A3.AMOUNT,2) AMOUNTTB FROM CONTRACT_SUMMARY A 
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE TRUNC(RQ)=TRUNC(SYSDATE-1) AND BRANCHID=" + branchid+ @" GROUP BY BRANCHID) A1 ON A.BRANCHID=A1.BRANCHID
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE TRUNC(RQ)=TRUNC(SYSDATE-2) AND BRANCHID=" + branchid + @" GROUP BY BRANCHID) A2 ON A.BRANCHID=A2.BRANCHID
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM-dd')= to_char(add_Months(sysdate-1, -12), 'yyyy-MM-dd') AND BRANCHID=" + branchid + @" GROUP BY BRANCHID) A3 ON A.BRANCHID=A3.BRANCHID
                             )
                             UNION ALL
-                            SELECT '本月' TIME,NVL(AMOUNT,0) AMOUNT,NVL(AMOUNTTB,0) AMOUNTTB,NVL(AMOUNTHB,0) AMOUNTHB FROM (
+                            SELECT '本月' TIME,NVL(SUM(AMOUNT),0) AMOUNT,NVL(SUM(AMOUNTTB),0) AMOUNTTB,NVL(SUM(AMOUNTHB),0) AMOUNTHB FROM (
                             SELECT distinct A.BRANCHID,A1.AMOUNT,ROUND(A1.AMOUNT/A2.AMOUNT,2) AMOUNTHB,ROUND(A1.AMOUNT/A3.AMOUNT,2) AMOUNTTB FROM CONTRACT_SUMMARY A 
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM')=to_char(sysdate, 'yyyy-MM') AND BRANCHID=" + branchid + @" GROUP BY BRANCHID) A1 ON A.BRANCHID=A1.BRANCHID
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM')=to_char(add_Months(sysdate, -1), 'yyyy-MM') AND BRANCHID=" + branchid + @" GROUP BY BRANCHID) A2 ON A.BRANCHID=A2.BRANCHID
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM')= to_char(add_Months(sysdate, -12), 'yyyy-MM') AND BRANCHID=" + branchid + @" GROUP BY BRANCHID) A3 ON A.BRANCHID=A3.BRANCHID
                             )
                             UNION ALL
-                            SELECT '上月' TIME,NVL(AMOUNT,0) AMOUNT,NVL(AMOUNTTB,0) AMOUNTTB,NVL(AMOUNTHB,0) AMOUNTHB FROM (
+                            SELECT '上月' TIME,NVL(SUM(AMOUNT),0) AMOUNT,NVL(SUM(AMOUNTTB),0) AMOUNTTB,NVL(SUM(AMOUNTHB),0) AMOUNTHB FROM (
                             SELECT distinct A.BRANCHID,A1.AMOUNT,ROUND(A1.AMOUNT/A2.AMOUNT,2) AMOUNTHB,ROUND(A1.AMOUNT/A3.AMOUNT,2) AMOUNTTB FROM CONTRACT_SUMMARY A 
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM')=to_char(add_Months(sysdate, -1), 'yyyy-MM') AND BRANCHID=" + branchid + @" GROUP BY BRANCHID) A1 ON A.BRANCHID=A1.BRANCHID
                             LEFT JOIN (SELECT BRANCHID,NVL(SUM(AMOUNT),0) AMOUNT FROM CONTRACT_SUMMARY WHERE to_char(RQ, 'yyyy-MM')=to_char(add_Months(sysdate, -2), 'yyyy-MM') AND BRANCHID=" + branchid + @" GROUP BY BRANCHID) A2 ON A.BRANCHID=A2.BRANCHID
@@ -75,12 +75,22 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataTable Box2Data(string branchid)
         {
-            string sql = @"SELECT (CASE RENT_STATUS  WHEN 2 THEN '正在经营' WHEN 1 THEN '闲置招租' end)TYPE,COUNT(1) NUMBERS,SUM(A.AREA_RENTABLE) AREA
-                              FROM SHOP A  WHERE BRANCHID  IN (" + GetPermissionSql(PermissionType.Branch) + @")";
-            if (branchid != "") {
-                sql += " AND BRANCHID=" + branchid ;
+            string sql = "";
+            if (branchid != "")
+            {
+                sql = @"SELECT '闲置招租' TYPE,COUNT(1) NUMBERS,NVL(SUM(A.AREA_RENTABLE),0) AREA
+                              FROM SHOP A  WHERE RENT_STATUS=1 AND BRANCHID=" + branchid + @"
+							UNION ALL
+						SELECT '正在经营' TYPE,COUNT(1) NUMBERS,NVL(SUM(A.AREA_RENTABLE),0) AREA
+                              FROM SHOP A  WHERE RENT_STATUS=2 AND BRANCHID=" + branchid + "	";
             }
-            sql+=" GROUP BY RENT_STATUS";
+            else {
+                sql = @"SELECT '闲置招租' TYPE,COUNT(1) NUMBERS,NVL(SUM(A.AREA_RENTABLE),0) AREA
+                              FROM SHOP A  WHERE RENT_STATUS=1 AND BRANCHID  IN (" + GetPermissionSql(PermissionType.Branch) + @") 
+							UNION ALL
+						SELECT '正在经营' TYPE,COUNT(1) NUMBERS,NVL(SUM(A.AREA_RENTABLE),0) AREA
+                              FROM SHOP A  WHERE RENT_STATUS=2 AND BRANCHID  IN (" + GetPermissionSql(PermissionType.Branch) + @")";
+            }
 
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
