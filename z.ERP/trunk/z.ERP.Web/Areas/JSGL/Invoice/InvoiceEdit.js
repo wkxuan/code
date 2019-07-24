@@ -31,6 +31,24 @@ editDetail.otherMethods = {
         });
     }
 }
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10700801"
+    }, {
+        id: "edit",
+        authority: "10700801"
+    }, {
+        id: "del",
+        authority: "10700801"
+    }, {
+        id: "save",
+        authority: "10700801"
+    }, {
+        id: "abandon",
+        authority: "10700801"
+    }]
+};
 editDetail.showOne = function (data, callback) {
     _.Ajax('ShowOneInvoiceEdit', {
         Data: { INVOICEID: data }

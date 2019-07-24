@@ -5,31 +5,20 @@
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">编号</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.VOUCHERID"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.VOUCHERID" />
         </i-col>
         <i-col span="2" class="RowTitle">
             名称
         </i-col>
-        <i-col span="6">
-
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.VOUCHERNAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.VOUCHERNAME" />
         </i-col>
 
         <i-col span="2" class="RowTitle">
             状态
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<普通单据状态>()
                 {
@@ -42,7 +31,7 @@
             <i-col span="2" class="RowTitle">
                 登记人
             </i-col>
-            <i-col span="6">
+            <i-col span="6" class="RowText">
                 @{
                     RenderControl(new TextBoxRender()
                     {
@@ -51,9 +40,9 @@
                 }
             </i-col>
             <i-col span="2" class="RowTitle">
-                登记时间_起
+                登记时间
             </i-col>
-            <i-col span="6">
+            <i-col span="3" class="RowText">
                 @{
                     RenderControl(new DateBoxRender()
                     {
@@ -61,10 +50,7 @@
                     });
                 }
             </i-col>
-            <i-col span="2" class="RowTitle">
-                登记时间_止
-            </i-col>
-            <i-col span="6">
+            <i-col span="3" class="RowText">
                 @{
                     RenderControl(new DateBoxRender()
                     {
@@ -73,39 +59,4 @@
                 }
             </i-col>
         </row>
-        @*<row>
-            <i-col span="2" class="RowTitle">
-                审核人
-            </i-col>
-            <i-col span="6">
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "searchParam.VERIFY"
-                    });
-                }
-            </i-col>
-            <i-col span="2" class="RowTitle">
-                审核时间_起
-            </i-col>
-            <i-col span="6">
-                @{
-                    RenderControl(new DateBoxRender()
-                    {
-                        vModel = "searchParam.VERIFY_TIME_START"
-                    });
-                }
-            </i-col>
-            <i-col span="2" class="RowTitle">
-                审核时间_止
-            </i-col>
-            <i-col span="6">
-                @{
-                    RenderControl(new DateBoxRender()
-                    {
-                        vModel = "searchParam.VERIFY_TIME_END"
-                    });
-                }
-            </i-col>
-        </row>*@
 }

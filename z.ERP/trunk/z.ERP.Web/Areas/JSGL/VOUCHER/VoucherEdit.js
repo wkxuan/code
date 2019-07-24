@@ -746,3 +746,22 @@ editDetail.IsValidSave = function () {
     };
     return true;
 }
+
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "108001"
+    }, {
+        id: "edit",
+        authority: "108001"
+    }, {
+        id: "del",
+        authority: "108001"
+    }, {
+        id: "save",
+        authority: "108001"
+    }, {
+        id: "abandon",
+        authority: "108001"
+    }];
+};
