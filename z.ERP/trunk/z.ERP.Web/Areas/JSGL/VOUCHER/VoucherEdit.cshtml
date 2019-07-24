@@ -1,8 +1,8 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
 @section baseParam{
     <row>
 
@@ -17,31 +17,6 @@
                 });
             }
         </i-col>
-        @*<i-col span="2" class="RowTitle">
-                类型
-            </i-col>
-            <i-col span="6">
-                @{
-                    RenderControl(new EnumDropDownListRender<账单类型>()
-                    {
-                        vModel = "dataParam.VOUCHERTYPE",
-                        Enable = true
-                    });
-                }
-            </i-col>*@
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                    Enable = false
-                });
-            }
-        </i-col>
-
     </row>
     <row>
         <i-col span="2" class="RowTitle">
