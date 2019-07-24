@@ -304,7 +304,7 @@ namespace z.ERP.Services
                   + " AND A.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             if (!Data.ID.IsEmpty())
                 sql += (" and A.ID= " + Data.ID);
-            sql += " and STATUS = 1";
+            sql += @" ORDER BY ID";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new
             {
