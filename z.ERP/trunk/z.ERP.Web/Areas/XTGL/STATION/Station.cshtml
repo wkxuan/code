@@ -8,10 +8,12 @@
         <i-col span="5" class="RowTitle">门店</i-col>
         <i-col span="6" class="RowText">
             @{
-                RenderControl(new ServiceDropDownListRender()
+                RenderControl(new DropDownListsRender()
                 {
                     vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
+                    Data = "screenParam.branchData",
+                    EmptyText = "",
+                    Change = "branchChange",
                 });
             }
         </i-col>
@@ -41,22 +43,6 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>
-            分店
-        </i-col>
-        <i-col span="5" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                    Enable = false
-                });
-            }
-        </i-col>
-
-
     </row>
     <row>
         <i-col span="3" class="RowTitle">

@@ -84,7 +84,7 @@ define.popCallBack = function (data) {
 
 define.IsValidSave = function () {
     if (!define.dataParam.BRANCHID) {
-        iview.Message.info("请选择分店!");
+        iview.Message.info("请选择门店!");
         return false;
     };
     if (!define.dataParam.TERMID) {

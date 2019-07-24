@@ -3,7 +3,7 @@
     define.screenParam.colDef = [
     { title: "POS终端号", key: 'STATIONBH'},
     { title: "IP地址", key: 'IP' },
-    { title: "分店", key: 'BRANCHNAME' }
+    { title: "门店", key: 'BRANCHNAME' }
     ];
 
     define.screenParam.payColDef = [
@@ -23,6 +23,16 @@
     define.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
     define.screenParam.popParam = {};
 
+    _.Ajax('GetStaionPayList', {
+    }, function (data) {
+        for (var i = 0; i < data.pay.length; i++) {
+            define.screenParam.STATION_PAY_DATA.push({
+                _checked: false,
+                PAYID: data.pay[i]["PAYID"],
+                NAME: data.pay[i]["NAME"],
+            });
+        }
+    });
 
 
     //以下三个表格事件
@@ -55,14 +65,17 @@ define.newRecord = function () {
 }
 
 define.mountedInit = function () {
-    _.Ajax('GetStaionPayList', {
+    _.Ajax('GetBranch', {
+        Data: { ID: "" }
     }, function (data) {
-        for (var i = 0; i < data.pay.length; i++) {
-            define.screenParam.STATION_PAY_DATA.push({
-                _checked: false,
-                PAYID: data.pay[i]["PAYID"],
-                NAME: data.pay[i]["NAME"],
-            });
+        if (data.dt) {
+            define.screenParam.branchData = [];
+            for (var i = 0; i < data.dt.length; i++) {
+                define.screenParam.branchData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
+            }
+            define.searchParam.BRANCHID = data.dt[0].ID;
+            Vue.set(define.dataParam, "BRANCHID", define.searchParam.BRANCHID);
+            define.showlist();
         }
     });
 }
@@ -90,9 +103,13 @@ define.showone = function (data, callback) {
 }
 
 define.otherMethods = {
+    branchChange: function (value) {
+        define.dataParam.BRANCHID = define.searchParam.BRANCHID;
+        define.showlist();
+    },
     SelShop: function () {
         if (!define.dataParam.BRANCHID) {
-            iview.Message.info("分店不能为空!");
+            iview.Message.info("门店不能为空!");
             exit;
         }        
         define.screenParam.showPopShop = true;
@@ -115,12 +132,13 @@ define.popCallBack = function (data) {
 };
 
 define.IsValidSave = function () {
-    if (!define.dataParam.STATIONBH) {
-        iview.Message.info("终端号不能为空!");
+    define.dataParam.BRANCHID = define.searchParam.BRANCHID;
+    if (!define.dataParam.BRANCHID) {
+        iview.Message.info("门店不能为空!");
         return false;
     }
-    if (!define.dataParam.BRANCHID) {
-        iview.Message.info("分店不能为空!");
+    if (!define.dataParam.STATIONBH) {
+        iview.Message.info("终端号不能为空!");
         return false;
     }
     if (!define.dataParam.IP) {

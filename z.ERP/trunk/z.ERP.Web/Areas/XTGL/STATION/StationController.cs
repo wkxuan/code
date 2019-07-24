@@ -42,5 +42,9 @@ namespace z.ERP.Web.Areas.XTGL.STATION
         {
             service.XtglService.DeleteStation(DefineDelete);
         }
+        public UIResult GetBranch(BRANCHEntity Data)
+        {
+            return new UIResult(service.DataService.GetBranch(Data));
+        }
     }
 }
