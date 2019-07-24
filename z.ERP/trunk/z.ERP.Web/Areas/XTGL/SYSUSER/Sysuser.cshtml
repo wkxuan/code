@@ -6,7 +6,7 @@
 @section search{
     <row>
         <i-col span="3" class="RowTitle">代码</i-col>
-        <i-col span="9">
+        <i-col span="5" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -15,7 +15,7 @@
             }
         </i-col>
         <i-col span="3" class="RowTitle">名称</i-col>
-        <i-col span="9">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -29,7 +29,7 @@
     <row>
         <span v-if="screenParam.componentVisible">
             <i-col span="3" class="RowTitle">用户编码</i-col>
-            <i-col span="6">
+            <i-col span="6"  class="RowText">
                 @{
                     RenderControl(new TextBoxRender()
                     {
@@ -39,7 +39,7 @@
             </i-col>
         </span>
         <i-col span="3" class="RowTitle">用户代码</i-col>
-        <i-col span="6">
+        <i-col span="6"  class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -52,7 +52,7 @@
             <span class="mustElement">*</span>
             用户名称
         </i-col>
-        <i-col span="6">
+        <i-col span="6"  class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -70,7 +70,7 @@
             <span class="mustElement">*</span>
             用户类型
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<用户类型>()
                 {
@@ -83,7 +83,7 @@
             <span class="mustElement">*</span> 
             所属机构
         </i-col>
-        <i-col span="6">
+        <i-col span="6"  class="RowText">
             @{
                 RenderControl(new CascaderRender()
                 {
@@ -109,7 +109,7 @@
                 });
             }
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -120,7 +120,7 @@
         </i-col>
 
         <i-col span="3" class="RowTitle">用户密码</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -133,24 +133,22 @@
     </row>
     <row>
         <i-col span="3" class="RowTitle">用户标记</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
-                RenderControl(new EnumCheckBoxListRender<用户标记>()
+                RenderControl(new EnumDropDownListRender<用户标记>()
                 {
                     vModel = "dataParam.USER_FLAG",
-                    MultiSelect = false,
                     Enable = false
                 });
             }
         </i-col>
 
         <i-col span="3" class="RowTitle">作废标记</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumCheckBoxListRender<标记>()
+        <i-col span="6" class="RowText">
+            @{ 
+                RenderControl(new EnumDropDownListRender<标记>()
                 {
                     vModel = "dataParam.VOID_FLAG",
-                    MultiSelect = false,
                     Enable = false
                 });
             }
