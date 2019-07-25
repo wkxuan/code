@@ -7,13 +7,13 @@
         background: radial-gradient(#0099ff -2%, #000000a6 100%);
     }
 
-    #edit .topMenuBtn .ivu-btn {
-        color: #fff;
-    }
-
-        #edit .topMenuBtn .ivu-btn:hover {
-            color: #000000;
+        #edit .topMenuBtn .ivu-btn {
+            color: #fff;
         }
+
+            #edit .topMenuBtn .ivu-btn:hover {
+                color: #000000;
+            }
 
     #edit .ivu-table .demo-table-info-row td {
         height: 35px;
@@ -67,4 +67,8 @@
 
     #edit .ivu-card-head {
         padding: 12px;
+    }
+
+    #edit .ivu-table-wrapper {
+        border: none;
     }

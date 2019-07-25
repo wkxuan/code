@@ -82,23 +82,14 @@
                 
                 quit: function (event) {
                     if (ve._key) {
-                        this.$Modal.confirm({
-                            title: '提示',
-                            content: '是否取消',
-                            onOk: function () {
-                                showone(ve._key);
-                                ve.disabled = _this.enabled(true);
-                            },
-                            onCancel: function () {
-                                ve.disabled = _this.enabled(false);
-                                this.id = "关闭"
-                            }
-                        });
+                        _.MessageBox("是否取消？", function () {
+                            showone(ve._key);
+                            ve.disabled = _this.enabled(true);
+                        });                       
                     }
                     else {
                         ve.disabled = _this.enabled(true);
                     }
-
                 },
                 
                 del: function (event) {
@@ -111,21 +102,14 @@
                     if (!_this.IsValidDel())
                         return;
 
-                    this.$Modal.confirm({
-                        title: '提示',
-                        content: '是否删除',
-                        onOk: function () {
-                            deleteone(ve.dataParam, function () {
-                                showlist();
-                       
-                                _this.dataParam = {};
-                                ve.dataParam = _this.dataParam;
-                                _self.$Message.info("删除成功");
-                            });
-                        },
-                        onCancel: function () {
-                            this.id = "关闭"
-                        }
+                    _.MessageBox("是否删除？", function () {
+                        deleteone(ve.dataParam, function () {
+                            showlist();
+
+                            _this.dataParam = {};
+                            ve.dataParam = _this.dataParam;
+                            _self.$Message.info("删除成功");
+                        });
                     });
                     ve.disabled = _this.enabled(true);
                 },

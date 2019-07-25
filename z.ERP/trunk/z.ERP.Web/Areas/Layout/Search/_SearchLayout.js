@@ -74,9 +74,9 @@
                 print: function (event) {
                     event.stopPropagation();
                     if (notExistsData()) {
-                        this.$Message.error("没有要打印的数据!");
+                        iview.Message.error("没有要打印的数据!");
                     } else {
-                        this.$Message.error("尚未提供打印方法!");
+                        iview.Message.error("尚未提供打印方法!");
                     }
                 },
                 add: function (event) {
@@ -91,14 +91,14 @@
                         iview.Message.info("请选中要删除的数据!");
                         return;
                     } else {
-                        _self.$Modal.confirm(_.MessageBox("是否删除？", () => {
+                        _.MessageBox("是否删除？", function () {
                             _.Ajax('Delete', {
                                 DeleteData: selectton
                             }, function (data) {
                                 iview.Message.info("删除成功");
                                 showList();
                             });
-                        }));
+                        });
                     }
                 },
                 changePageCount: function (index) {
@@ -135,7 +135,7 @@
                         ve.pagedataCount = data.total;
                     }
                     else {
-                        ve.$Message.info("没有满足当前查询条件的结果!");
+                        iview.Message.info("没有满足当前查询条件的结果!");
                     }
                 },
                 Error: function () {

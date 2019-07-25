@@ -46,7 +46,7 @@ zQuery.extend({
         }
     },
     MessageBox: function (content, okFun, cancelFun) {
-        return {
+        let option= {
             render: h=> {
                 return h('div', {
                     style: {
@@ -72,5 +72,6 @@ zQuery.extend({
                 }
             }
         }
+        iview.Modal.confirm(option);
     }
 });

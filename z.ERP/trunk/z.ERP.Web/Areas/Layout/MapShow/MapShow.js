@@ -114,22 +114,15 @@
                         this.$Message.info("请选中要删除的数据!");
                     }
                     else {
-                        this.$Modal.confirm({
-                            title: '提示',
-                            content: '是否删除',
-                            onOk: function () {
-                                _.Ajax('Delete', {
-                                    DeleteData: selectton
-                                }, function (data) {
-                                    showList(function (data) {
-                                        Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
-                                        _self.$Message.info("删除成功");
-                                    });
+                        _.MessageBox("是否删除？", function () {
+                            _.Ajax('Delete', {
+                                DeleteData: selectton
+                            }, function (data) {
+                                showList(function (data) {
+                                    Vue.set(ve.screenParamData, "dataDef", _this.screenParam.dataDef);
+                                    _self.$Message.info("删除成功");
                                 });
-                            },
-                            onCancel: function () {
-                                this.id = "关闭"
-                            }
+                            });
                         });
                     }
                 },

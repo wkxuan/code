@@ -51,3 +51,7 @@
         #popSearch .ivu-collapse-content > .ivu-collapse-content-box {
             padding: 1px !important;
         }
+
+    #popSearch .ivu-table-wrapper {
+        border: none;
+    }

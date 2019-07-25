@@ -330,6 +330,7 @@
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnList.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillList.js" />
+    <Content Include="Areas\Layout\Define\DefineStyle.css" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Edit\EditStyle.css" />
     <Content Include="Areas\Layout\Edit\_Edit.js" />
@@ -348,6 +349,7 @@
     <Content Include="Areas\Pop\PopBrand.js" />
     <Content Include="Areas\Pop\PopMerchant.js" />
     <Content Include="Areas\Pop\PopContract.js" />
+    <Content Include="Areas\Pop\Pop\p1.html" />
     <Content Include="Areas\Pop\Pop\PopPayList.js" />
     <Content Include="Areas\Pop\Pop\PopBrandList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />

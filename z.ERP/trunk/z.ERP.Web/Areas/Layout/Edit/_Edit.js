@@ -147,33 +147,33 @@
                 //删除
                 del: function () {
                     let _self = this;
-                    _self.$Modal.confirm(_.MessageBox("确认删除当前内容？", () => {
+                    _.MessageBox("确认删除当前内容？", function () {
                         _.Ajax('Delete', {
                             DeleteData: [_self.dataParam]
                         }, function (data) {
-                            _self.$Message.info("删除成功");
+                            iview.Message.info("删除成功");
 
                             setTimeout(function () {
                                 let win = window.location;
                                 let pathnameArr = win.pathname.split("/");
                                 pathnameArr[pathnameArr.length - 1] = null;
                                 window.location.replace(pathnameArr.join("/"));
-                            }, 200);                          
+                            }, 200);
                         });
-                    }));
+                    });
                 },
                 //放弃
                 abandon: function () {
                     let _self = this;
-                    _self.$Modal.confirm(_.MessageBox("确认放弃正在编辑的内容？", () => {
+                    _.MessageBox("确认放弃正在编辑的内容？", function () {
                         _self.disabled = false;
                         for (let item in _this.backData) {
                             _self.dataParam[item] = _this.backData[item];
                         }
                         _this.afterAbandon();
-                    }, () => {
+                    }, function () {
                         _self.disabled = true;
-                    }));
+                    });
                 },
                 //存档
                 save: function (event) {
@@ -183,7 +183,7 @@
                     _.Ajax('Save', {
                         SaveData: _this.veObj.dataParam
                     }, function (data) {
-                        _self.$Message.info("保存成功");
+                        iview.Message.info("保存成功");
 
                         setTimeout(function () {
                             let win = window.location;
