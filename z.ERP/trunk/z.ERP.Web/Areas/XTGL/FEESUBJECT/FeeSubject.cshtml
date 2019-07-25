@@ -113,15 +113,6 @@
 
         <i-col span="3" class="RowTitle">使用标记</i-col>
         <i-col span="6" class="RowText">
-            @*    @{
-                RenderControl(new EnumCheckBoxListRender<停用标记>()
-                {
-                    vModel = "dataParam.VOID_FLAG",
-                    MultiSelect = false,
-                    Enable = false
-                });
-            }
-            *@
             @{
                 RenderControl(new EnumDropDownListRender<停用标记>()
                 {
@@ -131,25 +122,6 @@
             }
         </i-col>
     </row>
-
-    @*
-        <row>
-            <i-col span="3" class="RowTitle">
-                <span class="mustElement">*</span>
-                收费单位
-            </i-col>
-            <i-col span="6" class="RowText">
-                @{
-                    RenderControl(new ServiceDropDownListRender()
-                    {
-                        vModel = "dataParam.FEE_ACCOUNTID",
-                        ServiceMothod = m => m.feeAccount(),
-                        Enable = false,
-                    });
-                }
-
-            </i-col>
-    </row>  *@
 }
 
 

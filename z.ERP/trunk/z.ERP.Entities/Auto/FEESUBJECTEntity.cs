@@ -96,11 +96,5 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-
-        [Field("收费单位")]
-        public string FEE_ACCOUNTID
-        {
-            get; set;
-        }
     }
 }
