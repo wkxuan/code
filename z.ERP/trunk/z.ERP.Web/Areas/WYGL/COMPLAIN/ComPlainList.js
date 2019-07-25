@@ -1,8 +1,8 @@
 ﻿search.beforeVue = function () {
     var col = [
         { title: "单据号", key: "BILLID", width: 95, sortable: true },
-        { title: "分店号", key: "BRANCHID", width: 95, sortable: true },
-        { title: "分店名称", key: "BRANCHMC", width: 105, sortable: true },
+        { title: "门店号", key: "BRANCHID", width: 95, sortable: true },
+        { title: "门店名称", key: "BRANCHMC", width: 105, sortable: true },
         { title: "登记人", key: "REPORTER_NAME", width: 100 },
         { title: "登记时间", key: "REPORTER_TIME", width: 150, sortable: true },
         { title: "审核人", key: "VERIFY_NAME", width: 100 },

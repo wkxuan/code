@@ -136,7 +136,7 @@ editDetail.mountedInit = function () {
 };
 editDetail.IsValidSave = function () {
     if (!editDetail.dataParam.BRANCHID) {
-        iview.Message.info("请选择分店!");
+        iview.Message.info("请选择门店!");
         return false;
     };
 

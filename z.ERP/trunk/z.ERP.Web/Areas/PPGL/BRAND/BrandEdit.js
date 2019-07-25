@@ -21,7 +21,6 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILLID = data.main[0].ID;
 
         editDetail.dataParam.CATEGORYID = data.main[0].CATEGORYID;
-        debugger
         if (data.main[0].CATEGORYIDCASCADER != null) {
             editDetail.screenParam.CATEGORYIDCASCADER = data.main[0].CATEGORYIDCASCADER.split(",");
         } else {
@@ -82,6 +81,20 @@ editDetail.mountedInit = function () {
     }];
 };
 
+
+editDetail.clearKey = function () {
+    editDetail.dataParam.ID = null;
+    editDetail.screenParam.CATEGORYIDCASCADER = [];
+    editDetail.dataParam.NAME = null;
+    editDetail.dataParam.CATEGORYID = null;
+    editDetail.dataParam.ADRESS = null;
+    editDetail.dataParam.CONTACTPERSON = null;
+    editDetail.dataParam.PHONENUM = null;
+    editDetail.dataParam.WEIXIN = null;
+    editDetail.dataParam.PIZ = null;
+    editDetail.dataParam.QQ = null;
+    editDetail.dataParam.STATUSMC = "未审核";
+}
 
 
 editDetail.otherMethods = {

@@ -167,7 +167,7 @@
                         for (let item in row) {
                             row[item] = null;
                         }
-                        iview.Message.info('当前单元代码不存在或者不属于当前分店卖场!');
+                        iview.Message.info('当前单元代码不存在或者不属于当前门店!');
                     }
                     editDetail.otherMethods.calculateArea();
                 });
@@ -531,7 +531,7 @@ editDetail.otherMethods = {
     //点击商铺弹窗
     srchShop: function () {
         if (!editDetail.dataParam.BRANCHID) {
-            iview.Message.info('请先确认分店!');
+            iview.Message.info('请先确认门店!');
             return;
         }
         editDetail.screenParam.ParentShop = { BRANCHID: editDetail.dataParam.BRANCHID };
@@ -539,7 +539,7 @@ editDetail.otherMethods = {
     },
     addRowShop: function () {
         if (!editDetail.dataParam.BRANCHID) {
-            iview.Message.info('请先确认分店!');
+            iview.Message.info('请先确认门店!');
             return;
         }
         let temp = editDetail.dataParam.CONTRACT_SHOP || [];
@@ -1087,7 +1087,7 @@ editDetail.IsValidSave = function () {
         });
     }
     if (!editDetail.dataParam.BRANCHID) {
-        iview.Message.info("请确认分店卖场!");
+        iview.Message.info("请确认门店!");
         return false;
     };
     if (!editDetail.dataParam.MERCHANTID) {

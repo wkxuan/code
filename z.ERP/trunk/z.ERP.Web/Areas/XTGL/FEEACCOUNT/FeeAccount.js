@@ -3,7 +3,7 @@
     define.screenParam.colDef = [
     { title: '单位编号', key: 'ID', width: 90 },
     { title: '单位名称', key: 'NAME' },
-    { title: "分店", key: 'BRANCHNAME' }
+    { title: "门店", key: 'BRANCHNAME' }
 
     ];
 
@@ -38,7 +38,7 @@ define.otherMethods = {
 define.IsValidSave = function () {
     define.dataParam.BRANCHID = define.searchParam.BRANCHID;
     if (!define.dataParam.BRANCHID) {
-        iview.Message.info("分店不能为空!");
+        iview.Message.info("门店不能为空!");
         return false;
     }
     if (!define.dataParam.NAME) {

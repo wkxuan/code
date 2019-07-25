@@ -2,7 +2,7 @@
     search.searchParam.MAPID = "";
     search.screenParam.colDef = [
         { title: "图纸编号", key: 'MAPID', width: 110, sortable: true },
-        { title: '分店', key: 'BRANCHNAME', width: 150 },
+        { title: '门店', key: 'BRANCHNAME', width: 150 },
         { title: '区域', key: 'REGIONNAME', width: 100 },
         { title: '楼层', key: 'FLOORNAME', width: 100 },
         { title: '状态', key: 'STATUSMC', width: 80 },

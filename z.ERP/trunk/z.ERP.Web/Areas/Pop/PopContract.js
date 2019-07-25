@@ -55,7 +55,7 @@
                   width: 150,
                 },
                 {
-                    title: '分店名称',
+                    title: '门店名称',
                     key: 'NAME',
                     width: 150,
                 },
