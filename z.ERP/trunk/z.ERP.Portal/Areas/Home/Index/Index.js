@@ -123,7 +123,7 @@ function GetLoadNav(systemid) {
             var _html = "";
             $.each(menus.MENU, function (i, row) {
                 _html += '<li data-type="m">';
-                _html += '<a data-id="' + row.ID + '" href="#" class="dropdown-toggle" style="height:34px"><i class="' + row.ICON + ' fa-fw "></i>';
+                _html += '<a data-id="' + row.ID + '" href="#" class="dropdown-toggle" style="height:34px"><i style="color: #66D2D3" class="' + row.ICON + ' fa-fw "></i>';
                 _html += '<span>' + row.NAME + '</span><i class="fa fa-angle-right drop-icon"></i></a>';
                 var childMenus = row.MENUList;
                 if (childMenus && childMenus.length > 0) {
