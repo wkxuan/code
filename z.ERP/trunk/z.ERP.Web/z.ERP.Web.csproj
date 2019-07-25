@@ -348,7 +348,6 @@
     <Content Include="Areas\Pop\PopBrand.js" />
     <Content Include="Areas\Pop\PopMerchant.js" />
     <Content Include="Areas\Pop\PopContract.js" />
-    <Content Include="Areas\Pop\Pop\p1.html" />
     <Content Include="Areas\Pop\Pop\PopPayList.js" />
     <Content Include="Areas\Pop\Pop\PopBrandList.js" />
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.js" />
