@@ -2,10 +2,14 @@
     editDetail.service = "XtglService";
     editDetail.method = "GetBrandData";
     editDetail.branchid = false;
-
+    editDetail.otherPanel = false;
     editDetail.Key = "ID";
-
     editDetail.screenParam.CATEGORYIDCASCADER = [];
+    _.Ajax('SearchInit', {
+        Data: {}
+    }, function (data) {
+        Vue.set(editDetail.screenParam, "CATEData", data.treeOrg.Obj);
+    });
 }
 
 
@@ -17,23 +21,67 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILLID = data.main[0].ID;
 
         editDetail.dataParam.CATEGORYID = data.main[0].CATEGORYID;
-        var arr = data.main[0].CATEGORYIDCASCADER.split(",") || [];
-        Vue.set(editDetail.screenParam, "CATEGORYIDCASCADER", arr);
-
+        debugger
+        if (data.main[0].CATEGORYIDCASCADER != null) {
+            editDetail.screenParam.CATEGORYIDCASCADER = data.main[0].CATEGORYIDCASCADER.split(",");
+        } else {
+            editDetail.screenParam.CATEGORYIDCASCADER = [];
+        }
         callback && callback(data);
 
     });
 };
 
-
-
+//按钮初始化
 editDetail.mountedInit = function () {
-    _.Ajax('SearchInit', {
-        Data: {}
-    }, function (data) {
-        Vue.set(editDetail.screenParam, "CATEData", data.treeOrg.Obj);
-    });
-}
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10200201"
+    }, {
+        id: "edit",
+        authority: "10200201",
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS !=0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+    }, {
+        id: "del",
+        authority: "10200201"
+    }, {
+        id: "save",
+        authority: "10200201"
+    }, {
+        id: "abandon",
+        authority: "10200201"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10200202",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { ID: editDetail.dataParam.ID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};
+
 
 
 editDetail.otherMethods = {

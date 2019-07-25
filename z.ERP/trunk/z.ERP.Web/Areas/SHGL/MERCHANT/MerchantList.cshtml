@@ -5,7 +5,7 @@
 @section conditionParam{
 <row>
     <i-col span="2" class="RowTitle">商户代码</i-col>
-    <i-col span="6">
+    <i-col span="6" class="RowText">
         @{
             RenderControl(new TextBoxRender()
             {
@@ -15,7 +15,7 @@
     </i-col>
 
     <i-col span="2" class="RowTitle">商户名称</i-col>
-    <i-col span="6">
+    <i-col span="6" class="RowText">
         @{
             RenderControl(new TextBoxRender()
             {
@@ -25,7 +25,7 @@
     </i-col>
 
     <i-col span="2" class="RowTitle">税号</i-col>
-    <i-col span="6">
+    <i-col span="6" class="RowText">
         @{
             RenderControl(new TextBoxRender()
             {
@@ -37,7 +37,7 @@
 
  <row>
      <i-col span="2" class="RowTitle">银行账号</i-col>
-     <i-col span="6">
+     <i-col span="6" class="RowText">
          @{
              RenderControl(new TextBoxRender()
              {
@@ -47,12 +47,11 @@
      </i-col>
 
      <i-col span="2" class="RowTitle">状态</i-col>
-     <i-col span="6">
+     <i-col span="6" class="RowText">
          @{
-             RenderControl(new EnumCheckBoxListRender<普通单据状态>()
+             RenderControl(new EnumDropDownListRender<普通单据状态>()
              {
                  vModel = "searchParam.STATUS",
-                 MultiSelect = true
              });
          }
      </i-col>

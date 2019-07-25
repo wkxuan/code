@@ -33,7 +33,7 @@ namespace z.ERP.Services
             item.HasKey("REPORTER_NAME", a => sql += $" and REPORTER_NAME  LIKE '%{a}%'");
             item.HasKey("REPORTER_TIME_START", a => sql += $" and REPORTER_TIME>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             item.HasKey("REPORTER_TIME_END", a => sql += $" and REPORTER_TIME< to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS') + 1");
-            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("STATUS", a => sql += $" and STATUS = {a}");
             item.HasKey("STATUSL", a => sql += $" and STATUS={a}");
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
