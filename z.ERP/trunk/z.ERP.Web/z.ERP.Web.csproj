@@ -330,7 +330,6 @@
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnList.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillList.js" />
-    <Content Include="Areas\Layout\Define\DefineStyle.css" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Edit\EditStyle.css" />
     <Content Include="Areas\Layout\Edit\_Edit.js" />
