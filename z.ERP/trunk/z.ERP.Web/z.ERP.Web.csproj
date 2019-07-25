@@ -205,6 +205,7 @@
     <Compile Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetailController.cs" />
     <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
     <Compile Include="Areas\Report\MerchantBusinessStatus\MerchantBusinessStatusController.cs" />
+    <Compile Include="Areas\Report\MerchantPayable\MerchantPayableController.cs" />
     <Compile Include="Areas\Report\MerchantPayCost\MerchantPayCostController.cs" />
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
     <Compile Include="Areas\Report\PayTypeSale\PayTypeSaleController.cs" />
