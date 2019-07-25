@@ -7,7 +7,7 @@
         { title: "开始日期", key: "START_DATE", width: 150 },
         { title: "结束日期", key: "END_DATE", width: 150 },
         { title: "状态", key: "STATUSMC", width: 80 },
-        { title: "分店名称", key: "BRANCHNAME", width: 100 },
+        { title: "门店名称", key: "BRANCHNAME", width: 100 },
         { title: "登记人", key: "REPORTER_NAME", width: 90 },
         { title: "登记时间", key: "REPORTER_TIME", width: 150, sortable: true },
         { title: "审核人", key: "VERIFY_NAME", width: 90 },
@@ -39,7 +39,7 @@ search.addHref = function (row) {
 search.otherMethods = {
     SelMerchant: function () {
         if (!search.searchParam.BRANCHID) {
-            iview.Message.info("请选择分店!");
+            iview.Message.info("请选择门店!");
             return;
         };
         search.screenParam.showPopMerchant = true;

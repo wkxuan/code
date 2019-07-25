@@ -5,7 +5,7 @@
         { title: "收银员", key: "SYYMC", width: 100, sortable: true },
         { title: "营业员", key: "YYYMC", width: 100, sortable: true },
         { title: "状态", key: "STATUSMC", width: 100 },
-        { title: "分店名称", key: "BRANCHMC", width: 150 },
+        { title: "门店名称", key: "BRANCHMC", width: 150 },
         { title: "登记人", key: "REPORTER_NAME", width: 90 },
         { title: "登记时间", key: "REPORTER_TIME", width: 150 },
         { title: "审核人", key: "VERIFY_NAME", width: 90 },

@@ -16,8 +16,8 @@
         { title: '登记时间', key: 'REPORTER_TIME', cellType: "datetime", width: 160, sortable: true },
         { title: '审核人', key: 'VERIFY_NAME', },
         { title: '审核时间', key: 'VERIFY_TIME', cellType: "datetime", width: 160, sortable: true },
-        { title: "分店代码", key: 'BRANCHID' },
-        { title: '分店名称', key: 'NAME' },
+        { title: "门店代码", key: 'BRANCHID' },
+        { title: '门店名称', key: 'NAME' },
         {
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({

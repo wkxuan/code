@@ -42,7 +42,7 @@ editDetail.showOne = function (data, callback) {
 editDetail.otherMethods = {
     selMerchant: function () {
         if (!editDetail.dataParam.BRANCHID) {
-            iview.Message.info("请选择分店!");
+            iview.Message.info("请选择门店!");
             return;
         }
         editDetail.screenParam.showPopMerchant = true;
@@ -135,7 +135,7 @@ editDetail.clearKey = function () {
 
 editDetail.IsValidSave = function () {
     if (!editDetail.dataParam.BRANCHID) {
-        iview.Message.info("请选择分店!");
+        iview.Message.info("请选择门店!");
         return false;
     };
     if (!editDetail.dataParam.MERCHANTID) {

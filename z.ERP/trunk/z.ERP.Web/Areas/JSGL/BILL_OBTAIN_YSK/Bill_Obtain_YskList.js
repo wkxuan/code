@@ -6,7 +6,7 @@
         { title: "权债发生月", key: "NIANYUE", width: 115, sortable: true },
         { title: "付款方式", key: "FKFSNAME", width: 80 },
         { title: "状态", key: "STATUSMC", width: 80 },
-        { title: "分店名称", key: "BRANCHNAME", width: 150 },
+        { title: "门店名称", key: "BRANCHNAME", width: 150 },
         { title: "登记人", key: "REPORTER_NAME", width: 90 },
         { title: "登记时间", key: "REPORTER_TIME", width: 150 },
         { title: "审核人", key: "VERIFY_NAME", width: 90 },
@@ -41,7 +41,7 @@ search.addHref = function (row) {
 search.otherMethods = {
     SelMerchant: function () {
         if (!search.searchParam.BRANCHID) {
-            iview.Message.info("请选择分店!");
+            iview.Message.info("请选择门店!");
             return;
         };
         search.screenParam.showPopMerchant = true;

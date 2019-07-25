@@ -1,11 +1,11 @@
 ﻿define.beforeVue = function () {
     define.screenParam.colDef = [
         {
-            title: '分店代码',
+            title: '门店代码',
             key: 'ID', width: 100,
         },
         {
-            title: '分店名称',
+            title: '门店名称',
             key: 'NAME', width: 280,
         }];
 

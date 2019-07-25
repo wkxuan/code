@@ -36,7 +36,7 @@ var pzdc = new Vue({
             }
             if (!this.BRANCHID)
             {
-                iview.Message.info("分店不能为空!");
+                iview.Message.info("门店不能为空!");
                 return false;
             }
             if (!this.CWNY) {

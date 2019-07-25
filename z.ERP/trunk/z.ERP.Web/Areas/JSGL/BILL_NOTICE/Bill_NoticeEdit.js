@@ -55,7 +55,7 @@ editDetail.showOne = function (data, callback) {
 editDetail.otherMethods = {
     SelMerchant: function () {
         if (!editDetail.dataParam.BRANCHID) {
-            iview.Message.info("请选择分店!");
+            iview.Message.info("请选择门店!");
             return;
         };
         editDetail.screenParam.showPopMerchant = true;
@@ -64,7 +64,7 @@ editDetail.otherMethods = {
     ///选择合同
     SelContract: function () {
         if (!editDetail.dataParam.BRANCHID) {
-            iview.Message.info("请选择分店!");
+            iview.Message.info("请选择门店!");
             return;
         };
         editDetail.screenParam.showPopContract = true;
@@ -253,7 +253,7 @@ editDetail.mountedInit = function () {
 
 editDetail.IsValidSave = function () {
     if (!editDetail.dataParam.BRANCHID) {
-        iview.Message.info("请选择分店!");
+        iview.Message.info("请选择门店!");
         return false;
     };
 

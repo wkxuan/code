@@ -11,8 +11,8 @@
         { title: "开始日期", key: "START_DATE", width: 100 },
         { title: "结束日期", key: "END_DATE", width: 100 },
         { title: "状态", key: "STATUSMC", width: 80 },
-        { title: "分店编号", key: "BRANCHID", width: 90 },
-        { title: "分店名称", key: "BRANCHNAME", width: 150 },
+        { title: "门店编号", key: "BRANCHID", width: 90 },
+        { title: "门店名称", key: "BRANCHNAME", width: 150 },
         { title: "登记人", key: "REPORTER_NAME", width: 90 },
         { title: "登记时间", key: "REPORTER_TIME", width: 150 }
     ];

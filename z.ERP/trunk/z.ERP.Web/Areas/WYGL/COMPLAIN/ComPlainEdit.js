@@ -10,7 +10,7 @@
 
     editDetail.IsValidSave = function () {
         if (!editDetail.dataParam.BRANCHID) {
-            iview.Message.info("请确分店!");
+            iview.Message.info("请确门店!");
             return false;
         };
         if (!editDetail.dataParam.CPLAINDEPT) {

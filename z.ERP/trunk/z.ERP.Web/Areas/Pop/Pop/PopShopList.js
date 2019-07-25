@@ -1,6 +1,6 @@
 ﻿search.beforeVue = function () {
     var col = [
-        { title: "分店名称", key: 'BRANCHNAME', width: 200 },
+        { title: "门店名称", key: 'BRANCHNAME', width: 200 },
         { title: '楼层名称', key: 'FLOORNAME', width: 200 },
         { title: '单元代码', key: 'CODE', width: 100 },
         { title: '单元名称', key: 'NAME', width: 150 }

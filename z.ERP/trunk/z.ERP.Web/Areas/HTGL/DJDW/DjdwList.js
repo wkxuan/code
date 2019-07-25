@@ -13,8 +13,8 @@
         { title: '登记时间', key: 'REPORTER_TIME', width: 150, sortable: true },
         { title: '审核人', key: 'VERIFY_NAME', width: 90, },
         { title: '审核时间', key: 'VERIFY_TIME', width: 150, sortable: true },
-        { title: "分店代码", key: 'BRANCHID', width: 90 },
-        { title: '分店名称', key: 'NAME', width: 150 },
+        { title: "门店代码", key: 'BRANCHID', width: 90 },
+        { title: '门店名称', key: 'NAME', width: 150 },
         {
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({

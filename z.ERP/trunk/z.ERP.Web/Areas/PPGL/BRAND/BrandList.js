@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: "代码", key: 'ID', width: 90, sortable: true },
         { title: '名称', key: 'NAME', width: 200 },
         { title: '业态', key: 'CATEGORYNAME', width: 150 },
@@ -15,8 +15,16 @@
         { title: '审核人', key: 'VERIFY_NAME', width: 100 },
         { title: '审核时间', key: 'VERIFY_TIME', width: 150, sortable: true },
         { title: '描述', key: 'DESCRIPTION', width: 200 },
+        {
+            title: '操作', key: 'operate', onClick: function (index, row, data) {
+                _.OpenPage({
+                    id: 102002,
+                    title: '品牌信息',
+                    url: "PPGL/BRAND/BrandEdit/" + row.ID
+                });
+            }
+        }
     ];
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "XtglService";
     search.method = "GetBrandData";
 
@@ -24,26 +32,11 @@
     search.screenParam.CATEGORY = [];
 }
 
-search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 102002,
-        title: '浏览品牌信息',
-        url: "PPGL/BRAND/BrandDetail/" + row.ID
-    });
-}
-
 search.addHref = function (row) {
     _.OpenPage({
         id: 102002,
         title: '新增品牌信息',
         url: "PPGL/BRAND/BrandEdit/"
-    });
-}
-search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 102002,
-        title: '编辑品牌信息',
-        url: "PPGL/BRAND/BrandEdit/" + row.ID
     });
 }
 

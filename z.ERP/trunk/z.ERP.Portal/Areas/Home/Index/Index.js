@@ -183,7 +183,7 @@ var Index = new Vue({
         dclrwcolDef: [
                 { title: '菜单名称', key: 'NAME'},
                 { title: '单据号', key: 'BILLID'},
-                { title: '分店', key: 'BRANCHMC'}],
+                { title: '门店', key: 'BRANCHMC'}],
         dclrwdataDef: [],
         noticesdata: [],
         alertcolDef: [

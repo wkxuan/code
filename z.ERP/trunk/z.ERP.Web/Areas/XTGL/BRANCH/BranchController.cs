@@ -11,7 +11,7 @@ namespace z.ERP.Web.Areas.XTGL.BRANCH
     {
         public ActionResult Branch()
         {
-            ViewBag.Title = "分店信息";
+            ViewBag.Title = "门店信息";
             return View(new DefineRender()
             {
                 Permission_Add = "10100401",

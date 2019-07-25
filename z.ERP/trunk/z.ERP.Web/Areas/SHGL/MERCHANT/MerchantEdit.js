@@ -16,71 +16,19 @@
     { type: 'selection', width: 60, align: 'center' },
     {
         title: "品牌代码", key: 'BRANDID', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.BRANDID
-                },
-                on: {
-                    'on-enter': function (event) {
-                        _self = this;
-                        editDetail.dataParam.MERCHANT_BRAND[params.index].BRANDID = event.target.value;
-
-                        _.Ajax('GetBrand', {
-                            Data: { ID: event.target.value }
-                        }, function (data) {
-                            if (data.dt) {
-                                Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'NAME', data.dt.NAME);
-                                Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYCODE', data.dt.CATEGORYCODE);
-                                Vue.set(editDetail.dataParam.MERCHANT_BRAND[params.index], 'CATEGORYNAME', data.dt.CATEGORYNAME);
-                            }
-                            else {
-                                iview.Message.info('当前品牌不存在!');
-                            }
-                        });
-                    }
-                },
-            })
-        },
     },
     { title: '品牌名称', key: 'NAME', width: 200 },
     { title: '业态代码', key: 'CATEGORYCODE', width: 200 },
-    { title: '业态名称', key: 'CATEGORYNAME', width: 200 },
-
-    {
-        title: '操作',
-        key: 'action',
-        width: 80,
-        align: 'center',
-        render: function (h, params) {
-            return h('div',
-                [
-                h('Button', {
-                    props: { type: 'primary', size: 'small', disabled: false },
-
-                    style: { marginRight: '50px' },
-                    on: {
-                        click: function (event) {
-                            editDetail.dataParam.MERCHANT_BRAND.splice(params.index, 1);
-                        }
-                    },
-                }, '删除')
-                ]);
-        }
-    }
+    { title: '业态名称', key: 'CATEGORYNAME', width: 200 }
     ];
-
+    editDetail.screenParam.showPopBrand = false;
+    editDetail.screenParam.srcPopBrand = __BaseUrl + "/Pop/Pop/PopBrandList/";
     editDetail.dataParam.MERCHANT_BRAND = editDetail.dataParam.MERCHANT_BRAND || [];
 };
 
 editDetail.otherMethods = {
-    addColPP: function () {
-        var temp = editDetail.dataParam.MERCHANT_BRAND || [];
-        temp.push({});
-        editDetail.dataParam.MERCHANT_BRAND = temp;
-    },
     delColPP: function () {
-        var selectton = this.$refs.selectBrand.getSelection();
+        var selectton = this.$refs.refGroup.getSelection();
         if (selectton.length == 0) {
             iview.Message.info("请选中要删除的品牌!");
         } else {
@@ -94,15 +42,7 @@ editDetail.otherMethods = {
         }
     },
     srchColPP: function () {
-        Vue.set(editDetail.screenParam, "PopBrand", true);
-    },
-
-
-    BrandBack: function (val) {
-        Vue.set(editDetail.screenParam, "PopBrand", false);
-        for (var i = 0; i < val.sj.length; i++) {
-            editDetail.dataParam.MERCHANT_BRAND.push(val.sj[i]);
-        }
+        Vue.set(editDetail.screenParam, "showPopBrand", true);
     },
 };
 
@@ -117,6 +57,17 @@ editDetail.showOne = function (data, callback) {
     });
 }
 
+editDetail.popCallBack = function (data) {
+    if (editDetail.screenParam.showPopBrand) {
+        editDetail.screenParam.showPopBrand = false;
+        let brand = editDetail.dataParam.MERCHANT_BRAND;
+        for (let i = 0; i < data.sj.length; i++) {
+            if (brand.filter(item=> { return (data.sj[i].BRANDID == item.BRANDID) }).length == 0) {
+                brand.push(data.sj[i]);
+            }
+        };
+    }
+};
 
 editDetail.clearKey = function () {
     editDetail.dataParam.MERCHANTID = null;
@@ -133,6 +84,48 @@ editDetail.clearKey = function () {
     editDetail.dataParam.MERCHANT_BRAND = [];
 }
 
+//按钮初始化
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10200101"
+    }, {
+        id: "edit",
+        authority: "10200101"
+    }, {
+        id: "del",
+        authority: "10200101"
+    }, {
+        id: "save",
+        authority: "10200101"
+    }, {
+        id: "abandon",
+        authority: "10200101"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10200102",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { MERCHANTID: editDetail.dataParam.MERCHANTID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};
 
 editDetail.IsValidSave = function () {
 
