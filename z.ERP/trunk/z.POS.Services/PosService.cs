@@ -4260,6 +4260,7 @@ namespace z.POS.Services
                     if (dt.Rows[0]["BJ_CJ"].ToString().ToInt() != 0)
                     {
                         goods.IRefNo_ZK = dt.Rows[0]["REFNO"].ToString().ToInt();
+                        goods.VipDisRule = dt.Rows[0]["VIPZKGZ"].ToString().ToInt();
                         if ((!dt.Rows[0]["ZKL"].IsNullValue()) && (dt.Rows[0]["ZKL"].ToString().ToDouble() != 0))
                         {
                             fRate = dt.Rows[0]["ZKL"].ToString().ToDouble();
@@ -6771,6 +6772,24 @@ namespace z.POS.Services
                  //   CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.3.5> 两个折相等 前台折清0[" + GoodsList[i].BackDiscount + "] " +
                  //   " 保流会员折[" + GoodsList[i].MemberDiscount + "]");
                 }
+
+                if (GoodsList[i].VipDisRule == 0)  //0仅后台折扣
+                {
+                    GoodsList[i].MemberDiscount = 0;
+                }
+                else if(GoodsList[i].VipDisRule == 1) // 1最大折扣
+                {
+                    if(GoodsList[i].MemberDiscount > GoodsList[i].BackDiscount)
+                    {
+                        GoodsList[i].BackDiscount = 0;
+                    }
+                    else
+                    {
+                        GoodsList[i].MemberDiscount = 0;
+                    }
+                }  //2 折上折
+
+
             }
 
           //  CommonUtils.WriteSKTLog(1, posId, "处理商品折扣<1.5> 处理完成");
