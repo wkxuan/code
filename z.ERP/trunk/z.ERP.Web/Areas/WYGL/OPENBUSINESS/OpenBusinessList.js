@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: "单据号", key: "BILLID", width: 95, sortable: true },
         { title: "开业日期", key: "OPENDATE", width: 110, sortable: true },
         { title: "登记人", key: "REPORTER_NAME", width: 100 },
@@ -7,13 +7,21 @@
         { title: "审核人", key: "VERIFY_NAME", width: 100 },
         { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true },
         { title: "状态", key: "STATUSMC", width: 100 },
+        {
+            title: '操作', key: 'operate', onClick: function (index, row, data) {
+                _.OpenPage({
+                    id: 103005,
+                    title: '编辑店铺开业单',
+                    url: "WYGL/OPENBUSINESS/OpenBusinessEdit/" + row.BILLID
+                });
+            }
+        }
     ]
 
     search.windowParam = {
         terst: false
     }
 
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "WyglService";
     search.method = "GetOpenBusiness";
 
@@ -27,13 +35,6 @@
     search.searchParam.VERIFYNAME = "";
 }
 
-search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 103005,
-        title: '店铺开业单',
-        url: "WYGL/OPENBUSINESS/OpenBusinessDetail/" + row.BILLID
-    });
-}
 
 search.addHref = function (row) {
     _.OpenPage({
@@ -42,14 +43,6 @@ search.addHref = function (row) {
         url: "WYGL/OPENBUSINESS/OpenBusinessEdit/"
     });
 }
-search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 103005,
-        title: '编辑店铺开业单',
-        url: "WYGL/OPENBUSINESS/OpenBusinessEdit/" + row.BILLID
-    });
-}
-
 search.otherMethods = {
     SelSysuser: function () {
         search.screenParam.showPopSysuser = true;

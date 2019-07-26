@@ -23,7 +23,7 @@ namespace z.ERP.Services
             item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
             item.HasKey("REPORTER", a => sql += $" and REPORTER = '{a}'");
             item.HasKey("VERIFY", a => sql += $" and VERIFY = '{a}'");
-            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("STATUS", a => sql += $" and STATUS = '{a}' ");
             item.HasKey("CHECK_DATE_START", a => sql += $" and CHECK_DATE>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             item.HasKey("CHECK_DATE_END", a => sql += $" and CHECK_DATE<= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             sql += " order by BILLID desc";
@@ -215,7 +215,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and NAME  LIKE '%{a}%'");
             item.HasKey("SH", a => sql += $" and SH LIKE '%{a}%'");
             item.HasKey("BANK", a => sql += $" and BANK LIKE '%{a}%'");
-            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("STATUS", a => sql += $" and STATUS = '{a}' ");
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -498,7 +498,7 @@ namespace z.ERP.Services
 
             InStock.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT A.*,B.GOODSDM,B.NAME,A.TAXINPRICE,B.USEPRICE " +
+            string sqlitem = $@"SELECT A.*,B.GOODSDM,B.NAME,B.USEPRICE " +
                              " FROM  WLINSTOCKITETM A,WL_GOODS B  " +
                              " where A.GOODSID = B.GOODSID  ";
             sqlitem += (" and A.BILLID= " + Data.BILLID);
@@ -1341,7 +1341,7 @@ namespace z.ERP.Services
             item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
             item.HasKey("REPORTER", a => sql += $" and REPORTER = '{a}'");
             item.HasKey("VERIFY", a => sql += $" and VERIFY = '{a}'");
-            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("STATUS", a => sql += $" and STATUS = '{a}' ");
             item.HasKey("MARCHINDATE_START", a => sql += $" and MARCHINDATE>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             item.HasKey("MARCHINDATE_END", a => sql += $" and MARCHINDATE<= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             sql += " order by BILLID desc";
@@ -1494,7 +1494,7 @@ namespace z.ERP.Services
             item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
             item.HasKey("REPORTER", a => sql += $" and REPORTER = '{a}'");
             item.HasKey("VERIFY", a => sql += $" and VERIFY = '{a}'");
-            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");
+            item.HasKey("STATUS", a => sql += $" and STATUS = '{a}' ");
             item.HasKey("OPENDATE_START", a => sql += $" and OPENDATE>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             item.HasKey("OPENDATE_END", a => sql += $" and OPENDATE<= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             sql += " order by BILLID desc";
@@ -1586,7 +1586,7 @@ namespace z.ERP.Services
             item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
             item.HasKey("REPORTER", a => sql += $" and REPORTER = '{a}'");
             item.HasKey("VERIFY", a => sql += $" and VERIFY = '{a}'");
-            item.HasArrayKey("STATUS", a => sql += $" and STATUS in ( { a.SuperJoin(",", b => "'" + b + "'") } ) ");            
+            item.HasKey("STATUS", a => sql += $" and STATUS  = '{a}'");            
             sql += " order by BILLID desc";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

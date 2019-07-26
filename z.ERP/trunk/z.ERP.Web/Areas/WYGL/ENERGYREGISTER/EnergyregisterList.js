@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: "单据号", key: "BILLID", width: 95, sortable: true },
         { title: "抄表日期", key: "CHECK_DATE", width: 110, sortable: true },
         { title: "年月", key: "YEARMONTH", width: 100 },
@@ -8,13 +8,21 @@
         { title: "审核人", key: "VERIFY_NAME", width: 100 },
         { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true },
         { title: "状态", key: "STATUSMC", width: 100 },
+        {
+            title: '操作', key: 'operate', onClick: function (index, row, data) {
+                _.OpenPage({
+                    id: 103002,
+                    title: '能源费用处理',
+                    url: "WYGL/ENERGYREGISTER/EnergyreGisterEdit/" + row.BILLID
+                });
+            }
+        }
     ]
 
     search.windowParam = {
         terst: false
     }
 
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "WyglService";
     search.method = "GetEnergyreGister";
 
@@ -28,26 +36,12 @@
     search.searchParam.VERIFYNAME = "";
 }
 
-search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 103002,
-        title: '浏览能源费用处理',
-        url: "WYGL/ENERGYREGISTER/EnergyreGisterDetail/" + row.BILLID
-    });
-}
 
 search.addHref = function (row) {
     _.OpenPage({
         id: 103002,
         title: '新增能源费用处理',
         url: "WYGL/ENERGYREGISTER/EnergyreGisterEdit/"
-    });
-}
-search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 103002,
-        title: '编辑能源费用处理',
-        url: "WYGL/ENERGYREGISTER/EnergyreGisterEdit/" + row.BILLID
     });
 }
 

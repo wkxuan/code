@@ -1,8 +1,8 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
 @section head{
 
 }
@@ -11,52 +11,18 @@
     <row>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "Merchant",
-                    Text = "供应商",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            供应商
         </i-col>
-        <i-col span="2">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.MERCHANTID"
-                });
-            }
-        </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NAME",
-                    Readonly = "true"
-                });
-            }
-        </i-col>
-
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.NAME" v-on:on-click="Merchant" v-bind:disabled="!disabled" />
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
             描述
         </i-col>
-        <i-col span="22">
+        <i-col span="22" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -68,33 +34,14 @@
 }
 
 @section detailParam{
+    <row v-if="disabled">
+        <i-button type="primary" v-on:click="srchWlxx">选择</i-button>
+        <i-button type="error" v-on:click="delColWlxx">删除</i-button>
+    </row>
     <row>
-        <i-col>
-
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "srchWlxx",
-                    Text = "选择物料",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "delColWlxx",
-                    Text = "删除",
-                    Enable = true,
-                    Type = "error",
-                    Icon = "minus-circled"
-                });
-            }
-        </i-col>
         <i-col span="24">
-            <i-table height="300" size="small" :border="true"
-                     :columns="screenParam.colDefWL" :data="dataParam.WLINSTOCKITETM" ref="selectWLxx"></i-table>
+            <yx-table v-bind:columns="screenParam.colDefWL" v-bind:height="300" selection=true
+                      v-bind:data="dataParam.WLINSTOCKITETM" v-bind:disabled="!disabled" ref="selectWLxx">
         </i-col>
     </row>
 }

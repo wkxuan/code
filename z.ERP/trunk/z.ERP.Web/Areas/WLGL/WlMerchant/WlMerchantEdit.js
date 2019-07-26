@@ -2,6 +2,7 @@
 
     editDetail.others = false;
     editDetail.branchid = false;
+    editDetail.otherPanel = false;
     editDetail.service = "WyglService";
     editDetail.method = "GetWlMerchant";
     editDetail.Key = 'MERCHANTID';
@@ -41,3 +42,45 @@ editDetail.IsValidSave = function () {
     };
     return true;
 }
+//按钮初始化
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10900101"
+    }, {
+        id: "edit",
+        authority: "10900101"
+    }, {
+        id: "del",
+        authority: "10900101"
+    }, {
+        id: "save",
+        authority: "10900101"
+    }, {
+        id: "abandon",
+        authority: "10900101"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10900102",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { MERCHANTID: editDetail.dataParam.MERCHANTID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};

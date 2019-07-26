@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: "单据号", key: "BILLID", width: 95, sortable: true },
         { title: "进场日期", key: "MARCHINDATE", width: 110, sortable: true },        
         { title: "登记人", key: "REPORTER_NAME", width: 100 },
@@ -7,13 +7,21 @@
         { title: "审核人", key: "VERIFY_NAME", width: 100 },
         { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true },
         { title: "状态", key: "STATUSMC", width: 100 },
+        {
+            title: '操作', key: 'operate', onClick: function (index, row, data) {
+                _.OpenPage({
+                    id: 103005,
+                    title: '商户进场管理处理',
+                    url: "WYGL/MARCHINAREAR/MarchinArearEdit/" + row.BILLID
+                });
+            }
+        }
     ]
 
     search.windowParam = {
         terst: false
     }
 
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "WyglService";
     search.method = "GetMarchinArear";
 
@@ -27,26 +35,11 @@
     search.searchParam.VERIFYNAME = "";
 }
 
-search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 103005,
-        title: '商户进场管理处理',
-        url: "WYGL/MARCHINAREAR/MarchinArearDetail/" + row.BILLID
-    });
-}
-
 search.addHref = function (row) {
     _.OpenPage({
         id: 103005,
         title: '新增商户进场管理处理',
         url: "WYGL/MARCHINAREAR/MarchinArearEdit/"
-    });
-}
-search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 103005,
-        title: '编辑商户进场管理处理',
-        url: "WYGL/MARCHINAREAR/MarchinArearEdit/" + row.BILLID
     });
 }
 

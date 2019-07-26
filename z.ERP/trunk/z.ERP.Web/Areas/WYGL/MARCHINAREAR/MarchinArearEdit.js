@@ -46,12 +46,26 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.MARCHINDATE = data.main[0].MARCHINDATE;
         editDetail.dataParam.STATUS = data.main[0].STATUS;
         editDetail.dataParam.DESCRIPTION = data.main[0].DESCRIPTION;
+        Vue.set(editDetail.dataParam, data.main[0]);
 
         editDetail.dataParam.MARCHINAREARITEM = data.item[0];
         callback && callback(data);
     });
 }
 
+//数据初始化
+editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.BRANCHID = null;
+    editDetail.dataParam.MERCHANTID = null;
+    editDetail.dataParam.SHMC = null;
+    editDetail.dataParam.CONTRACTID = null;
+    editDetail.dataParam.MARCHINDATE = null;
+    editDetail.dataParam.STATUS = null;
+    editDetail.dataParam.DESCRIPTION = null;
+
+    editDetail.dataParam.MARCHINAREARITEM = [];
+}
 
 editDetail.otherMethods = {    
     SelContract: function () {
@@ -82,3 +96,45 @@ editDetail.popCallBack = function (data) {
         })
     }
 }
+//按钮初始化
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10300501"
+    }, {
+        id: "edit",
+        authority: "10300501"
+    }, {
+        id: "del",
+        authority: "10300501"
+    }, {
+        id: "save",
+        authority: "10300501"
+    }, {
+        id: "abandon",
+        authority: "10300501"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10300502",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};

@@ -1,8 +1,8 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
 @section baseParam{
 
     <row>
@@ -10,25 +10,12 @@
             <span class="mustElement">*</span>
             名称
         </i-col>
-        <i-col span="14">
+        <i-col span="14" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.NAME",
                     Change = "Getpym"
-                });
-            }
-        </i-col>
-
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
-                {
-                    vModel = "dataParam.STATUS",
-                    Enable = false
                 });
             }
         </i-col>
@@ -39,7 +26,7 @@
             <span class="mustElement">*</span>
             拼音码
         </i-col>
-        <i-col span="6">
+        <i-col span="6"  class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -49,30 +36,17 @@
         </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelMerchant",
-                    Text = "供应商",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            供应商
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.MERCHANTNAME",
-                    Readonly = "true"
-                });
-            }
+        <i-col span="6"  class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.MERCHANTNAME" v-on:on-click="SelMerchant" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
             进项税率
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -88,7 +62,7 @@
             <span class="mustElement">*</span>
             采购单价
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -110,7 +84,7 @@
         <i-col span="2" class="RowTitle">
             使用价
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -124,7 +98,7 @@
         <i-col span="2" class="RowTitle">
             描述
         </i-col>
-        <i-col span="22">
+        <i-col span="22" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {

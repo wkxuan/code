@@ -5,7 +5,7 @@
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">供货商代码</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -15,7 +15,7 @@
         </i-col>
 
         <i-col span="2" class="RowTitle">供货商名称</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -28,42 +28,18 @@
 
     <row>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelReporter",
-                    Text = "登记人",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            登记人
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.REPORTER_NAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.REPORTER_NAME" v-on:on-click="SelReporter" />
         </i-col>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelVerify",
-                    Text = "审核人",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            审核人
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.VERIFY_NAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
         </i-col>
     </row>
 

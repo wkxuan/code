@@ -8,7 +8,7 @@
         <i-col span="2" class="RowTitle">
             单据号
         </i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             
             @{ 
                 RenderControl(new TextBoxRender()
@@ -20,7 +20,7 @@
         <i-col span="2" class="RowTitle">
             抄表日期起
         </i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -31,7 +31,7 @@
         <i-col span="2" class="RowTitle">
             抄表日期止
         </i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -44,7 +44,7 @@
         <i-col span="2" class="RowTitle">
             开始年月
         </i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -55,7 +55,7 @@
         <i-col span="2" class="RowTitle">
             结束年月
         </i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -66,12 +66,11 @@
         <i-col span="2" class="RowTitle">
             状态
         </i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             @{
-                RenderControl(new EnumCheckBoxListRender<普通单据状态>()
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
                 {
                     vModel = "searchParam.STATUS",
-                    MultiSelect = true
                 });
             }
         </i-col>
@@ -89,24 +88,11 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelSysuser",
-                    Text = "登记人",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            登记人
         </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.REPORTERNAME",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.REPORTERNAME" v-on:on-click="SelSysuser" />
         </i-col>
 
             @* <i-col span="2" class="RowTitle">
@@ -123,7 +109,7 @@
             <i-col span="2" class="RowTitle">
                 登记时间_起
             </i-col>
-            <i-col span="4">
+            <i-col span="6" class="RowText">
                 @{
                     RenderControl(new DateBoxRender()
                     {
@@ -134,7 +120,7 @@
             <i-col span="2" class="RowTitle">
                 登记时间_止
             </i-col>
-            <i-col span="4">
+            <i-col span="6" class="RowText">
                 @{
                     RenderControl(new DateBoxRender()
                     {
@@ -157,30 +143,17 @@
         </i-col>  *@
 
         <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelSysuser_sh",
-                    Text = "审核人",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            审核人
         </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.VERIFYNAME",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.VERIFYNAME" v-on:on-click="SelSysuser_sh" />
         </i-col>
 
         <i-col span="2" class="RowTitle">
             审核时间_起
         </i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -191,7 +164,7 @@
         <i-col span="2" class="RowTitle">
             审核时间_止
         </i-col>
-        <i-col span="4">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {

@@ -2,7 +2,7 @@
     editDetail.others = true;
     editDetail.branchid = true;
     editDetail.Key = 'BILLID';
-
+    editDetail.otherPanel = false;
     editDetail.screenParam.showPopShop = false;
     editDetail.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
     editDetail.screenParam.showPopBrand = false;
@@ -112,3 +112,46 @@ editDetail.showOne = function (data, callback) {
         callback && callback(data);
     });
 }
+
+//按钮初始化
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10300701"
+    }, {
+        id: "edit",
+        authority: "10300701"
+    }, {
+        id: "del",
+        authority: "10300701"
+    }, {
+        id: "save",
+        authority: "10300701"
+    }, {
+        id: "abandon",
+        authority: "10300701"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10300702",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};

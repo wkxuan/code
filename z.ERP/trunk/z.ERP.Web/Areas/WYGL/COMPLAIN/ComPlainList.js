@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: "单据号", key: "BILLID", width: 95, sortable: true },
         { title: "门店号", key: "BRANCHID", width: 95, sortable: true },
         { title: "门店名称", key: "BRANCHMC", width: 105, sortable: true },
@@ -8,13 +8,21 @@
         { title: "审核人", key: "VERIFY_NAME", width: 100 },
         { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true },
         { title: "状态", key: "STATUSMC", width: 100 },
+        {
+            title: '操作', key: 'operate', onClick: function (index, row, data) {
+                _.OpenPage({
+                    id: 103007,
+                    title: '编辑店铺投诉单',
+                    url: "WYGL/COMPLAIN/ComPlainEdit/" + row.BILLID
+                });
+            }
+        }
     ]
 
     search.windowParam = {
         terst: false
     }
 
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "WyglService";
     search.method = "GetComPlain";
 
@@ -28,27 +36,11 @@
     search.searchParam.VERIFYNAME = "";
 }
 
-
-search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 103007,
-        title: '店铺投诉单',
-        url: "WYGL/COMPLAIN/ComPlainDetail/" + row.BILLID
-    });
-}
-
 search.addHref = function (row) {
     _.OpenPage({
         id: 103007,
         title: '新增店铺投诉单',
         url: "WYGL/COMPLAIN/ComPlainEdit/"
-    });
-}
-search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 103007,
-        title: '编辑店铺投诉单',
-        url: "WYGL/COMPLAIN/ComPlainEdit/" + row.BILLID
     });
 }
 

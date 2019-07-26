@@ -73,3 +73,45 @@ editDetail.popCallBack = function (data) {
         }
     };
 };
+//按钮初始化
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10900201"
+    }, {
+        id: "edit",
+        authority: "10900201"
+    }, {
+        id: "del",
+        authority: "10900201"
+    }, {
+        id: "save",
+        authority: "10900201"
+    }, {
+        id: "abandon",
+        authority: "10900201"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10900202",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { GOODSID: editDetail.dataParam.GOODSID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};

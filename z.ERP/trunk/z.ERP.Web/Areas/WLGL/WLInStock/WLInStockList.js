@@ -1,6 +1,6 @@
 ﻿search.beforeVue = function () {
     search.searchParam.MERCHANTID = "";
-    var col = [
+    search.screenParam.colDef = [
         { title: '状态', key: 'STATUSMC', width: 80 },
         { title: "商户代码", key: 'MERCHANTID', width: 105, sortable: true },
         { title: '商户名称', key: 'NAME', width: 200 },
@@ -8,9 +8,16 @@
         { title: '编辑时间', key: 'REPORTER_TIME', width: 150, sortable: true },
         { title: '审核人', key: 'VERIFY_NAME', width: 90 },
         { title: '审核时间', key: 'VERIFY_TIME', width: 150, sortable: true },
+        {
+            title: '操作', key: 'operate', onClick: function (index, row, data) {
+                _.OpenPage({
+                    id: 10900302,
+                    title: '物料购进单',
+                    url: "WLGL/WLInStock/WLInStockEdit/" + row.BILLID
+                });
+            }
+        }
     ];
-
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "WyglService";
     search.method = "GetWlInStock";
 
@@ -50,25 +57,11 @@ search.popCallBack = function (data) {
     };
 };
 
-search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 10900303,
-        title: '浏览物料购进单信息',
-        url: "WLGL/WLInStock/WLInStockMx/" + row.BILLID
-    });
-};
 search.addHref = function (row) {
 
     _.OpenPage({
         id: 10900301,
         title: '新增物料购进单',
         url: "WLGL/WLInStock/WLInStockEdit/"
-    });
-};
-search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 10900302,
-        title: '编辑物料购进单',
-        url: "WLGL/WLInStock/WLInStockEdit/" + row.BILLID
     });
 };

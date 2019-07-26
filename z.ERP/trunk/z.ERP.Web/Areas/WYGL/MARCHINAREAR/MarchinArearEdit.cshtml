@@ -1,40 +1,27 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
+@using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
 @using z.ERP.Model;
 @using z.Extensions;
-@inherits EditDetailViewBase<string>
+@inherits EditViewBase<string>
 
 
 @section baseParam{
     <row>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelContract",
-                    Text = "租约",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
+            租约
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CONTRACTID",
-                    Enter = "htChange"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.CONTRACTID" v-on:on-click="SelContract" v-bind:disabled="!disabled" />
         </i-col>
 
         <i-col span="2" class="RowTitle">
             商户
         </i-col>
-        <i-col span="2">
+        <i-col span="2" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -43,7 +30,7 @@
                 });
             }
         </i-col>
-        <i-col span="4">
+        <i-col span="4" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -56,7 +43,7 @@
         <i-col span="2" class="RowTitle"><span class="mustElement">*</span>
             进场日期
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -71,7 +58,7 @@
         <i-col span="2" class="RowTitle">
             描述
         </i-col>
-        <i-col span="14">
+        <i-col span="14" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
