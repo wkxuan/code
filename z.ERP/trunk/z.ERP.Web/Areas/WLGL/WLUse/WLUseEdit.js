@@ -15,24 +15,11 @@
 
     //品牌表格
     editDetail.screenParam.colDefWL = [
-        { type: 'selection', width: 60, align: 'center' },
         { title: "物料代码", key: 'GOODSDM', width: 100 },
         { title: '物料名称', key: 'NAME', width: 200 },
         { title: '可领用数量', key: 'CANQTY', width: 100 },
         {
-            title: "领用数量", key: 'QUANTITY', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.QUANTITY
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            editDetail.dataParam.WLUSESITETM[params.index].QUANTITY = event.target.value;
-                        }
-                    },
-                })
-            },
+            title: "领用数量", key: 'QUANTITY', width: 120, cellType: "input",
         },
     ];
 };
@@ -54,6 +41,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.STATUS = "1";
     editDetail.dataParam.WLUSESITETM = [];
     editDetail.screenParam.popParam = {};
+    editDetail.dataParam.DESCRIPTION = null;
 }
 
 
@@ -120,3 +108,45 @@ editDetail.IsValidSave = function () {
     }
     return true;
 }
+//按钮初始化
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10900501"
+    }, {
+        id: "edit",
+        authority: "10900501"
+    }, {
+        id: "del",
+        authority: "10900501"
+    }, {
+        id: "save",
+        authority: "10900501"
+    }, {
+        id: "abandon",
+        authority: "10900501"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10900502",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};

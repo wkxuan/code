@@ -42,6 +42,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.STATUS = "1";
     editDetail.dataParam.WLSETTLEITEM = [];
     editDetail.screenParam.popParam = {};
+    editDetail.dataParam.DESCRIPTION = null;
 }
 
 
@@ -105,3 +106,45 @@ editDetail.IsValidSave = function () {
     }
     return true;
 }
+//按钮初始化
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10900801"
+    }, {
+        id: "edit",
+        authority: "10900801"
+    }, {
+        id: "del",
+        authority: "10900801"
+    }, {
+        id: "save",
+        authority: "10900801"
+    }, {
+        id: "abandon",
+        authority: "10900801"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10900802",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};

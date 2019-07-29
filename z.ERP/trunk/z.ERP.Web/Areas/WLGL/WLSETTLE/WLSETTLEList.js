@@ -1,6 +1,6 @@
 ﻿search.beforeVue = function () {
     search.searchParam.MERCHANTID = "";
-    var col = [
+    search.screenParam.colDef = [
         { title: '状态', key: 'STATUSMC', width: 80 },
         { title: "结算单单号", key: 'BILLID', width: 100 },
         { title: "商户代码", key: 'MERCHANTID', width: 105, sortable: true },
@@ -9,9 +9,17 @@
         { title: '编辑时间', key: 'REPORTER_TIME', width: 150, sortable: true },
         { title: '审核人', key: 'VERIFY_NAME', width: 90 },
         { title: '审核时间', key: 'VERIFY_TIME', width: 150, sortable: true },
+        {
+            title: '操作', key: 'operate', onClick: function (index, row, data) {
+                _.OpenPage({
+                    id: 10900801,
+                    title: '物料结算单',
+                    url: "WLGL/WLSETTLE/WLSETTLEEdit/" + row.BILLID
+                });
+            }
+        }
     ];
 
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
     search.service = "WyglService";
     search.method = "GetWLSETTLE";
 
@@ -51,25 +59,11 @@ search.popCallBack = function (data) {
     };
 };
 
-search.browseHref = function (row, index) {
-    _.OpenPage({
-        id: 10900803,
-        title: '浏览物料结算单信息',
-        url: "WLGL/WLSETTLE/WLSETTLEMx/" + row.BILLID
-    });
-};
 search.addHref = function (row) {
 
     _.OpenPage({
         id: 10900801,
         title: '新增物料结算单',
         url: "WLGL/WLSETTLE/WLSETTLEEdit/"
-    });
-};
-search.modHref = function (row, index) {
-    _.OpenPage({
-        id: 10900801,
-        title: '编辑物料结算单',
-        url: "WLGL/WLSETTLE/WLSETTLEEdit/" + row.BILLID
     });
 };

@@ -22,19 +22,7 @@
         { title: '使用价', key: 'USEPRICE', width: 100 },
         { title: '可冲红数量', key: 'CANQTY', width: 100 },
         {
-            title: "冲红数量", key: 'QUANTITY', width: 120,
-            render: function (h, params) {
-                return h('Input', {
-                    props: {
-                        value: params.row.QUANTITY
-                    },
-                    on: {
-                        'on-blur': function (event) {
-                            editDetail.dataParam.WLOUTSTOCKITETM[params.index].QUANTITY = event.target.value;
-                        }
-                    },
-                })
-            },
+            title: "冲红数量", key: 'QUANTITY', width: 120, cellType: "input",
         },
     ];
 };
@@ -56,6 +44,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.STATUS = "1";
     editDetail.dataParam.WLOUTSTOCKITETM = [];
     editDetail.screenParam.popParam = {};
+    editDetail.dataParam.DESCRIPTION = null;
 }
 
 
@@ -122,3 +111,46 @@ editDetail.IsValidSave = function () {
     }
     return true;
 }
+
+//按钮初始化
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: "10900401"
+    }, {
+        id: "edit",
+        authority: "10900401"
+    }, {
+        id: "del",
+        authority: "10900401"
+    }, {
+        id: "save",
+        authority: "10900401"
+    }, {
+        id: "abandon",
+        authority: "10900401"
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "10900402",
+        fun: function () {
+            _.Ajax('ExecData', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("审核成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }];
+};
