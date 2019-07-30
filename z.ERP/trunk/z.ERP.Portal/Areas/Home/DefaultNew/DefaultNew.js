@@ -104,12 +104,6 @@ var DefaultNew = new Vue({
         
     },
     methods: {
-        //切换重新加载数据，并动画展示
-        SwitchChange: function (status) {
-            if(status){
-                window.location.reload();
-            }
-        },
         //根据日期筛选数据
         box3datechange: function (event) {
             var type = event;

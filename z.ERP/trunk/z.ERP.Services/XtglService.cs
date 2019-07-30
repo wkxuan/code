@@ -732,7 +732,7 @@ namespace z.ERP.Services
             if (SPLCDEFD.BILLID.IsEmpty())
             {
                 SPLCDEFD.BILLID = NewINC("SPLCDEFD");
-                SPLCDEFD.STATUS = ((int)审批单状态.未审核).ToString();
+
             }
             else
             {
@@ -745,6 +745,7 @@ namespace z.ERP.Services
                 SPLCDEFD.VERIFY_NAME = con.VERIFY_NAME;
                 SPLCDEFD.VERIFY_TIME = con.VERIFY_TIME;
             }
+            SPLCDEFD.STATUS = ((int)审批单状态.未审核).ToString();
 
             //在这里查询有没有未终止的当前菜单号的审批流程,有的话给提示
             string sql = $@"select nvl(min(BILLID),0) BILLID from SPLCDEFD where";
@@ -762,8 +763,28 @@ namespace z.ERP.Services
             SPLCDEFD.REPORTER_NAME = employee.Name;
             SPLCDEFD.REPORTER_TIME = DateTime.Now.ToString();
 
+
             using (var Tran = DbHelper.BeginTransaction())
             {
+
+
+                List<SPLCJDEntity> jd = new List<SPLCJDEntity>();
+                jd = DbHelper.SelectList(new SPLCJDEntity()).Where(a => (a.BILLID == SPLCDEFD.BILLID)).ToList();
+                foreach (var jditem in jd)
+                {
+                    jditem.BILLID = SPLCDEFD.BILLID;
+                    DbHelper.Delete(jditem);
+                }
+
+                List<SPLCJGEntity> jg = new List<SPLCJGEntity>();
+                jg = DbHelper.SelectList(new SPLCJGEntity()).Where(a => (a.BILLID == SPLCDEFD.BILLID)).ToList();
+                foreach (var jgitem in jg)
+                {
+                    jgitem.BILLID = SPLCDEFD.BILLID;
+                    DbHelper.Delete(jgitem);
+                }
+
+
                 foreach (var splcjd in SPLCJD)
                 {
                     splcjd.BILLID = SPLCDEFD.BILLID;
@@ -908,6 +929,7 @@ namespace z.ERP.Services
         {
 
             //找当前应该是那个节点数据
+            //要根据当前操作人对应的角色组找审批流程以及节点
 
             if (Data.MENUID.IsEmpty())
             {
@@ -915,8 +937,17 @@ namespace z.ERP.Services
             }
             string sql = $@"select JDID,JDNAME from";
             sql += " SPLCDEFD A,SPLCJD B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+
+            if (employee.Id.ToInt() > 0)
+            {
+                sql += " and  exists(select 1 from USER_ROLE C where C.ROLEID=B.ROLEID and C.USERID=" + employee.Id + ")";
+            }
             sql += (" AND A.MENUID= " + Data.MENUID);
             DataTable splc = DbHelper.ExecuteTable(sql);
+
+
+
+
 
             //找最后一个审批数据
             var i = 1;
@@ -935,6 +966,12 @@ namespace z.ERP.Services
 
             string sqlxz = $@"select JDID,JGID,JGTYPE,JGMC from";
             sqlxz += " SPLCDEFD A,SPLCJG B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+
+            if (employee.Id.ToInt() > 0)
+            {
+                sqlxz += " and  exists(select 1 from USER_ROLE C,SPLCJD D";
+                sqlxz += " where A.BILLID=D.BILLID and C.ROLEID=D.ROLEID and C.USERID=" + employee.Id + ")";
+            }
             sqlxz += (" AND A.MENUID= " + Data.MENUID);
             sqlxz += (" AND B.JDID= " + i);
             DataTable splxz = DbHelper.ExecuteTable(sqlxz);
@@ -1029,7 +1066,7 @@ namespace z.ERP.Services
             item.HasKey("REPORTER_NAME", a => sql += $" and REPORTER_NAME = '{a}'");
             item.HasKey("VERIFY_NAME", a => sql += $" and VERIFY_NAME = '{a}'");
             item.HasKey("TERMINATE_NAME", a => sql += $" and TERMINATE_NAME = '{a}'");
-            sql += " order by MENUID DESC";
+            sql += " order by to_number(MENUID) DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<审批单状态>("STATUS", "STATUSNAME");
