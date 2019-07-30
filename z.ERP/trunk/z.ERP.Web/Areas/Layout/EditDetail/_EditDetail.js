@@ -54,6 +54,7 @@
         };
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
         var ve = new Vue(options);
+        _this.veObj = ve;
         function save(callback) {
             _.Ajax('Save', {
                 SaveData: ve.dataParam

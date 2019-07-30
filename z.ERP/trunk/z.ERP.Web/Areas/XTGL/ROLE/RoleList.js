@@ -10,7 +10,7 @@
     search.method = "GetRole";
 }
 search.mountedInit = function () {
-    _.Ajax('SearchInit', {
+    _.Ajax('OrgInit', {
         Data: {}
     }, function (data) {
         Vue.set(search.searchParam, "ORGData", data.treeOrg.Obj);

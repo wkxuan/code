@@ -80,7 +80,7 @@
                      v-on:on-select-cancel="screenParam.selectCancelregion"></i-table>
         </Tab-Pane>
         <Tab-Pane label="业态权限" name="name4">
-            <Tree :data="screenParam.ytTreeData" show-checkbox></Tree>
+            <Tree :data="screenParam.ytTreeData" show-checkbox ref="cateref"></Tree>
         </Tab-Pane>
         <Tab-Pane label="预警权限" name="name5">
             <i-table size="small" :border="true" height="370" width="400"

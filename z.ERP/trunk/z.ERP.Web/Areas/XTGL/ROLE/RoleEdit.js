@@ -198,10 +198,14 @@ editDetail.showOne = function (data, callback) {
 editDetail.IsValidSave = function () {
     //业态数据
     editDetail.screenParam.localYt = [];
-    for (var j = 0; j < editDetail.screenParam.ytTreeData.length; j++) {
-        var itemdata = editDetail.screenParam.ytTreeData[j].children;
-        InsertTree(itemdata);
+
+    var checkedNodes = editDetail.veObj.$refs.cateref.getCheckedNodes();
+    for (var j = 0; j < checkedNodes.length; j++) {
+        var itemdata = checkedNodes[j];
+        editDetail.screenParam.localYt.push({ YTID: itemdata.value });
     };
+    Vue.set(editDetail.dataParam, 'ROLE_YT', editDetail.screenParam.localYt);
+
     //菜单权限数据
     editDetail.screenParam.localMenu = [];
     for (var j = 0; j < editDetail.screenParam.USERMODULE.length; j++) { 

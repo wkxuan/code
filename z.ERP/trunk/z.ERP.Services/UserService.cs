@@ -128,6 +128,7 @@ namespace z.ERP.Services
             //业态
             string sqlYt2 = "select G.CATEGORYID,G.CATEGORYCODE,G.CATEGORYNAME,Y.YTID LEVEL_LAST from CATEGORY G,ROLE_YT Y where G.CATEGORYID =Y.YTID(+) ";
             sqlYt2 += (" AND Y.ROLEID(+)= " + Data.ROLEID);
+            sqlYt2 += " order by G.CATEGORYCODE";
 
             List<CATEGORYEntity> p =  DbHelper.ExecuteTable(sqlYt2).ToList<CATEGORYEntity>();
 

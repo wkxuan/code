@@ -74,5 +74,16 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                 }
             );
         }
+
+        public UIResult OrgInit()
+        {
+            var res = service.DataService.GetTreeOrg();
+            return new UIResult(
+                new
+                {
+                    treeOrg = res.Item1
+                }
+            );
+        }
     }
 }
