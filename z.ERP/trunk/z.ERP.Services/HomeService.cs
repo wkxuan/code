@@ -8,6 +8,7 @@ using z.ERP.Entities.Enum;
 using z.SSO.Model;
 using System.Linq;
 using z.Encryption;
+using System.Web;
 
 namespace z.ERP.Services
 {
@@ -89,7 +90,7 @@ namespace z.ERP.Services
                                         WHERE A.MENUID=B.MENUID AND B.ROLEID=C.ROLEID
                                         AND C.USERID=" + employee.Id + ")";
             }
-            if (int.Parse(data.PLATFORMID)==1)
+            if (int.Parse(data.PLATFORMID) == 1)
                 sqlgroup += @" and MODULECODE like '02%'";
             if (int.Parse(data.PLATFORMID) == 2)
                 sqlgroup += @" and MODULECODE like '05%'";
@@ -129,7 +130,8 @@ namespace z.ERP.Services
                                                       and c.userid = " + employee.Id + @" or
                                     aa.menuid is null)";
                         }
-                        else {
+                        else
+                        {
                             sql += @" and aa.menuid in (
                                                    select a.id
                                                      from menu a,
@@ -148,11 +150,11 @@ namespace z.ERP.Services
                     {
                         string url = dr["URL"].ToString();
                         dr["PLATFORMID"].ToString().TryToInt(PlatFormId =>
-                        {
-                            var pt = PlatFormList.FirstOrDefault(a => a.ID == PlatFormId.ToString());
-                            if (pt != null)
-                                dr["URL"] = pt.DOMAIN + url;
-                        });
+                                                {
+                                                    var pt = PlatFormList.FirstOrDefault(a => a.ID == PlatFormId.ToString());
+                                                    if (pt != null)
+                                                        dr["URL"] = pt.DOMAIN + url;
+                                                });
                     }
                     menuGr.MENUList = menu.ToList<MENUEntity>();
 
@@ -162,6 +164,26 @@ namespace z.ERP.Services
             {
                 MENU = MENU_GROUPList
             });
+        }
+    
+
+        /// <summary>
+        /// 获取一个菜单的url
+        /// </summary>
+        /// <param name="menuid"></param>
+        /// <returns></returns>
+        public string GetMenuUrl(string menuid)
+        {
+            if (menuid.IsEmpty())
+                return null;
+            MENUEntity menu = DbHelper.ExecuteOneObject<MENUEntity>($"select id,url from MENU where id='{menuid}'");
+            if (menu == null)
+                throw new Exception($"找不到菜单{menuid}");
+            List<PLATFORMEntity> allp = DbHelper.SelectList(new PLATFORMEntity() { ID = menu.PLATFORMID });
+            PLATFORMEntity ps = allp.FirstOrDefault(a => HttpContext.Current.Request.Url.Host.IsRegexMatch(a.MATCH));
+            if (ps == null)
+                ps = allp.First();
+            return ps.DOMAIN + menu.URL;
         }
 
         public User GetUserById(string id)
@@ -179,7 +201,7 @@ namespace z.ERP.Services
                 throw new Exception($"用户{code}不存在或已停用");
             if (salt(e.USERID, password) == e.PASSWORD)
             {
-                return e.ToObj(a => new User() { Id = e.USERID,Code=e.USERCODE, Name = e.USERNAME });
+                return e.ToObj(a => new User() { Id = e.USERID, Code = e.USERCODE, Name = e.USERNAME });
             }
             else
             {
@@ -263,14 +285,16 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
-        public DataTable NoticeData(int type) {
+        public DataTable NoticeData(int type)
+        {
             string sql = "";
             if (type == 1)
             {
                 sql = @"SELECT N.ID,N.TITLE,N.STATUS,TO_CHAR(VERIFY_TIME,'yyyy-MM-dd') release_time FROM NOTICE N WHERE N.STATUS=2  
                     AND not exists(select 1 from READNOTOCELOG   where READNOTOCELOG.NOTICEID=N.ID AND READNOTOCELOG.USERID=" + employee.Id + ") ORDER BY VERIFY_TIME DESC ";
             }
-            else {
+            else
+            {
                 sql = @"SELECT N.ID,N.TITLE,N.STATUS,TO_CHAR(VERIFY_TIME,'yyyy-MM-dd') release_time FROM NOTICE N WHERE N.STATUS=2  
                     AND exists(select 1 from READNOTOCELOG   where READNOTOCELOG.NOTICEID=N.ID AND READNOTOCELOG.USERID=" + employee.Id + ") ORDER BY VERIFY_TIME DESC ";
             }
@@ -280,11 +304,12 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
         public Tuple<dynamic, int> AlertData()
         {
             var sql = @" select DEF_ALERT.ID,MC,XSSX,SQLSTR, 0 COUNT,PLATFORM.DOMAIN FROM DEF_ALERT,PLATFORM 
-                          where PLATFORM.ID=1 and DEF_ALERT.ID in ("+ GetPermissionSql(PermissionType.Alert) + ") ORDER BY XSSX ";
+                          where PLATFORM.ID=1 and DEF_ALERT.ID in (" + GetPermissionSql(PermissionType.Alert) + ") ORDER BY XSSX ";
 
             var count = 0;
             DataTable dt = DbHelper.ExecuteTable(sql);
-            foreach (DataRow item in dt.Rows) {
+            foreach (DataRow item in dt.Rows)
+            {
                 var sqlstr = item["SQLSTR"].ToString();
                 DataTable dtstr = DbHelper.ExecuteTable(sqlstr);
                 item["COUNT"] = dtstr.Rows.Count;
