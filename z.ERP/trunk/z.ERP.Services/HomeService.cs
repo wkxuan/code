@@ -186,6 +186,20 @@ namespace z.ERP.Services
             return ps.DOMAIN + menu.URL;
         }
 
+        /// <summary>
+        /// 获取一个ERP服务域名
+        /// </summary>
+        /// <param name="menuid"></param>
+        /// <returns></returns>
+        public string GetErpDomain()
+        {
+            List<PLATFORMEntity> allp = DbHelper.SelectList(new PLATFORMEntity() { ID = "1" });
+            PLATFORMEntity ps = allp.FirstOrDefault(a => HttpContext.Current.Request.Url.Host.IsRegexMatch(a.MATCH));
+            if (ps == null)
+                ps = allp.First();
+            return ps.DOMAIN;
+        }
+
         public User GetUserById(string id)
         {
             return DbHelper.Select(new SYSUSEREntity(id))?.ToObj(a => new User() { Id = a.USERID, Name = a.USERNAME });
@@ -218,8 +232,8 @@ namespace z.ERP.Services
         {
 
             return DbHelper.ExecuteTable($@"SELECT A.MENUID FROM USERMODULE A, MENU B where A.MENUID = B.ID
- and exists(select 1 from USER_ROLE A1, ROLE_MENU B1, USERMODULE C1 where A1.USERID = '{userid}'
-and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
+                                               and exists(select 1 from USER_ROLE A1, ROLE_MENU B1, USERMODULE C1 where A1.USERID = '{userid}'
+                                               and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
                                                   .ToList<string>().ToArray();
             //return DbHelper.ExecuteTable($@"select b.menuid
             //                                              from USER_ROLE a
@@ -279,8 +293,8 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
         }
         public DataTable DclrwData()
         {
-            var sql = @" select B.MENUID,M.NAME,C.NAME BRANCHMC ,B.URL ,BILLID,P.ID PLATFORMID ,P.DOMAIN DOMAIN  from BILLSTATUS B,MENU M,BRANCH C,PLATFORM P 
-                 where B.MENUID=M.ID and B.BRABCHID =C.ID AND P.ID=M.PLATFORMID  
+            var sql = @" select B.MENUID,M.NAME,C.NAME BRANCHMC ,B.URL ,BILLID  from BILLSTATUS B,MENU M,BRANCH C 
+                 where B.MENUID=M.ID and B.BRABCHID =C.ID 
                 and exists (select 1 from USER_ROLE U,ROLE_MENU N where U.ROLEID = N.ROLEID and N.MENUID = M.ID and U.USERID = " + employee.Id + ") ORDER BY MENUID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
@@ -303,8 +317,8 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
         }
         public Tuple<dynamic, int> AlertData()
         {
-            var sql = @" select DEF_ALERT.ID,MC,XSSX,SQLSTR, 0 COUNT,PLATFORM.DOMAIN FROM DEF_ALERT,PLATFORM 
-                          where PLATFORM.ID=1 and DEF_ALERT.ID in (" + GetPermissionSql(PermissionType.Alert) + ") ORDER BY XSSX ";
+            var sql = @" select DEF_ALERT.ID,MC,XSSX,SQLSTR, 0 COUNT FROM DEF_ALERT
+                          where DEF_ALERT.ID in (" + GetPermissionSql(PermissionType.Alert) + ") ORDER BY XSSX ";
 
             var count = 0;
             DataTable dt = DbHelper.ExecuteTable(sql);
