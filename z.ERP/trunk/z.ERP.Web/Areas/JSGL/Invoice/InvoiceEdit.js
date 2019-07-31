@@ -1,8 +1,8 @@
 ﻿var Numbers = true;
 editDetail.beforeVue = function () {
-    editDetail.branchid = false;
     editDetail.Key = 'INVOICEID';
     editDetail.others = false;
+    editDetail.otherPanel = false;
     editDetail.service = "JsglService";
     editDetail.method = "GetInvoiceList";
     editDetail.screenParam.showPopMerchant = false;
@@ -78,7 +78,6 @@ editDetail.clearKey = function () {
     editDetail.dataParam.INVOICEAMOUNT = null;
     editDetail.dataParam.VATAMOUNT = null;
     editDetail.dataParam.INVOICEDATE = null;
-    editDetail.dataParam.CREATENAME = null;
 }
 editDetail.IsValidSave = function () {
     if (!Numbers) {

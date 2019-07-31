@@ -416,4 +416,10 @@ namespace z.ERP.Entities.Enum
         草稿状态 = 1,
         发布状态 = 2
     }
+    public enum 发票状态
+    {
+        已开具=1,
+        已核销=2,
+        已作废=3
+    }
 }
