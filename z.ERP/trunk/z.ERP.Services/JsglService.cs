@@ -727,7 +727,7 @@ namespace z.ERP.Services
         public DataGridResult GetInvoiceList(SearchItem item)
         {
             string sql = @"SELECT I.*,M.NAME MERCHANTNAME FROM INVOICE I,MERCHANT M
-                    WHERE I.MERCHANTID=M.MERCHANTID ";
+                    WHERE I.MERCHANTID=M.MERCHANTID AND I.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";
             item.HasKey("BRANCHID", a => sql += $" and I.BRANCHID = {a}");
             item.HasKey("STATUS", a => sql += $" and I.STATUS = {a}");
             item.HasKey("INVOICEID", a => sql += $" and I.INVOICEID = {a}");
