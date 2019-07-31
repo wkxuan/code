@@ -91,7 +91,7 @@ namespace z.ERP.Services
             item.HasKey("REGIONID", a => sql += $" and A.REGIONID = {a}");
             item.HasKey("AREA_RENTABLE_S", a => sql += $" and A.AREA_RENTABLE >= {a}");
             item.HasKey("AREA_RENTABLE_E", a => sql += $" and A.AREA_RENTABLE <= {a}");
-            sql += " ORDER BY A.SHOPID";
+            sql += " ORDER BY A.SHOPID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<单元类型>("TYPE", "TYPEMC");
