@@ -604,7 +604,7 @@ namespace z.ERP.Services
             if (billNotice.STATUS == ((int)普通单据状态.审核).ToString())
             {
                 throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
-            }
+            }           
             using (var Tran = DbHelper.BeginTransaction())
             {
                 billNotice.VERIFY = employee.Id;
@@ -764,6 +764,19 @@ namespace z.ERP.Services
             {
                 foreach (var item in DeleteData)
                 {
+                    var sql = "select * from BILL_OBTAIN_INVOICE where INVOICEID ="+ item.INVOICEID + "";
+                    DataTable dt = DbHelper.ExecuteTable(sql);
+                    if (item.STATUS == ((int)发票状态.已作废).ToString())
+                    {
+                        throw new LogicException("发票：(" + item.INVOICEID + ")已作废请勿重复操作!");
+                    }
+                    if (item.STATUS == ((int)发票状态.已核销).ToString())
+                    {
+                        throw new LogicException("发票：(" + item.INVOICEID + ")已核销不能作废!");                   
+                    }
+                    if (dt.Rows.Count>0) {
+                        throw new LogicException("发票：(" + item.INVOICEID + ")已关联核销单不能作废!");
+                    }
                     item.DISCARD = employee.Id;
                     item.DISCARD_NAME = employee.Name;
                     item.DISCARD_TIME = DateTime.Now.ToString();
