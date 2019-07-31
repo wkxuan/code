@@ -33,12 +33,12 @@
 defineNew.otherMethods = {
     branchChange: function () {
         defineNew.otherMethods.initRegion();
-        defineNew.searchParam.REGIONID = null;
-        defineNew.searchParam.FLOORID = null;
+        defineNew.searchParam.REGIONID = undefined;
+        defineNew.searchParam.FLOORID = undefined;
     },
     regionChange: function () {
         defineNew.otherMethods.initFloor();
-        defineNew.searchParam.FLOORID = null;
+        defineNew.searchParam.FLOORID = undefined;
     },
     floorChange: function () { },
     initBranch: function () {
