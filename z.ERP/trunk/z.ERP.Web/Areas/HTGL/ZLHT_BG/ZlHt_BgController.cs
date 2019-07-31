@@ -22,7 +22,7 @@ namespace z.ERP.Web.Areas.ZLHT_BG.ZlHt_Bg
             ViewBag.Title = "租赁租约信息变更";
             return View("ZlHt_BgEdit", model: (EditRender)Id);
         }
-        [Permission("10600401")]
+        [Permission("10600201")]
         public string Save(CONTRACTEntity SaveData)
         {
             return service.HtglService.SaveContract(SaveData);
@@ -79,7 +79,7 @@ namespace z.ERP.Web.Areas.ZLHT_BG.ZlHt_Bg
         {
             service.HtglService.DeleteContract(DeleteData);
         }
-        [Permission("10600402")]
+        [Permission("10600202")]
         public void ExecData(CONTRACTEntity Data)
         {
             service.HtglService.ExecHtBgData(Data);
