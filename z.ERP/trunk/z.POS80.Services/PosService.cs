@@ -5930,6 +5930,12 @@ namespace z.POS80.Services
 
                 if (PrepareCheckOutResult)
                 {
+                    if (bNeedBuyCent)
+                    {
+                        msg = "积分不足,无法退货";
+                        return false;
+                    }
+
                     if (articleCoupons != null)
                     {
                         for (i = 0; i < articleCoupons.Length; i++)
