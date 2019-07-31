@@ -1,29 +1,29 @@
-﻿#def_Main {
+﻿#defineNew {
     overflow: hidden;
 }
 
-    #def_Main .ivu-table .demo-table-info-row td {
+    #defineNew .ivu-table .demo-table-info-row td {
         height: 35px;
     }
 
-    #def_Main .ivu-table .demo-table-error-row td {
+    #defineNew .ivu-table .demo-table-error-row td {
         height: 35px;
     }
 
-    #def_Main .ivu-collapse-header .ivu-btn {
+    #defineNew .ivu-collapse-header .ivu-btn {
         color: #fff;
     }
 
-        #def_Main .ivu-collapse-header .ivu-btn:hover {
+        #defineNew .ivu-collapse-header .ivu-btn:hover {
             color: #000000;
         }
 
-    #def_Main .ivu-table th {
+    #defineNew .ivu-table th {
         background: radial-gradient(red -24%, yellow 100%);
         color: #fff;
     }
 
-    #def_Main .ivu-collapse-header {
+    #defineNew .ivu-collapse-header {
         height: 35px !important;
         line-height: 35px !important;
         font-size: 12px;
@@ -32,23 +32,29 @@
         background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);
     }
 
-    #def_Main .searchParamContent {
+    #defineNew .searchParamContent {
         padding-top: 10px;
         color: #fff;
         background: linear-gradient(#b0aacac2 -24%, #000000a6 100%);
     }
 
-    #def_Main .ivu-table-tip td {
+    #defineNew .ivu-table-tip td {
         color: #fff;
         background: linear-gradient(#b0aacac2 -24%, #000000a6 100%);
     }
 
-    #def_Main .ivu-collapse-content {
+    #defineNew .ivu-page {
+        color: #fff;
+        background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);
+        padding-left: 15px;
+    }
+
+    #defineNew .ivu-collapse-content {
         width: 100%;
         height: 100%;
         padding: 0 !important;
     }
 
-        #def_Main .ivu-collapse-content > .ivu-collapse-content-box {
+        #defineNew .ivu-collapse-content > .ivu-collapse-content-box {
             padding: 0 !important;
         }

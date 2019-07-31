@@ -16,7 +16,7 @@
     @RenderSection("head", false)
 }
 
-<div id="def_Main">
+<div id="defineNew">
     <collapse v-model="panelName">
         <panel name="condition">
             查询条件
@@ -43,7 +43,10 @@
                 <yx-table v-bind:columns="columns" v-bind:data="data"  selection=true
                           v-bind:loading="tbLoading" ref="selectData">
                 </yx-table>
-
+                <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total 
+                      v-bind:current="currentPage"
+                      v-on:on-change="changePageCount" v-bind:page-size-opts="arrPageSize"
+                      show-sizer v-on:on-page-size-change="changePageSizer"></page>
                 @RenderSection("resultOthers", false)
             </div>
         </panel>

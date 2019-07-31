@@ -1,6 +1,7 @@
 ﻿function _Search() {
 
     var _this = this;
+    this.vueObj;
 
     this.beforeVue = function () { }
 
@@ -22,13 +23,14 @@
                 searchParam: _this.searchParam,
                 pageInfo: _this.pageInfo,
                 disabled: _this.enabled(true),
-                panelName: 'condition',
+                panelName: ["condition", "result"],
                 columns: [],
                 data: [],
                 tbLoading: false,
                 arrPageSize: [10, 20, 50, 100],
                 pagedataCount: 0,
-                pageSize: 10
+                pageSize: 10,
+                currentPage: 1,
             },
             watch: {
                 "screenParam.colDef": {
@@ -45,27 +47,25 @@
             methods: {
                 seach: function (event) {
                     event.stopPropagation();
-                    let mess = this;
                     if (!_this.IsValidSrch())
                         return;
-                    _this.pageInfo.PageSize = mess.pageSize;
-                    _this.pageInfo.PageIndex = 0;
                     showList();
                 },
                 clear: function (event) {
                     event.stopPropagation();
-                    _this.searchParam = {};
-                    ve.searchParam = _this.searchParam;
-                    ve.data = [];
-                    ve.panelName = 'condition';
+                    let _self = this;
+                    _self.searchParam = {};
+                    _self.data = [];
+                    _self.pagedataCount = 0;
+                    _self.panelName = 'condition';
                     _this.newCondition();
                 },
                 //导出待完善
                 exp: function (event) {
                     event.stopPropagation();
-                    var _self = this;
+                    let _self = this;
                     _.Ajax('Output', {
-                        Values: _this.searchParam
+                        Values: _self.searchParam
                     }, function (data) {
                         window.open(__BaseUrl + data);
                     });
@@ -73,7 +73,7 @@
                 //打印待完善
                 print: function (event) {
                     event.stopPropagation();
-                    if (notExistsData()) {
+                    if (!ve.data.length) {
                         iview.Message.error("没有要打印的数据!");
                     } else {
                         iview.Message.error("尚未提供打印方法!");
@@ -90,43 +90,42 @@
                     if (selectton.length == 0) {
                         iview.Message.info("请选中要删除的数据!");
                         return;
-                    } else {
-                        _.MessageBox("是否删除？", function () {
-                            _.Ajax('Delete', {
-                                DeleteData: selectton
-                            }, function (data) {
-                                iview.Message.info("删除成功");
-                                showList();
-                            });
-                        });
                     }
+                    _.MessageBox("是否删除？", function () {
+                        _.Ajax('Delete', {
+                            DeleteData: selectton
+                        }, function (data) {
+                            iview.Message.info("删除成功");
+                            showList();
+                        });
+                    });
                 },
                 changePageCount: function (index) {
-                    let mess = this;
-                    _this.pageInfo.PageSize = mess.pageSize;
-                    _this.pageInfo.PageIndex = (index - 1);
+                    this.currentPage = index;
                     showList();
                 },
                 changePageSizer: function (value) {
-                    let mess = this;
                     this.pageSize = value;
-                    _this.pageInfo.PageSize = value;
+                    this.currentPage = 1;
                     showList();
                 }
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
-        var ve = new Vue(options);
+        _this.vueObj = new Vue(options);
+
         function showList() {
-            ve.searchParam = _this.searchParam;
-            ve.pageInfo = _this.pageInfo;
+            let ve = _this.vueObj;
             ve.data = [];
             ve.tbLoading = true;
             _.Search({
                 Service: _this.service,
                 Method: _this.method,
                 Data: ve.searchParam,
-                PageInfo: ve.pageInfo,
+                PageInfo: {
+                    PageSize: ve.pageSize,
+                    PageIndex: ve.currentPage - 1
+                },
                 Success: function (data) {
                     ve.tbLoading = false;
                     if (data.rows.length > 0) {
@@ -143,15 +142,11 @@
                 }
             })
         };
-        function notExistsData() {
-            return (!ve.data) || (ve.data.length == 0)
-        }
     }
 
     this.addHref = function () { }
 
     this.vueInit = function () {
-        _this.pageInfo = {};
         _this.searchParam = {};
         _this.screenParam = {};
         _this.service = "";
