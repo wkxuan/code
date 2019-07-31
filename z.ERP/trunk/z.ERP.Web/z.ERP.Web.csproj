@@ -182,6 +182,10 @@
     <Compile Include="Areas\JSGL\BILL_OBTAIN\Bill_ObtainController.cs" />
     <Compile Include="Areas\JSGL\BILL_RETURN\Bill_ReturnController.cs" />
     <Compile Include="Areas\JSGL\JOINBILL\JoinBillController.cs" />
+    <Compile Include="Areas\Layout\DefineDetail\DefineDetailViewBase.cs" />
+    <Compile Include="Areas\Layout\DefineDetail\DefineDetailRender.cs" />
+    <Compile Include="Areas\Layout\DefineNew\DefineNewRender.cs" />
+    <Compile Include="Areas\Layout\DefineNew\DefineViewNewBase.cs" />
     <Compile Include="Areas\Layout\Define\DefineRender.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\Detail\DetailViewBase.cs" />
@@ -331,6 +335,10 @@
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnList.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillList.js" />
+    <Content Include="Areas\Layout\DefineNew\DefineStyle.css" />
+    <Content Include="Areas\Layout\DefineNew\_DefineLayout.js" />
+    <Content Include="Areas\Layout\DefineDetail\DefineDetailStyle.css" />
+    <Content Include="Areas\Layout\DefineDetail\_DefineDetail.js" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Edit\EditStyle.css" />
     <Content Include="Areas\Layout\Edit\_Edit.js" />
@@ -434,6 +442,7 @@
     <Content Include="Areas\XTGL\REGION\Region.js" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.js" />
     <Content Include="Areas\XTGL\ROLE\RoleList.js" />
+    <Content Include="Areas\XTGL\SHOP\ShopDetail.js" />
     <Content Include="Areas\XTGL\SrchORG\SrchORG.js" />
     <Content Include="Areas\XTGL\SrchSPLC\SrchSPLC.js" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.js" />
@@ -733,6 +742,9 @@
     <Content Include="Content\Editor\fonts\w-e-icon.woff" />
     <Content Include="Areas\XTGL\SrchSPLC\SrchSPLC.cshtml" />
     <Content Include="Areas\XTGL\FEESUBJECT_ACCOUNT\FEESUBJECT_ACCOUNT.cshtml" />
+    <Content Include="Areas\Layout\DefineDetail\_DefineDetail.cshtml" />
+    <Content Include="Areas\XTGL\SHOP\ShopDetail.cshtml" />
+    <Content Include="Areas\Layout\DefineNew\_DefineLayout.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

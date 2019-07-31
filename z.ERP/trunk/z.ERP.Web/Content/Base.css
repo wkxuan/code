@@ -1,4 +1,8 @@
-﻿.hide {
+﻿html, body {
+    height: 100%;
+}
+
+.hide {
     display: none;
 }
 
@@ -54,7 +58,12 @@
 }
 
 .ivu-modal-header {
-    background: linear-gradient(#b0aacac2 -24%, #000000a6 100%);
+    background: radial-gradient(blue -24%,red 100%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    padding: 12px !important;
 }
 
 .ivu-modal-close {
@@ -68,7 +77,10 @@
 .ivu-modal-body {
     padding: 0 !important;
 }
-
+.ivu-modal-body iframe{
+    margin-bottom: -5px;
+}
+  
 .ivu-btn {
     padding: 0 5px !important;
 }
@@ -116,5 +128,5 @@
 
 .ivu-modal-confirm-footer {
     padding: 5px;
-    margin-top:10px !important;
+    margin-top: 10px !important;
 }

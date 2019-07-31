@@ -1,12 +1,13 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
+using z.ERP.Entities.Enum;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.DefineDetail;
+using z.ERP.Web.Areas.Layout.DefineNew;
+using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
-using z.ERP.Web.Areas.Layout.Define;
-using z.ERP.Entities.Enum;
-using z.Exceptions;
-
 namespace z.ERP.Web.Areas.XTGL.SHOP
 {
     public class ShopController : BaseController
@@ -14,12 +15,16 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
         public ActionResult Shop()
         {
             ViewBag.Title = "资产单元信息";
-            return View(new DefineRender()
+            return View(new DefineNewRender()
             {
                 //Permission_Chk = "104004"
             });
         }
-
+        public ActionResult ShopDetail(string Id)
+        {
+            ViewBag.Title = "资产单元信息";
+            return View("ShopDetail", model: (DefineDetailRender)Id);
+        }
         public string Save(SHOPEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
@@ -68,11 +73,13 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
             v.Verify();
             return CommonSave(DefineSave);
         }
-
-        public void Delete(SHOPEntity DefineDelete)
+        public void Delete(List<SHOPEntity> DefineDelete)
         {
-            var v = GetVerify(DefineDelete);
-            CommenDelete(DefineDelete);
+            foreach (var con in DefineDelete)
+            {
+                var v = GetVerify(con);
+                CommenDelete(DefineDelete);
+            }  
         }
         public string Check(SHOPEntity DefineSave)
         {
@@ -124,8 +131,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
                 new
                 {
                     shopelement = res.Item1
-                }
-                );
+                });
         }
     }
 }

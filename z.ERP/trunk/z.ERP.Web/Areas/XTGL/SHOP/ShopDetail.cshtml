@@ -1,0 +1,144 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.DefineDetail
+@inherits DefineDetailViewBase
+
+@section baseParam{
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            门店
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-select v-model="dataParam.BRANCHID" v-on:on-change="branchChange" v-bind:disabled="!disabled">
+                <i-option v-for="item in screenParam.branchData" 
+                          v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
+            </i-select>
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            区域
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-select v-model="dataParam.REGIONID" v-on:on-change="regionChange" v-bind:disabled="!disabled">
+                <i-option v-for="item in screenParam.regionData"
+                          v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
+            </i-select>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            楼层
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-select v-model="dataParam.FLOORID" v-on:on-change="floorChange" v-bind:disabled="!disabled">
+                <i-option v-for="item in screenParam.floorData"
+                          v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
+            </i-select>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            单元代码
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.CODE" v-bind:disabled="!disabled" />
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            单元名称
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.NAME" v-bind:disabled="!disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            单元类型
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<单元类型>()
+                {
+                    vModel = "dataParam.TYPE",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            管理机构
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new CascaderRender()
+                {
+                    vModel = "dataParam.ORGIDCASCADER",
+                    Data = "screenParam.ORGData",
+                    Change = "orgChange",
+                    Not_level_last = true,
+                    Enable = true
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            业态
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new CascaderRender()
+                {
+                    vModel = "dataParam.CATEGORYIDCASCADER",
+                    Data = "screenParam.CATEGORYData",
+                    Change = "categoryChange",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            租赁面积
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.AREA_RENTABLE" v-bind:disabled="!disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">使用面积</i-col>
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.AREA_USABLE" v-bind:disabled="!disabled" />
+        </i-col>
+        <i-col span="3" class="RowTitle">建筑面积</i-col>
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.AREA_BUILD" v-bind:disabled="!disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">单元状态</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<单元状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = true
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">租用状态</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<租用状态>()
+                {
+                    vModel = "dataParam.RENT_STATUS",
+                    Enable = true
+                });
+            }
+        </i-col>
+    </row>
+}

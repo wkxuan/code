@@ -870,3 +870,57 @@ Vue.component('yx-echart-pie', {
         }
     }
 });
+//弹窗组件
+Vue.component('yx-modal', {
+    props: ['src', 'modalVisible', 'width', 'height', 'title'],
+    template: `<Modal v-model="curVisible" :width="curWidth" v-on:on-visible-change="visibleChange" draggable footer-hide>` +
+                 `<div slot="header" name="header">` +
+                    `<span>{{curTitle}}</span>` +
+                 `</div>` +
+                 `<iframe :id="id" :src="src" frameborder="false" scrolling="no" style="border:none;"` +
+                          `width="100%" :height="curHeight"></iframe>` +
+            `</Modal>`,
+    data() {
+        return {
+            id: Guid(),
+            curWidth: null,
+            curVisible: false,
+            curHeight: "350px"
+        }
+    },
+    mounted() {
+        this.curWidth = this.width || 900;
+        if (this.height) {
+            this.curHeight = this.height + "px";
+        }
+    },
+    watch: {
+        modalVisible: {
+            handler: function (nv, ov) {
+                this.curVisible = nv;
+            }
+        },
+        src: {
+            handler: function (nv, ov) {
+                let _iframe1 = window.document.getElementById(this.id);
+                _iframe1.contentWindow.location.reload();
+            }
+        }
+    },
+    computed: {
+        curTitle() {
+            return this.title || "弹窗";
+        }
+    },
+    methods: {
+        visibleChange() {
+            let iframe = document.getElementById(this.id);
+            let iwindow = iframe.contentWindow;
+            if (!this.curVisible) {
+                this.$emit('update:modalVisible', this.curVisible);
+            } else {
+                iwindow.location.reload(true);
+            }
+        }
+    }
+});

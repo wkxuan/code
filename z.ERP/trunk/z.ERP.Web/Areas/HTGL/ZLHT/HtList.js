@@ -29,38 +29,46 @@
         }
     ];
 
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-    search.screenParam.showPopSysuser = false;
-    search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
+    search.screenParam.showPop = false;
+    search.screenParam.srcPop = null;
+    search.screenParam.title = null;
     search.screenParam.popParam = {};
 }
 
 search.otherMethods = {
     SelSigner: function () {
-        search.screenParam.showPopSysuser = true;
+        search.screenParam.title = "选择合同员";
+        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.screenParam.showPop = true;
         btnFlag = "SIGNER";
         search.screenParam.popParam = { USER_TYPE: "7" };
     },
     SelReporter: function () {
-        search.screenParam.showPopSysuser = true;
+        search.screenParam.title = "选择登记人";
+        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.screenParam.showPop = true;
         btnFlag = "REPORTER";
         search.screenParam.popParam = {};
     },
     SelVerify: function () {
-        search.screenParam.showPopSysuser = true;
+        search.screenParam.title = "选择审核人";
+        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.screenParam.showPop = true;
         btnFlag = "VERIFY";
         search.screenParam.popParam = {};
     },
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.title = "选择商户";
+        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.screenParam.showPop = true;
+        btnFlag = "Merchant";
     }
 }
 
 //接收子页面返回值
 search.popCallBack = function (data) {
-    if (search.screenParam.showPopSysuser) {
-        search.screenParam.showPopSysuser = false;
+    if (search.screenParam.showPop) {
+        search.screenParam.showPop = false;
         for (var i = 0; i < data.sj.length; i++) {
             if (btnFlag == "SIGNER") {
                 search.searchParam.SIGNER_NAME = data.sj[i].USERNAME;
@@ -71,34 +79,13 @@ search.popCallBack = function (data) {
             else if (btnFlag == "VERIFY") {
                 search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
             }
+            else if (btnFlag == "Merchant") {
+                search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+                search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            }
         };
     }
-
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
-        }
-    }
 };
-
-search.browseHref = function (row, index) {
-    if (row.HTLX == 1) {
-        _.OpenPage({
-            id: 10600200,
-            title: '浏览租赁租约详情',
-            url: "HTGL/ZLHT/HtDetail/" + row.CONTRACTID
-        })
-    }
-    else {
-        _.OpenPage({
-            id: 10600200,
-            title: '浏览租赁租约变更详情',
-            url: "HTGL/ZLHT_BG/ZlHt_BgDetail/" + row.CONTRACTID
-        })
-    }
-}
 
 search.addHref = function (row) {
     _.OpenPage({
@@ -108,52 +95,3 @@ search.addHref = function (row) {
     });
 
 }
-
-search.modHref = function (row, index) {
-    _.Search({
-        Service: search.service,
-        Method: search.method,
-        Data: { CONTRACTID: row.CONTRACTID },
-        Success: function (data) {
-            if (data.rows[0].STATUS == 1) {
-                if (row.HTLX == 1) {
-                    _.OpenPage({
-                        id: 10600201,
-                        title: '编辑租赁租约',
-                        url: "HTGL/ZLHT/HtEdit/" + row.CONTRACTID
-                    });
-                };
-                if (row.HTLX == 2) {
-                    _.OpenPage({
-                        id: 10600203,
-                        title: '变更租赁租约',
-                        url: "HTGL/ZLHT_BG/ZlHt_BgEdit/" + row.CONTRACTID
-                    });
-                };
-            } else {
-                iview.Message.info('当前租约信息不是未审核状态,不能编辑!');
-                return;
-            }
-        }
-    })
-}
-
-search.bgHref = function (row, index) {
-    if (row.HTLX == 2) {
-        iview.Message.info('当前租约已经是变更后的，不能在进行变更!');
-        return;
-    }
-    else {
-        if (row.STATUS == 1) {
-            iview.Message.info('当前租约尚未审核，要修改请直接编辑!');
-            return;
-        }
-        else {
-            _.OpenPage({
-                id: 10600203,
-                title: '变更租赁租约',
-                url: "HTGL/ZLHT_BG/ZlHt_BgEdit/" + row.CONTRACTID
-            });
-        };
-    };
-};

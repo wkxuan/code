@@ -1,7 +1,7 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<DropDownListsRender>
 
-<i-select v-model="@Model.vModel" :disabled="@(Model.Enable?"!disabled":"disabled")" v-on:on-change="@Model.Change">
+<i-select v-model="@Model.vModel" transfer :disabled="@(Model.Enable?"!disabled":"disabled")" v-on:on-change="@Model.Change">
     @{
         if (!Model.EmptyText.IsEmpty())
         {

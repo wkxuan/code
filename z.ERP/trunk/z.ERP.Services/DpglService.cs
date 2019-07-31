@@ -16,7 +16,6 @@ namespace z.ERP.Services
         internal DpglService()
         {
         }
-
         public DataGridResult SearchRegion(SearchItem item)
         {
             string sql = $@"SELECT A.REGIONID,A.CODE,A.NAME FROM REGION A WHERE 1=1";
@@ -30,7 +29,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public Tuple<dynamic, DataTable> GetRegion(REGIONEntity Data)
         {
             string sql = "select A.*,B.ORGIDCASCADER from REGION A,ORG B where A.ORGID=B.ORGID(+)";
@@ -46,7 +44,6 @@ namespace z.ERP.Services
             DataTable region = DbHelper.ExecuteTable(sql);
             return new Tuple<dynamic, DataTable>(region.ToOneLine(), region);
         }
-
         public DataGridResult SearchFloor(SearchItem item)
         {
             string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
@@ -61,8 +58,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
-
         /// <summary>
         /// 可返回一行楼层记录或符合条件的所有记录
         /// </summary>
@@ -81,22 +76,27 @@ namespace z.ERP.Services
             DataTable floor = DbHelper.ExecuteTable(sql);
             return new Tuple<dynamic,DataTable>(floor.ToOneLine(),floor);
         }
-
         public DataGridResult SearchShop(SearchItem item)
         {
-            string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME " +
-                   "  FROM SHOP A,CATEGORY B,ORG C,BRANCH D,FLOOR F "
+            string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,"
+                   + " B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME,R.NAME REGIONNAME,C.ORGNAME "
+                   + " FROM SHOP A,CATEGORY B,ORG C,BRANCH D,FLOOR F,REGION R "
                    + " WHERE  A.CATEGORYID = B.CATEGORYID(+) and A.ORGID=C.ORGID(+)"
-                   + " and A.BRANCHID = D.ID and A.FLOORID=F.ID"
+                   + " and A.BRANCHID = D.ID and A.FLOORID=F.ID and A.REGIONID=R.REGIONID "
                    + " and D.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             item.HasKey("FLOORID", a => sql += $" and A.FLOORID = '{a}'");
             item.HasKey("REGIONID", a => sql += $" and A.REGIONID = {a}");
-            sql += " ORDER BY  A.CODE";
+            item.HasKey("AREA_RENTABLE_S", a => sql += $" and A.AREA_RENTABLE >= {a}");
+            item.HasKey("AREA_RENTABLE_E", a => sql += $" and A.AREA_RENTABLE <= {a}");
+            sql += " ORDER BY A.SHOPID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<单元类型>("TYPE", "TYPEMC");
+            dt.NewEnumColumns<单元状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<租用状态>("RENT_STATUS", "RENT_STATUSMC");
             return new DataGridResult(dt, count);
         }
         /// <summary>
@@ -147,7 +147,6 @@ namespace z.ERP.Services
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
-
         public void DeleteAssetChange(List<ASSETCHANGEEntity> DeleteData)
         {
             foreach (var item in DeleteData)
@@ -167,7 +166,6 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
         }
-
         public string SaveAssetChange(ASSETCHANGEEntity SaveData)
         {
             var v = GetVerify(SaveData);
@@ -194,8 +192,6 @@ namespace z.ERP.Services
             }
             return SaveData.BILLID;
         }
-
-
         public Tuple<dynamic, DataTable, DataTable> GetAssetChangeElement(ASSETCHANGEEntity Data)
         {
             //此处校验一次只能查询一个单号,校验单号必须存在
@@ -256,7 +252,6 @@ namespace z.ERP.Services
             }
             return assetchange.BILLID;
         }
-
         /// <summary>
         /// 资产拆分审核
         /// </summary>
@@ -358,7 +353,6 @@ namespace z.ERP.Services
             }
             return SaveData.MAPID;
         }
-
         public Tuple<dynamic, DataTable> GetFloorMapElement(FLOORMAPEntity Data)
         {
             if (Data.MAPID.IsEmpty())
@@ -383,7 +377,6 @@ namespace z.ERP.Services
             DataTable floorshop = DbHelper.ExecuteTable(sqlitem);
             return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorshop);
         }
-
         public Tuple<dynamic, DataTable> GetFloorMapAdjustElement(FLOORMAPEntity Data)
         {
             if (Data.MAPID.IsEmpty())
@@ -520,7 +513,6 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
         }
-
         /// <summary>
         /// 详情页的审核
         /// </summary>
@@ -544,7 +536,6 @@ namespace z.ERP.Services
             }
             return map.MAPID;
         }
-
         /// <summary>
         /// 详情页的作废
         /// </summary>
@@ -568,6 +559,5 @@ namespace z.ERP.Services
             }
             return map.MAPID;
         }
-
     }
 }

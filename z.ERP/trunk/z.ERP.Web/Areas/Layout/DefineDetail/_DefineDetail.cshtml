@@ -1,0 +1,45 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Layout.DefineDetail
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+                    "Areas/Layout/DefineDetail/DefineDetailStyle.css",
+                    "Areas/Layout/DefineDetail/_DefineDetail.js"
+                };
+}
+@section head{
+    @InitFiles(WebFiles)
+    @RenderSection("head", false)
+}
+
+<div id="DefineDetail">
+    <div class="contentDiv">
+        @RenderSection("baseParam", false)
+    </div>
+    <div class="btnDiv">
+        <yx-tool-bar v-bind:list="list" v-bind:disabled="disabled" 
+                     v-bind:domdata="dataParam"></yx-tool-bar>
+    </div>
+    <div class="hide">
+        @RenderSection("hide", false)
+        @RenderSection("pops", false)
+    </div>
+</div>
+
+@section foot{
+    @RenderSection("foot", false)
+}
+@{
+    if (Model != null && !string.IsNullOrEmpty(Model?.Id))
+    {
+        <script type="text/javascript">
+            $(function () {
+                defineDetail.Id = "@Model.Id";
+            });
+        </script>
+    }
+}

@@ -94,30 +94,6 @@
     </row>
 }
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopMerchant",
-                    Caption = "选择商户",
-                    Width = "900",
-                    Src = "screenParam.srcPopMerchant"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopSysuser",
-                    Src = "screenParam.srcPopSysuser",
-                    Caption = "选择人员",
-                    Width = "800"
-                });
-            }
-        </i-col>
-    </row>
+    <yx-modal v-bind:src="screenParam.srcPop"  v-bind:title = "screenParam.title" width="900" height="400"
+              v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }

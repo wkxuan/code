@@ -1,0 +1,54 @@
+﻿#def_Main {
+    overflow: hidden;
+}
+
+    #def_Main .ivu-table .demo-table-info-row td {
+        height: 35px;
+    }
+
+    #def_Main .ivu-table .demo-table-error-row td {
+        height: 35px;
+    }
+
+    #def_Main .ivu-collapse-header .ivu-btn {
+        color: #fff;
+    }
+
+        #def_Main .ivu-collapse-header .ivu-btn:hover {
+            color: #000000;
+        }
+
+    #def_Main .ivu-table th {
+        background: radial-gradient(red -24%, yellow 100%);
+        color: #fff;
+    }
+
+    #def_Main .ivu-collapse-header {
+        height: 35px !important;
+        line-height: 35px !important;
+        font-size: 12px;
+        font-weight: bold;
+        color: #fff;
+        background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);
+    }
+
+    #def_Main .searchParamContent {
+        padding-top: 10px;
+        color: #fff;
+        background: linear-gradient(#b0aacac2 -24%, #000000a6 100%);
+    }
+
+    #def_Main .ivu-table-tip td {
+        color: #fff;
+        background: linear-gradient(#b0aacac2 -24%, #000000a6 100%);
+    }
+
+    #def_Main .ivu-collapse-content {
+        width: 100%;
+        height: 100%;
+        padding: 0 !important;
+    }
+
+        #def_Main .ivu-collapse-content > .ivu-collapse-content-box {
+            padding: 0 !important;
+        }
