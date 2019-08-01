@@ -157,7 +157,12 @@ editDetail.otherMethods = {
             iview.Message.info("请选择商户!");
             return;
         };
-        editDetail.screenParam.showPopInvoice = true;       
+        editDetail.screenParam.showPopInvoice = true;
+        editDetail.screenParam.popParam = {
+            MERCHANTID: editDetail.dataParam.MERCHANTID, BRANCHID: editDetail.dataParam.BRANCHID, STATUS: 1,
+            SqlCondition: " not exists(select 1 from BILL_OBTAIN_INVOICE  where BILL_OBTAIN_INVOICE.INVOICEID=I.INVOICEID)"
+            };
+
     },
     delInvoice: function () {
         var selectton = this.$refs.refINVOICE.getSelection();

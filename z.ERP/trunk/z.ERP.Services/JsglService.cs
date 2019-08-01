@@ -604,7 +604,7 @@ namespace z.ERP.Services
             if (billNotice.STATUS == ((int)普通单据状态.审核).ToString())
             {
                 throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
-            }
+            }           
             using (var Tran = DbHelper.BeginTransaction())
             {
                 billNotice.VERIFY = employee.Id;
@@ -726,18 +726,22 @@ namespace z.ERP.Services
         #region 发票管理
         public DataGridResult GetInvoiceList(SearchItem item)
         {
-            string sql = @"SELECT I.*,M.NAME MERCHANTNAME,1 STATUS FROM INVOICE I,MERCHANT M
-                    WHERE I.MERCHANTID=M.MERCHANTID ";
+            string sql = @"SELECT I.*,M.NAME MERCHANTNAME FROM INVOICE I,MERCHANT M
+                    WHERE I.MERCHANTID=M.MERCHANTID AND I.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";
+            item.HasKey("BRANCHID", a => sql += $" and I.BRANCHID = {a}");
+            item.HasKey("STATUS", a => sql += $" and I.STATUS = {a}");
             item.HasKey("INVOICEID", a => sql += $" and I.INVOICEID = {a}");
             item.HasKey("INVOICENUMBER", a => sql += $" and I.INVOICENUMBER = {a}");
             item.HasKey("TYPE", a => sql += $" and I.TYPE={a}");
             item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
             item.HasDateKey("INVOICEDATE", a => sql += $" and I.INVOICEDATE={a}");
-            sql += " ORDER BY  I.CREATEDATE DESC";
+            item.HasKey("SqlCondition", a => sql += $" and {a}");       //POP参数，发票只能用一次
+            sql += " ORDER BY  I.REPORTER_TIME DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<发票类型>("TYPE", "TYPENAME");
+            dt.NewEnumColumns<发票状态>("STATUS", "STATUSNAME");
             return new DataGridResult(dt, count);
         }
         public string SaveInvoice(InvoiceEntity SaveData) {
@@ -745,9 +749,10 @@ namespace z.ERP.Services
             if (SaveData.INVOICEID.IsEmpty()) {
                 SaveData.INVOICEID = NewINC("INVOICE");
                 SaveData.NOVATAMOUNT = (Convert.ToDecimal(SaveData.INVOICEAMOUNT) - Convert.ToDecimal(SaveData.VATAMOUNT)).ToString();
-                SaveData.CREATEUSERID= employee.Id;
-                SaveData.CREATENAME = employee.Name;
-                SaveData.CREATEDATE = DateTime.Now.ToString();
+                SaveData.REPORTER= employee.Id;
+                SaveData.REPORTER_NAME = employee.Name;
+                SaveData.REPORTER_TIME = DateTime.Now.ToString();
+                SaveData.STATUS = ((int)发票状态.已开具).ToString();
                 v.Require(a => a.INVOICEID);
                 v.Verify();
             }
@@ -759,7 +764,24 @@ namespace z.ERP.Services
             {
                 foreach (var item in DeleteData)
                 {
-                    DbHelper.Delete(item);
+                    var sql = "select * from BILL_OBTAIN_INVOICE where INVOICEID ="+ item.INVOICEID + "";
+                    DataTable dt = DbHelper.ExecuteTable(sql);
+                    if (item.STATUS == ((int)发票状态.已作废).ToString())
+                    {
+                        throw new LogicException("发票：(" + item.INVOICEID + ")已作废请勿重复操作!");
+                    }
+                    if (item.STATUS == ((int)发票状态.已核销).ToString())
+                    {
+                        throw new LogicException("发票：(" + item.INVOICEID + ")已核销不能作废!");                   
+                    }
+                    if (dt.Rows.Count>0) {
+                        throw new LogicException("发票：(" + item.INVOICEID + ")已关联核销单不能作废!");
+                    }
+                    item.DISCARD = employee.Id;
+                    item.DISCARD_NAME = employee.Name;
+                    item.DISCARD_TIME = DateTime.Now.ToString();
+                    item.STATUS = ((int)发票状态.已作废).ToString();
+                    DbHelper.Save(item);
                 }
                 Tran.Commit();
             }

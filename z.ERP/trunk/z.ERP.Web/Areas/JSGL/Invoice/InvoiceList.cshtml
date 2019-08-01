@@ -4,11 +4,33 @@
 @inherits SearchViewBase
 @section conditionParam{
     <row>
-        
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            发票状态
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<发票状态>()
+                {
+                    vModel = "searchParam.STATUS",
+                });
+            }
+        </i-col>
         <i-col span="2" class="RowTitle">发票号码</i-col>
         <i-col span="6" class="RowText">
             <i-input v-model="searchParam.INVOICENUMBER" />
         </i-col>
+    </row>
+    <row>
         <i-col span="2" class="RowTitle">
             发票类型
         </i-col>
@@ -20,8 +42,6 @@
                 });
             }
         </i-col>
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
             商户
         </i-col>

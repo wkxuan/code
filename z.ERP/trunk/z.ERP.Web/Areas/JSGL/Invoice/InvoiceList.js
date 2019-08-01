@@ -13,8 +13,9 @@
         { title: "不含税金额", key: "NOVATAMOUNT", width: 100 },
         { title: "增值税金额", key: "VATAMOUNT", width: 100 },
         { title: "发票金额", key: "INVOICEAMOUNT", width: 100 },
-        { title: "创建人", key: "CREATENAME", width: 150 },
-        { title: "创建时间", key: "CREATEDATE", width: 150 },
+        { title: "发票状态", key: "STATUSNAME", width: 150 },
+        { title: "创建人", key: "REPORTER_NAME", width: 150 },
+        { title: "创建时间", key: "REPORTER_TIME", width: 150 },
         {
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({

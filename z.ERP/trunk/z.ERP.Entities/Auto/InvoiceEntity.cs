@@ -70,13 +70,13 @@ namespace z.ERP.Entities.Auto
         /// <summary>
         /// 录入人id
         /// </summary>
-        public string CREATEUSERID {
+        public string REPORTER {
             set; get;
         }
         /// <summary>
         /// 录入人姓名
         /// </summary>
-        public string CREATENAME
+        public string REPORTER_NAME
         {
             set; get;
         }
@@ -84,7 +84,39 @@ namespace z.ERP.Entities.Auto
         /// 创建时间
         /// </summary>
         [DbType(DbType.DateTime)]
-        public string CREATEDATE { set; get; }
-
+        public string REPORTER_TIME { set; get; }
+        /// <summary>
+        /// 作废人id
+        /// </summary>
+        public string DISCARD
+        {
+            set; get;
+        }
+        /// <summary>
+        /// 作废人姓名
+        /// </summary>
+        public string DISCARD_NAME
+        {
+            set; get;
+        }
+        /// <summary>
+        /// 作废时间
+        /// </summary>
+        [DbType(DbType.DateTime)]
+        public string DISCARD_TIME { set; get; }
+        /// <summary>
+        /// 门店
+        /// </summary>
+        public string BRANCHID
+        {
+            set; get;
+        }
+        /// <summary>
+        ///状态
+        /// </summary>
+        public string STATUS
+        {
+            set; get;
+        }
     }
 }

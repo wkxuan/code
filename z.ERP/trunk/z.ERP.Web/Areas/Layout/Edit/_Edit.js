@@ -167,8 +167,13 @@
                     let _self = this;
                     _.MessageBox("确认放弃正在编辑的内容？", function () {
                         _self.disabled = false;
+                        let flag = false;
                         for (let item in _this.backData) {
+                            flag = true;
                             _self.dataParam[item] = _this.backData[item];
+                        }
+                        if (!flag) {
+                            _self.dataParam = {};
                         }
                         _this.afterAbandon();
                     }, function () {

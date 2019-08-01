@@ -21,7 +21,7 @@
     <div class="topMenuBtn">
         <yx-tool-bar v-bind:list="list" v-bind:disabled="disabled" v-bind:domdata="dataParam"></yx-tool-bar>
     </div>
-    <div>
+    <div class="centerContent">
         <Collapse v-model="collapseValue">
             <Panel name="1">
                 基本信息
@@ -67,8 +67,6 @@
                 </div>
             </Panel>
         </Collapse>
-    </div>
-    <div>
         <Card v-bind:padding=0>
             <row>
                 <i-col span="2" class="RowTitle">
