@@ -102,6 +102,17 @@ editDetail.clearKey = function () {
 };
 
 editDetail.showOne = function (data, callback) {
+    _.Ajax('SearchInit', {
+        Data: {}
+    }, function (datas) {
+        Vue.set(editDetail.screenParam, "ORGData", datas.treeOrg.Obj);
+        Vue.set(editDetail.screenParam, "USERMODULE", datas.module);
+        Vue.set(editDetail.screenParam, "fee", datas.fee);
+        Vue.set(editDetail.screenParam, "ytTreeData", datas.ytTree);
+        Vue.set(editDetail.screenParam, "region", datas.region);
+        Vue.set(editDetail.screenParam, "BRANCH", datas.branch);
+        Vue.set(editDetail.screenParam, "Alert", datas.alert);
+    
         _.Ajax('SearchRole', {
             Data: { ROLEID: data }
         }, function (data) {
@@ -179,6 +190,7 @@ editDetail.showOne = function (data, callback) {
                 editDetail.screenParam.ytTreeData = data.ytTreeData;                
             };
         });
+    });
     callback && callback();
 }
 
