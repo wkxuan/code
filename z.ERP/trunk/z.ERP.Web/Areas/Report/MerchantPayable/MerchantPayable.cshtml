@@ -13,8 +13,9 @@
                 {
                     vModel = "searchParam.BRANCHID",
                     ServiceMothod = m => m.branch(),
+                    Multiple = true
                 });
-            }
+            }       
         </i-col>
         <i-col span="2" class="RowTitle">
             收费项目类型
@@ -23,7 +24,8 @@
             @{
                 RenderControl(new EnumDropDownListRender<收费项目类型>()
                 {
-                    vModel = "searchParam.SFXMLX"
+                    vModel = "searchParam.SFXMLX",
+                    Multiple = true
                 });
             }
         </i-col>
@@ -57,6 +59,7 @@
                 {
                     vModel = "searchParam.SFXM",
                     ServiceMothod = m => m.feesubject(),
+                    Multiple = true
                 });
             }
         </i-col>

@@ -12,6 +12,9 @@
     height: 40px;
     line-height: 30px;
     padding-right: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .RowText {
@@ -77,10 +80,11 @@
 .ivu-modal-body {
     padding: 0 !important;
 }
-.ivu-modal-body iframe{
-    margin-bottom: -5px;
-}
-  
+
+    .ivu-modal-body iframe {
+        margin-bottom: -5px;
+    }
+
 .ivu-btn {
     padding: 0 5px !important;
 }

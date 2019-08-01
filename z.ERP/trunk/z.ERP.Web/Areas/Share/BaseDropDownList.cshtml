@@ -1,7 +1,7 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @inherits z.ERP.Web.Areas.Share.ControlViewBase<DropDownListRender>
 
-<i-select v-model="@Model.vModel" :disabled="@(Model.Enable?"!disabled":"disabled")"
+<i-select v-model="@Model.vModel" :multiple="@(Model.Multiple?"true":"false")" :disabled="@(Model.Enable?"!disabled":"disabled")"
           v-on:on-change="@Model.Change" transfer>
     @{
         foreach (var item in Model.Data)
