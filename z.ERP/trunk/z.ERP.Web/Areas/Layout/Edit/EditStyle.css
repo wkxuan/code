@@ -1,8 +1,13 @@
 ﻿#edit {
     overflow: hidden;
+    position: relative;
 }
 
     #edit .topMenuBtn {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
         text-align: center;
         background: radial-gradient(#0099ff -2%, #000000a6 100%);
     }
@@ -14,6 +19,16 @@
             #edit .topMenuBtn .ivu-btn:hover {
                 color: #000000;
             }
+
+    #edit .centerContent {
+        height: calc(100% - 40px);
+        position: fixed;
+        overflow: auto;
+        overflow-x: hidden;
+        width: 100%;
+        left: 0;
+        top: 40px;
+    }
 
     #edit .ivu-table .demo-table-info-row td {
         height: 35px;
