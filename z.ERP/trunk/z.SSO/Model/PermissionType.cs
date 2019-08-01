@@ -43,6 +43,13 @@ namespace z.SSO.Model
         /// <summary>
         /// 预警项目
         /// </summary>
-        Alert = 8
+        Alert = 8,
+
+        /// <summary>
+        /// 部门(包含上级部门)
+        /// </summary>
+        FullOrg = 9
+
+
     }
 }

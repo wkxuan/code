@@ -69,14 +69,19 @@ namespace z.ERP.Services
 
         public List<SelectItem> org_hs()
         {
-            string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE  ORG_TYPE=" + ((int)部门类型.核算部门).ToString() + "   ORDER BY  A.ORGID ";
+            string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE  ORG_TYPE=" + ((int)部门类型.核算部门).ToString() +
+                         "     AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")" +
+                         "   ORDER BY  A.ORGID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
 
         public List<SelectItem> org_zs()
         {
-            string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE LEVEL_LAST="+ ((int)末级标记.末级).ToString() + " AND  ORG_TYPE=" + ((int)部门类型.招商部门).ToString() + "   ORDER BY  A.ORGID ";
+            string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE LEVEL_LAST="+ ((int)末级标记.末级).ToString() + 
+                            "  AND  ORG_TYPE=" + ((int)部门类型.招商部门).ToString() +
+                            "  AND  A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")" +
+                            "  ORDER BY  A.ORGID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
@@ -277,7 +282,7 @@ namespace z.ERP.Services
         /// <returns></returns>
         public Tuple<dynamic> GetTreeOrg()
         {
-            string sql = "select ORGID,ORGCODE,ORGNAME,ORG_TYPE,LEVEL_LAST,BRANCHID,VOID_FLAG from ORG where 1=1 and ORGID in (" + GetPermissionSql(PermissionType.Org) + ")"; //部门权限
+            string sql = "select ORGID,ORGCODE,ORGNAME,ORG_TYPE,LEVEL_LAST,BRANCHID,VOID_FLAG from ORG where 1=1 and ORGID in (" + GetPermissionSql(PermissionType.FullOrg) + ")"; //部门权限
 
             sql += " order by ORGCODE";
 
