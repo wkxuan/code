@@ -14,7 +14,7 @@
 @section content{
     <row>
         <i-col span="24">           
-            <un-edit-table v-bind:options="options"></un-edit-table>
+            <yx-table v-bind:columns="columns" v-bind:data="data"></yx-table>
         </i-col>
     </row>
 }
@@ -26,10 +26,8 @@
             data: {
                 Mainpanel: 'condition',
                 disabled: true,
-                options:{
-                    columns: [],
-                    data:[],
-                },
+                columns: [],
+                data:[]
             },
             mounted: function () {
                 var _self = this;
@@ -45,9 +43,8 @@
                             width: parseInt(data.alertCol[i].WIDTH)
                         });
                     };
-                    Vue.set(_self.options, "columns", colList);
-                    Vue.set(_self.options, "data", data.alertData);
-
+                    _self.columns=colList;
+                    _self.data=data.alertData;
                 });
             }
         });
