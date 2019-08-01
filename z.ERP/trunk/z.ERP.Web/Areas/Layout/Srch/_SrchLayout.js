@@ -15,7 +15,7 @@
     this.afterResult = function (data) { }
     //echart初始化函数
     this.echartInit = function (data) { }
-    
+
     this.canEdit = function (mess) {
         return true;
     }
@@ -118,10 +118,18 @@
             ve.data = [];
             ve.pagedataCount = 0;
             ve.tbLoading = true;
+            let param = {};
+            for (let item in ve.searchParam) {
+                if (Array.isArray(ve.searchParam[item])) {
+                    param[item] = ve.searchParam[item].join(',');
+                } else {
+                    param[item] = ve.searchParam[item];
+                }
+            }
             _.Search({
                 Service: _this.service,
                 Method: _this.method,
-                Data: ve.searchParam,
+                Data: param,
                 PageInfo: {
                     PageSize: ve.pageSize,
                     PageIndex: ve.currentPage - 1
@@ -144,7 +152,7 @@
                 Error: function () {
                     ve.tbLoading = false;
                 }
-            })
+            });
         };
     }
 

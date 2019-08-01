@@ -1614,12 +1614,12 @@ namespace z.ERP.Services
                              "  where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID" +
                              "    and b.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
-            item.HasKey("BRANCHID", a => sqlParam += $" and b.BRANCHID ={a}");
+            item.HasKey("BRANCHID", a => sqlParam += $" and b.BRANCHID in ({a})");
             item.HasKey("MERCHANTID", a => sqlParam += $" and b.MERCHANTID ={a}");
             item.HasKey("NIANYUE", a => sqlParam += $" and b.NIANYUE ={a}");
             item.HasKey("YEARMONTH", a => sqlParam += $" and b.YEARMONTH ={a}");
-            item.HasKey("SFXMLX", a => sqlParam += $" and f.TYPE ={a}");
-            item.HasKey("SFXM", a => sqlParam += $" and b.TERMID ={a}");
+            item.HasKey("SFXMLX", a => sqlParam += $" and f.TYPE in ({a})");
+            item.HasKey("SFXM", a => sqlParam += $" and b.TERMID in ({a})");
         
             sqlSfxm += sqlParam;
             var resData = DbHelper.ExecuteTable(sqlSfxm);

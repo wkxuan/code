@@ -46,7 +46,14 @@ namespace z.ERP.Web.Areas.Share.Render
             get;
             set;
         }
-
+        /// <summary>
+        /// 是否可以多选
+        /// </summary>
+        public virtual bool Multiple
+        {
+            get;
+            set;
+        }
         public string Change
         {
             get;
