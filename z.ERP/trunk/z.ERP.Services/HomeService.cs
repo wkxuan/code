@@ -8,6 +8,7 @@ using z.ERP.Entities.Enum;
 using z.SSO.Model;
 using System.Linq;
 using z.Encryption;
+using System.Web;
 
 namespace z.ERP.Services
 {
@@ -17,6 +18,41 @@ namespace z.ERP.Services
         internal HomeService()
         {
         }
+
+
+        /// <summary>
+        /// 获取一个菜单的url
+        /// </summary>
+        /// <param name="menuid"></param>
+        /// <returns></returns>
+        public string GetMenuUrl(string menuid)
+        {
+            if (menuid.IsEmpty())
+                return null;
+            MENUEntity menu = DbHelper.ExecuteOneObject<MENUEntity>($"select id,url from MENU where id='{menuid}'");
+            if (menu == null)
+                throw new Exception($"找不到菜单{menuid}");
+            List<PLATFORMEntity> allp = DbHelper.SelectList(new PLATFORMEntity() { ID = menu.PLATFORMID });
+            PLATFORMEntity ps = allp.FirstOrDefault(a => HttpContext.Current.Request.Url.Host.IsRegexMatch(a.MATCH));
+            if (ps == null)
+                ps = allp.First();
+            return ps.DOMAIN + menu.URL;
+        }
+
+        /// <summary>
+        /// 获取一个ERP服务域名
+        /// </summary>
+        /// <param name="menuid"></param>
+        /// <returns></returns>
+        public string GetErpDomain()
+        {
+            List<PLATFORMEntity> allp = DbHelper.SelectList(new PLATFORMEntity() { ID = "1" });
+            PLATFORMEntity ps = allp.FirstOrDefault(a => HttpContext.Current.Request.Url.Host.IsRegexMatch(a.MATCH));
+            if (ps == null)
+                ps = allp.First();
+            return ps.DOMAIN;
+        }
+
 
         /// <summary>
         /// 获取所有菜单
@@ -258,9 +294,9 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
         }
         public DataTable DclrwData()
         {
-            var sql = @" select B.MENUID,M.NAME,C.NAME BRANCHMC ,B.URL ,BILLID,P.ID PLATFORMID ,P.DOMAIN DOMAIN  "
-                     + "   from BILLSTATUS B,MENU M,BRANCH C,PLATFORM P "
-                     + "  where B.MENUID=M.ID and B.BRABCHID =C.ID AND P.ID=M.PLATFORMID " 
+            var sql = @" select B.MENUID,M.NAME,C.NAME BRANCHMC ,B.URL ,BILLID "
+                     + "   from BILLSTATUS B,MENU M,BRANCH C"
+                     + "  where B.MENUID=M.ID and B.BRABCHID =C.ID  " 
                      + "    and M.ID in (" + GetPermissionSql(PermissionType.Menu) + ")"      //菜单权限
                      + "    and C.ID in (" + GetPermissionSql(PermissionType.Branch) + ")"    //门店权限
                      + "  order by  B.MENUID ";
@@ -285,8 +321,8 @@ and A1.ROLEID = B1.ROLEID and B1.MENUID = C1.MENUID and C1.MENUID = A.MENUID )")
         }
         public Tuple<dynamic, int> AlertData()
         {
-            var sql = @" select DEF_ALERT.ID,MC,XSSX,SQLSTR, 0 COUNT,PLATFORM.DOMAIN FROM DEF_ALERT,PLATFORM 
-                          where PLATFORM.ID=1 and DEF_ALERT.ID in ("+ GetPermissionSql(PermissionType.Alert) + ") ORDER BY XSSX ";
+            var sql = @" select DEF_ALERT.ID,MC,XSSX,SQLSTR, 0 COUNT FROM DEF_ALERT
+                          where DEF_ALERT.ID in ("+ GetPermissionSql(PermissionType.Alert) + ") ORDER BY XSSX ";
 
             var count = 0;
             DataTable dt = DbHelper.ExecuteTable(sql);

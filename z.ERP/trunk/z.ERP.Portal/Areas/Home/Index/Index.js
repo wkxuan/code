@@ -144,6 +144,9 @@ function GetLoadNav(systemid) {
         };
     });
 }
+
+var erpDomain = "";
+
 //添加vue模块
 var Index = new Vue({
     el: '#Badge',
@@ -234,6 +237,7 @@ var Index = new Vue({
         AllTopData: function () {
             let _Index = this;
             _.AjaxT('AllTopData', { 1: 1 }, function (data) {     //为防止与目录加载冲突，用同步加载   AjaxT
+                erpDomain = data.erpdomain;
                 _Index.BadgeNO = parseInt(data.noticecount) + parseInt(data.dclrwcount) + parseInt(data.alertcount);
                 _Index.dclrw = (h) => {
                     return h('div', [
@@ -275,7 +279,7 @@ var Index = new Vue({
             _.OpenPage({
                 id: event.MENUID,
                 title: event.NAME,
-                url: event.DOMAIN+event.URL + event.BILLID
+                url: erpDomain + event.URL + event.BILLID
             })
         },
         //消息详情
@@ -320,8 +324,8 @@ var Index = new Vue({
             Index.DrawerModel = false;   //先关闭抽屉在打开tab
             _.OpenPage({
                 id: event.ID,
-                title: event.MC+ "浏览",
-                url: event.DOMAIN + "XTGL/AlertShow/AlertShow/" + event.ID
+                title: event.MC+ "浏览", 
+                url: erpDomain + "XTGL/AlertShow/AlertShow/" + event.ID
             })
         },
     },

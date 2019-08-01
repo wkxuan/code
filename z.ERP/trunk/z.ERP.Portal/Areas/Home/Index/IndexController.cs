@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using z.SSO;
+﻿using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
 using z.MVC5.Results;
@@ -28,6 +23,7 @@ namespace z.ERP.Web.Areas.Home.Index
             var Noticedata= service.HomeService.NoticeData(1);   //通知公告
             var Dclrwdata = service.HomeService.DclrwData();  //待处理任务
             var Alertdata= service.HomeService.AlertData();    //预警数据
+            var ErpDomain = service.HomeService.GetErpDomain();
             return new UIResult(
                 new
                 {
@@ -36,7 +32,8 @@ namespace z.ERP.Web.Areas.Home.Index
                     noticedata = Noticedata,
                     noticecount = Noticedata.Rows.Count > 0 ? Noticedata.Rows.Count : 0,
                     alertdata = Alertdata.Item1,
-                    alertcount = Alertdata.Item2
+                    alertcount = Alertdata.Item2,
+                    erpdomain = ErpDomain
                 }
                 );
         }
