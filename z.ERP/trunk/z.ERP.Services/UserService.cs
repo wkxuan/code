@@ -229,6 +229,9 @@ namespace z.ERP.Services
             v.IsUnique(a => a.ROLECODE);
             v.Require(a => a.ROLENAME);
             v.Require(a => a.ORGID);
+            if (SaveData.VOID_FLAG!="1") {
+                SaveData.VOID_FLAG = "2";       //标记有null数据， 不为1得全部置为2 
+            }
             v.Verify();
             using (var Tran = DbHelper.BeginTransaction())
             {

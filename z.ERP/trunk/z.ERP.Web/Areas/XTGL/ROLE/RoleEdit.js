@@ -197,6 +197,18 @@ editDetail.showOne = function (data, callback) {
 }
 
 editDetail.IsValidSave = function () {
+    if (!editDetail.dataParam.ROLECODE) {
+        iview.Message.info("角色代码不能为空!");
+        return false;
+    }
+    if (!editDetail.dataParam.ROLENAME) {
+        iview.Message.info("角色名称不能为空!");
+        return false;
+    }
+    if (!editDetail.dataParam.ORGIDCASCADER) {
+        iview.Message.info("所属机构不能为空!");
+        return false;
+    }
     //业态数据
     editDetail.screenParam.localYt = [];
     for (var j = 0; j < editDetail.screenParam.ytTreeData.length; j++) {

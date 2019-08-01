@@ -362,7 +362,6 @@ namespace z.ERP.Services
                         SqlCategory += " and exists(select 1 from USER_ROLE, ROLE_YT where USER_ROLE.USERID = " + employee.Id;
                         SqlCategory += " and USER_ROLE.ROLEID = ROLE_YT.ROLEID and ROLE_YT.YTID = CATEGORY.CATEGORYID ) ";
                     }
-                    SqlCategory += " order by CATEGORYCODE";
                     return SqlCategory;
                 case PermissionType.Alert:
                     String SqlAlert = "";
@@ -403,6 +402,30 @@ namespace z.ERP.Services
             }
             return SqlyTQx;
         }
+
+        public string GetFullYtQX(string B)
+        {
+            string SqlyTQx = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
+            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
+            {
+                if (i == 0)
+                {
+                    SqlyTQx = "( " + B + ".CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'  or '" + yTdt.Rows[i][0].ToString() +"' LIKE "+B+ ".CATEGORYCODE||'%' ";
+                }
+                else
+                {
+                    SqlyTQx += " or " + B + ".CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'  or '" + yTdt.Rows[i][0].ToString() + "' LIKE " + B + ".CATEGORYCODE||'%'";
+                }
+                if (i == yTdt.Rows.Count - 1)
+                {
+                    SqlyTQx += ")";
+                }
+            }
+            return SqlyTQx;
+        }
+
 
 
 

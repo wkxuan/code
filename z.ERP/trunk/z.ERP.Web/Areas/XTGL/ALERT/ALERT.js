@@ -102,7 +102,14 @@ define.IsValidSave = function () {
         iview.Message.info("请设置预警信息显示!");
         return false;
     }
-
+    if (define.dataParam.ALERT_FIELD.length > 0) {
+        for (var i = 0; i < define.dataParam.ALERT_FIELD.length; i++) {
+            if (!define.dataParam.ALERT_FIELD[i].FIELDMC || !define.dataParam.ALERT_FIELD[i].CHINAMC || !define.dataParam.ALERT_FIELD[i].WIDTH) {
+                iview.Message.info("请设置完整预警信息显示!");
+                return false;
+            }
+        }       
+    }
     return true;
 };
 

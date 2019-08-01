@@ -350,7 +350,15 @@ namespace z.ERP.Services
         /// <returns></returns>
         public Tuple<dynamic> GetTreeCategory()
         {
-            List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
+            // 不能查全部业态，按照权限查业态
+            //List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
+            string sql = GetFullYtQX("C");
+            string sqlYt = $@" SELECT * FROM  CATEGORY C WHERE 1=1 ";
+
+            if (sql != "")
+                sqlYt += " and " + sql;
+
+            List<CATEGORYEntity> p = DbHelper.ExecuteTable(sqlYt).ToList<CATEGORYEntity>();
             var treeOrg = new UIResult(TreeModel.Create(p,
                 a => a.CATEGORYCODE,
                 a => new TreeModel()
