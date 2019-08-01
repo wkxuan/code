@@ -12,9 +12,7 @@ Vue.component('yx-table', {
                     ` v-bind:loading="curLoading" ` +
                     ` v-bind:highlight-row="curHighlightRow" ` +
                     ` v-bind:size="curSize" ` +
-                    ` v-bind:draggable="curDraggable" ` +
                     ` v-bind:tooltipTheme="curTooltipTheme" ` +
-                    ` v-on:on-drag-drop="onDragDrop" ` +
                     ` v-on:on-current-change="currentChange" ` +
                     ` v-on:on-sort-change="sortChange" ` +
                     ` v-on:on-row-click="rowClick" ` +
@@ -43,7 +41,6 @@ Vue.component('yx-table', {
             curMaxHeight: null,
             curHighlightRow: true,
             curSize: "small",
-            curDraggable: true,
             curTooltipTheme: "light",
             curStripe: null,
             curBorder: null,
@@ -347,11 +344,6 @@ Vue.component('yx-table', {
                 data.push({ type: 'selection', width: 50, align: 'center', fixed: 'left' });
             }
             this.curColumns = data;
-        },
-        //拖拽排序松开时触发，返回置换的两行数据索引
-        onDragDrop: function (index1, index2) {
-            let dropObj = this.curData.splice(index1, 1);
-            this.curData.splice(index2, 0, dropObj[0]);
         },
         //双击某一行时触发
         rowDblClick(row, index) {
