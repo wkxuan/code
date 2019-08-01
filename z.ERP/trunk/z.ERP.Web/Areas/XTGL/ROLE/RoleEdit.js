@@ -98,23 +98,10 @@ editDetail.clearKey = function () {
     editDetail.dataParam.ROLENAME = null;
     editDetail.dataParam.ORGIDCASCADER = [];
     editDetail.dataParam.VOID_FLAG = "2";
-    editDetail.showOne(-1);
+    this.otherMethods.initdata();
 };
 
 editDetail.showOne = function (data, callback) {
-
-
-    _.Ajax('SearchInit', {
-        Data: {}
-    }, function (datainit) {
-        Vue.set(editDetail.screenParam, "ORGData", datainit.treeOrg.Obj);
-        Vue.set(editDetail.screenParam, "USERMODULE", datainit.module);
-        Vue.set(editDetail.screenParam, "fee", datainit.fee);
-        Vue.set(editDetail.screenParam, "ytTreeData", datainit.ytTree);
-        Vue.set(editDetail.screenParam, "region", datainit.region);
-        Vue.set(editDetail.screenParam, "BRANCH", datainit.branch);
-        Vue.set(editDetail.screenParam, "Alert", datainit.alert);
-
         _.Ajax('SearchRole', {
             Data: { ROLEID: data }
         }, function (data) {
@@ -192,7 +179,6 @@ editDetail.showOne = function (data, callback) {
                 editDetail.screenParam.ytTreeData = data.ytTreeData;                
             };
         });
-    });
     callback && callback();
 }
 
@@ -276,6 +262,19 @@ editDetail.otherMethods = {
         editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx?personid=" + editDetail.dataParam.ROLECODE;
         editDetail.screenParam.showPopCrmRole = true;
     },
+    initdata: function () {
+        _.Ajax('SearchInit', {
+            Data: {}
+        }, function (data) {
+            Vue.set(editDetail.screenParam, "ORGData", data.treeOrg.Obj);
+            Vue.set(editDetail.screenParam, "USERMODULE", data.module);
+            Vue.set(editDetail.screenParam, "fee", data.fee);
+            Vue.set(editDetail.screenParam, "ytTreeData", data.ytTree);
+            Vue.set(editDetail.screenParam, "region", data.region);
+            Vue.set(editDetail.screenParam, "BRANCH", data.branch);
+            Vue.set(editDetail.screenParam, "Alert", data.alert);
+        });
+    }
 }
 
 editDetail.checkfee = function (selection) {
@@ -312,20 +311,6 @@ editDetail.checkAlert = function (selection) {
         localData.push({ ALERTID: selection[i].ALERTID });
     };
     Vue.set(editDetail.dataParam, 'ROLE_ALERT', localData);
-}
-editDetail.mountedInit = function () {
-
-    _.Ajax('SearchInit', {
-        Data: {}
-    }, function (data) {
-        Vue.set(editDetail.screenParam, "ORGData", data.treeOrg.Obj);
-        Vue.set(editDetail.screenParam, "USERMODULE", data.module);
-        Vue.set(editDetail.screenParam, "fee", data.fee);
-        Vue.set(editDetail.screenParam, "ytTreeData", data.ytTree);
-        Vue.set(editDetail.screenParam, "region", data.region);
-        Vue.set(editDetail.screenParam, "BRANCH", data.branch);
-        Vue.set(editDetail.screenParam, "Alert", data.alert);
-    });
 }
 
 editDetail.billchange = function () {

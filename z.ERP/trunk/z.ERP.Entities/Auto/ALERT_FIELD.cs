@@ -45,5 +45,10 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        [Field("排列顺序")]
+        public string PLSX
+        {
+            get; set;
+        }
     }
 }

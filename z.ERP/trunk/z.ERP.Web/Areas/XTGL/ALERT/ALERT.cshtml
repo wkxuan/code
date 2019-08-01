@@ -3,6 +3,29 @@
 @using z.ERP.Web.Areas.Layout.Define
 @inherits DefineViewBase
 
+@section search{
+    <row>
+        <i-col span="5" class="RowTitle">预警代码</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.ID",
+                });
+            }
+        </i-col>
+        <i-col span="5" class="RowTitle">预警名称</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MC",
+                });
+            }
+        </i-col>
+    </row>
+}
+
 @section element{
     <row>
         <i-col span="3" class="RowTitle">
@@ -14,6 +37,7 @@
                 {
                     vModel = "dataParam.ID",
                     Id = "tb_id",
+                    Readonly="true"
                 });
             }
         </i-col>
@@ -52,44 +76,29 @@
             <span class="mustElement">*</span>
             SQL设置
         </i-col>
-        <i-col span="6">
+        <i-col span="21">
             @{
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.SQLSTR",
                     type = "textarea",
-                    rows = "20",
+                    rows = "5",
                     Enable = false
                 });
             }
         </i-col>
-
-
-        <i-col span="15">
-            <span class="mustElement">显示设置</span>
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "addCol",
-                    Text = "添加一行",
-                    Enable = false,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "delCol",
-                    Text = "删除一行",
-                    Enable = false,
-                    Type = "error",
-                    Icon = "minus-circled"
-                });
-            }
-            <i-table size="small" :border="true"
-                     :columns="screenParam.colAlertField" :data="dataParam.ALERT_FIELD" ref="selectAlert"></i-table>
+    </row>
+    <row></row>
+    <row v-if="!disabled">
+        <i-button type="primary" v-on:click="addCol">添加一行</i-button>
+        <i-button type="error" v-on:click="delCol">删除</i-button>
+    </row>
+    <row>
+        <i-col span="24">
+            <yx-table v-bind:columns="screenParam.colAlertField" v-bind:height="270" selection=true
+                      v-bind:data="dataParam.ALERT_FIELD" v-bind:disabled="disabled" ref="selectAlert">
         </i-col>
     </row>
+
 
 }

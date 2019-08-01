@@ -1,64 +1,29 @@
 ﻿define.beforeVue = function () {
     define.screenParam.colDef = [
-        { title: '代码', key: 'ID', width: 150 },
-        { title: '名称', key: 'MC', width: 150 },
+        { title: '代码', key: 'ID', width: 80 },
+        { title: '名称', key: 'MC'},
+        { title: '显示顺序', key: 'XSSX', width: 100 },
     ];
     define.dataParam.ALERT_FIELD = define.dataParam.ALERT_FIELD || [];
     define.screenParam.colAlertField = [
-    { type: 'selection', width: 60, align: 'center' },
     {
         title: "字段名",
-        key: 'FIELDMC', width: 200,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.FIELDMC
-                },
-                on: {
-                    'on-blur': function (event) {
-                        define.dataParam.ALERT_FIELD[params.index].FIELDMC = event.target.value;
-                    }
-                },
-            })
-        },
+        key: 'FIELDMC', width: 200, cellType: "input"
     },
     {
         title: '显示名',
-        key: 'CHINAMC', width: 200,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.CHINAMC
-                },
-                on: {
-                    'on-blur': function (event) {
-                        define.dataParam.ALERT_FIELD[params.index].CHINAMC = event.target.value;
-                    }
-                },
-            })
-        },
+        key: 'CHINAMC', width: 200, cellType: "input"
     },
     {
         title: '宽度',
-        key: 'WIDTH', width: 100,
-        render: function (h, params) {
-            return h('Input', {
-                props: {
-                    value: params.row.WIDTH
-                },
-                on: {
-                    'on-blur': function (event) {
-                        define.dataParam.ALERT_FIELD[params.index].WIDTH = event.target.value;
-                    }
-                },
-            })
-        },
+        key: 'WIDTH', width: 100, cellType: "input", cellDataType: "number"
+    },
+    {
+        title: '排列顺序',
+        key : 'PLSX', width: 100, cellType: "input", cellDataType: "number"
     }];
 
     define.screenParam.dataDef = [];
-
-
-
     define.service = "XtglService";
     define.method = "GetAlertElement";
     define.methodList = "GetAlert";
@@ -67,14 +32,20 @@
 
 define.otherMethods = {
     addCol: function () {
+        var plsx;
+        if (!define.dataParam.ALERT_FIELD) {
+            plsx = 1
+        } else {
+            plsx = define.dataParam.ALERT_FIELD.length+1;
+        };
         var temp = define.dataParam.ALERT_FIELD || [];
-        temp.push({});
+        temp.push({ PLSX: plsx});
         Vue.set(define.dataParam, "ALERT_FIELD", temp);
     },
     delCol: function () {
         var selectton = this.$refs.selectAlert.getSelection();
         if (selectton.length == 0) {
-            iview.Message.info("请选中要删除的品牌!");
+            iview.Message.info("请选中要删除的数据!");
         } else {
             for (var i = 0; i < selectton.length; i++) {
                 for (var j = 0; j < define.dataParam.ALERT_FIELD.length; j++) {
@@ -117,6 +88,7 @@ define.showone = function (data, callback) {
     _.Ajax('SearchAlert', {
         Data: { ID: data }
     }, function (data) {
+        define.dataParam = {};
         $.extend(define.dataParam, data.defalert);
         define.dataParam.ALERT_FIELD = data.item;
         callback && callback();

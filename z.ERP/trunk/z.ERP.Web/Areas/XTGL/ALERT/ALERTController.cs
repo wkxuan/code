@@ -10,7 +10,6 @@ namespace z.ERP.Web.Areas.XTGL.ALERT
     {
         public ActionResult ALERT()
         {
-
             ViewBag.Title = "预警信息定义";
             return View();
         }

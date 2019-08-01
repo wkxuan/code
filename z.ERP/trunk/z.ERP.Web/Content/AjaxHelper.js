@@ -107,7 +107,7 @@ zQuery.extend({
                 });
             },
             error: function (retdata) {
-                alert("请求出错:" + retdata.status);
+                alert("网络问题，请稍后重试:" + retdata.status);
                 options.error && options.error(retdata, -1, '');
             }
         });

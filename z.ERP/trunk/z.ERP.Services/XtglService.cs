@@ -652,7 +652,8 @@ namespace z.ERP.Services
 
             string sql = $@"SELECT ID,MC,XSSX,SQLSTR FROM DEF_ALERT WHERE 1=1 ";
             item.HasKey("ID", a => sql += $" and ID LIKE '%{a}%'");
-            sql += " order by ID";
+            item.HasKey("MC", a => sql += $" and MC LIKE '%{a}%'");
+            sql += " order by XSSX";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -671,11 +672,12 @@ namespace z.ERP.Services
             DataTable defalert = DbHelper.ExecuteTable(sql);
 
 
-            string sqlItem = $@"select FIELDMC,CHINAMC,WIDTH from ALERT_FIELD where 1=1";
+            string sqlItem = $@"select FIELDMC,CHINAMC,WIDTH,PLSX from ALERT_FIELD where 1=1";
             if (!Data.ID.IsEmpty())
             {
                 sqlItem += " and ID = " + Data.ID;
             }
+            sqlItem += " order by PLSX";
             DataTable defalertItem = DbHelper.ExecuteTable(sqlItem);
             return new Tuple<dynamic, DataTable>(defalert.ToOneLine(), defalertItem);
         }
@@ -726,11 +728,12 @@ namespace z.ERP.Services
             alert = DbHelper.Select(new DEF_ALERTEntity() { ID = Data.ID });
             DataTable alertSql = DbHelper.ExecuteTable(alert.SQLSTR);
 
-            string sqlItem = $@"select FIELDMC,CHINAMC,WIDTH from ALERT_FIELD where 1=1";
+            string sqlItem = $@"select FIELDMC,CHINAMC,WIDTH,PLSX from ALERT_FIELD where 1=1";
             if (!Data.ID.IsEmpty())
             {
                 sqlItem += " and ID = " + Data.ID;
             }
+            sqlItem += " order by PLSX";
             DataTable alertCol = DbHelper.ExecuteTable(sqlItem);
             return new Tuple<DataTable, DataTable>(alertSql, alertCol);
         }
