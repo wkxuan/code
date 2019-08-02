@@ -9,7 +9,8 @@
         top: 0;
         width: 100%;
         text-align: center;
-        background: radial-gradient(#0099ff -2%, #000000a6 100%);
+        background:#5cadff;
+        /*background: radial-gradient(#0099ff -2%, #000000a6 100%);*/
     }
 
         #edit .topMenuBtn .ivu-btn {
@@ -46,16 +47,10 @@
             color: #000000;
         }
 
-    #edit .ivu-table th {
+    /*#edit .ivu-table th {
         background: radial-gradient(red -24%, yellow 100%);
         color: #fff;
-    }
-
-    #edit .ivu-page {
-        color: #fff;
-        background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);
-        padding-left: 15px;
-    }
+    }*/
 
     #edit .ivu-collapse-header {
         height: 35px !important;
@@ -63,7 +58,8 @@
         font-size: 12px;
         font-weight: bold;
         color: #fff;
-        background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);
+        background:#0099ff;
+        /*background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);*/
     }
 
     #edit .editParamContent {

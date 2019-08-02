@@ -111,10 +111,7 @@ Vue.component('yx-table', {
             let data = $.map(_self.colsList, item => {
                 item.ellipsis = true;
                 item.tooltip = true;
-                if (item.width) {
-                    item.minWidth = item.width || 120;
-                    item.width = null;
-                } else {
+                if (!item.width) {
                     item.minWidth = item.minWidth || 120;
                 }
                 item.renderHeader = function (h, params) {

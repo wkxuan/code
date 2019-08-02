@@ -19,6 +19,7 @@
     this.afterAbandon = function () { }
     //功能按钮配置数组
     this.btnConfig = [];
+    this.branchChange = function () { };
     this.vue = function VueOperate() {
         var options = {
             el: '#edit',
@@ -173,7 +174,7 @@
                             _self.dataParam[item] = _this.backData[item];
                         }
                         if (!flag) {
-                            _self.dataParam = {};
+                            _this.clearKey();
                         }
                         _this.afterAbandon();
                     }, function () {
@@ -198,6 +199,9 @@
                         }, 200);
                     });
                 },
+                branchChange: function () {
+                    _this.branchChange();
+                }
             }
         };
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);

@@ -40,11 +40,13 @@
 @section baseParam{
     <row>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             商户
         </i-col>
         <i-col span="6" class="RowText">
             <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="dataParam.MERNAME" v-on:on-click="srchMerchant" v-bind:disabled="!disabled" />
+                     v-model="dataParam.MERNAME" v-on:on-click="srchMerchant" 
+                     v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             纸质编号
@@ -61,6 +63,7 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             开始日期
         </i-col>
         <i-col span="6" class="RowText">
@@ -69,9 +72,10 @@
                 {
                     vModel = "dataParam.CONT_START",
                 });
-            }
+            } 
         </i-col>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             结束日期
         </i-col>
         <i-col span="6" class="RowText">
@@ -98,6 +102,7 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             招商部门
         </i-col>
         <i-col span="6" class="RowText">
@@ -110,6 +115,7 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             合作方式
         </i-col>
         <i-col span="6" class="RowText">
@@ -284,11 +290,10 @@
     <row>
         <i-col span="12">
             <Card v-bind:padding=0>
-                <p slot="title">品牌</p>
+                <p slot="title"><span class="mustElement">*</span>品牌</p>
                 <div slot="extra">
                     <div class="tableBtnDiv" v-if="disabled">
                         <i-button type="primary" v-on:click="srchBrand">选择</i-button>
-                        <i-button type="primary" v-on:click="addRowBrand">添加一行</i-button>
                         <i-button type="error" v-on:click="delBrand">删除</i-button>
                     </div>
                 </div>
@@ -299,7 +304,7 @@
         </i-col>
         <i-col span="12">
             <Card v-bind:padding=0>
-                <p slot="title">资产</p>
+                <p slot="title"><span class="mustElement">*</span>资产</p>
                 <div slot="extra">
                     <div class="tableBtnDiv" v-if="disabled">
                         <i-button type="primary" v-on:click="srchShop">选择</i-button>
@@ -316,7 +321,7 @@
 }
 @section detailParam{
     <Tabs value="name1">
-        <tab-pane label="费用设置" name="name1">
+        <tab-pane label="租金信息" name="name1">
             <row>
                 <i-col span="24">
                     <div class="tableBtnDiv" v-if="disabled">
@@ -339,9 +344,19 @@
                 </i-col>
             </row>
             <row>
+                <i-col span="24">
+                    <Card v-bind:padding=0>
+                        <p slot="title"><span class="mustElement">*</span>租金分解信息</p>
+                        <yx-table v-bind:columns="screenParam.colDefRENTITEM" v-bind:height="200"
+                                  v-bind:data="dataParam.CONTRACT_RENTITEM" v-bind:disabled="!disabled">
+                        </yx-table>
+                    </Card>
+                </i-col>
+            </row>
+            <row>
                 <i-col span="8">
                     <Card v-bind:padding=0>
-                        <p slot="title">扣率组</p>
+                        <p slot="title"><span class="mustElement">*</span>扣率组</p>
                         <div slot="extra">
                             <div v-if="disabled">
                                 <i-button type="primary" v-on:click="addColGroup">添加一行</i-button>
@@ -367,13 +382,6 @@
                                   v-bind:data="dataParam.CONTJSKL" v-bind:disabled="!disabled" ref="refJskl">
                         </yx-table>
                     </Card>
-                </i-col>
-            </row>
-            <row>
-                <i-col span="24">
-                    <yx-table v-bind:columns="screenParam.colDefRENTITEM" v-bind:height="200"
-                              v-bind:data="dataParam.CONTRACT_RENTITEM" v-bind:disabled="!disabled">
-                    </yx-table>
                 </i-col>
             </row>
         </tab-pane>
