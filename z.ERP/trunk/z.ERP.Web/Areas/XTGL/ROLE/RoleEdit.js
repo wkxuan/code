@@ -112,84 +112,85 @@ editDetail.showOne = function (data, callback) {
         Vue.set(editDetail.screenParam, "region", datas.region);
         Vue.set(editDetail.screenParam, "BRANCH", datas.branch);
         Vue.set(editDetail.screenParam, "Alert", datas.alert);
-    
-        _.Ajax('SearchRole', {
-            Data: { ROLEID: data }
-        }, function (data) {
-            if (data.role != null) {
-                $.extend(editDetail.dataParam, data.role);
-                editDetail.dataParam.VOID_FLAG = data.role.VOID_FLAG + "";  //控件接收string类型
-                editDetail.dataParam.BILLID = data.role.ROLEID;
-                if (editDetail.dataParam.ORGIDCASCADER != null) {
-                    editDetail.dataParam.ORGIDCASCADER = editDetail.dataParam.ORGIDCASCADER.split(",")
-                } else {
-                    editDetail.dataParam.ORGIDCASCADER = null;
-                }
-                editDetail.screenParam.USERMODULE = data.module;
-
-                var localFee = [];
-                for (var j = 0; j < editDetail.screenParam.fee.length; j++) {
-                    Vue.set(editDetail.screenParam.fee[j], '_checked', false);
-
-                    for (var i = 0; i < data.fee.length; i++) {
-                        if (data.fee[i].TRIMID == editDetail.screenParam.fee[j].TRIMID) {
-                            Vue.set(editDetail.screenParam.fee[j], '_checked', true);
-                            localFee.push({
-                                TRIMID: data.fee[i].TRIMID
-                            });
-                        }
+        if(data){   //新增撤销判断
+            _.Ajax('SearchRole', {
+                Data: { ROLEID: data }
+            }, function (data) {
+                if (data.role != null) {
+                    $.extend(editDetail.dataParam, data.role);
+                    editDetail.dataParam.VOID_FLAG = data.role.VOID_FLAG + "";  //控件接收string类型
+                    editDetail.dataParam.BILLID = data.role.ROLEID;
+                    if (editDetail.dataParam.ORGIDCASCADER != null) {
+                        editDetail.dataParam.ORGIDCASCADER = editDetail.dataParam.ORGIDCASCADER.split(",")
+                    } else {
+                        editDetail.dataParam.ORGIDCASCADER = null;
                     }
-                    Vue.set(editDetail.dataParam, 'ROLE_FEE', localFee);
-                };
-                //门店
-                var localBRANCH = [];
-                for (var j = 0; j < editDetail.screenParam.BRANCH.length; j++) {
-                    Vue.set(editDetail.screenParam.BRANCH[j], '_checked', false);
+                    editDetail.screenParam.USERMODULE = data.module;
 
-                    for (var i = 0; i < data.branch.length; i++) {
-                        if (data.branch[i].BRANCHID == editDetail.screenParam.BRANCH[j].BRANCHID) {
-                            Vue.set(editDetail.screenParam.BRANCH[j], '_checked', true);
-                            localBRANCH.push({
-                                BRANCHID: data.branch[i].BRANCHID
-                            });
+                    var localFee = [];
+                    for (var j = 0; j < editDetail.screenParam.fee.length; j++) {
+                        Vue.set(editDetail.screenParam.fee[j], '_checked', false);
+
+                        for (var i = 0; i < data.fee.length; i++) {
+                            if (data.fee[i].TRIMID == editDetail.screenParam.fee[j].TRIMID) {
+                                Vue.set(editDetail.screenParam.fee[j], '_checked', true);
+                                localFee.push({
+                                    TRIMID: data.fee[i].TRIMID
+                                });
+                            }
                         }
-                    }
-                    Vue.set(editDetail.dataParam, 'ROLE_BRANCH', localBRANCH);
-                };
-                //预警
-                var localALERT = [];
-                for (var j = 0; j < editDetail.screenParam.Alert.length; j++) {
-                    Vue.set(editDetail.screenParam.Alert[j], '_checked', false);
+                        Vue.set(editDetail.dataParam, 'ROLE_FEE', localFee);
+                    };
+                    //门店
+                    var localBRANCH = [];
+                    for (var j = 0; j < editDetail.screenParam.BRANCH.length; j++) {
+                        Vue.set(editDetail.screenParam.BRANCH[j], '_checked', false);
 
-                    for (var i = 0; i < data.alert.length; i++) {
-                        if (data.alert[i].ALERTID == editDetail.screenParam.Alert[j].ALERTID) {
-                            Vue.set(editDetail.screenParam.Alert[j], '_checked', true);
-                            localALERT.push({
-                                ALERTID: data.alert[i].ALERTID
-                            });
+                        for (var i = 0; i < data.branch.length; i++) {
+                            if (data.branch[i].BRANCHID == editDetail.screenParam.BRANCH[j].BRANCHID) {
+                                Vue.set(editDetail.screenParam.BRANCH[j], '_checked', true);
+                                localBRANCH.push({
+                                    BRANCHID: data.branch[i].BRANCHID
+                                });
+                            }
                         }
-                    }
-                    Vue.set(editDetail.dataParam, 'ROLE_ALERT', localALERT);
-                };
+                        Vue.set(editDetail.dataParam, 'ROLE_BRANCH', localBRANCH);
+                    };
+                    //预警
+                    var localALERT = [];
+                    for (var j = 0; j < editDetail.screenParam.Alert.length; j++) {
+                        Vue.set(editDetail.screenParam.Alert[j], '_checked', false);
 
-                var localRegion = [];
-                for (var j = 0; j < editDetail.screenParam.region.length; j++) {
-                    Vue.set(editDetail.screenParam.region[j], '_checked', false);
-
-                    for (var i = 0; i < data.region.length; i++) {
-                        if (data.region[i].REGIONID == editDetail.screenParam.region[j].REGIONID) {
-                            Vue.set(editDetail.screenParam.region[j], '_checked', true);
-                            localRegion.push({
-                                REGIONID: data.region[i].REGIONID
-                            });
+                        for (var i = 0; i < data.alert.length; i++) {
+                            if (data.alert[i].ALERTID == editDetail.screenParam.Alert[j].ALERTID) {
+                                Vue.set(editDetail.screenParam.Alert[j], '_checked', true);
+                                localALERT.push({
+                                    ALERTID: data.alert[i].ALERTID
+                                });
+                            }
                         }
-                    }
-                    Vue.set(editDetail.dataParam, 'ROLE_REGION', localRegion);
-                };
+                        Vue.set(editDetail.dataParam, 'ROLE_ALERT', localALERT);
+                    };
+
+                    var localRegion = [];
+                    for (var j = 0; j < editDetail.screenParam.region.length; j++) {
+                        Vue.set(editDetail.screenParam.region[j], '_checked', false);
+
+                        for (var i = 0; i < data.region.length; i++) {
+                            if (data.region[i].REGIONID == editDetail.screenParam.region[j].REGIONID) {
+                                Vue.set(editDetail.screenParam.region[j], '_checked', true);
+                                localRegion.push({
+                                    REGIONID: data.region[i].REGIONID
+                                });
+                            }
+                        }
+                        Vue.set(editDetail.dataParam, 'ROLE_REGION', localRegion);
+                    };
                
-                editDetail.screenParam.ytTreeData = data.ytTreeData;                
-            };
-        });
+                    editDetail.screenParam.ytTreeData = data.ytTreeData;                
+                };
+            });
+        }
     });
     callback && callback();
 }

@@ -3,6 +3,19 @@
 @using z.ERP.Web.Areas.Layout.Edit;
 @using z.ERP.Entities;
 @inherits EditViewBase<string>
+@section head{
+    <style>
+        #zzc {
+            width: 100%;
+            height: 370px;
+            position: absolute;
+            background-color: #F3F3F3;
+            z-index: 999999999;
+            opacity: 0.6;
+            margin-top: 35px;
+        }
+    </style>
+}
 @section baseParam{
     <row>
         <i-col span="2" class="RowTitle">
@@ -49,14 +62,15 @@
         </i-col>
     </row>
     }
-@section detailParam{    
+@section detailParam{  
+    <div id="zzc" v-if="!disabled"></div>  
     <Tabs type="card" value="name1">
         <Tab-Pane label="菜单权限" name="name1">
-            <Tree :data="screenParam.USERMODULE" show-checkbox></Tree>
+            <Tree v-bind:data="screenParam.USERMODULE" show-checkbox></Tree>
         </Tab-Pane>
         <Tab-Pane label="门店权限" name="name2">
             <i-table size="small" :border="true" height="370" width="400"
-             :columns="screenParam.colDef_BRANCH" :data="screenParam.BRANCH"
+             v-bind:columns="screenParam.colDef_BRANCH" v-bind:data="screenParam.BRANCH"
              v-on:on-select="screenParam.selectDataBRANCH"
              v-on:on-select-all="screenParam.selectDataAllBRANCH"
              v-on:on-select-all-cancel="screenParam.selectAllCancelBRANCH"
@@ -64,7 +78,7 @@
         </Tab-Pane>
         <Tab-Pane label="区域权限" name="name3">
             <i-table size="small" :border="true" height="370" width="400"
-                     :columns="screenParam.colDef_Menuregion" :data="screenParam.region"
+                     v-bind:columns="screenParam.colDef_Menuregion" v-bind:data="screenParam.region"
                      v-on:on-select="screenParam.selectDataregion"
                      v-on:on-select-all="screenParam.selectDataAllregion"
                      v-on:on-select-all-cancel="screenParam.selectAllCancelregion"
@@ -75,7 +89,7 @@
         </Tab-Pane>
         <Tab-Pane label="预警权限" name="name5">
             <i-table size="small" :border="true" height="370" width="400"
-                     :columns="screenParam.colDef_Alert" :data="screenParam.Alert"
+                     v-bind:columns="screenParam.colDef_Alert" v-bind:data="screenParam.Alert"
                      v-on:on-select="screenParam.selectDataAlert"
                      v-on:on-select-all="screenParam.selectDataAllAlert"
                      v-on:on-select-all-cancel="screenParam.selectAllCancelAlert"
@@ -83,7 +97,7 @@
         </Tab-Pane>
         <Tab-Pane label="费用项目" name="name6">
             <i-table size="small" :border="true" height="370" width="400"
-                     :columns="screenParam.colDef_Menufee" :data="screenParam.fee"
+                     v-bind:columns="screenParam.colDef_Menufee" v-bind:data="screenParam.fee"
                      v-on:on-select="screenParam.selectDatafee"
                      v-on:on-select-all="screenParam.selectDataAllfee"
                      v-on:on-select-all-cancel="screenParam.selectAllCancelfee"
