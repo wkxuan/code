@@ -34,19 +34,19 @@ defineDetail.mountedInit = function () {
 
     defineDetail.btnConfig = [{
         id: "add",
-        authority: "10400400"
+        authority: "104004"
     }, {
         id: "edit",
-        authority: "10400400"
+        authority: "104004"
     }, {
         id: "del",
-        authority: "10400400"
+        authority: "104004"
     }, {
         id: "save",
-        authority: "10400400"
+        authority: "104004"
     }, {
         id: "abandon",
-        authority: "10400400"
+        authority: "104004"
     }];
 };
 
