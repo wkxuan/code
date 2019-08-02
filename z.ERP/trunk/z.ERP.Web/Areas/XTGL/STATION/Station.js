@@ -9,7 +9,7 @@
     define.screenParam.payColDef = [
        { type: 'selection', width: 60, align: 'center' },
        { title: '代码', key: 'PAYID', width: 80 },
-       { title: '名称', key: 'NAME', width: 160 }
+       { title: '名称', key: 'NAME' }
     ];
     define.dataParam.STATION_PAY = [];
     define.screenParam.dataDef = [];

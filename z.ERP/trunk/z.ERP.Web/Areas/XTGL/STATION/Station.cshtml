@@ -2,7 +2,6 @@
 @using z.ERP.Entities.Enum
 @using z.ERP.Web.Areas.Layout.Define
 @inherits DefineViewBase
-
 @section search{
     <row>
         <i-col span="5" class="RowTitle">门店</i-col>
@@ -114,9 +113,10 @@
             <span class="mustElement">*</span>
             收款方式
         </i-col>
-        <i-col span="10">
+        
+        <i-col span="10">        
         <i-table  size="small" border height="330"
-                    :columns="screenParam.payColDef" :data="screenParam.STATION_PAY_DATA"   
+                    v-bind:columns="screenParam.payColDef" v-bind:data="screenParam.STATION_PAY_DATA"
                     v-on:on-select="screenParam.selectData"
                     v-on:on-select-all="screenParam.selectDataAll"
                     v-on:on-select-cancel="screenParam.selectCancel"></i-table>

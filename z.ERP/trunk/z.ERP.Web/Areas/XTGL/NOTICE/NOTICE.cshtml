@@ -114,15 +114,15 @@
             通知门店
         </i-col>
         <i-col span="16" class="RowText">
-            <Checkbox-Group v-model="dataParam.BRANCHID" v-on:on-change="CheckBoxChange" v-bind:disabled="!disabled">
-                <Checkbox v-for="item in screenParam.BRANCHID" v-bind:label="item.value" v-bind:key="item.value">
+            <Checkbox-Group v-model="dataParam.BRANCHID" v-on:on-change="CheckBoxChange">
+                <Checkbox v-for="item in screenParam.BRANCHID" v-bind:label="item.value" v-bind:key="item.value" v-bind:disabled="disabled">
                     <span>{{item.label}}</span>
                 </Checkbox>
             </Checkbox-Group>
         </i-col>
     </row>
     <row>
-        <yx-editor :content="dataParam.CONTENT" :disabled="disabled" v-on:change="editorChange"></yx-editor>
+        <yx-editor v-bind:content="dataParam.CONTENT" v-bind:disabled="disabled" v-on:change="editorChange"></yx-editor>
     </row>
 
 }
