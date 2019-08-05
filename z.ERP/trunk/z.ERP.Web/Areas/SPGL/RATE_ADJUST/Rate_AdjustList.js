@@ -1,14 +1,14 @@
 ﻿search.beforeVue = function () {
     search.screenParam.colDef = [
-        { title: "单据编号", key: "ID", width: 100, sortable: true },
-        { title: "调整开始时间", key: "STARTTIME", width: 150, sortable: true },
-        { title: "调整结束时间", key: "ENDTIME", width: 150, sortable: true },
-        { title: "状态", key: "STATUSMC", width: 100 },
-        { title: "门店名称", key: "BRANCHNAME", width: 150, sortable: true },
-        { title: "登记人", key: "REPORTER_NAME", width: 90 },
-        { title: "登记时间", key: "REPORTER_TIME", width: 150 },
-        { title: "审核人", key: "VERIFY_NAME", width: 90 },
-        { title: "审核时间", key: "VERIFY_TIME", width: 150 },
+        { title: "单据编号", key: "ID",  sortable: true },
+        { title: "调整开始时间", key: "STARTTIME",  sortable: true },
+        { title: "调整结束时间", key: "ENDTIME",sortable: true },
+        { title: "状态", key: "STATUSMC", },
+        { title: "门店名称", key: "BRANCHNAME", width: 250},
+        { title: "登记人", key: "REPORTER_NAME" },
+        { title: "登记时间", key: "REPORTER_TIME"},
+        { title: "审核人", key: "VERIFY_NAME"},
+        { title: "审核时间", key: "VERIFY_TIME"},
         {
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({

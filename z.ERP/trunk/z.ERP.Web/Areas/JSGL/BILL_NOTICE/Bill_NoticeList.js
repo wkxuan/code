@@ -6,12 +6,12 @@
         { title: "类型", key: "TYPEMC", width: 80 },
         { title: "租约号", key: "CONTRACTID", width: 100, sortable: true },
         { title: "商户编码", key: "MERCHANTID", width: 105, sortable: true },
-        { title: "商户名称", key: "MERCHANTNAME", width: 200 },
+        { title: "商户名称", key: "MERCHANTNAME", width: 250 },
         { title: "收费单位", key: "FEE_ACCOUNTNAME", width: 200 },
-        { title: "门店名称", key: "BRANCHNAME", width: 150 },
-        { title: "登记人", key: "REPORTER_NAME", width: 90 },
+        { title: "门店名称", key: "BRANCHNAME", width: 250 },
+        { title: "登记人", key: "REPORTER_NAME" },
         { title: "登记时间", key: "REPORTER_TIME", width: 150, sortable: true },
-        { title: "审核人", key: "VERIFY_NAME", width: 90 },
+        { title: "审核人", key: "VERIFY_NAME" },
         { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true },
         {
             title: '操作', key: 'operate', onClick: function (index, row, data) {
@@ -62,8 +62,9 @@ search.otherMethods = {
         search.screenParam.showPopMerchant = true;
     },
     SelContract: function () {
+        search.screenParam.popParam = { BRANCHID: search.searchParam.BRANCHID };
         search.screenParam.showPopContract = true;
-    }
+    },
 }
 
 //接收子页面返回值

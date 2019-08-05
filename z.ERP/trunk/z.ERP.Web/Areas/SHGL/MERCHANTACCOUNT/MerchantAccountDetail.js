@@ -1,14 +1,14 @@
 ﻿srch.beforeVue = function () {
     var col = [
-        { title: '商户编码', key: 'MERCHANTID', width: 90 },
-        { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
-        { title: '收费单位', key: 'FEE_ACCOUNTNAME', width: 200 },
-        { title: '单号', key: 'REFERID', width: 80 },
-        { title: '类型', key: 'REFERTYPENAME', width: 120 },
-        { title: '变更时间', key: 'CHANGE_TIME', width: 150 },
-        { title: '收款金额', key: 'SAVE_MONEY', width: 100, align: "right" },
-        { title: '付款金额', key: 'USE_MONEY', width: 100, align: "right" },
-        { title: '变更后余额', key: 'ACCOUNT', width: 120, align: "right" },
+        { title: '商户编码', key: 'MERCHANTID'},
+        { title: '商户名称', key: 'MERCHANTNAME'},
+        { title: '收费单位', key: 'FEE_ACCOUNTNAME' },
+        { title: '单号', key: 'REFERID' },
+        { title: '类型', key: 'REFERTYPENAME'},
+        { title: '变更时间', key: 'CHANGE_TIME' },
+        { title: '收款金额', key: 'SAVE_MONEY',  align: "right" },
+        { title: '付款金额', key: 'USE_MONEY',  align: "right" },
+        { title: '变更后余额', key: 'ACCOUNT',align: "right" },
     ];
     srch.screenParam.colDef = col;
     srch.service = "ShglService";

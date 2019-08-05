@@ -5,6 +5,7 @@
     editDetail.Key = 'BILLID';
     //预收款收款
     editDetail.dataParam.TYPE = 1;
+    editDetail.screenParam.FEE_ACCOUNT = [];
     editDetail.dataParam.popParam = {};
     editDetail.dataParam.showPopMerchant = false;
     editDetail.dataParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
@@ -23,6 +24,17 @@ editDetail.showOne = function (data, callback) {
 editDetail.otherMethods = {
     SelMerchant: function () {
         editDetail.dataParam.showPopMerchant = true;
+    },
+    branchChange: function () {
+        _.Ajax('GETfee', {
+            Data: { BRANCHID: editDetail.dataParam.BRANCHID }
+        }, function (data) {
+            var list = [];
+            for (var i = 0; i < data.length; i++) {
+                list.push({ value: data[i].Key, label: data[i].Value })
+            }
+            editDetail.screenParam.FEE_ACCOUNT = list;
+        });
     }
 }
 

@@ -20,24 +20,24 @@
 
     editDetail.screenParam.colDef = [
     { title: '店铺代码', key: 'CODE', width: 100 },
-    { title: '原建筑面积', key: 'AREA_BUILD_OLD', width: 100 },
-    { title: '原使用面积', key: 'AREA_USABLE_OLD', width: 100 },
-    { title: '原租赁面积', key: 'AREA_RENTABLE_OLD', width: 100 },
+    { title: '原建筑面积', key: 'AREA_BUILD_OLD'},
+    { title: '原使用面积', key: 'AREA_USABLE_OLD'},
+    { title: '原租赁面积', key: 'AREA_RENTABLE_OLD'},
     {
-        title: "新建筑面积", key: 'AREA_BUILD_NEW', width: 100, cellType: "input", cellDataType: "number",
+        title: "新建筑面积", key: 'AREA_BUILD_NEW', cellType: "input", cellDataType: "number",
         onBlur: function (index, row, data) {
             editDetail.dataParam.ASSETCHANGEITEM[index].AREA_BUILD_NEW = row.AREA_BUILD_NEW;
         }
     },
     {
-        title: "新使用面积", key: 'AREA_USABLE_NEW', width: 100, cellType: "input", cellDataType: "number",
+        title: "新使用面积", key: 'AREA_USABLE_NEW', cellType: "input", cellDataType: "number",
         onBlur: function (index, row, data) {
             editDetail.dataParam.ASSETCHANGEITEM[index].AREA_USABLE_NEW = row.AREA_USABLE_NEW;
         }
 
     },
     {
-        title: "新租赁面积", key: 'AREA_RENTABLE_NEW', width: 100, cellType: "input", cellDataType: "number",
+        title: "新租赁面积", key: 'AREA_RENTABLE_NEW', cellType: "input", cellDataType: "number",
         onBlur: function (index, row, data) {
             editDetail.dataParam.ASSETCHANGEITEM[index].AREA_RENTABLE_NEW = row.AREA_RENTABLE_NEW;
         }

@@ -27,9 +27,9 @@ editDetail.beforeVue = function () {
         });
         editDetail.screenParam.colDef = [
             { title: "租约号", key: 'CONTRACTID', width: 150 },
-            { title: "商户名称", key: 'MERCHANTNAME', width: 150 },
-            { title: "收费项目", key: 'TERMID', width: 150, cellType: "select", enableCellEdit: true, selectList: TERMList },
-            { title: "调整金额", key: 'MUST_MONEY', width: 100, cellType: "input", cellDataType: "number" }
+            { title: "商户名称", key: 'MERCHANTNAME', width: 550 },
+            { title: "收费项目", key: 'TERMID', width: 200, cellType: "select", enableCellEdit: true, selectList: TERMList },
+            { title: "调整金额", key: 'MUST_MONEY', width: 200, cellType: "input", cellDataType: "number" }
         ];
     });
 }
@@ -47,6 +47,11 @@ editDetail.showOne = function (data, callback) {
 ///html中绑定方法
 editDetail.otherMethods = {
     srchContract: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info("请选择门店!");
+            return;
+        };
+        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
         editDetail.screenParam.showPopContract = true;
     },
     delContract: function () {
@@ -63,6 +68,9 @@ editDetail.otherMethods = {
             }
         }
     },
+    branchChange: function () {
+        editDetail.dataParam.BILL_ADJUST_ITEM = [];
+    }
 }
 
 ///接收弹窗返回参数

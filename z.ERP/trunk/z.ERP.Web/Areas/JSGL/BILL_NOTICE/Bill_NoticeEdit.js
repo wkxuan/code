@@ -10,17 +10,18 @@
     editDetail.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
     editDetail.screenParam.popParam = {};
     editDetail.dataParam.BILL_NOTICE_ITEM = [];
+    editDetail.screenParam.FEE_ACCOUNT = [];
 
     editDetail.dataParam.NIANYUE = (new Date()).getFullYear() + ('0' + ((new Date()).getMonth() + 1)).substr(-2); //默认当前年月
     // editDetail.dataParam.TYPE = 1;
 
     editDetail.screenParam.colDef = [
-    { title: '账单号', key: 'FINAL_BILLID', width: 100 },
-    { title: '债权发生月', key: 'NIANYUE', width: 100 },
-    { title: '收费项目', key: 'TERMMC', width: 200 },
-    { title: "应收金额", key: 'MUST_MONEY', width: 100 },
-    { title: "未付金额", key: 'UNPAID_MONEY', width: 100 },
-    { title: "通知金额", key: 'NOTICE_MONEY', width: 100, cellType: "input", cellDataType: "number" }
+    { title: '账单号', key: 'FINAL_BILLID'},
+    { title: '债权发生月', key: 'NIANYUE'},
+    { title: '收费项目', key: 'TERMMC'},
+    { title: "应收金额", key: 'MUST_MONEY'},
+    { title: "未付金额", key: 'UNPAID_MONEY' },
+    { title: "通知金额", key: 'NOTICE_MONEY', cellType: "input", cellDataType: "number" }
     ];
     if (!editDetail.dataParam.BILL_NOTICE_ITEM) {
         editDetail.dataParam.BILL_NOTICE_ITEM = [{
@@ -53,6 +54,24 @@ editDetail.showOne = function (data, callback) {
 
 ///html中绑定方法
 editDetail.otherMethods = {
+    ContractChange: function () {
+        editDetail.dataParam.BILL_NOTICE_ITEM = [];
+    },
+    branchChange: function () {
+        editDetail.dataParam.CONTRACTID = null;
+        editDetail.dataParam.MERCHANTID = null;
+        editDetail.dataParam.MERCHANTNAME = null;
+        editDetail.dataParam.BILL_NOTICE_ITEM = [];
+        _.Ajax('GETfee', {
+            Data: { BRANCHID: editDetail.dataParam.BRANCHID }
+        }, function (data) {
+            var list = [];
+            for (var i = 0; i < data.length; i++) {
+                list.push({ value: data[i].Key, label: data[i].Value })
+            }
+            editDetail.screenParam.FEE_ACCOUNT = list;
+        });
+    },
     SelMerchant: function () {
         if (!editDetail.dataParam.BRANCHID) {
             iview.Message.info("请选择门店!");

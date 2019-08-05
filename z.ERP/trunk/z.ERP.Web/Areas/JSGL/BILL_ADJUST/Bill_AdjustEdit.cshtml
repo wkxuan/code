@@ -65,26 +65,21 @@
     </row>
 }
 @section detailParam{
-    <row v-if="disabled">
-        @*@{
-            RenderControl(new ButtonRender()
-            {
-                Click = "screenParam.addCol",
-                Text = "添加一行",
-                Enable = true,
-                Type = "primary"
-            });
-        }*@
-        <i-button type="primary" v-on:click="srchContract">选择</i-button>
-        <i-button type="error" v-on:click="delContract">删除</i-button>
-    </row>
-    <row>
-        <i-col span="24">
+<row>
+    <i-col span="24">
+        <Card v-bind:padding=0>
+            <p slot="title">租约</p>
+            <div slot="extra">
+                <i-button type="primary" v-on:click="srchContract">选择</i-button>
+                <i-button type="error" v-on:click="delContract">删除</i-button>
+            </div>
             <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
                       v-bind:data="dataParam.BILL_ADJUST_ITEM" v-bind:disabled="!disabled" ref="refGroup">
             </yx-table>
-        </i-col>
-    </row>
+        </Card>
+    </i-col>
+</row>
+
 }
 @section pops{
     @{

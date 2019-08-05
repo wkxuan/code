@@ -12,7 +12,7 @@
         </i-col>
         <i-col span="6" class="RowText">
             <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="dataParam.MERCHANTNAME" v-on:on-click="SelMerchant" v-on:on-change="balance" v-bind:disabled="!disabled" />
+                     v-model="dataParam.MERCHANTNAME" v-on:on-click="SelMerchant" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
@@ -42,10 +42,11 @@
         </i-col>
         <i-col span="6" class="RowText">
             @{
-                RenderControl(new ServiceDropDownListRender()
+                RenderControl(new DropDownListsRender()
                 {
                     vModel = "dataParam.FEE_ACCOUNT_ID",
-                    ServiceMothod = m => m.feeAccount(),
+                    Data = "screenParam.FEE_ACCOUNT",
+                    EmptyText = "",
                 });
             }
 

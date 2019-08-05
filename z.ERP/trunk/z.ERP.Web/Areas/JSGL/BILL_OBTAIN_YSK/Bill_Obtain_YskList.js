@@ -1,16 +1,16 @@
 ﻿search.beforeVue = function () {
     search.screenParam.colDef = [
-        { title: "单据编号", key: "BILLID", width: 105, sortable: true },
-        { title: "商户代码", key: "MERCHANTID", width: 105, sortable: true },
+        { title: "单据编号", key: "BILLID",  sortable: true },
+        { title: "商户代码", key: "MERCHANTID",  sortable: true },
         { title: "商户名称", key: "MERCHANTNAME", width: 200 },
-        { title: "权债发生月", key: "NIANYUE", width: 115, sortable: true },
-        { title: "付款方式", key: "FKFSNAME", width: 80 },
-        { title: "状态", key: "STATUSMC", width: 80 },
-        { title: "门店名称", key: "BRANCHNAME", width: 150 },
-        { title: "登记人", key: "REPORTER_NAME", width: 90 },
-        { title: "登记时间", key: "REPORTER_TIME", width: 150 },
-        { title: "审核人", key: "VERIFY_NAME", width: 90 },
-        { title: "审核时间", key: "VERIFY_TIME", width: 150 },
+        { title: "权债发生月", key: "NIANYUE", sortable: true },
+        { title: "付款方式", key: "FKFSNAME" },
+        { title: "状态", key: "STATUSMC"},
+        { title: "门店名称", key: "BRANCHNAME", width: 250 },
+        { title: "登记人", key: "REPORTER_NAME"},
+        { title: "登记时间", key: "REPORTER_TIME"},
+        { title: "审核人", key: "VERIFY_NAME"},
+        { title: "审核时间", key: "VERIFY_TIME"},
         {
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
@@ -40,10 +40,6 @@ search.addHref = function (row) {
 }
 search.otherMethods = {
     SelMerchant: function () {
-        if (!search.searchParam.BRANCHID) {
-            iview.Message.info("请选择门店!");
-            return;
-        };
         search.screenParam.showPopMerchant = true;
     },
     SelSysuser: function () {

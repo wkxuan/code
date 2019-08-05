@@ -77,6 +77,10 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
                 }
                 );
         }
+        public UIResult GETfee(FEE_ACCOUNTEntity Data)
+        {
+            return new UIResult(service.DataService.feeAccount(Data));
+        }
         public void ExecData(BILL_NOTICEEntity Data)
         {
             service.JsglService.ExecBillNotice(Data);

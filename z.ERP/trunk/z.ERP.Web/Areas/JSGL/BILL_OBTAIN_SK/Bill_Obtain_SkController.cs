@@ -48,7 +48,10 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
         {
             return service.JsglService.SaveBillObtain(SaveData);
         }
-
+        public UIResult GETfee(FEE_ACCOUNTEntity Data)
+        {
+            return new UIResult(service.DataService.feeAccount(Data));
+        }
         public void ExecData(BILL_OBTAINEntity Data)
         {
             service.JsglService.ExecBillObtain(Data);

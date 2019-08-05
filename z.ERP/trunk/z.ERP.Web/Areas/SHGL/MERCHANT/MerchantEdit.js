@@ -15,11 +15,11 @@
     editDetail.screenParam.colDef = [
     { type: 'selection', width: 60, align: 'center' },
     {
-        title: "品牌代码", key: 'BRANDID', width: 100,
+        title: "品牌代码", key: 'BRANDID'
     },
-    { title: '品牌名称', key: 'NAME', width: 200 },
-    { title: '业态代码', key: 'CATEGORYCODE', width: 200 },
-    { title: '业态名称', key: 'CATEGORYNAME', width: 200 }
+    { title: '品牌名称', key: 'NAME'},
+    { title: '业态代码', key: 'CATEGORYCODE' },
+    { title: '业态名称', key: 'CATEGORYNAME' }
     ];
     editDetail.screenParam.showPopBrand = false;
     editDetail.screenParam.srcPopBrand = __BaseUrl + "/Pop/Pop/PopBrandList/";

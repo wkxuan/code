@@ -14,19 +14,19 @@
     editDetail.screenParam.srcPopInvoice = __BaseUrl + "/" + "Pop/Pop/PopInvoiceList/";
     editDetail.screenParam.srcPopBill = __BaseUrl + "/" + "Pop/Pop/PopBillList/";
     editDetail.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-
+    editDetail.screenParam.FEE_ACCOUNT = [];
     editDetail.screenParam.popParam = {};
 
     editDetail.screenParam.colDef = [
-    { title: '账单号', key: 'FINAL_BILLID', width: 100 },
-    { title: '权债年月', key: 'NIANYUE', width: 100 },
-    { title: '收付实现月', key: 'YEARMONTH', width: 100 },
-    { title: '租约号', key: 'CONTRACTID', width: 100 },
-    { title: '收费项目', key: 'TERMMC', width: 200 },
-    { title: '应收金额', key: 'MUST_MONEY', width: 100 },
-    { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
+    { title: '账单号', key: 'FINAL_BILLID'},
+    { title: '权债年月', key: 'NIANYUE' },
+    { title: '收付实现月', key: 'YEARMONTH'},
+    { title: '租约号', key: 'CONTRACTID'},
+    { title: '收费项目', key: 'TERMMC'},
+    { title: '应收金额', key: 'MUST_MONEY'},
+    { title: '未付金额', key: 'UNPAID_MONEY' },
     {
-        title: "付款金额", key: 'RECEIVE_MONEY', width: 100, cellType: "input", cellDataType: "number",
+        title: "付款金额", key: 'RECEIVE_MONEY',  cellType: "input", cellDataType: "number",
         onChange: function (index, row, data) {
             editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY = row.RECEIVE_MONEY;
         let sumJE = 0;
@@ -40,19 +40,19 @@
 
     //发票pop
     editDetail.screenParam.colDefI = [
-        { title: "发票号码", key: "INVOICENUMBER", width: 120},
-        { title: "商户", key: "MERCHANTNAME", width: 200},
-        { title: "发票类型", key: "TYPENAME", width: 100 },
+        { title: "发票号码", key: "INVOICENUMBER"},
+        { title: "商户", key: "MERCHANTNAME"},
+        { title: "发票类型", key: "TYPENAME"},
         {
-            title: "开票日期", key: "INVOICEDATE", width: 115,
+            title: "开票日期", key: "INVOICEDATE", 
             render: function (h, params) {
                 return h('div',
                     this.row.INVOICEDATE.substr(0, 10));
             }
         },
-        { title: "不含税金额", key: "NOVATAMOUNT", width: 100 },
-        { title: "增值税金额", key: "VATAMOUNT", width: 100 },
-        { title: "发票金额", key: "INVOICEAMOUNT", width: 100 }
+        { title: "不含税金额", key: "NOVATAMOUNT"},
+        { title: "增值税金额", key: "VATAMOUNT"},
+        { title: "发票金额", key: "INVOICEAMOUNT"}
     ];
 
 
@@ -109,6 +109,21 @@ editDetail.clearKey = function () {
 
 ///html中绑定方法
 editDetail.otherMethods = {
+    branchChange: function () {
+        editDetail.dataParam.MERCHANTID = null;
+        editDetail.dataParam.MERCHANTNAME = null;
+        editDetail.dataParam.MERCHANT_MONEY = 0;
+        this.balance();
+        _.Ajax('GETfee', {
+            Data: { BRANCHID: editDetail.dataParam.BRANCHID }
+        }, function (data) {
+            var list = [];
+            for (var i = 0; i < data.length; i++) {
+                list.push({ value: data[i].Key, label: data[i].Value })
+            }
+            editDetail.screenParam.FEE_ACCOUNT = list;
+        });
+    },
     SelMerchant: function () {
         if (!editDetail.dataParam.BRANCHID) {
             iview.Message.info("请选择门店!");
@@ -192,6 +207,7 @@ editDetail.otherMethods = {
         editDetail.dataParam.ALL_MONEY = fkje - editDetail.dataParam.ADVANCE_MONEY;
     },
     balance: function () {
+        debugger
         //收款方式和商户不为空，验证余额，其余情况置未0
         if (editDetail.dataParam.MERCHANTNAME != null && editDetail.dataParam.MERCHANTNAME != undefined && editDetail.dataParam.FEE_ACCOUNT_ID != null && editDetail.dataParam.FEE_ACCOUNT_ID != undefined) {
             _.Ajax('SearchBalance', {

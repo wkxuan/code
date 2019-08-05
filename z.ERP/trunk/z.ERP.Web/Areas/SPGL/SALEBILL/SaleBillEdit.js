@@ -30,11 +30,11 @@
             }
         });
         editDetail.screenParam.colDef = [        
-            { title: "商品代码", key: "GOODSDM", width: 150, },
-            { title: '商品名称', key: 'NAME', width: 100 },
-            { title: '商铺代码', key: 'CODE', width: 100 },
-            { title: '收款方式', key: 'PAYID', width: 100,cellType: "select", enableCellEdit: true, selectList: payList},
-            { title: '收款金额', key: 'AMOUNT', width: 100, cellType: "input", cellDataType: "number"}
+            { title: "商品代码", key: "GOODSDM"},
+            { title: '商品名称', key: 'NAME' },
+            { title: '商铺代码', key: 'CODE'},
+            { title: '收款方式', key: 'PAYID',cellType: "select", enableCellEdit: true, selectList: payList},
+            { title: '收款金额', key: 'AMOUNT', cellType: "input", cellDataType: "number"}
         ]
     });
     if (!editDetail.dataParam.SALEBILLITEM) {

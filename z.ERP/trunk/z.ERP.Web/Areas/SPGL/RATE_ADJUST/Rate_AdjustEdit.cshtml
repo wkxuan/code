@@ -34,75 +34,80 @@
 
 }
 @section detailParam{
-    <row v-if="disabled">
-        <i-col span="3">
-            <i-button type="primary" v-on:click="srchColGoods">选择</i-button>
-            <i-button type="error" v-on:click="delColGoods">删除</i-button>
-        </i-col>
-        <i-col span="2" style="text-align:right">
-            扣率(%):
-        </i-col>
-        <i-col span="1">
-            <i-input v-model="screenParam.RATE" type="number" v-bind:disabled="!disabled" size="small"/>
-        </i-col>
-        <i-col span="16">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "cDOWN_RATE",
-                    Text = "批量设置扣率降点",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "cUP_RATE",
-                    Text = "批量设置扣率升点",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "cLIMIT_DOWN",
-                    Text = "批量设置扣率下限",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "cLIMIT_UP",
-                    Text = "批量设置扣率上限",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "cleardata",
-                    Text = "清空",
-                    Enable = true,
-                    Type = "primary",
-                    Icon = "plus-circled"
-                });
-            }
-        </i-col>
-    </row>
     <row>
         <i-col span="24">
-            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
-                      v-bind:data="dataParam.RATE_ADJUST_ITEM" v-bind:disabled="!disabled" ref="refGroup">
-            </yx-table>
+            <Card v-bind:padding=0>
+                <p slot="title">商品</p>
+                <div slot="extra">
+                    <div class="tableBtnDiv" v-if="disabled">
+                        <i-col span="2" style="text-align:right">
+                            扣率(%):
+                        </i-col>
+                        <i-col span="3">
+                            <i-input v-model="screenParam.RATE" type="number" v-bind:disabled="!disabled" size="small" />
+                        </i-col>
+                        <i-col span="16">
+                            @{
+                                RenderControl(new ButtonRender()
+                                {
+                                    Click = "cDOWN_RATE",
+                                    Text = "批量设置扣率降点",
+                                    Enable = true,
+                                    Type = "primary",
+                                    Icon = "plus-circled"
+                                });
+                            }
+                            @{
+                                RenderControl(new ButtonRender()
+                                {
+                                    Click = "cUP_RATE",
+                                    Text = "批量设置扣率升点",
+                                    Enable = true,
+                                    Type = "primary",
+                                    Icon = "plus-circled"
+                                });
+                            }
+                            @{
+                                RenderControl(new ButtonRender()
+                                {
+                                    Click = "cLIMIT_DOWN",
+                                    Text = "批量设置扣率下限",
+                                    Enable = true,
+                                    Type = "primary",
+                                    Icon = "plus-circled"
+                                });
+                            }
+                            @{
+                                RenderControl(new ButtonRender()
+                                {
+                                    Click = "cLIMIT_UP",
+                                    Text = "批量设置扣率上限",
+                                    Enable = true,
+                                    Type = "primary",
+                                    Icon = "plus-circled"
+                                });
+                            }
+                            @{
+                                RenderControl(new ButtonRender()
+                                {
+                                    Click = "cleardata",
+                                    Text = "清空",
+                                    Enable = true,
+                                    Type = "primary",
+                                    Icon = "plus-circled"
+                                });
+                            }
+                        </i-col>
+                        <i-col span="3">
+                            <i-button type="primary" v-on:click="srchColGoods">选择</i-button>
+                            <i-button type="error" v-on:click="delColGoods">删除</i-button>
+                        </i-col>
+                    </div>
+                </div>
+                <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
+                          v-bind:data="dataParam.RATE_ADJUST_ITEM" v-bind:disabled="!disabled" ref="refGroup">
+                </yx-table>
+            </Card>
         </i-col>
     </row>
 

@@ -53,14 +53,20 @@
 
 }
 @section detailParam{
-    <row v-if="disabled">
-        <i-button type="primary" v-on:click="srchColGoods">选择</i-button>
-        <i-button type="error" v-on:click="delColGoods">删除</i-button>
-    </row>
     <row>
         <i-col span="24">
-            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
-                      v-bind:data="dataParam.SALEBILLITEM" v-bind:disabled="!disabled" ref="refGroup">
+            <Card v-bind:padding=0>
+                <p slot="title">商品</p>
+                <div slot="extra">
+                    <div class="tableBtnDiv" v-if="disabled">
+                        <i-button type="primary" v-on:click="srchColGoods">选择</i-button>
+                        <i-button type="error" v-on:click="delColGoods">删除</i-button>
+                    </div>
+                </div>
+                <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
+                          v-bind:data="dataParam.SALEBILLITEM" v-bind:disabled="!disabled" ref="refZd">
+                </yx-table>
+            </Card>
         </i-col>
     </row>
 

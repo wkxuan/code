@@ -12,11 +12,11 @@
     editDetail.screenParam.srcPopGoods = __BaseUrl + "/" + "Pop/Pop/PopGoodsList/";
 
     editDetail.screenParam.colDef = [
-        { title: "商品代码", key: "GOODSDM", width: 100 },
-        { title: '商品名称', key: 'NAME', width: 150 },
+        { title: "商品代码", key: "GOODSDM"},
+        { title: '商品名称', key: 'NAME', width: 350 },
 
         {
-            title: '扣率降点(%)', key: 'DOWN_RATE', width: 120, cellType: "input", cellDataType: "number",
+            title: '扣率降点(%)', key: 'DOWN_RATE', cellType: "input", cellDataType: "number",
             onChange: function (index, row, data) {
                 editDetail.dataParam.RATE_ADJUST_ITEM[index].UP_RATE = 0;
                 editDetail.dataParam.RATE_ADJUST_ITEM[index].DOWN_RATE = row.DOWN_RATE == "" || row.DOWN_RATE == undefined ? 0 : row.DOWN_RATE;
@@ -24,7 +24,7 @@
             }
         },
         {
-            title: '扣率升点(%)', key: 'UP_RATE', width: 120, cellType: "input", cellDataType: "number",
+            title: '扣率升点(%)', key: 'UP_RATE', cellType: "input", cellDataType: "number",
             onChange: function (index, row, data) {
                 editDetail.dataParam.RATE_ADJUST_ITEM[index].DOWN_RATE = 0;
                 editDetail.dataParam.RATE_ADJUST_ITEM[index].UP_RATE = row.UP_RATE == "" || row.UP_RATE == undefined ? 0 : row.UP_RATE;
@@ -32,22 +32,22 @@
             }
         },
         {
-            title: '扣率下限(%)', key: 'LIMIT_DOWN', width: 120, cellType: "input", cellDataType: "number",
+            title: '扣率下限(%)', key: 'LIMIT_DOWN', cellType: "input", cellDataType: "number",
             onChange: function (index, row, data) {
                 editDetail.dataParam.RATE_ADJUST_ITEM[index].LIMIT_DOWN = row.LIMIT_DOWN == "" || row.LIMIT_DOWN == undefined ? 0 : row.LIMIT_DOWN;
             }
         },
         {
-            title: '扣率上限(%)', key: 'LIMIT_UP', width: 120, cellType: "input", cellDataType: "number",
+            title: '扣率上限(%)', key: 'LIMIT_UP',  cellType: "input", cellDataType: "number",
             onChange: function (index, row, data) {
                 editDetail.dataParam.RATE_ADJUST_ITEM[index].LIMIT_UP = row.LIMIT_UP == "" || row.LIMIT_UP == undefined ? 0 : row.LIMIT_UP;
             }
         },
         {
-            title: '新扣率(%)', key: 'RATE_NEW', width: 120
+            title: '新扣率(%)', key: 'RATE_NEW'
         },
         {
-            title: '原扣率(%)', key: 'RATE_OLD', width: 120
+            title: '原扣率(%)', key: 'RATE_OLD'
         }
     ]
     if (!editDetail.dataParam.RATE_ADJUST_ITEM) {

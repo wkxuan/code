@@ -80,16 +80,20 @@
     </row>
 }
 @section detailParam{
-    <row v-if="disabled">
-        <i-button type="primary" v-on:click="srchColPP">选择</i-button>
-        <i-button type="error" v-on:click="delColPP">删除</i-button>
-    </row>
-    <row>
-        <i-col span="24">
+<row>
+    <i-col span="24">
+        <Card v-bind:padding=0>
+            <p slot="title">品牌</p>
+            <div slot="extra">
+                <i-button type="primary" v-on:click="srchColPP">选择</i-button>
+                <i-button type="error" v-on:click="delColPP">删除</i-button>
+            </div>
             <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
                       v-bind:data="dataParam.MERCHANT_BRAND" v-bind:disabled="!disabled" ref="refGroup">
-        </i-col>
-    </row>
+            </yx-table>
+        </Card>
+    </i-col>
+</row>
 }
 @section pops{
     @{

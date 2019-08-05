@@ -1,11 +1,11 @@
 ﻿srch.beforeVue = function () {
     var col = [
-        { title: '门店', key: 'BRANCHNAME', width: 150},
-        { title: '商户编码', key: 'MERCHANTID', width: 90 },
-        { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
-        { title: '收费单位', key: 'FEE_ACCOUNTNAME', width: 200 },        
-        { title: '商户预收款余额', key: 'BALANCE', width: 150, align: "right" },
-        { title: '已用金额', key: 'USED_MONEY', width:150, align: "right" }
+        { title: '门店', key: 'BRANCHNAME'},
+        { title: '商户编码', key: 'MERCHANTID' },
+        { title: '商户名称', key: 'MERCHANTNAME'},
+        { title: '收费单位', key: 'FEE_ACCOUNTNAME' },        
+        { title: '商户预收款余额', key: 'BALANCE',align: "right" },
+        { title: '已用金额', key: 'USED_MONEY', align: "right" }
 
     ];
     srch.screenParam.colDef = col;
