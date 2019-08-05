@@ -254,7 +254,6 @@
             title: '结束日期', key: 'ENDDATE', cellType: "date", width: 100
         },
         { title: '年月', key: 'YEARMONTH', width: 80 },
-        { title: '出单状态', key: 'YEARMONTH', width: 80 },
         {
             title: '租金', key: 'RENTS', cellType: "input", cellDataType: "number",
             onChange: function (index, row, data) {
@@ -266,7 +265,7 @@
                 let sum = 0;
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].INX == row.INX) {
-                        sum += Number(row.RENTS);
+                        sum += Number(data[i].RENTS);
                      }
                 }
                 for (let i = 0; i < rent.length; i++) {

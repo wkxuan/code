@@ -45,7 +45,7 @@
                 _this.mountedInit();
             },
             methods: {
-                seach: function (event) {
+                search: function (event) {
                     event.stopPropagation();
                     if (!_this.IsValidSrch())
                         return;

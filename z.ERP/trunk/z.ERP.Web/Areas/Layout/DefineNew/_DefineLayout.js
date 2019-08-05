@@ -2,6 +2,7 @@
     var _this = this;
     this.vueObj;
     this.columnsDef = [];
+    this.btnConfig = [];
     this.beforeVue = function () { };
     this.mountedInit = function () { };
     this.add = function () { };
@@ -9,6 +10,7 @@
     this.IsValidSrch = function () {
         return true;
     }
+    
     this.vue = function VueOperate() {
         var options = {
             el: '#defineNew',
@@ -22,32 +24,94 @@
                 arrPageSize: [10, 20, 50, 100],
                 pagedataCount: 0,
                 pageSize: 10,
-                currentPage: 1
+                currentPage: 1,
+                toolBtnList: [],
             },
             mounted: function () {
                 _this.mountedInit();
+                this.initBtn();
+            },
+            computed: {
+                list() {
+                    return this.toolBtnList || [];
+                }
             },
             methods: {
-                seach: function (event) {
-                    event.stopPropagation();
+                //初始化功能按钮
+                initBtn() {
+                    let _self = this;
+                    let baseBtn = [{
+                        id: "select",
+                        name: "查询",
+                        icon: "md-search",
+                        fun: function () {
+                            _self.search();
+                        },
+                        enabled: function () {
+                            return true;
+                        }
+                    },{
+                        id: "clear",
+                        name: "清空",
+                        icon: "md-refresh",
+                        fun: function () {
+                            _self.clear();
+                        },
+                        enabled: function () {
+                            return true;
+                        }
+                    }, {
+                        id: "add",
+                        name: "新增",
+                        icon: "md-add",
+                        fun: function () {
+                            _self.add();
+                        },
+                        enabled: function (a) {
+                            return true;
+                        }
+                    }, {
+                        id: "del",
+                        name: "删除",
+                        icon: "md-trash",
+                        fun: function () {
+                            _self.del();
+                        },
+                        enabled: function () {
+                            return true;
+                        }
+                    }];
+                    let data = [];
+                    for (let j = 0, jlen = _this.btnConfig.length; j < jlen; j++) {
+                        for (let i = 0, ilen = baseBtn.length; i < ilen; i++) {
+                            if (baseBtn[i].id == _this.btnConfig[j].id) {
+                                let loc = {};
+                                $.extend(loc, baseBtn[i], _this.btnConfig[j]);
+                                data.push(loc);
+                            }
+                        }
+                        if (_this.btnConfig[j].isNewAdd) {
+                            data.push(_this.btnConfig[j]);
+                        }
+                    }
+                    _self.toolBtnList = data;
+                },
+                search: function (event) {
                     if (!_this.IsValidSrch())
                         return;
                     showList();
                 },
-                clear: function (event) {
-                    event.stopPropagation();
+                clear: function () {
                     let _self = this;
                     _self.searchParam = {};
                     _self.data = [];
                     _self.pagedataCount = 0;
                     _this.newCondition();
                 },
-                add: function (event) {
-                    event.stopPropagation();
+                add: function () {
                     _this.add();
                 },
-                del: function (event) {
-                    event.stopPropagation();
+                del: function () {
                     let selectton = this.$refs.selectData.getSelection();
                     if (selectton.length == 0) {
                         iview.Message.info("请选中要删除的数据!");

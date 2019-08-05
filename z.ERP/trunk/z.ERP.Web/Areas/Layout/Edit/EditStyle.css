@@ -9,8 +9,7 @@
         top: 0;
         width: 100%;
         text-align: center;
-        background:#5cadff;
-        /*background: radial-gradient(#0099ff -2%, #000000a6 100%);*/
+        background:#2d8cf0;
     }
 
         #edit .topMenuBtn .ivu-btn {
@@ -39,27 +38,13 @@
         height: 35px;
     }
 
-    #edit .ivu-collapse-header .ivu-btn {
-        color: #fff;
-    }
-
-        #edit .ivu-collapse-header .ivu-btn:hover {
-            color: #000000;
-        }
-
-    /*#edit .ivu-table th {
-        background: radial-gradient(red -24%, yellow 100%);
-        color: #fff;
-    }*/
-
     #edit .ivu-collapse-header {
         height: 35px !important;
         line-height: 35px !important;
         font-size: 12px;
         font-weight: bold;
         color: #fff;
-        background:#0099ff;
-        /*background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);*/
+        background:#2d8cf0;
     }
 
     #edit .editParamContent {
