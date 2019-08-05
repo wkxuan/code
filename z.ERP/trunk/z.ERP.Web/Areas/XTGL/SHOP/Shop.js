@@ -84,6 +84,20 @@ defineNew.otherMethods = {
 
 defineNew.mountedInit = function () {
     defineNew.otherMethods.initBranch();
+
+    defineNew.btnConfig = [{
+        id: "select",
+        authority: "104004"
+    }, {
+        id: "clear",
+        authority: "104004"
+    }, {
+        id: "add",
+        authority: "104004"
+    }, {
+        id: "del",
+        authority: "104004"
+    }];
 };
 
 defineNew.add = function () {

@@ -18,34 +18,20 @@
             color: #000000;
         }
 
-    #defineNew .ivu-table th {
-        background: radial-gradient(red -24%, yellow 100%);
-        color: #fff;
-    }
-
     #defineNew .ivu-collapse-header {
         height: 35px !important;
         line-height: 35px !important;
         font-size: 12px;
         font-weight: bold;
         color: #fff;
-        background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);
+        background: #2d8cf0;
     }
 
     #defineNew .searchParamContent {
         padding-top: 10px;
-        color: #fff;
-        background: linear-gradient(#b0aacac2 -24%, #000000a6 100%);
-    }
-
-    #defineNew .ivu-table-tip td {
-        color: #fff;
-        background: linear-gradient(#b0aacac2 -24%, #000000a6 100%);
     }
 
     #defineNew .ivu-page {
-        color: #fff;
-        background: radial-gradient(rgba(243, 224, 87, 0.51) -24%, #0000005c 100%);
         padding-left: 15px;
     }
 

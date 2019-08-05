@@ -574,14 +574,17 @@ Vue.component('yx-tool-bar', {
                         if (flag) {
                             _backdata.push({
                                 icon: _list[i].icon,
-                                fun: _list[i].fun,
+                                fun: function (event) {
+                                    event.stopPropagation();
+                                    _list[i].fun();
+                                },
                                 name: _list[i].name,
                             })
                         }
                     }
                 }
             }
-            _self.toolList = _backdata;
+            _self.toolList = _backdata; 
         },
     }
 });

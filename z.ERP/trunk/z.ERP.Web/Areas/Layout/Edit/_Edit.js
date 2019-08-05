@@ -110,21 +110,15 @@
                         }
                     }];
                     let data = [];
-                    for (let i = 0, ilen = baseBtn.length; i < ilen; i++) {
-                        for (let j = 0, jlen = _this.btnConfig.length; j < jlen; j++) {
+                    for (let j = 0, jlen = _this.btnConfig.length; j < jlen; j++) {
+                        for (let i = 0, ilen = baseBtn.length; i < ilen; i++) {
                             if (baseBtn[i].id == _this.btnConfig[j].id) {
                                 let loc = {};
                                 $.extend(loc, baseBtn[i], _this.btnConfig[j]);
                                 data.push(loc);
                             }
                         }
-                    }
-                    for (let j = 0, jlen = _this.btnConfig.length; j < jlen; j++) {
-                        if ((_this.btnConfig[j].id != "add" ||
-                            _this.btnConfig[j].id != "edit" ||
-                            _this.btnConfig[j].id != "del" ||
-                            _this.btnConfig[j].id != "save" ||
-                            _this.btnConfig[j].id != "abandon") && _this.btnConfig[j].isNewAdd) {
+                        if (_this.btnConfig[j].isNewAdd) {
                             data.push(_this.btnConfig[j]);
                         }
                     }
