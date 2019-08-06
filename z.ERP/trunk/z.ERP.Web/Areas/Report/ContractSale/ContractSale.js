@@ -3,8 +3,8 @@
         title: '日期', key: 'RQ', width: 100,
         render: function (h, params) {
             return h('div',
-                this.row.RQ.substr(0, 10));
-            //    new Date(this.row.RQ).Format('yyyy-MM-dd'));
+               this.row.RQ.substr(0, 10));
+              //  new Date(this.row.RQ).Format('yyyy-MM-dd'));
         }
     },
     { title: '租约号', key: 'CONTRACTID', width: 95 },
@@ -85,15 +85,13 @@ srch.otherMethods = {
     },
     changeSrchType: function (value) {
         if (value == 1) {
-            Vue.set(this.screenParamData, "dataDef", []);   //清空table
-            Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colD);
-            Vue.set(srch, "method", "ContractSale");
+            srch.screenParam.dataDef = {};
+            srch.screenParam.colDef = colD;
+            srch.method = "ContractSale";
         } else {
-            Vue.set(this.screenParamData, "dataDef", []);   //清空table
-            Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colM);
-            Vue.set(srch, "method", "ContractSaleM");
+            srch.screenParam.dataDef = {};
+            srch.screenParam.colDef = colM;
+            srch.method = "ContractSaleM";
         }
     }
 }
