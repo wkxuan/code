@@ -44,6 +44,14 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         {
             service.HtglService.ExecData(Data);
         }
+        public void StartUp(CONTRACTEntity Data)
+        {
+            service.HtglService.StartUp(Data);
+        }
+        public void Stop(CONTRACTEntity Data)
+        {
+            service.HtglService.Stop(Data);
+        }
         public UIResult SearchContract(CONTRACTEntity Data)
         {
             var res = service.HtglService.GetContractElement(Data);
@@ -79,13 +87,17 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         public UIResult SearchInit()
         {
             SearchItem item = new SearchItem();
-            var FeeRule = service.XtglService.GetFeeRule(item);
-            var LateFeeRule = service.XtglService.GetLateFeeRule(item);
+            var feeRule = service.XtglService.GetFeeRule(item);
+            var lateFeeRule = service.XtglService.GetLateFeeRule(item);
+            var org_zs = service.DataService.org_zs();
+            var operrule = service.DataService.operrule(); 
             return new UIResult(
                 new
                 {
-                    FeeRule = FeeRule,
-                    LateFeeRule = LateFeeRule
+                    FeeRule = feeRule,
+                    LateFeeRule = lateFeeRule,
+                    Org_zs = org_zs,
+                    Operrule = operrule
                 }
             );
         }

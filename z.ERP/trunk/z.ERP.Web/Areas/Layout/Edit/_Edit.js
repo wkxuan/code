@@ -10,6 +10,8 @@
     }
     //是否显示其它信息折叠面板
     this.otherPanel = true;
+    //单据底部制单人等信息是否使用默认显示
+    this.defaultFooter = true;
     //弹窗返回数据回调函数
     this.popCallBack = function (data) { };
     this.enabled = function (val) { return val; }
@@ -30,7 +32,8 @@
                 disabled: _this.enabled(false),
                 collapseValue: [1, 2],
                 toolBtnList: [],
-                otherPanel: _this.otherPanel
+                otherPanel: _this.otherPanel,
+                defaultFooter: _this.defaultFooter
             },
             mounted: function () {
                 _this.mountedInit();
@@ -184,12 +187,11 @@
                         SaveData: _this.veObj.dataParam
                     }, function (data) {
                         iview.Message.info("保存成功");
-
                         setTimeout(function () {
                             let win = window.location;
                             let pathnameArr = win.pathname.split("/");
                             pathnameArr[pathnameArr.length - 1] = data;
-                            window.location.replace(pathnameArr.join("/"));
+                            win.href = pathnameArr.join("/");
                         }, 200);
                     });
                 },

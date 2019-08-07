@@ -36,7 +36,60 @@
         </row>
     </Card>
 }
-
+@section detailParamFooter{
+    <row>
+        <i-col span="2" class="RowTitle">
+            制单人:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.REPORTER_NAME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            制单时间:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.REPORTER_TIME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            审核人:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.VERIFY_NAME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            审核时间:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.VERIFY_TIME}}</label>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            启动人:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.INITINATE_NAME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            启动时间:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.INITINATE_TIME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            终止人:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.TERMINATE_NAME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            终止时间:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.TERMINATE_TIME}}</label>
+        </i-col>
+    </row>
+}
 @section baseParam{
     <row>
         <i-col span="2" class="RowTitle">
@@ -44,9 +97,9 @@
             商户
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="dataParam.MERNAME" v-on:on-click="srchMerchant" 
-                     v-bind:disabled="!disabled" />
+            <i-input readonly v-bind:icon="(!disabled||dataParam.CONTRACT_OLD)? '':'md-search'"
+                     v-model="dataParam.MERNAME" v-on:on-click="srchMerchant"
+                     v-bind:disabled="(!disabled||dataParam.CONTRACT_OLD)? true:false" />
         </i-col>
         <i-col span="2" class="RowTitle">
             纸质编号
@@ -67,24 +120,16 @@
             开始日期
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.CONT_START",
-                });
-            } 
+            <date-picker type="date" v-bind:value="dataParam.CONT_START" v-on:on-change="contStartChange"
+                         v-bind:disabled="(!disabled||dataParam.CONTRACT_OLD)? true:false"></date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
             结束日期
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.CONT_END",
-                });
-            }
+            <date-picker type="date" v-bind:value="dataParam.CONT_END" v-on:on-change="contEndChange"
+                         v-bind:disabled="!disabled"></date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             合同员
@@ -106,26 +151,22 @@
             招商部门
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.ORGID",
-                    ServiceMothod = m => m.org_zs()
-                });
-            }
+            <i-select v-model="dataParam.ORGID" transfer
+                      v-bind:disabled="(!disabled||dataParam.CONTRACT_OLD)? true:false">
+                <i-option v-for="item in screenParam.orgList" v-bind:value="item.value"
+                          v-bind:key="item.value">{{ item.label }}</i-option>
+            </i-select>
         </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
             合作方式
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.OPERATERULE",
-                    ServiceMothod = m => m.operrule()
-                });
-            }
+            <i-select v-model="dataParam.OPERATERULE" transfer
+                      v-bind:disabled="(!disabled||dataParam.CONTRACT_OLD)? true:false">
+                <i-option v-for="item in screenParam.operateruleList" v-bind:value="item.value"
+                          v-bind:key="item.value">{{ item.label }}</i-option>
+            </i-select>
         </i-col>
         <i-col span="2" class="RowTitle">
             建筑面积
@@ -261,7 +302,7 @@
         </i-col>
         <i-col span="2" class="RowTitle" v-if="dataParam.CONTRACT_OLD">
             <span class="mustElement">*</span>
-            变更日期
+            变更启动日期
         </i-col>
         <i-col span="6" class="RowText" v-if="dataParam.CONTRACT_OLD">
             @{
@@ -285,7 +326,7 @@
                     rows = "2"
                 });
             }
-        </i-col>     
+        </i-col>
     </row>
     <row>
         <i-col span="12">

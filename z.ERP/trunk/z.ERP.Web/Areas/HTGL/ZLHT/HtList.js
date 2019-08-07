@@ -19,7 +19,7 @@
         { title: "门店代码", key: 'BRANCHID' },
         { title: '门店名称', key: 'NAME' },
         {
-            title: '操作', key: 'operate', onClick: function (index, row, data) {
+            title: '操作', key: 'operate', authority: "10600200", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10600201,
                     title: '编辑租赁租约',

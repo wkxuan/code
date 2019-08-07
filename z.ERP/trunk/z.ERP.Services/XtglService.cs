@@ -257,8 +257,10 @@ namespace z.ERP.Services
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
-            item.HasKey("FLOORID", a => sql += $" and A.FLOORID = {a}");
-            sql += " ORDER BY  A.CODE";
+            item.HasKey("FLOORID", a => sql += $" and A.FLOORID = {a}"); 
+            item.HasKey("RENT_STATUS", a => sql += $" and A.RENT_STATUS = {a}"); 
+
+             sql += " ORDER BY  A.CODE";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);

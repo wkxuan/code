@@ -20,13 +20,13 @@ Vue.component('yx-table', {
                     ` :row-class-name="rowClassName" ` +
                     ` v-on:on-selection-change="onSelectionChange"> ` +
                  ` </i-table> ` +
-                 ` <div style="position: absolute;top:2px;right:-5px;" v-if="list.length>0"> ` +
+                 ` <div style="position: absolute;top:2px;right:-5px;" v-if="visibleList.length>0"> ` +
                     ` <Poptip placement="left" trigger="hover" style="margin-left:-20px;margin-top:5px;"> ` +
                         ` <Icon type="md-settings" /> ` +
                         ` <div slot="content"> ` +
                             ` <CheckboxGroup v-model="visibleCols" v-on:on-change="checkBoxChange"> ` +
                                 ` <ul style="text-align: left;"> ` +
-                                    ` <li v-for="(i,k) in list" key="k"><Checkbox v-bind:label="i.title">{{i.title}}</Checkbox></li> ` +
+                                    ` <li v-for="(i,k) in visibleList" key="k"><Checkbox v-bind:label="i.title">{{i.title}}</Checkbox></li> ` +
                                ` </ul> ` +
                             ` </CheckboxGroup> ` +
                         ` </div> ` +
@@ -45,11 +45,12 @@ Vue.component('yx-table', {
             curStripe: null,
             curBorder: null,
             visibleCols: [],
-            list: [],
+            visibleList: [],
             colsList: [],
             curColumns: [],
             selectionData: [],
-            currentRow: null
+            currentRow: null,
+            operateCol: []
         };
     },
     mounted() {
@@ -62,19 +63,11 @@ Vue.component('yx-table', {
     watch: {
         columns: {
             handler: function (nv, ov) {
+                let _self = this;
                 if (!nv || !nv.length)
                     return;
-                this.colsList = nv.filter(item => {
-                    if (item.type && item.type == "selection") {
-                        return false;
-                    }
-                    return true;
-                });
-                this.list = this.colsList;
-                this.curColumns = this.initCols();
-                this.visibleCols = $.map(this.colsList, item => {
-                    return item.title;
-                });
+
+                _self.newCols(nv);
             },
             immediate: true,
             deep: true
@@ -98,6 +91,58 @@ Vue.component('yx-table', {
         }
     },
     methods: {
+        newCols(nv) {
+            let _self = this;
+            _self.visibleList = nv.filter(function (item) {
+                if (item.type && item.type == "selection") {
+                    return false;
+                }
+                if (item.key == "operate" && item.authority) {
+                    return false;
+                }
+                return true;
+            });
+
+            let operateCol = nv.filter(function (item) {
+                if (item.key == "operate" && item.authority) {
+                    return true;
+                }
+                return false;
+            });
+
+            if (operateCol.length) {
+                let param = $.map(operateCol, function (item) {
+                    return {
+                        id: item.key,
+                        authority: item.authority,
+                        enable: false
+                    };
+                });
+
+                _.Ajax('checkMenu', {
+                    MenuAuthority: param
+                }, function (data) {
+                    let len = data.filter(function (item) {
+                        return item.enable;
+                    });
+                    if (len.length) {
+                        _self.colsList = _self.visibleList.concat(operateCol);
+                    } else {
+                        _self.colsList = _self.visibleList;
+                    }
+                    _self.curColumns = _self.initCols();
+                    _self.visibleCols = $.map(_self.visibleList, function (item) {
+                        return item.title;
+                    });
+                });
+            } else {
+                _self.colsList = _self.visibleList;
+                _self.curColumns = _self.initCols();
+                _self.visibleCols = $.map(_self.colsList, function (item) {
+                    return item.title;
+                });
+            }
+        },
         rowClassName (row, index) {
             if (index % 2 == 0) {
                 return 'demo-table-info-row';

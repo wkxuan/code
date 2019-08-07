@@ -13,5 +13,6 @@
 search.popInitParam = function (data) {
     search.searchParam.BRANCHID = data.BRANCHID;
     search.searchParam.STATUS = data.STATUS;
+    search.searchParam.RENT_STATUS = data.RENT_STATUS;
 }
 
