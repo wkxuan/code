@@ -81,11 +81,13 @@ srch.otherMethods = {
     },
     changeSrchType: function (value) {
         if (value == 1) {
-            srch.screenParam.dataDef = {};
+            Vue.set(this.options, "data", []);
+            Vue.set(this, "pagedataCount", 0);    //清空分页数据
             srch.screenParam.colDef=colD;
             srch.method="GoodsSale";
         } else {
-            srch.screenParam.dataDef = {};
+            Vue.set(this.options, "data", []);
+            Vue.set(this, "pagedataCount", 0);    //清空分页数据
             srch.screenParam.colDef=colM;
             srch.method="GoodsSaleM";
         }
