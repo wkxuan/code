@@ -1516,6 +1516,7 @@ editDetail.mountedInit = function () {
         authority: "10600203",
         fun: function () {
             editDetail.backData = DeepClone(editDetail.dataParam);
+            editDetail.veObj.branchDisabled = true;
             editDetail.veObj.disabled = true;
             editDetail.dataParam.CONTRACT_OLD = editDetail.dataParam.BILLID;
             editDetail.dataParam.BILLID = null;
@@ -1534,7 +1535,7 @@ editDetail.mountedInit = function () {
             editDetail.dataParam.TERMINATE = null;
             editDetail.dataParam.TERMINATE_NAME = null;
             editDetail.dataParam.TERMINATE_TIME = null;
-            editDetail.dataParam.STATUS = null;
+            editDetail.dataParam.STATUSMC = null;
         },
         enabled: function (disabled, data) {
             if (!disabled && data.BILLID && (data.STATUS == 2 || data.STATUS == 3) && data.HTLX == 1) {

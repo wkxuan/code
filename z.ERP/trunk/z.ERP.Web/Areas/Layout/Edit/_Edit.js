@@ -33,7 +33,8 @@
                 collapseValue: [1, 2],
                 toolBtnList: [],
                 otherPanel: _this.otherPanel,
-                defaultFooter: _this.defaultFooter
+                defaultFooter: _this.defaultFooter,
+                branchDisabled: false
             },
             mounted: function () {
                 _this.mountedInit();
@@ -132,6 +133,7 @@
                     let _self = this;
                     _this.backData = DeepClone(_self.dataParam);
                     _self.disabled = true;
+                    _self.branchDisabled = false;
                     _this.clearKey();
                     _this.dataParam.BILLID = null;
                     _this.newRecord();                 
@@ -141,6 +143,7 @@
                     let _self = this;
                     _this.backData = DeepClone(_self.dataParam);
                     _self.disabled = true;
+                    _self.branchDisabled = false;
                 },
                 //删除
                 del: function () {
@@ -155,7 +158,7 @@
                                 let win = window.location;
                                 let pathnameArr = win.pathname.split("/");
                                 pathnameArr[pathnameArr.length - 1] = null;
-                                window.location.replace(pathnameArr.join("/"));
+                                win.replace(pathnameArr.join("/"));
                             }, 200);
                         });
                     });
@@ -165,6 +168,7 @@
                     let _self = this;
                     _.MessageBox("确认放弃正在编辑的内容？", function () {
                         _self.disabled = false;
+                        _self.branchDisabled = false;
                         let flag = false;
                         for (let item in _this.backData) {
                             flag = true;
@@ -191,7 +195,7 @@
                             let win = window.location;
                             let pathnameArr = win.pathname.split("/");
                             pathnameArr[pathnameArr.length - 1] = data;
-                            win.href = pathnameArr.join("/");
+                            win.replace(pathnameArr.join("/"));
                         }, 200);
                     });
                 },

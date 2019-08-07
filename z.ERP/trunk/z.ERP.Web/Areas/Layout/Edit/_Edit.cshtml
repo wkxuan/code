@@ -39,13 +39,23 @@
                                 <span class="mustElement">*</span>
                                 门店
                             </i-col>
-                            <i-col span="6" class="RowText">
+                            <i-col span="6" class="RowText" v-if="branchDisabled">
                                 @{
                                     RenderControl(new ServiceDropDownListRender()
                                     {
                                         vModel = "dataParam.BRANCHID",
                                         ServiceMothod = m => m.branch(),
-                                        Change= "branchChange"
+                                        Enable = false
+                                    });
+                                }
+                            </i-col>
+                            <i-col span="6" class="RowText" v-else>
+                                @{
+                                    RenderControl(new ServiceDropDownListRender()
+                                    {
+                                        vModel = "dataParam.BRANCHID",
+                                        ServiceMothod = m => m.branch(),
+                                        Change = "branchChange"
                                     });
                                 }
                             </i-col>
