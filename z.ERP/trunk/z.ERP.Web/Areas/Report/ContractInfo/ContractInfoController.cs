@@ -27,5 +27,9 @@ namespace z.ERP.Web.Areas.Report.ContractInfo
         {
             return service.ReportService.ContractInfoOutput(item);
         }
+        public UIResult SearchFEE()
+        {
+            return new UIResult(service.ReportService.SEARCHFEE());
+        }
     }
 }

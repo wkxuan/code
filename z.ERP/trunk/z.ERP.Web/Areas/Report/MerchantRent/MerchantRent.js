@@ -1,23 +1,23 @@
 ﻿srch.beforeVue = function () {
     var col = [
-        { title: '年月', key: 'YEARMONTH', width: 90 },
-        { title: '业态编码', key: 'CATEGORYCODE', width: 90 },
-        { title: '业态名称', key: 'CATEGORYNAME', width: 100 },
-        { title: '楼层', key: 'FLOORCODE', width: 80 },
-        { title: '铺位号', key: 'SHOPCODE', width: 90 },
-        { title: '经营面积(平米)', key: 'AREA', width: 100, align: "right" },
-        { title: '品牌', key: 'BRANDNAME', width: 120},
-        { title: '租约号', key: 'CONTRACTID', width: 100},
-        { title: '客户编码', key: 'MERCHANTID', width: 90 },
-        { title: '客户名称', key: 'MERCHANTNAME', width: 120 },
-        { title: '固定租金单价(元/平米/月)', key: 'RENTPRICE', width: 110, align: "right" },
-        { title: '固定月租金(元)', key: 'RENTS', width: 110, align: "right" },
-        { title: '含税销售额(元)', key: 'AMOUNT', width: 120, align: "right" },
-        { title: '扣率租金(元)', key: 'TCRENTS', width: 100, align: "right" },
-        { title: '差异(元)', key: 'CE', width: 100, align: "right" },
-        { title: '应计提扣率租金(元)', key: 'YJT', width: 100, align: "right" },
-        { title: '物业费单价(元/平米/月)', key: 'WYPRICE', width: 110, align: "right" },
-        { title: '物业费(元)', key: 'WYJE', width: 95, align: "right" }
+        { title: '年月', key: 'YEARMONTH', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '业态编码', key: 'CATEGORYCODE', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '业态名称', key: 'CATEGORYNAME', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '楼层', key: 'FLOORCODE', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '铺位号', key: 'SHOPCODE', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '经营面积(平米)', key: 'AREA', width: 120, align: "right",  ellipsis: true, tooltip: true },
+        { title: '品牌', key: 'BRANDNAME', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '租约号', key: 'CONTRACTID', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '客户编码', key: 'MERCHANTID', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '客户名称', key: 'MERCHANTNAME', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '固定租金单价(元/平米/月)', key: 'RENTPRICE', width: 120, align: "right",  ellipsis: true, tooltip: true },
+        { title: '固定月租金(元)', key: 'RENTS', width: 120, align: "right",  ellipsis: true, tooltip: true },
+        { title: '含税销售额(元)', key: 'AMOUNT', width: 120, align: "right",  ellipsis: true, tooltip: true },
+        { title: '扣率租金(元)', key: 'TCRENTS', width: 150, align: "right", sortable: true, ellipsis: true, tooltip: true },
+        { title: '差异(元)', key: 'CE', width: 120, align: "right", sortable: true, ellipsis: true, tooltip: true },
+        { title: '应计提扣率租金(元)', key: 'YJT', width: 120, align: "right",  ellipsis: true, tooltip: true },
+        { title: '物业费单价(元/平米/月)', key: 'WYPRICE', width: 120, align: "right",  ellipsis: true, tooltip: true },
+        { title: '物业费(元)', key: 'WYJE', width: 120, align: "right", sortable: true, ellipsis: true, tooltip: true }
 
     ];
     srch.screenParam.colDef = col;
@@ -34,6 +34,16 @@
     srch.screenParam.popParam = {};
     srch.searchParam.CATEGORYCODE = "";
     srch.screenParam.CATEGORY = [];
+};
+srch.newCondition = function () {
+    srch.searchParam.BRANCHID = "";
+    srch.searchParam.CATEGORY = "";
+    srch.searchParam.FLOORID = "";
+    srch.searchParam.MERCHANTNAME = "";
+    srch.searchParam.CONTRACTID = "";
+    srch.searchParam.BRANDNAME = "";
+    srch.searchParam.YEARMONTH_START = "";
+    srch.searchParam.YEARMONTH_END = "";
 };
 
 srch.mountedInit = function () {

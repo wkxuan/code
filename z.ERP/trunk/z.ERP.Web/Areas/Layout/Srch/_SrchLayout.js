@@ -64,7 +64,7 @@
                 clear: function (event) {
                     event.stopPropagation();
                     let _self = this;
-                    _self.searchParam = {};
+                    _this.beforeVue();
                     _self.data = [];
                     _self.pagedataCount = 0;
                     _self.panelName = 'condition';

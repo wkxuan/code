@@ -1,15 +1,15 @@
 ﻿srch.beforeVue = function () {
     srch.screenParam.colDef = [
-        { title: '终端号', key: 'POSNO', width: 95 },
-        { title: '交易号', key: 'DEALID', width: 95 },
-        { title: '交易时间', key: 'SALE_TIME', width: 150, cellType: "datetime" },
-        { title: '记账日期', key: 'ACCOUNT_DATE', width: 100, cellType: "date" },
-        { title: '收款员编码', key: 'CASHIERCODE', width: 100 },
-        { title: '收款员名称', key: 'CASHIERNAME', width: 110 },
-        { title: '收款金额', key: 'SALE_AMOUNT', width: 120, align: "right" },
-        { title: '找零金额', key: 'CHANGE_AMOUNT', width: 100, align: "right" },
-        { title: '原终端号', key: 'POSNO_OLD', width: 100 },
-        { title: '原交易号', key: 'DEALID_OLD', width: 100 },
+        { title: '终端号', key: 'POSNO', width: 130 ,sortable:true},
+        { title: '交易号', key: 'DEALID', width: 130, sortable: true },
+        { title: '交易时间', key: 'SALE_TIME', width: 150, cellType: "datetime", sortable: true },
+        { title: '记账日期', key: 'ACCOUNT_DATE', width: 130, cellType: "date", sortable: true },
+        { title: '收款员编码', key: 'CASHIERCODE', width: 150, sortable: true },
+        { title: '收款员名称', key: 'CASHIERNAME', width: 150, sortable: true },
+        { title: '收款金额', key: 'SALE_AMOUNT', width: 130, align: "right", sortable: true },
+        { title: '找零金额', key: 'CHANGE_AMOUNT', width: 130, align: "right", sortable: true },
+        { title: '原终端号', key: 'POSNO_OLD', width: 130, sortable: true },
+        { title: '原交易号', key: 'DEALID_OLD', width: 130, sortable: true },
 
     ];
     srch.service = "ReportService";
@@ -31,7 +31,14 @@
 
 };
 srch.newCondition = function () {
-    srch.screenParam.echartData = [];
+    srch.searchParam.BRANCHID = "";
+    srch.searchParam.POSNO = "";
+    srch.searchParam.SALE_TIME_START = "";
+    srch.searchParam.SALE_TIME_END = "";
+    srch.searchParam.MERCHANTNAME = "";
+    srch.searchParam.SHOPNAME = "";
+    srch.searchParam.ACCOUNT_DATE_START = "";
+    srch.searchParam.ACCOUNT_DATE_END = "";
 };
 
 srch.echartInit = function (data) {
