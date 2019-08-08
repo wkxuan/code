@@ -2,6 +2,7 @@
 editDetail.beforeVue = function () {
     editDetail.Key = 'INVOICEID';
     editDetail.others = false;
+    editDetail.defaultFooter = false;
     editDetail.otherPanel = false;
     editDetail.service = "JsglService";
     editDetail.method = "GetInvoiceList";
@@ -71,6 +72,9 @@ editDetail.popCallBack = function (data) {
     }
 };
 editDetail.clearKey = function () {
+    editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.INVOICEID = null;
+    editDetail.dataParam.BRANCHID = null;
     editDetail.dataParam.INVOICENUMBER = null;
     editDetail.dataParam.TYPE = null;
     editDetail.dataParam.MERCHANTID = null;
@@ -78,6 +82,10 @@ editDetail.clearKey = function () {
     editDetail.dataParam.INVOICEAMOUNT = null;
     editDetail.dataParam.VATAMOUNT = null;
     editDetail.dataParam.INVOICEDATE = null;
+    editDetail.dataParam.REPORTER_NAME = null;
+    editDetail.dataParam.REPORTER_TIME = null;
+    editDetail.dataParam.DISCARD_NAME = null;
+    editDetail.dataParam.DISCARD_TIME = null;
 }
 editDetail.IsValidSave = function () {
     if (!Numbers) {

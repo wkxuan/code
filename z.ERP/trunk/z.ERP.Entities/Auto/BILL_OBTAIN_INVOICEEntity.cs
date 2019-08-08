@@ -13,10 +13,9 @@ namespace z.ERP.Entities.Auto
         public BILL_OBTAIN_INVOICEEntity() {
 
         }
-        public BILL_OBTAIN_INVOICEEntity(string billid, string type, string invoiceid)
+        public BILL_OBTAIN_INVOICEEntity(string billid,string invoiceid)
         {
             BILLID = billid;
-            TYPE = type;
             INVOICEID = invoiceid;
         }
         /// <summary>
@@ -25,15 +24,6 @@ namespace z.ERP.Entities.Auto
         [PrimaryKey]
         [Field("单号")]
         public string BILLID
-        {
-            get; set;
-        }
-        /// <summary>
-        /// 类型(0租赁账单1联营结算单)
-        /// <summary>
-        [PrimaryKey]
-        [Field("类型(0租赁账单1联营结算单)")]
-        public string TYPE
         {
             get; set;
         }
