@@ -20,7 +20,7 @@
         { title: "审核人", key: "VERIFY_NAME", width: 90 },
         { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true },
         {
-            title: '操作', key: 'operate', onClick: function (index, row, data) {
+            title: '操作', key: 'operate', authority: "10700300", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 107003,
                     title: '保证金收取单',

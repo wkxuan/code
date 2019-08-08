@@ -82,7 +82,10 @@
        { title: "金额", key: 'COST', cellType: "input", cellDataType: "number" },
     ];
 }
-
+editDetail.branchChange = function () {
+    editDetail.dataParam.CONTRACT_SHOP = [];
+    editDetail.otherMethods.calculateArea();
+};
 editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopMerchant) {
         editDetail.screenParam.showPopMerchant = false;

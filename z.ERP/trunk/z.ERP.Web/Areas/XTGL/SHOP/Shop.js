@@ -23,7 +23,7 @@
         { title: '单元状态', key: 'STATUSMC' },
         { title: '租用状态', key: 'RENT_STATUSMC' },
         {
-            title: '操作', key: 'operate', onClick: function (index, row, data) {
+            title: '操作', key: 'operate', authority: "104004", onClick: function (index, row, data) {
                 defineNew.screenParam.defineDetailSrc = __BaseUrl + "/XTGL/SHOP/ShopDetail/" + row.SHOPID;
                 defineNew.screenParam.showDefineDetail = true;
             }

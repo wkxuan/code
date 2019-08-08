@@ -16,9 +16,9 @@
         { title: "门店代码", key: 'BRANCHID', width: 90 },
         { title: '门店名称', key: 'NAME', width: 150 },
         {
-            title: '操作', key: 'operate', onClick: function (index, row, data) {
+            title: '操作', key: 'operate', authority: "10600503", onClick: function (index, row, data) {
                 _.OpenPage({
-                    id: 10600401,
+                    id: 10600501,
                     title: '编辑多经点位租约',
                     url: "HTGL/DJDW/DjdwEdit/" + row.CONTRACTID
                 });
