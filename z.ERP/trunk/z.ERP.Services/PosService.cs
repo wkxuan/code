@@ -711,6 +711,70 @@ namespace z.ERP.Services
             };
         }
 
+
+        public SaleListsResult GetSaleLists(SaleListsFilter filter)
+        {
+            string posno;
+            if (String.IsNullOrEmpty(filter.posNo))
+                posno = employee.PlatformId;
+            else
+                posno = filter.posNo;
+
+            string sql = " select a.posno,a.dealid,b.payid,c.name payname,b.amount payamount,to_char(a.sale_time,'yyyy-mm-dd HH24:MI:SS') saletime"
+                       + "   from sale a,sale_pay b,pay c"
+                       + "  where a.posno = b.posno and a.dealid = b.dealid"
+                       + "    and b.payid = c.payid"
+                       + $"   and a.posno = '{posno}'";
+            if (filter.saleType > 0)
+                sql += $" and sign(b.amount) = decode({filter.saleType},1,1,2,-1) ";
+            if (filter.payId > 0)
+                sql += $" and b.payid = {filter.payId}";
+            if (filter.payAmount != 0)
+                sql += $" and abs(b.amount - {filter.payAmount}) < 0.01";
+            if (String.IsNullOrEmpty(filter.saleBeginDate))
+                sql += " and trunc(a.sale_time) >= trunc(sysdate) ";
+            else
+                sql += $" and trunc(a.sale_time) >= trunc(to_date('{filter.saleBeginDate}','yyyy-mm-dd'))";
+            if (String.IsNullOrEmpty(filter.saleEndDate))
+                sql += " and trunc(a.sale_time) <= trunc(sysdate) ";
+            else
+                sql += $" and trunc(a.sale_time) <= trunc(to_date('{filter.saleEndDate}','yyyy-mm-dd'))";
+
+
+            sql += " union all"
+                 + " select a.posno, a.dealid, b.payid, c.name payname, b.amount payamount, to_char(a.sale_time, 'yyyy-mm-dd HH24:MI:SS') saletime"
+                 + "  from his_sale a, his_sale_pay b, pay c"
+                 + "  where a.posno = b.posno and a.dealid = b.dealid"
+                 + "    and b.payid = c.payid"
+                 + $" and a.posno = '{posno}'";
+            if (filter.saleType > 0)
+                sql += $" and sign(b.amount) = decode({filter.saleType},1,1,2,-1) ";
+            if (filter.payId > 0)
+                sql += $" and b.payid = {filter.payId}";
+            if (filter.payAmount != 0)
+                sql += $" and abs(b.amount - {filter.payAmount}) < 0.01";
+            if (String.IsNullOrEmpty(filter.saleBeginDate))
+                sql += " and trunc(a.sale_time) >= trunc(sysdate) ";
+            else
+                sql += $" and trunc(a.sale_time) >= trunc(to_date('{filter.saleBeginDate}','yyyy-mm-dd'))";
+            if (String.IsNullOrEmpty(filter.saleEndDate))
+                sql += " and trunc(a.sale_time) <= trunc(sysdate) ";
+            else
+                sql += $" and trunc(a.sale_time) <= trunc(to_date('{filter.saleEndDate}','yyyy-mm-dd'))";
+
+           sql += " order by 6 desc,3 asc";
+           
+
+            int count;
+            List<SaleLists> saleListData = DbHelper.ExecuteObject<SaleLists>(sql, filter.pageInfo, out count);
+
+            return new SaleListsResult()
+            {
+                recordCount = count,
+                saleLists = saleListData
+            };
+        }
+
         #region  PosService
 
         #region 属性

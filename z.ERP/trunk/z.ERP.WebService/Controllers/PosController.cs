@@ -100,6 +100,17 @@ namespace z.ERP.WebService.Controllers
             return service.PosService.GetSaleCountSummary(filter);
         }
 
+        /// <summary>
+        /// 销售明细列表_分页
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        [ServiceAble("GetSaleLists")]
+        public SaleListsResult GetSaleLists(SaleListsFilter filter)
+        {
+            return service.PosService.GetSaleLists(filter);
+        }
+
         [ServiceAble("GetMemberInfo")]
         public GetMemberCardDetailsResult GetMemberInfo(ReqMemberCard reqMC)
         {

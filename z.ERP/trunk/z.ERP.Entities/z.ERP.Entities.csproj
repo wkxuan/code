@@ -119,6 +119,9 @@
     <Compile Include="OPENBUSINESSEntity.cs" />
     <Compile Include="Service\Pos\PaySumCountResult.cs" />
     <Compile Include="Service\Pos\SaleCountSummaryResult.cs" />
+    <Compile Include="Service\Pos\SaleLists.cs" />
+    <Compile Include="Service\Pos\SaleListsFilter.cs" />
+    <Compile Include="Service\Pos\SaleListsResult.cs" />
     <Compile Include="SPLCEntity.cs" />
     <Compile Include="Service\Pos\Address.cs" />
     <Compile Include="Service\Pos\PasswordInfo.cs" />
