@@ -1,20 +1,20 @@
 ﻿var colList = [
-    { title: '交易时间', key: 'SALE_TIME', width: 200 },
-    { title: '交易号', key: 'DEALID', width: 80 },
-    { title: '商户编码', key: 'MERCHANTID', width: 120},
-    { title: '商户名称', key: 'NAME', width: 250 },
-    { title: '品牌名称', key: 'BRANDNAME', width: 150 },
-    { title: '终端号', key: 'POSNO', width: 80 },
-    { title: '收款方式', key: 'PAYNAME', width: 100 },
-    { title: '销售金额', key: 'AMOUNT', width: 150, align: "right" },
+    { title: '交易时间', key: 'SALE_TIME', width: 200, sortable: true },
+    { title: '交易号', key: 'DEALID', width: 150, sortable: true },
+    { title: '商户编码', key: 'MERCHANTID', width: 120, sortable: true },
+    { title: '商户名称', key: 'NAME', width: 250, sortable: true },
+    { title: '品牌名称', key: 'BRANDNAME', width: 150, sortable: true },
+    { title: '终端号', key: 'POSNO', width: 150, sortable: true },
+    { title: '收款方式', key: 'PAYNAME', width: 150, sortable: true },
+    { title: '销售金额', key: 'AMOUNT', width: 150, align: "right", sortable: true },
 ];
 
 var colSum = [
-    { title: '商户编码', key: 'MERCHANTID', width: 120 },
-    { title: '商户名称', key: 'NAME', width: 250 },
-    { title: '终端号', key: 'POSNO', width: 80 },
-    { title: '收款方式', key: 'PAYNAME', width: 100 },
-    { title: '销售金额', key: 'AMOUNT', width: 150, align: "right" },
+    { title: '商户编码', key: 'MERCHANTID', width: 120, sortable: true },
+    { title: '商户名称', key: 'NAME', width: 250, sortable: true },
+    { title: '终端号', key: 'POSNO', width: 150, sortable: true },
+    { title: '收款方式', key: 'PAYNAME', width: 150, sortable: true },
+    { title: '销售金额', key: 'AMOUNT', width: 150, align: "right", sortable: true },
 ];
 var echartTypeList1 = [{ label: "按商户", value: "NAME" },
                      { label: "按终端号", value: "POSNO" },
@@ -46,8 +46,14 @@ srch.beforeVue = function () {
 };
 
 srch.newCondition = function () {
-    srch.searchParam.SrchTYPE = 1;
-    srch.screenParam.echartData = [];
+    srch.searchParam.BRANCHID= "";
+    srch.searchParam.MERCHANTNAME = "";
+    srch.searchParam.BRANDNAME = "";
+    srch.searchParam.Pay = "";
+    srch.searchParam.RQ_START = "";
+    srch.searchParam.RQ_END = "";
+    srch.searchParam.YEARMONTH_START = "";
+    srch.searchParam.YEARMONTH_END = "";
 };
 
 srch.echartInit = function (data) {

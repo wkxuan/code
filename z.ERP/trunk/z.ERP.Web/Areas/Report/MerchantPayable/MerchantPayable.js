@@ -1,8 +1,8 @@
 ﻿var cols = [
-    { title: '商户代码', key: 'MERCHANTID', minWidth: 100, ellipsis: true, tooltip: true },
-    { title: '商户名称', key: 'MERCHANTNAME', minWidth: 100, ellipsis: true, tooltip: true },
-    { title: '债权发生月', key: 'NIANYUE', minWidth: 100, ellipsis: true, tooltip: true },
-    { title: '收付实现月', key: 'YEARMONTH', minWidth: 100, ellipsis: true, tooltip: true },
+    { title: '商户代码', key: 'MERCHANTID', minWidth: 100, ellipsis: true, tooltip: true ,sortable:true},
+    { title: '商户名称', key: 'MERCHANTNAME', minWidth: 100, ellipsis: true, tooltip: true, sortable: true },
+    { title: '债权发生月', key: 'NIANYUE', minWidth: 100, ellipsis: true, tooltip: true, sortable: true },
+    { title: '收付实现月', key: 'YEARMONTH', minWidth: 100, ellipsis: true, tooltip: true, sortable: true },
 
 ];
 srch.mountedInit = function () {
@@ -26,7 +26,12 @@ srch.beforeVue = function () {
     srch.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
 };
 srch.newCondition = function () {
-    srch.screenParam.colDef = cols;
+    srch.searchParam.BRANCHID = "";
+    srch.searchParam.MERCHANTNAME = "";
+    srch.searchParam.SFXMLX = "";
+    srch.searchParam.NIANYUE = "";
+    srch.searchParam.SFXM = "";
+    srch.searchParam.YEARMONTH = "";
 };
 srch.afterResult = function (data) {
     if (data.length) {

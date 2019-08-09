@@ -15,7 +15,7 @@
         { title: "终止人", key: "TERMINATE_NAME", width: 100 },
         { title: "终止时间", key: "TERMINATE_TIME", width: 150, sortable: true },
         {
-            title: '操作', key: 'operate', onClick: function (index, row, data) {
+            title: '操作', key: 'operate', authority: "10600300", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 106003,
                     title: '编辑退铺单',

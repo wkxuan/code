@@ -1,11 +1,11 @@
 ﻿srch.beforeVue = function () {
     var col = [
-        { title: '租约号', key: 'CONTRACTID', width: 90 },
-        { title: '楼层', key: 'FLOORCODE', width: 80 },
-        { title: '铺位号', key: 'SHOPCODE', width: 90 },
-        { title: '品牌', key: 'BRANDNAME', width: 120},
-        { title: '客户编码', key: 'MERCHANTID', width: 90 },
-        { title: '客户名称', key: 'MERCHANTNAME', width: 150 },
+        { title: '租约号', key: 'CONTRACTID', width: 90, sortable: true },
+        { title: '楼层', key: 'FLOORCODE', width: 80, sortable: true },
+        { title: '铺位号', key: 'SHOPCODE', width: 120, sortable: true },
+        { title: '品牌', key: 'BRANDNAME', width: 120, sortable: true },
+        { title: '客户编码', key: 'MERCHANTID', width: 120, sortable: true },
+        { title: '客户名称', key: 'MERCHANTNAME', width: 150, sortable: true },
         { title: '经营面积(平米)', key: 'AREAR', width: 100, align: "right" },
         {
             title: '合同有效期起', key: 'CONT_START', width: 110
@@ -13,14 +13,10 @@
         {
             title: '合同有效期止', key: 'CONT_END', width: 110
         },
-        { title: '租金收取方式', key: 'RENTWAY', width: 120 },
+        { title: '租金收取方式', key: 'RENTWAY', width: 150, sortable: true },
         { title: '固定租金标准(年:元/平米/月)', key: 'RENTPRICE', width: 120 },
-        { title: '固定租金收费规则', key: 'RENTRULE', width: 120 },
-        { title: '物业费收费规则', key: 'WYFRULE', width: 110 },
-        { title: '物业管理费(元/平米/月)', key: 'WYFPRICE', width: 110, align: "right" },
-        { title: '履约保证金', key: 'LYBZJ', width: 100, align: "right" },
-        { title: '装修保证金', key: 'ZXBZJ', width: 100, align: "right" },
-        { title: 'POS押金', key: 'POSYJ', width: 100, align: "right" }
+        { title: '固定租金收费规则', key: 'RENTRULE', width: 120, sortable: true },
+        //{ title: '物业费收费规则', key: 'WYFRULE', width: 110 },
     ];
     srch.screenParam.colDef = col;
     srch.service = "ReportService";
@@ -36,6 +32,26 @@
     srch.screenParam.popParam = {};
     srch.searchParam.CATEGORYCODE = "";
     srch.screenParam.CATEGORY = [];
+    _.Ajax('SearchFEE', {
+        Data: {}
+    }, function (data) {
+        var list = [];
+        for (var i = 0; i < data.length;i++) {
+            debugger
+            list.push({ title: data[i].NAME, key: data[i].PYM, width: 130, align: "right" });
+        }
+        debugger
+        srch.screenParam.colDef.push(list);
+    });
+};
+
+srch.newCondition = function () {
+    srch.searchParam.BRANCHID = "";
+    srch.searchParam.CATEGORYCODE = "";
+    srch.searchParam.FLOORID = "";
+    srch.searchParam.MERCHANTNAME = "";
+    srch.searchParam.CONTRACTID = "";
+    srch.searchParam.BRANDNAME = "";
 };
 
 srch.mountedInit = function () {

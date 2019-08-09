@@ -12,7 +12,7 @@
         { title: "审核人", key: "VERIFY_NAME", width: 90 },
         { title: "审核时间", key: "VERIFY_TIME", width: 150, sortable: true },
         {
-            title: '操作', key: 'operate', onClick: function (index, row, data) {
+            title: '操作', key: 'operate', authority: "10700100", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 107001,
                     title: '编辑保证金返还单',
