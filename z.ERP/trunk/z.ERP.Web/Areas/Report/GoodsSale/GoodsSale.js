@@ -4,7 +4,7 @@
         render: function (h, params) {
             return h('div',
                 this.row.RQ.substr(0, 10));
-            //   new Date(this.row.RQ).Format('yyyy-MM-dd'));
+               //new Date(this.row.RQ).Format('yyyy-MM-dd'));
         }
     },
     { title: '商品编码', key: 'GOODSDM', width: 95 },
@@ -52,7 +52,7 @@ srch.beforeVue = function () {
     srch.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
     srch.screenParam.showPopBrand = false;
     srch.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
-
+    srch.screenParam.dataDef = {};
     srch.screenParam.popParam = {};
     srch.screenParam.KINDID = [];
     srch.searchParam.SrchTYPE = 1;
@@ -81,15 +81,15 @@ srch.otherMethods = {
     },
     changeSrchType: function (value) {
         if (value == 1) {
-            Vue.set(this.screenParamData, "dataDef", []);   //清空table
+            Vue.set(this.options, "data", []);
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colD);
-            Vue.set(srch, "method", "GoodsSale");
+            srch.screenParam.colDef=colD;
+            srch.method="GoodsSale";
         } else {
-            Vue.set(this.screenParamData, "dataDef", []);   //清空table
+            Vue.set(this.options, "data", []);
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colM);
-            Vue.set(srch, "method", "GoodsSaleM");
+            srch.screenParam.colDef=colM;
+            srch.method="GoodsSaleM";
         }
     }
 }
