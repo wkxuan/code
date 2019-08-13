@@ -768,9 +768,9 @@ namespace z.ERP.Services
             foreach (var item in DeleteData)
             {
                 FREESHOPEntity Data = DbHelper.Select(item);
-                if (Data.STATUS == ((int)退铺单状态.审核).ToString())
+                if (Data.STATUS != ((int)退铺单状态.未审核).ToString())
                 {
-                    throw new LogicException("已经审核不能删除!");
+                    throw new LogicException("不是未审核状态,不能删除!");
                 }
             }
             using (var Tran = DbHelper.BeginTransaction())
@@ -840,9 +840,9 @@ namespace z.ERP.Services
         public string ExecFreeShop(FREESHOPEntity Data)
         {
             FREESHOPEntity freeShop = DbHelper.Select(Data);
-            if (freeShop.STATUS == ((int)退铺单状态.审核).ToString())
+            if (freeShop.STATUS != ((int)退铺单状态.未审核).ToString())
             {
-                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+                throw new LogicException("不是未审核状态,不能审核!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
@@ -862,9 +862,9 @@ namespace z.ERP.Services
             {
                 throw new LogicException("退铺日期大于当前日期不能终止合同!");
             }
-            if (freeShop.STATUS == ((int)退铺单状态.终止).ToString())
+            if (freeShop.STATUS != ((int)退铺单状态.审核).ToString())
             {
-                throw new LogicException("单据(" + Data.BILLID + ")已经终止不能再次终止!");
+                throw new LogicException("不是审核状态,不能终止!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
