@@ -112,9 +112,7 @@ namespace z.ERP.Web.Areas.Base
                 var obj = new MenuAuthority();
                 obj.id = MenuAuthority[i].id;
                 obj.authority = MenuAuthority[i].authority;
-                if (MenuAuthority[i].authority != null &&
-                    MenuAuthority[i].authority.ToString().Trim() != "" &&
-                    employee.HasPermission(MenuAuthority[i].authority))
+                if (string.IsNullOrEmpty(MenuAuthority[i].authority)|| employee.HasPermission(MenuAuthority[i].authority))
                 {
                     obj.enable = true;
                 }

@@ -1,9 +1,8 @@
-﻿using z.ERP.Web.Areas.Base;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using z.ERP.Entities;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.DefineDetail;
 using z.Extensions;
-using System;
-using z.ERP.Web.Areas.Layout.Define;
 
 namespace z.ERP.Web.Areas.XTGL.BRANCH
 {
@@ -12,14 +11,13 @@ namespace z.ERP.Web.Areas.XTGL.BRANCH
         public ActionResult Branch()
         {
             ViewBag.Title = "门店信息";
-            return View(new DefineRender()
-            {
-                Permission_Add = "10100401",
-                Permission_Mod = "10100402",
-                Invisible_Srch = true   //设置查询按扭不可见
-            });
+            return View();
         }
-
+        public ActionResult BranchDetail(string Id)
+        {
+            ViewBag.Title = "门店信息";
+            return View("BranchDetail", model: (DefineDetailRender)Id);
+        }
         public string Save(BRANCHEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
@@ -38,7 +36,6 @@ namespace z.ERP.Web.Areas.XTGL.BRANCH
             service.XtglService.Org_Update(DefineSave.ORGID, DefineSave.ID.ToInt());
             return CommonSave(DefineSave);
         }
-
         public void Delete(BRANCHEntity DefineDelete)
         {
             var v = GetVerify(DefineDelete);

@@ -27,7 +27,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         }
         public ActionResult HtEdit(string Id)
         {
-            ViewBag.Title = "租赁租约信息编辑";
+            ViewBag.Title = "租赁租约信息";
             return View("HtEdit", model: (EditRender)Id);
         }
         [Permission("10600201")]
@@ -133,6 +133,11 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             {
                 service.XtglService.ExecMenuSplc(Data);
             }   
+        }
+        //检查合同做变更时是否已存在未启动的变更合同
+        public string checkHtBgData(CONTRACTEntity Data)
+        {
+            return service.HtglService.checkHtBgData(Data);
         }
     }
 }

@@ -12,73 +12,61 @@
 @section head{
     @InitFiles(WebFiles)
     @RenderSection("head", false)
+    <style>
+        #treeDef {
+            overflow: hidden;
+            height:100%;
+        }
+
+            #treeDef .topMenuBtn {
+                height:35px;
+                text-align: right;
+                line-height:35px;
+                background: #2d8cf0;
+                padding-right:10px;
+            }
+
+                #treeDef .topMenuBtn .ivu-btn {
+                    color: #fff;
+                }
+
+                    #treeDef .topMenuBtn .ivu-btn:hover {
+                        color: #000000;
+                    }
+
+            #treeDef .contentSplit {
+                height: calc(100% - 35px);
+                overflow: hidden;
+                width: 100%;
+            }
+
+            #treeDef .ivu-split-pane {
+                margin: 8px;
+                overflow: auto;
+            }
+    </style>
 }
 
-<div id="def_Main">
-    <row class="topbutton">
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "addtj",
-                Text = "加同级"
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "addxj",
-                Text = "加下级"
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "mod",
-                Text = "修改",
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "save",
-                Text = "存档",
-                Enable = false
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "quit",
-                Text = "放弃",
-                Enable = false
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "del",
-                Text = "删除",
-            });
-        }
-    </row>
-    <row>
-        <i-col span="8">
-            <card>
-                <Tree :data="screenParam.dataDef" v-on:on-select-change="showlist"></Tree>
-            </card>
-        </i-col>
-        <i-col span="16">
-            <card class="elementcard">
+<div id="treeDef">
+    <div class="topMenuBtn">
+        <yx-tool-bar v-bind:list="list" v-bind:disabled="disabled" v-bind:domdata="dataParam"></yx-tool-bar>
+    </div>
+    <div class="contentSplit">
+        <Split v-model="splitVal">
+            <div slot="left" class="leftPane">
+                <yx-tree ref="treeRef" v-bind:data="data" v-on:onselectchange="onselectchange"
+                         showcheckbox="false" v-bind:disabled="nodedisabled"></yx-tree>
+            </div>
+            <div slot="right" class="rightPane">
                 @RenderSection("element", true)
-            </card>
-        </i-col>
-    </row>
+            </div>
+        </Split>
+    </div>
 
     <div class="hide">
         @RenderSection("hide", false)
     </div>
 </div>
-
 
 @section foot{
     @RenderSection("foot", false)

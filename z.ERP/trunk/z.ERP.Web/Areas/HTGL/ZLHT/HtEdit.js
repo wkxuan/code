@@ -1515,27 +1515,35 @@ editDetail.mountedInit = function () {
         icon: "md-star",
         authority: "10600203",
         fun: function () {
-            editDetail.backData = DeepClone(editDetail.dataParam);
-            editDetail.veObj.branchDisabled = true;
-            editDetail.veObj.disabled = true;
-            editDetail.dataParam.CONTRACT_OLD = editDetail.dataParam.BILLID;
-            editDetail.dataParam.BILLID = null;
-            editDetail.dataParam.CONTRACTID = null;
+            _.Ajax('checkHtBgData', {
+                Data: editDetail.dataParam
+            }, function (data) {
+                if (data) {
+                    iview.Message.info(`原租约${editDetail.dataParam.CONTRACTID}已存在未启动的变更合同${data},不能再次变更!`);
+                } else {
+                    editDetail.backData = DeepClone(editDetail.dataParam);
+                    editDetail.veObj.branchDisabled = true;
+                    editDetail.veObj.disabled = true;
+                    editDetail.dataParam.CONTRACT_OLD = editDetail.dataParam.BILLID;
+                    editDetail.dataParam.BILLID = null;
+                    editDetail.dataParam.CONTRACTID = null;
 
-            editDetail.dataParam.REPORTER = null;
-            editDetail.dataParam.REPORTER_NAME = null;
-            editDetail.dataParam.REPORTER_TIME = null;
-            editDetail.dataParam.VERIFY = null;
-            editDetail.dataParam.VERIFY_NAME = null;
-            editDetail.dataParam.VERIFY_TIME = null;
+                    editDetail.dataParam.REPORTER = null;
+                    editDetail.dataParam.REPORTER_NAME = null;
+                    editDetail.dataParam.REPORTER_TIME = null;
+                    editDetail.dataParam.VERIFY = null;
+                    editDetail.dataParam.VERIFY_NAME = null;
+                    editDetail.dataParam.VERIFY_TIME = null;
 
-            editDetail.dataParam.INITINATE = null;
-            editDetail.dataParam.INITINATE_NAME = null;
-            editDetail.dataParam.INITINATE_TIME = null;
-            editDetail.dataParam.TERMINATE = null;
-            editDetail.dataParam.TERMINATE_NAME = null;
-            editDetail.dataParam.TERMINATE_TIME = null;
-            editDetail.dataParam.STATUSMC = null;
+                    editDetail.dataParam.INITINATE = null;
+                    editDetail.dataParam.INITINATE_NAME = null;
+                    editDetail.dataParam.INITINATE_TIME = null;
+                    editDetail.dataParam.TERMINATE = null;
+                    editDetail.dataParam.TERMINATE_NAME = null;
+                    editDetail.dataParam.TERMINATE_TIME = null;
+                    editDetail.dataParam.STATUSMC = null;
+                }
+            }); 
         },
         enabled: function (disabled, data) {
             if (!disabled && data.BILLID && (data.STATUS == 2 || data.STATUS == 3) && data.HTLX == 1) {

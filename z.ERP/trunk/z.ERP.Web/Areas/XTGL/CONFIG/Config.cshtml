@@ -1,121 +1,25 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Web.Areas.Layout.Define
-@using z.ERP.Entities.Enum
-@inherits DefineViewBase
+﻿@using z.ERP.Web.Areas.Layout.DefineNew
+@inherits DefineViewNewBase
 
-@section search{
+@section conditionParam{
     <row>
-        <i-col span="3" class="RowTitle">描述</i-col>
-        <i-col span="11">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.DESCRIPTION"
-                });
-            }
+        <i-col span="2" class="RowTitle">
+            描述
         </i-col>
-        <i-col span="3" class="RowTitle">代码</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.ID"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.DESCRIPTION" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            编号
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.ID" />
         </i-col>
     </row>
 }
 
-@section element{
-    <row>
-        <i-col span="2" class="RowTitle">
-            编号
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ID",
-                });
-            }
-        </i-col>
-    </row>
-    
-    <row>
-        <i-col span="2" class="RowTitle">
-            <span class="mustElement">*</span>
-            缺省值
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.DEF_VAL",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            <span class="mustElement">*</span>
-            当前值
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CUR_VAL",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
-
-
-    <row>
-        <i-col span="2" class="RowTitle">
-            <span class="mustElement">*</span>
-            最大值
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.MAX_VAL",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            <span class="mustElement">*</span>
-            最小值
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.MIN_VAL",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            <span class="mustElement">*</span>
-            描述
-        </i-col>
-        <i-col span="14">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.DESCRIPTION",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
+@section pops{
+    <yx-modal v-bind:src="screenParam.defineDetailSrc" v-bind:title="screenParam.title"
+              width="400" height="450"
+              v-bind:modal-visible.sync="screenParam.showDefineDetail"></yx-modal>
 }

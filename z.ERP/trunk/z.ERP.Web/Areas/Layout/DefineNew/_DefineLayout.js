@@ -18,6 +18,7 @@
                 panelName: ["condition", "result"],
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
+                disabled: false,
                 data: [],
                 columns: _this.columnsDef,
                 tbLoading: false,

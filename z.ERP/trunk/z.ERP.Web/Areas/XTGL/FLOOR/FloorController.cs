@@ -1,9 +1,10 @@
-﻿using z.ERP.Web.Areas.Base;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using z.ERP.Entities;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.DefineDetail;
 using z.Extensions;
-using System;
 using z.MVC5.Results;
+using System.Collections.Generic;
 
 namespace z.ERP.Web.Areas.XTGL.FLOOR
 {
@@ -14,7 +15,11 @@ namespace z.ERP.Web.Areas.XTGL.FLOOR
             ViewBag.Title = "楼层信息";
             return View();
         }
-
+        public ActionResult FloorDetail(string Id)
+        {
+            ViewBag.Title = "楼层信息";
+            return View("FloorDetail", model: (DefineDetailRender)Id);
+        }
         public string Save(FLOOREntity DefineSave)
         {
             var v = GetVerify(DefineSave);
@@ -33,11 +38,12 @@ namespace z.ERP.Web.Areas.XTGL.FLOOR
             v.Verify();
             return CommonSave(DefineSave);
         }
-
-        public void Delete(FLOOREntity DefineDelete)
+        public void Delete(List<FLOOREntity> DefineDelete)
         {
-            var v = GetVerify(DefineDelete);
-            CommenDelete(DefineDelete);
+            foreach (var con in DefineDelete)
+            {
+                CommenDelete(con);
+            }
         }
         public UIResult SearchInit()
         {
@@ -53,12 +59,10 @@ namespace z.ERP.Web.Areas.XTGL.FLOOR
         {
             return new UIResult(service.DataService.GetBranch(Data));
         }
-
         public UIResult GetRegion(REGIONEntity Data)
         {
             return new UIResult(service.DataService.GetRegion(Data));
         }
-
         public UIResult GetFloor(FLOOREntity Data)
         {
             var res = service.DpglService.GetFloor(Data);

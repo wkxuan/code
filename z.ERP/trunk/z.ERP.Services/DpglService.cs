@@ -1,12 +1,12 @@
-﻿using System.Data;
-using z.MVC5.Results;
-using z.ERP.Entities;
+﻿using System;
 using System.Collections.Generic;
-using z.Extensions;
-using System;
+using System.Data;
+using z.ERP.Entities;
 using z.ERP.Entities.Enum;
-using z.Exceptions;
 using z.ERP.Entities.Procedures;
+using z.Exceptions;
+using z.Extensions;
+using z.MVC5.Results;
 using z.SSO.Model;
 
 namespace z.ERP.Services
@@ -46,16 +46,21 @@ namespace z.ERP.Services
         }
         public DataGridResult SearchFloor(SearchItem item)
         {
-            string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1";
+            string sql = $@" SELECT A.*,B.ORGNAME,R.NAME REGIONNAME,H.NAME BRANCHNAME" +
+                           " FROM FLOOR A,ORG B,REGION R,BRANCH H" +
+                           " WHERE A.REGIONID=R.REGIONID AND A.BRANCHID=H.ID AND A.ORGID=B.ORGID(+)";
             sql += " and A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("ID,", a => sql += $" and A.ID = {a}");
             item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
             item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
             item.HasKey("REGIONID", a => sql += $" and A.REGIONID= {a}");
-            sql += " ORDER BY  A.ID";
+            item.HasKey("AREA_BUILD_S", a => sql += $" and A.AREA_BUILD >= {a}");
+            item.HasKey("AREA_BUILD_E", a => sql += $" and A.AREA_BUILD <= {a}");
+            sql += " ORDER BY A.ID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<停用标记>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
         /// <summary>

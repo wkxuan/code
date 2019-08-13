@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using  z.ERP.Web.Areas.Base;
 using System.Web.Mvc;
 using z.ERP.Entities;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.DefineDetail;
 using z.Extensions;
-using z.ERP.Web.Areas.Layout.Define;
 
 namespace z.ERP.Web.Areas.XTGL.CONFIG
 {
@@ -14,14 +11,14 @@ namespace z.ERP.Web.Areas.XTGL.CONFIG
     {
         public ActionResult Config()
         {
-            ViewBag.Title = "系统参数";
-            return View(new DefineRender()
-            {
-              Permission_Mod = "10100101",
-              Invisible_Add = true
-            });
+            ViewBag.Title = "系统参数列表";
+            return View();
         }
-
+        public ActionResult ConfigDetail(string Id)
+        {
+            ViewBag.Title = "系统参数信息";
+            return View("ConfigDetail", model: (DefineDetailRender)Id);
+        }
         public string Save(CONFIGEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
