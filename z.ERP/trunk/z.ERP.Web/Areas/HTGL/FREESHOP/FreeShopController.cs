@@ -5,6 +5,7 @@ using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Attributes;
 using z.MVC5.Results;
+using System.Collections.Generic;
 
 namespace z.ERP.Web.Areas.HTGL.FREESHOP
 {
@@ -39,6 +40,12 @@ namespace z.ERP.Web.Areas.HTGL.FREESHOP
         {
             return service.HtglService.SaveFreeShop(SaveData);
         }
+
+        public void Delete(List<FREESHOPEntity> DeleteData)
+        {
+            service.HtglService.DeleteFreeShop(DeleteData);
+        }
+
         public UIResult GetContractList(CONTRACTEntity Data)
         {
             return new UIResult(service.HtglService.GetContractList(Data));

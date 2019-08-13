@@ -783,6 +783,26 @@ namespace z.ERP.Services
             return result;
         }
 
+        public void DeleteFreeShop(List<FREESHOPEntity> DeleteData)
+        {
+            foreach (var item in DeleteData)
+            {
+                FREESHOPEntity Data = DbHelper.Select(item);
+                if (Data.STATUS != ((int)退铺单状态.未审核).ToString())
+                {
+                    throw new LogicException("不是未审核状态,不能删除!");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    DbHelper.Delete(item);
+                }
+                Tran.Commit();
+            }
+        }
+
         public object ShowOneFreeShopEdit(FREESHOPEntity Data)
         {
             string sql = $@" SELECT L.*,M.MERCHANTID,M.NAME SHMC FROM FREESHOP L,CONTRACT C,MERCHANT M";
