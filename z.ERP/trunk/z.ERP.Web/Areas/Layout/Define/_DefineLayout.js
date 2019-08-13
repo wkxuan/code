@@ -34,7 +34,8 @@
                 topbtnChkVisible: _this.btnChkvisible,
                 alwaysdisabled: _this.alwaysenabled,
                 _key: undefined,
-                tableH: 500
+                tableH: 500,
+                splitVal:0.4
             },
             mounted: function () {                
                 _.Search({
