@@ -1,4 +1,8 @@
-﻿//table组件
+﻿//iView全局配置
+Vue.use(iview, {
+    transfer: true,
+});
+//table组件
 Vue.component('yx-table', {
     props: ['columns', 'data', 'disabled', 'selection', 'stripe', 'showHeader', 'border', 'width', 'height', 'loading', 'highlightRow', 'size'],
     template: ` <div style="width:100%;height:100%;position: relative;"> ` +

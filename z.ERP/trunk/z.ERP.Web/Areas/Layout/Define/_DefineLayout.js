@@ -1,8 +1,10 @@
 ﻿function _Define() {
     var _this = this;
-
+    //得到主键
+    this.Key = undefined;
+    this.splitVal = 0.3;
+    this.backData;
     this.beforeVue = function () { }
-
     this.enabled = function (val) { return val; }
     this.isvisible = function (val) { return val; }
     this.btnChkvisible = false;
@@ -10,17 +12,15 @@
     this.IsValidSave = function () {
         return true;
     }
-
     //添加后初始化数据信息
     this.newRecord = function () { }
     this.beforeDel = function () {
         return true;
     }
-
-    //得到主键
-    this.Key = undefined;
+    this.IsValidChk = function () {
+        return true;
+    }
     this.mountedInit = function () { };
-
 
     this.vue = function VueOperate() {
         var options = {
@@ -33,147 +33,115 @@
                 topbtnModVisible: _this.isvisible(true),
                 topbtnChkVisible: _this.btnChkvisible,
                 alwaysdisabled: _this.alwaysenabled,
-                _key: undefined,
-                tableH: 500,
-                splitVal:0.4
+                data: [],
+                columns: [],
+                splitVal: _this.splitVal,
             },
-            mounted: function () {                
-                _.Search({
-                    Service: _this.service,
-                    Method: _this.methodList,
-                    Data: _this.searchParam,//增加查询条件
-                    Success: function (data) {
-                        define.screenParam.dataDef = data.rows;
-                    }
-                })
+            mounted: function () {
+                _this.showlist();
                 _this.mountedInit();
+            },
+            watch: {
+                "screenParam.colDef": {
+                    handler: function (nv, ov) {
+                        this.columns = nv;
+                    },
+                    immediate: true,
+                    deep: true
+                }
             },
             methods: {
                 add: function (event) {
-                    ve._key = define.dataParam[_this.Key],
-                    _this.dataParam = {};
+                    _this.backData = DeepClone(this.dataParam);
+                    let obj = this.dataParam;
+                    for (let item in obj) {
+                        obj[item] = null;
+                    }
+                    this.disabled = _this.enabled(false);
                     _this.newRecord();
-                    ve.dataParam = _this.dataParam;
-                    ve.disabled = _this.enabled(false);
                 },
                 mod: function (event) {
-                    if (!ve._key) {
-                        this.$Message.error("请选择数据");
+                    if (!this.dataParam[_this.Key]) {
+                        iview.Message.error("请选择数据");
                         return;
                     }
-                    ve._key = define.dataParam[_this.Key];
-                    ve.disabled = _this.enabled(false);
+                    _this.backData = DeepClone(this.dataParam);
+                    this.disabled = _this.enabled(false);
                 },
                 save: function (event) {
                     var _self = this;
                     if (!_this.IsValidSave())
                         return;
+
                     save(function (data) {
-                        showlist(function () {
-                            _this.showone(data, function () {
-                                ve.disabled = _this.enabled(true);
-                                ve.dataParam = _this.dataParam;
-                                _self.$Message.info("保存成功");
-                            });
-                        });
+                        _self.disabled = _this.enabled(true);
+                        _this.showlist();
+                        iview.Message.info("保存成功");
                     })
                 },
                 quit: function (event) {
-                    if (ve._key) {
-                        this.$Modal.confirm({
-                            title: '提示',
-                            content: '是否取消',
-                            onOk: function () {
-                                _this.dataParam = {};
-                                ve.dataParam = _this.dataParam;
-                                _this.showone(ve._key, function () {
-                                    ve.dataParam = _this.dataParam;
-                                });
-                                ve.disabled = _this.enabled(true);
-                            },
-                            onCancel: function () {
-                                ve.disabled = _this.enabled(false);
-                                this.id = "关闭"
+                    var _self = this;
+                    _.MessageBox("是否取消？", function () {
+                        let flag = false;
+                        for (let item in _this.backData) {
+                            flag = true;
+                            _self.dataParam[item]= _this.backData[item];
+                        }
+                        if (!flag) {
+                            let obj = _self.dataParam;
+                            for (let item in obj) {
+                                obj[item] = null;
                             }
-                        });
-                    }
-                    else {
-                        ve.disabled = _this.enabled(true);
-                    }
-
+                        }
+                        _self.disabled = _this.enabled(true);
+                    });
                 },
                 del: function (event) {
                     var _self = this;
-                    if (!ve._key) {
-                        _self.$Message.error("请选择数据");
+                    if (!_self.dataParam[_this.Key]) {
+                        iview.Message.error("请选择数据");
                         return;
-                    };
+                    }
 
                     if (!_this.beforeDel())
                         return;
 
-                    this.$Modal.confirm({
-                        title: '提示',
-                        content: '是否删除',
-                        onOk: function () {
-                            deleteone(ve.dataParam, function () {
-                                showlist();
-                                _this.dataParam = {};
-                                ve.dataParam = _this.dataParam;
-                                _self.$Message.info("删除成功");
-                            });
-                        },
-                        onCancel: function () {
-                            this.id = "关闭"
-                        }
+                    _.MessageBox("是否删除？", function () {
+                        deleteone(_self.dataParam, function () {
+                            _self.dataParam = {};
+                            _this.showlist();
+                            iview.Message.info("删除成功");
+                        });
                     });
-                    ve.disabled = _this.enabled(true);
-                },
-                showlist: function (currentRow, oldCurrentRow) {
-                    $.extend(_this.dataParam , currentRow);
-                    ve._key = define.dataParam[_this.Key];
-                    _this.showone(ve._key, function () {
-                        ve.dataParam = _this.dataParam;
-                    });
-                },
-                seachList: function (event) {
-                    showlist();
                 },
                 chk: function (event) {
                     var _self = this;
-                    if (!ve._key) {
-                        _self.$Message.error("请选择数据");
+                    if (!_self.dataParam[_this.Key]) {
+                        iview.Message.error("请选择数据");
                         return;
-                    };
-                    if (!_this.IsValidSave())
+                    }
+                    if (!_this.IsValidChk())
                         return;
+
                     check(function (data) {
-                        showlist(function () {
-                            _this.showone(data, function () {
-                                //ve.disabled = _this.enabled(false);
-                                ve.dataParam = _this.dataParam;
-                                _self.$Message.info("审核成功");
+                        _this.showlist(function () {
+                            _this.showOne(data, function () {
+                                iview.Message.info("审核成功");
                             });
                         });
                     })
+                },
+                seachList: function () {
+                    _this.showlist();
+                },
+                currentChange: function (currentRow, oldCurrentRow) {
+                    _this.showOne(currentRow[_this.Key]);
                 },
             }
         };
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
         var ve = new Vue(options);
         _this.myve = ve;
-
-        function showlist(callback) {
-            _.Search({
-                Service: _this.service,
-                Method: _this.methodList,
-                Data: _this.searchParam,
-                Success: function (data) {
-                    define.screenParam.dataDef = data.rows;
-                    callback && callback();
-                }
-            })
-        }
 
         function save(callback) {
             _.Ajax('Save', {
@@ -206,21 +174,22 @@
             Method: _this.methodList,
             Data: _this.searchParam,
             Success: function (data) {
-                define.screenParam.dataDef = data.rows;
+                _this.myve.data = data.rows;
                 callback && callback();
             }
         })
     }
-    this.showone=function (key, callback) {
-        if (key) {
+
+    this.showOne = function (val, callback) {
+        if (val) {
             var v = {};
-            v[_this.Key] = key;
+            v[_this.Key] = val;
             _.Search({
                 Service: _this.service,
                 Method: _this.method,
                 Data: v,
                 Success: function (data) {
-                    _this.dataParam = data.rows[0];
+                    _this.myve.dataParam = data.rows[0];
                     callback && callback();
                 }
             });
@@ -240,7 +209,7 @@
     setTimeout(function () {
         _this.vueInit();
         _this.beforeVue();
-        _this.vue();         
+        _this.vue();
     }, 100);
 }
 var define = new _Define();
