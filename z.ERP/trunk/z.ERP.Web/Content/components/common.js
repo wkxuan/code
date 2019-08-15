@@ -1,4 +1,8 @@
-﻿//table组件
+﻿//iView全局配置
+Vue.use(iview, {
+    transfer: true,
+});
+//table组件
 Vue.component('yx-table', {
     props: ['columns', 'data', 'disabled', 'selection', 'stripe', 'showHeader', 'border', 'width', 'height', 'loading', 'highlightRow', 'size'],
     template: ` <div style="width:100%;height:100%;position: relative;"> ` +
@@ -176,6 +180,7 @@ Vue.component('yx-table', {
                     item.title = item.title || "操作";
                     item.align = item.align || "center";
                     item.fixed = item.fixed || "right";
+                    item.width = 120;
                     item.render = function (h, params) {
                         return h('div',
                               [h('Button', {
@@ -629,7 +634,7 @@ Vue.component('yx-tool-bar', {
                     }
                 }
             }
-            _self.toolList = _backdata; 
+            _self.toolList = _backdata;
         },
     }
 });
@@ -781,132 +786,6 @@ Vue.component('yx-echart-bar', {
         }
     }
 });
-//echart饼图组件
-Vue.component('yx-echart-pie', {
-    props: ['data', 'enumlist', 'value', 'sumkey'],
-    template: ` <div> ` +
-              `  <Card v-bind:padding=0>` +
-              `    <div slot="title">` +
-              `       <radio-group v-model="curValue" v-on:on-change="echartRadioChange">` +
-              `          <radio v-for="(i,k) in curEnumlist" v-bind:key="k" v-bind:label="i.value">` +
-              `             <span>{{i.label}}</span>` +
-              `          </radio>` +
-              `       </radio-group>` +
-              `    </div>` +
-              `    <div v-bind:id="id" style="width:100%;height:300%;"></div>` +
-              `  </Card>` +
-              ` </div>`,
-    data() {
-        return {
-            curValue: null,
-            legendData: [],
-            echartObj: null,
-            id: Guid()
-        }
-    },
-    mounted() {
-        this.curValue = this.value;
-        this.echartObj = echarts.init(document.getElementById(this.id));
-    },
-    computed: {
-        curEnumlist() {
-            return this.enumlist || [];
-        }
-    },
-    watch: {
-        data: {
-            handler: function (nv, ov) {
-                this.initEchart();
-            }
-        },
-        value: {
-            handler: function (nv, ov) {
-                if (nv == ov) {
-                    return;
-                }
-                this.curValue = nv;
-                this.initEchart();
-            },
-            deep: true
-        }
-    },
-    methods: {
-        echartRadioChange(value) {
-            this.initEchart();
-        },
-        initEchart () {
-            let _self = this;
-            let legendData = [];
-            let data = _self.data;
-            let key = _self.curValue;
-            //查找data中不同项初始x轴数据
-            for (let i = 0; i < data.length; i++) {
-                let len = legendData.filter(function (item) {
-                    if (!data[i][key] || item == data[i][key]) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                })
-                if (!len.length && data[i][key] != "合计") {
-                    legendData.push(data[i][key]);
-                }
-            }
-            //构造series数据
-            let seriesData = [];
-            for (let i = 0; i < legendData.length; i++) {
-                let list = data.filter(function (item) {
-                    if (item[key] == legendData[i]) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
-                let sum = 0;
-                for (let j = 0; j < list.length; j++) {
-                    sum += list[j][_self.sumkey];
-                }
-                seriesData.push({
-                    name: legendData[i],
-                    value: sum
-                });
-            }
-            //初始化echart图形
-            _self.echartObj.setOption({
-                tooltip: {
-                    trigger: 'item',
-                    formatter: "{b} : {c} ({d}%)"
-                },
-                legend: {
-                    type: 'scroll',
-                    orient: 'vertical',
-                    right: 10,
-                    top: 20,
-                    bottom: 20,
-                    data: legendData,
-                },
-                series: [
-                    {
-                        type: 'pie',
-                        radius: '55%',
-                        center: ['40%', '50%'],
-                        data: {
-                            legendData: legendData,
-                            seriesData: seriesData,
-                        },
-                        itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
-                    }
-                ]
-            });
-        }
-    }
-});
 //弹窗组件
 Vue.component('yx-modal', {
     props: ['src', 'modalVisible', 'width', 'height', 'title'],
@@ -958,6 +837,91 @@ Vue.component('yx-modal', {
             } else {
                 iwindow.location.reload(true);
             }
+        }
+    }
+});
+//tree组件
+Vue.component('yx-tree', {
+    props: ['data', 'disabled', 'disablecheckbox', 'showcheckbox', 'multiple', 'checkstrictly'],
+    template: `<Tree ref="treeRef" :data="curData" :multiple="multiple" :show-checkbox="disablecheckbox" ` +
+              ` :check-strictly="checkstrictly" ` +
+              ` v-on:on-select-change="onSelectChange" `+
+              ` v-on:on-check-change="onCheckChange" `+
+              ` v-on:on-toggle-expand="onToggleExpand"></Tree> `,
+    data() {
+        return {
+            curData: [],
+        }
+    },
+    mounted() {
+    },
+    computed: {
+
+    },
+    watch: {
+        data: {
+            handler: function (nv, ov) {
+                this.curData = nv;
+                this.initData(this.curData);
+            },
+            immediate: true,
+            deep: true
+        },
+        disabled: {
+            handler: function (nv, ov) {
+                this.initData(this.curData);
+            }
+        },
+        disablecheckbox: {
+            handler: function (nv, ov) {
+                this.initData(this.curData);
+            }
+        }
+    },
+    methods: {
+        //初始化节点
+        initData(data) {
+            for (let i = 0; i < data.length; i++) {
+                data[i].disabled = this.disabled;
+                data[i].disableCheckbox = this.disablecheckbox;
+                if (data[i].children && data[i].children.length) {
+                    this.setDisabled(data[i].children);
+                }
+            }
+        },
+        //设置子孙节点disabled
+        setDisabled(data) {
+            for (let i = 0; i < data.length; i++) {
+                data[i].disabled = this.disabled;
+                data[i].disableCheckbox = this.disablecheckbox;
+                if (data[i].children && data[i].children.length) {
+                    this.setDisabled(data[i].children);
+                }
+            }
+        },
+        //点击树节点时触发
+        onSelectChange(selectArr, node) {
+            this.$emit('onselectchange', selectArr, node);
+        },
+        //点击复选框时触发
+        onCheckChange(checkArr, node) {
+            this.$emit('oncheckchange', checkArr, node);
+        },
+        //展开和收起子列表时触发
+        onToggleExpand(node) {
+            this.$emit('ontoggleexpand', node);
+        },
+        //获取被勾选的节点
+        getCheckedNodes() {
+            return this.$refs.treeRef.getCheckedNodes();
+        },
+        //获取被选中的节点
+        getSelectedNodes() {
+            return this.$refs.treeRef.getSelectedNodes();
+        },
+        //获取选中及半选节点
+        getCheckedAndIndeterminateNodes() {
+            return this.$refs.treeRef.getCheckedAndIndeterminateNodes();
         }
     }
 });

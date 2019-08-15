@@ -9,7 +9,6 @@ using z.ERP.Entities.Enum;
 using z.ERP.Model.Vue;
 using z.Exceptions;
 using z.Extensions;
-using z.Extensions;
 using z.MVC5.Results;
 using z.SSO.Model;
 
@@ -20,7 +19,6 @@ namespace z.ERP.Services
         internal XtglService()
         {
         }
-
         public DataGridResult GetBrandData(SearchItem item)
         {
             string SqlyTQx = "";
@@ -63,8 +61,6 @@ namespace z.ERP.Services
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
-
-
         public DataGridResult SrcORG(SearchItem item)
         {
             string sql = $@"SELECT ORGCODE,ORGNAME FROM ORG WHERE 1=1 ";
@@ -75,9 +71,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
-
-
         public DataGridResult GetPay(SearchItem item)
         {
             string sql = $@"SELECT PAYID,NAME FROM PAY WHERE 1=1 ";
@@ -88,7 +81,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public DataGridResult GetPayElement(SearchItem item)
         {
             string sql = $@"SELECT * FROM PAY WHERE 1=1 ";
@@ -97,8 +89,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
-
         public DataGridResult GetFeeSubject(SearchItem item)
         {
             string sql = $@"SELECT TRIMID,NAME,TRIMID TERMID FROM FEESUBJECT  WHERE 1=1";
@@ -111,7 +101,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public DataGridResult GetFeeSubjectElement(SearchItem item)
         {
             string sql = $@"SELECT * FROM FEESUBJECT WHERE 1=1 ";
@@ -120,29 +109,22 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
-
         public DataGridResult GetBranch(SearchItem item)
         {
-            string sql = $@"SELECT ID,NAME FROM BRANCH WHERE 1=1";
-            item.HasKey("ID,", a => sql += $" and ID = '{a}'");
-            item.HasKey("NAME", a => sql += $" and NAME = '{a}'");
-            sql += " ORDER BY  ID";
+            string sql = $@"SELECT B.*,O.ORGNAME FROM BRANCH B,ORG O WHERE B.ORGID=O.ORGID";
+            item.HasKey("ID", a => sql += $" and B.ID = {a}");
+            item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
+            item.HasKey("ORGID", a => sql += $" and B.ORGID = {a}");
+            item.HasKey("STATUS", a => sql += $" and B.STATUS = {a}");
+            item.HasKey("AREA_BUILD_S", a => sql += $" and B.AREA_BUILD >= {a}");
+            item.HasKey("AREA_BUILD_E", a => sql += $" and B.AREA_BUILD <= {a}"); 
+            item.HasKey("CONTACT", a => sql += $" and B.CONTACT = {a}");
+            sql += " ORDER BY B.ID desc";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<停用标记>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
-
-        public DataGridResult GetBranchElement(SearchItem item)
-        {
-            string sql = $@"select * from BRANCH where 1=1 ";
-            item.HasKey("ID", a => sql += $" and ID = '{a}'");
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            return new DataGridResult(dt, count);
-        }
-
-
         public DataGridResult GetConfig(SearchItem item)
         {
             string sql = $@"select * from CONFIG where 1=1 ";
@@ -152,7 +134,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public DataGridResult GetFkfs(SearchItem item)
         {
             string sql = $@"select ID,NAME from FKFS where 1=1";
@@ -171,8 +152,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
-
         public DataGridResult GetFeeRule(SearchItem item)
         {
             string sql = $@"select * from FEERULE where 1=1 ";
@@ -212,7 +191,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public DataGridResult GetFloorElement(SearchItem item)
         {
             string sql = $@"select A.*,B.ORGIDCASCADER from FLOOR A,ORG B where A.ORGID=B.ORGID(+) ";
@@ -309,7 +287,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public DataGridResult GetEnergyFilesElement(SearchItem item)
         {
             string sql = $@"SELECT A.*,B.CODE SHOPCODE FROM ENERGY_FILES A,SHOP B WHERE A.SHOPID=B.SHOPID(+)";
@@ -318,7 +295,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public DataGridResult GetPeriod(SearchItem item)
         {
             string sql = $@"select YEARMONTH,to_char(DATE_START,'yyyy-mm-dd') DATE_START,to_char(DATE_END,'yyyy-mm-dd')" +
@@ -340,7 +316,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public Tuple<dynamic, DataTable> GetStaionElement(STATIONEntity Data)
         {
             string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID,S.NETWORK_NODE_ADDRESS from STATION S where 1=1 ";
@@ -385,7 +360,6 @@ namespace z.ERP.Services
                 };
                 return result;
             }  */
-
         public object GetStaionPayList()
         {
             string sql = $@"SELECT PAYID,NAME FROM PAY  ";
@@ -399,8 +373,6 @@ namespace z.ERP.Services
             };
             return result;
         }
-
-
         public string SaveSataion(STATIONEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
@@ -432,7 +404,6 @@ namespace z.ERP.Services
 
             return DefineSave.STATIONBH;
         }
-
         public void DeleteStation(STATIONEntity DeleteData)
         {
             var v = GetVerify(DeleteData);
@@ -440,7 +411,6 @@ namespace z.ERP.Services
             DbHelper.ExecuteNonQuery(sql);
             DbHelper.Delete(DeleteData);
         }
-
         public string SaveBrand(BRANDEntity SaveData)
         {
             var v = GetVerify(SaveData);
@@ -461,7 +431,6 @@ namespace z.ERP.Services
             DbHelper.Save(SaveData);
             return SaveData.ID;
         }
-
         public virtual UIResult TreeCategoryData(SearchItem item)
         {
             string sql = $@"select * from CATEGORY where 1=1 ";
@@ -470,7 +439,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public virtual UIResult TreeCategoryList()
         {
             List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
@@ -483,8 +451,6 @@ namespace z.ERP.Services
                     expand = true
                 })?.ToArray());
         }
-
-
         public virtual UIResult TreeOrgData(SearchItem item)
         {
             string sql = $@"select * from ORG where 1=1 ";
@@ -493,7 +459,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public virtual UIResult TreeOrgList()
         {
             List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
@@ -506,7 +471,6 @@ namespace z.ERP.Services
                     expand = true
                 })?.ToArray());
         }
-
         public virtual UIResult TreeGoodsKindData(SearchItem item)
         {
             string sql = $@"select * from GOODS_KIND where 1=1 ";
@@ -515,7 +479,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public virtual UIResult TreeGoodsKindList()
         {
             List<GOODS_KINDEntity> p = DbHelper.SelectList(new GOODS_KINDEntity()).OrderBy(a => a.CODE).ToList();
@@ -538,15 +501,12 @@ namespace z.ERP.Services
             string sqlUpdate = $@"update ORG set BRANCHID=" + BRANCHID + " where  ORGCODE like '" + org.ORGCODE + "%'";
             DbHelper.ExecuteNonQuery(sqlUpdate);
         }
-
         public string Org_BRANCHID(string CODE)
         {
             var sql = " select BRANCHID from ORG where ORGCODE='" + CODE + "'";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.Rows[0][0].ToString();
         }
-
-
         public object GetBrandElement(BRANDEntity Data)
         {
             string sql = $@"select A.*,B.CATEGORYIDCASCADER,B.CATEGORYNAME from BRAND A,CATEGORY B where A.CATEGORYID=B.CATEGORYID ";
@@ -570,7 +530,6 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic>(dt.ToOneLine());
         }
-
         public string BrandExecData(BRANDEntity Data)
         {
             BRANDEntity brand = DbHelper.Select(Data);
@@ -589,7 +548,6 @@ namespace z.ERP.Services
             }
             return brand.ID;
         }
-
         public DataGridResult GetPosO2OWftCfg(SearchItem item)
         {
             string sql = $@"select P.*,B.NAME BRANCHNAME from POSO2OWFTCFG P,STATION S,BRANCH B where P.POSNO=S.STATIONBH AND S.BRANCHID=B.ID ";
@@ -601,7 +559,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public DataGridResult GetFeeAccount(SearchItem item)
         {
             string sql = $@"select F.*,B.NAME BRANCHNAME from fee_account F,BRANCH B where F.BRANCHID=B.ID ";
@@ -614,7 +571,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public SHOPEntity SelectShop(string shop)
         {
             return DbHelper.Select(new SHOPEntity() { SHOPID = shop });
@@ -649,8 +605,6 @@ namespace z.ERP.Services
             dt.NewEnumColumns<POS类型>("TYPE", "TYPENAME");
             return new DataGridResult(dt, count);
         }
-
-
         public DataGridResult GetAlert(SearchItem item)
         {
 
@@ -662,10 +616,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
-
-
-
         public Tuple<dynamic, DataTable> GetAlertElement(DEF_ALERTEntity Data)
         {
             string sql = $@"select ID,MC,XSSX,SQLSTR FROM DEF_ALERT where 1=1";
@@ -685,9 +635,6 @@ namespace z.ERP.Services
             DataTable defalertItem = DbHelper.ExecuteTable(sqlItem);
             return new Tuple<dynamic, DataTable>(defalert.ToOneLine(), defalertItem);
         }
-
-
-
         public string SaveAlert(DEF_ALERTEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
@@ -709,7 +656,6 @@ namespace z.ERP.Services
 
             return DefineSave.ID;
         }
-
         public bool VerifySql(string sql)
         {
             var b = false;
@@ -724,8 +670,6 @@ namespace z.ERP.Services
             }
             return b;
         }
-
-
         public Tuple<DataTable, DataTable> GetAlertSql(DEF_ALERTEntity Data)
         {
             DEF_ALERTEntity alert = new DEF_ALERTEntity();
@@ -741,9 +685,6 @@ namespace z.ERP.Services
             DataTable alertCol = DbHelper.ExecuteTable(sqlItem);
             return new Tuple<DataTable, DataTable>(alertSql, alertCol);
         }
-
-
-
         public string SaveSplc(SPLCDEFDEntity SPLCDEFD,
             List<SPLCJDEntity> SPLCJD, List<SPLCJGEntity> SPLCJG)
         {
@@ -823,7 +764,6 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
         }
-
         public Tuple<dynamic, DataTable, DataTable> GetSplcdefdElement(SPLCDEFDEntity Data)
         {
             if (Data.BILLID.IsEmpty())
@@ -864,7 +804,6 @@ namespace z.ERP.Services
                 spjg
             );
         }
-
         public string ExecSplc(SPLCDEFDEntity Data)
         {
             var v = GetVerify(Data);
@@ -899,7 +838,6 @@ namespace z.ERP.Services
             }
             return con.BILLID;
         }
-
         public string OverSplc(SPLCDEFDEntity Data)
         {
             var v = GetVerify(Data);
@@ -921,9 +859,6 @@ namespace z.ERP.Services
             }
             return con.BILLID;
         }
-
-
-
         public Tuple<DataTable, DataTable, int> GetSplc(SPLCEntity Data)
         {
             //找当前应该是那个节点数据
@@ -964,7 +899,6 @@ namespace z.ERP.Services
                  curJdid
             );
         }
-
         public void ExecMenuSplc(SPLCJG_MENUEntity Data)
         {
             var v = GetVerify(Data);
@@ -1061,7 +995,6 @@ namespace z.ERP.Services
             v.Verify();
             DbHelper.Save(rnl);
         }
-
         public DataGridResult SrchSplc(SearchItem item)
         {
             string sql = @"select * from SPLCDEFD where 1=1 ";

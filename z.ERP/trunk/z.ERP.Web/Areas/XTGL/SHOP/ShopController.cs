@@ -4,10 +4,10 @@ using z.ERP.Entities;
 using z.ERP.Entities.Enum;
 using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.DefineDetail;
-using z.ERP.Web.Areas.Layout.DefineNew;
 using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
+
 namespace z.ERP.Web.Areas.XTGL.SHOP
 {
     public class ShopController : BaseController
@@ -15,10 +15,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
         public ActionResult Shop()
         {
             ViewBag.Title = "资产单元信息";
-            return View(new DefineNewRender()
-            {
-                //Permission_Chk = "104004"
-            });
+            return View();
         }
         public ActionResult ShopDetail(string Id)
         {
@@ -77,8 +74,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
         {
             foreach (var con in DefineDelete)
             {
-                var v = GetVerify(con);
-                CommenDelete(DefineDelete);
+                CommenDelete(con);
             }  
         }
         public string Check(SHOPEntity DefineSave)

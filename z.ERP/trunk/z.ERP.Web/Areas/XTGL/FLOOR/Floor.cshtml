@@ -1,161 +1,54 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Define
-@inherits DefineViewBase
+﻿@using z.ERP.Web.Areas.Layout.DefineNew
+@inherits DefineViewNewBase
 
-@section search{
+@section conditionParam{
     <row>
-        <i-col span="3" class="RowTitle">门店</i-col>
-        <i-col span="9">
-            @{
-                RenderControl(new DropDownListsRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    Data = "screenParam.branchData",
-                    Change = "branchChange",
-                    Enable = true
-                });
-            }
+        <i-col span="2" class="RowTitle">
+            门店
         </i-col>
-
-        <i-col span="3" class="RowTitle">区域</i-col>
-        <span v-show="disabled">
-            <i-col span="9">
-                @{
-                    RenderControl(new DropDownListsRender()
-                    {
-                        vModel = "dataParam.REGIONID",
-                        Data = "screenParam.regionData",
-                        Change = "regionChange",
-                        Enable = true
-                    });
-                }
-            </i-col>
-        </span>
-        <span v-show="!disabled">
-            <i-col span="9">
-                @{
-                    RenderControl(new DropDownListsRender()
-                    {
-                        vModel = "dataParam.REGIONID",
-                        Data = "screenParam.regionData",
-                        Change = "regionChange",
-                        Enable = false
-                    });
-                }
-            </i-col>
-        </span>
-</row>
-}
-@section element{
-    <row>
-        <span v-if="screenParam.componentVisible">
-            <i-col span="2" class="RowTitle">楼层编码</i-col>
-            <i-col span="6">
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "dataParam.ID"
-                    });
-                }
-            </i-col>
-        </span>
-        <i-col span="3" class="RowTitle">楼层代码</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CODE",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-select v-model="searchParam.BRANCHID" v-on:on-change="branchChange">
+                <i-option v-for="item in screenParam.branchData"
+                          v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
+            </i-select>
         </i-col>
-
-        <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>
-            楼层名称
-            </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NAME",
-                    Enable = false
-                });
-            }
+        <i-col span="2" class="RowTitle">
+            区域
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-select v-model="searchParam.REGIONID">
+                <i-option v-for="item in screenParam.regionData"
+                          v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
+            </i-select>
         </i-col>
     </row>
-
     <row>
-        <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>        
-            管理机构
+        <i-col span="2" class="RowTitle">
+            楼层代码
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new CascaderRender()
-                {
-                    vModel = "dataParam.ORGIDCASCADER",
-                    Data = "screenParam.ORGData",
-                    Change = "orgChange",
-                    Not_level_last = true,
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.CODE" />
         </i-col>
-
-        <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>
+        <i-col span="2" class="RowTitle">
+            楼层名称
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.NAME" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
             建筑面积
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREA_BUILD",
-                    Enable = false
-                });
-            }
+        <i-col span="3" class="RowText">
+            <i-input type="number" v-model="searchParam.AREA_BUILD_S" />
+        </i-col>
+        <i-col span="3" class="RowText">
+            <i-input type="number" v-model="searchParam.AREA_BUILD_E" />
         </i-col>
     </row>
+}
 
-    <row>
-        <i-col span="3" class="RowTitle">使用面积</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREA_USABLE",
-                    Enable = false
-                });
-            }
-        </i-col>
-
-        <i-col span="3" class="RowTitle">租赁面积</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREA_RENTABLE",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
-
-
-    <row>
-        <i-col span="3" class="RowTitle">使用标记</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new EnumCheckBoxListRender<停用标记>()
-                {
-                    vModel = "dataParam.STATUS",
-                    MultiSelect = false,
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
-
+@section pops{
+    <yx-modal v-bind:src="screenParam.defineDetailSrc" v-bind:title="screenParam.title"
+              width="600" height="260"
+              v-bind:modal-visible.sync="screenParam.showDefineDetail"></yx-modal>
 }

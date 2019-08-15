@@ -13,11 +13,47 @@
 @section head{
     @InitFiles(WebFiles)
     @RenderSection("head", false)
+
+    <style>
+        #def_Main {
+            overflow: hidden;
+            height: 100%;
+        }
+
+            #def_Main .topMenuBtn {
+                height: 35px;
+                text-align: right;
+                line-height: 35px;
+                background: #2d8cf0;
+                padding-right: 10px;
+            }
+
+            #def_Main .contentSplit {
+                height: calc(100% - 35px);
+                overflow: hidden;
+                width: 100%;
+            }
+
+            #def_Main .ivu-split-pane {
+                overflow: auto;
+            }
+            
+             #def_Main .rightPane {
+                padding-top:8px;
+            }
+            #def_Main .leftPane {
+                overflow: hidden;
+                height: 100%;
+            }
+
+                #def_Main .leftPane .paramDivCon {
+                    margin:8px;
+                }
+    </style>
 }
 
 <div id="def_Main">
-    <row class="topbutton">
-
+    <div class="topMenuBtn">
         @{
             RenderControl(new ButtonRender()
             {
@@ -29,7 +65,6 @@
                 Icon = "md-search"
             });
         }
-
         @{
             RenderControl(new ButtonRender()
             {
@@ -100,37 +135,29 @@
                 });
             }
         </span>
-    </row>
-    <row>
-        <i-col span="8">
-            <div ref="tableHeight">
-                <card style="height:100%">
-                    @*<p slot="title">列表信息</p>*@
-                    <div style="height:8%">
-                        @RenderSection("search", false)
-                    </div>
-                    <i-table v-bind:highlight-row="true" size="small" v-bind:border="true" v-bind:height="tableH"
-                             v-bind:columns="screenParam.colDef" v-bind:data="screenParam.dataDef"
-                             v-on:on-current-change="showlist"></i-table>
-                </card>
+    </div>
+    <div class="contentSplit">
+        <Split v-model="splitVal">
+            <div slot="left" class="leftPane">   
+                <div class="paramDivCon">
+                    @RenderSection("search", false)
+                </div>
+
+                <yx-table v-bind:columns="columns" v-bind:height="600" v-bind:data="data" 
+                          v-on:currentChange="currentChange" ref="selectData">
+                </yx-table>
             </div>
-        </i-col>
-        <i-col span="16">
-            <div ref="cardHeigth">
-                <card class="elementcard" style="height:500px">
-                    @*<p slot="title">包含元素</p>*@
-                    @RenderSection("element", true)
-                </card>
+            <div slot="right" class="rightPane">
+                @RenderSection("element", true)
             </div>
-        </i-col>
-    </row>
+        </Split>
+    </div>
 
     <div class="hide">
         @RenderSection("hide", false)
         @RenderSection("pops", false)
     </div>
 </div>
-
 
 @section foot{
     @RenderSection("foot", false)

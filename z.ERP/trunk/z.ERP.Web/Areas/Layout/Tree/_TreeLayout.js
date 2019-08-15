@@ -1,183 +1,267 @@
 ﻿function _Define() {
     var _this = this;
-
+    this.vueObj;
+    this.AddTar;
+    this.Key;
+    this.backData;
+    this.btnConfig = [];
     this.beforeVue = function () { }
-
-
     this.enabled = function (val) { return val; }
-
-
     this.IsValidSave = function (_self) {
         return true;
     }
-
     this.IsValidDel = function (_self) {
         return true;
     }
-
+    this.IsValidTj = function () {
+        return true;
+    }
     this.IsValidXj = function () {
         return true;
     }
-
-    this.AddTar;
-
-    this.Key;
-
-
     this.newRecord = function () { }
-
-
     this.vue = function VueOperate() {
         var options = {
-            el: '#def_Main',
+            el: '#treeDef',
             data: {
                 dataParam: _this.dataParam,
                 screenParam: _this.screenParam,
-                searchParam: _this.searchParam,
-                disabled: _this.enabled(true),
-                _key: undefined
+                disabled: _this.enabled(false),
+                nodedisabled: false,
+                splitVal: 0.3,
+                data: [],
+                toolBtnList: [],
+                keyVal: null
             },
-            mounted: showlist,
+            mounted(){
+                this.seachList();
+                this.initBtn();
+            },
+            computed: {
+                list() {
+                    return this.toolBtnList || [];
+                }
+            },
             methods: {
-                
+                //初始化功能按钮
+                initBtn() {
+                    let _self = this;
+                    let baseBtn = [{
+                        id: "addtj",
+                        name: "加同级",
+                        icon: "md-add",
+                        fun: function () {
+                            _self.addtj();
+                        },
+                        enabled: function (disabled, data) {
+                            if (!disabled && data && data[_this.Key]) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }, {
+                        id: "addxj",
+                        name: "加下级",
+                        icon: "md-add",
+                        fun: function () {
+                            _self.addxj();
+                        },
+                        enabled: function (disabled, data) {
+                            if (!disabled && data && data[_this.Key]) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    },{
+                        id: "edit",
+                        name: "编辑",
+                        icon: "md-create",
+                        fun: function () {
+                            _self.edit();
+                        },
+                        enabled: function (disabled, data) {
+                            if (!disabled && data && data[_this.Key]) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }, {
+                        id: "del",
+                        name: "删除",
+                        icon: "md-trash",
+                        fun: function () {
+                            _self.del();
+                        },
+                        enabled: function (disabled, data) {
+                            if (!disabled && data && data[_this.Key]) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }, {
+                        id: "save",
+                        name: "存档",
+                        icon: "md-checkmark-circle",
+                        fun: function () {
+                            _self.save();
+                        },
+                        enabled: function (disabled, data) {
+                            if (disabled) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }, {
+                        id: "abandon",
+                        name: "放弃",
+                        icon: "md-refresh",
+                        fun: function () {
+                            _self.quit();
+                        },
+                        enabled: function (disabled, data) {
+                            return disabled;
+                        }
+                    }];
+                    let data = [];
+                    if (_this.btnConfig.length) {
+                        for (let j = 0, jlen = _this.btnConfig.length; j < jlen; j++) {
+                            for (let i = 0, ilen = baseBtn.length; i < ilen; i++) {
+                                if (baseBtn[i].id == _this.btnConfig[j].id) {
+                                    let loc = {};
+                                    $.extend(loc, baseBtn[i], _this.btnConfig[j]);
+                                    data.push(loc);
+                                }
+                            }
+                            if (_this.btnConfig[j].isNewAdd) {
+                                data.push(_this.btnConfig[j]);
+                            }
+                        }
+                    } else {
+                        data = baseBtn;
+                    } 
+                    _self.toolBtnList = data;
+                },
                 addtj: function (event) {
-                    _this.dataParam = {};
+                    if (!this.keyVal) {
+                        iview.Message.error("请选择数据");
+                        return;
+                    };
+                    if (!_this.IsValidTj())
+                        return;
                     _this.newRecord();
-                    this.AddTar = 'tj';
-                    ve.dataParam = _this.dataParam;
-                    ve.disabled = _this.enabled(false);
+                    _this.AddTar = 'tj';
+                    this.dataParam = {};
+                    this.disabled = _this.enabled(true);
+                    this.nodedisabled = true;
                 },
                 addxj: function (event) {
+                    if (!this.keyVal) {
+                        iview.Message.error("请选择数据");
+                        return;
+                    };
                     if (!_this.IsValidXj())
                         return;
-                    _this.dataParam = {};
                     _this.newRecord();
-                    this.AddTar = 'xj';
-                    ve.dataParam = _this.dataParam;
-                    ve.disabled = _this.enabled(false);
-                },
-                
-                mod: function (event) {
-                    if (!ve._key) {
-                        this.$Message.error("请选择数据");
+                    _this.AddTar = 'xj';
+                    this.dataParam = {};
+                    this.disabled = _this.enabled(true);
+                    this.nodedisabled = true;
+                },          
+                edit: function (event) {
+                    if (!this.keyVal) {
+                        iview.Message.error("请选择数据");
                         return;
                     };
                     //修改的时候值传' ',否则全局变量值上次按钮的值
-                    this.AddTar = ' ';
-                    ve._key = define.dataParam[_this.Key];
-                    ve.disabled = _this.enabled(false);
-                },
-                
+                    _this.AddTar = ' ';
+                    this.disabled = _this.enabled(true);
+                    this.nodedisabled = true;
+                },       
                 save: function (event) {
                     var _self = this;
-                    save(function (data) {
-                        showlist(function () {
-                            showone(data, function () {
-                                ve.disabled = _this.enabled(true);
-                                _self.$Message.info("保存成功");
-                            });
-                        });
-                    })
-                },
-                
+                    _.Ajax('Save', {
+                        Tar: _this.AddTar,
+                        Key: _self.keyVal,
+                        DefineSave: _self.dataParam
+                    }, function (data) {
+                        iview.Message.info("保存成功");
+                        showOne(data);
+                        _self.disabled = _this.enabled(false);
+                        _self.seachList();
+                        _self.nodedisabled = false;
+                    });
+                },     
                 quit: function (event) {
-                    if (ve._key) {
-                        _.MessageBox("是否取消？", function () {
-                            showone(ve._key);
-                            ve.disabled = _this.enabled(true);
-                        });                       
-                    }
-                    else {
-                        ve.disabled = _this.enabled(true);
-                    }
-                },
-                
+                    var _self = this;
+                    _.MessageBox("是否取消？", function () {
+                        _self.dataParam = _this.backData;
+                        _self.disabled = _this.enabled(false);
+                        _self.nodedisabled = false;
+                    });
+                },               
                 del: function (event) {
                     var _self = this;
-                    if (!ve._key) {
-                        _self.$Message.error("请选择数据");
+                    if (!_self.keyVal) {
+                        iview.Message.error("请选择数据");
                         return;
                     };
-
                     if (!_this.IsValidDel())
                         return;
 
                     _.MessageBox("是否删除？", function () {
-                        deleteone(ve.dataParam, function () {
-                            showlist();
+                        _.Ajax('Delete', {
+                            DefineDelete: _self.dataParam
+                        }, function (data) {      
+                            _self.dataParam = {};
+                            iview.Message.info("删除成功");
 
-                            _this.dataParam = {};
-                            ve.dataParam = _this.dataParam;
-                            _self.$Message.info("删除成功");
+                            _self.seachList();
                         });
                     });
-                    ve.disabled = _this.enabled(true);
+                },      
+                onselectchange: function (selectArr, node) {                 
+                    showOne(node.code);
                 },
-      
-                showlist: function (currentRow, oldCurrentRow) {
-                    var p = currentRow && currentRow[0] && currentRow[0];
-                    ve._key = p.code;
-                    showone(p.code);
-                },
-                seachList: function (event) {
-                    showlist();
+                seachList: function () {
+                    var _self = this;
+                    _.SearchNoQuery({
+                        Service: _this.service,
+                        Method: _this.methodList,
+                        Success: function (data) {
+                            _self.data = data;
+                        }
+                    })
                 }
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
-        var ve = new Vue(options);
-        function showlist(callback) {
-            _.SearchNoQuery({
+
+        _this.vueObj = new Vue(options);
+
+        function showOne(key, callback) {
+            _.Search({
                 Service: _this.service,
-                Method: _this.methodList,
+                Method: _this.method,
+                Data: {
+                    code: key
+                },
                 Success: function (data) {
-                    define.screenParam.dataDef = data;
+                    _this.vueObj.dataParam = data.rows[0];
+                    _this.vueObj.keyVal = _this.vueObj.dataParam[_this.Key];
+                    _this.backData = DeepClone(data.rows[0]);
                     callback && callback();
                 }
-            })
-        }
-
-        function showone(key, callback) {
-            if (key) {
-                var v = {};
-                _.Search({
-                    Service: _this.service,
-                    Method: _this.method,
-                    Data: {
-                        code: key
-                    },
-                    Success: function (data) {
-                        _this.dataParam = data.rows[0];
-                        ve.dataParam = _this.dataParam;
-                        callback && callback();
-                    }
-                });
-            }
-        }
-
-        function save(callback) {
-            _.Ajax('Save', {
-                Tar: ve.AddTar,
-                Key: ve._key,
-                DefineSave: ve.dataParam
-            }, function (data) {
-                callback && callback(data);
-            });
-        }
-
-        function deleteone(data, callback) {
-            _.Ajax('Delete', {
-                DefineDelete: data
-            }, function (data) {
-                callback && callback();
             });
         }
     }
 
-
     this.vueInit = function () {
         _this.dataParam = {};
-        _this.searchParam = {};
         _this.screenParam = {};
         _this.service = "";
         _this.method = "";

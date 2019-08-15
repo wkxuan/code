@@ -117,6 +117,7 @@
         function showList() {
             let ve = _this.vueObj;
             ve.data = [];
+            ve.pagedataCount = 0;
             ve.tbLoading = true;
             _.Search({
                 Service: _this.service,

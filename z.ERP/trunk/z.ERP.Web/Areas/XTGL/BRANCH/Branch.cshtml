@@ -1,174 +1,70 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Define
-@inherits DefineViewBase
+@using z.ERP.Web.Areas.Layout.DefineNew
+@inherits DefineViewNewBase
 
-@section element{
+@section conditionParam{
     <row>
-        <i-col span="3" class="RowTitle">门店代码</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ID"
-                });
-            }
+        <i-col span="2" class="RowTitle">
+            门店代码
         </i-col>
-
-        <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="searchParam.ID" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
             门店名称
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NAME",
-                    Enable=false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.NAME" />
         </i-col>
-    </row>
-
-    <row>
-        <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>
+        <i-col span="2" class="RowTitle">
             管理部门
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
-                    vModel = "dataParam.ORGID",
+                    vModel = "searchParam.ORGID",
                     ServiceMothod = m => m.org_hs(),
                     Enable = false
                 });
             }
         </i-col>
-
-        <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
             建筑面积
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREA_BUILD",
-                    Enable=false
-                });
-            }
+        <i-col span="3" class="RowText">
+            <i-input type="number" v-model="searchParam.AREA_BUILD_S" />
         </i-col>
-    </row>
-
-    <row>
-        <i-col span="3" class="RowTitle">使用面积</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREA_USABLE",
-                    Enable = false
-                });
-            }
+        <i-col span="3" class="RowText">
+            <i-input type="number" v-model="searchParam.AREA_BUILD_E" />
         </i-col>
-
-        <i-col span="3" class="RowTitle">租赁面积</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREA_RENTABLE",
-                    Enable=false
-                });
-            }
+        <i-col span="2" class="RowTitle">
+            联系人
         </i-col>
-    </row>
-
-    
-    <row>
-        <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.CONTACT" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
             停用标记
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
-                RenderControl(new EnumCheckBoxListRender<停用标记>()
+                RenderControl(new EnumDropDownListRender<停用标记>()
                 {
-                    vModel = "dataParam.STATUS",
-                    MultiSelect = false,
+                    vModel = "searchParam.STATUS",
                     Enable = false
                 });
             }
         </i-col>
+    </row>
 
-        <i-col span="3" class="RowTitle">打印标题</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.PRINTNAME",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="3" class="RowTitle">联系人</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CONTACT",
-                    Enable = false
-                });
-            }
-        </i-col>
+}
 
-        <i-col span="3" class="RowTitle">电话</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CONTACT_NUM",
-                    Enable=false
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="3" class="RowTitle">银行</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.BANK",
-                    Enable = false
-                });
-            }
-        </i-col>
-
-        <i-col span="3" class="RowTitle">账户</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ACCOUNT",
-                    Enable=false
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="3" class="RowTitle">地址</i-col>
-        <i-col span="15">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ADDRESS",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
+@section pops{
+    <yx-modal v-bind:src="screenParam.defineDetailSrc" v-bind:title="screenParam.title"
+              width="800" height="350"
+              v-bind:modal-visible.sync="screenParam.showDefineDetail"></yx-modal>
 }

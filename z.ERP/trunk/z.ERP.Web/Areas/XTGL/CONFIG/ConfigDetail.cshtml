@@ -1,0 +1,58 @@
+﻿@using z.ERP.Web.Areas.Layout.DefineDetail
+@inherits DefineDetailViewBase
+
+@section baseParam{
+    <row>
+        <i-col span="6" class="RowTitle">
+            编号
+        </i-col>
+        <i-col span="14" class="RowText">
+            <i-input v-model="dataParam.ID" disabled />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="6" class="RowTitle">
+            <span class="mustElement">*</span>
+            缺省值
+        </i-col>
+        <i-col span="14" class="RowText">
+            <i-input v-model="dataParam.DEF_VAL" disabled />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="6" class="RowTitle">
+            <span class="mustElement">*</span>
+            当前值
+        </i-col>
+        <i-col span="14" class="RowText">
+            <i-input v-model="dataParam.CUR_VAL" v-bind:disabled="!disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="6" class="RowTitle">
+            <span class="mustElement">*</span>
+            最大值
+        </i-col>
+        <i-col span="14" class="RowText">
+            <i-input v-model="dataParam.MAX_VAL" disabled />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="6" class="RowTitle">
+            <span class="mustElement">*</span>
+            最小值
+        </i-col>
+        <i-col span="14" class="RowText">
+            <i-input v-model="dataParam.MIN_VAL" disabled />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="6" class="RowTitle">
+            <span class="mustElement">*</span>
+            描述
+        </i-col>
+        <i-col span="14" class="RowText">
+            <i-input type="textarea" v-bind:rows="8" v-model="dataParam.DESCRIPTION" disabled />
+        </i-col>
+    </row>
+}

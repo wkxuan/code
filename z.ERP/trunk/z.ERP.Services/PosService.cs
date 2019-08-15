@@ -3975,7 +3975,7 @@ namespace z.ERP.Services
                     totalMoney += payment.PayMoney;
                 }
 
-                if (CouponList.Count == 0)
+                if ((CouponList.Count == 0) || totalMoney == 0)
                 {
                     return true;
                 }
@@ -5505,7 +5505,7 @@ namespace z.ERP.Services
                     totalMoney += payment.PayMoney;
                 }
 
-                if (moneyCardList.Count == 0)
+                if ((moneyCardList.Count == 0) || (totalMoney == 0))
                 {
                     return true;
                 }
@@ -5925,7 +5925,7 @@ namespace z.ERP.Services
                     totalMoney += payment.PayMoney;
                 }
 
-                if (CouponList.Count == 0)
+                if ((CouponList.Count == 0) || (totalMoney == 0))
                 {
                     return true;
                 }
@@ -6553,7 +6553,7 @@ namespace z.ERP.Services
                     totalMoney += payment.PayMoney;
                 }
 
-                if (moneyCardList.Count == 0)
+                if ((moneyCardList.Count == 0) || (totalMoney == 0) )
                 {
                     return true;
                 }

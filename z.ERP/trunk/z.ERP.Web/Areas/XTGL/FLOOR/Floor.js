@@ -1,185 +1,89 @@
-﻿define.beforeVue = function () {
+﻿defineNew.beforeVue = function () {
+    defineNew.service = "DpglService";
+    defineNew.method = "SearchFloor";
+    defineNew.screenParam.defineDetailSrc = null;
+    defineNew.screenParam.showDefineDetail = false;
+    defineNew.screenParam.title = "楼层信息";
+    defineNew.screenParam.branchData = [];
+    defineNew.screenParam.regionData = [];
 
-    define.screenParam.colDef = [
-        {
-            title: "代码",
-            key: 'CODE', width: 100
-        },
-        {
-            title: '名称',
-            key: 'NAME', width: 200
-        }];
-    define.screenParam.dataDef = [];
-    define.service = "DpglService";
-    define.method = "SearchFloor";
-    define.methodList = "SearchFloor";
-    define.Key = 'ID';
-    define.Data = [];
-    define.screenParam.componentVisible = false;
-    define.screenParam.branchData = [];
-    define.screenParam.regionData = [];
-    define.dataParam.ORGIDCASCADER = [];
-    define.btnChkvisible = true;
-
-    _.Ajax('GetBranch', {
-        Data: { ID: "" }
-    }, function (data) {
-        if (data.dt) {
-            define.screenParam.branchData = [];
-            for (var i = 0; i < data.dt.length; i++) {
-                define.screenParam.branchData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
-            }
-            define.searchParam.BRANCHID = data.dt[0].ID;
-            define.dataParam.BRANCHID = define.searchParam.BRANCHID;
-        }
-        else {
-
-        }
-    });
-    _.Ajax('GetRegion', {
-        Data: { BRANCHID: define.dataParam.BRANCHID }
-    }, function (data) {
-        if (data.dt) {
-            define.screenParam.regionData = [];
-            define.dataParam.REGIONID = 0;
-            define.searchParam.REGIONID = 0;
-            for (var i = 0; i < data.dt.length; i++) {
-                define.screenParam.regionData.push({ value: data.dt[i].REGIONID, label: data.dt[i].NAME })
-            }
-            define.dataParam.REGIONID = data.dt[0].REGIONID;
-            define.searchParam.REGIONID = define.dataParam.REGIONID;
-            define.showlist();
-        }
-        else {
-
-        }
-    });
+    defineNew.columnsDef = [
+       { title: "楼层代码", key: 'CODE' },
+       { title: '楼层名称', key: 'NAME' },
+       { title: '门店', key: 'BRANCHNAME' },
+       { title: '区域', key: 'REGIONNAME' },
+       { title: '管理机构', key: 'ORGNAME' },
+       { title: '建筑面积', key: 'AREA_BUILD' },
+       { title: '租用面积', key: 'AREA_RENTABLE' },
+       { title: '使用面积', key: 'AREA_USABLE' },      
+       { title: '使用标记', key: 'STATUSMC' },
+       {
+           title: '操作', key: 'operate', onClick: function (index, row, data) {
+               defineNew.screenParam.defineDetailSrc = __BaseUrl + "/XTGL/FLOOR/FloorDetail/" + row.ID;
+               defineNew.screenParam.showDefineDetail = true;
+           }
+       }];
 }
 
+defineNew.mountedInit = function () {
+    defineNew.otherMethods.initBranch();
 
-define.newRecord = function () {
-    if (define.searchParam.BRANCHID == 0) {
-        iview.Message.info("请选择门店!");
-     //   return;
-    };
-    if (define.searchParam.GEGIONID == 0) {
-        iview.Message.info("请选择区域!");
-     //   return;
-    };
-    define.dataParam.STATUS = 1;
-    define.dataParam.ORGIDCASCADER = [];
-    define.dataParam.BRANCHID = define.searchParam.BRANCHID;
-    define.dataParam.REGIONID = define.searchParam.REGIONID;
+    defineNew.btnConfig = [{
+        id: "select",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "add",
+        authority: ""
+    }, {
+        id: "del",
+        authority: ""
+    }];
+};
 
-    return true;
-}
+defineNew.add = function () {
+    defineNew.screenParam.defineDetailSrc = __BaseUrl + "/XTGL/FLOOR/FloorDetail/";
+    defineNew.screenParam.showDefineDetail = true;
+};
 
-define.otherMethods = {
-    branchChange: function (value) {
-       // define.screenParam.regionData = [];
-        define.screenParam.REGIONID = 0;
-        define.dataParam.FLOORID = "";
-        define.dataParam.CODE = "";
-        define.dataParam.NAME = "";
-        define.dataParam.ORGIDCASCADER = [];
-        define.dataParam.AREA_BUILD = "";
-        define.dataParam.AREA_USABLE = "";
-        define.dataParam.AREA_RENTABLE = "";
-        define.dataParam.STATUS = "";
-        _.Ajax('GetRegion', {
-            Data: { BRANCHID: value }
-        }, function (Data) {
-            if (Data.dt) {
-                define.screenParam.regionData = [];
-                define.dataParam.REGIONID = 0;
-                define.searchParam.REGIONID = 0;
-                for (var i = 0; i < Data.dt.length; i++) {
-                    define.screenParam.regionData.push({ value: Data.dt[i].REGIONID, label: Data.dt[i].NAME })
+defineNew.popCallBack = function (data) {
+    if (defineNew.screenParam.showDefineDetail) {
+        defineNew.screenParam.showDefineDetail = false;
+        defineNew.searchList();
+    }
+};
+
+defineNew.otherMethods = {
+    branchChange: function () {
+        defineNew.otherMethods.initRegion();
+        defineNew.searchParam.REGIONID = undefined;
+    },
+    initBranch: function () {
+        _.Ajax('GetBranch', {
+            Data: { ID: "" }
+        }, function (data) {
+            let dt = data.dt;
+            if (dt && dt.length) {
+                defineNew.screenParam.branchData = [];
+                for (var i = 0; i < dt.length; i++) {
+                    defineNew.screenParam.branchData.push({ value: dt[i].ID, label: dt[i].NAME })
                 }
-                define.dataParam.REGIONID = Data.dt[0].RGIONID;
-                define.searchParam.REGIONID = define.dataParam.RGIONID;
-                define.showlist();
-            }
-            else {
-
             }
         });
     },
-
-    regionChange: function (value) {
-        if (define.dataParam.REGIONID == 0) {
-            define.searchParam.REGIONID = "";
-        }
-        else {
-            define.searchParam.REGIONID = define.dataParam.REGIONID;
-        }
-        if (define.myve.disabled) {
-            define.dataParam.FLOORID = "";
-            define.dataParam.CODE = "";
-            define.dataParam.NAME = "";
-            define.dataParam.ORGIDCASCADER = [];
-            define.dataParam.AREA_BUILD = "";
-            define.dataParam.AREA_USABLE = "";
-            define.dataParam.AREA_RENTABLE = "";
-            define.dataParam.STATUS = "";
-            define.showlist();
-        }
-    },
-
-    orgChange: function (value, selectedData) {
-        define.dataParam.ORGID = value[value.length - 1];
-    },
-    kindChange: function (value, selectedData) {
-        editDetail.dataParam.KINDID = value[value.length - 1];
-    },
-    clear: function () {
-
+    initRegion: function () {
+        _.Ajax('GetRegion', {
+            Data: { BRANCHID: defineNew.searchParam.BRANCHID }
+        }, function (data) {
+            let dt = data.dt;
+            if (dt && dt.length) {
+                defineNew.screenParam.regionData = [];
+                for (var i = 0; i < dt.length; i++) {
+                    defineNew.screenParam.regionData.push({ value: dt[i].REGIONID, label: dt[i].NAME })
+                }
+            }
+        });
     }
-}
-
-define.mountedInit = function () {
-    _.Ajax('SearchInit', {
-        Data: {}
-    }, function (data) {
-        Vue.set(define.screenParam, "ORGData", data.treeOrg.Obj);
-    });
-}
-
-define.showone = function (data, callback) {
-    _.Ajax('GetFloor', {
-        Data: { ID: data }
-    }, function (data) {
-        $.extend(define.dataParam, data.floorelement);
-        define.dataParam.ORGIDCASCADER = define.dataParam.ORGIDCASCADER.toString().split(",");
-        callback && callback();
-    });
-}
-
-define.IsValidSave = function () {
-    if (define.dataParam.BRANCHID == 0) {
-        iview.Message.info("请选择门店!");
-        return false;
-    };
-    if (define.dataParam.REGIONID == 0) {
-        iview.Message.info("请选择区域!");
-        return false;
-    };
-    if (!define.dataParam.CODE) {
-        iview.Message.info("楼层代码不能为空!");
-        return false;
-    };
-    if (!define.dataParam.NAME) {
-        iview.Message.info("楼层名称不能为空!");
-        return false;
-    };
-    if (!define.dataParam.ORGIDCASCADER) {
-        iview.Message.info("请选择管理机构!");
-        return false;
-    };
-    if (!define.dataParam.AREA_BUILD) {
-        iview.Message.info("建筑面积不能为空!");
-        return false;
-    };
-
-    return true;
 }
