@@ -29,7 +29,7 @@
                         门店
                     </i-col>
                     <i-col span="6" class="RowText">
-                        <i-select v-model="BRANCHID" v-on:on-change="branchChange">
+                        <i-select v-model="BRANCHID" v-on:on-change="branchChange"> 
                             <i-option v-for="item in branchData"
                                       v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
                         </i-select>

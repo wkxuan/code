@@ -643,6 +643,7 @@ namespace z.ERP.Services
                     MAPSHOP shopi = new MAPSHOP();
                     shopi.TYPE = "shop";    //类型 单元
                     shopi.POINTS = item["POINTS"].ToString();
+                    shopi.COLOR= item["COLOR"].ToString();
                     shopi.SHOPINFO = new MAPSHOPINFO
                     {
                         ID = item["SHOPID"].ToString(),
@@ -681,7 +682,7 @@ namespace z.ERP.Services
         }
         public DataTable GETSHOPDATA(string BRANCHID, string REGIONID, string FLOORID)
         {
-            string SQL = @"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS FROM MAPSHOPDATA M,SHOP S WHERE M.SHOPID=S.SHOPID";
+            string SQL = @"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS,C.COLOR FROM MAPSHOPDATA M,SHOP S,CATEGORY C WHERE M.SHOPID=S.SHOPID AND S.CATEGORYID=C.CATEGORYID";
             if (!BRANCHID.IsEmpty())
             {
                 SQL += " and S.BRANCHID =" + BRANCHID + " ";

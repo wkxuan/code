@@ -16,6 +16,7 @@ namespace z.ERP.Entities
     public class MAPSHOP {
         public string TYPE { set; get; }
         public string POINTS { set; get; }
+        public string COLOR { set; get; }
         public MAPSHOPINFO SHOPINFO { set; get; }
     }
     public class MAPSHOPINFO

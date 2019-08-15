@@ -41,6 +41,18 @@
                 define.searchParam.REGIONID = data.dt[0].REGIONID;
                 define.showlist();
             }
+            _.Ajax('GetFloor', {
+                Data: { REGIONID: define.dataParam.REGIONID }
+            }, function (data) {
+                if (data.dt) {
+                    define.screenParam.floorData = [];
+                    define.dataParam.FLOORID = 0;
+                    define.searchParam.FLOORID = 0;
+                    for (var i = 0; i < data.dt.length; i++) {
+                        define.screenParam.floorData.push({ value: data.dt[i].ID, label: data.dt[i].NAME })
+                    }
+                }
+            });
         });
     });
 }
@@ -63,19 +75,18 @@ define.otherMethods = {
     branchChange: function () {
         define.otherMethods.initRegion();
         define.searchParam.REGIONID = undefined;
-        define.dataParam.FLOORID = undefined;
+        define.searchParam.FLOORID = undefined;
     },
     regionChange: function () {
         define.showlist();
         define.otherMethods.initFloor();
-        define.dataParam.FLOORID = undefined;
+        define.searchParam.FLOORID = undefined;
     },
     floorChange: function (event) {
         _.Ajax('GetFloorMD', {
             Data: { BRANCHID: define.dataParam.BRANCHID, REGIONID: define.dataParam.REGIONID, FLOORID: event }
         }, function (data) {
             if (data.Item1) {
-                iview.Message.info("该楼层已有数据，将启用编辑!");
                 define.dataParam.POINTS = data.Item1.POINTS;
             } else {
                 define.dataParam.POINTS = "";

@@ -3,6 +3,7 @@
     define.method = "TreeCategoryData";
     define.methodList = "TreeCategoryList";
     define.Key = 'CATEGORYCODE';
+    define.dataParam.COLOR = " ";
 
     define.dataParam.CATEGORYCODE = null;
     define.dataParam.CATEGORYNAME = null;

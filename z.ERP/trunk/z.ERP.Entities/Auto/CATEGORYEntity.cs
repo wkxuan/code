@@ -64,5 +64,7 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        [Field("颜色")]
+        public string COLOR { set; get; }
     }
 }

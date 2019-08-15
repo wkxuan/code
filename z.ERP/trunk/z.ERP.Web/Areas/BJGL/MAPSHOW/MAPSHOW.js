@@ -184,12 +184,12 @@
             }
 
             //颜色常量 包括填充颜色和边框颜色
-            var colorConst = [
-                { fill: "#F8D3A5", stroke: "#F7A540" },          //橙色
-                { fill: "#f7dee4", stroke: "#EEAEEE" },          //粉红色，
-                { fill: "#bfdaf7", stroke: "#99ccff" },          //蓝色
-                { fill: "#ece4d8", stroke: "#D2B48C" }           //土色
-            ]
+            //var colorConst = [
+            //    { fill: "#F8D3A5", stroke: "#F7A540" },          //橙色
+            //    { fill: "#f7dee4", stroke: "#EEAEEE" },          //粉红色，
+            //    { fill: "#bfdaf7", stroke: "#99ccff" },          //蓝色
+            //    { fill: "#ece4d8", stroke: "#D2B48C" }           //土色
+            //]
 
             var floorGroup;     //楼层元素组
             var labelGroup;     //楼层标注组
@@ -223,10 +223,10 @@
                     var item = buidlingItem[i];
                     var type = item.TYPE;
                     var points = item.POINTS;
-                    var colorIndex = 1;
+                    var color = item.COLOR;
                     switch (type) {
                         case ObjType.CELL:
-                            this.addCell(points, 3, colorIndex, item.SHOPINFO);
+                            this.addCell(points, 3, color, item.SHOPINFO);
                             break;
                         case ObjType.FLOOR:
                             this.addFloor(points, 0.5, item.SHOPINFO);
@@ -250,10 +250,10 @@
             /*
             *   创建不规则的小室
             * */
-            loadFloor.prototype.addCell = function (points, height, colorIndex, info) {
+            loadFloor.prototype.addCell = function (points, height, color, info) {
                 var geometry = this.getGeometry(points, height, info);
                 geometry.computeFaceNormals();          //计算法向量
-                var material = new THREE.MeshLambertMaterial({ color: colorConst[colorIndex].fill, side: THREE.DoubleSide });         //受光照影响
+                var material = new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide });         //受光照影响
                 var mesh = new THREE.Mesh(geometry, material);
                 this.container.add(mesh);				//添加填充
 
