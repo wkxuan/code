@@ -14,7 +14,6 @@
             key: 'BRANCHNAME'
         }];
 
-    define.screenParam.dataDef = [];
     define.service = "XtglService";
     define.method= "GetFEESUBJECT_ACCOUNT";
     define.methodList = "GetFEESUBJECT_ACCOUNT";

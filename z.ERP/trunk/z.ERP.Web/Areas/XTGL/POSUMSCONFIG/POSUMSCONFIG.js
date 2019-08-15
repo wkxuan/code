@@ -6,7 +6,6 @@
     ];
     define.screenParam.popParam = {};
 
-    define.screenParam.dataDef = [];
     define.service = "XtglService";
     define.method = "GetPOSUMSCONFIG";
     define.methodList = "GetPOSUMSCONFIG";

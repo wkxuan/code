@@ -6,10 +6,9 @@
         },
         {
             title: '支付方式名称',
-            key: 'NAME', width: 250,
+            key: 'NAME'
         }];
 
-    define.screenParam.dataDef = [];
     define.service = "XtglService";
     define.method = "GetPayElement";
     define.methodList = "GetPay";

@@ -48,7 +48,6 @@
                   ]);
           }
       }];
-    define.screenParam.dataDef = [];
     define.screenParam.componentVisible = false;
     define.dataParam.ORGIDCASCADER = [];
     define.dataParam.USER_ROLE = [];

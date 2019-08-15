@@ -7,7 +7,6 @@
 
     ];
 
-    define.screenParam.dataDef = [];
     define.service = "XtglService";
     define.method = "GetFeeAccount";
     define.methodList = "GetFeeAccount";

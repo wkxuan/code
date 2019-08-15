@@ -7,10 +7,8 @@
         },
         {
             title: '收费项目名称',
-            key: 'NAME', width: 280
+            key: 'NAME'
         }];
-
-    define.screenParam.dataDef = [];
 
     define.service = "XtglService";
     define.method = "GetFeeSubjectElement";

@@ -7,10 +7,9 @@
         },
         {
             title: '名称',
-            key: 'FILENAME', width: 250
+            key: 'FILENAME'
         }];
 
-    define.screenParam.dataDef = [];
 
     define.service = "XtglService";
     define.method = "GetEnergyFilesElement";

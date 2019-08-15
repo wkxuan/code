@@ -30,7 +30,6 @@
     }}
     ];
     define.dataParam.NOTICE_BRANCH = [];
-    define.screenParam.dataDef = [];
     define.service = "XtglService";
     define.method = "GetNOTICE";
     define.methodList = "GetNOTICE";
