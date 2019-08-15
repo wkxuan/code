@@ -8,6 +8,7 @@ using z.ERP.Entities.Enum;
 using z.Exceptions;
 using z.ERP.Entities.Procedures;
 using z.SSO.Model;
+using z.ERP.Entities.Auto;
 
 namespace z.ERP.Services
 {
@@ -19,7 +20,7 @@ namespace z.ERP.Services
         public DataGridResult SearchRegion(SearchItem item)
         {
             string sql = $@"SELECT A.REGIONID,A.CODE,A.NAME FROM REGION A WHERE 1=1";
-            sql += " and A.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+")"; //门店权限
+            sql += " and A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("REGIONID,", a => sql += $" and A.REGIONID = {a}");
             item.HasKey("CODE,", a => sql += $" and A.CODE = '{a}'");
             item.HasKey("NAME", a => sql += $" and A.NAME = '{a}'");
@@ -63,7 +64,7 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Tuple<dynamic,DataTable> GetFloor(FLOOREntity Data)
+        public Tuple<dynamic, DataTable> GetFloor(FLOOREntity Data)
         {
             string sql = $@"select A.*,B.ORGIDCASCADER from FLOOR A,ORG B where A.ORGID=B.ORGID(+) ";
             sql += " and A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
@@ -72,9 +73,9 @@ namespace z.ERP.Services
             if (!Data.CODE.IsEmpty())
                 sql += (" AND A.CODE= " + Data.CODE);
             if (!Data.NAME.IsEmpty())
-                sql += (" AND A.NAME like %" + Data.NAME+"%");
+                sql += (" AND A.NAME like %" + Data.NAME + "%");
             DataTable floor = DbHelper.ExecuteTable(sql);
-            return new Tuple<dynamic,DataTable>(floor.ToOneLine(),floor);
+            return new Tuple<dynamic, DataTable>(floor.ToOneLine(), floor);
         }
         public DataGridResult SearchShop(SearchItem item)
         {
@@ -197,7 +198,7 @@ namespace z.ERP.Services
             //此处校验一次只能查询一个单号,校验单号必须存在
             string sql = $@"SELECT A.*,B.NAME BRANCHNAME FROM ASSETCHANGE A,BRANCH B  "
                       + "    WHERE A.BRANCHID=B.ID "
-                      +"       AND B.ID  IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
+                      + "       AND B.ID  IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND BILLID= " + Data.BILLID);
             DataTable assetchange = DbHelper.ExecuteTable(sql);
@@ -325,7 +326,7 @@ namespace z.ERP.Services
             var v = GetVerify(SaveData);
             if (SaveData.MAPID.IsEmpty())
             {
-                SaveData.MAPID = NewINC("FLOORMAP"); 
+                SaveData.MAPID = NewINC("FLOORMAP");
                 SaveData.STATUS = ((int)布局图状态.未审核).ToString();
             }
             else
@@ -418,7 +419,7 @@ namespace z.ERP.Services
             DataTable dtmapid = DbHelper.ExecuteTable(sql);
             int mapid = Convert.ToInt32(dtmapid.Rows[0]["MAPID"].ToString());
 
-            if (mapid== 0)
+            if (mapid == 0)
             {
                 throw new LogicException("没有符合条件的分析图纸!");
             }
@@ -432,17 +433,17 @@ namespace z.ERP.Services
                 where A.CONTRACTID = P.CONTRACTID AND A.SHOPID = P.SHOPID AND P.CATEGORYID = Y.CATEGORYID
                 AND A.YEARMONTH = 201810 AND A.SHOPID = B.SHOPID AND B.CODE = C.SHOPCODE
                 AND C.MAPID = D.MAPID AND B.FLOORID = D.FLOORID  ";
-                sqlitem1 += (" and D.MAPID = " + mapid );
-                sqlitem1 += " GROUP BY  P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE ";
+            sqlitem1 += (" and D.MAPID = " + mapid);
+            sqlitem1 += " GROUP BY  P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE ";
             DataTable floorcategory = DbHelper.ExecuteTable(sqlitem1);
 
             return new Tuple<dynamic, DataTable>(floormap.ToOneLine(), floorcategory);
         }
-        public Tuple<dynamic, DataTable, DataTable,DataTable> GetGetFloorShowMapData(FLOORMAPSHOWEntity Data)
+        public Tuple<dynamic, DataTable, DataTable, DataTable> GetGetFloorShowMapData(FLOORMAPSHOWEntity Data)
         {
-            string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE TO_NUMBER(to_char(NVL(P.INITINATE_TIME,P.VERIFY_TIME),'YYYYMM'))<=" +Data.YEARMONTH 
-                + @" AND TO_NUMBER(to_char(NVL(P.TERMINATE_TIME,SYSDATE),'YYYYMM'))>= " + Data.YEARMONTH  ;
-                   sql += " AND FLOORID= " + Data.FLOORID;
+            string sql = $@"SELECT NVL(MAX(MAPID),0) MAPID FROM FLOORMAP P WHERE TO_NUMBER(to_char(NVL(P.INITINATE_TIME,P.VERIFY_TIME),'YYYYMM'))<=" + Data.YEARMONTH
+                + @" AND TO_NUMBER(to_char(NVL(P.TERMINATE_TIME,SYSDATE),'YYYYMM'))>= " + Data.YEARMONTH;
+            sql += " AND FLOORID= " + Data.FLOORID;
             DataTable dtmapid = DbHelper.ExecuteTable(sql);
             int mapid = Convert.ToInt32(dtmapid.Rows[0]["MAPID"].ToString());
 
@@ -458,7 +459,7 @@ namespace z.ERP.Services
                 , (SELECT COLOR FROM CATEGORYCOLOR R WHERE R.CATEGORYCODE = Y.CATEGORYCODE) COLOR
                 from CONTRACT_SUMMARY A, CONTRACT_SHOP P,CATEGORY Y, SHOP B, FLOORSHOP C, FLOORMAP D
                 where A.CONTRACTID = P.CONTRACTID AND A.SHOPID = P.SHOPID AND P.CATEGORYID = Y.CATEGORYID
-                AND A.YEARMONTH = " +Data.YEARMONTH +@" AND A.SHOPID = B.SHOPID AND B.CODE = C.SHOPCODE 
+                AND A.YEARMONTH = " + Data.YEARMONTH + @" AND A.SHOPID = B.SHOPID AND B.CODE = C.SHOPCODE 
                 AND C.MAPID = D.MAPID AND B.FLOORID = D.FLOORID  ";
             sqlitem1 += " and D.MAPID = " + mapid;
             sqlitem1 += " GROUP BY  P.CATEGORYID,Y.CATEGORYNAME,Y.CATEGORYCODE ";
@@ -488,7 +489,7 @@ namespace z.ERP.Services
             sqlitem3 += " GROUP BY  B.RENT_STATUS,S.NAME,S.COLOR ";
             DataTable shoprent_status = DbHelper.ExecuteTable(sqlitem3);
 
-            return new Tuple<dynamic, DataTable, DataTable,DataTable>(floormap.ToOneLine(), floorcategory, floorshop, shoprent_status);
+            return new Tuple<dynamic, DataTable, DataTable, DataTable>(floormap.ToOneLine(), floorcategory, floorshop, shoprent_status);
         }
         /// <summary>
         /// 列表页的删除,可以批量删除
@@ -559,5 +560,138 @@ namespace z.ERP.Services
             }
             return map.MAPID;
         }
+        #region 布局图定义数据
+        /// <summary>
+        /// 单元数据
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult SearchMAPSHOPDATA(SearchItem item)
+        {
+            string sql = $@"SELECT M.*,S.BRANCHID,S.CODE,S.NAME,S.REGIONID,S.FLOORID FROM MAPSHOPDATA M,SHOP S WHERE M.SHOPID=S.SHOPID "
+                   + " and S.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
+            item.HasKey("BRANCHID", a => sql += $" and S.BRANCHID = '{a}'");
+            item.HasKey("FLOORID", a => sql += $" and S.FLOORID = '{a}'");
+            item.HasKey("REGIONID", a => sql += $" and S.REGIONID = {a}");
+            item.HasKey("SHOPID", a => sql += $" and S.SHOPID = {a}");
+            sql += " ORDER BY M.SHOPID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public DataGridResult SearchMAPFLOORDATA(SearchItem item)
+        {
+            string sql = $@"SELECT M.* FROM MAPFLOORDATA M,FLOOR F WHERE M.FLOORID=F.ID AND M.BRANCHID=F.BRANCHID AND M.REGIONID=F.REGIONID "
+                   + " and F.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
+            item.HasKey("BRANCHID", a => sql += $" and M.BRANCHID = '{a}'");
+            item.HasKey("FLOORID", a => sql += $" and M.FLOORID = '{a}'");
+            item.HasKey("REGIONID", a => sql += $" and M.REGIONID = {a}");
+            sql += " ORDER BY M.FLOORID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public Tuple<dynamic> GetFloorMD(MAPFLOORDATAEntity Data) {
+            string sql = $@"SELECT M.* FROM MAPFLOORDATA M,FLOOR F WHERE M.FLOORID=F.ID AND M.BRANCHID=F.BRANCHID AND M.REGIONID=F.REGIONID ";
+            if (!Data.BRANCHID.IsEmpty()) {
+                sql += " and M.BRANCHID =" + Data.BRANCHID + " ";
+            }
+            if (!Data.REGIONID.IsEmpty())
+            {
+                sql += " and M.REGIONID =" + Data.REGIONID + " ";
+            }
+            if (!Data.FLOORID.IsEmpty())
+            {
+                sql += " and M.FLOORID =" + Data.FLOORID + " ";
+            }
+            DataTable floormap = DbHelper.ExecuteTable(sql);
+            return new Tuple<dynamic>(floormap.ToOneLine());
+        }
+        #endregion
+
+        #region 布局图展示数据
+        public Tuple<dynamic, List<MAPTITLEEntity>> GetInitMAPDATA(MAPFLOORINFOEntity data) {
+            MAPFLOORINFOEntity LISTMAPFLOORINFO = new MAPFLOORINFOEntity();
+            List<MAPSHOP> mapshoplist= new List<MAPSHOP>();
+            List<MAPTITLEEntity> maptitlelist = new List<MAPTITLEEntity>();
+            LISTMAPFLOORINFO.BRANCHID = data.BRANCHID; 
+            LISTMAPFLOORINFO.REGIONID = data.REGIONID;
+            LISTMAPFLOORINFO.FLOORID = data.FLOORID;
+            //floor
+            var floor = GETFLOORDATA(LISTMAPFLOORINFO.BRANCHID, LISTMAPFLOORINFO.REGIONID, LISTMAPFLOORINFO.FLOORID);   //获取地板模块信息
+            if (floor.Rows.Count>0) {
+                MAPSHOP floori = new MAPSHOP();
+                floori.TYPE = "floor";    //类型 地板
+                floori.POINTS = floor.Rows[0]["POINTS"].ToString();
+                floori.SHOPINFO = new MAPSHOPINFO {
+                    ID= floor.Rows[0]["FLOORID"].ToString(),
+                    TYPE = "floor",
+                    MNAME = floor.Rows[0]["NAME"].ToString(),
+                    STATUS= floor.Rows[0]["STATUS"].ToString()
+                };
+                mapshoplist.Add(floori);
+            }
+            //shop
+            var shop = GETSHOPDATA(LISTMAPFLOORINFO.BRANCHID, LISTMAPFLOORINFO.REGIONID, LISTMAPFLOORINFO.FLOORID);
+            if (shop.Rows.Count>0) {
+                foreach (DataRow item in shop.Rows) {
+                    MAPSHOP shopi = new MAPSHOP();
+                    shopi.TYPE = "shop";    //类型 单元
+                    shopi.POINTS = item["POINTS"].ToString();
+                    shopi.SHOPINFO = new MAPSHOPINFO
+                    {
+                        ID = item["SHOPID"].ToString(),
+                        MNAME = item["NAME"].ToString(),
+                        TYPE= "shop",
+                        STATUS = item["STATUS"].ToString(),
+                        RENT_STATUS = item["RENT_STATUS"].ToString()
+                    };
+                    //标题信息
+                    MAPTITLEEntity mte = new MAPTITLEEntity();
+                    mte.SHOPNAME = item["NAME"].ToString();
+                    mte.POINTS = item["TITLEPOINTS"].ToString();
+                    maptitlelist.Add(mte);
+                    mapshoplist.Add(shopi);
+                }
+            }
+            LISTMAPFLOORINFO.MAPSHOPLIST = mapshoplist;
+            return new Tuple<dynamic, List<MAPTITLEEntity>>(LISTMAPFLOORINFO, maptitlelist);
+        }
+        public DataTable GETFLOORDATA(string BRANCHID,string REGIONID,string FLOORID) {
+            string SQL = @"SELECT M.*,F.CODE,F.NAME,F.STATUS FROM MAPFLOORDATA M,FLOOR F WHERE M.FLOORID=F.ID AND M.BRANCHID=F.BRANCHID AND M.REGIONID=F.REGIONID";
+            if (!BRANCHID.IsEmpty())
+            {
+                SQL += " and M.BRANCHID =" + BRANCHID + " ";
+            }
+            if (!REGIONID.IsEmpty())
+            {
+                SQL += " and M.REGIONID =" + REGIONID + " ";
+            }
+            if (!FLOORID.IsEmpty())
+            {
+                SQL += " and M.FLOORID =" + FLOORID + " ";
+            }
+            DataTable dt = DbHelper.ExecuteTable(SQL);
+            return dt;
+        }
+        public DataTable GETSHOPDATA(string BRANCHID, string REGIONID, string FLOORID)
+        {
+            string SQL = @"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS FROM MAPSHOPDATA M,SHOP S WHERE M.SHOPID=S.SHOPID";
+            if (!BRANCHID.IsEmpty())
+            {
+                SQL += " and S.BRANCHID =" + BRANCHID + " ";
+            }
+            if (!REGIONID.IsEmpty())
+            {
+                SQL += " and S.REGIONID =" + REGIONID + " ";
+            }
+            if (!FLOORID.IsEmpty())
+            {
+                SQL += " and S.FLOORID =" + FLOORID + " ";
+            }
+            DataTable dt = DbHelper.ExecuteTable(SQL);
+            return dt;
+        }
+        #endregion
     }
 }

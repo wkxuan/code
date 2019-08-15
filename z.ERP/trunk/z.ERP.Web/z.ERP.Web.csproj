@@ -166,6 +166,9 @@
     <Compile Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustController.cs" />
     <Compile Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShowController.cs" />
     <Compile Include="Areas\BJGL\FLOORMAP\FloorMapController.cs" />
+    <Compile Include="Areas\BJGL\MAPSHOPDATA\MAPSHOPDATAController.cs" />
+    <Compile Include="Areas\BJGL\MAPFLOORDATA\MAPFLOORDATAController.cs" />
+    <Compile Include="Areas\BJGL\MAPSHOW\MAPSHOWController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
@@ -305,6 +308,10 @@
     <Content Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShow.js" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapEdit.js" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.js" />
+    <Content Include="Areas\BJGL\MAPSHOPDATA\MAPSHOPDATA.js" />
+    <Content Include="Areas\BJGL\MAPFLOORDATA\MAPFLOORDATA.js" />
+    <Content Include="Areas\BJGL\MAPSHOW\MAPSHOW.css" />
+    <Content Include="Areas\BJGL\MAPSHOW\MAPSHOW.js" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.js" />
@@ -475,6 +482,17 @@
     <Content Include="Content\Base.css" />
     <Content Include="Content\jquery.min.js" />
     <Content Include="Areas\Layout\Define\_DefineLayout.js" />
+    <Content Include="Content\three\dat.gui.min.js" />
+    <Content Include="Content\three\Earcut.js" />
+    <Content Include="Content\three\FBXLoader.js" />
+    <Content Include="Content\three\inflate.min.js" />
+    <Content Include="Content\three\jquery-1.8.3.min.js" />
+    <Content Include="Content\three\OrbitControls.js" />
+    <Content Include="Content\three\stats.min.js" />
+    <Content Include="Content\three\three.js" />
+    <Content Include="Content\three\ThreeBSP.js" />
+    <Content Include="Content\three\TrackballControls.js" />
+    <Content Include="Content\three\tween.min.js" />
     <Content Include="Content\VUE\iview.js" />
     <Content Include="Content\VUE\iview.min.js" />
     <Content Include="Content\VUE\locale\de-DE.js" />
@@ -743,6 +761,9 @@
     <Content Include="Areas\Layout\DefineDetail\_DefineDetail.cshtml" />
     <Content Include="Areas\XTGL\SHOP\ShopDetail.cshtml" />
     <Content Include="Areas\Layout\DefineNew\_DefineLayout.cshtml" />
+    <Content Include="Areas\BJGL\MAPSHOW\MAPSHOW.cshtml" />
+    <Content Include="Areas\BJGL\MAPSHOPDATA\MAPSHOPDATA.cshtml" />
+    <Content Include="Areas\BJGL\MAPFLOORDATA\MAPFLOORDATA.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

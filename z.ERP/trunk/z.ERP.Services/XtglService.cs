@@ -257,7 +257,9 @@ namespace z.ERP.Services
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
-            item.HasKey("FLOORID", a => sql += $" and A.FLOORID = {a}"); 
+            item.HasKey("REGIONID", a => sql += $" and A.REGIONID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and A.FLOORID = {a}");
+            item.HasKey("SqlCondition", a => sql += $" and {a}");
             item.HasKey("RENT_STATUS", a => sql += $" and A.RENT_STATUS = {a}"); 
 
              sql += " ORDER BY  A.CODE";
