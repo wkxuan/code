@@ -90,10 +90,27 @@ namespace z.ERP.Services
             DataTable role = DbHelper.ExecuteTable(sql);
 
             //更改权限列表为树 by：DZK
-            string sql1 = @" SELECT NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(U.MODULECODE,0,LENGTH(U.MODULECODE)-2),0) parentid,R.ROLEID IsChecked FROM USERMODULE U
-                    LEFT JOIN ROLE_MENU R ON U.MODULECODE=R.MODULECODE  AND U.MENUID=R.MENUID AND R.ROLEID = " + Data.ROLEID + @"
-                    WHERE U.ENABLE_FLAG=1  	                    
-	                    ORDER BY U.MODULECODE";
+            /*    string sql1 = @" SELECT NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(U.MODULECODE,0,LENGTH(U.MODULECODE)-2),0) parentid,R.ROLEID IsChecked FROM USERMODULE U
+                        LEFT JOIN ROLE_MENU R ON U.MODULECODE=R.MODULECODE  AND U.MENUID=R.MENUID AND R.ROLEID = " + Data.ROLEID + @"
+                        WHERE U.ENABLE_FLAG=1  	                    
+                            ORDER BY U.MODULECODE"; */
+
+            string sql1 = @"select Z.MENUID,Z.MODULECODE,Z.MODULENAME,Z.PARENTID,R.ROLEID IsChecked
+                            from
+                                (select NVL(U.MENUID, 0) MENUID, U.MODULECODE, U.MODULENAME, nvl(substr(MODULECODE, 0, LENGTH(MODULECODE) - 2), 0) parentid
+                                  FROM USERMODULE U, MENU M
+                                 WHERE U.MENUID = M.ID  AND U.ENABLE_FLAG = 1  and length(to_char(m.id)) < 8
+                                 union all
+                                 select NVL(m.id, 0) MENUID, U.MODULECODE || lpad(to_char(mod(m.id, 100)), 2, '0') MODULECODE, m.name MODULENAME, U.MODULECODE parentid
+                                  FROM USERMODULE U, MENU M
+                                 WHERE  U.ENABLE_FLAG = 1 AND M.PLATFORMID = 1 and length(to_char(m.id)) = 8
+                                   and u.menuid = trunc(m.id / 100)
+                                 UNION ALL
+                                 select  NVL(MENUID, 0), MODULECODE, MODULENAME, nvl(substr(MODULECODE, 0, LENGTH(MODULECODE) - 2), 0) parentid FROM USERMODULE
+                                  WHERE ENABLE_FLAG = 1 and(MENUID is null or MENUID = 0)
+                                 ) Z left join ROLE_MENU R ON Z.MENUID = R.MENUID AND Z.MODULECODE = R.MODULECODE AND R.ROLEID = " + Data.ROLEID + @"
+                               order by MODULECODE,MENUID";
+
             List<USERMODULEEntity> um = DbHelper.ExecuteTable(sql1).ToList<USERMODULEEntity>(); ;
             List<TreeEntity> treeList = new List<TreeEntity>();
             foreach (var item in um)
@@ -165,13 +182,31 @@ namespace z.ERP.Services
             var org = DataService.GetTreeOrg();
 
             //更改权限列表为树 by：DZK
-            string sql1 = @" (select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  
-                                FROM USERMODULE U,MENU M 
-                               WHERE U.MENUID=M.ID  AND U.ENABLE_FLAG=1 
-                        UNION ALL 
-                           select  NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid FROM USERMODULE 
-                            WHERE ENABLE_FLAG=1 and (MENUID is null or MENUID =0)) 
-	                        ORDER BY MODULECODE ";
+            /*    string sql1 = @" (select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  
+                                    FROM USERMODULE U,MENU M 
+                                   WHERE U.MENUID=M.ID  AND U.ENABLE_FLAG=1 
+                            UNION ALL 
+                               select  NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid FROM USERMODULE 
+                                WHERE ENABLE_FLAG=1 and (MENUID is null or MENUID =0)) 
+                                ORDER BY MODULECODE ";
+                                */
+
+
+            string sql1 = @"(
+                                select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  
+                                  FROM USERMODULE U,MENU M 
+                                 WHERE U.MENUID=M.ID  AND U.ENABLE_FLAG=1  and length(to_char(m.id)) <8
+                                 union all
+                                 select NVL(m.id,0) MENUID,U.MODULECODE|| lpad(to_char(mod(m.id,100)),2,'0') MODULECODE,m.name MODULENAME,U.MODULECODE parentid  
+                                  FROM USERMODULE U,MENU M 
+                                 WHERE  U.ENABLE_FLAG=1 AND M.PLATFORMID =1 and length(to_char(m.id)) =8
+                                   and u.menuid = trunc(m.id/100)
+   
+                                UNION ALL 
+                                 select  NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid FROM USERMODULE 
+                                  WHERE ENABLE_FLAG=1 and (MENUID is null or MENUID =0)   
+                                   )
+                                   order by MODULECODE,MENUID";
             List<USERMODULEEntity> um = DbHelper.ExecuteTable(sql1).ToList<USERMODULEEntity>();
             List<TreeEntity> treeList = new List<TreeEntity>();
             foreach (var item in um)

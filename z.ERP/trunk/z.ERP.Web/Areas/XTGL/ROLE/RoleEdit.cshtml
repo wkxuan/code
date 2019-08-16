@@ -63,10 +63,10 @@
     </row>
     }
 @section detailParam{  
-    <div id="zzc" v-if="!disabled"></div>  
+    @*<div id="zzc" v-if="!disabled"></div>*@  
     <Tabs type="card" value="name1">
         <Tab-Pane label="菜单权限" name="name1">
-            <Tree v-bind:data="screenParam.USERMODULE" show-checkbox></Tree>
+            <yx-tree v-bind:data="screenParam.USERMODULE"  v-bind:disablecheckbox="!disabled" :showcheckbox="true"></yx-tree>
         </Tab-Pane>
         <Tab-Pane label="门店权限" name="name2">
             <i-table size="small" :border="true" height="370" width="400"

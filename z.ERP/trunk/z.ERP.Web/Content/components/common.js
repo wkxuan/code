@@ -843,7 +843,7 @@ Vue.component('yx-modal', {
 //tree组件
 Vue.component('yx-tree', {
     props: ['data', 'disabled', 'disablecheckbox', 'showcheckbox', 'multiple', 'checkstrictly'],
-    template: `<Tree ref="treeRef" :data="curData" :multiple="multiple" :show-checkbox="disablecheckbox" ` +
+    template: `<Tree ref="treeRef" :data="curData" :multiple="multiple" :show-checkbox="showcheckbox" ` +
               ` :check-strictly="checkstrictly" ` +
               ` v-on:on-select-change="onSelectChange" `+
               ` v-on:on-check-change="onCheckChange" `+
@@ -862,25 +862,26 @@ Vue.component('yx-tree', {
         data: {
             handler: function (nv, ov) {
                 this.curData = nv;
-                this.initData(this.curData);
+                this.initData();
             },
             immediate: true,
             deep: true
         },
         disabled: {
             handler: function (nv, ov) {
-                this.initData(this.curData);
+                this.initData();
             }
         },
         disablecheckbox: {
             handler: function (nv, ov) {
-                this.initData(this.curData);
+                this.initData();
             }
         }
     },
     methods: {
         //初始化节点
-        initData(data) {
+        initData() {
+            let data = this.curData;
             for (let i = 0; i < data.length; i++) {
                 data[i].disabled = this.disabled;
                 data[i].disableCheckbox = this.disablecheckbox;
