@@ -416,12 +416,11 @@ namespace z.ERP.Services
             DataTable billObtainItem = DbHelper.ExecuteTable(sqlitem);
 
             //发票数据
-            string sqlinvoice = @"SELECT B.BILLID,B.TYPE BTYPE,M.NAME MERCHANTNAME,I.* FROM BILL_OBTAIN_INVOICE B,INVOICE I,MERCHANT M
+            string sqlinvoice = @"SELECT B.BILLID,M.NAME MERCHANTNAME,I.* FROM BILL_OBTAIN_INVOICE B,INVOICE I,MERCHANT M
                     WHERE B.INVOICEID=I.INVOICEID AND I.MERCHANTID=M.MERCHANTID";
             if (!Data.BILLID.IsEmpty())
                 sqlinvoice += (" and B.BILLID= " + Data.BILLID);
             DataTable billObtainInvoice = DbHelper.ExecuteTable(sqlinvoice);
-            billObtainInvoice.NewEnumColumns<发票类型>("TYPE", "TYPENAME");
 
             return new Tuple<dynamic, DataTable, DataTable>(billObtain.ToOneLine(), billObtainItem, billObtainInvoice);
         }

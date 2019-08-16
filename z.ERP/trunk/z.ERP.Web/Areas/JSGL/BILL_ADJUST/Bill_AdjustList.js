@@ -16,7 +16,7 @@
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10700201,
-                    title: '费用调整单',
+                    title: '费用调整单详情',
                     url: "JSGL/BILL_ADJUST/Bill_AdjustEdit/" + row.BILLID
                 });
             }
@@ -28,11 +28,12 @@
     search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
     search.screenParam.showPopSysuser = false;
     search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
+    search.searchParam.TYPE = 2;
 }
 search.addHref = function (row) {
     _.OpenPage({
         id: 10700201,
-        title: '费用调整单',
+        title: '费用调整单详情',
         url: "JSGL/BILL_ADJUST/Bill_AdjustEdit/"
     });
 }

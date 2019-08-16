@@ -15,7 +15,7 @@
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10700401,
-                    title: '预收款收取单',
+                    title: '预收款收取单详情',
                     url: "JSGL/BILL_OBTAIN_YSK/Bill_Obtain_YskEdit/" + row.BILLID
                 });
             }
@@ -34,7 +34,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 10700401,
-        title: '新增预收款收取单',
+        title: '新增预收款收取单详情',
         url: "JSGL/BILL_OBTAIN_YSK/Bill_Obtain_YskEdit/"
     });
 }

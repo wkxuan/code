@@ -57,7 +57,7 @@ editDetail.otherMethods = {
         editDetail.screenParam.popParam = {
             BRANCHID: editDetail.dataParam.BRANCHID,
             MERCHANTID: editDetail.dataParam.MERCHANTID,
-            FTYPE: "1"    //保证金类型
+            FTYPE: [1]   //保证金类型
         };
     },
     delBill: function () {

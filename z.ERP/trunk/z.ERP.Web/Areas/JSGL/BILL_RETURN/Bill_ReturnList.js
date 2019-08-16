@@ -15,7 +15,7 @@
             title: '操作', key: 'operate', authority: "10700100", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 107001,
-                    title: '编辑保证金返还单',
+                    title: '保证金返还单详情',
                     url: "JSGL/BILL_RETURN/Bill_ReturnEdit/" + row.BILLID
                 });
             }
@@ -42,7 +42,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 107001,
-        title: '新增保证金返还单',
+        title: '保证金返还单详情',
         url: "JSGL/BILL_RETURN/Bill_ReturnEdit/"
     });
 }

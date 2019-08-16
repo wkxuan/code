@@ -17,7 +17,7 @@
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10700501,
-                    title: '商户缴费通知单',
+                    title: '商户缴费通知单详情',
                     url: "JSGL/BILL_NOTICE/Bill_NoticeEdit/" + row.BILLID
                 });
             }
@@ -43,7 +43,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 10700501,
-        title: '商户缴费通知单',
+        title: '商户缴费通知单详情',
         url: "JSGL/BILL_NOTICE/Bill_NoticeEdit/"
     });
 }

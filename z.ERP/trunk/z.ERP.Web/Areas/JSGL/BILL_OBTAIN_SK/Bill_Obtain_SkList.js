@@ -15,7 +15,7 @@
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 107007,
-                    title: '租赁核销单',
+                    title: '租赁核销单详情',
                     url: "JSGL/Bill_Obtain_Sk/Bill_Obtain_SkEdit/" + row.BILLID
                 });
             }
@@ -33,7 +33,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 107007,
-        title: '租赁核销单',
+        title: '租赁核销单详情',
         url: "JSGL/BILL_OBTAIN_SK/Bill_Obtain_SkEdit/"
     });
 }

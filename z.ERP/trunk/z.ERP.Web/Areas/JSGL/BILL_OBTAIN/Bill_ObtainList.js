@@ -23,7 +23,7 @@
             title: '操作', key: 'operate', authority: "10700300", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 107003,
-                    title: '保证金收取单',
+                    title: '保证金收取单详情',
                     url: "JSGL/BILL_OBTAIN/Bill_ObtainEdit/" + row.BILLID
                 });
             }
@@ -47,7 +47,7 @@ search.popCallBack = function (data) {
 search.addHref = function (row) {
     _.OpenPage({
         id: 107003,
-        title: '保证金收取单',
+        title: '保证金收取单详情',
         url: "JSGL/BILL_OBTAIN/Bill_ObtainEdit/"
     });
 };

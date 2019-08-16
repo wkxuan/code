@@ -20,7 +20,7 @@
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10700801,
-                    title: '开票记录',
+                    title: '开票记录详情',
                     url: "JSGL/Invoice/InvoiceEdit/" + row.INVOICEID
                 });
             }
@@ -36,7 +36,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 10700801,
-        title: '新增开票记录',
+        title: '开票记录详情',
         url: "JSGL/Invoice/InvoiceEdit/"
     });
 }
