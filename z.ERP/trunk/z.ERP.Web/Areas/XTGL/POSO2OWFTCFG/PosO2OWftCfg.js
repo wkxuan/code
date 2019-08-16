@@ -7,7 +7,6 @@
 
     define.screenParam.popParam = {};
 
-    define.screenParam.dataDef = [];
     define.service = "XtglService";
     define.method = "GetPosO2OWftCfg";
     define.methodList = "GetPosO2OWftCfg";

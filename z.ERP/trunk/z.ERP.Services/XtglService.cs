@@ -235,7 +235,9 @@ namespace z.ERP.Services
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
-            item.HasKey("FLOORID", a => sql += $" and A.FLOORID = {a}"); 
+            item.HasKey("REGIONID", a => sql += $" and A.REGIONID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and A.FLOORID = {a}");
+            item.HasKey("SqlCondition", a => sql += $" and {a}");
             item.HasKey("RENT_STATUS", a => sql += $" and A.RENT_STATUS = {a}"); 
 
              sql += " ORDER BY  A.CODE";
@@ -431,7 +433,7 @@ namespace z.ERP.Services
         }
         public virtual UIResult TreeCategoryData(SearchItem item)
         {
-            string sql = $@"select * from CATEGORY where 1=1 ";
+            string sql = $@"select C.CATEGORYID,C.CATEGORYCODE,C.CATEGORYNAME,C.LEVEL_LAST,C.CATEGORYIDCASCADER,NVL(C.COLOR,'') COLOR from CATEGORY C where 1=1 ";
             item.HasKey("code", a => sql += $" and CATEGORYCODE = '{a}' ");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

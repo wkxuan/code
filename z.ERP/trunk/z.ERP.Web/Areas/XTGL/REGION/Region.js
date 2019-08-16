@@ -7,9 +7,8 @@
         },
         {
             title: '名称',
-            key: 'NAME', width: 200
+            key: 'NAME'
         }];
-    define.screenParam.dataDef = [];
     define.service = "DpglService";
     define.method = "SearchRegion";
     define.methodList = "SearchRegion";

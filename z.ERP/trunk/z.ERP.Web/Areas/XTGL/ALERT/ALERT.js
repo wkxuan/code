@@ -23,7 +23,6 @@
         key : 'PLSX', width: 100, cellType: "input", cellDataType: "number"
     }];
 
-    define.screenParam.dataDef = [];
     define.service = "XtglService";
     define.method = "GetAlertElement";
     define.methodList = "GetAlert";

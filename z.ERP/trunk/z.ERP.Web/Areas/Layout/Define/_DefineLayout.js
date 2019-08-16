@@ -61,18 +61,19 @@
                     _this.newRecord();
                 },
                 mod: function (event) {
+                    _this.dataParam = this.dataParam;
                     if (!this.dataParam[_this.Key]) {
                         iview.Message.error("请选择数据");
                         return;
-                    }
+                    }                  
                     _this.backData = DeepClone(this.dataParam);
+
                     this.disabled = _this.enabled(false);
                 },
                 save: function (event) {
                     var _self = this;
                     if (!_this.IsValidSave())
                         return;
-
                     save(function (data) {
                         _self.disabled = _this.enabled(true);
                         _this.showlist();
@@ -142,7 +143,7 @@
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
         var ve = new Vue(options);
         _this.myve = ve;
-
+    
         function save(callback) {
             _.Ajax('Save', {
                 DefineSave: ve.dataParam

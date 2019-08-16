@@ -1,0 +1,46 @@
+﻿#MapShow {
+    overflow: hidden;
+}
+
+    #MapShow .ivu-table .demo-table-info-row td {
+        height: 35px;
+    }
+
+    #MapShow .ivu-table .demo-table-error-row td {
+        height: 35px;
+    }
+
+    #MapShow .ivu-collapse-header .ivu-btn {
+        color: #fff;
+    }
+
+        #MapShow .ivu-collapse-header .ivu-btn:hover {
+            color: #000000;
+        }
+
+    #MapShow .ivu-collapse-header {
+        height: 35px !important;
+        line-height: 35px !important;
+        font-size: 12px;
+        font-weight: bold;
+        color: #fff;
+        background: #2d8cf0;
+    }
+
+    #MapShow .searchParamContent {
+        padding-top: 10px;
+    }
+
+    #MapShow .ivu-page {
+        padding-left: 15px;
+    }
+
+    #MapShow .ivu-collapse-content {
+        width: 100%;
+        height: 100%;
+        padding: 0 !important;
+    }
+
+        #MapShow .ivu-collapse-content > .ivu-collapse-content-box {
+            padding: 0 !important;
+        }

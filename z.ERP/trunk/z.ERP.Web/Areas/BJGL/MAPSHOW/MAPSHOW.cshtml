@@ -1,0 +1,72 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Empty
+@inherits EmptyViewBase
+@section head{
+    @InitFiles(new string[] {
+        "/Areas/BJGL/MAPSHOW/MAPSHOW.css",
+        "/Content/three/three.js",
+        "/Content/three/Earcut.js",
+        "/Content/three/OrbitControls.js"
+    })
+}
+@section content{
+<div id="MapShow">
+    <collapse v-model="panelName">
+        <panel name="condition">
+            查询条件
+            <div style="float: right; width: 400px ;text-align: right;">
+                <span>
+                    <i-button type="text" v-on:click="SERCHMAP" shape="circle">查询</i-button>
+                </span>
+                <span>
+                    <i-button type="text" v-on:click="CLEAR"  shape="circle">清空</i-button>
+                </span>
+            </div>
+            <div slot="content" class="searchParamContent" ref="serchrow">
+                <row>
+                    <i-col span="2" class="RowTitle">
+                        门店
+                    </i-col>
+                    <i-col span="6" class="RowText">
+                        <i-select v-model="BRANCHID" v-on:on-change="branchChange"> 
+                            <i-option v-for="item in branchData"
+                                      v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
+                        </i-select>
+                    </i-col>
+                    <i-col span="2" class="RowTitle">
+                        区域
+                    </i-col>
+                    <i-col span="6" class="RowText">
+                        <i-select v-model="REGIONID" v-on:on-change="regionChange" >
+                            <i-option v-for="item in regionData"
+                                      v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
+                        </i-select>
+                    </i-col>
+                    <i-col span="2" class="RowTitle">
+                        楼层
+                    </i-col>
+                    <i-col span="6" class="RowText">
+                        <i-select v-model="FLOORID" v-on:on-change="floorChange" >
+                            <i-option v-for="item in floorData"
+                                      v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
+                        </i-select>
+                    </i-col>
+                </row>
+            </div>
+        </panel>
+        <panel name="result">
+            布局信息
+            <div style="float: right;width: 400px ;text-align: right;">
+            </div>
+            <div slot="content">
+                <row>
+                    <i-col span="24">
+                        <div  ref="maps" style="min-height:300px;height:100%"></div>
+                    </i-col>
+                </row>
+            </div>
+        </panel>
+    </collapse>
+</div>
+}

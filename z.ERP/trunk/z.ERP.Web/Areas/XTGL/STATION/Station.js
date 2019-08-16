@@ -12,7 +12,6 @@
        { title: '名称', key: 'NAME' }
     ];
     define.dataParam.STATION_PAY = [];
-    define.screenParam.dataDef = [];
     define.screenParam.STATION_PAY_DATA = [];
     define.service = "XtglService";
     define.method = "GetStaionElement";
