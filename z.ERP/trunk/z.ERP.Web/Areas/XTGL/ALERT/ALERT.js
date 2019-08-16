@@ -4,15 +4,15 @@
         { title: '名称', key: 'MC'},
         { title: '显示顺序', key: 'XSSX', width: 100 },
     ];
-    define.dataParam.ALERT_FIELD = define.dataParam.ALERT_FIELD || [];
+    define.dataParam.ALERT_FIELD =[];
     define.screenParam.colAlertField = [
     {
         title: "字段名",
-        key: 'FIELDMC', width: 200, cellType: "input"
+        key: 'FIELDMC', cellType: "input"
     },
     {
         title: '显示名',
-        key: 'CHINAMC', width: 200, cellType: "input"
+        key: 'CHINAMC', cellType: "input"
     },
     {
         title: '宽度',
@@ -83,11 +83,10 @@ define.IsValidSave = function () {
     return true;
 };
 
-define.showone = function (data, callback) {
+define.showOne = function (data, callback) {
     _.Ajax('SearchAlert', {
         Data: { ID: data }
     }, function (data) {
-        define.dataParam = {};
         $.extend(define.dataParam, data.defalert);
         define.dataParam.ALERT_FIELD = data.item;
         callback && callback();

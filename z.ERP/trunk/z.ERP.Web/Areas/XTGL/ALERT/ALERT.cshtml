@@ -88,21 +88,18 @@
             }
         </i-col>
     </row>
-    <row></row>
-    <row >
-        <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>
-            显示字段
-        </i-col>
-        <i-button v-if="!disabled" type="primary" v-on:click="addCol">添加一行</i-button>
-        <i-button v-if="!disabled" type="error" v-on:click="delCol">删除</i-button>
-    </row>
     <row>
         <i-col span="24">
-            <yx-table v-bind:columns="screenParam.colAlertField" v-bind:height="270" selection=true
-                      v-bind:data="dataParam.ALERT_FIELD" v-bind:disabled="disabled" ref="selectAlert">
+            <Card v-bind:padding=0>
+                <p slot="title"><span class="mustElement">*</span>显示字段</p>
+                <div slot="extra">
+                    <div class="tableBtnDiv" v-if="!disabled">
+                        <i-button type="primary" v-on:click="addCol">添加一行</i-button>
+                        <i-button type="error" v-on:click="delCol">删除</i-button>
+                    </div>
+                </div>
+                <yx-table v-bind:columns="screenParam.colAlertField" v-bind:height="270" selection=true
+                          v-bind:data="dataParam.ALERT_FIELD" v-bind:disabled="disabled" ref="selectAlert"></Card>
         </i-col>
     </row>
-
-
 }

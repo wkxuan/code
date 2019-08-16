@@ -1,13 +1,13 @@
 ﻿
 editDetail.beforeVue = function () {
-    editDetail.others = false;
+    editDetail.defaultFooter = false;
     editDetail.branchid = false;
     editDetail.service = "UserService";
     editDetail.method = "GetRoleElement";
     editDetail.screenParam.USERMODULE = editDetail.screenParam.USERMODULE || [];
     editDetail.screenParam.fee = editDetail.screenParam.fee || [];
     editDetail.screenParam.showPopCrmRole = false;
-    editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx?personid=-5";
+    editDetail.screenParam.srcPopCrmRole = null;
     editDetail.screenParam.popParam = {};
     editDetail.screenParam.ytTreeData = editDetail.screenParam.ytTreeData || [];
     editDetail.screenParam.region = editDetail.screenParam.region || [];
@@ -112,7 +112,7 @@ editDetail.showOne = function (data, callback) {
         Vue.set(editDetail.screenParam, "region", datas.region);
         Vue.set(editDetail.screenParam, "BRANCH", datas.branch);
         Vue.set(editDetail.screenParam, "Alert", datas.alert);
-        if(data){   //新增撤销判断
+        if (data) {   //新增撤销判断
             _.Ajax('SearchRole', {
                 Data: { ROLEID: data }
             }, function (data) {
@@ -186,8 +186,8 @@ editDetail.showOne = function (data, callback) {
                         }
                         Vue.set(editDetail.dataParam, 'ROLE_REGION', localRegion);
                     };
-               
-                    editDetail.screenParam.ytTreeData = data.ytTreeData;                
+
+                    editDetail.screenParam.ytTreeData = data.ytTreeData;
                 };
             });
         }
@@ -216,7 +216,7 @@ editDetail.IsValidSave = function () {
     };
     //菜单权限数据
     editDetail.screenParam.localMenu = [];
-    for (var j = 0; j < editDetail.screenParam.USERMODULE.length; j++) { 
+    for (var j = 0; j < editDetail.screenParam.USERMODULE.length; j++) {
         for (var i = 0; i < editDetail.screenParam.USERMODULE[j].children.length; i++) { //循环菜单
             var itemdata = editDetail.screenParam.USERMODULE[j].children[i].children;
             InsertTreeMenu(itemdata);
@@ -235,7 +235,7 @@ function InsertTreeMenu(treeData) {
                     MENUID: treeData[i].value,
                     MODULECODE: treeData[i].code,
                 });
-                
+
                 InsertTreeMenu(treeData[i].children)
             }
             else if (treeData[i].children.length > 0) {
@@ -246,16 +246,13 @@ function InsertTreeMenu(treeData) {
 }
 
 function InsertTree(treeData) {
-    if (treeData.length>0)
-    {
-        for (var i = 0; i < treeData.length; i++)
-        {
+    if (treeData.length > 0) {
+        for (var i = 0; i < treeData.length; i++) {
             if (treeData[i].checked) {
                 editDetail.screenParam.localYt.push({ YTID: treeData[i].value });
                 Vue.set(editDetail.dataParam, 'ROLE_YT', editDetail.screenParam.localYt);
             }
-            else if (treeData[i].children.length>0)
-            {
+            else if (treeData[i].children.length > 0) {
                 InsertTree(treeData[i].children)
             }
         }
@@ -264,14 +261,14 @@ function InsertTree(treeData) {
 
 editDetail.otherMethods = {
     orgChange: function (value, selectedData) {
-         editDetail.dataParam.ORGID = value[value.length - 1];
+        editDetail.dataParam.ORGID = value[value.length - 1];
     },
     SelCrmRole: function () {
-        if(editDetail.dataParam.ROLECODE=="")
-        {
+        if (editDetail.dataParam.ROLECODE == "") {
             iview.Message.info("请输入角色代码!");
             return;
         }
+
         editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx?personid=" + editDetail.dataParam.ROLECODE;
         editDetail.screenParam.showPopCrmRole = true;
     },
@@ -341,26 +338,26 @@ editDetail.mountedInit = function () {
         id: "edit",
         authority: "10100701",
         enabled: function (disabled, data) {
-                            if (!disabled && data.BILLID != null) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
+            if (!disabled && data.BILLID != null) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }, {
         id: "del",
         authority: "10100702",
         enabled: function (disabled, data) {
-        if (!disabled && data.BILLID != null) {
-            return true;
-        } else {
-            return false;
+            if (!disabled && data.BILLID != null) {
+                return true;
+            } else {
+                return false;
+            }
         }
-    }
     }, {
         id: "save",
         authority: "10100701"
-    },{
+    }, {
         id: "abandon",
         authority: "10100701"
     }]
@@ -370,5 +367,3 @@ editDetail.mountedInit = function () {
 editDetail.afterAbandon = function () {
     editDetail.showOne(editDetail.dataParam.BILLID);
 }
-
-

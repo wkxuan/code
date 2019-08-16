@@ -878,7 +878,7 @@ Vue.component('yx-tree', {
     methods: {
         //初始化节点
         initData() {
-            let data = this.curData;
+            let data = this.data;
             for (let i = 0; i < data.length; i++) {
                 data[i].disabled = this.disabled;
                 data[i].disableCheckbox = this.disablecheckbox;
@@ -886,6 +886,7 @@ Vue.component('yx-tree', {
                     this.setDisabled(data[i].children);
                 }
             }
+            this.curData = data;
         },
         //设置子孙节点disabled
         setDisabled(data) {
