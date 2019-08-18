@@ -45,6 +45,10 @@
     <Compile Include="ServiceBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\z.ATR.96262API\z.ATR.96262API.csproj">
+      <Project>{c15e9c57-5874-4d26-a0a6-fffd8452b4cc}</Project>
+      <Name>z.ATR.96262API</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.ATR.Entities\z.ATR.Entities.csproj">
       <Project>{3BFBB3BC-1850-4697-8166-BB768A9A90C1}</Project>
       <Name>z.ATR.Entities</Name>

@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <Choose>
@@ -55,6 +56,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\z.ATR.96262API\z.ATR.96262API.csproj">
+      <Project>{C15E9C57-5874-4D26-A0A6-FFFD8452B4CC}</Project>
+      <Name>z.ATR.96262API</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.ATR.WinService\z.ATR.WinService.csproj">
       <Project>{AEC5588D-0ABA-4FE3-84CB-721D8E31A2FF}</Project>
       <Name>z.ATR.WinService</Name>

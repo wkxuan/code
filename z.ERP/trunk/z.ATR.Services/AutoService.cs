@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using z.ATR.Entities;
 using z.WSTools.Txt;
 using z.Extensions;
+using z.ATR._96262API;
 
 namespace z.ATR.Services
 {
@@ -14,6 +15,7 @@ namespace z.ATR.Services
     {
         public void Test()
         {
+
             List<TextModel> list = TxtReader.ReadToModel<TextModel>(new TableReaderSettings()
             {
                 FilePath = $@"C:\Users\zgy\Desktop\新建文件夹\ttt.txt",
@@ -27,7 +29,7 @@ namespace z.ATR.Services
                 }
             });
             Log.Info("list", list);
-            
+
 
             DataTable dt = TxtReader.ReadToDatatable(new TableReaderSettings()
             {
@@ -52,7 +54,7 @@ namespace z.ATR.Services
 
         public void insertYHDZXX()
         {
-            string filePath  = ConfigExtension.GetConfig("FilePath").ToString();
+            string filePath = ConfigExtension.GetConfig("FilePath").ToString();
 
             List<YHDZXX> list = TxtReader.ReadToModel<YHDZXX>(new TableReaderSettings()
             {

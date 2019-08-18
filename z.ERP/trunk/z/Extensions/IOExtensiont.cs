@@ -180,6 +180,42 @@ namespace z.Extensions
                 return false;
             }
         }
+
+        /// <summary>
+        /// 获取并新建一个临时文件夹
+        /// </summary>
+        /// <returns></returns>
+        public static string GetTempPath()
+        {
+            string p1 = Path.GetTempPath();
+            string p2 = "z_" + StringExtension.Random(10, false, true, true, false);
+            string path = p1 + p2;
+            CheckPath(path, true);
+            return path;
+        }
+
+        /// <summary>
+        /// 创建一个临时文件并干一些事情
+        /// </summary>
+        /// <param name="Run"></param>
+        public static void GetTempPathAndDo(Action<string> Run)
+        {
+            if (Run == null)
+                return;
+            string path = GetTempPath();
+            try
+            {
+                Run(path);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                Directory.Delete(path, true);
+            }
+        }
         #endregion
         #region 文件方法
         /// <summary>
@@ -405,8 +441,10 @@ namespace z.Extensions
 
             double multiple = 0;
 
-            if (originalImage.Width >= originalImage.Height) multiple = (double)originalImage.Width / (double)width;
-            else multiple = (double)originalImage.Height / (double)height;
+            if (originalImage.Width >= originalImage.Height)
+                multiple = (double)originalImage.Width / (double)width;
+            else
+                multiple = (double)originalImage.Height / (double)height;
 
             if (ow <= width && oh <= height)
             {
