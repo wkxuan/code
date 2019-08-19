@@ -10,12 +10,12 @@
 
     editDetail.screenParam.colDef = [
     {
-        title: "账单号", key: 'FINAL_BILLID', width: 160
+        title: "账单号", key: 'FINAL_BILLID'
     },
-    { title: '应收金额', key: 'MUST_MONEY', width: 100 },
-    { title: '已收金额', key: 'RECEIVE_MONEY', width: 100 },
+    { title: '应收金额', key: 'MUST_MONEY' },
+    { title: '已收金额', key: 'RECEIVE_MONEY' },
     {
-        title: "返还金额", key: 'RETURN_MONEY', width: 100,
+        title: "返还金额", key: 'RETURN_MONEY',
         cellType: "input", cellDataType: "number",
         onChange: function (index, row, data) {
             if (Number(row.RETURN_MONEY) > Number(row.MUST_MONEY)) {
@@ -67,7 +67,7 @@ editDetail.otherMethods = {
         editDetail.screenParam.popParam = {
             BRANCHID: editDetail.dataParam.BRANCHID,
             CONTRACTID: editDetail.dataParam.CONTRACTID,
-            FTYPE: "1",    //保证金类型
+            FTYPE: [1],    //保证金类型
             RRETURNFLAG: "1"  //返还标记 暂时判断 RECEIVE_MONEY <> 0 的记录
         };
     },

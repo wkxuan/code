@@ -105,7 +105,7 @@ editDetail.popCallBack = function (data) {
                     MUST_MONEY: data.sj[i].MUST_MONEY,
                     UNPAID_MONEY: data.sj[i].UNPAID_MONEY,
                     TYPE: data.sj[i].TYPE,
-                    RECEIVE_MONEY: data.sj[i].RECEIVE_MONEY,
+                    RECEIVE_MONEY: data.sj[i].UNPAID_MONEY,
                 });
         }
     }
@@ -158,6 +158,10 @@ editDetail.IsValidSave = function () {
     for (var i = 0; i < itemData.length; i++) {
         if (!itemData[i].RECEIVE_MONEY) {
             iview.Message.info(`请录入账单号为${itemData[i].FINAL_BILLID}的付款金额!`);
+            return false;
+        };
+        if (Number(itemData[i].RECEIVE_MONEY) > Number(itemData[i].UNPAID_MONEY)) {
+            iview.Message.info(`请录入账单号为${itemData[i].FINAL_BILLID}的付款金额不能大于未付金额!`);
             return false;
         };
     };
