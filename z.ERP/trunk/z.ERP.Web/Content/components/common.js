@@ -786,7 +786,7 @@ Vue.component('yx-echart-bar', {
 //弹窗组件
 Vue.component('yx-modal', {
     props: ['src', 'modalVisible', 'width', 'height', 'title'],
-    template: `<Modal v-model="curVisible" :width="curWidth" v-on:on-visible-change="visibleChange" draggable footer-hide>` +
+    template: `<Modal v-model="curVisible" :width="curWidth" v-on:on-visible-change="visibleChange" draggable footer-hide transfer>` +
                  `<div slot="header" name="header">` +
                     `<span>{{curTitle}}</span>` +
                  `</div>` +
@@ -798,13 +798,13 @@ Vue.component('yx-modal', {
             id: Guid(),
             curWidth: null,
             curVisible: false,
-            curHeight: "350px"
+            curHeight: "400px"
         }
     },
     mounted() {
         this.curWidth = this.width || 900;
         if (this.height) {
-            this.curHeight = this.height + "px";
+            this.curHeight = (Number(this.height) + 50) + "px";
         }
     },
     watch: {

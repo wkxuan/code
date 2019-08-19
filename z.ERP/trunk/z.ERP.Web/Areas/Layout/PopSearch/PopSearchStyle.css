@@ -6,11 +6,6 @@
         height: 35px;
     }
 
-    /*#popSearch .ivu-table th {
-        background: radial-gradient(blue -24%,red 100%);
-        color: #fff;
-    }*/
-
     #popSearch .ivu-collapse-header {
         height: 35px !important;
         line-height: 35px !important;
@@ -29,6 +24,16 @@
 
     #popSearch .popParamContent {
         padding-top: 10px;
+        overflow-y:auto;
+        max-height:350px;
+    }
+     #popSearch .popResContent {
+        overflow-y:auto;
+        max-height:350px;
+        overflow:hidden;
+    }
+        #popSearch .popResContent .ivu-page {
+        padding-left:10px;
     }
 
     #popSearch .ivu-collapse-content {
@@ -43,4 +48,7 @@
 
     #popSearch .ivu-table-wrapper {
         border: none;
+    }
+    #popSearch .ivu-modal-content{
+        height:100%;
     }

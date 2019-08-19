@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: "供应商编号", key: "MERCHANTID", width: 100 },
         { title: "供应商名称", key: "GHSNAME", width: 200 },
         { title: "物料编号", key: "GOODSDM", width: 100 },
@@ -8,12 +8,9 @@
         { title: "含税采购价", key: "TAXINPRICE", width: 100 },
         { title: "使用价", key: "USEPRICE", width: 100 }
     ];
-    search.screenParam.colDef = col.concat(search.colMul);
     search.service = "WyglService";
     search.method = "GetWlGoods";
 }
-
-
 search.popInitParam = function (data) {
     if (data) {
         search.searchParam.MERCHANTID = data.MERCHANTID;

@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: "账单号", key: "BILLID", width: 80 },
         { title: "租约号", key: "CONTRACTID", width: 100 },
         { title: "费用项目", key: "TERMMC", width: 100 },
@@ -16,21 +16,12 @@
         { title: "登记人", key: "REPORTER_NAME", width: 90 },
         { title: "登记时间", key: "REPORTER_TIME", width: 150 }
     ];
-    search.screenParam.colDef = col.concat(search.colMul);
     search.service = "DataService";
     search.method = "GetBillPart";
-
-  //  search.screenParam.TERMID = 0;
-
-  //  search.screenParam.srcPopFeeSubject = __BaseUrl + "/" + "Pop/Pop/PopFeeSubjectList/";
-  //  search.screenParam.showFeeSubject = false;
-
-
 }
 ////获取父页面参数
 search.popInitParam = function (data) {
-    if (data)
-    {
+    if (data) {
         search.searchParam.BRANCHID = data.BRANCHID;
         search.searchParam.MERCHANTID = data.MERCHANTID;
         search.searchParam.CONTRACTID = data.CONTRACTID;
@@ -41,19 +32,4 @@ search.popInitParam = function (data) {
         search.searchParam.FEE_ACCOUNTID = data.FEE_ACCOUNTID;  //收费单位
     }
 }
-/*
-search.otherMethods = {
-    SelFeeSubject: function () {
-        search.screenParam.showPopFeeSubject = true;
-    }
-}
-//接收子页面返回值
-search.popCallBack = function (data) {
-    search.screenParam.showFeeSubject = false;
-    for (var i = 0; i < data.sj.length; i++) {
-        search.screenParam.TERMID = data.sj[i].TERMID;
-        search.screenParam.TERMNAME = data.sj[i].NAME;
-    };
-
-};*/
 

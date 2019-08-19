@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: "租约号", key: "CONTRACTID", width: 100 },
         { title: "商户编号", key: "MERCHANTID", width: 100 },
         { title: "商户名称", key: "MERCHANTNAME", width: 200 },
@@ -10,24 +10,16 @@
         { title: "登记人", key: "REPORTER_NAME", width: 100 },
         { title: "登记时间", key: "REPORTER_TIME", width: 100 }
     ];
-    search.screenParam.colDef = col.concat(search.colMul);
     search.service = "DataService";
     search.method = "GetContract";
-
-    //search.screenParam.TERMID = 0;
-    //search.screenParam.srcPopFeeSubject = __BaseUrl + "/" + "Pop/Pop/PopFeeSubjectList/";
-    //search.screenParam.showFeeSubject = false;
-
-
 }
 //获取父页面参数
 search.popInitParam = function (data) {
-    if (data)
-    {
+    if (data) {
         search.searchParam.BRANCHID = data.BRANCHID;
         search.searchParam.YXHTBJ = data.YXHTBJ;
         search.searchParam.FREESHOPBJ = data.FREESHOPBJ;
-    }    
+    }
 }
 search.otherMethods = {
     SelFeeSubject: function () {

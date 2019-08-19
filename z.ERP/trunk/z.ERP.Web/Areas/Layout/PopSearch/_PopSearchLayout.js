@@ -1,27 +1,16 @@
 ﻿function _Search() {
 
     var _this = this;
-
+    
+    this.vueObj;
     this.beforeVue = function () { }
-
-    this.enabled = function (val) { return val; }
-
     this.newCondition = function () { }
-
     this.IsValidSrch = function () {
         return true;
     }
-
-    this.canEdit = function (mess) {
-        return true;
-    }
-
     this.popInitParam = function (data) { }
-
     this.popCallBack = function (data) { };
-
     this.mountedInit = function () { }
-
     this.vue = function VueOperate() {
         var options = {
             el: '#popSearch',
@@ -29,11 +18,15 @@
                 screenParam: _this.screenParam,
                 searchParam: _this.searchParam,
                 panelName: ["condition", "result"],
-                disabled: _this.enabled(true),
+                disabled: true,
                 columns: [],
                 data: [],
                 maxHeight: 280,
-                tbLoading: false
+                tbLoading: false,
+                arrPageSize: [10, 20, 50, 100],
+                pagedataCount: 0,
+                pageSize: 10,
+                currentPage: 1
             },
             mounted: function () {
                 _this.mountedInit();
@@ -69,26 +62,8 @@
                         _this.popInitParam(window.parent.define.screenParam.popParam);
 
                     _self.searchParam = _this.searchParam;
-                    _self.tbLoading = true;
 
-                    _.Search({
-                        Service: _this.service,
-                        Method: _this.method,
-                        Data: _self.searchParam,
-                        Success: function (data) {
-                            _self.tbLoading = false;
-                            if (data.rows.length > 0) {
-                                _self.panelName = 'result';
-                                _self.data = data.rows;                               
-                            }
-                            else {
-                                _self.$Message.info("没有满足当前查询条件的结果!");
-                            }
-                        },
-                        Error: function () {
-                            _self.tbLoading = false;
-                        }
-                    });
+                    showList();
                 },
                 qr: function (event) {
                     event.stopPropagation();
@@ -115,27 +90,53 @@
                     _this.searchParam = {};
                     this.searchParam = _this.searchParam;
                     this.data = [];
-                    //this.panelName = 'condition';
+                    this.pagedataCount = 0;
                     _this.newCondition();
+                },
+                changePageCount: function (index) {
+                    this.currentPage = index;
+                    showList();
+                },
+                changePageSizer: function (value) {
+                    this.pageSize = value;
+                    this.currentPage = 1;
+                    showList();
                 }
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
-        var ve = new Vue(options);
-        function notExistsData() {
-            return (!ve.data) || (ve.data.length == 0)
-        }
-    }
+        this.vueObj = new Vue(options);
 
-    this.colDefInit = function () {
-        _this.colMul = [{
-            type: 'selection',
-            width: 60,
-            align: 'center',
-            fixed: 'left',
-        }];
+        function showList() {
+            let ve = _this.vueObj;
+            ve.data = [];
+            ve.pagedataCount = 0;
+            ve.tbLoading = true;
+            _.Search({
+                Service: _this.service,
+                Method: _this.method,
+                Data: ve.searchParam,
+                PageInfo: {
+                    PageSize: ve.pageSize,
+                    PageIndex: ve.currentPage - 1
+                },
+                Success: function (data) {
+                    ve.tbLoading = false;
+                    if (data.rows.length > 0) {
+                        ve.panelName = 'result';
+                        ve.data = data.rows;
+                        ve.pagedataCount = data.total;
+                    }
+                    else {
+                        iview.Message.info("没有满足当前查询条件的结果!");
+                    }
+                },
+                Error: function () {
+                    ve.tbLoading = false;
+                }
+            })
+        };
     }
-
     this.vueInit = function () {
         _this.searchParam = {};
         _this.screenParam = {};
@@ -144,7 +145,6 @@
     };
 
     setTimeout(function () {
-        _this.colDefInit();
         _this.vueInit();
         _this.beforeVue();
         _this.vue();
