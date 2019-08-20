@@ -245,7 +245,7 @@ namespace z.ERP.Services
             //   List<SaleRequest> saleList = DbHelper.ExecuteObject<SaleRequest>(sqlSale);
 
             if (!saleDt.IsNotNull())
-                throw new Exception("销售记录不存在!");
+                return null;
 
             //   saleList[0].goodslist = DbHelper.ExecuteObject<GoodsResult>(sqlGoods);
             //   saleList[0].paylist = DbHelper.ExecuteObject<PayResult>(sqlPay);
@@ -2957,7 +2957,7 @@ namespace z.ERP.Services
             catch (Exception e)
             {
                 result = -1;
-                msg = "取数据失败" + e.Message;
+                msg = "取数据失败:" + e.Message;
                 confirmResult.code = result;
                 confirmResult.text = msg;
                 throw new Exception(msg);
@@ -3443,9 +3443,9 @@ namespace z.ERP.Services
                 else
                 {
                     result = -1;
-                    msg = "保存销售:失败：" + msg;
+                    msg = "保存销售:失败:" + msg;
                     confirmResult.code = result;
-                    confirmResult.text = msg; //+ jdMsg;
+                    confirmResult.text = msg;
                     throw new Exception(msg);
                 }
 
