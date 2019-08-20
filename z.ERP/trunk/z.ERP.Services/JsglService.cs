@@ -127,7 +127,7 @@ namespace z.ERP.Services
             DataTable billReturn = DbHelper.ExecuteTable(sql);
             billReturn.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
-            string sqlitem = $@"SELECT M.*,B.MUST_MONEY,B.RECEIVE_MONEY " +
+            string sqlitem = $@"SELECT M.*,B.MUST_MONEY,B.RECEIVE_MONEY,B.RETURN_MONEY HIS_RETURN_MONEY " +
                 " FROM BILL_RETURN_ITEM M，BILL B " +
                 " where M.FINAL_BILLID=B.BILLID(+) ";
             if (!Data.BILLID.IsEmpty())
@@ -144,17 +144,18 @@ namespace z.ERP.Services
         public string ExecBillReturn(BILL_RETURNEntity Data)
         {
             BILL_RETURNEntity billReturn = DbHelper.Select(Data);
-            if (billReturn.STATUS == ((int)普通单据状态.审核).ToString())
+            if (billReturn.STATUS != ((int)普通单据状态.未审核).ToString())
             {
-                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+                throw new LogicException("单据(" + Data.BILLID + ")不是未审核状态,不能审核!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-                billReturn.VERIFY = employee.Id;
-                billReturn.VERIFY_NAME = employee.Name;
-                billReturn.VERIFY_TIME = DateTime.Now.ToString();
-                billReturn.STATUS = ((int)普通单据状态.审核).ToString();
-                DbHelper.Save(billReturn);
+                Exec_BILL_RETURN exec_billreturn = new Exec_BILL_RETURN()
+                {
+                    p_BILLID = Data.BILLID,
+                    p_VERIFY = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_billreturn);
                 Tran.Commit();
             }
             return billReturn.BILLID;
@@ -433,9 +434,9 @@ namespace z.ERP.Services
         public string ExecBillObtain(BILL_OBTAINEntity Data)
         {
             BILL_OBTAINEntity billObtain = DbHelper.Select(Data);
-            if (billObtain.STATUS == ((int)普通单据状态.审核).ToString())
+            if (billObtain.STATUS != ((int)普通单据状态.审核).ToString())
             {
-                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+                throw new LogicException("单据(" + Data.BILLID + ")不是审核状态,不能审核!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {

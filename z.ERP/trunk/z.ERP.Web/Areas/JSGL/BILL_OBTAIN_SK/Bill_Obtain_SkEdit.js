@@ -142,7 +142,13 @@ editDetail.otherMethods = {
             return;
         };
         editDetail.screenParam.showPopBill = true;
-        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID, FEE_ACCOUNTID: editDetail.dataParam.FEE_ACCOUNT_ID, WFDJ: 1, FTYPE: [2,3,4] };
+        editDetail.screenParam.popParam = {
+            MERCHANTID: editDetail.dataParam.MERCHANTID,
+            FEE_ACCOUNTID: editDetail.dataParam.FEE_ACCOUNT_ID,
+            WFDJ: 1,
+            FTYPE: [2, 3, 4],
+            STATUS:[2,3]
+        };
     },
     delBill: function () {
         var selectton = this.$refs.refBill.getSelection();

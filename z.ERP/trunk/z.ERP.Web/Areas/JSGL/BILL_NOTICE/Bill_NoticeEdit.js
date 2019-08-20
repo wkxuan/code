@@ -113,7 +113,8 @@ editDetail.otherMethods = {
             CONTRACTID: editDetail.dataParam.CONTRACTID,
             WFDJ: 1,
             SCFS_TZD: editDetail.dataParam.TYPE,
-            FEE_ACCOUNTID: editDetail.dataParam.FEE_ACCOUNTID
+            FEE_ACCOUNTID: editDetail.dataParam.FEE_ACCOUNTID,
+            STATUS:[2,3]
         };
     },
     delBill: function () {

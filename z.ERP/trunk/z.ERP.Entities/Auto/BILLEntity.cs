@@ -35,7 +35,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 卖场ID
         /// <summary>
-        [Field("卖场ID")]
+        [Field("门店ID")]
         public string BRANCHID
         {
             get; set;
@@ -100,7 +100,7 @@ namespace z.ERP.Entities
         /// 返还金额
         /// <summary>
         [Field("返还金额")]
-        public string RRETURN_MONEY
+        public string RETURN_MONEY
         {
             get; set;
         }

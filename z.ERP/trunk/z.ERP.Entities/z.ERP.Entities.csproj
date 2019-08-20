@@ -51,6 +51,7 @@
     <Compile Include="MAPFLOORINFOEntity.cs" />
     <Compile Include="MAPTITLEEntity.cs" />
     <Compile Include="NOTICEEntity.cs" />
+    <Compile Include="Procedures\Exec_BILL_RETURN.cs" />
     <Compile Include="Procedures\EXEC_CONTRACT_STOP.cs" />
     <Compile Include="Procedures\EXEC_CONTRACT_STARTUP.cs" />
     <Compile Include="Procedures\EXEC_RATE_ADJUST.cs" />

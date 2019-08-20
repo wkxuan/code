@@ -30,6 +30,7 @@ search.popInitParam = function (data) {
         search.searchParam.RRETURNFLAG = data.RRETURNFLAG;
         search.searchParam.SCFS_TZD = data.SCFS_TZD;  //出单类型
         search.searchParam.FEE_ACCOUNTID = data.FEE_ACCOUNTID;  //收费单位
+        search.searchParam.STATUS = data.STATUS;
     }
 }
 

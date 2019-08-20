@@ -14,13 +14,14 @@
     },
     { title: '应收金额', key: 'MUST_MONEY' },
     { title: '已收金额', key: 'RECEIVE_MONEY' },
+    { title: '已返金额', key: 'HIS_RETURN_MONEY' },
     {
-        title: "返还金额", key: 'RETURN_MONEY',
+        title: "本次返还金额", key: 'RETURN_MONEY',
         cellType: "input", cellDataType: "number",
         onChange: function (index, row, data) {
-            if (Number(row.RETURN_MONEY) > Number(row.MUST_MONEY)) {
+            if (Number(row.RETURN_MONEY) > Number(row.RECEIVE_MONEY) - Number(row.HIS_RETURN_MONEY)) {
                 row.RETURN_MONEY = null;
-                iview.Message.info("此账单的返还金额不能大于应收金额!");
+                iview.Message.info("返还金额不能大于已收金额-已返金额!");
                 return;
             }
         }
@@ -68,6 +69,7 @@ editDetail.otherMethods = {
             BRANCHID: editDetail.dataParam.BRANCHID,
             CONTRACTID: editDetail.dataParam.CONTRACTID,
             FTYPE: [1],    //保证金类型
+            STATUS:[3,4],  //状态
             RRETURNFLAG: "1"  //返还标记 暂时判断 RECEIVE_MONEY <> 0 的记录
         };
     },
@@ -111,8 +113,9 @@ editDetail.popCallBack = function (data) {
                     FINAL_BILLID: data.sj[i].BILLID,
                     TERMMC: data.sj[i].TERMMC,
                     MUST_MONEY: data.sj[i].MUST_MONEY,
-                    UNPAID_MONEY: data.sj[i].UNPAID_MONEY,
-                    NOTICE_MONEY: data.sj[i].UNPAID_MONEY
+                    RECEIVE_MONEY: data.sj[i].RECEIVE_MONEY,
+                    HIS_RETURN_MONEY: data.sj[i].RETURN_MONEY
+
                 });
         }
     }
@@ -169,7 +172,7 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请选择租约!");
         return false;
     }
-    if (!editDetail.dataParam.NIAYUE) {
+    if (!editDetail.dataParam.NIANYUE) {
         iview.Message.info("请输入债权发年月!");
         return false;
     }
