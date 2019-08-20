@@ -22,7 +22,7 @@
             title: '操作', key: 'operate', authority: "10600200", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10600201,
-                    title: '编辑租赁租约',
+                    title: '租赁租约详情',
                     url: "HTGL/ZLHT/HtEdit/" + row.CONTRACTID
                 });
             }
@@ -90,7 +90,7 @@ search.popCallBack = function (data) {
 search.addHref = function (row) {
     _.OpenPage({
         id: 10600201,
-        title: '新增租赁租约',
+        title: '租赁租约详情',
         url: "HTGL/ZLHT/HtEdit/"
     });
 

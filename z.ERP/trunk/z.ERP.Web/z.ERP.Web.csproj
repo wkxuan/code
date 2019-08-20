@@ -572,7 +572,6 @@
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.cshtml" />
     <Content Include="Areas\XTGL\STATION\Station.cshtml" />
     <Content Include="Areas\Layout\Empty\_EmptyLayout.cshtml" />
-    <Content Include="Areas\SHGL\MERCHANT\Detail.cshtml" />
     <Content Include="Areas\Layout\Detail\_DetailLayout.cshtml" />
     <Content Include="Areas\Layout\EditDetail\_EditDetail.cshtml" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.cshtml" />
@@ -581,7 +580,6 @@
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.cshtml" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterDetail.cshtml" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.cshtml" />
-    <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeDetail.cshtml" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.cshtml" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.cshtml" />
     <Content Include="Areas\Share\CommonWindow.cshtml" />
@@ -592,14 +590,11 @@
     <Content Include="Areas\PPGL\BRAND\BrandDetail.cshtml" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.cshtml" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.cshtml" />
-    <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltDetail.cshtml" />
-    <Content Include="Areas\SPGL\GOODS\GoodsDetail.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsList.cshtml" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.cshtml" />
     <Content Include="Areas\HTGL\ZLHT\HtEdit.cshtml" />
     <Content Include="Areas\HTGL\ZLHT\HtList.cshtml" />
-    <Content Include="Areas\JSGL\JOINBILL\JoinBillDetail.cshtml" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.cshtml" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillList.cshtml" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.cshtml" />
@@ -609,20 +604,16 @@
     <Content Include="Areas\Layout\Edit\_Edit.cshtml" />
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnList.cshtml" />
-    <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustDetail.cshtml" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustList.cshtml" />
     <Content Include="Areas\JSGL\BILL_OBTAIN\Bill_ObtainEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_OBTAIN\Bill_ObtainList.cshtml" />
-    <Content Include="Areas\JSGL\BILL_OBTAIN_YSK\Bill_Obtain_YskDetail.cshtml" />
     <Content Include="Areas\JSGL\BILL_OBTAIN_YSK\Bill_Obtain_YskEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_OBTAIN_YSK\Bill_Obtain_YskList.cshtml" />
-    <Content Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeDetail.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeEdit.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeList.cshtml" />
     <Content Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkList.cshtml" />
     <Content Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkEdit.cshtml" />
-    <Content Include="Areas\JSGL\BILL_OBTAIN_SK\Bill_Obtain_SkDetail.cshtml" />
     <Content Include="Areas\Share\Cascader.cshtml" />
     <Content Include="Areas\Share\BaseDropDownLists.cshtml" />
     <Content Include="Areas\Share\Pops.cshtml" />
@@ -648,7 +639,6 @@
     <Content Include="Areas\XTGL\RCL\RCL.cshtml" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillList.cshtml" />
     <Content Include="Areas\SPGL\SALEBILL\SaleBillEdit.cshtml" />
-    <Content Include="Areas\SPGL\SALEBILL\SaleBillDetail.cshtml" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.cshtml" />
     <Content Include="Areas\Layout\Srch\_SrchLayout.cshtml" />
@@ -660,7 +650,6 @@
     <Content Include="Areas\CWGL\PZDC\Pzdc.cshtml" />
     <Content Include="Areas\XTGL\REGION\Region.cshtml" />
     <Content Include="File\Template\凭证导出.xlsx" />
-    <Content Include="Areas\JSGL\VOUCHER\VoucherDetail.cshtml" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.cshtml" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherList.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintOther.cshtml" />
@@ -739,7 +728,6 @@
     <Content Include="Areas\Pop\Pop\PopStationList.cshtml" />
     <Content Include="Areas\JSGL\Invoice\InvoiceList.cshtml" />
     <Content Include="Areas\JSGL\Invoice\InvoiceEdit.cshtml" />
-    <Content Include="Areas\JSGL\Invoice\InvoiceDetail.cshtml" />
     <Content Include="Areas\XTGL\AlertShow\AlertShow.cshtml" />
     <Content Include="Areas\XTGL\SPLC\SPLC.cshtml" />
     <Content Include="Areas\Share\Drawer.cshtml" />

@@ -33,7 +33,7 @@ search.addHref = function (row) {
 
     _.OpenPage({
         id: 10200101,
-        title: '新增商户信息',
+        title: '商户信息',
         url: "SHGL/MERCHANT/MerchantEdit/"
     });
 };

@@ -19,7 +19,7 @@
             title: '操作', key: 'operate', authority: "10600503", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10600501,
-                    title: '编辑多经点位租约',
+                    title: '多经点位租约详情',
                     url: "HTGL/DJDW/DjdwEdit/" + row.CONTRACTID
                 });
             }
@@ -79,7 +79,7 @@ search.popCallBack = function (data) {
 search.addHref = function (row) {
     _.OpenPage({
         id: 10600401,
-        title: '新增多经点位租约',
+        title: '多经点位租约详情',
         url: "HTGL/DJDW/DjdwEdit/"
     });
 }

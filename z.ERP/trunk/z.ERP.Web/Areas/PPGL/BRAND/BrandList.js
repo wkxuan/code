@@ -35,7 +35,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 102002,
-        title: '新增品牌信息',
+        title: '品牌信息',
         url: "PPGL/BRAND/BrandEdit/"
     });
 }

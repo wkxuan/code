@@ -17,7 +17,7 @@
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 104002,
-                    title: '资产拆分单',
+                    title: '资产拆分单详情',
                     url: "DPGL/ASSETSPILT/AssetSpiltEdit/" + row.BILLID
                 });
             }
@@ -31,7 +31,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 104002,
-        title: '新增资产拆分单',
+        title: '资产拆分单详情',
         url: "DPGL/ASSETSPILT/AssetSpiltEdit/"
     });
 }
