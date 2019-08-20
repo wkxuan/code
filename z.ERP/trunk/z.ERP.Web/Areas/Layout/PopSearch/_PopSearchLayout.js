@@ -69,14 +69,7 @@
                     this.searchParam = _this.searchParam;
 
                 },
-                qr: function (event) {
-                    event.stopPropagation();
-                    let data = {};
-                    data.sj = this.$refs.selectData.getSelection();
-                    if (!data.sj.length) {
-                        this.$Message.info("请选择数据!");
-                        return;
-                    }
+                callBack: function (data) {
                     if (window.parent.editDetail != undefined)
                         window.parent.editDetail.popCallBack(data)
                     else if (window.parent.srch != undefined)
@@ -92,6 +85,21 @@
                     else if (window.parent.defineDetail != undefined)
                         window.parent.defineDetail.popCallBack(data);
                     this.data = [];
+                },
+                qr: function (event) {
+                    event.stopPropagation();
+                    let data = {};
+                    data.sj = this.$refs.selectData.getSelection();
+                    if (!data.sj.length) {
+                        this.$Message.info("请选择数据!");
+                        return;
+                    }
+                    this.callBack(data);
+                },
+                rowdblclick: function (row, index) {
+                    let data = {};
+                    data.sj = [row];
+                    this.callBack(data);
                 },
                 clear: function (event) {
                     event.stopPropagation();
