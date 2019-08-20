@@ -25,11 +25,9 @@
     #popSearch .popParamContent {
         padding-top: 10px;
         overflow-y:auto;
-        max-height:350px;
     }
      #popSearch .popResContent {
         overflow-y:auto;
-        max-height:350px;
         overflow:hidden;
     }
         #popSearch .popResContent .ivu-page {

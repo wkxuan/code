@@ -21,7 +21,6 @@
                 disabled: true,
                 columns: [],
                 data: [],
-                maxHeight: 280,
                 tbLoading: false,
                 arrPageSize: [10, 20, 50, 100],
                 pagedataCount: 0,
@@ -43,11 +42,13 @@
             methods: {
                 seach: function (event) {
                     event.stopPropagation();
-                    let _self = this;
 
                     if (!_this.IsValidSrch())
                         return;
-                    this.data = [];
+
+                    showList();
+                },
+                initParam: function () {
                     //父页面是单据
                     if (window.parent.editDetail != undefined)
                         _this.popInitParam(window.parent.editDetail.screenParam.popParam);
@@ -60,10 +61,13 @@
                         //父页面是简单定义
                     else if (window.parent.define != undefined)
                         _this.popInitParam(window.parent.define.screenParam.popParam);
+                    else if (window.parent.defineNew != undefined)
+                        _this.popInitParam(window.parent.defineNew.screenParam.popParam);
+                    else if (window.parent.defineDetail != undefined)
+                        _this.popInitParam(window.parent.defineDetail.screenParam.popParam);
 
-                    _self.searchParam = _this.searchParam;
+                    this.searchParam = _this.searchParam;
 
-                    showList();
                 },
                 qr: function (event) {
                     event.stopPropagation();
@@ -83,6 +87,10 @@
                         window.parent.define.popCallBack(data);
                     else if (window.parent.splc != undefined)
                         window.parent.splc.popCallBack(data);
+                    else if (window.parent.defineNew != undefined)
+                        window.parent.defineNew.popCallBack(data);
+                    else if (window.parent.defineDetail != undefined)
+                        window.parent.defineDetail.popCallBack(data);
                     this.data = [];
                 },
                 clear: function (event) {
@@ -95,11 +103,15 @@
                 },
                 changePageCount: function (index) {
                     this.currentPage = index;
+                    if (!_this.IsValidSrch())
+                        return;
                     showList();
                 },
                 changePageSizer: function (value) {
                     this.pageSize = value;
                     this.currentPage = 1;
+                    if (!_this.IsValidSrch())
+                        return;
                     showList();
                 }
             }
@@ -112,6 +124,7 @@
             ve.data = [];
             ve.pagedataCount = 0;
             ve.tbLoading = true;
+            ve.initParam();
             _.Search({
                 Service: _this.service,
                 Method: _this.method,

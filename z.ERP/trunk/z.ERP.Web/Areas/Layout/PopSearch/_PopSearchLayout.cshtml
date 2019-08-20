@@ -19,7 +19,7 @@
     <collapse v-model="panelName">
         <panel name="condition">
             查询条件
-            <div style="float: right; width: 400px ;text-align: right;">
+            <div style="float: right; width: 400px ;text-align: right;margin-right:10px;">
                 <i-button type="text" shape="circle" icon="md-search" v-on:click="seach">查询</i-button>
                 <i-button type="text" shape="circle" icon="md-checkmark" v-on:click="qr">确认</i-button>
                 <i-button type="text" shape="circle" icon="md-refresh" v-on:click="clear">清空</i-button>
@@ -33,13 +33,13 @@
         </panel>
         <panel name="result">
             查询结果
-            <div style="float: right; width: 400px ;text-align: right;">
+            <div style="float: right; width: 400px ;text-align: right;margin-right:10px;">
                 @*增加结果按钮*@
                 @RenderSection("resultBtn", false)
             </div>
             <div slot="content" class="popResContent">
                 @*结果显示*@
-                <yx-table v-bind:columns="columns" v-bind:data="data" v-bind:height="maxHeight" ref="selectData" 
+                <yx-table v-bind:columns="columns" v-bind:data="data" height="400" ref="selectData" 
                           v-bind:loading="tbLoading" selection=true>
                 </yx-table>
                 <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total

@@ -798,13 +798,13 @@ Vue.component('yx-modal', {
             id: Guid(),
             curWidth: null,
             curVisible: false,
-            curHeight: "400px"
+            curHeight: "550px"
         }
     },
     mounted() {
         this.curWidth = this.width || 900;
         if (this.height) {
-            this.curHeight = (Number(this.height) + 50) + "px";
+            this.curHeight = this.height + "px";
         }
     },
     watch: {
