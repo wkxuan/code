@@ -22,7 +22,7 @@ Vue.component('yx-table', {
                     ` v-on:on-selection-change="onSelectionChange"> ` +
                  ` </i-table> ` +
                  ` <div style="position: absolute;top:2px;right:-5px;" v-if="visibleList.length>0"> ` +
-                    ` <Poptip placement="left" trigger="hover" style="margin-left:-20px;margin-top:5px;"> ` +
+                    ` <Poptip placement="left" trigger="hover" transfer style="margin-left:-20px;margin-top:5px;"> ` +
                         ` <Icon type="md-settings" /> ` +
                         ` <div slot="content"> ` +
                             ` <CheckboxGroup v-model="visibleCols" v-on:on-change="checkBoxChange"> ` +

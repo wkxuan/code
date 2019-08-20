@@ -190,7 +190,7 @@
                         DefineSave: _self.dataParam
                     }, function (data) {
                         iview.Message.info("保存成功");
-                        showOne(data);
+                        _this.showOne(data);
                         _self.disabled = _this.enabled(false);
                         _self.seachList();
                         _self.nodedisabled = false;
@@ -225,7 +225,7 @@
                     });
                 },      
                 onselectchange: function (selectArr, node) {                 
-                    showOne(node.code);
+                    _this.showOne(node.code);
                 },
                 seachList: function () {
                     var _self = this;
@@ -241,23 +241,23 @@
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
 
-        _this.vueObj = new Vue(options);
+        _this.vueObj = new Vue(options);  
+    }
 
-        function showOne(key, callback) {
-            _.Search({
-                Service: _this.service,
-                Method: _this.method,
-                Data: {
-                    code: key
-                },
-                Success: function (data) {
-                    _this.vueObj.dataParam = data.rows[0];
-                    _this.vueObj.keyVal = _this.vueObj.dataParam[_this.Key];
-                    _this.backData = DeepClone(data.rows[0]);
-                    callback && callback();
-                }
-            });
-        }
+    this.showOne = function (key, callback) {
+        _.Search({
+            Service: _this.service,
+            Method: _this.method,
+            Data: {
+                code: key
+            },
+            Success: function (data) {
+                _this.vueObj.dataParam = data.rows[0];
+                _this.vueObj.keyVal = _this.vueObj.dataParam[_this.Key];
+                _this.backData = DeepClone(data.rows[0]);
+                callback && callback();
+            }
+        });
     }
 
     this.vueInit = function () {
