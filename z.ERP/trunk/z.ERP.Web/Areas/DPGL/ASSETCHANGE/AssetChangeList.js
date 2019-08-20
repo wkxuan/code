@@ -17,7 +17,7 @@
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 104001,
-                    title: '资产面积变更单',
+                    title: '资产面积变更单详情',
                     url: "DPGL/ASSETCHANGE/AssetChangeEdit/" + row.BILLID
                 });
             }
@@ -33,7 +33,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 104001,
-        title: '资产面积变更单',
+        title: '资产面积变更单详情',
         url: "DPGL/ASSETCHANGE/AssetChangeEdit/"
     });
 }

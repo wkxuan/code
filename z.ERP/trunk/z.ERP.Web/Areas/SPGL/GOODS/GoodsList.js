@@ -32,7 +32,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 105002,
-        title: '新增商品信息',
+        title: '商品信息',
         url: "SPGL/GOODS/GoodsEdit/"
     });
 }

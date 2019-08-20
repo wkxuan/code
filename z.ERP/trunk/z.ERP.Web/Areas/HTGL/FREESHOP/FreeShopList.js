@@ -18,7 +18,7 @@
             title: '操作', key: 'operate', authority: "10600300", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 106003,
-                    title: '编辑退铺单',
+                    title: '退铺单详情',
                     url: "HTGL/FREESHOP/FreeShopEdit/" + row.BILLID
                 });
             }
@@ -33,7 +33,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 106003,
-        title: '新增退铺单',
+        title: '退铺单详情',
         url: "HTGL/FREESHOP/FreeShopEdit/"
     });
 }

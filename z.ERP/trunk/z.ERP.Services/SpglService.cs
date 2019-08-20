@@ -305,7 +305,7 @@ namespace z.ERP.Services
                 BILLID = SaveData.BILLID,
                 MENUID = "10500402",
                 BRABCHID = SaveData.BRANCHID,
-                URL = " SPGL/SALEBILL/SaleBillDetail/"
+                URL = " SPGL/SALEBILL/SaleBillEdit/"
             };
             InsertDclRw(dcl);
 
@@ -359,7 +359,7 @@ namespace z.ERP.Services
                         BILLID = salebill.BILLID,
                         MENUID = "10500402",
                         BRABCHID = salebill.BRANCHID,
-                        URL = " SPGL/SALEBILL/SaleBillDetail/"
+                        URL = " SPGL/SALEBILL/SaleBillEdit/"
                     };
                     DelDclRw(dcl);
                     DbHelper.Delete(salebill);
@@ -407,7 +407,7 @@ namespace z.ERP.Services
                 BILLID = Data.BILLID,
                 MENUID = "10500402",
                 BRABCHID = Data.BRANCHID,
-                URL = " SPGL/SALEBILL/SaleBillDetail/"
+                URL = " SPGL/SALEBILL/SaleBillEdit/"
             };
             DelDclRw(dcl);
             return mer.BILLID;
@@ -535,7 +535,7 @@ namespace z.ERP.Services
                         BILLID = AD.ID,
                         MENUID = "10500702",
                         BRABCHID = AD.BRANCHID,
-                        URL = " SPGL/RATE_ADJUST/Rate_AdjustEdit/"    //暂无浏览界面
+                        URL = " SPGL/RATE_ADJUST/Rate_AdjustEdit/"
                     };
                     DelDclRw(dcl);
 

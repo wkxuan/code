@@ -9,7 +9,7 @@
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 108001,
-                    title: '编辑凭证模板',
+                    title: '凭证模板详情',
                     url: "JSGL/VOUCHER/VoucherEdit/" + row.VOUCHERID
                 });
             }
@@ -21,7 +21,7 @@
 search.addHref = function (row) {
     _.OpenPage({
         id: 108001,
-        title: '新增凭证模板',
+        title: '凭证模板详情',
         url: "JSGL/VOUCHER/VoucherEdit/"
     });
 }
