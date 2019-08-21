@@ -1,7 +1,19 @@
 ﻿define.beforeVue = function () {
-    define.dataParam.IP = "";
+    define.dataParam.IP = null;
+    define.dataParam.SHOPID = null;
+    define.dataParam.SHOPCODE = null;
+    define.dataParam.TYPE = null;
+    define.dataParam.NETWORK_NODE_ADDRESS = null;
+    define.dataParam.STATIONBH = null;
+    define.dataParam.STATION_PAY = [];
+    define.screenParam.STATION_PAY_DATA = [];
+    define.service = "XtglService";
+    define.method = "GetStaion";
+    define.methodList = "GetStaion";
+    define.Key = "STATIONBH";
+
     define.screenParam.colDef = [
-    { title: "POS终端号", key: 'STATIONBH'},
+    { title: "POS终端号", key: 'STATIONBH' },
     { title: "IP地址", key: 'IP' },
     { title: "门店", key: 'BRANCHNAME' }
     ];
@@ -11,28 +23,11 @@
        { title: '代码', key: 'PAYID', width: 80 },
        { title: '名称', key: 'NAME' }
     ];
-    define.dataParam.STATION_PAY = [];
-    define.screenParam.STATION_PAY_DATA = [];
-    define.service = "XtglService";
-    define.method = "GetStaionElement";
-    define.methodList = "GetStaion";
-    define.Key = "STATIONBH";
 
-    define.screenParam.showPopShop = false;
-    define.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
+    define.screenParam.showPop = false;
+    define.screenParam.srcPop = null;
+    define.screenParam.title = null;
     define.screenParam.popParam = {};
-
-    _.Ajax('GetStaionPayList', {
-    }, function (data) {
-        for (var i = 0; i < data.pay.length; i++) {
-            define.screenParam.STATION_PAY_DATA.push({
-                _checked: false,
-                PAYID: data.pay[i]["PAYID"],
-                NAME: data.pay[i]["NAME"],
-            });
-        }
-    });
-
 
     //以下三个表格事件
     define.screenParam.selectData = function (selection, row) {
@@ -77,13 +72,24 @@ define.mountedInit = function () {
             define.showlist();
         }
     });
+
+    _.Ajax('GetStaionPayList', {
+    }, function (data) {
+        for (var i = 0; i < data.pay.length; i++) {
+            define.screenParam.STATION_PAY_DATA.push({
+                _checked: false,
+                PAYID: data.pay[i]["PAYID"],
+                NAME: data.pay[i]["NAME"],
+            });
+        }
+    });
 }
 
-define.showone = function (data, callback) {
+define.showOne = function (data, callback) {
     _.Ajax('SearchStation', {
         Data: { STATIONBH: data }
     }, function (data) {
-        $.extend(define.dataParam, data.Pay);
+        $.extend(define.dataParam, data.Station);
         let localData = [];
         for (var j = 0; j < define.screenParam.STATION_PAY_DATA.length; j++) {
             Vue.set(define.screenParam.STATION_PAY_DATA[j], '_checked', false);
@@ -95,7 +101,6 @@ define.showone = function (data, callback) {
             };
             //赋值防止左边列表变化后直接保存
             Vue.set(define.dataParam, 'STATION_PAY', localData);
-           // Vue.set(define.dataParam, 'STATION', localData)
         };
         callback && callback();
     });
@@ -107,11 +112,14 @@ define.otherMethods = {
         define.showlist();
     },
     SelShop: function () {
+        define.dataParam.BRANCHID = define.searchParam.BRANCHID;
         if (!define.dataParam.BRANCHID) {
             iview.Message.info("门店不能为空!");
-            exit;
-        }        
-        define.screenParam.showPopShop = true;
+            return;
+        }
+        define.screenParam.title = "选择店铺";
+        define.screenParam.showPop = true;
+        define.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopShopList/";
         define.screenParam.popParam = { BRANCHID: define.dataParam.BRANCHID };
     },
     atoA: function () {
@@ -121,13 +129,15 @@ define.otherMethods = {
 
 //接收子页面返回值
 define.popCallBack = function (data) {
-    if (define.screenParam.showPopShop) {
-       define.screenParam.showPopShop = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            define.dataParam.SHOPID = data.sj[i].SHOPID;
-            define.dataParam.SHOPCODE = data.sj[i].SHOPCODE;
-        };
-     }
+    if (define.screenParam.showPop) {
+        define.screenParam.showPop = false;
+        if (define.screenParam.title == "选择店铺") {
+            for (var i = 0; i < data.sj.length; i++) {
+                define.dataParam.SHOPID = data.sj[i].SHOPID;
+                define.dataParam.SHOPCODE = data.sj[i].SHOPCODE;
+            };
+        }
+    }
 };
 
 define.IsValidSave = function () {

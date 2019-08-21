@@ -1,7 +1,7 @@
 ﻿
 //table组件
 Vue.component('yx-table', {
-    props: ['columns', 'data', 'disabled', 'selection', 'stripe', 'showHeader', 'border', 'width', 'height', 'loading', 'highlightRow', 'size'],
+    props: ['columns', 'data', 'disabled', 'selection', 'stripe', 'showHeader', 'border', 'width', 'height', 'loading', 'highlightRow', 'size', 'showindex'],
     template: ` <div style="width:100%;height:100%;position: relative;"> ` +
                  ` <i-table ref="tableRef" v-bind:columns="curColumns" ` +
                     ` v-bind:data="curData" ` +
@@ -196,6 +196,9 @@ Vue.component('yx-table', {
             });
             if (this.selection) {
                 data.push({ type: 'selection', width: 50, align: 'center', fixed: 'left' });
+            }
+            if (this.showindex) {
+                data.unshift({ key: 'N', title: '序号', width: 80, align: 'center', fixed: 'left' });
             }
             return this.initRender(data);
         },

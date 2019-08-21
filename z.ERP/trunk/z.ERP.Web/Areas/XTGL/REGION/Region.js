@@ -66,7 +66,7 @@ define.mountedInit = function () {
     });
 }
 
-define.showone = function (data, callback) {
+define.showOne = function (data, callback) {
     _.Ajax('GetRegion', {
         Data: { REGIONID: data }
     }, function (data) {

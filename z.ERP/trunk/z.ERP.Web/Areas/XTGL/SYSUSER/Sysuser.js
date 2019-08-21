@@ -69,7 +69,7 @@ define.newRecord = function () {
     define.dataParam.ORGIDCASCADER = [];
 }
 
-define.showone = function (data, callback) {
+define.showOne = function (data, callback) {
     _.Ajax('SearchUser', {
         Data: { USERID: data }
     }, function (data) {
