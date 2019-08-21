@@ -104,7 +104,8 @@
                 },
                 clear: function () {
                     let _self = this;
-                    _self.searchParam = {};
+                    _this.searchParam = {};
+                    _self.searchParam = _this.searchParam;
                     _self.data = [];
                     _self.pagedataCount = 0;
                     _this.newCondition();
