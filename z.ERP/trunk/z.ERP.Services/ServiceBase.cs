@@ -286,6 +286,16 @@ namespace z.ERP.Services
             {
                 case PermissionType.Menu:
                     String SqlMenu = "";
+
+                    SqlMenu = "select A0.ID from MENU A0 where 1=1";
+                    if (!employee.Id.IsEmpty() && employee.Id != "-1")
+                    {
+                        SqlMenu += " and exists(select 1 from USER_ROLE A1, ROLE_MENU B1 where A1.USERID=" + employee.Id;
+                        SqlMenu += "               and  A1.ROLEID = B1.ROLEID and A0.ID=B1.MENUID)";
+                    }
+
+
+                    /*  暂不考虑菜单位置权限
                     SqlMenu = " SELECT A.MENUID FROM USERMODULE A,MENU B where A.MENUID = B.ID";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
@@ -299,6 +309,7 @@ namespace z.ERP.Services
                         SqlMenu += " and C1.MODULECODE = A.MODULECODE ";
                     }
                     //SqlMenu += " ) ";
+                    */
                     return SqlMenu;
                 case PermissionType.Org:
                     String SqlDepartment = "";
