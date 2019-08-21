@@ -99,24 +99,12 @@
 
     <row>
         <i-col span="3" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelShop",
-                    Text = "店铺",
-                    Enable = false,
-                    Type = "primary"
-                });
-            }
+            店铺
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.SHOPCODE",
-                    Enable = false
-                });
-            }
+            <i-input readonly v-bind:icon="disabled? '':'md-search'"
+                     v-model="dataParam.SHOPCODE" v-on:on-click="SelShop"
+                     v-bind:disabled="disabled? true:false" />
         </i-col>
 
         <i-col span="3" class="RowTitle">用户密码</i-col>

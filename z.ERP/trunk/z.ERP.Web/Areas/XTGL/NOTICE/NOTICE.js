@@ -50,7 +50,7 @@ define.otherMethods = {
     }
 }
 
-define.showone = function (data, callback) {
+define.showOne = function (data, callback) {
     _.Ajax('SearchNOTICE', {
         Data: { ID: data }
     }, function (data) {

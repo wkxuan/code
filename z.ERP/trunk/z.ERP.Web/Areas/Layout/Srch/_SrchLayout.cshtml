@@ -49,7 +49,7 @@
             </div>
             <div slot="content">
                 @*结果显示*@
-                <yx-table v-bind:columns="columns" v-bind:data="data" v-bind:loading="tbLoading"></yx-table>
+                <yx-table v-bind:columns="columns" v-bind:data="data" v-bind:loading="tbLoading" showindex=true></yx-table>
                 <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total 
                       v-bind:current="currentPage"
                       v-on:on-change="changePageCount" v-bind:page-size-opts="arrPageSize"

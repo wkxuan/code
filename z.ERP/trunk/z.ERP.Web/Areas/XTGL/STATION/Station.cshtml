@@ -87,24 +87,12 @@
     </row>
     <row>
         <i-col span="3" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelShop",
-                    Text = "店铺",
-                    Enable = false,
-                    Type = "primary"
-                });
-            }
+            店铺
         </i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.SHOPCODE",
-                    Enable = false
-                });
-            }
+            <i-input readonly v-bind:icon="disabled? '':'md-search'"
+                     v-model="dataParam.SHOPCODE" v-on:on-click="SelShop"
+                     v-bind:disabled="disabled? true:false" />
         </i-col>
         <i-col span="3" class="RowTitle">
             MAC地址
@@ -138,16 +126,8 @@
 }
 
 @section pops{
-
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopShop",
-            Src = "screenParam.srcPopShop",
-            Caption = "选择店铺",
-            Width = "800"
-        });
-    }
+<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="800"
+          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }
 
 
