@@ -11,8 +11,8 @@
 @section head{    
     @InitFiles(new string[] {
         "/Content/three/three.js",
+        "/Content/three/OrbitControls.js",
         "/Content/three/Earcut.js",
-        "/Content/three/OrbitControls.js"
     })
     <style>
         #MapShow {
@@ -34,13 +34,6 @@
 }
 
 <div id="MapShow">
-    <div>
-        <Drawer title="Basic Drawer" v-model="DrawerModel">
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-        </Drawer>
-    </div>  
     <Split v-model="splitVal">
         <div slot="left" class="leftPane" ref="tree">
             <yx-tree ref="treeRef" v-bind:data="data" v-on:onselectchange="onselectchange"
@@ -50,5 +43,11 @@
             <div ref="maps" style="height:100%;width:100%"></div>            
         </div>       
     </Split>
-
+    <div>
+        <Drawer title="Basic Drawer" v-model="DrawerModel">
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+        </Drawer>
+    </div>  
 </div>

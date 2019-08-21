@@ -239,7 +239,7 @@
                 for (var i = 0; i < length; i++) {
                     data.push(points[i][0], points[i][2]);
                 }
-                var triangles = Earcut.triangulate(data);
+                var triangles = triangulate(data);
                 if (triangles && triangles.length != 0) {
                     for (var i = 0; i < triangles.length; i++) {
                         var tlength = triangles.length;
