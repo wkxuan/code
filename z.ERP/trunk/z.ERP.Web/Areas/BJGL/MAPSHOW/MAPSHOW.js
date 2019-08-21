@@ -1,103 +1,37 @@
 ﻿var Mapshow = new Vue({
     el: "#MapShow",
     data: {
-        panelName: ["condition", "result"],
-        BRANCHID: "",
-        branchData: [],
-        REGIONID: "",
-        regionData: [],
-        FLOORID: "",
-        floorData:[]
+        splitVal: 0.2,
+        data: [],
+        DrawerModel:false
     },
     mounted: function () {
-        this.initBranch();        
+        this.initTree();        
     },
     methods: {
-        branchChange: function () {
-            this.initRegion();
-            Mapshow.REGIONID = undefined;
-            Mapshow.FLOORID = undefined;
+        initTree: function () {
+            _.SearchNoQuery({
+                Service: "DpglService",
+                Method: "TreeFloorData",
+                Success: function (data) {
+                    Mapshow.data = data;
+                }
+            })
         },
-        regionChange: function () {
-            this.initFloor();
-            Mapshow.FLOORID = undefined;
-        },
-        floorChange: function () { },
-        initBranch: function () {
-            _.Ajax('GetBranch', {
-                Data: { ID: "" }
-            }, function (data) {
-                let dt = data.dt;
-                if (dt && dt.length) {
-                    var Data = [];
-                    for (var i = 0; i < dt.length; i++) {
-                        Data.push({ value: dt[i].ID, label: dt[i].NAME })
+        onselectchange: function (selectArr, node) {
+            if (node.parentId == "REGION") {
+                var $map = this.$refs.maps;    //目标元素
+                $map.innerHTML = "";
+                _.Ajax('GetInitMAPDATA', {
+                    Data: { FLOORID: node.code }
+                }, function (data) {
+                    if (data.floorInfo.MAPSHOPLIST.length > 0 || data.labelArray.length > 0) {
+                        Mapshow.initMAP(data.floorInfo, data.labelArray);
+                    } else {
+                        iview.Message.info("暂无布局图数据，请联系管理员!");
                     }
-                    Mapshow.branchData = Data;
-                }
-            });
-        },
-        initRegion: function () {
-            _.Ajax('GetRegion', {
-                Data: { BRANCHID: Mapshow.BRANCHID }
-            }, function (data) {
-                let dt = data.dt;
-                if (dt && dt.length) {
-                    var Data = [];
-                    for (var i = 0; i < dt.length; i++) {
-                        Data.push({ value: dt[i].REGIONID, label: dt[i].NAME })
-                    }
-                    Mapshow.regionData = Data;
-                }
-            });
-        },
-        initFloor: function () {
-            _.Ajax('GetFloor', {
-                Data: { REGIONID: Mapshow.REGIONID }
-            }, function (data) {
-                let dt = data.dt;
-                if (dt && dt.length) {
-                    var Data = [];
-                    for (var i = 0; i < dt.length; i++) {
-                        Data.push({ value: dt[i].ID, label: dt[i].NAME })
-                    }
-                    Mapshow.floorData = Data;
-                }
-            });
-        },
-        SERCHMAP: function () {
-            if (!Mapshow.BRANCHID) {
-                iview.Message.info("请选择门店!");
-                return false;
-            };
-            if (!Mapshow.REGIONID) {
-                iview.Message.info("请选择区域!");
-                return false;
-            };
-            if (!Mapshow.FLOORID) {
-                iview.Message.info("请选择楼层!");
-                return false;
-            };
-            var $map = this.$refs.maps;    //目标元素
-            $map.innerHTML = "";
-            _.Ajax('GetInitMAPDATA', {
-                Data: { BRANCHID: Mapshow.BRANCHID, REGIONID: Mapshow.REGIONID, FLOORID: Mapshow.FLOORID }
-            }, function (data) {
-                debugger
-                if (data.floorInfo.MAPSHOPLIST.length>0 || data.labelArray.length>0) {
-                    Mapshow.initMAP(data.floorInfo, data.labelArray);
-                } else {
-                    iview.Message.info("暂无布局图数据，请联系管理员!");
-                }
-            });
-           
-        },
-        CLEAR: function () {
-            Mapshow.BRANCHID = undefined;
-            Mapshow.REGIONID = undefined;
-            Mapshow.FLOORID = undefined;
-            var $map = this.$refs.maps;    //目标元素
-            $map.innerHTML = "";
+                });
+            }
         },
         initMAP: function (floorInfo, labelArray) {
             //数据处理  X,Z,Y //由于图像原因  Y轴为负值
@@ -123,11 +57,11 @@
             // 块的高度
             var cubeHeight = 1.5;
             //获取容器的宽高
-            var $serchrow = this.$refs.serchrow.clientHeight;   //搜索条件高度
-            var $map = this.$refs.maps;    //目标元素
+            var $tree = this.$refs.tree;  //左面目标元素
+            var $map = this.$refs.maps;    //右面目标元素
             $map.innerHTML = "";
             var width = $map.clientWidth;     //获取画布「canvas3d」的宽
-            var height = window.innerHeight-70;   //获取画布「canvas3d」的高
+            var height = window.innerHeight-25;   //获取画布「canvas3d」的高
             function init() {
                 renderer = new THREE.WebGLRenderer({
                     antialias: true
@@ -182,14 +116,6 @@
                 FLOOR: "floor",        //地板
                 CELL: "shop",          //常用的小隔间
             }
-
-            //颜色常量 包括填充颜色和边框颜色
-            //var colorConst = [
-            //    { fill: "#F8D3A5", stroke: "#F7A540" },          //橙色
-            //    { fill: "#f7dee4", stroke: "#EEAEEE" },          //粉红色，
-            //    { fill: "#bfdaf7", stroke: "#99ccff" },          //蓝色
-            //    { fill: "#ece4d8", stroke: "#D2B48C" }           //土色
-            //]
 
             var floorGroup;     //楼层元素组
             var labelGroup;     //楼层标注组
@@ -343,13 +269,13 @@
             //鼠标单击事件
             function onDocumentMouseClick(event) {
                 event.preventDefault();
+                var treew = $tree.clientWidth;   //左侧树宽度
                 var vector = new THREE.Vector3();//三维坐标对象
                 vector.set(
-                        (event.clientX / width) * 2 - 1,
-                        -(event.clientY / window.innerHeight) * 2 + 1,
+                        ((event.clientX - treew) / width) * 2 - 1,
+                        -(event.clientY / height) * 2 + 1,
                         0.5);
                 vector.unproject(camera);
-                debugger
                 var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
                 var intersects = raycaster.intersectObjects(scene.children[2].children);
                 if (intersects.length) {      //有时先选到线,选不中
@@ -382,10 +308,11 @@
             //鼠标双击事件
             function onDocumentMouseDBLClick(event) {
                 event.preventDefault();
+                var treew = $tree.clientWidth; //左侧树宽度
                 var vector = new THREE.Vector3();//三维坐标对象
                 vector.set(
-                        (event.clientX / width) * 2 - 1,
-                        -(event.clientY / window.innerHeight) * 2 + 1,
+                        ((event.clientX - treew )/ width) * 2 - 1,
+                        -(event.clientY / height) * 2 + 1,
                         0.5);
                 vector.unproject(camera);
                 debugger
@@ -407,10 +334,11 @@
                     if (selectedCell.geometry.name.TYPE == "shop") {   //点击地板不要动作
                         selectedCell.material = new THREE.MeshBasicMaterial({ color: "#BF5430", side: THREE.DoubleSide });  //选中改变颜色
                         console.log(selectedCell.geometry.name);   //选中模块名称   暂时只能自定义name  
-                        Mapshow.$Modal.info({
-                            title: selectedCell.geometry.name.MNAME,
-                            content: selectedCell.geometry.name.ID + "<br/>" + selectedCell.geometry.name.MNAME + "<br/>" + selectedCell.geometry.name.TYPE
-                        })
+                        //Mapshow.$Modal.info({
+                        //    title: selectedCell.geometry.name.MNAME,
+                        //    content: selectedCell.geometry.name.ID + "<br/>" + selectedCell.geometry.name.MNAME + "<br/>" + selectedCell.geometry.name.TYPE
+                        //})
+                        Mapshow.DrawerModel = true;
                     }
                 } else {
                     if (selectedCell) {

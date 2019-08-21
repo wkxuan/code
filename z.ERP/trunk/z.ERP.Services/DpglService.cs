@@ -9,6 +9,7 @@ using z.Extensions;
 using z.MVC5.Results;
 using z.SSO.Model;
 using z.ERP.Entities.Auto;
+using z.ERP.Model.Tree;
 
 namespace z.ERP.Services
 {
@@ -615,6 +616,63 @@ namespace z.ERP.Services
         #endregion
 
         #region 布局图展示数据
+        /// <summary>
+        /// 获取楼层树
+        /// </summary>
+        /// <returns></returns>
+        public virtual UIResult TreeFloorData() {
+            string branchsql = @"SELECT A.ID,A.NAME FROM BRANCH A WHERE  A.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ORDER BY ID";
+            string regionsql = @"SELECT A.REGIONID,A.CODE,A.NAME,A.BRANCHID FROM REGION A WHERE  A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ") AND A.STATUS = 1 ORDER BY A.CODE";
+            string floorsql = @"SELECT A.ID FLOORID,A.CODE,A.NAME,A.REGIONID FROM FLOOR A WHERE  A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ") and STATUS = 1 ORDER BY A.CODE";
+            DataTable branchdata = DbHelper.ExecuteTable(branchsql);
+            DataTable regiondata = DbHelper.ExecuteTable(regionsql);
+            DataTable floordata = DbHelper.ExecuteTable(floorsql);
+            #region  垃圾代码，就别打开了
+            List<TreeEntity> treeList = new List<TreeEntity>();
+            if (branchdata.Rows.Count>0) {
+                foreach (DataRow item in branchdata.Rows) {
+                    TreeEntity btree = new TreeEntity();
+                    btree.value = item["ID"].ToString();
+                    btree.code = item["ID"].ToString();
+                    btree.title = item["NAME"].ToString();
+                    if (regiondata.Rows.Count>0) {
+                        List<TreeEntity> RList = new List<TreeEntity>();
+                        foreach (DataRow item1 in regiondata.Rows)
+                        {
+                            if (item1["BRANCHID"].ToString()== btree.value) { 
+                                TreeEntity rtree = new TreeEntity();
+                                rtree.value = item1["REGIONID"].ToString();
+                                rtree.code = item1["REGIONID"].ToString();
+                                rtree.title = item1["NAME"].ToString();
+                                rtree.parentId = "BRANCH";
+                                if (floordata.Rows.Count > 0)
+                                {
+                                    List<TreeEntity> FList = new List<TreeEntity>();
+                                    foreach (DataRow item2 in floordata.Rows)
+                                    {
+                                        if (item2["REGIONID"].ToString() == rtree.value)
+                                        {
+                                            TreeEntity ftree = new TreeEntity();
+                                            ftree.value = item2["FLOORID"].ToString();
+                                            ftree.code =  item2["FLOORID"].ToString();  
+                                            ftree.title = item2["NAME"].ToString();
+                                            ftree.parentId = "REGION";
+                                            FList.Add(ftree);
+                                        }
+                                    }
+                                    rtree.children = FList;
+                                };
+                                RList.Add(rtree);
+                            }
+                        }
+                        btree.children = RList;
+                    };
+                    treeList.Add(btree);
+                }
+            }
+            #endregion
+            return new UIResult(treeList);
+        }
         public Tuple<dynamic, List<MAPTITLEEntity>> GetInitMAPDATA(MAPFLOORINFOEntity data) {
             MAPFLOORINFOEntity LISTMAPFLOORINFO = new MAPFLOORINFOEntity();
             List<MAPSHOP> mapshoplist= new List<MAPSHOP>();
@@ -623,7 +681,7 @@ namespace z.ERP.Services
             LISTMAPFLOORINFO.REGIONID = data.REGIONID;
             LISTMAPFLOORINFO.FLOORID = data.FLOORID;
             //floor
-            var floor = GETFLOORDATA(LISTMAPFLOORINFO.BRANCHID, LISTMAPFLOORINFO.REGIONID, LISTMAPFLOORINFO.FLOORID);   //获取地板模块信息
+            var floor = GETFLOORDATA(LISTMAPFLOORINFO.FLOORID);   //获取地板模块信息
             if (floor.Rows.Count>0) {
                 MAPSHOP floori = new MAPSHOP();
                 floori.TYPE = "floor";    //类型 地板
@@ -635,9 +693,11 @@ namespace z.ERP.Services
                     STATUS= floor.Rows[0]["STATUS"].ToString()
                 };
                 mapshoplist.Add(floori);
+                LISTMAPFLOORINFO.BRANCHID = floor.Rows[0]["BRANCHID"].ToString();
+                LISTMAPFLOORINFO.REGIONID = floor.Rows[0]["REGIONID"].ToString();
             }
             //shop
-            var shop = GETSHOPDATA(LISTMAPFLOORINFO.BRANCHID, LISTMAPFLOORINFO.REGIONID, LISTMAPFLOORINFO.FLOORID);
+            var shop = GETSHOPDATA(LISTMAPFLOORINFO.FLOORID);
             if (shop.Rows.Count>0) {
                 foreach (DataRow item in shop.Rows) {
                     MAPSHOP shopi = new MAPSHOP();
@@ -663,16 +723,8 @@ namespace z.ERP.Services
             LISTMAPFLOORINFO.MAPSHOPLIST = mapshoplist;
             return new Tuple<dynamic, List<MAPTITLEEntity>>(LISTMAPFLOORINFO, maptitlelist);
         }
-        public DataTable GETFLOORDATA(string BRANCHID,string REGIONID,string FLOORID) {
+        public DataTable GETFLOORDATA(string FLOORID) {
             string SQL = @"SELECT M.*,F.CODE,F.NAME,F.STATUS FROM MAPFLOORDATA M,FLOOR F WHERE M.FLOORID=F.ID AND M.BRANCHID=F.BRANCHID AND M.REGIONID=F.REGIONID";
-            if (!BRANCHID.IsEmpty())
-            {
-                SQL += " and M.BRANCHID =" + BRANCHID + " ";
-            }
-            if (!REGIONID.IsEmpty())
-            {
-                SQL += " and M.REGIONID =" + REGIONID + " ";
-            }
             if (!FLOORID.IsEmpty())
             {
                 SQL += " and M.FLOORID =" + FLOORID + " ";
@@ -680,17 +732,9 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(SQL);
             return dt;
         }
-        public DataTable GETSHOPDATA(string BRANCHID, string REGIONID, string FLOORID)
+        public DataTable GETSHOPDATA( string FLOORID)
         {
             string SQL = @"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS,C.COLOR FROM MAPSHOPDATA M,SHOP S,CATEGORY C WHERE M.SHOPID=S.SHOPID AND S.CATEGORYID=C.CATEGORYID";
-            if (!BRANCHID.IsEmpty())
-            {
-                SQL += " and S.BRANCHID =" + BRANCHID + " ";
-            }
-            if (!REGIONID.IsEmpty())
-            {
-                SQL += " and S.REGIONID =" + REGIONID + " ";
-            }
             if (!FLOORID.IsEmpty())
             {
                 SQL += " and S.FLOORID =" + FLOORID + " ";

@@ -13,7 +13,7 @@ namespace z.ERP.Web.Areas.BJGL.MAPSHOW
     {
         public ActionResult MAPSHOW()
         {
-            ViewBag.Title = "楼层信息";
+            ViewBag.Title = "布局信息";
             return View();
         }
         public UIResult GetBranch(BRANCHEntity Data)
