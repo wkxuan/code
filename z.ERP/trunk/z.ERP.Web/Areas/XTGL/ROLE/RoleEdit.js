@@ -264,12 +264,11 @@ editDetail.otherMethods = {
         editDetail.dataParam.ORGID = value[value.length - 1];
     },
     SelCrmRole: function () {
-        if (editDetail.dataParam.ROLECODE == "") {
-            iview.Message.info("请输入角色代码!");
-            return;
-        }
-
-        editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx?personid=" + editDetail.dataParam.ROLECODE;
+        if (!editDetail.dataParam.ROLECODE) {
+            editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx";
+        } else {
+            editDetail.screenParam.srcPopCrmRole = "http://113.133.162.90:8002/PopupPage/defczgqx.aspx?personid=" + editDetail.dataParam.ROLECODE;
+        }        
         editDetail.screenParam.showPopCrmRole = true;
     },
     initdata: function () {
