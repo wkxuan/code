@@ -154,12 +154,10 @@
                         }, function (data) {
                             iview.Message.info("删除成功");
 
-                            setTimeout(function () {
-                                let win = window.location;
-                                let pathnameArr = win.pathname.split("/");
-                                pathnameArr[pathnameArr.length - 1] = null;
-                                win.replace(pathnameArr.join("/"));
-                            }, 200);
+                            let win = window.location;
+                            let pathnameArr = win.pathname.split("/");
+                            pathnameArr[pathnameArr.length - 1] = null;
+                            win.replace(pathnameArr.join("/"));
                         });
                     });
                 },
@@ -191,12 +189,11 @@
                         SaveData: _this.veObj.dataParam
                     }, function (data) {
                         iview.Message.info("保存成功");
-                        setTimeout(function () {
-                            let win = window.location;
-                            let pathnameArr = win.pathname.split("/");
-                            pathnameArr[pathnameArr.length - 1] = data;
-                            win.replace(pathnameArr.join("/"));
-                        }, 200);
+
+                        let win = window.location;
+                        let pathnameArr = win.pathname.split("/");
+                        pathnameArr[pathnameArr.length - 1] = data;
+                        win.replace(pathnameArr.join("/"));
                     });
                 },
                 branchChange: function () {
