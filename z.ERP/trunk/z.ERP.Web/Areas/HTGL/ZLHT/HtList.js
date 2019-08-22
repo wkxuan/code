@@ -1,5 +1,6 @@
 ﻿search.beforeVue = function () {
     search.searchParam.STYLE = "1";  //只查询租赁合同
+    search.searchParam.HTLX = "1"; //默认查询原始合同
     search.service = "HtglService";
     search.method = "GetContract";
 
@@ -21,7 +22,7 @@
         {
             title: '操作', key: 'operate', authority: "10600200", onClick: function (index, row, data) {
                 _.OpenPage({
-                    id: 10600201,
+                    id: 10600200,
                     title: '租赁租约详情',
                     url: "HTGL/ZLHT/HtEdit/" + row.CONTRACTID
                 });
