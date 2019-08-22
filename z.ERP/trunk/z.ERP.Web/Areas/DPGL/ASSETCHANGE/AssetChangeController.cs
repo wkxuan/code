@@ -40,7 +40,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
         }
         public ActionResult AssetChangeDetail(string Id)
         {
-            ViewBag.Title = "资产面积变更";
+            ViewBag.Title = "资产面积变更单";
             var entity = service.DpglService.GetAssetChangeElement(new ASSETCHANGEEntity(Id));
             ViewBag.assetchange = entity.Item1;
             ViewBag.assetchangeitem = entity.Item2;
@@ -49,7 +49,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETCHANGE
 
         public ActionResult AssetChangeEdit(string Id)
         {
-            ViewBag.Title = "资产面积变更";
+            ViewBag.Title = "资产面积变更详情";
             return View("AssetChangeEdit",model: (EditRender)Id);
         }
 

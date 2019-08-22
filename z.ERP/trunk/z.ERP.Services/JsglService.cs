@@ -84,6 +84,21 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
+            //删除审核待办任务
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    var dcl = new BILLSTATUSEntity
+                    {
+                        BILLID = item.BILLID,
+                        MENUID = "10700102",
+                        BRABCHID = item.BRANCHID
+                    };
+                    DelDclRw(dcl);
+                }
+                Tran.Commit();
+            }
         }
 
         public string SaveBillReturn(BILL_RETURNEntity SaveData)
@@ -112,6 +127,14 @@ namespace z.ERP.Services
 
                 Tran.Commit();
             }
+            //增加审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.BILLID,
+                MENUID = "10700102",
+                BRABCHID = SaveData.BRANCHID,
+                URL = "JSGL/BILL_RETURN/Bill_ReturnEdit/"
+            };
             return SaveData.BILLID;
         }
 
@@ -144,9 +167,9 @@ namespace z.ERP.Services
         public string ExecBillReturn(BILL_RETURNEntity Data)
         {
             BILL_RETURNEntity billReturn = DbHelper.Select(Data);
-            if (billReturn.STATUS != ((int)普通单据状态.未审核).ToString())
+            if (billReturn.STATUS == ((int)普通单据状态.审核).ToString())
             {
-                throw new LogicException("单据(" + Data.BILLID + ")不是未审核状态,不能审核!");
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核,不能再次审核!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
@@ -158,6 +181,15 @@ namespace z.ERP.Services
                 DbHelper.ExecuteProcedure(exec_billreturn);
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.BILLID,
+                MENUID = "10700102",
+                BRABCHID = Data.BRANCHID
+            };
+            DelDclRw(dcl);
             return billReturn.BILLID;
         }
 
@@ -242,6 +274,25 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    var dcl = new BILLSTATUSEntity
+                    {
+                        BILLID = item.BILLID,
+                        MENUID = "10700502",
+                        BRABCHID = item.BRANCHID,
+                        URL = "JSGL/BILL_ADJUST/Bill_AdjustEdit/"
+                    };
+                    DelDclRw(dcl);
+                }
+                Tran.Commit();
+            }
+
+
         }
 
         public string SaveBillAdjust(BILL_ADJUSTEntity SaveData)
@@ -269,6 +320,19 @@ namespace z.ERP.Services
 
                 Tran.Commit();
             }
+
+            //增加审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.BILLID,
+                MENUID = "10500702",
+                BRABCHID = SaveData.BRANCHID,
+                URL = "JSGL/BILL_ADJUST/Bill_AdjustEdit/"
+            };
+
+            InsertDclRw(dcl);
+
+
             return SaveData.BILLID;
         }
 
@@ -315,6 +379,19 @@ namespace z.ERP.Services
                 DbHelper.ExecuteProcedure(exec_billadjust);
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.BILLID,
+                MENUID = "10500702",
+                BRABCHID = Data.BRANCHID,
+                URL = "JSGL/BILL_ADJUST/Bill_AdjustEdit/"
+            };
+
+            DelDclRw(dcl);
+
+
             return billAdjust.BILLID;
         }
 
@@ -362,6 +439,30 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            string menuid = "";
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    if (item.TYPE == ((int)收款类型.预收款).ToString())
+                        menuid = "10700402";
+                    else if(item.TYPE == ((int)收款类型.保证金收款).ToString())
+                        menuid = "10700302";
+                    else if (item.TYPE == ((int)收款类型.账单收款).ToString())
+                        menuid = "10700702";
+
+                    var dcl = new BILLSTATUSEntity
+                    {
+                        BILLID =  item.BILLID,
+                        MENUID = menuid,
+                        BRABCHID = item.BRANCHID
+                    };
+                    DelDclRw(dcl);
+                }
+                Tran.Commit();
+            }
         }
 
         public string SaveBillObtain(BILL_OBTAINEntity SaveData)
@@ -394,6 +495,36 @@ namespace z.ERP.Services
 
                 Tran.Commit();
             }
+
+            string menuid = "";
+            string url = "";
+
+            if (SaveData.TYPE == ((int)收款类型.预收款).ToString())
+            {
+                menuid = "10700402";
+                url = "JSGL/BILL_OBTAIN/Bill_Obtain_YskEdit/";
+            }
+            else if(SaveData.TYPE == ((int)收款类型.保证金收款).ToString())
+            {
+                menuid = "10700302";
+                url = "JSGL/BILL_OBTAIN/Bill_ObtainEdit/";
+            }
+            else if (SaveData.TYPE == ((int)收款类型.账单收款).ToString())
+            {
+                menuid = "10700702";
+                url = "JSGL/BILL_OBTAIN/Bill_Obtain_SkEdit/"; 
+            }                
+
+            //增加审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.BILLID,
+                MENUID = menuid,
+                BRABCHID = SaveData.BRANCHID,
+                URL = url
+            };
+
+            InsertDclRw(dcl);
             return SaveData.BILLID;
         }
 
@@ -434,9 +565,9 @@ namespace z.ERP.Services
         public string ExecBillObtain(BILL_OBTAINEntity Data)
         {
             BILL_OBTAINEntity billObtain = DbHelper.Select(Data);
-            if (billObtain.STATUS != ((int)普通单据状态.审核).ToString())
+            if (billObtain.STATUS == ((int)普通单据状态.审核).ToString())
             {
-                throw new LogicException("单据(" + Data.BILLID + ")不是审核状态,不能审核!");
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核,不能再次审核!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
@@ -448,6 +579,23 @@ namespace z.ERP.Services
                 DbHelper.ExecuteProcedure(exec_billobtain);
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            string menuid = "";
+            if (Data.TYPE == ((int)收款类型.预收款).ToString())
+                menuid = "10700402";
+            else if (Data.TYPE == ((int)收款类型.保证金收款).ToString())
+                menuid = "10700302";
+            else if (Data.TYPE == ((int)收款类型.账单收款).ToString())
+                menuid = "10700702";
+
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.BILLID,
+                MENUID = menuid,
+                BRABCHID = Data.BRANCHID
+            };
+            DelDclRw(dcl);
             return billObtain.BILLID;
         }
 
@@ -497,6 +645,23 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    var dcl = new BILLSTATUSEntity
+                    {
+                        BILLID = item.BILLID,
+                        MENUID = "10700502",
+                        BRABCHID = item.BRANCHID
+                    };
+                    DelDclRw(dcl);
+
+                }
+                Tran.Commit();
+            }
         }
 
         public string SaveBillNotice(BILL_NOTICEEntity SaveData)
@@ -527,6 +692,20 @@ namespace z.ERP.Services
 
                 Tran.Commit();
             }
+
+            //增加审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.BILLID,
+                MENUID = "10500702",
+                BRABCHID = SaveData.BRANCHID,
+                URL = "JSGL/BILL_NOTICE/Bill_NoticeEdit/"
+            };
+
+            InsertDclRw(dcl);
+
+
+
             return SaveData.BILLID;
         }
 
@@ -614,6 +793,17 @@ namespace z.ERP.Services
                 DbHelper.Save(billNotice);
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.BILLID,
+                MENUID = "10700502",
+                BRABCHID = Data.BRANCHID
+            };
+            DelDclRw(dcl);
+
+
             return billNotice.BILLID;
         }
 
