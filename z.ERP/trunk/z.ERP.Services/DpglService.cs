@@ -735,7 +735,7 @@ namespace z.ERP.Services
             List<MAPSHOP> mapshoplist= new List<MAPSHOP>();
             List<MAPTITLEEntity> maptitlelist = new List<MAPTITLEEntity>();           
             //floor
-            var floor = GETFLOORDATA(LISTMAPFLOORINFO.FLOORID);   //获取地板模块信息
+            var floor = GETFLOORDATA(data.FLOORID);   //获取地板模块信息
             if (floor.Rows.Count>0) {
                 MAPSHOP floori = new MAPSHOP();
                 floori.TYPE = "floor";    //类型 地板
@@ -752,7 +752,7 @@ namespace z.ERP.Services
                 LISTMAPFLOORINFO.FLOORID = data.FLOORID;
             }
             //shop
-            var shop = GETSHOPDATA(LISTMAPFLOORINFO.FLOORID);
+            var shop = GETSHOPDATA(data.FLOORID);
             if (shop.Rows.Count>0) {
                 foreach (DataRow item in shop.Rows) {
                     MAPSHOP shopi = new MAPSHOP();
@@ -798,7 +798,7 @@ namespace z.ERP.Services
                     LEFT JOIN MERCHANT MT ON CT.MERCHANTID=MT.MERCHANTID AND CT.HTLX=1 AND CT.STATUS IN (2,3)";
             if (!FLOORID.IsEmpty())
             {
-                SQL += " and S.FLOORID =" + FLOORID + " ";
+                SQL += " WHERE S.FLOORID =" + FLOORID + " ";
             }
             DataTable dt = DbHelper.ExecuteTable(SQL);
             return dt;
