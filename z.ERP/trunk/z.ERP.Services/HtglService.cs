@@ -503,6 +503,8 @@ namespace z.ERP.Services
                 {
                     PERIODEntity PerioYm = new PERIODEntity();
                     PerioYm = DbHelper.Select(new PERIODEntity() { YEARMONTH = (scn * 100 + scy).ToString() });
+                    if(PerioYm == null)
+                        throw new LogicException($"请定义{scn}年的财务月区间!");
                     zjfj.CREATEDATE = PerioYm.DATE_END;
                 }
                 else

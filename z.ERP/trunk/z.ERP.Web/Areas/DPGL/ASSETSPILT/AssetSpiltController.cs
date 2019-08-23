@@ -13,7 +13,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
     {
         public ActionResult AssetSpiltList(string type)
         {
-            ViewBag.Title = "店铺拆分处理";
+            ViewBag.Title = "资产拆分单";
             ViewBag.Type = "3";
             return View(new SearchRender()
             {
@@ -26,7 +26,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
         }
         public ActionResult AssetSpiltDetail(string Id)
         {
-            ViewBag.Title = "店铺拆分处理";
+            ViewBag.Title = "资产拆分单详情";
             var entity = service.DpglService.GetAssetChangeElement(new ASSETCHANGEEntity(Id));
             ViewBag.assetSpilt = entity.Item1;
             ViewBag.assetSpiltitem = entity.Item2;
@@ -36,7 +36,7 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
 
         public ActionResult AssetSpiltEdit(string Id)
         {
-            ViewBag.Title = "店铺拆分处理";
+            ViewBag.Title = "资产拆分单详情";
             return View("AssetSpiltEdit",model: (EditRender)Id);
         }
 

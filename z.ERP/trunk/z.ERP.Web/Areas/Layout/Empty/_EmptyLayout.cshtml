@@ -12,21 +12,39 @@
 @section head{
     @InitFiles(WebFiles)
     @RenderSection("head", false)
+
+<style>
+    #List_Main {
+        overflow: hidden;
+        height: 100%;
+    }
+
+        #List_Main .topMenuBtn {
+            height: 35px;
+            text-align: left;
+            line-height: 35px;
+            background: #2d8cf0;
+            padding-left: 10px;
+        }
+         #List_Main .contentDiv {
+                height: calc(100% - 35px);
+                overflow: hidden;
+                width: 100%;
+            }
+</style>
+
 }
 
 
 <div id="List_Main">
-    <collapse>
-        <row class="topbutton">
-            @RenderSection("btn", false)
-        </row>
-        <row>
-            <card>
-                @RenderSection("content", true)
-            </card>
-        </row>
-
-    </collapse>
+    <div class="topMenuBtn">
+        @RenderSection("btn", false)
+    </div>
+    <div class="contentDiv">
+        <card>
+            @RenderSection("content", true)
+        </card>
+    </div>
 </div>
 
 @section foot{

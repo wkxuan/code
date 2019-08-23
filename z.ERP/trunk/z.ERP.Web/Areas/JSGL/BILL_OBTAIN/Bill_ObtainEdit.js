@@ -193,7 +193,7 @@ editDetail.mountedInit = function () {
         authority: "10700302",
         fun: function () {
             _.Ajax('ExecData', {
-                Data: { BILLID: editDetail.dataParam.BILLID },
+                Data: { BILLID: editDetail.dataParam.BILLID, TYPE: editDetail.dataParam.TYPE },
             }, function (data) {
                 iview.Message.info("审核成功");
                 setTimeout(function () {

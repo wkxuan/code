@@ -2,9 +2,9 @@
     el: "#List_Main",
     data: {
         jzqj: { LASTDAY: '', Natrual: false },
-        colDef: [{ title: '年月',key: 'YEARMONTH', width: 149,},
-                 { title: '开始日期', key: 'DATE_START', width: 150, },
-                 { title: '结束日期', key: 'DATE_END', width: 150, }, ],
+        colDef: [{ title: '年月',key: 'YEARMONTH'},
+                 { title: '开始日期', key: 'DATE_START' },
+                 { title: '结束日期', key: 'DATE_END' }, ],
         dataDef: [],        
         disabled: true,
         Year: '',

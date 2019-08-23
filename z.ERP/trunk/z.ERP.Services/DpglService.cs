@@ -172,6 +172,32 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            string menuid = "";
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    if (item.CHANGE_TYPE == ((int)资产调整类型.资产面积).ToString())
+                    {
+                        menuid = "10400102";
+                    }
+                    else if (item.CHANGE_TYPE == ((int)资产调整类型.资产拆分).ToString())
+                    {
+                        menuid = "10400202";
+                    }
+                    var dcl = new BILLSTATUSEntity
+                    {
+                        BILLID = item.BILLID,
+                        MENUID = menuid,
+                        BRABCHID = item.BRANCHID
+                    };
+                    DelDclRw(dcl);
+                }
+                Tran.Commit();
+            }
         }
         public string SaveAssetChange(ASSETCHANGEEntity SaveData)
         {
@@ -197,6 +223,29 @@ namespace z.ERP.Services
 
                 Tran.Commit();
             }
+
+            //增加审核待办任务
+            string menuid = "";
+            string url = "";
+            if (SaveData.CHANGE_TYPE == ((int)资产调整类型.资产面积).ToString())
+            {
+                menuid = "10400102";
+                url = "DPGL/ASSETCHANGE/AssetChangeEdit/";
+            }
+            else if(SaveData.CHANGE_TYPE == ((int)资产调整类型.资产拆分).ToString())
+            {
+                menuid = "10400202";
+                url = "DPGL/ASSETSPILT/AssetSpiltEdit/";
+            }
+
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.BILLID,
+                MENUID = menuid,
+                BRABCHID = SaveData.BRANCHID,
+                URL = url
+            };
+            InsertDclRw(dcl);
             return SaveData.BILLID;
         }
         public Tuple<dynamic, DataTable, DataTable> GetAssetChangeElement(ASSETCHANGEEntity Data)
@@ -238,15 +287,6 @@ namespace z.ERP.Services
             {
                 throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
             }
-            //using (var Tran = DbHelper.BeginTransaction())
-            //{
-            //    assetchange.VERIFY = employee.Id;
-            //    assetchange.VERIFY_NAME = employee.Name;
-            //    assetchange.VERIFY_TIME = DateTime.Now.ToString();
-            //    assetchange.STATUS = ((int)普通单据状态.审核).ToString();
-            //    DbHelper.Save(assetchange);
-            //    Tran.Commit();
-            //}
             using (var Tran = DbHelper.BeginTransaction())
             {
                 EXEC_ASSET_CHANGE exec_asset_change = new EXEC_ASSET_CHANGE()
@@ -257,6 +297,15 @@ namespace z.ERP.Services
                 DbHelper.ExecuteProcedure(exec_asset_change);
                 Tran.Commit();
             }
+            //删除审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.BILLID,
+                MENUID = "10400102",
+                BRABCHID = Data.BRANCHID
+            };
+            DelDclRw(dcl);
+
             return assetchange.BILLID;
         }
         /// <summary>
@@ -281,6 +330,14 @@ namespace z.ERP.Services
                 DbHelper.ExecuteProcedure(exec_asset_spilt);
                 Tran.Commit();
             }
+            //删除审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.BILLID,
+                MENUID = "10400202",
+                BRABCHID = Data.BRANCHID
+            };
+            DelDclRw(dcl);
             return assetchange.BILLID;
         }
         public DataGridResult GetFloorMap(SearchItem item)

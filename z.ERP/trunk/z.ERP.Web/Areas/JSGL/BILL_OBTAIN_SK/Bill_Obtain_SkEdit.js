@@ -2,7 +2,7 @@
     editDetail.others = true;
     editDetail.branchid = true;
     editDetail.Key = 'BILLID';
-    //保证金收款
+    //核销单
     editDetail.dataParam.TYPE = 3;
     editDetail.dataParam.ALL_MONEY = 0;
     editDetail.dataParam.ADVANCE_MONEY = 0;
