@@ -19,8 +19,14 @@
     define.methodList = "GetFEESUBJECT_ACCOUNT";
     define.screenParam.showPopFeeSubject = false;
     define.screenParam.srcPopFeeSubject = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
-    define.Key = 'TERMID';   
+    define.Key = 'TERMID';
+
+    define.dataParam.TERMID = null;
+    define.dataParam.TERMNAME = null;
+    define.dataParam.FEE_ACCOUNTID = null;
+    define.dataParam.NOTICE_CREATE_WAY = null;
 };
+
 define.mountedInit=function(){
     _.Ajax('GetBranch', {
         Data: { ID: "" }
@@ -37,6 +43,17 @@ define.mountedInit=function(){
         }
     });
 }
+
+define.showOne = function (data, callback) {
+    _.Ajax('GetFEESUBJECT_ACCOUNTOne', {
+        Data: { TERMID: data, BRANCHID: define.searchParam.BRANCHID }
+    }, function (data) {
+        $.extend(define.dataParam, data[0]);
+        define.dataParam.FEE_ACCOUNTID = data[0].FEE_ACCOUNTID + "";
+        callback && callback();
+    });
+}
+
 define.otherMethods = {
     branchChange: function (value) {
         define.dataParam.BRANCHID = define.searchParam.BRANCHID;

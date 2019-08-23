@@ -34,6 +34,12 @@ namespace z.ERP.Web.Areas.XTGL.FEESUBJECT_ACCOUNT
         {
             return new UIResult(service.DataService.feeAccount(Data));
         }
-        
+
+        public UIResult GetFEESUBJECT_ACCOUNTOne(FEESUBJECT_ACCOUNTEntity data)
+        {
+            return  service.XtglService.GetFEESUBJECT_ACCOUNTOne(data);
+        }
+
+
     }
 }
