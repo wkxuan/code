@@ -76,11 +76,11 @@
                 scene.background = new THREE.Color(0xF1F2F7);
                 camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
                 camera.lookAt(new THREE.Vector3(20, 0, 20));
-                camera.position.set(0, 40, 50);
+                camera.position.set(0, 200, 0);    //生成可视角度
                 // 光线的照射
                 var ambiColor = "#f2f2f2";
                 var spotLight = new THREE.SpotLight(ambiColor);
-                spotLight.position.set(-100, 100,-100);
+                spotLight.position.set(0, 100,0);
                 scene.add(spotLight);
                 var spotLight2 = new THREE.SpotLight(ambiColor);
                 spotLight2.position.set(100, 100, 150);
