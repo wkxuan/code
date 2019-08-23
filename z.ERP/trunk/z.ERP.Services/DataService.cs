@@ -389,6 +389,7 @@ namespace z.ERP.Services
                        + "  WHERE A.MERCHANTID=B.MERCHANTID AND A.BRANCHID=C.ID"
                        + "    AND C.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID like '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and B.NAME like '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");

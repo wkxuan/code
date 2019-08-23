@@ -150,10 +150,6 @@ define.IsValidSave = function () {
         iview.Message.info("终端号不能为空!");
         return false;
     }
-    if (!define.dataParam.IP) {
-        iview.Message.info("IP地址不能为空!");
-        return false;
-    }
     if (!define.dataParam.TYPE) {
         iview.Message.info("类型不能为空!");
         return false;

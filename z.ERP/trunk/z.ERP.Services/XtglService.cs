@@ -318,7 +318,8 @@ namespace z.ERP.Services
         }
         public Tuple<dynamic, DataTable> GetStaionElement(STATIONEntity Data)
         {
-            string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID,S.NETWORK_NODE_ADDRESS from STATION S where 1=1 ";
+            string sql = $@"select S.STATIONBH,S.TYPE,S.IP,S.SHOPID,S.NETWORK_NODE_ADDRESS,P.CODE SHOPCODE ";
+            sql += " from STATION S,SHOP P where S.SHOPID=P.SHOPID(+) ";
             sql += " AND S.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.STATIONBH.IsEmpty())
                 sql += $" and S.STATIONBH = '{ Data.STATIONBH}'";
@@ -381,8 +382,8 @@ namespace z.ERP.Services
             v.Require(a => a.STATIONBH);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.TYPE);
-            v.Require(a => a.IP);
-            v.IsUnique(a => a.IP);
+          //  v.Require(a => a.IP);
+          //  v.IsUnique(a => a.IP);
 
             //生成终端密钥，调用销售数据采集接口时用
             if (DefineSave.Encryption.IsEmpty())
@@ -1022,14 +1023,29 @@ namespace z.ERP.Services
         }
         public DataGridResult GetFEESUBJECT_ACCOUNT(SearchItem item)
         {
-            string sql = $@"SELECT FA.*,B.NAME BRANCHNAME,F.NAME TERMNAME FROM FEESUBJECT_ACCOUNT FA,BRANCH B,FEESUBJECT F  WHERE FA.BRANCHID=B.ID AND FA.TERMID=F.TRIMID";
-
-            item.HasKey("BRANCHID", a => sql += $" and FA.BRANCHID LIKE '%{a}%'");
-            item.HasKey("TERMID", a => sql += $" and FA.TERMID LIKE '%{a}%'");
+            string sql = @"SELECT FA.*,B.NAME BRANCHNAME,F.NAME TERMNAME 
+                             FROM FEESUBJECT_ACCOUNT FA,BRANCH B,FEESUBJECT F  
+                            WHERE FA.BRANCHID=B.ID AND FA.TERMID=F.TRIMID";
+            item.HasKey("BRANCHID", a => sql += $" and FA.BRANCHID = {a}");
+            item.HasKey("TERMID", a => sql += $" and FA.TERMID = {a}");
             sql += " ORDER BY  FA.BRANCHID,FA.TERMID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
+        }
+
+        public UIResult GetFEESUBJECT_ACCOUNTOne(FEESUBJECT_ACCOUNTEntity data)
+        {
+            string sql = @"SELECT FA.*,B.NAME BRANCHNAME,F.NAME TERMNAME 
+                             FROM FEESUBJECT_ACCOUNT FA,BRANCH B,FEESUBJECT F  
+                            WHERE FA.BRANCHID=B.ID AND FA.TERMID=F.TRIMID";
+            if (!string.IsNullOrEmpty(data.BRANCHID))
+                sql += $" and FA.BRANCHID = {data.BRANCHID}";
+            if (!string.IsNullOrEmpty(data.TERMID))
+                sql += $" and FA.TERMID = {data.TERMID}";
+            sql += " ORDER BY  FA.BRANCHID,FA.TERMID";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new UIResult(dt);
         }
     }
 

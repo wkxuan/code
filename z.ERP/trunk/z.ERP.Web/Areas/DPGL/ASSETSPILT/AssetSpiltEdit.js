@@ -242,7 +242,7 @@ editDetail.btnConfig = [{
     authority: "10400202",
     fun: function () {
         _.Ajax('ExecData', {
-            Data: { BILLID: editDetail.dataParam.BILLID },
+            Data: { BILLID: editDetail.dataParam.BILLID, CHANGE_TYPE: editDetail.dataParam.CHANGE_TYPE },
         }, function (data) {
             iview.Message.info("审核成功");
             setTimeout(function () {
