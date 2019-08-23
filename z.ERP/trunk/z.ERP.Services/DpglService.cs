@@ -676,10 +676,7 @@ namespace z.ERP.Services
         public Tuple<dynamic, List<MAPTITLEEntity>> GetInitMAPDATA(MAPFLOORINFOEntity data) {
             MAPFLOORINFOEntity LISTMAPFLOORINFO = new MAPFLOORINFOEntity();
             List<MAPSHOP> mapshoplist= new List<MAPSHOP>();
-            List<MAPTITLEEntity> maptitlelist = new List<MAPTITLEEntity>();
-            LISTMAPFLOORINFO.BRANCHID = data.BRANCHID; 
-            LISTMAPFLOORINFO.REGIONID = data.REGIONID;
-            LISTMAPFLOORINFO.FLOORID = data.FLOORID;
+            List<MAPTITLEEntity> maptitlelist = new List<MAPTITLEEntity>();           
             //floor
             var floor = GETFLOORDATA(LISTMAPFLOORINFO.FLOORID);   //获取地板模块信息
             if (floor.Rows.Count>0) {
@@ -689,12 +686,13 @@ namespace z.ERP.Services
                 floori.SHOPINFO = new MAPSHOPINFO {
                     ID= floor.Rows[0]["FLOORID"].ToString(),
                     TYPE = "floor",
-                    MNAME = floor.Rows[0]["NAME"].ToString(),
+                    NAME = floor.Rows[0]["NAME"].ToString(),
                     STATUS= floor.Rows[0]["STATUS"].ToString()
                 };
                 mapshoplist.Add(floori);
                 LISTMAPFLOORINFO.BRANCHID = floor.Rows[0]["BRANCHID"].ToString();
                 LISTMAPFLOORINFO.REGIONID = floor.Rows[0]["REGIONID"].ToString();
+                LISTMAPFLOORINFO.FLOORID = data.FLOORID;
             }
             //shop
             var shop = GETSHOPDATA(LISTMAPFLOORINFO.FLOORID);
@@ -707,14 +705,14 @@ namespace z.ERP.Services
                     shopi.SHOPINFO = new MAPSHOPINFO
                     {
                         ID = item["SHOPID"].ToString(),
-                        MNAME = item["NAME"].ToString(),
+                        NAME = item["NAME"].ToString(),
                         TYPE= "shop",
                         STATUS = item["STATUS"].ToString(),
                         RENT_STATUS = item["RENT_STATUS"].ToString()
                     };
                     //标题信息
                     MAPTITLEEntity mte = new MAPTITLEEntity();
-                    mte.SHOPNAME = item["NAME"].ToString();
+                    mte.SHOPNAME = item["MERCHANTNAME"].ToString();  //商户名称
                     mte.POINTS = item["TITLEPOINTS"].ToString();
                     maptitlelist.Add(mte);
                     mapshoplist.Add(shopi);
@@ -734,13 +732,43 @@ namespace z.ERP.Services
         }
         public DataTable GETSHOPDATA( string FLOORID)
         {
-            string SQL = @"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS,C.COLOR FROM MAPSHOPDATA M,SHOP S,CATEGORY C WHERE M.SHOPID=S.SHOPID AND S.CATEGORYID=C.CATEGORYID";
+            string SQL = @"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS,C.COLOR,NVL(MT.NAME,' ') MERCHANTNAME
+                    FROM MAPSHOPDATA M
+                    LEFT JOIN SHOP S ON M.SHOPID=S.SHOPID
+                    LEFT JOIN CATEGORY C ON  S.CATEGORYID=C.CATEGORYID
+                    LEFT JOIN CONTRACT_SHOP CS ON S.SHOPID=CS.SHOPID
+                    LEFT JOIN CONTRACT CT ON CS.CONTRACTID=CT.CONTRACTID
+                    LEFT JOIN MERCHANT MT ON CT.MERCHANTID=MT.MERCHANTID AND CT.HTLX=1 AND CT.STATUS IN (2,3)";
             if (!FLOORID.IsEmpty())
             {
                 SQL += " and S.FLOORID =" + FLOORID + " ";
             }
             DataTable dt = DbHelper.ExecuteTable(SQL);
             return dt;
+        }
+        public Tuple<dynamic, dynamic> GetSHOPINFO(string shopid) {
+            string sql = @"SELECT S.*,B.NAME BRANCHNAME,R.NAME REGIONNAME,F.NAME FLOORNAME,C.CATEGORYNAME ,O.ORGNAME 
+                    FROM SHOP S,BRANCH B,REGION R,FLOOR F,CATEGORY C,ORG O
+                    WHERE S.BRANCHID=B.ID AND S.REGIONID=R.REGIONID AND S.FLOORID=F.ID AND S.CATEGORYID=C.CATEGORYID AND S.ORGID=O.ORGID  ";
+            if (!string.IsNullOrEmpty(shopid)) {
+                sql+=" AND SHOPID="+ shopid + "";
+            }
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<单元类型>("TYPE", "TYPENAME");
+            dt.NewEnumColumns<单元状态>("STATUS","STATUSNAME");
+            dt.NewEnumColumns<租用状态>("RENT_STATUS", "RENT_STATUSNAME");
+
+            String sql1 = @"SELECT C.* ,M.NAME MERCHANTNAME,O.ORGNAME,F.NAME FEERULENAME
+                    FROM CONTRACT C,MERCHANT M ,CONTRACT_SHOP CS,ORG O,FEERULE F
+                    WHERE C.MERCHANTID=M.MERCHANTID  AND CS.CONTRACTID=C.CONTRACTID AND C.ORGID=O.ORGID AND C.FEERULE_RENT=F.ID AND C.STATUS IN (2,3) ";                    
+            if (!string.IsNullOrEmpty(shopid))
+            {
+                sql1 += " AND CS.SHOPID=" + shopid + "";
+            }
+            sql1 += @" ORDER BY C.CONTRACTID";
+            DataTable dt1 = DbHelper.ExecuteTable(sql1);
+            dt1.NewEnumColumns<核算方式>("STYLE", "STYLENAME");
+            return new Tuple<dynamic, dynamic>(dt.ToOneLine(), dt1.ToOneLine());
         }
         #endregion
     }

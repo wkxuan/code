@@ -8,7 +8,7 @@
                     "Areas/BJGL/MAPSHOW/MAPSHOW.js"
                 };
 }
-@section head{    
+@section head{
     @InitFiles(new string[] {
         "/Content/three/three.js",
         "/Content/three/OrbitControls.js",
@@ -20,34 +20,140 @@
             height: 100%;
             width: 100%;
         }
+
             #MapShow .ivu-split-pane {
                 margin: 8px;
                 overflow: auto;
             }
+
         .ivu-split-horizontal .ivu-split-trigger-con {
-            display:none
+            display: none;
         }
+
         .ivu-split-pane.right-pane {
-            border-left:1px solid #e8eaec;
+            border-left: 1px solid #e8eaec;
+        }
+
+        .RowText {
+            line-height: 30px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        [v-cloak] {
+            display: none !important;
         }
     </style>
 }
 
-<div id="MapShow">
+<div id="MapShow" v-cloak>
     <Split v-model="splitVal">
         <div slot="left" class="leftPane" ref="tree">
             <yx-tree ref="treeRef" v-bind:data="data" v-on:onselectchange="onselectchange"
                      v-bind:showcheckbox="false"></yx-tree>
         </div>
-        <div slot="right" class="rightPane">           
-            <div ref="maps" style="height:100%;width:100%"></div>            
-        </div>       
+        <div slot="right" class="rightPane">
+            <div ref="maps" style="height:100%;width:100%"></div>
+        </div>
     </Split>
     <div>
-        <Drawer title="Basic Drawer" v-model="DrawerModel">
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+        @*信息展示抽屉*@
+        <Drawer v-model="DrawerModel" width="40" v-bind:draggable="true">
+            <p slot="header">
+                <Breadcrumb separator=">">
+                    <Breadcrumb-Item>
+                        <Icon type="ios-home-outline"></Icon> {{SHOPINFO.BRANCHNAME}}
+                    </Breadcrumb-Item>
+                    <Breadcrumb-Item>
+                        <Icon type="ios-map"></Icon> {{SHOPINFO.REGIONNAME}}
+                    </Breadcrumb-Item>
+                    <Breadcrumb-Item>
+                        <Icon type="logo-buffer"></Icon> {{SHOPINFO.FLOORNAME}}
+                    </Breadcrumb-Item>
+                    <Breadcrumb-Item>
+                        <Icon type="ios-cube"></Icon> {{SHOPINFO.CODE}}
+                    </Breadcrumb-Item>
+                </Breadcrumb>
+            </p>
+            <Card v-bind:bordered="false" dis-hover>
+                <p slot="title">资产单元信息</p>
+                <row>
+                    <i-col span="4" class="RowTitle">门店 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.BRANCHNAME}}</i-col>
+                    <i-col span="4" class="RowTitle">区域 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.REGIONNAME}}</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">楼层 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.FLOORNAME}}</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">单元代码 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.CODE}}</i-col>
+                    <i-col span="4" class="RowTitle">单元名称 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.NAME}}</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">单元类型 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.TYPENAME}}</i-col>
+                    <i-col span="4" class="RowTitle">管理机构 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.ORGNAME}}</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">业态 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.CATEGORYNAME}}</i-col>
+                    <i-col span="4" class="RowTitle">租赁面积 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.AREA_RENTABLE}} ㎡</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">使用面积 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.AREA_USABLE}} ㎡</i-col>
+                    <i-col span="4" class="RowTitle">建筑面积 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.AREA_BUILD}} ㎡</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">单元状态 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.STATUSNAME}}</i-col>
+                    <i-col span="4" class="RowTitle">租用状态 ：</i-col>
+                    <i-col span="8" class="RowText">{{SHOPINFO.RENT_STATUSNAME}}</i-col>
+                </row>
+            </Card>
+            <Card v-bind:bordered="false" v-if="merchant" style="padding-top:10px" dis-hover>
+                <p slot="title">商户信息</p>
+                <row>
+                    <i-col span="4" class="RowTitle">商户名称 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.MERCHANTNAME}}</i-col>
+                    <i-col span="4" class="RowTitle">商户代码 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.MERCHANTID}}</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">合同开始日期 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.CONT_START|formatDate}}</i-col>
+                    <i-col span="4" class="RowTitle">合同结束日期 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.CONT_END|formatDate}}</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">招商部门 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.ORGNAME}}</i-col>
+                    <i-col span="4" class="RowTitle">核算方式 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.STYLENAME}}</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">装修期起 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.FIT_BEGIN|formatDate}}</i-col>
+                    <i-col span="4" class="RowTitle">装修期至 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.FIT_END|formatDate}}</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">免租期起 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.FREE_BEGIN|formatDate}}</i-col>
+                    <i-col span="4" class="RowTitle">免租期至 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.FREE_END|formatDate}}</i-col>
+                </row>
+                <row>
+                    <i-col span="4" class="RowTitle">租金收取规则 ：</i-col>
+                    <i-col span="8" class="RowText">{{MERCHANTINFO.FEERULENAME}}</i-col>
+                </row>
+            </Card>
         </Drawer>
-    </div>  
+    </div>
 </div>

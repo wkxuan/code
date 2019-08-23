@@ -16,18 +16,6 @@ namespace z.ERP.Web.Areas.BJGL.MAPSHOW
             ViewBag.Title = "布局信息";
             return View();
         }
-        public UIResult GetBranch(BRANCHEntity Data)
-        {
-            return new UIResult(service.DataService.GetBranch(Data));
-        }
-        public UIResult GetRegion(REGIONEntity Data)
-        {
-            return new UIResult(service.DataService.GetRegion(Data));
-        }
-        public UIResult GetFloor(FLOOREntity Data)
-        {
-            return new UIResult(service.DataService.GetFloor(Data));
-        }
         public UIResult GetInitMAPDATA(MAPFLOORINFOEntity data) {
             var datas = service.DpglService.GetInitMAPDATA(data);
             return new UIResult(
@@ -36,6 +24,15 @@ namespace z.ERP.Web.Areas.BJGL.MAPSHOW
                     labelArray=datas.Item2
                 }
                 );
+        }
+        public UIResult GetSHOPINFO(string shopid) {
+            var data = service.DpglService.GetSHOPINFO(shopid);
+            return new UIResult(
+                new
+                {
+                    shopdata = data.Item1,
+                    merchantdata = data.Item2
+                });
         }
     }
 }

@@ -3,6 +3,9 @@
     data: {
         splitVal: 0.2,
         data: [],
+        SHOPINFO: Object,
+        MERCHANTINFO: Object,
+        merchant:true,
         DrawerModel:false
     },
     mounted: function () {
@@ -77,7 +80,7 @@
                 // 光线的照射
                 var ambiColor = "#f2f2f2";
                 var spotLight = new THREE.SpotLight(ambiColor);
-                spotLight.position.set(-100, 100, -100);
+                spotLight.position.set(-100, 100,-100);
                 scene.add(spotLight);
                 var spotLight2 = new THREE.SpotLight(ambiColor);
                 spotLight2.position.set(100, 100, 150);
@@ -143,8 +146,9 @@
             loadFloor.prototype.load = function () {
                 var floor = this.data;
                 var Branchid = floor.BRANCHID, Regionid = floor.REGIONID; floorid = floor.FLOORID;
+                Mapshow.SHOPINFO.BRANCHID = Branchid; Mapshow.SHOPINFO.REGIONID = Regionid; Mapshow.SHOPINFO.FLOORID = floorid;
+
                 var buidlingItem = floor.MAPSHOPLIST;
-                debugger
                 for (var i = 0; i < buidlingItem.length; i++) {
                     var item = buidlingItem[i];
                     var type = item.TYPE;
@@ -179,11 +183,16 @@
             loadFloor.prototype.addCell = function (points, height, color, info) {
                 var geometry = this.getGeometry(points, height, info);
                 geometry.computeFaceNormals();          //计算法向量
-                var material = new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide });         //受光照影响
+                var material;
+                if (info.RENT_STATUS == "1") {
+                    material = new THREE.MeshLambertMaterial({ color: "#F0F0F0", side: THREE.DoubleSide });         //模块颜色    单元空置
+                } else {
+                    material = new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide });         //模块颜色
+                }
                 var mesh = new THREE.Mesh(geometry, material);
                 this.container.add(mesh);				//添加填充
 
-                var lineMaterial = new THREE.LineBasicMaterial({ color: "#F7A540" });     //xi
+                var lineMaterial = new THREE.LineBasicMaterial({ color: "#F7A540" });     //线颜色
                 var lineGeometry = this.getGeometry(points, height, info);
                 var line = new THREE.Line(lineGeometry, lineMaterial);
                 this.container.add(line);
@@ -280,7 +289,7 @@
                 var intersects = raycaster.intersectObjects(scene.children[2].children);
                 if (intersects.length) {      //有时先选到线,选不中
                     var point = intersects[0].point;
-                    console.log(point.x + "," + point.y + "," + point.z);
+                    //console.log(point.x + "," + point.y + "," + point.z);
                     if (selectedCell) {
                         selectedCell.material = instantMaterial;
                     }
@@ -293,7 +302,7 @@
                     instantMaterial = selectedCell.material;
                     if (selectedCell.geometry.name.TYPE=="shop") {   //点击地板不要动作
                         selectedCell.material = new THREE.MeshBasicMaterial({ color: "#BF5430", side: THREE.DoubleSide });  //选中改变颜色
-                    console.log(selectedCell.geometry.name);   //选中模块名称   暂时只能自定义name  
+                    //console.log(selectedCell.geometry.name);   //选中模块名称   暂时只能自定义name  
                     }
                 } else {
                     if (selectedCell) {
@@ -315,12 +324,11 @@
                         -(event.clientY / height) * 2 + 1,
                         0.5);
                 vector.unproject(camera);
-                debugger
                 var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
                 var intersects = raycaster.intersectObjects(scene.children[2].children);
                 if (intersects.length) {      //有时先选到线,选不中
                     var point = intersects[0].point;
-                    console.log(point.x + "," + point.y + "," + point.z);
+                    //console.log(point.x + "," + point.y + "," + point.z);
                     if (selectedCell) {
                         selectedCell.material = instantMaterial;
                     }
@@ -333,12 +341,20 @@
                     instantMaterial = selectedCell.material;
                     if (selectedCell.geometry.name.TYPE == "shop") {   //点击地板不要动作
                         selectedCell.material = new THREE.MeshBasicMaterial({ color: "#BF5430", side: THREE.DoubleSide });  //选中改变颜色
-                        console.log(selectedCell.geometry.name);   //选中模块名称   暂时只能自定义name  
-                        //Mapshow.$Modal.info({
-                        //    title: selectedCell.geometry.name.MNAME,
-                        //    content: selectedCell.geometry.name.ID + "<br/>" + selectedCell.geometry.name.MNAME + "<br/>" + selectedCell.geometry.name.TYPE
-                        //})
-                        Mapshow.DrawerModel = true;
+                        //console.log(selectedCell.geometry.name);
+                        // 点击展示商铺信息
+                        _.Ajax('GetSHOPINFO', {
+                             shopid: selectedCell.geometry.name.ID 
+                        }, function (data) {
+                            Mapshow.SHOPINFO = data.shopdata;
+                            if (Mapshow.SHOPINFO.RENT_STATUS == "1") {
+                                Mapshow.merchant = false;
+                            } else {
+                                Mapshow.merchant = true;
+                                Mapshow.MERCHANTINFO = data.merchantdata;
+                            }
+                            Mapshow.DrawerModel = true;
+                        });
                     }
                 } else {
                     if (selectedCell) {
@@ -494,5 +510,21 @@
             }
             init();
         }
+    },
+    filters:{
+        formatDate: function (val) {
+            if (!isEmpty(val)) {
+                return val.substr(0, 10)
+            } else {
+                return "\\";
+            }
+        }
     }
 });
+function isEmpty(obj) {
+    if (typeof obj == "undefined" || obj == null || obj == "") {
+        return true;
+    } else {
+        return false;
+    }
+}

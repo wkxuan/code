@@ -22,7 +22,7 @@ namespace z.ERP.Entities
     public class MAPSHOPINFO
     {
         public string ID { set; get; }
-        public string MNAME { set; get; }
+        public string NAME { set; get; }
         public string TYPE { set; get; }
         public string STATUS { set; get; }
         public string RENT_STATUS { set; get; }
