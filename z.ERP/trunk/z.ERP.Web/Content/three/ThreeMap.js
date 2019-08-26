@@ -136,7 +136,7 @@
             loadFloor.prototype.addFloor = function (points, height, info) {
                 var geometry = this.getGeometry(points, height, info);
                 geometry.computeFaceNormals();          //计算法向量
-                var material = new THREE.MeshLambertMaterial({ color: "#999999", side: THREE.DoubleSide });         //MeshLambertMaterial
+                var material = new THREE.MeshLambertMaterial({ color: "#C1C1C1", side: THREE.DoubleSide });         //MeshLambertMaterial
                 var mesh = new THREE.Mesh(geometry, material);
                 mesh.castShadow = true;
                 this.container.add(mesh);				//添加填充
