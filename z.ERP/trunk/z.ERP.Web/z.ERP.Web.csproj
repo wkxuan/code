@@ -309,7 +309,6 @@
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.js" />
     <Content Include="Areas\BJGL\MAPSHOPDATA\MAPSHOPDATA.js" />
     <Content Include="Areas\BJGL\MAPFLOORDATA\MAPFLOORDATA.js" />
-    <Content Include="Areas\BJGL\MAPSHOW\MAPSHOW.css" />
     <Content Include="Areas\BJGL\MAPSHOW\MAPSHOW.js" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
@@ -484,6 +483,7 @@
     <Content Include="Content\jquery.min.js" />
     <Content Include="Areas\Layout\Define\_DefineLayout.js" />
     <Content Include="Content\three\Earcut.js" />
+    <Content Include="Content\three\ThreeMap.js" />
     <Content Include="Content\three\OrbitControls.js" />
     <Content Include="Content\three\three.js" />
     <Content Include="Content\VUE\iview.js" />
