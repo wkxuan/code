@@ -78,11 +78,11 @@
                 camera.lookAt(new THREE.Vector3(20, 0, 20));
                 camera.position.set(0, 200, 0);    //生成可视角度
                 // 光线的照射
-                var ambiColor = "#f2f2f2";
-                var light = new THREE.AmbientLight(ambiColor,0.5); // 环境光
+                var ambiColor = "#FFFFFF";
+                var light = new THREE.AmbientLight(ambiColor,0.6); // 环境光
                 scene.add(light);
-                var spotLight = new THREE.SpotLight("#FFF");// 射灯光
-                spotLight.position.set(0, 100,0);
+                var spotLight = new THREE.SpotLight(ambiColor);// 射灯光
+                spotLight.position.set(0, 150,0);
                 scene.add(spotLight);
                 //var spotLight2 = new THREE.SpotLight(ambiColor);
                 //spotLight2.position.set(100, 100, 150);
@@ -173,7 +173,7 @@
             loadFloor.prototype.addFloor = function (points, height, info) {
                 var geometry = this.getGeometry(points, height, info);
                 geometry.computeFaceNormals();          //计算法向量
-                var material = new THREE.MeshLambertMaterial({ color: "#EFEFEF", side: THREE.DoubleSide });         //MeshLambertMaterial
+                var material = new THREE.MeshLambertMaterial({ color: "#999999", side: THREE.DoubleSide });         //MeshLambertMaterial
                 var mesh = new THREE.Mesh(geometry, material);
                 mesh.castShadow = true;
                 this.container.add(mesh);				//添加填充
@@ -187,7 +187,7 @@
                 geometry.computeFaceNormals();          //计算法向量
                 var material;
                 if (info.RENT_STATUS == "1") {
-                    material = new THREE.MeshLambertMaterial({ color: "#F0F0F0", side: THREE.DoubleSide });         //模块颜色    单元空置
+                    material = new THREE.MeshLambertMaterial({ color: "#A6A5A4", side: THREE.DoubleSide });         //模块颜色    单元空置
                 } else {
                     material = new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide });         //模块颜色
                 }

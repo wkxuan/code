@@ -3,11 +3,11 @@
     define.screenParam.colDef = [
         {
             title: '单元编码',
-            key: 'SHOPID',width:130
+            key: 'SHOPID',width:120
         },
         {
             title: "代码",
-            key: 'CODE', width: 100
+            key: 'CODE', width: 130
         }, {
             title: "标题坐标",
             key: 'TITLEPOINTS', tooltip:true

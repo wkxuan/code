@@ -2,7 +2,11 @@
     define.screenParam.colDef = [
         {
             title: '楼层编码',
-            key: 'FLOORID',width:150
+            key: 'FLOORID',width:120
+        },
+        {
+            title: '楼层名称',
+            key: 'FLOORNAME', width: 120
         },
         {
             title: "坐标定位",
