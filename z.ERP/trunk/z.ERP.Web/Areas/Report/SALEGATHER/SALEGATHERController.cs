@@ -8,7 +8,7 @@ namespace z.ERP.Web.Areas.Report.SALEGATHER
     {
         public ActionResult SALEGATHER()
         {
-            ViewBag.Title = "销售数据查询";
+            ViewBag.Title = "销售采集处理记录查询";
             return View();
         }
     }

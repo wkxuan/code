@@ -8,7 +8,7 @@ namespace z.ERP.Web.Areas.Report.PAYINFO
     {
         public ActionResult PAYINFO()
         {
-            ViewBag.Title = "第三方支付信息查询";
+            ViewBag.Title = "第三方支付记录查询";
             return View();
         }
     }

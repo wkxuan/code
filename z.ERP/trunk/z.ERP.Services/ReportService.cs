@@ -1711,7 +1711,7 @@ namespace z.ERP.Services
         #endregion
 
 
-        #region 销售数据查询
+        #region 销售采集处理记录查询
         public DataGridResult SALEGATHER(SearchItem item)
         {
 
