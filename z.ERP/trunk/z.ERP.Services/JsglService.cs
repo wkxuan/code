@@ -502,7 +502,7 @@ namespace z.ERP.Services
             if (SaveData.TYPE == ((int)收款类型.预收款).ToString())
             {
                 menuid = "10700402";
-                url = "JSGL/BILL_OBTAIN/Bill_Obtain_YskEdit/";
+                url = "JSGL/BILL_OBTAIN_Ysk/Bill_Obtain_YskEdit/";
             }
             else if(SaveData.TYPE == ((int)收款类型.保证金收款).ToString())
             {
@@ -512,7 +512,7 @@ namespace z.ERP.Services
             else if (SaveData.TYPE == ((int)收款类型.账单收款).ToString())
             {
                 menuid = "10700702";
-                url = "JSGL/BILL_OBTAIN/Bill_Obtain_SkEdit/"; 
+                url = "JSGL/BILL_OBTAIN_Sk/Bill_Obtain_SkEdit/"; 
             }                
 
             //增加审核待办任务

@@ -852,6 +852,8 @@ namespace z.ERP.Services
                 a.SetTable(dt);
             });
         }
+
+
         #region 收款方式销售报表
         /// <summary>
         /// 普通列表
@@ -1717,8 +1719,9 @@ namespace z.ERP.Services
 
             string sqlsum = $@"SELECT SALEGATHER.DEALID, SALEGATHER.SALETIME, SALEGATHER.FLAG,SALEGATHER.CREATE_TIME, SALEGATHER.REASON, STATION.STATIONBH
                     FROM SALEGATHER 
-                    INNER JOIN STATION ON STATION.STATIONBH=SALEGATHER.POSNO 
-                    WHERE TYPE= 3";
+                    INNER JOIN STATION ON STATION.STATIONBH=SALEGATHER.POSNO ";
+            sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sqlsum += "   WHERE TYPE= 3";
 
             item.HasDateKey("SALETIME", a => sqlsum += $" and SALETIME={a}");
             item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
@@ -1775,17 +1778,16 @@ namespace z.ERP.Services
         public DataGridResult Bill_Src(SearchItem item)
         {
             string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.NAME MERCHANTNAME,A.BILLID,D.NAME FEENAME, A.CONTRACTID, 
- A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,
-A.RETURN_MONEY,A.START_DATE,A.END_DATE,A.TYPE,A.STATUS,F.NAME UNITNAME，A.DESCRIPTION
-
-FROM BILL A, BRANCH B, MERCHANT C, FEESUBJECT D, FEESUBJECT_ACCOUNT E,FEE_ACCOUNT F
-WHERE A.BRANCHID = B.ID AND
-A.MERCHANTID=C.MERCHANTID AND
-A.TERMID=D.TRIMID AND 
-E.TERMID=D.TRIMID AND 
-E.FEE_ACCOUNTID=F.ID AND
-A.BRANCHID =E.BRANCHID 
-order by nianyue desc";
+                                     A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,
+                                    A.RETURN_MONEY,A.START_DATE,A.END_DATE,A.TYPE,A.STATUS,F.NAME UNITNAME，A.DESCRIPTION
+                                    FROM BILL A, BRANCH B, MERCHANT C, FEESUBJECT D, FEESUBJECT_ACCOUNT E,FEE_ACCOUNT F
+                                    WHERE A.BRANCHID = B.ID AND
+                                    A.MERCHANTID=C.MERCHANTID AND
+                                    A.TERMID=D.TRIMID AND 
+                                    E.TERMID=D.TRIMID AND 
+                                    E.FEE_ACCOUNTID=F.ID AND
+                                    A.BRANCHID =E.BRANCHID 
+                                    order by nianyue desc";
 
             item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
             //item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
@@ -1798,9 +1800,6 @@ order by nianyue desc";
             item.HasDateKey("NIANYUE", a => sqlsum += $" and A.NIANYUE ={a}");
             item.HasKey("TYPE", a => sqlsum += $" and A.TYPE = {a}");
             item.HasKey("STATUS", a => sqlsum += $" and A.STATUS = {a}");
-
-            //item.HasKey("DESCRIPTION", a => sqlsum += $" and E.FEE_ACCOUNTID = {a}");
-            //item.HasKey("FEE_ACCOUNTID", a => sqlsum += $" and F.DESCRIPTION = {a}");
 
             int count;
             DataTable dt = DbHelper.ExecuteTable(sqlsum, item.PageInfo, out count);
