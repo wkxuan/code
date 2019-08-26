@@ -207,6 +207,7 @@
     <Compile Include="Areas\Layout\Srch\SrchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
+    <Compile Include="Areas\Report\BILL_SRC\Bill_SrcController.cs" />
     <Compile Include="Areas\Report\ContractInfo\ContractInfoController.cs" />
     <Compile Include="Areas\Report\ContractSale\ContractSaleController.cs" />
     <Compile Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetailController.cs" />
@@ -215,7 +216,9 @@
     <Compile Include="Areas\Report\MerchantPayable\MerchantPayableController.cs" />
     <Compile Include="Areas\Report\MerchantPayCost\MerchantPayCostController.cs" />
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
+    <Compile Include="Areas\Report\PAYINFO\PAYINFOController.cs" />
     <Compile Include="Areas\Report\PayTypeSale\PayTypeSaleController.cs" />
+    <Compile Include="Areas\Report\SALEGATHER\SALEGATHERController.cs" />
     <Compile Include="Areas\Report\SaleRecord\SaleRecordController.cs" />
     <Compile Include="Areas\Share\Render\ServiceCheckBoxListRender.cs" />
     <Compile Include="Areas\Share\Render\TableRender.cs" />
@@ -266,6 +269,7 @@
     <Compile Include="Areas\WYGL\OPENBUSINESS\OpenBusinessController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT_ACCOUNT\FEESUBJECT_ACCOUNTController.cs" />
     <Compile Include="Areas\XTGL\NOTICE\NOTICEController.cs" />
+    <Compile Include="Areas\XTGL\POSKEYSrch\POSKEYSrchController.cs" />
     <Compile Include="Areas\XTGL\SPLC\SPLCController.cs" />
     <Compile Include="Areas\XTGL\AlertShow\AlertShowController.cs" />
     <Compile Include="Areas\XTGL\ALERT\ALERTController.cs" />
@@ -384,6 +388,7 @@
     <Content Include="Areas\Pop\Pop\PopShopList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopShopList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
+    <Content Include="Areas\Report\BILL_SRC\Bill_Src.js" />
     <Content Include="Areas\Report\ContractInfo\ContractInfo.js" />
     <Content Include="Areas\Report\ContractSale\ContractSale.js" />
     <Content Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetail.js" />
@@ -393,7 +398,9 @@
     <Content Include="Areas\Report\MerchantPayCost\MerchantPayCost.js" />
     <Content Include="Areas\JSGL\Invoice\InvoiceEdit.js" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.js" />
+    <Content Include="Areas\Report\PAYINFO\PAYINFO.js" />
     <Content Include="Areas\Report\PayTypeSale\PayTypeSale.js" />
+    <Content Include="Areas\Report\SALEGATHER\SALEGATHER.js" />
     <Content Include="Areas\Report\SaleRecord\SaleRecord.js" />
     <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccount.js" />
     <Content Include="Areas\SHGL\MERCHANTACCOUNT\MerchantAccountDetail.js" />
@@ -445,6 +452,7 @@
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
+    <Content Include="Areas\XTGL\POSKEYSrch\POSKEYSrch.js" />
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.js" />
     <Content Include="Areas\XTGL\POSUMSCONFIG\POSUMSCONFIG.js" />
     <Content Include="Areas\XTGL\RCL\RCL.js" />
@@ -747,6 +755,10 @@
     <Content Include="Areas\BJGL\MAPSHOW\MAPSHOW.cshtml" />
     <Content Include="Areas\BJGL\MAPSHOPDATA\MAPSHOPDATA.cshtml" />
     <Content Include="Areas\BJGL\MAPFLOORDATA\MAPFLOORDATA.cshtml" />
+    <Content Include="Areas\Report\SALEGATHER\SALEGATHER.cshtml" />
+    <Content Include="Areas\Report\PAYINFO\PAYINFO.cshtml" />
+    <Content Include="Areas\Report\BILL_SRC\Bill_Src.cshtml" />
+    <Content Include="Areas\XTGL\POSKEYSrch\POSKEYSrch.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
