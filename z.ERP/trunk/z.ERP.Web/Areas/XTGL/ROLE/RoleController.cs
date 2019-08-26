@@ -35,12 +35,12 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
                 new
                 {
                     role = res.Item1,
-                    fee = res.Item2,
-                    module = res.Item3,
-                    ytTreeData = res.Item6,
-                    regionTreeData = res.Item5,
-                    branch = res.Item7,
-                    alert = res.Item4
+                    module = res.Item2,
+                    ytTree = res.Item3,
+                    regionTree = res.Item4,
+                    fee = res.Item5,
+                    branch = res.Item6,
+                    alert = res.Item7
                 }
             );
         }
@@ -60,29 +60,18 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
             return new UIResult(
                 new
                 {
-                    treeOrg = res.Item1,
-                    fee = res.Item2,
-                    module = res.Item3,
-                    ytTree = res.Item4,
-                    regionTreeData = res.Item5,
-                    branch=res.Item6,
-                    alert = res.Item7
+                    module = res.Item1,
+                    ytTree = res.Item2,
+                    regionTree = res.Item3,
+                    fee = res.Item4,                   
+                    branch = res.Item5,
+                    alert = res.Item6
                 }
             );
         }
         public UIResult SearchTreeOrg() {
             return new UIResult(service.DataService.GetTreeOrg());
         }
-        //public UIResult regionQxData(ROLEEntity Data)
-        //{
-        //    var res = service.UserService.regionQxData(Data);
-        //    return new UIResult(
-        //       new
-        //       {
-        //           regionData = res
-        //       }
-        //   );
-        //}
         public string getCrmService()
         {
             return ConfigurationManager.AppSettings["CrmService"].ToString();
