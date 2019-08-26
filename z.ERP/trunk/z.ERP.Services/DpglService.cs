@@ -647,7 +647,6 @@ namespace z.ERP.Services
             string sql = $@"SELECT M.* FROM MAPFLOORDATA M,FLOOR F WHERE M.FLOORID=F.ID AND M.BRANCHID=F.BRANCHID AND M.REGIONID=F.REGIONID "
                    + " and F.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("BRANCHID", a => sql += $" and M.BRANCHID = '{a}'");
-            item.HasKey("FLOORID", a => sql += $" and M.FLOORID = '{a}'");
             item.HasKey("REGIONID", a => sql += $" and M.REGIONID = {a}");
             sql += " ORDER BY M.FLOORID DESC";
             int count;
