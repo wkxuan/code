@@ -79,16 +79,20 @@
              v-on:on-select-cancel="screenParam.selectCancelBRANCH"></i-table>
         </Tab-Pane>
         <Tab-Pane label="区域权限" name="name3">
-            <div class="zzc" v-if="!disabled"></div>
+            <yx-tree v-bind:data="screenParam.regionTreeData" v-bind:disablecheckbox="!disabled" ref="regionTreeRef"
+                     v-bind:showcheckbox="true">
+            </yx-tree>
+
+            @*<div class="zzc" v-if="!disabled"></div>
             <i-table size="small" :border="true" height="370" width="400"
                      v-bind:columns="screenParam.colDef_Menuregion" v-bind:data="screenParam.region"
                      v-on:on-select="screenParam.selectDataregion"
                      v-on:on-select-all="screenParam.selectDataAllregion"
                      v-on:on-select-all-cancel="screenParam.selectAllCancelregion"
-                     v-on:on-select-cancel="screenParam.selectCancelregion"></i-table>
+                     v-on:on-select-cancel="screenParam.selectCancelregion"></i-table>*@
         </Tab-Pane>
         <Tab-Pane label="业态权限" name="name4">
-            <yx-tree v-bind:data="screenParam.ytTreeData" v-bind:disablecheckbox="!disabled" 
+            <yx-tree v-bind:data="screenParam.ytTreeData" v-bind:disablecheckbox="!disabled"  ref="ytTreeRef"
                      v-bind:showcheckbox="true">
             </yx-tree>
         </Tab-Pane>
