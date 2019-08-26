@@ -341,11 +341,11 @@ namespace z.ERP.Services
                     return SqlBranch;
                 case PermissionType.Floor:
                     String SqlFloor = "";
-                    SqlFloor = "SELECT A.ID FROM FLOOR A,ORG B where A.ORGID = B.ORGID";
+                    SqlFloor = "SELECT ID FROM FLOOR where 1=1";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
-                        SqlFloor += " and exists(select 1 from USER_ROLE A1, ROLE B1, ORG C1 where A1.USERID = " + employee.Id;
-                        SqlFloor += " and A1.ROLEID = B1.ROLEID and B1.ORGID = C1.ORGID and B.ORGCODE like C1.ORGCODE || '%' )";
+                        SqlFloor += " and exists(select 1 from USER_ROLE A1, ROLE_FLOOR B1 where A1.USERID = " + employee.Id;
+                        SqlFloor += " and A1.ROLEID = B1.ROLEID and B1.FLOORID = FLOOR.ID ) ";
                     }
                     return SqlFloor;
                 case PermissionType.Shop:

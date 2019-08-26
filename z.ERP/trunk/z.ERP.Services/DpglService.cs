@@ -86,11 +86,13 @@ namespace z.ERP.Services
         public DataGridResult SearchShop(SearchItem item)
         {
             string sql = $@"SELECT  A.*,A.CODE SHOPCODE,A.AREA_BUILD AREA,B.CATEGORYCODE,"
-                   + " B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME,R.NAME REGIONNAME,C.ORGNAME "
-                   + " FROM SHOP A,CATEGORY B,ORG C,BRANCH D,FLOOR F,REGION R "
-                   + " WHERE  A.CATEGORYID = B.CATEGORYID(+) and A.ORGID=C.ORGID(+)"
-                   + " and A.BRANCHID = D.ID and A.FLOORID=F.ID and A.REGIONID=R.REGIONID "
-                   + " and D.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
+                   + "              B.CATEGORYNAME,D.NAME BRANCHNAME,F.NAME FLOORNAME,R.NAME REGIONNAME,C.ORGNAME "
+                   + "        FROM SHOP A,CATEGORY B,ORG C,BRANCH D,FLOOR F,REGION R "
+                   + "       WHERE  A.CATEGORYID = B.CATEGORYID(+) and A.ORGID=C.ORGID(+)"
+                   + "         and A.BRANCHID = D.ID and A.FLOORID=F.ID and A.REGIONID=R.REGIONID "
+                   + "         and D.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")" //门店权限
+                   + "         and R.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")" //区域权限
+                   + "         and F.ID IN (" + GetPermissionSql(PermissionType.Floor) + ")"; //楼层权限
             item.HasKey("CODE", a => sql += $" and A.CODE like '%{a}%'");
             item.HasKey("NAME", a => sql += $" and A.NAME like '%{a}%'");
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
@@ -644,7 +646,7 @@ namespace z.ERP.Services
         }
         public DataGridResult SearchMAPFLOORDATA(SearchItem item)
         {
-            string sql = $@"SELECT M.* FROM MAPFLOORDATA M,FLOOR F WHERE M.FLOORID=F.ID AND M.BRANCHID=F.BRANCHID AND M.REGIONID=F.REGIONID "
+            string sql = $@"SELECT M.*,F.NAME FLOORNAME FROM MAPFLOORDATA M,FLOOR F WHERE M.FLOORID=F.ID AND M.BRANCHID=F.BRANCHID AND M.REGIONID=F.REGIONID "
                    + " and F.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
             item.HasKey("BRANCHID", a => sql += $" and M.BRANCHID = '{a}'");
             item.HasKey("REGIONID", a => sql += $" and M.REGIONID = {a}");

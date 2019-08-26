@@ -17,12 +17,14 @@ namespace z.ERP.Services
         {
             string SqlyTQx = GetYtQx("G");
 
-            string sql = $"SELECT C.*,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
+            string sql = $"SELECT C.*,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,M.NAME MERCHANTNAME,";
+            sql += " S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID and S.FLOORID=F.ID";
 
             sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
             if (SqlyTQx != "")  //业态权限
             {
@@ -58,6 +60,7 @@ namespace z.ERP.Services
                 sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
 
                 sqlsum += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                sqlsum += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
                 if (SqlyTQx != "")  //业态权限
                 {
@@ -100,6 +103,7 @@ namespace z.ERP.Services
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
 
             sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
             if (SqlyTQx != "")  //业态权限
             {
@@ -132,6 +136,7 @@ namespace z.ERP.Services
                 sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
 
                 sqlsum += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                sqlsum += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
                 if (SqlyTQx != "")  //业态权限
                 {
@@ -174,6 +179,7 @@ namespace z.ERP.Services
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
 
             sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
             if (SqlyTQx != "") //业态权限
             {
@@ -215,6 +221,7 @@ namespace z.ERP.Services
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
 
             sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
             if (SqlyTQx != "")  //业态权限
             {
@@ -536,7 +543,7 @@ namespace z.ERP.Services
                 sqlsum += " FROM SALE S, SYSUSER U,STATION T";
                 sqlsum += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
 
-                sql += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                sqlsum += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
                 item.HasKey("BRANCHID", a => sqlsum += $" and T.BRANCHID={a}");
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
@@ -556,7 +563,7 @@ namespace z.ERP.Services
                 sqlsum += " FROM HIS_SALE S, SYSUSER U,STATION T";
                 sqlsum += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
 
-                sql += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                sqlsum += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
                 item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
@@ -659,6 +666,7 @@ namespace z.ERP.Services
                             + "   and Y.MERCHANTID = M.MERCHANTID"
 
                             + "   and Y.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += " and R.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
 
             if (SqlyTQx != "") //业态权限
             {
@@ -709,7 +717,7 @@ namespace z.ERP.Services
                             + "   and Y.BRANDID = D.ID and D.CATEGORYID = C.CATEGORYID"
                             + "   and Y.MERCHANTID = M.MERCHANTID"
                             + "   and Y.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
+            sql += " and R.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
             if (SqlyTQx != "") //业态权限
             {
                 sql += " and " + SqlyTQx;
@@ -769,7 +777,7 @@ namespace z.ERP.Services
                        + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
                        + "   AND C.HTLX=1 "  //AND C.STATUS !=5
                        +"    AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
+            sql += " and F.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
             if (SqlyTQx != "") //业态权限
             {
                 sql += " and " + SqlyTQx;
@@ -819,7 +827,7 @@ namespace z.ERP.Services
                        + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
                        + "   AND C.HTLX=1 "  //AND C.STATUS !=5
                        +"    AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
+            sql += " and F.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
             if (SqlyTQx != "") //业态权限
             {
                 sql += " and " + SqlyTQx;

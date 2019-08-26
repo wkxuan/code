@@ -332,11 +332,38 @@ namespace z.ERP.Services
                 dt = dt
             };
         }
+        /// <summary>
+        /// 获取楼层数据
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
         public object GetFloor(FLOOREntity Data)
         {
             string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1"
                  + " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"  //门店权限
                  + " AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")"; //区域权限
+            if (!Data.BRANCHID.IsEmpty())
+                sql += (" and A.BRANCHID= " + Data.BRANCHID);
+            if (!Data.REGIONID.IsEmpty())
+                sql += (" and A.REGIONID= " + Data.REGIONID);
+            sql += " and STATUS = 1 ORDER BY A.CODE";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt
+            };
+        }
+        /// <summary>
+        /// 获取有权限楼层数据
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public object GetLimitedFloor(FLOOREntity Data)
+        {
+            string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1"
+                 + " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"  //门店权限
+                 + " AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")" //区域权限
+                 + " AND A.ID IN (" + GetPermissionSql(PermissionType.Floor) + ")"; //楼层权限
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
             if (!Data.REGIONID.IsEmpty())
