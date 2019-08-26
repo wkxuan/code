@@ -917,11 +917,68 @@ Vue.component('yx-tree', {
         getCheckedNodes() {
             return this.$refs.treeRef.getCheckedNodes();
         },
+        //获取被勾选的节点（除父节点外）
+        getOnlyChlCheckedNodes() {
+            let _data = [];
+            let _func = function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].checked) {
+                        if (data[i].children.length) {
+                            _func(data[i].children);
+                        } else {
+                            _data.push(data[i]);
+                        }
+                    } else if (data[i].indeterminate) {
+                        _func(data[i].children);
+                    }
+                };
+            }
+            _func(this.data);
+            return _data;
+        },
+        //获取被勾选的节点（如果父节点也被勾选，则子节点不返回）
+        getFilterCheckedNodes() {
+            let _data = [];
+            let _func = function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].checked) {
+                        if (data[i].children.length) {
+                            _data.push(data[i]);
+                            continue;
+                        } else {
+                            _data.push(data[i]);
+                        }
+                    } else {
+                        if (data[i].children.length) {
+                            _func(data[i].children);
+                        }
+                    }                   
+                };
+            }
+            _func(this.data);
+            return _data;
+        },
+        //获取半选的节点集合
+        getOnlyIndeterminateNodes() {
+            let _data = [];
+            let _func = function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].indeterminate) {
+                        _data.push(data[i]);
+                    }
+                    if (data[i].children.length) {
+                        _func(data[i].children);
+                    }
+                };
+            }
+            _func(this.data);
+            return _data;
+        },
         //获取被选中的节点
         getSelectedNodes() {
             return this.$refs.treeRef.getSelectedNodes();
         },
-        //获取选中及半选节点
+        //获取被勾选中及半勾选节点
         getCheckedAndIndeterminateNodes() {
             return this.$refs.treeRef.getCheckedAndIndeterminateNodes();
         }

@@ -31,6 +31,13 @@ namespace z.ERP.Entities
         }
 
         [ForeignKey(nameof(ROLEID), nameof(ROLE_FEEEntity.ROLEID))]
+        public List<ROLE_FLOOREntity> ROLE_FLOOR
+        {
+            get;
+            set;
+        }
+
+        [ForeignKey(nameof(ROLEID), nameof(ROLE_FEEEntity.ROLEID))]
         public List<ROLE_YTEntity> ROLE_YT
         {
             get;

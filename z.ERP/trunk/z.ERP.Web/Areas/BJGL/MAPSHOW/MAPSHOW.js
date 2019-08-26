@@ -64,7 +64,7 @@
             var $map = this.$refs.maps;    //右面目标元素
             $map.innerHTML = "";
             var width = $map.clientWidth;     //获取画布「canvas3d」的宽
-            var height = window.innerHeight-25;   //获取画布「canvas3d」的高
+            var height = window.innerHeight-22;   //获取画布「canvas3d」的高
             function init() {
                 renderer = new THREE.WebGLRenderer({
                     antialias: true
@@ -79,12 +79,14 @@
                 camera.position.set(0, 200, 0);    //生成可视角度
                 // 光线的照射
                 var ambiColor = "#f2f2f2";
-                var spotLight = new THREE.SpotLight(ambiColor);
+                var light = new THREE.AmbientLight(ambiColor,0.5); // 环境光
+                scene.add(light);
+                var spotLight = new THREE.SpotLight("#FFF");// 射灯光
                 spotLight.position.set(0, 100,0);
                 scene.add(spotLight);
-                var spotLight2 = new THREE.SpotLight(ambiColor);
-                spotLight2.position.set(100, 100, 150);
-                scene.add(spotLight2);
+                //var spotLight2 = new THREE.SpotLight(ambiColor);
+                //spotLight2.position.set(100, 100, 150);
+                //scene.add(spotLight2);
 
                 controls = new THREE.OrbitControls(camera, renderer.domElement);//用户交互
                 //设置相机的角度范围
@@ -281,7 +283,7 @@
                 var treew = $tree.clientWidth;   //左侧树宽度
                 var vector = new THREE.Vector3();//三维坐标对象
                 vector.set(
-                        ((event.clientX - treew) / width) * 2 - 1,
+                        ((event.clientX - treew - 16) / width) * 2 - 1,      //16是margin 的距离
                         -(event.clientY / height) * 2 + 1,
                         0.5);
                 vector.unproject(camera);
@@ -320,7 +322,7 @@
                 var treew = $tree.clientWidth; //左侧树宽度
                 var vector = new THREE.Vector3();//三维坐标对象
                 vector.set(
-                        ((event.clientX - treew )/ width) * 2 - 1,
+                        ((event.clientX - treew-16 )/ width) * 2 - 1,    //16是margin 的距离
                         -(event.clientY / height) * 2 + 1,
                         0.5);
                 vector.unproject(camera);
