@@ -204,6 +204,13 @@ namespace z.ERP.Entities.Enum
         核算员 = 8,
         其它 = -1
     }
+    public enum 处理标记
+    {
+        未处理 = 0,
+        处理成功 = 1,
+        处理失败 = 2
+
+    }
     public enum 标记
     {
         是 = 1,

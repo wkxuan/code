@@ -85,7 +85,7 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, List<TreeEntity>, TreeModel[], DataTable> GetRoleElement(ROLEEntity Data)
+        public Tuple<dynamic, List<TreeEntity>, TreeModel[], List<TreeEntity>, DataTable, DataTable, DataTable> GetRoleElement(ROLEEntity Data)
         {
             string sql = $@"SELECT A.*,B.ORGIDCASCADER  FROM ROLE A,ORG B  WHERE A.ORGID=B.ORGID ";
             if (!Data.ROLEID.IsEmpty())
@@ -166,13 +166,10 @@ namespace z.ERP.Services
                 sqlalert += (" AND ROLEID= " + Data.ROLEID);
             DataTable alert = DbHelper.ExecuteTable(sqlalert);
 
-            return new Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, List<TreeEntity>, TreeModel[], DataTable>(role.ToOneLine(), fee, module, alert, regionTreeData, ytTreeData, branch);
+            return new Tuple<dynamic, List<TreeEntity>, TreeModel[], List<TreeEntity>, DataTable, DataTable, DataTable>(role.ToOneLine(), module, ytTreeData, regionTreeData, fee, branch, alert);
         }
-        public Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], List<TreeEntity>, DataTable, DataTable> GetRoleInit()
+        public Tuple<List<TreeEntity>, TreeModel[], List<TreeEntity>, DataTable, DataTable, DataTable> GetRoleInit()
         {
-
-            var org = DataService.GetTreeOrg();
-
             string sql1 = @"(select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  
                                from USERMODULE U,MENU M 
                               where U.MENUID=M.ID  AND U.ENABLE_FLAG=1  and length(to_char(m.id)) <8
@@ -231,7 +228,8 @@ namespace z.ERP.Services
                             + "     and B.ID IN (" + GetPermissionSql(PermissionType.Alert) + ")"
                             + "   order by B.ID";
             DataTable alert = DbHelper.ExecuteTable(sqlalert);
-            return new Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], List<TreeEntity>, DataTable, DataTable>(org.Item1, fee, module, ytTreeData, regionTreeData, branch, alert);
+
+            return new Tuple<List<TreeEntity>, TreeModel[], List<TreeEntity>, DataTable, DataTable, DataTable>(module, ytTreeData, regionTreeData, fee, branch, alert);
         }
         public List<TreeEntity> regionQxData(ROLEEntity Data)
         {

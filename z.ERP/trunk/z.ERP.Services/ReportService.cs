@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using z.ERP.Entities.Enum;
 using z.Extensions;
 using z.MVC5.Results;
 using z.SSO.Model;
@@ -16,12 +17,14 @@ namespace z.ERP.Services
         {
             string SqlyTQx = GetYtQx("G");
 
-            string sql = $"SELECT C.*,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
+            string sql = $"SELECT C.*,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,M.NAME MERCHANTNAME,";
+            sql += " S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
             sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
             sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
             sql += "  and B.CATEGORYID=G.CATEGORYID and S.FLOORID=F.ID";
 
             sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
             if (SqlyTQx != "")  //业态权限
             {
@@ -57,6 +60,7 @@ namespace z.ERP.Services
                 sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
 
                 sqlsum += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                sqlsum += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
                 if (SqlyTQx != "")  //业态权限
                 {
@@ -99,6 +103,7 @@ namespace z.ERP.Services
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
 
             sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
             if (SqlyTQx != "")  //业态权限
             {
@@ -131,6 +136,7 @@ namespace z.ERP.Services
                 sqlsum += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
 
                 sqlsum += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                sqlsum += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
                 if (SqlyTQx != "")  //业态权限
                 {
@@ -173,6 +179,7 @@ namespace z.ERP.Services
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
 
             sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
             if (SqlyTQx != "") //业态权限
             {
@@ -214,6 +221,7 @@ namespace z.ERP.Services
             sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
 
             sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += "  and F.ID in (" + GetPermissionSql(PermissionType.Region) + ")";  //楼层权限
 
             if (SqlyTQx != "")  //业态权限
             {
@@ -535,7 +543,7 @@ namespace z.ERP.Services
                 sqlsum += " FROM SALE S, SYSUSER U,STATION T";
                 sqlsum += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
 
-                sql += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                sqlsum += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
                 item.HasKey("BRANCHID", a => sqlsum += $" and T.BRANCHID={a}");
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
@@ -555,7 +563,7 @@ namespace z.ERP.Services
                 sqlsum += " FROM HIS_SALE S, SYSUSER U,STATION T";
                 sqlsum += " WHERE S.CASHIERID = U.USERID and S.POSNO=T.STATIONBH ";
 
-                sql += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                sqlsum += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
                 item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
@@ -658,6 +666,7 @@ namespace z.ERP.Services
                             + "   and Y.MERCHANTID = M.MERCHANTID"
 
                             + "   and Y.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += " and R.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
 
             if (SqlyTQx != "") //业态权限
             {
@@ -708,7 +717,7 @@ namespace z.ERP.Services
                             + "   and Y.BRANDID = D.ID and D.CATEGORYID = C.CATEGORYID"
                             + "   and Y.MERCHANTID = M.MERCHANTID"
                             + "   and Y.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
+            sql += " and R.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
             if (SqlyTQx != "") //业态权限
             {
                 sql += " and " + SqlyTQx;
@@ -768,7 +777,7 @@ namespace z.ERP.Services
                        + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
                        + "   AND C.HTLX=1 "  //AND C.STATUS !=5
                        +"    AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
+            sql += " and F.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
             if (SqlyTQx != "") //业态权限
             {
                 sql += " and " + SqlyTQx;
@@ -818,7 +827,7 @@ namespace z.ERP.Services
                        + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
                        + "   AND C.HTLX=1 "  //AND C.STATUS !=5
                        +"    AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
+            sql += " and F.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
             if (SqlyTQx != "") //业态权限
             {
                 sql += " and " + SqlyTQx;
@@ -1698,6 +1707,108 @@ namespace z.ERP.Services
         {
             string sql = "select * from feesubject";
             return DbHelper.ExecuteTable(sql);
+        }
+        #endregion
+
+
+        #region 销售数据查询
+        public DataGridResult SALEGATHER(SearchItem item)
+        {
+
+            string sqlsum = $@"SELECT SALEGATHER.DEALID, SALEGATHER.SALETIME, SALEGATHER.FLAG,SALEGATHER.CREATE_TIME, SALEGATHER.REASON, STATION.STATIONBH
+                    FROM SALEGATHER 
+                    INNER JOIN STATION ON STATION.STATIONBH=SALEGATHER.POSNO 
+                    WHERE TYPE= 3";
+
+            item.HasDateKey("SALETIME", a => sqlsum += $" and SALETIME={a}");
+            item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
+            item.HasDateKey("CREATE_TIME", a => sqlsum += $" and CREATE_TIME={a}");
+            item.HasKey("FLAG", a => sqlsum += $" and FLAG={a}");
+            item.HasKey("REASON", a => sqlsum += $" and REASON LIKE '%{a}%'");
+
+            item.HasKey("STATIONBH", a => sqlsum += $" and STATIONBH={a}");
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sqlsum, item.PageInfo, out count);
+            dt.NewEnumColumns<处理标记>("FLAG", "FLAGMC");
+            return new DataGridResult(dt, count);
+        }
+
+        #endregion
+
+        #region 第三方支付信息查询
+        public DataGridResult PAYINFO(SearchItem item)
+        {
+
+            string sqlsum = $@"SELECT A.OPERTIME,A.POSNO,A.DEALID,B.NAME,A.CARDNO,A.BANK,A.AMOUNT,A.SERIALNO,A.REFNO,D.NAME BRANCHNAME
+                                FROM PAYRECORD A 
+                                INNER JOIN PAY B ON(A.PAYID= B.PAYID)
+                                INNER JOIN STATION C ON(A.POSNO =C.STATIONBH)
+                                INNER JOIN BRANCH D ON(D.ID=C.BRANCHID)";
+            item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
+            item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
+
+            item.HasKey("POSNO", a => sqlsum += $" and POSNO={a}");
+            item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
+            //item.HasKey("INX", a => sqlsum += $" and INX={a}");
+            //item.HasKey("NAME", a => sqlsum += $" and NAME={a}");
+            //item.HasKey("CARDNO", a => sqlsum += $" and CARDNO={a}");
+            //item.HasKey("BANK", a => sqlsum += $" and BANK={a}");
+            item.HasKey("AMOUNT", a => sqlsum += $" and AMOUNT={a}");
+            // item.HasKey("SERIALNO", a => sqlsum += $" and SERIALNO={a}");
+            //item.HasKey("REFNO", a => sqlsum += $" and REFNO={a}");
+            //item.HasKey("PAYID", a => sqlsum += $" and B.PAYID={a}");
+            item.HasKey("PAYID", a => sqlsum += $" and B.PAYID ={a}");
+            item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID={a}");
+            //item.HasKey("BRANCHNAME", a => sqlsum += $" and D.NAME BRANCHNAME={a}");
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sqlsum, item.PageInfo, out count);
+            //dt.NewEnumColumns<处理标记>("FLAG", "FLAGMC");
+
+            return new DataGridResult(dt, count);
+        }
+
+        #endregion
+
+        #region 费用账单查询
+        public DataGridResult Bill_Src(SearchItem item)
+        {
+            string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.NAME MERCHANTNAME,A.BILLID,D.NAME FEENAME, A.CONTRACTID, 
+ A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,
+A.RETURN_MONEY,A.START_DATE,A.END_DATE,A.TYPE,A.STATUS,F.NAME UNITNAME，A.DESCRIPTION
+
+FROM BILL A, BRANCH B, MERCHANT C, FEESUBJECT D, FEESUBJECT_ACCOUNT E,FEE_ACCOUNT F
+WHERE A.BRANCHID = B.ID AND
+A.MERCHANTID=C.MERCHANTID AND
+A.TERMID=D.TRIMID AND 
+E.TERMID=D.TRIMID AND 
+E.FEE_ACCOUNTID=F.ID AND
+A.BRANCHID =E.BRANCHID 
+order by nianyue desc";
+
+            item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
+            //item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
+            item.HasKey("MERCHANTID", a => sqlsum += $" and a.MERCHANTID ={a}");
+            item.HasKey("BILLID", a => sqlsum += $" and a.BILLID ={a}");
+            item.HasKey("NAME", a => sqlsum += $" and D.NAME ={a}");
+            item.HasKey("START_DATE", a => sqlsum += $" and a.START_DATE ={a}");
+            item.HasKey("END_DATE", a => sqlsum += $" and a.END_DATE ={a}");
+            item.HasDateKey("YEARMONTH", a => sqlsum += $" and A.YEARMONTH ={a}");
+            item.HasDateKey("NIANYUE", a => sqlsum += $" and A.NIANYUE ={a}");
+            item.HasKey("TYPE", a => sqlsum += $" and A.TYPE = {a}");
+            item.HasKey("STATUS", a => sqlsum += $" and A.STATUS = {a}");
+
+            //item.HasKey("DESCRIPTION", a => sqlsum += $" and E.FEE_ACCOUNTID = {a}");
+            //item.HasKey("FEE_ACCOUNTID", a => sqlsum += $" and F.DESCRIPTION = {a}");
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sqlsum, item.PageInfo, out count);
+            dt.NewEnumColumns<账单状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<账单类型>("TYPE", "TYPEMC");
+
+            return new DataGridResult(dt, count);
+
         }
         #endregion
     }

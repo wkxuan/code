@@ -10,15 +10,13 @@ editDetail.beforeVue = function () {
     editDetail.screenParam.popParam = {};
     editDetail.screenParam.ORGData = [];
 
-    editDetail.screenParam.USERMODULE = [];
-    editDetail.screenParam.fee = [];
+    editDetail.screenParam.userModule = [];
     editDetail.screenParam.ytTreeData = [];
-    editDetail.screenParam.localYt = [];
-    editDetail.screenParam.localMenu = [];
-    editDetail.screenParam.BRANCH = [];
-    editDetail.screenParam.Alert = [];
     editDetail.screenParam.regionTreeData = [];
-
+    editDetail.screenParam.fee = [];    
+    editDetail.screenParam.branch = [];
+    editDetail.screenParam.Alert = [];
+    
     editDetail.screenParam.colDef_Menufee = [
         { type: 'selection', width: 60, align: 'center' },
         { title: '费用项目名称', key: 'NAME' }
@@ -31,47 +29,6 @@ editDetail.beforeVue = function () {
         { type: 'selection', width: 60, align: 'center' },
         { title: '预警项目', key: 'NAME' }
     ];
-    //门店
-    editDetail.screenParam.selectDataAlert = function (selection, row) {
-        editDetail.checkAlert(selection);
-    };
-
-    editDetail.screenParam.selectDataAllAlert = function (selection) {
-        editDetail.checkAlert(selection);
-    };
-    editDetail.screenParam.selectCancelAlert = function (selection) {
-        editDetail.checkAlert(selection);
-    };
-    editDetail.screenParam.selectAllCancelAlert = function (selection) {
-        editDetail.checkAlert(selection);
-    }
-    //门店
-    editDetail.screenParam.selectDataBRANCH = function (selection, row) {
-        editDetail.checkBRANCH(selection);
-    };
-
-    editDetail.screenParam.selectDataAllBRANCH = function (selection) {
-        editDetail.checkBRANCH(selection);
-    };
-    editDetail.screenParam.selectCancelBRANCH = function (selection) {
-        editDetail.checkBRANCH(selection);
-    };
-    editDetail.screenParam.selectAllCancelBRANCH = function (selection) {
-        editDetail.checkBRANCH(selection);
-    }
-    //费用
-    editDetail.screenParam.selectDatafee = function (selection, row) {
-        editDetail.checkfee(selection);
-    };
-    editDetail.screenParam.selectDataAllfee = function (selection) {
-        editDetail.checkfee(selection);
-    };
-    editDetail.screenParam.selectCancelfee = function (selection) {
-        editDetail.checkfee(selection);
-    };
-    editDetail.screenParam.selectAllCancelfee = function (selection) {
-        editDetail.checkfee(selection);
-    }
 };
 
 editDetail.newRecord = function () {
@@ -101,7 +58,9 @@ editDetail.showOne = function (data, callback) {
                 editDetail.dataParam.ORGIDCASCADER = null;
             }
 
-            editDetail.screenParam.USERMODULE = data.module;
+            editDetail.screenParam.userModule = data.module;
+            editDetail.screenParam.regionTreeData = data.regionTree;
+            editDetail.screenParam.ytTreeData = data.ytTree;
 
             var localFee = [];
             for (var j = 0; j < editDetail.screenParam.fee.length; j++) {
@@ -119,12 +78,12 @@ editDetail.showOne = function (data, callback) {
             };
             //门店
             var localBRANCH = [];
-            for (var j = 0; j < editDetail.screenParam.BRANCH.length; j++) {
-                Vue.set(editDetail.screenParam.BRANCH[j], '_checked', false);
+            for (var j = 0; j < editDetail.screenParam.branch.length; j++) {
+                Vue.set(editDetail.screenParam.branch[j], '_checked', false);
 
                 for (var i = 0; i < data.branch.length; i++) {
-                    if (data.branch[i].BRANCHID == editDetail.screenParam.BRANCH[j].BRANCHID) {
-                        Vue.set(editDetail.screenParam.BRANCH[j], '_checked', true);
+                    if (data.branch[i].BRANCHID == editDetail.screenParam.branch[j].BRANCHID) {
+                        Vue.set(editDetail.screenParam.branch[j], '_checked', true);
                         localBRANCH.push({
                             BRANCHID: data.branch[i].BRANCHID
                         });
@@ -147,25 +106,12 @@ editDetail.showOne = function (data, callback) {
                 }
                 Vue.set(editDetail.dataParam, 'ROLE_ALERT', localALERT);
             };
-
-           
-            editDetail.screenParam.regionTreeData = data.regionTreeData;
-            editDetail.screenParam.ytTreeData = data.ytTreeData;
         };
     });
     callback && callback();
 }
 
 editDetail.IsValidSave = function () {
-    //业态权限数据
-    editDetail.screenParam.ROLE_YT = [];
-    //菜单权限数据
-    editDetail.screenParam.ROLE_MENU = [];
-    //区域权限数据
-    editDetail.dataParam.ROLE_REGION = [];
-    //楼层权限数据
-    editDetail.dataParam.ROLE_FLOOR = [];
-
     if (!editDetail.dataParam.ROLECODE) {
         iview.Message.info("角色代码不能为空!");
         return false;
@@ -178,56 +124,75 @@ editDetail.IsValidSave = function () {
         iview.Message.info("所属机构不能为空!");
         return false;
     }
-    
+
+    //业态权限数据
+    editDetail.dataParam.ROLE_YT = [];
     let ytSaveData = editDetail.veObj.$refs.ytTreeRef.getFilterCheckedNodes();
     for (let i = 0; i < ytSaveData.length; i++) {
-        editDetail.screenParam.ROLE_YT.push({ ROLEID: editDetail.dataParam.ROLEID, YTID: ytSaveData[i].value });
+        editDetail.dataParam.ROLE_YT.push({
+            ROLEID: editDetail.dataParam.ROLEID,
+            YTID: ytSaveData[i].value
+        });
     };
- 
-    for (var j = 0; j < editDetail.screenParam.USERMODULE.length; j++) {
-        for (var i = 0; i < editDetail.screenParam.USERMODULE[j].children.length; i++) { //循环菜单
-            var itemdata = editDetail.screenParam.USERMODULE[j].children[i].children;
-            InsertTreeMenu(itemdata);
-        };
+    
+    //菜单权限数据
+    editDetail.dataParam.ROLE_MENU = [];
+    let moduleSaveData = editDetail.veObj.$refs.moduleTreeRef.getCheckedNodes();
+    for (let i = 0; i < moduleSaveData.length; i++) {
+        editDetail.dataParam.ROLE_MENU.push({
+            MENUID: moduleSaveData[i].value,
+            MODULECODE: moduleSaveData[i].code
+        });
     };
 
-    Vue.set(editDetail.dataParam, 'ROLE_MENU', editDetail.screenParam.localMenu);
-
+    //区域权限数据、楼层权限数据
+    editDetail.dataParam.ROLE_REGION = [];
+    editDetail.dataParam.ROLE_FLOOR = [];
     let regionData = editDetail.screenParam.regionTreeData;
     for (let i = 0; i < regionData.length; i++) {
         if (regionData[i].checked || regionData[i].indeterminate) {
-            editDetail.dataParam.ROLE_REGION.push({ ROLEID: editDetail.dataParam.ROLEID, REGIONID: regionData[i].value });
+            editDetail.dataParam.ROLE_REGION.push({
+                ROLEID: editDetail.dataParam.ROLEID,
+                REGIONID: regionData[i].value
+            });
 
             let chl = regionData[i].children;
             if (chl && chl.length) {
                 for (let j = 0; j < chl.length; j++) {
                     if (chl[j].checked) {
-                        editDetail.dataParam.ROLE_FLOOR.push({ ROLEID: editDetail.dataParam.ROLEID, FLOORID: chl[j].value });
+                        editDetail.dataParam.ROLE_FLOOR.push({
+                            ROLEID: editDetail.dataParam.ROLEID,
+                            FLOORID: chl[j].value
+                        });
                     }
                 }
             }
         }  
     }
+    
+    //门店权限数据
+    editDetail.dataParam.ROLE_BRANCH = [];
+    let branchSaveData = editDetail.veObj.$refs.branchRef.getSelection();
+    for (var i = 0; i < branchSaveData.length; i++) {
+        editDetail.dataParam.ROLE_BRANCH.push({ BRANCHID: branchSaveData[i].BRANCHID });
+    };
 
+    //费用项权限数据
+    editDetail.dataParam.ROLE_FEE = [];
+    let feeSaveData = editDetail.veObj.$refs.feeRef.getSelection();
+    for (var i = 0; i < feeSaveData.length; i++) {
+        editDetail.dataParam.ROLE_FEE.push({ TRIMID: feeSaveData[i].TRIMID });
+    };
+
+    //预警权限数据
+    editDetail.dataParam.ROLE_ALERT = [];
+    let alertSaveData = editDetail.veObj.$refs.alertRef.getSelection();
+    for (var i = 0; i < alertSaveData.length; i++) {
+        editDetail.dataParam.ROLE_ALERT.push({ ALERTID: alertSaveData[i].ALERTID });
+    };
+
+    debugger
     return true;
-}
-//菜单权限结合
-function InsertTreeMenu(treeData) {
-    if (treeData.length > 0) {
-        for (var i = 0; i < treeData.length; i++) {
-            if (treeData[i].checked) {
-                editDetail.screenParam.localMenu.push({
-                    MENUID: treeData[i].value,
-                    MODULECODE: treeData[i].code,
-                });
-
-                InsertTreeMenu(treeData[i].children)
-            }
-            else if (treeData[i].children.length > 0) {
-                InsertTreeMenu(treeData[i].children)
-            }
-        }
-    }
 }
 
 editDetail.otherMethods = {
@@ -250,41 +215,14 @@ editDetail.otherMethods = {
         _.Ajax('SearchInit', {
             Data: {}
         }, function (data) {
-            Vue.set(editDetail.screenParam, "ORGData", data.treeOrg.Obj);
-            Vue.set(editDetail.screenParam, "USERMODULE", data.module);
-            Vue.set(editDetail.screenParam, "fee", data.fee);
+            Vue.set(editDetail.screenParam, "userModule", data.module);
+            Vue.set(editDetail.screenParam, "regionTreeData", data.regionTree);
             Vue.set(editDetail.screenParam, "ytTreeData", data.ytTree);
-            Vue.set(editDetail.screenParam, "BRANCH", data.branch);
+            Vue.set(editDetail.screenParam, "fee", data.fee);
+            Vue.set(editDetail.screenParam, "branch", data.branch);
             Vue.set(editDetail.screenParam, "Alert", data.alert);
         });
     }
-}
-
-editDetail.checkfee = function (selection) {
-    editDetail.dataParam.ROLE_FEE = [];
-    var localData = [];
-    for (var i = 0; i < selection.length; i++) {
-        localData.push({ TRIMID: selection[i].TRIMID });
-    };
-    Vue.set(editDetail.dataParam, 'ROLE_FEE', localData);
-}
-//门店选中方法
-editDetail.checkBRANCH = function (selection) {
-    editDetail.dataParam.ROLE_BRANCH = [];
-    var localData = [];
-    for (var i = 0; i < selection.length; i++) {
-        localData.push({ BRANCHID: selection[i].BRANCHID });
-    };
-    Vue.set(editDetail.dataParam, 'ROLE_BRANCH', localData);
-}
-//预警选中方法
-editDetail.checkAlert = function (selection) {
-    editDetail.dataParam.ROLE_ALERT = [];
-    var localData = [];
-    for (var i = 0; i < selection.length; i++) {
-        localData.push({ ALERTID: selection[i].ALERTID });
-    };
-    Vue.set(editDetail.dataParam, 'ROLE_ALERT', localData);
 }
 //接收子页面返回值
 editDetail.popCallBack = function (data) {
@@ -292,7 +230,11 @@ editDetail.popCallBack = function (data) {
 };
 //按钮初始化
 editDetail.mountedInit = function () {
-    //this.otherMethods.initdata();
+    _.Ajax('SearchTreeOrg', {
+        Data: {}
+    }, function (data) {
+        Vue.set(editDetail.screenParam, "ORGData", data.Item1.Obj);
+    });
     editDetail.btnConfig = [{
         id: "add",
         authority: "10100701"
@@ -310,11 +252,7 @@ editDetail.mountedInit = function () {
         id: "del",
         authority: "10100702",
         enabled: function (disabled, data) {
-            if (!disabled && data.BILLID != null) {
-                return true;
-            } else {
-                return false;
-            }
+            return false;
         }
     }, {
         id: "save",

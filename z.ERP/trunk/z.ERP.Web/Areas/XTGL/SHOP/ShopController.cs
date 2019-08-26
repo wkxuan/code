@@ -106,7 +106,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
         }
         public UIResult GetFloor(FLOOREntity Data)
         {
-            return new UIResult(service.DataService.GetFloor(Data));
+            return new UIResult(service.DataService.GetLimitedFloor(Data));
         }
         public UIResult SearchInit()
         {

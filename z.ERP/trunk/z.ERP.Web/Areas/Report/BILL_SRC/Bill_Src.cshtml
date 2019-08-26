@@ -1,0 +1,126 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.Srch;
+@using z.ERP.Entities.Enum;
+@inherits SrchViewBase
+@section conditionParam{
+
+    <row>
+        <i-col span="3" class="RowTitle">门店</i-col>
+        <i-col span="4" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">商户编号</i-col>
+        <i-col span="4" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTID",
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">账单号</i-col>
+        <i-col span="4" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.BILLID",
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+
+        <i-col span="3" class="RowTitle">收费项目名称 </i-col>
+        <i-col span="4" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.NAME",
+                    ServiceMothod = m => m.feesubject(),
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">合同类型</i-col>
+        <i-col span="4" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<合同类型>()
+                {
+                    vModel = "searchParam.TYPE",
+
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">合同状态</i-col>
+        <i-col span="4">
+            @{
+                RenderControl(new EnumDropDownListRender<合同状态>()
+                {
+                    vModel = "searchParam.STATUS",
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="3" class="RowTitle">收付实现月</i-col>
+        <i-col span="4" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    Id = "sfsxy",
+                    vModel = "searchParam.YEARMONTH",
+                    type = "number"
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">
+            债权发生月
+        </i-col>
+        <i-col span="4" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    Id = "zqfsy",
+                    vModel = "searchParam.NIANYUE",
+                    type = "number"
+                });
+            }
+        </i-col>
+
+
+        <i-col span="3" class="RowTitle">
+            交费日期
+        </i-col>
+        <i-col span="2" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.START_DATE",
+
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.END_DATE"
+                });
+            }
+        </i-col>
+    </row>
+
+}

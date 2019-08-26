@@ -1047,6 +1047,23 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new UIResult(dt);
         }
+
+        public DataGridResult POSKEYSrch(SearchItem item)
+        {
+            string sql = $@"SELECT STATIONBH,ENCRYPTION,BRANCH.NAME 
+                        FROM STATION 
+                        LEFT JOIN BRANCH ON STATION.BRANCHID=BRANCH.ID
+                        WHERE TYPE=3 ";
+
+            item.HasKey("BRANCHID", a => sql += $" and BRANCHID LIKE '%{a}%'");
+            item.HasKey("STATIONBH", a => sql += $" and STATIONBH LIKE '%{a}%'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+
+        }
+
+
     }
 
 }

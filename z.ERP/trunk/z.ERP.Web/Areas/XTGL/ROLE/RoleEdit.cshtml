@@ -1,7 +1,6 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
 @using z.ERP.Web.Areas.Layout.Edit;
-@using z.ERP.Entities;
 @inherits EditViewBase<string>
 @section head{
     <style>
@@ -65,31 +64,19 @@
 @section detailParam{  
     <Tabs type="card" value="name1">
         <Tab-Pane label="菜单权限" name="name1">
-            <yx-tree v-bind:data="screenParam.USERMODULE"  v-bind:disablecheckbox="!disabled" 
+            <yx-tree v-bind:data="screenParam.userModule"  v-bind:disablecheckbox="!disabled"  ref="moduleTreeRef"
                      v-bind:showcheckbox="true"></yx-tree>
         </Tab-Pane>
         <Tab-Pane label="门店权限" name="name2">
             <div class="zzc" v-if="!disabled"></div>
             
-            <i-table size="small" :border="true" height="370" width="400"
-             v-bind:columns="screenParam.colDef_BRANCH" v-bind:data="screenParam.BRANCH"
-             v-on:on-select="screenParam.selectDataBRANCH"
-             v-on:on-select-all="screenParam.selectDataAllBRANCH"
-             v-on:on-select-all-cancel="screenParam.selectAllCancelBRANCH"
-             v-on:on-select-cancel="screenParam.selectCancelBRANCH"></i-table>
+            <i-table size="small" :border="true" height="370" width="400" ref="branchRef"
+             v-bind:columns="screenParam.colDef_BRANCH" v-bind:data="screenParam.branch"></i-table>
         </Tab-Pane>
         <Tab-Pane label="区域权限" name="name3">
             <yx-tree v-bind:data="screenParam.regionTreeData" v-bind:disablecheckbox="!disabled" ref="regionTreeRef"
                      v-bind:showcheckbox="true">
             </yx-tree>
-
-            @*<div class="zzc" v-if="!disabled"></div>
-            <i-table size="small" :border="true" height="370" width="400"
-                     v-bind:columns="screenParam.colDef_Menuregion" v-bind:data="screenParam.region"
-                     v-on:on-select="screenParam.selectDataregion"
-                     v-on:on-select-all="screenParam.selectDataAllregion"
-                     v-on:on-select-all-cancel="screenParam.selectAllCancelregion"
-                     v-on:on-select-cancel="screenParam.selectCancelregion"></i-table>*@
         </Tab-Pane>
         <Tab-Pane label="业态权限" name="name4">
             <yx-tree v-bind:data="screenParam.ytTreeData" v-bind:disablecheckbox="!disabled"  ref="ytTreeRef"
@@ -98,25 +85,17 @@
         </Tab-Pane>
         <Tab-Pane label="预警权限" name="name5">
             <div class="zzc" v-if="!disabled"></div>
-            <i-table size="small" :border="true" height="370" width="400"
-                     v-bind:columns="screenParam.colDef_Alert" v-bind:data="screenParam.Alert"
-                     v-on:on-select="screenParam.selectDataAlert"
-                     v-on:on-select-all="screenParam.selectDataAllAlert"
-                     v-on:on-select-all-cancel="screenParam.selectAllCancelAlert"
-                     v-on:on-select-cancel="screenParam.selectCancelAlert"></i-table>
+            <i-table size="small" :border="true" height="370" width="400" ref="alertRef"
+                     v-bind:columns="screenParam.colDef_Alert" v-bind:data="screenParam.Alert"></i-table>
         </Tab-Pane>
         <Tab-Pane label="费用项目" name="name6">
             <div class="zzc" v-if="!disabled"></div>
-            <i-table size="small" :border="true" height="370" width="400"
-                     v-bind:columns="screenParam.colDef_Menufee" v-bind:data="screenParam.fee"
-                     v-on:on-select="screenParam.selectDatafee"
-                     v-on:on-select-all="screenParam.selectDataAllfee"
-                     v-on:on-select-all-cancel="screenParam.selectAllCancelfee"
-                     v-on:on-select-cancel="screenParam.selectCancelfee"></i-table>
+            <i-table size="small" :border="true" height="370" width="400" ref="feeRef"
+                     v-bind:columns="screenParam.colDef_Menufee" v-bind:data="screenParam.fee"></i-table>
         </Tab-Pane>
         <Tab-Pane label="其他权限" name="name7">
             <row>
-                <i-col span="12" offset="8">
+                <i-col span="12">
                     <i-button icon="md-settings" v-on:click="SelCrmRole" 
                               v-bind:disabled="!disabled">CRM权限</i-button>
                 </i-col>
