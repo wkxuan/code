@@ -1,14 +1,14 @@
-﻿using System.Data;
-using z.MVC5.Results;
-using z.ERP.Entities;
-using z.Extensions;
-using System;
-using z.SSO.Model;
-using z.ERP.Entities.Enum;
+﻿using System;
 using System.Collections.Generic;
-using z.ERP.Model.Vue;
+using System.Data;
 using System.Linq;
+using z.ERP.Entities;
+using z.ERP.Entities.Enum;
 using z.ERP.Model.Tree;
+using z.ERP.Model.Vue;
+using z.Extensions;
+using z.MVC5.Results;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -45,8 +45,11 @@ namespace z.ERP.Services
         }
         public Tuple<dynamic, DataTable> GetUserElement(SYSUSEREntity Data)
         {
-            string sql = $@"select A.USERID,A.USERCODE,A.USERNAME,A.USER_TYPE,A.ORGID,A.USER_FLAG,";
-                          sql += " A.VOID_FLAG,B.ORGIDCASCADER from SYSUSER A,ORG B where A.ORGID=B.ORGID(+)  ";
+            string sql = @"select A.USERID,A.USERCODE,A.USERNAME,A.USER_TYPE,A.ORGID,A.USER_FLAG,
+                                  A.VOID_FLAG,B.ORGIDCASCADER,C.CODE SHOPCODE 
+                             from SYSUSER A,ORG B,SHOP C 
+                            where A.ORGID=B.ORGID(+) 
+                              and A.SHOPID=C.SHOPID(+) ";
             if (!Data.USERID.IsEmpty())
             {
                 sql += " and A.USERID = " + Data.USERID;
@@ -82,34 +85,28 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, DataTable, TreeModel[], DataTable> GetRoleElement(ROLEEntity Data)
+        public Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, List<TreeEntity>, TreeModel[], DataTable> GetRoleElement(ROLEEntity Data)
         {
             string sql = $@"SELECT A.*,B.ORGIDCASCADER  FROM ROLE A,ORG B  WHERE A.ORGID=B.ORGID ";
             if (!Data.ROLEID.IsEmpty())
                 sql += (" AND ROLEID= " + Data.ROLEID);
             DataTable role = DbHelper.ExecuteTable(sql);
 
-            //更改权限列表为树 by：DZK
-            /*    string sql1 = @" SELECT NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(U.MODULECODE,0,LENGTH(U.MODULECODE)-2),0) parentid,R.ROLEID IsChecked FROM USERMODULE U
-                        LEFT JOIN ROLE_MENU R ON U.MODULECODE=R.MODULECODE  AND U.MENUID=R.MENUID AND R.ROLEID = " + Data.ROLEID + @"
-                        WHERE U.ENABLE_FLAG=1  	                    
-                            ORDER BY U.MODULECODE"; */
-
             string sql1 = @"select Z.MENUID,Z.MODULECODE,Z.MODULENAME,Z.PARENTID,R.ROLEID IsChecked
-                            from
-                                (select NVL(U.MENUID, 0) MENUID, U.MODULECODE, U.MODULENAME, nvl(substr(MODULECODE, 0, LENGTH(MODULECODE) - 2), 0) parentid
-                                  FROM USERMODULE U, MENU M
-                                 WHERE U.MENUID = M.ID  AND U.ENABLE_FLAG = 1  and length(to_char(m.id)) < 8
-                                 union all
-                                 select NVL(m.id, 0) MENUID, U.MODULECODE || lpad(to_char(mod(m.id, 100)), 2, '0') MODULECODE, m.name MODULENAME, U.MODULECODE parentid
-                                  FROM USERMODULE U, MENU M
-                                 WHERE  U.ENABLE_FLAG = 1 AND M.PLATFORMID = 1 and length(to_char(m.id)) = 8
+                              from (
+                            select NVL(U.MENUID, 0) MENUID, U.MODULECODE, U.MODULENAME, nvl(substr(MODULECODE, 0, LENGTH(MODULECODE) - 2), 0) parentid
+                              from USERMODULE U, MENU M
+                             where U.MENUID = M.ID  AND U.ENABLE_FLAG = 1  and length(to_char(m.id)) < 8
+                         union all
+                            select NVL(m.id, 0) MENUID, U.MODULECODE || lpad(to_char(mod(m.id, 100)), 2, '0') MODULECODE, m.name MODULENAME, U.MODULECODE parentid
+                              from USERMODULE U, MENU M
+                             where U.ENABLE_FLAG = 1 AND M.PLATFORMID = 1 and length(to_char(m.id)) = 8
                                    and u.menuid = trunc(m.id / 100)
-                                 UNION ALL
-                                 select  NVL(MENUID, 0), MODULECODE, MODULENAME, nvl(substr(MODULECODE, 0, LENGTH(MODULECODE) - 2), 0) parentid FROM USERMODULE
-                                  WHERE ENABLE_FLAG = 1 and(MENUID is null or MENUID = 0)
-                                 ) Z left join ROLE_MENU R ON Z.MENUID = R.MENUID AND Z.MODULECODE = R.MODULECODE AND R.ROLEID = " + Data.ROLEID + @"
-                               order by MODULECODE,MENUID";
+                         union all
+                            select NVL(MENUID, 0), MODULECODE, MODULENAME, nvl(substr(MODULECODE, 0, LENGTH(MODULECODE) - 2), 0) parentid 
+                              from USERMODULE
+                             where ENABLE_FLAG = 1 and(MENUID is null or MENUID = 0)) Z left join ROLE_MENU R ON Z.MENUID = R.MENUID AND Z.MODULECODE = R.MODULECODE AND R.ROLEID = " + Data.ROLEID + @"
+                          order by MODULECODE,MENUID";
 
             List<USERMODULEEntity> um = DbHelper.ExecuteTable(sql1).ToList<USERMODULEEntity>(); ;
             List<TreeEntity> treeList = new List<TreeEntity>();
@@ -139,14 +136,11 @@ namespace z.ERP.Services
                 sqlYt += (" AND ROLEID= " + Data.ROLEID);
             DataTable yt = DbHelper.ExecuteTable(sqlYt);
 
-            //区域
-            string sqlRegion = $@" SELECT REGIONID FROM  ROLE_REGION WHERE 1=1";
-            if (!Data.ROLEID.IsEmpty())
-                sqlRegion += (" AND ROLEID= " + Data.ROLEID);
-            DataTable region = DbHelper.ExecuteTable(sqlRegion);
+            var regionTreeData = regionQxData(Data);
+
             //业态
             string sqlYt2 = "select G.CATEGORYID,G.CATEGORYCODE,G.CATEGORYNAME,Y.YTID LEVEL_LAST from CATEGORY G,ROLE_YT Y where G.CATEGORYID =Y.YTID(+) ";
-            sqlYt2 += (" AND Y.ROLEID(+)= " + Data.ROLEID);
+            sqlYt2 += " AND Y.ROLEID(+)= " + Data.ROLEID;
 
             List<CATEGORYEntity> p =  DbHelper.ExecuteTable(sqlYt2).ToList<CATEGORYEntity>();
 
@@ -172,41 +166,27 @@ namespace z.ERP.Services
                 sqlalert += (" AND ROLEID= " + Data.ROLEID);
             DataTable alert = DbHelper.ExecuteTable(sqlalert);
 
-            return new Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, DataTable, TreeModel[], DataTable>(role.ToOneLine(), fee, module, alert, region, ytTreeData, branch);
+            return new Tuple<dynamic, DataTable, List<TreeEntity>, DataTable, List<TreeEntity>, TreeModel[], DataTable>(role.ToOneLine(), fee, module, alert, regionTreeData, ytTreeData, branch);
         }
-
-
-        public Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable, DataTable, DataTable> GetRoleInit()
+        public Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], List<TreeEntity>, DataTable, DataTable> GetRoleInit()
         {
 
             var org = DataService.GetTreeOrg();
 
-            //更改权限列表为树 by：DZK
-            /*    string sql1 = @" (select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  
-                                    FROM USERMODULE U,MENU M 
-                                   WHERE U.MENUID=M.ID  AND U.ENABLE_FLAG=1 
-                            UNION ALL 
-                               select  NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid FROM USERMODULE 
-                                WHERE ENABLE_FLAG=1 and (MENUID is null or MENUID =0)) 
-                                ORDER BY MODULECODE ";
-                                */
+            string sql1 = @"(select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  
+                               from USERMODULE U,MENU M 
+                              where U.MENUID=M.ID  AND U.ENABLE_FLAG=1  and length(to_char(m.id)) <8
+                          union all
+                             select NVL(m.id,0) MENUID,U.MODULECODE|| lpad(to_char(mod(m.id,100)),2,'0') MODULECODE,m.name MODULENAME,U.MODULECODE parentid  
+                               from USERMODULE U,MENU M 
+                              where U.ENABLE_FLAG=1 AND M.PLATFORMID =1 and length(to_char(m.id)) =8
+                                    and u.menuid = trunc(m.id/100)
+                          union all 
+                             select NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid 
+                               from USERMODULE 
+                              where ENABLE_FLAG=1 and (MENUID is null or MENUID =0))
+                           order by MODULECODE,MENUID";
 
-
-            string sql1 = @"(
-                                select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  
-                                  FROM USERMODULE U,MENU M 
-                                 WHERE U.MENUID=M.ID  AND U.ENABLE_FLAG=1  and length(to_char(m.id)) <8
-                                 union all
-                                 select NVL(m.id,0) MENUID,U.MODULECODE|| lpad(to_char(mod(m.id,100)),2,'0') MODULECODE,m.name MODULENAME,U.MODULECODE parentid  
-                                  FROM USERMODULE U,MENU M 
-                                 WHERE  U.ENABLE_FLAG=1 AND M.PLATFORMID =1 and length(to_char(m.id)) =8
-                                   and u.menuid = trunc(m.id/100)
-   
-                                UNION ALL 
-                                 select  NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid FROM USERMODULE 
-                                  WHERE ENABLE_FLAG=1 and (MENUID is null or MENUID =0)   
-                                   )
-                                   order by MODULECODE,MENUID";
             List<USERMODULEEntity> um = DbHelper.ExecuteTable(sql1).ToList<USERMODULEEntity>();
             List<TreeEntity> treeList = new List<TreeEntity>();
             foreach (var item in um)
@@ -220,14 +200,15 @@ namespace z.ERP.Services
                 treeList.Add(node);
             }
             var module=treeList.ToTree();
+
             //费用
             string sqlitem2 = $@"select A.TRIMID,A.NAME from FEESUBJECT A  order by A.TRIMID";
             DataTable fee = DbHelper.ExecuteTable(sqlitem2);
-            //区域
-            string sqlitemRegion = $@"select A.REGIONID,A.NAME from REGION A where 1=1"
-                                  + "    and A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")"
-                                  + "  order by A.REGIONID";
-            DataTable region = DbHelper.ExecuteTable(sqlitemRegion);
+
+            var role = new ROLEEntity();
+            //区域数据
+            var regionTreeData = regionQxData(role);
+
             //业态树
             List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
             var ytTreeData = TreeModel.Create(p,
@@ -250,11 +231,75 @@ namespace z.ERP.Services
                             + "     and B.ID IN (" + GetPermissionSql(PermissionType.Alert) + ")"
                             + "   order by B.ID";
             DataTable alert = DbHelper.ExecuteTable(sqlalert);
-            return new Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], DataTable, DataTable, DataTable>(org.Item1, fee, module, ytTreeData, region, branch, alert);
+            return new Tuple<dynamic, DataTable, List<TreeEntity>, TreeModel[], List<TreeEntity>, DataTable, DataTable>(org.Item1, fee, module, ytTreeData, regionTreeData, branch, alert);
         }
+        public List<TreeEntity> regionQxData(ROLEEntity Data)
+        {
+            var treeList = new List<TreeEntity>();
 
+            string sqlRegion = $@"SELECT REGIONID,CODE,NAME FROM REGION WHERE 1=1";
+            sqlRegion += " AND REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")";
 
-        
+            var region = DbHelper.ExecuteTable(sqlRegion).ToList<REGIONEntity>();
+            foreach (var item in region)
+            {
+                TreeEntity node = new TreeEntity();
+                node.value = item.REGIONID;
+                node.code = item.CODE;
+                node.title = item.NAME;
+                node.expand = false;
+                node.children = floorQxData(Data,item.REGIONID);
+                treeList.Add(node);
+            }
+            return treeList;
+        }
+        public List<TreeEntity> floorQxData(ROLEEntity Data,string regionid)
+        {
+            var treeList = new List<TreeEntity>();
+
+            string sqlFloor = $@"SELECT ID,CODE,NAME FROM FLOOR
+                                  WHERE REGIONID=" + regionid;
+            sqlFloor += " AND ID IN (" + GetPermissionSql(PermissionType.Floor) + ")";
+            sqlFloor += " ORDER BY ID ASC";
+            var floor = DbHelper.ExecuteTable(sqlFloor).ToList<FLOOREntity>();
+
+           
+            if (!Data.ROLEID.IsEmpty())
+            {
+                const string floorQx = @"select 1 from ROLE_FLOOR where roleid={0} and floorid={1}";
+
+                foreach (var item in floor)
+                {
+                    bool flag = false;
+                    if(DbHelper.ExecuteTable(string.Format(floorQx, Data.ROLEID, item.ID)).Rows.Count > 0){
+                        flag = true;
+                    }
+                    TreeEntity node = new TreeEntity();
+                    node.value = item.ID;
+                    node.code = item.CODE;
+                    node.title = item.NAME;
+                    node.expand = false;
+                    node.@checked = flag;
+                    node.parentId = regionid;
+                    treeList.Add(node);
+                }
+            }
+            else
+            {
+                foreach (var item in floor)
+                {
+                    TreeEntity node = new TreeEntity();
+                    node.value = item.ID;
+                    node.code = item.CODE;
+                    node.title = item.NAME;
+                    node.expand = false;
+                    node.@checked = false;
+                    node.parentId = regionid;
+                    treeList.Add(node);
+                }
+            }          
+            return treeList;
+        }
         public string SaveRole(ROLEEntity SaveData)
         {
             var v = GetVerify(SaveData);
@@ -275,6 +320,5 @@ namespace z.ERP.Services
             }
             return SaveData.ROLEID;
         }
-
     }
 }
