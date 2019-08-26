@@ -40,7 +40,9 @@ editDetail.clearKey = function () {
     editDetail.dataParam.ROLENAME = null;
     editDetail.dataParam.ORGIDCASCADER = [];
     editDetail.dataParam.VOID_FLAG = "2";
-    this.otherMethods.initdata();
+    if (editDetail.disabled) {
+        this.otherMethods.initdata();
+    }
 };
 
 editDetail.showOne = function (data, callback) {
@@ -191,7 +193,6 @@ editDetail.IsValidSave = function () {
         editDetail.dataParam.ROLE_ALERT.push({ ALERTID: alertSaveData[i].ALERTID });
     };
 
-    debugger
     return true;
 }
 
