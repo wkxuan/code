@@ -25,29 +25,8 @@
         },
         {
             title: '所属机构',
-            key: 'ORGNAME', width: 200
-        },
-      {
-          title: '操作',
-          key: 'action',
-          width: 80,
-          align: 'center',
-          render: function (h, params) {
-              return h('div',
-                  [
-                  h('Button', {
-                      props: { type: 'primary', size: 'small', disabled: false },
-
-                      style: { marginRight: '50px' },
-                      on: {
-                          click: function (event) {
-                              define.dataParam.USER_ROLE.splice(params.index, 1);
-                          }
-                      },
-                  }, '删除')
-                  ]);
-          }
-      }];
+            key: 'ORGNAME'
+        }];
     define.screenParam.componentVisible = false;
     define.dataParam.ORGIDCASCADER = [];
     define.dataParam.USER_ROLE = [];
@@ -86,7 +65,23 @@ define.otherMethods = {
     SelRole: function () {
         define.screenParam.showPopRole = true;
     },
-    SelShop:function () {
+    DelRole: function () {
+        let selection = this.$refs.roleRef.getSelection();
+        if (selection.length == 0) {
+            iview.Message.info("请选中要删除的角色!");
+        } else {
+            for (let i = 0; i < selection.length; i++) {
+                let temp = define.dataParam.USER_ROLE;
+                for (let j = 0; j < temp.length; j++) {
+                    if (temp[j].ROLECODE == selection[i].ROLECODE) {
+                        temp.splice(j, 1);
+                        break;
+                    }
+                }
+            }
+        }
+    },
+    SelShop: function () {
         define.screenParam.showPopShop = true;
     }
 }
@@ -101,16 +96,17 @@ define.mountedInit = function () {
 
 //接收子页面返回值
 define.popCallBack = function (data) {
-    if (define.screenParam.showPopRole)
-    {
+    if (define.screenParam.showPopRole) {
         define.screenParam.showPopRole = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            define.dataParam.USER_ROLE.push(data.sj[i]);
+        let role = define.dataParam.USER_ROLE;
+        for (let i = 0; i < data.sj.length; i++) {
+            if (role.filter(function (item) { return (data.sj[i].ROLECODE == item.ROLECODE) }).length == 0) {
+                role.push(data.sj[i]);
+            }
         };
     }
 
-    else if (define.screenParam.showPopShop)
-    {
+    else if (define.screenParam.showPopShop) {
         define.screenParam.showPopShop = false;
         for (var i = 0; i < data.sj.length; i++) {
             define.dataParam.SHOPID = data.sj[i].SHOPID;
@@ -122,20 +118,17 @@ define.popCallBack = function (data) {
 
 
 define.IsValidSave = function () {
-    if (!define.dataParam.USERCODE)
-    {
+    if (!define.dataParam.USERCODE) {
         iview.Message.info("用户代码不能为空!");
         return false;
     }
 
-    if (!define.dataParam.USERNAME)
-    {
+    if (!define.dataParam.USERNAME) {
         iview.Message.info("用户名称不能为空!");
         return false;
     }
 
-    if (!define.dataParam.USER_TYPE)
-    {
+    if (!define.dataParam.USER_TYPE) {
         iview.Message.info("用户类型不能为空!");
         return false;
     }
@@ -145,12 +138,10 @@ define.IsValidSave = function () {
         return false;
     }
 
-
-    if (define.dataParam.USER_TYPE == "2" && !define.dataParam.SHOPID)
-    {
+    if (define.dataParam.USER_TYPE == "2" && !define.dataParam.SHOPID) {
         iview.Message.info("营业员必须选择店铺!");
         return false;
     }
 
     return true;
-};  
+};
