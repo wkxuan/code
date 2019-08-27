@@ -156,7 +156,7 @@ namespace z.ERP.Services
             string sqlYt = @"select G.CATEGORYID,G.CATEGORYCODE,G.CATEGORYNAME 
                              from CATEGORY G where 1=1";
 
-            string SqlyTQx = GetYtQx("G");
+            string SqlyTQx = GetFullYtQX("G");
             if (SqlyTQx != "")
             {
                 sqlYt += " and " + SqlyTQx;
