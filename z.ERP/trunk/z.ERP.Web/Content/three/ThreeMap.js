@@ -1,4 +1,4 @@
-﻿(function (window, undefined) {
+﻿(function (window, undefined) {   
     ThreeMapInit = function (floorInfo, labelArray, $ref) {
             //数据处理  X,Z,Y //由于图像原因  Y轴为负值
             for (var i = 0; i < labelArray.length; i++) {
@@ -52,6 +52,9 @@
                 //scene.add(spotLight2);
 
                 controls = new THREE.OrbitControls(camera, renderer.domElement);//用户交互
+
+                window.ThreeMapcontrols = controls;     //外放 控制器，，  可修改操控参数
+
                 //设置相机的角度范围
                 controls.maxPolarAngle = Math.PI * 0.5;
                 //设置相机距离原点的最远距离
