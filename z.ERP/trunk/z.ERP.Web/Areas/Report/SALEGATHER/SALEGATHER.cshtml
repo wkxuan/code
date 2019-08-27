@@ -5,6 +5,20 @@
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
             交易时间
         </i-col>
         <i-col span="3" class="RowText">
@@ -29,7 +43,7 @@
         <i-col span="2" class="RowTitle">
             上传时间
         </i-col>
-        <i-col span="3" class="RowText">
+        <i-col span="2" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -38,7 +52,7 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowText">
+        <i-col span="2" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -47,10 +61,12 @@
             }
         </i-col>
 
+    </row>
+    <row>
         <i-col span="2" class="RowTitle">
             终端号
         </i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -58,8 +74,6 @@
                 });
             }
         </i-col>
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
             交易号
         </i-col>
@@ -75,7 +89,7 @@
         <i-col span="2" class="RowTitle">
             处理标记
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="4" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<处理标记>()
                 {
@@ -83,11 +97,12 @@
                 });
             }
         </i-col>
-
+    </row>
+    <row>
         <i-col span="2" class="RowTitle">
             失败原因
         </i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="20" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {

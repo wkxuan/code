@@ -45,16 +45,17 @@
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
-                    vModel = "searchParam.NAME",
+                    vModel = "searchParam.TRIMID",
                     ServiceMothod = m => m.feesubject(),
+                    Multiple = true
                 });
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">合同类型</i-col>
+        <i-col span="3" class="RowTitle">账单类型</i-col>
         <i-col span="4" class="RowText">
             @{
-                RenderControl(new EnumDropDownListRender<合同类型>()
+                RenderControl(new EnumDropDownListRender<账单类型>()
                 {
                     vModel = "searchParam.TYPE",
 
@@ -62,10 +63,10 @@
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">合同状态</i-col>
+        <i-col span="3" class="RowTitle">账单状态</i-col>
         <i-col span="4">
             @{
-                RenderControl(new EnumDropDownListRender<合同状态>()
+                RenderControl(new EnumDropDownListRender<账单状态>()
                 {
                     vModel = "searchParam.STATUS",
                 });
@@ -87,7 +88,7 @@
         </i-col>
 
         <i-col span="3" class="RowTitle">
-            债权发生月
+            权责发生月
         </i-col>
         <i-col span="4" class="RowText">
             @{

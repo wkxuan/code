@@ -759,6 +759,10 @@
     <Content Include="Areas\Report\PAYINFO\PAYINFO.cshtml" />
     <Content Include="Areas\Report\BILL_SRC\Bill_Src.cshtml" />
     <Content Include="Areas\XTGL\POSKEYSrch\POSKEYSrch.cshtml" />
+    <Content Include="File\Template\第三方支付记录查询.xlsx" />
+    <Content Include="File\Template\销售采集处理记录查询.xlsx" />
+    <Content Include="File\Template\终端密钥查询.xlsx" />
+    <Content Include="File\Template\费用账单查询.xlsx" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,8 @@
 ﻿srch.beforeVue = function () {
     srch.searchParam.SALEGATHER = "";
     var col = [
-         { title: '交易开始时间', key: 'SALETIME', width: 150 },
+        { title: '门店', key: 'NAME', width: 150 },
+        { title: '交易开始时间', key: 'SALETIME', width: 150 },
         { title: '交易结束时间', key: 'SALETIME', width: 150 },
         { title: '交易号', key: 'DEALID', width: 90 },
         { title: '上传开始时间', key: 'CREATE_TIME', width: 150 },
