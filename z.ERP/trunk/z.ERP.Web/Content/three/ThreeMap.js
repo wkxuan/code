@@ -1,4 +1,4 @@
-﻿(function (window, undefined) {
+﻿(function (window, undefined) {   
     ThreeMapInit = function (floorInfo, labelArray, $ref) {
             //数据处理  X,Z,Y //由于图像原因  Y轴为负值
             for (var i = 0; i < labelArray.length; i++) {
@@ -52,6 +52,9 @@
                 //scene.add(spotLight2);
 
                 controls = new THREE.OrbitControls(camera, renderer.domElement);//用户交互
+
+                window.ThreeMapcontrols = controls;     //外放 控制器，，  可修改操控参数
+
                 //设置相机的角度范围
                 controls.maxPolarAngle = Math.PI * 0.5;
                 //设置相机距离原点的最远距离
@@ -136,7 +139,7 @@
             loadFloor.prototype.addFloor = function (points, height, info) {
                 var geometry = this.getGeometry(points, height, info);
                 geometry.computeFaceNormals();          //计算法向量
-                var material = new THREE.MeshLambertMaterial({ color: "#999999", side: THREE.DoubleSide });         //MeshLambertMaterial
+                var material = new THREE.MeshLambertMaterial({ color: "#C1C1C1", side: THREE.DoubleSide });         //MeshLambertMaterial
                 var mesh = new THREE.Mesh(geometry, material);
                 mesh.castShadow = true;
                 this.container.add(mesh);				//添加填充

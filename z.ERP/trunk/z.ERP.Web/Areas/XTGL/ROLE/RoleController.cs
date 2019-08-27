@@ -27,10 +27,9 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
             ViewBag.Title = "角色定义";
             return View("RoleEdit",model: (EditRender)Id);
         }
-
-        public UIResult SearchRole(ROLEEntity Data)
+        public UIResult SearchInit(ROLEEntity Data)
         {
-            var res = service.UserService.GetRoleElement(Data);
+            var res = service.UserService.GetRoleInit(Data);
             return new UIResult(
                 new
                 {
@@ -53,21 +52,6 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
         {
             var v = GetVerify(DefineDelete);
             CommenDelete(DefineDelete);
-        }
-        public UIResult SearchInit()
-        {
-            var res = service.UserService.GetRoleInit();
-            return new UIResult(
-                new
-                {
-                    module = res.Item1,
-                    ytTree = res.Item2,
-                    regionTree = res.Item3,
-                    fee = res.Item4,                   
-                    branch = res.Item5,
-                    alert = res.Item6
-                }
-            );
         }
         public UIResult SearchTreeOrg() {
             return new UIResult(service.DataService.GetTreeOrg());
