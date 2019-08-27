@@ -67,8 +67,13 @@ namespace z.ERP.Services
         public DataGridResult GetRole(SearchItem item)
         {
             string sql = $@"select A.ROLEID,A.ROLECODE,A.ROLENAME,B.ORGID,B.ORGCODE,B.ORGNAME,1 STATUS 
-                              FROM ROLE A,ORG B WHERE A.ORGID=B.ORGID 
-                               and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";  //部门权限
+                              FROM ROLE A,ORG B WHERE A.ORGID=B.ORGID ";
+                               //and A.ORGID in (" + GetPermissionSql(PermissionType.Org) + ")";  //部门权限
+            if (int.Parse(employee.Id) > 0  )  //非admin用户只显示有的角色
+            {
+                sql += " and A.ROLEID in (select ROLEID from USER_ROLE where USERID= " + employee.Id +")";
+            }
+
             item.HasKey("ROLECODE", a => sql += $" and A.ROLECODE = '{a}'");
             item.HasKey("ROLENAME", a => sql += $" and A.ROLENAME like '%{a}%'");
             item.HasKey("ORGCODE", a => sql += $" and B.ORGCODE like '{a}%'");
@@ -94,11 +99,11 @@ namespace z.ERP.Services
 
             string sqlMenu = @"(select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  
                                from USERMODULE U,MENU M 
-                              where U.MENUID=M.ID  AND U.ENABLE_FLAG=1  and length(to_char(m.id)) <8
+                              where U.MENUID=M.ID  AND U.ENABLE_FLAG=1 and M.STATUS IN (1,98)  and length(to_char(m.id)) <8
                           union all
                              select NVL(m.id,0) MENUID,U.MODULECODE|| lpad(to_char(mod(m.id,100)),2,'0') MODULECODE,m.name MODULENAME,U.MODULECODE parentid  
                                from USERMODULE U,MENU M 
-                              where U.ENABLE_FLAG=1 AND M.PLATFORMID =1 and length(to_char(m.id)) =8
+                              where U.ENABLE_FLAG=1 AND M.PLATFORMID =1  and M.STATUS IN (1,98) and length(to_char(m.id)) =8
                                     and u.menuid = trunc(m.id/100)
                           union all 
                              select NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid 
@@ -156,11 +161,11 @@ namespace z.ERP.Services
             string sqlYt = @"select G.CATEGORYID,G.CATEGORYCODE,G.CATEGORYNAME 
                              from CATEGORY G where 1=1";
 
-            string SqlyTQx = GetFullYtQX("G");
-            if (SqlyTQx != "")
-            {
-                sqlYt += " and " + SqlyTQx;
-            }
+            //string SqlyTQx = GetFullYtQX("G");
+            //if (SqlyTQx != "")
+            //{
+            //    sqlYt += " and " + SqlyTQx;
+            //}
             var ytData = DbHelper.ExecuteTable(sqlYt).ToList<CATEGORYEntity>();          
             var ytTreeData = TreeModel.Create(ytData, a => a.CATEGORYCODE,
                 a => new TreeModel()
@@ -174,7 +179,7 @@ namespace z.ERP.Services
 
             //门店
             string sqlbranch = $@"select B.ID BRANCHID,B.NAME from BRANCH B where 1=1 "
-                               + "   and B.ID IN ("+GetPermissionSql(PermissionType.Branch)+")"                                   
+                               //+ "   and B.ID IN ("+GetPermissionSql(PermissionType.Branch)+")"                                   
                                + " order by B.ID";
 
             DataTable branch = DbHelper.ExecuteTable(sqlbranch);
@@ -195,7 +200,7 @@ namespace z.ERP.Services
 
             //预警
             string sqlalert = $@"select B.ID ALERTID,B.MC NAME from DEF_ALERT B where 1=1 "
-                            + "     and B.ID IN (" + GetPermissionSql(PermissionType.Alert) + ")"
+                            //+ "     and B.ID IN (" + GetPermissionSql(PermissionType.Alert) + ")"
                             + "   order by B.ID";
             DataTable alert = DbHelper.ExecuteTable(sqlalert);
             alert.Columns.Add("_checked", typeof(bool));
@@ -219,7 +224,7 @@ namespace z.ERP.Services
             var treeList = new List<TreeEntity>();
 
             string sqlRegion = $@"SELECT REGIONID,CODE,NAME FROM REGION WHERE 1=1";
-            sqlRegion += " AND REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")";
+            //sqlRegion += " AND REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")";
 
             var region = DbHelper.ExecuteTable(sqlRegion).ToList<REGIONEntity>();
             foreach (var item in region)
@@ -240,7 +245,7 @@ namespace z.ERP.Services
 
             string sqlFloor = $@"SELECT ID,CODE,NAME FROM FLOOR
                                   WHERE REGIONID=" + regionid;
-            sqlFloor += " AND ID IN (" + GetPermissionSql(PermissionType.Floor) + ")";
+            //sqlFloor += " AND ID IN (" + GetPermissionSql(PermissionType.Floor) + ")";
             sqlFloor += " ORDER BY ID ASC";
             var floor = DbHelper.ExecuteTable(sqlFloor).ToList<FLOOREntity>();
 

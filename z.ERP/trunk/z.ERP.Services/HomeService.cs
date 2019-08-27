@@ -67,7 +67,7 @@ namespace z.ERP.Services
                                     ab.url url,
                                     ab.platformid
                                from menutree aa, menu ab
-                              where  aa.menuid = ab.id(+)  ";
+                              where  aa.menuid = ab.id(+) and ab.STATUS IN (1,98)  ";
             if (int.Parse(employee.Id) > 0)
             {
                 sql += @" and (aa.menuid in (
@@ -146,6 +146,7 @@ namespace z.ERP.Services
                                     ab.platformid
                                from usermodule aa, menu ab
                               where  aa.menuid = ab.id and LENGTH(aa.MODULECODE)=6 and aa.ENABLE_FLAG=1
+                                and ab.STATUS IN (1,98)
                                 and aa.modulecode like  '" + menuGr.ID + "%'";
                     if (int.Parse(employee.Id) > 0)
                     {
@@ -233,6 +234,7 @@ namespace z.ERP.Services
         {
 
             return DbHelper.ExecuteTable($@"SELECT B.ID FROM MENU B where 1=1
+                                               and B.STATUS IN (1,98)
                                                and exists(select 1 from USER_ROLE A1, ROLE_MENU B1 where A1.USERID = '{userid}'
                                                and A1.ROLEID = B1.ROLEID and B1.MENUID = B.ID)")
                                                   .ToList<string>().ToArray();
