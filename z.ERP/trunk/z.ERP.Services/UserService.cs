@@ -77,7 +77,7 @@ namespace z.ERP.Services
             item.HasKey("ROLECODE", a => sql += $" and A.ROLECODE = '{a}'");
             item.HasKey("ROLENAME", a => sql += $" and A.ROLENAME like '%{a}%'");
             item.HasKey("ORGCODE", a => sql += $" and B.ORGCODE like '{a}%'");
-            sql += " ORDER BY  A.ROLECODE ";
+            sql += " ORDER BY  A.ROLEID desc ";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
