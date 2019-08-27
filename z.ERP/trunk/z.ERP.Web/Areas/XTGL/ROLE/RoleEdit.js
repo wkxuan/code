@@ -31,86 +31,41 @@ editDetail.beforeVue = function () {
     ];
 };
 
-editDetail.newRecord = function () {
-    editDetail.dataParam.VOID_FLAG = "2";
-};
-
 editDetail.clearKey = function () {
     editDetail.dataParam.ROLECODE = null;
     editDetail.dataParam.ROLENAME = null;
     editDetail.dataParam.ORGIDCASCADER = [];
     editDetail.dataParam.VOID_FLAG = "2";
-    if (editDetail.disabled) {
-        this.otherMethods.initdata();
-    }
+};
+
+editDetail.newRecord = function () {
+    this.otherMethods.initdata();
 };
 
 editDetail.showOne = function (data, callback) {
-    _.Ajax('SearchRole', {
-        Data: { ROLEID: data }
-    }, function (data) {
-        if (data.role != null) {
-            $.extend(editDetail.dataParam, data.role);
-            editDetail.dataParam.VOID_FLAG = data.role.VOID_FLAG + "";  //控件接收string类型
-            editDetail.dataParam.BILLID = data.role.ROLEID;
+    this.otherMethods.initdata(function () {
+        _.Ajax('SearchInit', {
+            Data: { ROLEID: data }
+        }, function (data) {
+            if (data.role != null && data.role.ROLEID != null) {
+                $.extend(editDetail.dataParam, data.role);
+                editDetail.dataParam.VOID_FLAG = data.role.VOID_FLAG + "";  //控件接收string类型
+                editDetail.dataParam.BILLID = data.role.ROLEID;
 
-            if (editDetail.dataParam.ORGIDCASCADER != null) {
-                editDetail.dataParam.ORGIDCASCADER = editDetail.dataParam.ORGIDCASCADER.split(",")
-            } else {
-                editDetail.dataParam.ORGIDCASCADER = null;
-            }
-
+                if (editDetail.dataParam.ORGIDCASCADER != null) {
+                    editDetail.dataParam.ORGIDCASCADER = editDetail.dataParam.ORGIDCASCADER.split(",")
+                } else {
+                    editDetail.dataParam.ORGIDCASCADER = null;
+                }
+            };
             editDetail.screenParam.userModule = data.module;
             editDetail.screenParam.regionTreeData = data.regionTree;
             editDetail.screenParam.ytTreeData = data.ytTree;
-
-            var localFee = [];
-            for (var j = 0; j < editDetail.screenParam.fee.length; j++) {
-                Vue.set(editDetail.screenParam.fee[j], '_checked', false);
-
-                for (var i = 0; i < data.fee.length; i++) {
-                    if (data.fee[i].TRIMID == editDetail.screenParam.fee[j].TRIMID) {
-                        Vue.set(editDetail.screenParam.fee[j], '_checked', true);
-                        localFee.push({
-                            TRIMID: data.fee[i].TRIMID
-                        });
-                    }
-                }
-                Vue.set(editDetail.dataParam, 'ROLE_FEE', localFee);
-            };
-            //门店
-            var localBRANCH = [];
-            for (var j = 0; j < editDetail.screenParam.branch.length; j++) {
-                Vue.set(editDetail.screenParam.branch[j], '_checked', false);
-
-                for (var i = 0; i < data.branch.length; i++) {
-                    if (data.branch[i].BRANCHID == editDetail.screenParam.branch[j].BRANCHID) {
-                        Vue.set(editDetail.screenParam.branch[j], '_checked', true);
-                        localBRANCH.push({
-                            BRANCHID: data.branch[i].BRANCHID
-                        });
-                    }
-                }
-                Vue.set(editDetail.dataParam, 'ROLE_BRANCH', localBRANCH);
-            };
-            //预警
-            var localALERT = [];
-            for (var j = 0; j < editDetail.screenParam.Alert.length; j++) {
-                Vue.set(editDetail.screenParam.Alert[j], '_checked', false);
-
-                for (var i = 0; i < data.alert.length; i++) {
-                    if (data.alert[i].ALERTID == editDetail.screenParam.Alert[j].ALERTID) {
-                        Vue.set(editDetail.screenParam.Alert[j], '_checked', true);
-                        localALERT.push({
-                            ALERTID: data.alert[i].ALERTID
-                        });
-                    }
-                }
-                Vue.set(editDetail.dataParam, 'ROLE_ALERT', localALERT);
-            };
-        };
+            editDetail.screenParam.fee = data.fee;
+            editDetail.screenParam.branch = data.branch;
+            editDetail.screenParam.alert = data.alert;
+        });
     });
-    callback && callback();
 }
 
 editDetail.IsValidSave = function () {
@@ -212,17 +167,20 @@ editDetail.otherMethods = {
             editDetail.screenParam.showPopCrmRole = true;
         });      
     },
-    initdata: function () {
+    initdata: function (func) {
         _.Ajax('SearchInit', {
-            Data: {}
+            Data: { }
         }, function (data) {
-            Vue.set(editDetail.screenParam, "userModule", data.module);
-            Vue.set(editDetail.screenParam, "regionTreeData", data.regionTree);
-            Vue.set(editDetail.screenParam, "ytTreeData", data.ytTree);
-            Vue.set(editDetail.screenParam, "fee", data.fee);
-            Vue.set(editDetail.screenParam, "branch", data.branch);
-            Vue.set(editDetail.screenParam, "Alert", data.alert);
-        });
+            editDetail.screenParam.userModule = data.module;
+            editDetail.screenParam.regionTreeData = data.regionTree;
+            editDetail.screenParam.ytTreeData = data.ytTree;
+            editDetail.screenParam.fee = data.fee;
+            editDetail.screenParam.branch = data.branch;
+            editDetail.screenParam.alert = data.alert;
+            if (typeof func == "function") {
+                func();
+            }
+        });        
     }
 }
 //接收子页面返回值
@@ -236,6 +194,9 @@ editDetail.mountedInit = function () {
     }, function (data) {
         Vue.set(editDetail.screenParam, "ORGData", data.Item1.Obj);
     });
+
+    this.otherMethods.initdata();
+
     editDetail.btnConfig = [{
         id: "add",
         authority: "10100701"
@@ -265,5 +226,9 @@ editDetail.mountedInit = function () {
 };
 //取消保存后方法，原数据回复
 editDetail.afterAbandon = function () {
-    editDetail.showOne(editDetail.dataParam.BILLID);
+    if (editDetail.dataParam.BILLID) {
+        editDetail.showOne(editDetail.dataParam.BILLID);
+    } else {
+        this.otherMethods.initdata();
+    }
 }
