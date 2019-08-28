@@ -62,6 +62,7 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT A.ID,A.NAME FROM FLOOR A  WHERE 1=1 "
                        + "     and A.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+ ")"  //门店权限
+                       + "     and A.ID IN (" + GetPermissionSql(PermissionType.Floor) + ")"
                        + "   ORDER BY  A.ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
