@@ -76,6 +76,14 @@ namespace z.ERP.Services
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
 
+        public List<SelectItem> allorg_hs()
+        {
+            string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE  ORG_TYPE=" + ((int)部门类型.核算部门).ToString() +
+                          "  ORDER BY  A.ORGID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ORGID", "ORGNAME");
+        }
+
         public List<SelectItem> org_zs()
         {
             string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE LEVEL_LAST="+ ((int)末级标记.末级).ToString() + 
