@@ -16,7 +16,7 @@
     ]
 
 
-    search.screenParam.colDef = col.concat(search.colOperate).concat(search.colMul);
+    search.screenParam.colDef = col;
     search.service = "JsglService";
     search.method = "GetJoinBillList";
 }

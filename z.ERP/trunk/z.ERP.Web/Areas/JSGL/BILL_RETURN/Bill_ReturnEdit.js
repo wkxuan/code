@@ -34,6 +34,7 @@ editDetail.showOne = function (data, callback) {
     }, function (data) {
         $.extend(editDetail.dataParam, data.billReturn);
         editDetail.dataParam.BILL_RETURN_ITEM = data.billReturnItem;
+        editDetail.dataParam.NIANYUE += "";    //日期控件需要字符类型
         callback && callback(data);
     });
 };

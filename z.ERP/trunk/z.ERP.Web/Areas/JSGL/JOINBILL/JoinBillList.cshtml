@@ -8,7 +8,7 @@
         <i-col span="2" class="RowTitle">
             单号
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -19,7 +19,7 @@
         <i-col span="2" class="RowTitle">
             租约号
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
 
             @{
                 RenderControl(new TextBoxRender()
@@ -31,7 +31,7 @@
         <i-col span="2" class="RowTitle">
             商户
         </i-col>
-        <i-col span="6">            
+        <i-col span="6" class="RowText">            
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -44,30 +44,21 @@
         <i-col span="2" class="RowTitle">
             开始年月
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.NIANYUE_START"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="searchParam.NIANYUE_START=$event"
+                         v-model="searchParam.NIANYUE_START"></date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             结束年月
         </i-col>
-        <i-col span="6">
-
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.NIANYUE_END"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="searchParam.NIANYUE_END=$event"
+                         v-model="searchParam.NIANYUE_END"></date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             状态
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<结算单状态>
                 {
@@ -80,7 +71,7 @@
         <i-col span="2" class="RowTitle">
             登记人
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -91,7 +82,7 @@
         <i-col span="2" class="RowTitle">
             登记时间_起
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -102,7 +93,7 @@
         <i-col span="2" class="RowTitle">
             登记时间_止
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -115,7 +106,7 @@
         <i-col span="2" class="RowTitle">
             审核人
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -126,7 +117,7 @@
         <i-col span="2" class="RowTitle">
             审核时间_起
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -137,7 +128,7 @@
         <i-col span="2" class="RowTitle">
             审核时间_止
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {

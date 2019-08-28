@@ -62,6 +62,7 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT A.ID,A.NAME FROM FLOOR A  WHERE 1=1 "
                        + "     and A.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+ ")"  //门店权限
+                       + "     and A.ID IN (" + GetPermissionSql(PermissionType.Floor) + ")"
                        + "   ORDER BY  A.ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
@@ -72,6 +73,14 @@ namespace z.ERP.Services
             string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE  ORG_TYPE=" + ((int)部门类型.核算部门).ToString() +
                          "     AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")" +
                          "   ORDER BY  A.ORGID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ORGID", "ORGNAME");
+        }
+
+        public List<SelectItem> allorg_hs()
+        {
+            string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE  ORG_TYPE=" + ((int)部门类型.核算部门).ToString() +
+                          "  ORDER BY  A.ORGID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }

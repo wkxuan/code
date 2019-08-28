@@ -19,7 +19,7 @@
     <i-col span="24">
         <Card v-bind:padding=0>
             <p slot="title">商铺</p>
-            <div slot="extra">
+            <div slot="extra" v-show="disabled">
                 <i-button type="primary" v-on:click="SelShop">选择</i-button>
                 <i-button type="error" v-on:click="delShop">删除</i-button>
             </div>
