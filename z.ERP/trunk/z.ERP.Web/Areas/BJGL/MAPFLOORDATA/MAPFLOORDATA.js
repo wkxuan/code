@@ -14,12 +14,13 @@
         }];
     define.screenParam.dataDef = [];
     define.service = "DpglService";
-    define.method = "SearchMAPFLOORDATA";
+    define.method = "SearchMAPFLOORINFO";
     define.methodList = "SearchMAPFLOORDATA";
     define.Key = 'FLOORID';
     define.screenParam.branchData = [];
     define.screenParam.regionData = [];
     define.screenParam.floorData = [];
+    define.dataParam.POINTS = "";
     _.Ajax('GetBranch', {
         Data: { ID: "" }
     }, function (data) {
@@ -59,10 +60,13 @@
             });
         });
     });
+    
 }
 define.newRecord = function () {
     define.dataParam.BRANCHID = define.searchParam.BRANCHID;
     define.dataParam.REGIONID = define.searchParam.REGIONID;
+    define.dataParam.FLOORID = undefined;
+    define.dataParam.POINTS = "";
     if (!define.dataParam.BRANCHID) {
         iview.Message.info("请选择门店!");
         return;
@@ -71,8 +75,6 @@ define.newRecord = function () {
         iview.Message.info("请选择区域!");
         return;
     }
-    define.dataParam.FLOORID = "";
-    define.dataParam.POINTS = "";
 
 }
 define.otherMethods = {
@@ -86,9 +88,9 @@ define.otherMethods = {
         define.otherMethods.initFloor();
         define.searchParam.FLOORID = undefined;
     },
-    floorChange: function (event) {
+    floorChange: function (event) {      
         _.Ajax('GetFloorMD', {
-            Data: { BRANCHID: define.dataParam.BRANCHID, REGIONID: define.dataParam.REGIONID, FLOORID: event }
+            Data: { FLOORID: event }
         }, function (data) {
             if (data.Item1) {
                 define.dataParam.POINTS = data.Item1.POINTS;

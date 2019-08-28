@@ -655,6 +655,18 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public DataGridResult SearchMAPFLOORINFO(SearchItem item)
+        {
+            string sql = $@"SELECT M.*,F.NAME FLOORNAME FROM MAPFLOORDATA M,FLOOR F WHERE M.FLOORID=F.ID AND M.BRANCHID=F.BRANCHID AND M.REGIONID=F.REGIONID "
+                   + " and F.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
+            item.HasKey("BRANCHID", a => sql += $" and M.BRANCHID = '{a}'");
+            item.HasKey("REGIONID", a => sql += $" and M.REGIONID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and M.FLOORID = '{a}'");
+            sql += " ORDER BY M.FLOORID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
         public Tuple<dynamic> GetFloorMD(MAPFLOORDATAEntity Data) {
             string sql = $@"SELECT M.* FROM MAPFLOORDATA M,FLOOR F WHERE M.FLOORID=F.ID AND M.BRANCHID=F.BRANCHID AND M.REGIONID=F.REGIONID ";
             if (!Data.BRANCHID.IsEmpty()) {
