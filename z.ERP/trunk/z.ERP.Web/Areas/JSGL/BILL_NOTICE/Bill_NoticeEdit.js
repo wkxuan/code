@@ -47,6 +47,7 @@ editDetail.showOne = function (data, callback) {
         Data: { BILLID: data }
     }, function (data) {
         $.extend(editDetail.dataParam, data.billNotice);
+        editDetail.dataParam.NIANYUE += "";
         editDetail.dataParam.BILL_NOTICE_ITEM = data.billNoticeItem;
         callback && callback(data);
     });

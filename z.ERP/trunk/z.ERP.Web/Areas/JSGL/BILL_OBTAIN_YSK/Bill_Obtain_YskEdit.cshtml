@@ -19,7 +19,8 @@
             权债发生月
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input v-model="dataParam.NIANYUE" v-bind:disabled="!disabled" />
+            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="dataParam.NIANYUE=$event"
+                         v-model="dataParam.NIANYUE" v-bind:disabled="!disabled"></date-picker>
         </i-col>
     </row>
     <row>

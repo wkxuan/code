@@ -83,6 +83,7 @@ editDetail.showOne = function (data, callback) {
         Data: { BILLID: data }
     }, function (data) {
         $.extend(editDetail.dataParam, data.billObtain);
+        editDetail.dataParam.NIANYUE += "";
         editDetail.dataParam.BILL_OBTAIN_ITEM = data.billObtainItem;
         editDetail.dataParam.BILL_OBTAIN_INVOICE = data.billObtainInvoice || [];
         callback && callback(data);

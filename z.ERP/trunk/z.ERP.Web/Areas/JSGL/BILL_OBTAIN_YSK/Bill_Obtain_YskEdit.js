@@ -16,6 +16,7 @@ editDetail.showOne = function (data, callback) {
     }, function (data) {
         $.extend(editDetail.dataParam, data.billObtainYsk);
         Vue.set(editDetail.dataParam, data.billObtainYsk);
+        editDetail.dataParam.NIANYUE += "";
         editDetail.dataParam.BILLID = data.billObtainYsk.BILLID;
         callback && callback(data);
     });

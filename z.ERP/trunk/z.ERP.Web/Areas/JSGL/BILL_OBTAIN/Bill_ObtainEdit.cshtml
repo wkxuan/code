@@ -19,7 +19,8 @@
             收款年月
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input type="number" v-model="dataParam.NIANYUE" clearable v-bind:disabled="!disabled"/>
+            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="dataParam.NIANYUE=$event"
+                         v-model="dataParam.NIANYUE" v-bind:disabled="!disabled"></date-picker>
         </i-col>
     </row>
     <row>
@@ -58,7 +59,7 @@
             <Card v-bind:padding=0>
                 <p slot="title">账单</p>
                 <div slot="extra">
-                    <div class="tableBtnDiv" v-if="disabled">
+                    <div class="tableBtnDiv" v-show="disabled">
                         <i-button type="primary" v-on:click="selBill">选择</i-button>
                         <i-button type="error" v-on:click="delBill">删除</i-button>
                     </div>
