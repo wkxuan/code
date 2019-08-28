@@ -23,6 +23,17 @@
     srch.method = "PAYINFO";
 };
 
+srch.newCondition = function () {
+    srch.searchParam.BRANCHID = "";
+    srch.searchParam.POSNO = "";
+    srch.searchParam.DEALID = "";
+    srch.searchParam.PAYID = "";
+    srch.searchParam.AMOUNT = "";
+    srch.searchParam.START = "";
+    srch.searchParam.END = "";
+
+};
+
 
 
 

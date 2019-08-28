@@ -1756,15 +1756,22 @@ namespace z.ERP.Services
             sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             sqlsum += "   WHERE TYPE= 3";
 
-            item.HasDateKey("SALETIME", a => sqlsum += $" and SALETIME={a}");
+            //item.HasDateKey("SALETIME", a => sqlsum += $" and SALETIME={a}");
             item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
-            item.HasDateKey("CREATE_TIME", a => sqlsum += $" and CREATE_TIME={a}");
+
+
+            item.HasDateKey("SALETIME_START", a => sqlsum += $" and SALETIME >= {a}");
+            item.HasDateKey("SALETIME_END", a => sqlsum += $" and SALETIME <= {a}");
+
+            item.HasDateKey("CREATE_TIME_START", a => sqlsum += $" and CREATE_TIME >={a}");
+            item.HasDateKey("CREATE_TIME_END", a => sqlsum += $" and CREATE_TIME <={a}");
+
             item.HasKey("FLAG", a => sqlsum += $" and FLAG={a}");
             item.HasKey("REASON", a => sqlsum += $" and REASON LIKE '%{a}%'");
 
             item.HasKey("STATIONBH", a => sqlsum += $" and STATIONBH={a}");
 
-           
+
             DataTable dt = DbHelper.ExecuteTable(sqlsum);
             dt.NewEnumColumns<处理标记>("FLAG", "FLAGMC");
             dt.TableName = "SALEGATHER";
@@ -1784,11 +1791,11 @@ namespace z.ERP.Services
                                 FROM PAYRECORD A 
                                 INNER JOIN PAY B ON(A.PAYID= B.PAYID)
                                 INNER JOIN STATION C ON(A.POSNO =C.STATIONBH)
-                                INNER JOIN BRANCH D ON(D.ID=C.BRANCHID)"+
+                                INNER JOIN BRANCH D ON(D.ID=C.BRANCHID)" +
                              " and c.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             //sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
-            item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
+            item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID ={a}");
             item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
             item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
 
@@ -1826,7 +1833,7 @@ namespace z.ERP.Services
                              " and c.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             //sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
-            item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
+            item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID ={a}");
             item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
             item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
 
@@ -1841,9 +1848,9 @@ namespace z.ERP.Services
             //item.HasKey("REFNO", a => sqlsum += $" and REFNO={a}");
             //item.HasKey("PAYID", a => sqlsum += $" and B.PAYID={a}");
             item.HasKey("PAYID", a => sqlsum += $" and B.PAYID ={a}");
-            
+
             DataTable dt = DbHelper.ExecuteTable(sqlsum);
-           
+
             dt.TableName = "PAYINFO";
             return GetExport("第三方支付记录查询", a =>
             {
@@ -1857,7 +1864,7 @@ namespace z.ERP.Services
         #region 费用账单查询
         public DataGridResult Bill_Src(SearchItem item)
         {
-            string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.NAME MERCHANTNAME,A.BILLID,D.NAME FEENAME, A.CONTRACTID, 
+            string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME,A.BILLID,D.NAME FEENAME, A.CONTRACTID, 
                                          A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,
                                         A.RETURN_MONEY,A.START_DATE,A.END_DATE,A.TYPE,A.STATUS,F.NAME UNITNAME，A.DESCRIPTION
                                         FROM BILL A, BRANCH B, MERCHANT C, FEESUBJECT D, FEESUBJECT_ACCOUNT E,FEE_ACCOUNT F
@@ -1870,19 +1877,26 @@ namespace z.ERP.Services
 
 
             sqlsum += "  AND A.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            
+
 
             item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
-            item.HasKey("MERCHANTID", a => sqlsum += $" and a.MERCHANTID ={a}");
+            item.HasKey("MERCHANTID", a => sqlsum += $" and c.MERCHANTID ={a}");
+            //item.HasKey("MERCHANTNAME", a => sqlsum += $" and c.NAME ={a}");
             item.HasKey("BILLID", a => sqlsum += $" and a.BILLID ={a}");
-            item.HasKey("NAME", a => sqlsum += $" and D.NAME ={a}");
-            item.HasKey("START_DATE", a => sqlsum += $" and a.START_DATE ={a}");
-            item.HasKey("END_DATE", a => sqlsum += $" and a.END_DATE ={a}");
-            item.HasDateKey("YEARMONTH", a => sqlsum += $" and A.YEARMONTH ={a}");
-            item.HasDateKey("NIANYUE", a => sqlsum += $" and A.NIANYUE ={a}");
+            item.HasKey("TRIMID", a => sqlsum += $" and D.TRIMID ={a}");
+            // item.HasKey("START_DATE", a => sqlsum += $" and a.START_DATE ={a}");
+            //  item.HasKey("END_DATE", a => sqlsum += $" and a.END_DATE ={a}");
+            //item.HasDateKey("YEARMONTH", a => sqlsum += $" and A.YEARMONTH ={a}");
+            item.HasKey("YEARMONTH_START", a => sqlsum += $" and A.YEARMONTH = {a}");
+            //item.HasKey("YEARMONTH_END", a => sqlsum += $" and A.YEARMONTH <= {a}");
+            item.HasKey("NIANYUE_START", a => sqlsum += $" and A.NIANYUE = {a}");
+            //item.HasKey("NIANYUE_END", a => sqlsum += $" and A.NIANYUE <= {a}");
+            //item.HasDateKey("NIANYUE", a => sqlsum += $" and A.NIANYUE ={a}");
             item.HasKey("TYPE", a => sqlsum += $" and A.TYPE = {a}");
             item.HasKey("STATUS", a => sqlsum += $" and A.STATUS = {a}");
+            item.HasKey("CONTRACTID", a => sqlsum += $" and A.CONTRACTID = {a}");
             sqlsum += "     order by nianyue desc";
+
             int count;
             DataTable dt = DbHelper.ExecuteTable(sqlsum, item.PageInfo, out count);
             dt.NewEnumColumns<账单状态>("STATUS", "STATUSMC");
@@ -1896,7 +1910,7 @@ namespace z.ERP.Services
         #region 费用账单查询导出
         public string Bill_SrcOutput(SearchItem item)
         {
-            string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.NAME MERCHANTNAME,A.BILLID,D.NAME FEENAME, A.CONTRACTID, 
+            string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME,A.BILLID,D.NAME FEENAME, A.CONTRACTID, 
                                          A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,
                                         A.RETURN_MONEY,A.START_DATE,A.END_DATE,A.TYPE,A.STATUS,F.NAME UNITNAME，A.DESCRIPTION
                                         FROM BILL A, BRANCH B, MERCHANT C, FEESUBJECT D, FEESUBJECT_ACCOUNT E,FEE_ACCOUNT F
@@ -1912,18 +1926,24 @@ namespace z.ERP.Services
 
 
             item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
-            item.HasKey("MERCHANTID", a => sqlsum += $" and a.MERCHANTID ={a}");
+            item.HasKey("MERCHANTID", a => sqlsum += $" and c.MERCHANTID ={a}");
+            //item.HasKey("MERCHANTNAME", a => sqlsum += $" and c.NAME ={a}");
             item.HasKey("BILLID", a => sqlsum += $" and a.BILLID ={a}");
             item.HasKey("TRIMID", a => sqlsum += $" and D.TRIMID ={a}");
-            item.HasKey("START_DATE", a => sqlsum += $" and a.START_DATE ={a}");
-            item.HasKey("END_DATE", a => sqlsum += $" and a.END_DATE ={a}");
-            item.HasDateKey("YEARMONTH", a => sqlsum += $" and A.YEARMONTH ={a}");
-            item.HasDateKey("NIANYUE", a => sqlsum += $" and A.NIANYUE ={a}");
+            // item.HasKey("START_DATE", a => sqlsum += $" and a.START_DATE ={a}");
+            //  item.HasKey("END_DATE", a => sqlsum += $" and a.END_DATE ={a}");
+            //item.HasDateKey("YEARMONTH", a => sqlsum += $" and A.YEARMONTH ={a}");
+            item.HasKey("YEARMONTH_START", a => sqlsum += $" and A.YEARMONTH = {a}");
+            //item.HasKey("YEARMONTH_END", a => sqlsum += $" and A.YEARMONTH <= {a}");
+            item.HasKey("NIANYUE_START", a => sqlsum += $" and A.NIANYUE = {a}");
+            //item.HasKey("NIANYUE_END", a => sqlsum += $" and A.NIANYUE <= {a}");
+            //item.HasDateKey("NIANYUE", a => sqlsum += $" and A.NIANYUE ={a}");
             item.HasKey("TYPE", a => sqlsum += $" and A.TYPE = {a}");
             item.HasKey("STATUS", a => sqlsum += $" and A.STATUS = {a}");
+            item.HasKey("CONTRACTID", a => sqlsum += $" and A.CONTRACTID = {a}");
             sqlsum += "     order by nianyue desc";
 
-            
+
             DataTable dt = DbHelper.ExecuteTable(sqlsum);
             dt.NewEnumColumns<账单状态>("STATUS", "STATUSMC");
             dt.NewEnumColumns<账单类型>("TYPE", "TYPEMC");
