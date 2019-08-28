@@ -565,7 +565,7 @@ namespace z.ERP.Services
 
                 sqlsum += "  and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
-                item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID={a}");
+                item.HasKey("BRANCHID", a => sqlsum += $" and T.BRANCHID={a}");
                 item.HasKey("POSNO", a => sqlsum += $" and S.POSNO='{a}'");
 
                 item.HasKey("MERCHANTID", a => sqlsum += $" and EXISTS(SELECT 1 FROM HIS_SALE_GOODS G,GOODS D WHERE S.POSNO=G.POSNO and S.DEALID=G.DEALID AND G.GOODSID=D.GOODSID AND D.MERCHANTID in ({a}))");
