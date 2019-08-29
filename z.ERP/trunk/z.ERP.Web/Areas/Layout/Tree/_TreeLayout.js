@@ -147,14 +147,12 @@
                     _self.toolBtnList = data;
                 },
                 addtj: function (event) {
-                    if (!this.data.length) {
-                        this.keyVal = "01";
-                    } else {
+                    if (this.data.length) {
                         if (!this.keyVal) {
                             iview.Message.error("请选择数据");
                             return;
                         };
-                    }                  
+                    }                
                     if (!_this.IsValidTj())
                         return;
                     _this.backData = DeepClone(this.dataParam);
