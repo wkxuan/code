@@ -128,5 +128,25 @@
         }
         return objClone;
     };
+    //将对象中所有成员置空
+    ClearObject = function (obj) {
+        let isArrayFn = function (value) {
+            if (typeof Array.isArray === "function") {
+                return Array.isArray(value);
+            } else {
+                return Object.prototype.toString.call(value) === "[object Array]";
+            }
+        }
+
+        for (let item in obj) {
+            if (isArrayFn(obj[item])) {
+                obj[item] = [];
+                console.log(1111111111);
+            } else {
+                obj[item] = null;
+            }
+        }
+        return obj;
+    }
 })(window);
 

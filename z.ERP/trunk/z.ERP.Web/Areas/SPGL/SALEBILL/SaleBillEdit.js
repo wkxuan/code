@@ -121,7 +121,7 @@ editDetail.mountedInit = function () {
             });
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.STATUS < 2) {
+            if (!disabled && data.STATUS == 1) {
                 return true;
             } else {
                 return false;
@@ -164,8 +164,12 @@ editDetail.popCallBack = function (data) {
 }
 
 editDetail.IsValidSave = function () {
-
+    if (!editDetail.dataParam.BRANCHID) {
+        iview.Message.info("请确认门店!");
+        return false;
+    };
     editDetail.dataParam.POSNO = ("000000" + editDetail.dataParam.BRANCHID + '0999').substr(-6);
+    
     if (!editDetail.dataParam.ACCOUNT_DATE) {
         iview.Message.info("请确认记账日期!");
         return false;
