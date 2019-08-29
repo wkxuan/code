@@ -25,7 +25,6 @@
             //获取容器的宽高
             var $tree = $ref.tree;  //左面目标元素
             var $map = $ref.maps;    //右面目标元素
-            $map.innerHTML = "";
             var width = $map.clientWidth;     //获取画布「canvas3d」的宽
             var height = window.innerHeight-22;   //获取画布「canvas3d」的高
             function init() {
@@ -153,7 +152,7 @@
                 geometry.computeFaceNormals();          //计算法向量
                 var material;
                 if (info.RENT_STATUS == "1") {
-                    material = new THREE.MeshLambertMaterial({ color: "#A6A5A4", side: THREE.DoubleSide });         //模块颜色    单元空置
+                    material = new THREE.MeshLambertMaterial({ color: "#C3C1BD", side: THREE.DoubleSide });         //模块颜色    单元空置
                 } else {
                     material = new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide });         //模块颜色
                 }

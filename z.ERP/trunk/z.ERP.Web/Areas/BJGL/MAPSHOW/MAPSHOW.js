@@ -1,12 +1,17 @@
 ﻿var Mapshow = new Vue({
     el: "#MapShow",
     data: {
-        splitVal: 0.2,
+        splitVal: 0.2,   //切割面板宽度
         data: [],
         SHOPINFO: Object,
         MERCHANTINFO: Object,
+        Floorid:"",
         merchant:true,
-        DrawerModel:false
+        DrawerModel: false,      //右弹出抽屉
+        buttontool: false,        //工具栏
+        buttons: ["1", "2"],
+        ISRENT: 0,
+        NOTRENT:0
     },
     mounted: function () {
         this.initTree();        
@@ -22,20 +27,31 @@
             })
         },
         onselectchange: function (selectArr, node) {
-            if (node.parentId == "REGION") {
-                var $this = this.$refs;    //目标元素
-                $this.maps.innerHTML = "";
-                _.Ajax('GetInitMAPDATA', {
-                    Data: { FLOORID: node.code }
-                }, function (data) {
-                    if (data.floorInfo.MAPSHOPLIST.length > 0 || data.labelArray.length > 0) {
-                        ThreeMapInit(data.floorInfo, data.labelArray, $this);
-                    } else {
-                        iview.Message.info("暂无布局图数据，请联系管理员!");
-                    }
-                });
+            if (node.parentId == "REGION") {               
+                Mapshow.Floorid = node.code;
+                Mapshow.INITMAP();
             }
         },
+        INITMAP: function () {
+            var $this = this.$refs;    //目标元素
+            $this.maps.innerHTML = "";
+            _.Ajax('GetInitMAPDATA', {
+                floorid: Mapshow.Floorid, shopstatus: Mapshow.buttons.join()
+            }, function (data) {
+                if (data.floorInfo.MAPSHOPLIST.length > 0 || data.labelArray.length > 0) {
+                    ThreeMapInit(data.floorInfo, data.labelArray, $this);
+                    Mapshow.buttontool = true;
+                    Mapshow.ISRENT = data.floorInfo.IS_RENT;
+                    Mapshow.NOTRENT = data.floorInfo.NOT_RENT;
+                } else {
+                    Mapshow.buttontool = false;
+                    iview.Message.info("暂无布局图数据，请联系管理员!");
+                }
+            });
+        },
+        checkchange: function () {
+            Mapshow.INITMAP();
+        }
     },
     filters:{
         formatDate: function (val) {

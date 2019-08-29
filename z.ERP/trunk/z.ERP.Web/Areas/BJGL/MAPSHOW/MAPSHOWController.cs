@@ -16,8 +16,8 @@ namespace z.ERP.Web.Areas.BJGL.MAPSHOW
             ViewBag.Title = "布局信息";
             return View();
         }
-        public UIResult GetInitMAPDATA(MAPFLOORINFOEntity data) {
-            var datas = service.DpglService.GetInitMAPDATA(data);
+        public UIResult GetInitMAPDATA(string floorid,string shopstatus) {
+            var datas = service.DpglService.GetInitMAPDATA(floorid, shopstatus);
             return new UIResult(
                 new { 
                     floorInfo= datas.Item1,

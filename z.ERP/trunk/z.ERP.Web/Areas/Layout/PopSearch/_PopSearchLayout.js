@@ -3,6 +3,8 @@
     var _this = this;
     
     this.vueObj;
+    this.service = "";
+    this.method = "";
     this.beforeVue = function () { }
     this.newCondition = function () { }
     this.IsValidSrch = function () {
@@ -161,8 +163,6 @@
     this.vueInit = function () {
         _this.searchParam = {};
         _this.screenParam = {};
-        _this.service = "";
-        _this.method = "";
     };
 
     setTimeout(function () {
