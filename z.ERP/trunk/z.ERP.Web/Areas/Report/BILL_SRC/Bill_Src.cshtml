@@ -17,16 +17,23 @@
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">商户编号</i-col>
+        <i-col span="3" class="RowTitle">
+            商户
+        </i-col>
         <i-col span="4" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MERCHANTID",
-                });
-            }
+            <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
         </i-col>
 
+        <i-col span="3" class="RowTitle">
+            租约
+        </i-col>
+        <i-col span="4" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.CONTRACTID" v-on:on-click="SelContract" />
+        </i-col>
+       
+    </row>
+
+    <row>
         <i-col span="3" class="RowTitle">账单号</i-col>
         <i-col span="4" class="RowText">
             @{
@@ -36,21 +43,7 @@
                 });
             }
         </i-col>
-    </row>
 
-    <row>
-
-        <i-col span="3" class="RowTitle">收费项目名称 </i-col>
-        <i-col span="4" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.TRIMID",
-                    ServiceMothod = m => m.feesubject(),
-                    Multiple = true
-                });
-            }
-        </i-col>
 
         <i-col span="3" class="RowTitle">账单类型</i-col>
         <i-col span="4" class="RowText">
@@ -75,14 +68,26 @@
     </row>
 
     <row>
-        <i-col span="3" class="RowTitle">收付实现月</i-col>
+        <i-col span="3" class="RowTitle">收费项目名称 </i-col>
         <i-col span="4" class="RowText">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new ServiceDropDownListRender()
                 {
-                    Id = "sfsxy",
-                    vModel = "searchParam.YEARMONTH",
-                    type = "number"
+                    vModel = "searchParam.TRIMID",
+                    ServiceMothod = m => m.feesubject(),
+                    Multiple = true
+                });
+            }
+        </i-col>
+
+        <i-col span="3" class="RowTitle">
+            收付实现月
+        </i-col>
+        <i-col span="4" class="RowText">
+            @{
+                RenderControl(new YearMonthBoxRender()
+                {
+                    vModel = "searchParam.YEARMONTH_START"
                 });
             }
         </i-col>
@@ -92,36 +97,46 @@
         </i-col>
         <i-col span="4" class="RowText">
             @{
-                RenderControl(new TextBoxRender()
+                RenderControl(new YearMonthBoxRender()
                 {
-                    Id = "zqfsy",
-                    vModel = "searchParam.NIANYUE",
-                    type = "number"
+                    vModel = "searchParam.NIANYUE_START"         
                 });
             }
         </i-col>
 
 
-        <i-col span="3" class="RowTitle">
-            交费日期
-        </i-col>
-        <i-col span="2" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.START_DATE",
 
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowText">
+    </row>
+
+}
+
+@section pops{
+    <row>
+        <i-col>
             @{
-                RenderControl(new DateBoxRender()
+                RenderControl(new PopsRender()
                 {
-                    vModel = "searchParam.END_DATE"
+                    vModel = "screenParam.showPopMerchant",
+                    Caption = "选择商户",
+                    Width = "900",
+                    Src = "screenParam.srcPopMerchant"
                 });
             }
         </i-col>
     </row>
+
+<row>
+    <i-col>
+        @{
+            RenderControl(new PopsRender()
+            {
+                vModel = "screenParam.showPopContract",
+                Caption = "选择租约",
+                Width = "900",
+                Src = "screenParam.srcPopContract"
+            });
+        }
+    </i-col>
+</row>
 
 }

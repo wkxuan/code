@@ -17,6 +17,19 @@
     srch.method = "SALEGATHER";
 };
 
+srch.newCondition = function () {
+    srch.searchParam.BRANCHID = "";
+    srch.searchParam.SALETIME_START = "";
+    srch.searchParam.SALETIME_END = "";
+    srch.searchParam.CREATE_TIME_START = "";
+    srch.searchParam.CREATE_TIME_END = "";
+    srch.searchParam.STATIONBH = "";
+    srch.searchParam.DEALID = "";
+    srch.searchParam.FLAG = "";
+    srch.searchParam.REASON = "";
+   
+};
+
 
 
 
