@@ -12,7 +12,7 @@
     editDetail.dataParam.BILL_NOTICE_ITEM = [];
     editDetail.screenParam.FEE_ACCOUNT = [];
 
-   // editDetail.dataParam.NIANYUE = (new Date()).Format("yyyyMM"); //默认当前年月
+    editDetail.dataParam.NIANYUE = (new Date()).Format("yyyyMM"); //默认当前年月
     // editDetail.dataParam.TYPE = 1;
 
     editDetail.screenParam.colDef = [
@@ -38,7 +38,7 @@
 }
 
 editDetail.newRecord = function () {
-  //  editDetail.dataParam.NIANYUE =  (new Date()).Format("yyyyMM"); //默认当前年月
+    editDetail.dataParam.NIANYUE =  (new Date()).Format("yyyyMM"); //默认当前年月
     //  editDetail.dataParam.TYPE = 1;
 }
 

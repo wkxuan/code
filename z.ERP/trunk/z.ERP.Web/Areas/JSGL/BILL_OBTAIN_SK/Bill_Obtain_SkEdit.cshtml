@@ -36,8 +36,7 @@
             收款年月
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="dataParam.NIANYUE=$event"
-                         v-model="dataParam.NIANYUE" v-bind:disabled="!disabled"></date-picker>
+            <yx-year-month-picker v-bind:value.sync="dataParam.NIANYUE" v-bind:disabled="!disabled"></yx-year-month-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             商户余额
