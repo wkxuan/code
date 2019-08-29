@@ -371,7 +371,7 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1"
                  + " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"  //门店权限
-                 + " AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")" //区域权限
+              //   + " AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")" //区域权限
                  + " AND A.ID IN (" + GetPermissionSql(PermissionType.Floor) + ")"; //楼层权限
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
