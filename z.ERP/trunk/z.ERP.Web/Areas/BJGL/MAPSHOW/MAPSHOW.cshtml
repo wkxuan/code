@@ -43,6 +43,11 @@
         [v-cloak] {
             display: none !important;
         }
+        .sbutton {
+            position:absolute;
+            padding-left:10px;
+            padding-top:10px;
+        }
     </style>
 }
 
@@ -53,7 +58,20 @@
                      v-bind:showcheckbox="false"></yx-tree>
         </div>
         <div slot="right" class="rightPane">
-            <div ref="maps" style="height:100%;width:100%"></div>
+            <div ref="maps" style="height:100%;width:100%;position:absolute"></div>
+            <div class="sbutton" style="display:block" v-show="buttontool">
+                <Checkbox-Group v-model="buttons" size="large" v-on:on-change="checkchange">
+                    <Checkbox label="1">
+                        <Icon type="ios-cube-outline"></Icon>
+                        <span>闲置招租  <span style="font-size:16px;font-weight:700;color:#C94B4B">{{NOTRENT}}</span></span>
+                    </Checkbox>
+                    <br />
+                    <Checkbox label="2">
+                        <Icon type="ios-cube"></Icon>
+                        <span>正在经营  <span style="font-size:16px;font-weight:700;color:#44D3FF">{{ISRENT}}</span></span>
+                    </Checkbox>
+                </Checkbox-Group>
+            </div>
         </div>
     </Split>
     <div>
