@@ -31,22 +31,23 @@ namespace z.ERP.Services
             {
                 sqlParam += " and " + SqlyTQx;
             }
+           
+
+            item.HasKey("CATEGORYCODE", a => sqlParam += $" and G.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("FLOORID", a => sqlParam += $" and F.ID = {a}");
+            item.HasKey("BRANCHID", a => sqlParam += $" and C.BRANCHID = {a}");
+            item.HasKey("CONTRACTID", a => sqlParam += $" and C.CONTRACTID = '{a}'");
+            item.HasDateKey("RQ_START", a => sqlParam += $" and C.RQ >= {a}");
+            item.HasDateKey("RQ_END", a => sqlParam += $" and C.RQ <= {a}");
+            item.HasKey("MERCHANTID", a => sqlParam += $" and C.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sqlParam += $" and M.NAME LIKE '%{a}%'");
+            item.HasArrayKey("KINDID", a => sqlParam += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("BRANDID", a => sqlParam += $" and C.BRANDID = {a}");
+            item.HasKey("BRANDNAME", a => sqlParam += $" and B.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sqlParam += $" and C.YEARMONTH >= {a}");
+            item.HasKey("YEARMONTH_END", a => sqlParam += $" and C.YEARMONTH <= {a}");
+
             sql += sqlParam;
-
-            item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
-            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
-            item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sql += $" and C.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sql += $" and C.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
-            item.HasKey("BRANDID", a => sql += $" and C.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sql += $" and C.YEARMONTH >= {a}");
-            item.HasKey("YEARMONTH_END", a => sql += $" and C.YEARMONTH <= {a}");
-
             sql += " ORDER BY  C.RQ,C.MERCHANTID,C.CONTRACTID ";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -92,22 +93,23 @@ namespace z.ERP.Services
             {
                 sqlParam += " and " + SqlyTQx;
             }
+            
+
+            item.HasKey("CATEGORYCODE", a => sqlParam += $" and G.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("FLOORID", a => sqlParam += $" and F.ID = {a}");
+            item.HasKey("BRANCHID", a => sqlParam += $" and C.BRANCHID = {a}");
+            item.HasKey("CONTRACTID", a => sqlParam += $" and C.CONTRACTID = '{a}'");
+            item.HasDateKey("RQ_START", a => sqlParam += $" and C.RQ >= {a}");
+            item.HasDateKey("RQ_END", a => sqlParam += $" and C.RQ <= {a}");
+            item.HasKey("MERCHANTID", a => sqlParam += $" and C.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sqlParam += $" and M.NAME LIKE '%{a}%'");
+            item.HasArrayKey("KINDID", a => sqlParam += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("BRANDID", a => sqlParam += $" and C.BRANDID = {a}");
+            item.HasKey("BRANDNAME", a => sqlParam += $" and B.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sqlParam += $" and C.YEARMONTH >= {a}");
+            item.HasKey("YEARMONTH_END", a => sqlParam += $" and C.YEARMONTH <= {a}");
+
             sql += sqlParam;
-
-            item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
-            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
-            item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sql += $" and C.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sql += $" and C.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
-            item.HasKey("BRANDID", a => sql += $" and C.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sql += $" and C.YEARMONTH >= {a}");
-            item.HasKey("YEARMONTH_END", a => sql += $" and C.YEARMONTH <= {a}");
-
             sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,K.CODE,K.NAME,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE";
             sql += " ORDER BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID ";
             int count;

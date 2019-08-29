@@ -54,7 +54,7 @@
                             _self.addtj();
                         },
                         enabled: function (disabled, data) {
-                            if (!disabled && data && data[_this.Key]) {
+                            if (!disabled && data) {
                                 return true;
                             } else {
                                 return false;
@@ -147,12 +147,15 @@
                     _self.toolBtnList = data;
                 },
                 addtj: function (event) {
-                    if (!this.keyVal) {
-                        iview.Message.error("请选择数据");
-                        return;
-                    };
+                    if (this.data.length) {
+                        if (!this.keyVal) {
+                            iview.Message.error("请选择数据");
+                            return;
+                        };
+                    }                
                     if (!_this.IsValidTj())
                         return;
+                    _this.backData = DeepClone(this.dataParam);
                     _this.newRecord();
                     _this.AddTar = 'tj';
                     this.dataParam = {};
@@ -166,6 +169,7 @@
                     };
                     if (!_this.IsValidXj())
                         return;
+                    _this.backData = DeepClone(this.dataParam);
                     _this.newRecord();
                     _this.AddTar = 'xj';
                     this.dataParam = {};
@@ -177,6 +181,7 @@
                         iview.Message.error("请选择数据");
                         return;
                     };
+                    _this.backData = DeepClone(this.dataParam);
                     //修改的时候值传' ',否则全局变量值上次按钮的值
                     _this.AddTar = ' ';
                     this.disabled = _this.enabled(true);
@@ -253,8 +258,7 @@
             },
             Success: function (data) {
                 _this.vueObj.dataParam = data.rows[0];
-                _this.vueObj.keyVal = _this.vueObj.dataParam[_this.Key];
-                _this.backData = DeepClone(data.rows[0]);
+                _this.vueObj.keyVal = _this.vueObj.dataParam[_this.Key];              
                 callback && callback();
             }
         });
