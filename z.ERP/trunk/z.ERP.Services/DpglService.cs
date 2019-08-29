@@ -126,6 +126,7 @@ namespace z.ERP.Services
             if (!Data.NAME.IsEmpty())
                 sql += (" AND A.NAME like %" + Data.NAME + "%");
             DataTable shop = DbHelper.ExecuteTable(sql);
+            shop.NewEnumColumns<租用状态>("RENT_STATUS", "RENT_STATUSMC");
             return new Tuple<dynamic, DataTable>(shop.ToOneLine(), shop);
         }
         public object GetOneShop(SHOPEntity Data)
@@ -693,7 +694,7 @@ namespace z.ERP.Services
         public virtual UIResult TreeFloorData() {
             string branchsql = @"SELECT A.ID,A.NAME FROM BRANCH A WHERE  A.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ORDER BY ID";
             string regionsql = @"SELECT A.REGIONID,A.CODE,A.NAME,A.BRANCHID FROM REGION A WHERE  A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ") AND A.STATUS = 1 ORDER BY A.CODE";
-            string floorsql = @"SELECT A.ID FLOORID,A.CODE,A.NAME,A.REGIONID FROM FLOOR A WHERE  A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ") and STATUS = 1 ORDER BY A.CODE";
+            string floorsql = @"SELECT A.ID FLOORID,A.CODE,A.NAME,A.REGIONID FROM FLOOR A WHERE  A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ") and A.ID IN (" + GetPermissionSql(PermissionType.Floor) + ") and STATUS = 1 ORDER BY A.CODE";
             DataTable branchdata = DbHelper.ExecuteTable(branchsql);
             DataTable regiondata = DbHelper.ExecuteTable(regionsql);
             DataTable floordata = DbHelper.ExecuteTable(floorsql);
@@ -743,12 +744,12 @@ namespace z.ERP.Services
             #endregion
             return new UIResult(treeList);
         }
-        public Tuple<dynamic, List<MAPTITLEEntity>> GetInitMAPDATA(MAPFLOORINFOEntity data) {
+        public Tuple<dynamic, List<MAPTITLEEntity>> GetInitMAPDATA(string floorid, string shopstatus) {
             MAPFLOORINFOEntity LISTMAPFLOORINFO = new MAPFLOORINFOEntity();
             List<MAPSHOP> mapshoplist= new List<MAPSHOP>();
             List<MAPTITLEEntity> maptitlelist = new List<MAPTITLEEntity>();           
             //floor
-            var floor = GETFLOORDATA(data.FLOORID);   //获取地板模块信息
+            var floor = GETFLOORDATA(floorid);   //获取地板模块信息
             if (floor.Rows.Count>0) {
                 MAPSHOP floori = new MAPSHOP();
                 floori.TYPE = "floor";    //类型 地板
@@ -762,10 +763,10 @@ namespace z.ERP.Services
                 mapshoplist.Add(floori);
                 LISTMAPFLOORINFO.BRANCHID = floor.Rows[0]["BRANCHID"].ToString();
                 LISTMAPFLOORINFO.REGIONID = floor.Rows[0]["REGIONID"].ToString();
-                LISTMAPFLOORINFO.FLOORID = data.FLOORID;
+                LISTMAPFLOORINFO.FLOORID = floorid;
             }
             //shop
-            var shop = GETSHOPDATA(data.FLOORID);
+            var shop = GETSHOPDATA(floorid, shopstatus);
             if (shop.Rows.Count>0) {
                 foreach (DataRow item in shop.Rows) {
                     MAPSHOP shopi = new MAPSHOP();
@@ -789,6 +790,11 @@ namespace z.ERP.Services
                 }
             }
             LISTMAPFLOORINFO.MAPSHOPLIST = mapshoplist;
+            //已租，未租数量
+            var ss= GETRENTCOUNT(floorid);
+            LISTMAPFLOORINFO.NOT_RENT = ss.Rows[0]["RENT"].ToString();
+            LISTMAPFLOORINFO.IS_RENT = ss.Rows[1]["RENT"].ToString();
+
             return new Tuple<dynamic, List<MAPTITLEEntity>>(LISTMAPFLOORINFO, maptitlelist);
         }
         public DataTable GETFLOORDATA(string FLOORID) {
@@ -800,7 +806,7 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(SQL);
             return dt;
         }
-        public DataTable GETSHOPDATA( string FLOORID)
+        public DataTable GETSHOPDATA( string FLOORID,string shopstatus)
         {
             string SQL = @"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS,C.COLOR,NVL(MT.NAME,' ') MERCHANTNAME
                     FROM MAPSHOPDATA M
@@ -813,6 +819,17 @@ namespace z.ERP.Services
             {
                 SQL += " WHERE S.FLOORID =" + FLOORID + " ";
             }
+            if (!shopstatus.IsEmpty())
+            {
+                SQL += " AND S.RENT_STATUS IN (" + shopstatus + ") ";
+            }
+            DataTable dt = DbHelper.ExecuteTable(SQL);
+            return dt;
+        }
+        public DataTable GETRENTCOUNT(string FLOORID)
+        {
+            string SQL = @"SELECT COUNT(1) RENT FROM SHOP WHERE STATUS=2 AND RENT_STATUS=1 AND FLOORID="+ FLOORID +" UNION ALL "
+                            + "SELECT COUNT(1) RENT FROM SHOP WHERE STATUS=2 AND RENT_STATUS=2 AND FLOORID=" + FLOORID + "";
             DataTable dt = DbHelper.ExecuteTable(SQL);
             return dt;
         }

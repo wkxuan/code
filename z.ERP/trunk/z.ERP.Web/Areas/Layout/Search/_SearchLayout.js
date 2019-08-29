@@ -12,7 +12,8 @@
     this.IsValidSrch = function () {
         return true;
     }
-
+    this.service = "";
+    this.method = "";
     this.mountedInit = function () { }
 
     this.vue = function VueOperate() {
@@ -150,9 +151,7 @@
 
     this.vueInit = function () {
         _this.searchParam = {};
-        _this.screenParam = {};
-        _this.service = "";
-        _this.method = "";
+        _this.screenParam = {};   
     };
 
     setTimeout(function () {

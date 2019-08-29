@@ -129,6 +129,7 @@
                 add: function (event) {
                     let _self = this;
                     _this.backData = DeepClone(_self.dataParam);
+                    _self.dataParam = ClearObject(_self.dataParam);
                     this.disabled = true;
                     _this.clearKey();
                     _this.newRecord();
@@ -158,8 +159,13 @@
                 quit: function (event) {
                     let _self = this;
                     _.MessageBox("确认放弃正在编辑的内容？", function () {
+                        let flag = false;
                         for (let item in _this.backData) {
+                            flag = true;
                             _self.dataParam[item] = _this.backData[item];
+                        }
+                        if (!flag) {
+                            _self.dataParam = ClearObject(_self.dataParam);
                         }
                         _self.disabled = false;
                     });

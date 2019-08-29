@@ -132,17 +132,16 @@
                 add: function () {
                     let _self = this;
                     _this.backData = DeepClone(_self.dataParam);
-                    _self.disabled = true;
+                    _self.disabled = _this.enabled(true);
                     _self.branchDisabled = false;
-                    _this.clearKey();
-                    _this.dataParam.BILLID = null;
+                    _self.dataParam = ClearObject(_self.dataParam);
                     _this.newRecord();                 
                 },
                 //编辑
                 edit: function () {
                     let _self = this;
                     _this.backData = DeepClone(_self.dataParam);
-                    _self.disabled = true;
+                    _self.disabled = _this.enabled(true);
                     _self.branchDisabled = false;
                 },
                 //删除
@@ -165,7 +164,7 @@
                 abandon: function () {
                     let _self = this;
                     _.MessageBox("确认放弃正在编辑的内容？", function () {
-                        _self.disabled = false;
+                        _self.disabled = _this.enabled(false);
                         _self.branchDisabled = false;
                         let flag = false;
                         for (let item in _this.backData) {
@@ -173,11 +172,11 @@
                             _self.dataParam[item] = _this.backData[item];
                         }
                         if (!flag) {
-                            _this.clearKey();
+                            _self.dataParam = ClearObject(_self.dataParam);
                         }
                         _this.afterAbandon();
                     }, function () {
-                        _self.disabled = true;
+                        _self.disabled = _this.enabled(true);
                     });
                 },
                 //存档
@@ -228,7 +227,7 @@
         if (editDetail.Id) {
             editDetail.showOne(editDetail.Id);
         } else {
-            _this.veObj.disabled = true;
+            _this.veObj.disabled = _this.enabled(true);
         }
     }, 200);
 }

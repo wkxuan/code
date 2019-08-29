@@ -10,7 +10,7 @@
     editDetail.service = "DpglService";
     editDetail.method = "GetAssetChange";
     editDetail.Key = 'BILLID';
-    editDetail.dataParam.CHANGE_TYPE = 1;
+    editDetail.dataParam.CHANGE_TYPE = 2;  //资产面积
     editDetail.screenParam.componentVisible = false;
     editDetail.screenParam.showPopShop = false;
     editDetail.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";

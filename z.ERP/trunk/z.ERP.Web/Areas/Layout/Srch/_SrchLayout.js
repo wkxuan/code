@@ -19,7 +19,8 @@
     this.canEdit = function (mess) {
         return true;
     }
-
+    this.service = "";
+    this.method = "";
     this.mountedInit = function () { }
     //是否显示可视化数据折叠面板
     this.echartResult = false;
@@ -159,8 +160,6 @@
     this.vueInit = function () {
         _this.searchParam = {};
         _this.screenParam = {};
-        _this.service = "";
-        _this.method = "";
     };
 
     setTimeout(function () {

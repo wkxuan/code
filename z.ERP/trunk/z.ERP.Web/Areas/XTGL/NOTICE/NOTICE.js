@@ -1,15 +1,4 @@
 ﻿define.beforeVue = function () {
-    _.Ajax('GetBRANCH', {
-        1: 1
-    }, function (data) {
-        let List = $.map(data, item => {
-            return {
-                label: item.Value,
-                value: item.Key
-            }
-        });
-        define.screenParam.BRANCHID = List;
-    });
     define.screenParam.colDef = [
     { title: '编号', key: 'ID', width: 80 },
     { title: '通知标题', key: 'TITLE',tooltip :true},
@@ -29,7 +18,11 @@
         }, text);
     }}
     ];
+    define.dataParam.ID = null;
+    define.dataParam.STATUS = null;
+    define.dataParam.TITLE = null;
     define.dataParam.NOTICE_BRANCH = [];
+    define.screenParam.BRANCHID = [];
     define.service = "XtglService";
     define.method = "GetNOTICE";
     define.methodList = "GetNOTICE";
@@ -55,9 +48,8 @@ define.showOne = function (data, callback) {
         Data: { ID: data }
     }, function (data) {
         define.dataParam = data.notice;
-        Vue.set(define.dataParam, data.notice);       
         let s = $.map(data.branch, item=> {
-            return item.ID+"";
+            return item.ID + "";
         });
         define.dataParam.BRANCHID = s;
         let localData = [];
@@ -66,7 +58,10 @@ define.showOne = function (data, callback) {
                 localData.push({ BRANCHID: data.branch[i].ID });
             };
         }
-        Vue.set(define.dataParam, 'NOTICE_BRANCH', localData);
+        define.dataParam.NOTICE_BRANCH = localData;
+
+        define.myve.dataParam = define.dataParam;
+
         callback && callback();
     });
 }
@@ -75,6 +70,19 @@ define.newRecord = function () {
     define.dataParam.CONTENT = "";
     define.dataParam.NOTICE_BRANCH = [];
 }
+define.mountedInit = function () {
+    _.Ajax('GetBRANCH', {
+        1: 1
+    }, function (data) {
+        let List = $.map(data, item => {
+            return {
+                label: item.Value,
+                value: item.Key
+            }
+        });
+        define.screenParam.BRANCHID = List;
+    });
+};
 
 define.IsValidSave = function () {
     if (!define.dataParam.STATUS) {

@@ -1,46 +1,11 @@
 ﻿editDetail.beforeVue = function () {
-    editDetail.others = true;
-    editDetail.branchid = true;
-    editDetail.Key = 'BILLID';
     //初始化弹窗所要传递参数
-
     editDetail.screenParam.showPopSyyuser = false;
     editDetail.screenParam.srcPopSyyuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
-
     editDetail.screenParam.showPopGoods = false;
     editDetail.screenParam.srcPopGoods = __BaseUrl + "/" + "Pop/Pop/PopGoodsShopList/";
-
-
     editDetail.screenParam.popParam = {};
-    editDetail.dataParam.BILLID = null;
-    editDetail.dataParam.BRANCHID = null;
-    editDetail.dataParam.POSNO = null;
-    editDetail.dataParam.ACCOUNT_DATE = null;
-    editDetail.dataParam.STATUS = null;
-    editDetail.dataParam.CASHIERID = null;
-    editDetail.dataParam.CLERKID = null;
-    editDetail.dataParam.DESCRIPTION = null;
-    _.Ajax('GetPay', {
-        1:1
-    }, function (data) {
-        let payList = $.map(data, item => {
-            return {
-                label: item.NAME,
-                value: item.PAYID
-            }
-        });
-        editDetail.screenParam.colDef = [        
-            { title: "商品代码", key: "GOODSDM"},
-            { title: '商品名称', key: 'NAME' },
-            { title: '商铺代码', key: 'CODE'},
-            { title: '收款方式', key: 'PAYID',cellType: "select", enableCellEdit: true, selectList: payList},
-            { title: '收款金额', key: 'AMOUNT', cellType: "input", cellDataType: "number"}
-        ]
-    });
-    if (!editDetail.dataParam.SALEBILLITEM) {
-        editDetail.dataParam.SALEBILLITEM = [{
-        }]
-    };
+    editDetail.screenParam.colDef = [];
 }
 
 editDetail.showOne = function (data, callback) {
@@ -52,12 +17,11 @@ editDetail.showOne = function (data, callback) {
         callback && callback(data);
     });
 }
-
 ///html中绑定方法
 editDetail.otherMethods = {
-    SelSyysuser: function () {        
+    SelSyysuser: function () {
         editDetail.screenParam.showPopSyyuser = true;
-        editDetail.screenParam.popParam = { USER_TYPE: "1"};
+        editDetail.screenParam.popParam = { USER_TYPE: "1" };
         btnFlag = "SYYFlag";
     },
     SelYyysuser: function () {
@@ -66,13 +30,12 @@ editDetail.otherMethods = {
         btnFlag = "YYYFlag";
     },
     srchColGoods: function () {
-        if (!editDetail.dataParam.CLERKID)
-        {
+        if (!editDetail.dataParam.CLERKID) {
             iview.Message.info("营业员不能为空!");
-            exit;
+            return;
         }
         editDetail.screenParam.showPopGoods = true;
-        editDetail.screenParam.popParam = { YYY: editDetail.dataParam.CLERKID, STATUS:"2"};
+        editDetail.screenParam.popParam = { YYY: editDetail.dataParam.CLERKID, STATUS: "2" };
     },
     delColGoods: function () {
         var selectton = this.$refs.refGroup.getSelection();
@@ -87,6 +50,25 @@ editDetail.otherMethods = {
                 }
             }
         }
+    },
+    initItem: function () {
+        _.Ajax('GetPay', {
+            1: 1
+        }, function (data) {
+            let payList = $.map(data, item => {
+                return {
+                    label: item.NAME,
+                    value: item.PAYID
+                }
+            });
+            editDetail.screenParam.colDef = [
+                { title: "商品代码", key: "GOODSDM" },
+                { title: '商品名称', key: 'NAME' },
+                { title: '商铺代码', key: 'CODE' },
+                { title: '收款方式', key: 'PAYID', cellType: "select", enableCellEdit: true, selectList: payList },
+                { title: '收款金额', key: 'AMOUNT', cellType: "input", cellDataType: "number" }
+            ]
+        });
     }
 }
 //数据初始化
@@ -107,6 +89,7 @@ editDetail.clearKey = function () {
 }
 //按钮初始化
 editDetail.mountedInit = function () {
+    editDetail.otherMethods.initItem();
     editDetail.btnConfig = [{
         id: "add",
         authority: "10500401"
@@ -138,7 +121,7 @@ editDetail.mountedInit = function () {
             });
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.STATUS < 2) {
+            if (!disabled && data.STATUS == 1) {
                 return true;
             } else {
                 return false;
@@ -147,10 +130,8 @@ editDetail.mountedInit = function () {
         isNewAdd: true
     }];
 };
-
 ///接收弹窗返回参数
 editDetail.popCallBack = function (data) {
-
     if (editDetail.screenParam.showPopSyyuser) {
         editDetail.screenParam.showPopSyyuser = false;
         if (btnFlag == "SYYFlag") {
@@ -164,29 +145,31 @@ editDetail.popCallBack = function (data) {
     }
     if (editDetail.screenParam.showPopGoods) {
         editDetail.screenParam.showPopGoods = false;
-        if (editDetail.dataParam.SALEBILLITEM.length > 0) {
-            if (!editDetail.dataParam.SALEBILLITEM[0].GOODSID) {
-                editDetail.dataParam.SALEBILLITEM.splice(0, 1);
+        let itemData = editDetail.dataParam.SALEBILLITEM;
+        for (let i = 0; i < data.sj.length; i++) {
+            if (itemData.filter(function (item) { return (data.sj[i].GOODSID == item.GOODSID) }).length == 0) {
+                itemData.push({
+                    GOODSID: data.sj[i].GOODSID,
+                    GOODSDM: data.sj[i].GOODSDM,
+                    NAME: data.sj[i].NAME,
+                    CODE: data.sj[i].CODE,
+                    SHOPID: data.sj[i].SHOPID,
+                    QUANTITY: 1,
+                    PAYID: null,
+                    AMOUNT: 0
+                });
             }
-        }
-        for (var i = 0; i < data.sj.length; i++) {
-            editDetail.dataParam.SALEBILLITEM.push({
-                GOODSID: data.sj[i].GOODSID,
-                GOODSDM: data.sj[i].GOODSDM,
-                NAME: data.sj[i].NAME,
-                CODE: data.sj[i].CODE,
-                SHOPID: data.sj[i].SHOPID,
-                QUANTITY: 1,
-                PAYID: null,
-                AMOUNT:0
-            });
-        }
+        };
     }
 }
 
 editDetail.IsValidSave = function () {
-
+    if (!editDetail.dataParam.BRANCHID) {
+        iview.Message.info("请确认门店!");
+        return false;
+    };
     editDetail.dataParam.POSNO = ("000000" + editDetail.dataParam.BRANCHID + '0999').substr(-6);
+    
     if (!editDetail.dataParam.ACCOUNT_DATE) {
         iview.Message.info("请确认记账日期!");
         return false;
@@ -200,10 +183,18 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请确认营业员!");
         return false;
     };
-    if (editDetail.dataParam.SALEBILLITEM.length == 0) {
+    let itemData = editDetail.dataParam.SALEBILLITEM;
+
+    if (!itemData.length) {
         iview.Message.info("请确认销售明细!");
         return false;
-    };
+    }
+    for (let i = 0; i < itemData.length; i++) {
+        if (!itemData[i].PAYID) {
+            iview.Message.info(`请确认商品“${itemData[i].NAME}”的收款方式!`);
+            return false;
+        }
+    }
 
     return true;
 }

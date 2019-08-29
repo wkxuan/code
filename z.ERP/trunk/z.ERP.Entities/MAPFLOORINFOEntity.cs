@@ -11,6 +11,8 @@ namespace z.ERP.Entities
         public string BRANCHID { set; get; }
         public string REGIONID { set; get; }
         public string FLOORID { set; get; }
+        public string IS_RENT { set; get; }
+        public string NOT_RENT { set; get; }
         public List<MAPSHOP> MAPSHOPLIST { set; get; }
     }
     public class MAPSHOP {
