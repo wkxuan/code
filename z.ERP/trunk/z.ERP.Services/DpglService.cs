@@ -126,6 +126,7 @@ namespace z.ERP.Services
             if (!Data.NAME.IsEmpty())
                 sql += (" AND A.NAME like %" + Data.NAME + "%");
             DataTable shop = DbHelper.ExecuteTable(sql);
+            shop.NewEnumColumns<租用状态>("RENT_STATUS", "RENT_STATUSMC");
             return new Tuple<dynamic, DataTable>(shop.ToOneLine(), shop);
         }
         public object GetOneShop(SHOPEntity Data)
