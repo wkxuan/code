@@ -244,7 +244,7 @@ namespace z.ERP.Services
             item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
             item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
@@ -277,7 +277,7 @@ namespace z.ERP.Services
                 item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
                 item.HasKey("MERCHANTID", a => sqlsum += $" and G.MERCHANTID LIKE '%{a}%'");
                 item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
-                item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+                item.HasKey("CATEGORYCODE", a => sqlsum += $" and C.CATEGORYCODE LIKE '{a}%'");
                 item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
                 item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
                 item.HasKey("YEARMONTH_START", a => sqlsum += $" and D.YEARMONTH >= {a}");
@@ -320,7 +320,7 @@ namespace z.ERP.Services
             item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
             item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
@@ -355,7 +355,7 @@ namespace z.ERP.Services
                 item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
                 item.HasKey("MERCHANTID", a => sqlsum += $" and G.MERCHANTID LIKE '%{a}%'");
                 item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
-                item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+                item.HasKey("CATEGORYCODE", a => sqlsum += $" and C.CATEGORYCODE LIKE '{a}%'");
                 item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
                 item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
                 item.HasKey("YEARMONTH_START", a => sqlsum += $" and D.YEARMONTH >= {a}");
@@ -399,7 +399,7 @@ namespace z.ERP.Services
             item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
             item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
@@ -439,7 +439,7 @@ namespace z.ERP.Services
             item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
             item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");

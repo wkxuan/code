@@ -30,15 +30,15 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            商品分类
+            品类
         </i-col>
         <i-col span="6" class="RowText">
             @{
                 RenderControl(new CascaderRender()
                 {
-                    vModel = "searchParam.KINDID",
-                    Data = "screenParam.dataKind",
-                    Change = "changeKind",
+                    vModel = "screenParam.CATEGORY",
+                    Data = "screenParam.CATEData",
+                    Change = "changeCate",
                     Not_level_last = true
                 });
             }
