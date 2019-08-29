@@ -134,8 +134,7 @@
                     _this.backData = DeepClone(_self.dataParam);
                     _self.disabled = true;
                     _self.branchDisabled = false;
-                    _this.clearKey();
-                    _this.dataParam.BILLID = null;
+                    _self.dataParam = _self.clearObj(_self.dataParam);
                     _this.newRecord();                 
                 },
                 //编辑
@@ -173,7 +172,7 @@
                             _self.dataParam[item] = _this.backData[item];
                         }
                         if (!flag) {
-                            _this.clearKey();
+                            _self.dataParam = _self.clearObj(_self.dataParam);
                         }
                         _this.afterAbandon();
                     }, function () {
@@ -198,6 +197,16 @@
                 },
                 branchChange: function () {
                     _this.branchChange();
+                },
+                clearObj: function (obj) {
+                    for (let item in obj) {
+                        if (Array.isArray(obj[item])) {
+                            obj[item] = [];
+                        } else {
+                            obj[item] = null;
+                        }
+                    }
+                    return obj;
                 }
             }
         };
