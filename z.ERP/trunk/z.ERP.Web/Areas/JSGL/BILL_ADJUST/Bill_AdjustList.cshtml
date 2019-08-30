@@ -35,15 +35,13 @@
             债权发生月
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="searchParam.NIANYUE=$event"
-                         v-model="searchParam.NIANYUE"></date-picker>
+            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE"></yx-year-month-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             收付实现月
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="searchParam.YEARMONTH=$event"
-                         v-model="searchParam.YEARMONTH"></date-picker>
+            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH"></yx-year-month-picker>
         </i-col>
 
         @*<i-col span="2" class="RowTitle">账单类型</i-col>

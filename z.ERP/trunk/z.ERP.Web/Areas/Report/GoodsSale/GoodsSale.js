@@ -54,8 +54,9 @@ srch.beforeVue = function () {
     srch.screenParam.srcPopBrand = __BaseUrl + "/Pop/Pop/PopBrandList/";
 
     srch.screenParam.popParam = {};
-    srch.screenParam.KINDID = [];
     srch.searchParam.SrchTYPE = 1;
+    srch.searchParam.CATEGORYCODE = "";
+    srch.screenParam.CATEGORY = [];
 
     srch.screenParam.echartType = echartTypeList.concat({ label: "按日期", value: "RQ" });
     srch.screenParam.echartRadioVal = "CONTRACTID";
@@ -65,7 +66,7 @@ srch.beforeVue = function () {
 };
 srch.newCondition = function () {
     srch.searchParam.BRANCHID = "";
-    srch.searchParam.KINDID = "";
+    srch.searchParam.CATEGORYCODE = "";
     srch.searchParam.MERCHANTNAME = "";
     srch.searchParam.GOODSDM = "";
     srch.searchParam.GOODSNAME = "";
@@ -82,12 +83,12 @@ srch.echartInit = function (data) {
 };
 
 srch.mountedInit = function () {
-    _.Ajax('SearchKind', {
+    _.Ajax('SearchCate', {
         Data: {}
     }, function (data) {
-        Vue.set(srch.screenParam, "dataKind", data.treeorg.Obj);
+        Vue.set(srch.screenParam, "CATEData", data.treeOrg.Obj);
     });
-};
+}
 
 srch.otherMethods = {
     SelMerchant: function () {
@@ -99,8 +100,8 @@ srch.otherMethods = {
     SelBrand: function () {
         srch.screenParam.showPopBrand = true;
     },
-    changeKind: function (value, selectedData) {
-        srch.screenParam.KINDID = value[value.length - 1];
+    changeCate: function (value, selectedData) {
+        srch.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
     },
     changeSrchType: function (value) {
         srch.screenParam.echartData = [];
