@@ -121,8 +121,8 @@ namespace z.ERP.Services
             if (int.Parse(employee.Id) > 0)
             {
                 sqlgroup += @" and MODULECODE in (
-                                        SELECT DISTINCT SUBSTR(A.MODULECODE,1,4) FROM USERMODULE A,ROLE_MENU B,USER_ROLE C
-                                        WHERE A.MENUID=B.MENUID AND B.ROLEID=C.ROLEID
+                                        SELECT DISTINCT SUBSTR(B.MODULECODE,1,4) FROM ROLE_MENU B,USER_ROLE C
+                                        WHERE B.ROLEID=C.ROLEID
                                         AND C.USERID=" + employee.Id + ")";
             }
             if (int.Parse(data.PLATFORMID)==1)
