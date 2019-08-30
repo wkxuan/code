@@ -640,7 +640,7 @@ namespace z.ERP.Services
 
 
             item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and R.ID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and R.ID in ({a})");
             item.HasKey("BRANCHID", a => sql += $" and Y.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and Y.CONTRACTID = '{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
@@ -689,8 +689,8 @@ namespace z.ERP.Services
             }
 
             item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and R.ID = {a}");
-            item.HasKey("BRANCHID", a => sql += $" and Y.BRANCHID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and R.ID in ({a})");
+                   item.HasKey("BRANCHID", a => sql += $" and Y.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and Y.CONTRACTID = '{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
@@ -752,7 +752,7 @@ namespace z.ERP.Services
             }
 
             item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and F.ID in ({a})");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
@@ -803,7 +803,7 @@ namespace z.ERP.Services
 
 
             item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and F.ID in ({a})");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
@@ -1174,7 +1174,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID in ({a})");
             String ISPAYS = "";
             item.HasKey("ISpay", a => ISPAYS = $"{a}");
             if (!string.IsNullOrEmpty(ISPAYS))
@@ -1214,7 +1214,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID in ({a})");
             String ISPAYS = "";
             item.HasKey("ISpay", a => ISPAYS = $"{a}");
             if (!string.IsNullOrEmpty(ISPAYS))
@@ -1255,7 +1255,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID in ({a})");
             String ISPAYS = "";
             item.HasKey("ISpay", a => ISPAYS = $"{a}");
             if (!string.IsNullOrEmpty(ISPAYS))
@@ -1299,7 +1299,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID in ({a})");
             String ISPAYS = "";
             item.HasKey("ISpay", a => ISPAYS = $"{a}");
             if (!string.IsNullOrEmpty(ISPAYS))
@@ -1529,7 +1529,6 @@ namespace z.ERP.Services
         }
         public string GoodsSaleDetailOutput(SearchItem item)
         {
-
             string sql = @" SELECT * 
                               FROM (select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,
                                            GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT,
@@ -1552,7 +1551,6 @@ namespace z.ERP.Services
             item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-
 
             sql += @" UNION ALL ";
 
@@ -1881,9 +1879,7 @@ namespace z.ERP.Services
                                         E.FEE_ACCOUNTID=F.ID AND
                                         A.BRANCHID =E.BRANCHID";
 
-
             sqlsum += "  AND A.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
 
             item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
             item.HasKey("MERCHANTID", a => sqlsum += $" and c.MERCHANTID ={a}");
@@ -1898,7 +1894,6 @@ namespace z.ERP.Services
             item.HasKey("STATUS", a => sqlsum += $" and A.STATUS = {a}");
             item.HasKey("CONTRACTID", a => sqlsum += $" and A.CONTRACTID = {a}");
             sqlsum += "     order by nianyue desc";
-
 
             DataTable dt = DbHelper.ExecuteTable(sqlsum);
             dt.NewEnumColumns<账单状态>("STATUS", "STATUSMC");
