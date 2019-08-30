@@ -39,8 +39,6 @@ editDetail.showOne = function (data, callback) {
         Data: { BILLID: data }
     }, function (data) {
         $.extend(editDetail.dataParam, data.billAdjust);
-        editDetail.dataParam.NIANYUE += "";
-        editDetail.dataParam.YEARMONTH += "";
         editDetail.dataParam.BILL_ADJUST_ITEM = data.billAdjustItem;
         callback && callback(data);
     });

@@ -14,7 +14,7 @@
             title: '操作', key: 'operate', onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10500401,
-                    title: '销售补录单',
+                    title: '销售补录单详情',
                     url: "SPGL/SALEBILL/SaleBillEdit/" + row.BILLID
                 });
             }
@@ -87,7 +87,7 @@ search.popCallBack = function (data) {
 search.addHref = function (row) {
     _.OpenPage({
         id: 105004,
-        title: '销售补录单',
+        title: '销售补录单详情',
         url: "SPGL/SALEBILL/SaleBillEdit/"
     })
 }

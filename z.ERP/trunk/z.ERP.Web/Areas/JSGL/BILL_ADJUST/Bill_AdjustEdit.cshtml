@@ -9,15 +9,13 @@
             权债发生月
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="dataParam.NIANYUE=$event"
-                         v-model="dataParam.NIANYUE" v-bind:disabled="!disabled"></date-picker>
+            <yx-year-month-picker v-bind:value.sync="dataParam.NIANYUE" v-bind:disabled="!disabled"></yx-year-month-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             收付实现月
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="dataParam.YEARMONTH=$event"
-                         v-model="dataParam.YEARMONTH" v-bind:disabled="!disabled"></date-picker>
+            <yx-year-month-picker v-bind:value.sync="dataParam.YEARMONTH" v-bind:disabled="!disabled"></yx-year-month-picker>
         </i-col>
     </row>
 

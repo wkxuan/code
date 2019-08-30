@@ -132,13 +132,7 @@
         </i-col>
         <i-col span="3" class="RowTitle">租用状态</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new EnumDropDownListRender<租用状态>()
-                {
-                    vModel = "dataParam.RENT_STATUS",
-                    Enable = true
-                });
-            }
+            <i-input v-model="dataParam.RENT_STATUSMC" disabled />
         </i-col>
     </row>
 }

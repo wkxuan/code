@@ -1053,11 +1053,8 @@ namespace z.ERP.Services
             string sql = $@"SELECT STATION.STATIONBH,STATION.ENCRYPTION,BRANCH.NAME 
                         FROM STATION 
                         LEFT JOIN BRANCH ON STATION.BRANCHID=BRANCH.ID";
-
-
-            sql += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             sql += " WHERE TYPE = 3 ";
-
+            sql += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BRANCHID LIKE '%{a}%'");
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH LIKE '%{a}%'");
             int count;
@@ -1070,12 +1067,9 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT STATION.STATIONBH,STATION.ENCRYPTION,BRANCH.NAME 
                         FROM STATION 
-                        LEFT JOIN BRANCH ON STATION.BRANCHID=BRANCH.ID";
-                        
-
-            sql += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                        LEFT JOIN BRANCH ON STATION.BRANCHID=BRANCH.ID";            
                sql +=" WHERE TYPE = 3 ";
-
+               sql += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BRANCHID LIKE '%{a}%'");
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH LIKE '%{a}%'");
          

@@ -88,8 +88,7 @@
             年月
         </i-col>
         <i-col span="6"  class="RowText">
-            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="searchParam.NIANYUE=$event"
-                         v-model="searchParam.NIANYUE"></date-picker>
+            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE"></yx-year-month-picker>
         </i-col>
     </row>
     <row>

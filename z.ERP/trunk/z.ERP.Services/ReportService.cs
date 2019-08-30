@@ -244,7 +244,7 @@ namespace z.ERP.Services
             item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
             item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
@@ -277,7 +277,7 @@ namespace z.ERP.Services
                 item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
                 item.HasKey("MERCHANTID", a => sqlsum += $" and G.MERCHANTID LIKE '%{a}%'");
                 item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
-                item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+                item.HasKey("CATEGORYCODE", a => sqlsum += $" and C.CATEGORYCODE LIKE '{a}%'");
                 item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
                 item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
                 item.HasKey("YEARMONTH_START", a => sqlsum += $" and D.YEARMONTH >= {a}");
@@ -320,7 +320,7 @@ namespace z.ERP.Services
             item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
             item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
@@ -355,7 +355,7 @@ namespace z.ERP.Services
                 item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
                 item.HasKey("MERCHANTID", a => sqlsum += $" and G.MERCHANTID LIKE '%{a}%'");
                 item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
-                item.HasArrayKey("KINDID", a => sqlsum += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+                item.HasKey("CATEGORYCODE", a => sqlsum += $" and C.CATEGORYCODE LIKE '{a}%'");
                 item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
                 item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
                 item.HasKey("YEARMONTH_START", a => sqlsum += $" and D.YEARMONTH >= {a}");
@@ -399,7 +399,7 @@ namespace z.ERP.Services
             item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
             item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
@@ -439,7 +439,7 @@ namespace z.ERP.Services
             item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
             item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
@@ -640,7 +640,7 @@ namespace z.ERP.Services
 
 
             item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and R.ID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and R.ID in ({a})");
             item.HasKey("BRANCHID", a => sql += $" and Y.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and Y.CONTRACTID = '{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
@@ -689,8 +689,8 @@ namespace z.ERP.Services
             }
 
             item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and R.ID = {a}");
-            item.HasKey("BRANCHID", a => sql += $" and Y.BRANCHID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and R.ID in ({a})");
+                   item.HasKey("BRANCHID", a => sql += $" and Y.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and Y.CONTRACTID = '{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
@@ -752,7 +752,7 @@ namespace z.ERP.Services
             }
 
             item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and F.ID in ({a})");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
@@ -803,7 +803,7 @@ namespace z.ERP.Services
 
 
             item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
+            item.HasKey("FLOORID", a => sql += $" and F.ID in ({a})");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
@@ -1127,7 +1127,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID in ({a})");
             String ISPAYS = "";
             item.HasKey("ISpay", a => ISPAYS = $"{a}");
             if (!string.IsNullOrEmpty(ISPAYS))
@@ -1167,7 +1167,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID in ({a})");
             String ISPAYS = "";
             item.HasKey("ISpay", a => ISPAYS = $"{a}");
             if (!string.IsNullOrEmpty(ISPAYS))
@@ -1208,7 +1208,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID in ({a})");
             String ISPAYS = "";
             item.HasKey("ISpay", a => ISPAYS = $"{a}");
             if (!string.IsNullOrEmpty(ISPAYS))
@@ -1252,7 +1252,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID = {a}");
+            item.HasKey("TRIMID", a => sql += $" and FEESUBJECT.TRIMID in ({a})");
             String ISPAYS = "";
             item.HasKey("ISpay", a => ISPAYS = $"{a}");
             if (!string.IsNullOrEmpty(ISPAYS))
@@ -1498,7 +1498,6 @@ namespace z.ERP.Services
         }
         public string GoodsSaleDetailOutput(SearchItem item)
         {
-
             string sql = @" SELECT * 
                               FROM (select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,
                                            GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT,
@@ -1521,7 +1520,6 @@ namespace z.ERP.Services
             item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-
 
             sql += @" UNION ALL ";
 
@@ -1798,7 +1796,7 @@ namespace z.ERP.Services
         #region 费用账单查询
         public DataGridResult Bill_Src(SearchItem item)
         {
-            string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME,A.BILLID,D.NAME FEENAME, A.CONTRACTID, 
+            string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME,A.BILLID, D.NAME FEENAME, A.CONTRACTID, 
                                          A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,
                                         A.RETURN_MONEY,A.START_DATE,A.END_DATE,A.TYPE,A.STATUS,F.NAME UNITNAME，A.DESCRIPTION
                                         FROM BILL A, BRANCH B, MERCHANT C, FEESUBJECT D, FEESUBJECT_ACCOUNT E,FEE_ACCOUNT F
@@ -1809,23 +1807,17 @@ namespace z.ERP.Services
                                         E.FEE_ACCOUNTID=F.ID AND
                                         A.BRANCHID =E.BRANCHID";
 
-
             sqlsum += "  AND A.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
 
             item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
             item.HasKey("MERCHANTID", a => sqlsum += $" and c.MERCHANTID ={a}");
             //item.HasKey("MERCHANTNAME", a => sqlsum += $" and c.NAME ={a}");
             item.HasKey("BILLID", a => sqlsum += $" and a.BILLID ={a}");
-            item.HasKey("TRIMID", a => sqlsum += $" and D.TRIMID ={a}");
-            // item.HasKey("START_DATE", a => sqlsum += $" and a.START_DATE ={a}");
-            //  item.HasKey("END_DATE", a => sqlsum += $" and a.END_DATE ={a}");
-            //item.HasDateKey("YEARMONTH", a => sqlsum += $" and A.YEARMONTH ={a}");
-            item.HasKey("YEARMONTH_START", a => sqlsum += $" and A.YEARMONTH = {a}");
+            item.HasKey("TRIMID", a => sqlsum += $" and d.TRIMID in ({a})");
+             item.HasKey("YEARMONTH_START", a => sqlsum += $" and A.YEARMONTH = {a}");
             //item.HasKey("YEARMONTH_END", a => sqlsum += $" and A.YEARMONTH <= {a}");
             item.HasKey("NIANYUE_START", a => sqlsum += $" and A.NIANYUE = {a}");
             //item.HasKey("NIANYUE_END", a => sqlsum += $" and A.NIANYUE <= {a}");
-            //item.HasDateKey("NIANYUE", a => sqlsum += $" and A.NIANYUE ={a}");
             item.HasKey("TYPE", a => sqlsum += $" and A.TYPE = {a}");
             item.HasKey("STATUS", a => sqlsum += $" and A.STATUS = {a}");
             item.HasKey("CONTRACTID", a => sqlsum += $" and A.CONTRACTID = {a}");
@@ -1839,12 +1831,13 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
 
         }
-        #endregion
 
-        #region 费用账单查询导出
-        public string Bill_SrcOutput(SearchItem item)
+    #endregion
+
+    #region 费用账单查询导出
+    public string Bill_SrcOutput(SearchItem item)
         {
-            string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME,A.BILLID,D.NAME FEENAME, A.CONTRACTID, 
+            string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME, A.BILLID, D.NAME FEENAME, A.CONTRACTID, 
                                          A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,
                                         A.RETURN_MONEY,A.START_DATE,A.END_DATE,A.TYPE,A.STATUS,F.NAME UNITNAME，A.DESCRIPTION
                                         FROM BILL A, BRANCH B, MERCHANT C, FEESUBJECT D, FEESUBJECT_ACCOUNT E,FEE_ACCOUNT F
@@ -1855,28 +1848,21 @@ namespace z.ERP.Services
                                         E.FEE_ACCOUNTID=F.ID AND
                                         A.BRANCHID =E.BRANCHID";
 
-
             sqlsum += "  AND A.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
 
             item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
             item.HasKey("MERCHANTID", a => sqlsum += $" and c.MERCHANTID ={a}");
             //item.HasKey("MERCHANTNAME", a => sqlsum += $" and c.NAME ={a}");
             item.HasKey("BILLID", a => sqlsum += $" and a.BILLID ={a}");
-            item.HasKey("TRIMID", a => sqlsum += $" and D.TRIMID ={a}");
-            // item.HasKey("START_DATE", a => sqlsum += $" and a.START_DATE ={a}");
-            //  item.HasKey("END_DATE", a => sqlsum += $" and a.END_DATE ={a}");
-            //item.HasDateKey("YEARMONTH", a => sqlsum += $" and A.YEARMONTH ={a}");
+            item.HasKey("TRIMID", a => sqlsum += $" and D.TRIMID in ({a})");      
             item.HasKey("YEARMONTH_START", a => sqlsum += $" and A.YEARMONTH = {a}");
             //item.HasKey("YEARMONTH_END", a => sqlsum += $" and A.YEARMONTH <= {a}");
             item.HasKey("NIANYUE_START", a => sqlsum += $" and A.NIANYUE = {a}");
-            //item.HasKey("NIANYUE_END", a => sqlsum += $" and A.NIANYUE <= {a}");
-            //item.HasDateKey("NIANYUE", a => sqlsum += $" and A.NIANYUE ={a}");
+            //item.HasKey("NIANYUE_END", a => sqlsum += $" and A.NIANYUE <= {a}");  
             item.HasKey("TYPE", a => sqlsum += $" and A.TYPE = {a}");
             item.HasKey("STATUS", a => sqlsum += $" and A.STATUS = {a}");
             item.HasKey("CONTRACTID", a => sqlsum += $" and A.CONTRACTID = {a}");
             sqlsum += "     order by nianyue desc";
-
 
             DataTable dt = DbHelper.ExecuteTable(sqlsum);
             dt.NewEnumColumns<账单状态>("STATUS", "STATUSMC");

@@ -53,10 +53,7 @@
             methods: {
                 add: function (event) {
                     _this.backData = DeepClone(this.dataParam);
-                    let obj = this.dataParam;
-                    for (let item in obj) {
-                        obj[item] = null;
-                    }
+                    this.dataParam = ClearObject(this.dataParam);
                     this.disabled = _this.enabled(false);
                     _this.newRecord();
                 },
@@ -89,10 +86,7 @@
                             _self.dataParam[item]= _this.backData[item];
                         }
                         if (!flag) {
-                            let obj = _self.dataParam;
-                            for (let item in obj) {
-                                obj[item] = null;
-                            }
+                            _self.dataParam = ClearObject(_self.dataParam);
                         }
                         _self.disabled = _this.enabled(true);
                     });

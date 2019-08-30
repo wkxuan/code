@@ -7,7 +7,7 @@ editDetail.beforeVue = function () {
     editDetail.service = "DpglService";
     editDetail.method = "SearchAssetSpilt";
     editDetail.Key = 'BILLID';
-    editDetail.dataParam.CHANGE_TYPE = 3;
+    editDetail.dataParam.CHANGE_TYPE = 3;  //资产拆分
     editDetail.screenParam.componentVisible = false;
     editDetail.screenParam.showPopShop = false;
     editDetail.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
@@ -25,7 +25,7 @@ editDetail.beforeVue = function () {
     editDetail.screenParam.colDef2 = [
 
         {
-            title: "新店铺代码", key: 'ASSETCODE_NEW', width: 150, cellType: "input", cellDataType: "number",
+            title: "新店铺代码", key: 'ASSETCODE_NEW', width: 150, cellType: "input",
             onBlur: function (index, row, data) {
                 editDetail.dataParam.ASSETCHANGEITEM[index].ASSETCODE_NEW = row.ASSETCODE_NEW;
             }
