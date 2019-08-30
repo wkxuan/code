@@ -831,7 +831,7 @@ namespace z.ERP.Services
         public DataGridResult PayTypeSale(SearchItem item)
         {
             //历史交易数据
-            String sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,HIS_SALE.SALE_TIME,HIS_SALE.DEALID,HIS_SALE.POSNO,PAY.NAME PAYNAME,HIS_SALE_GOODS_PAY.AMOUNT
+            String sql = @"SELECT DISTINCT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,HIS_SALE.SALE_TIME,HIS_SALE.DEALID,HIS_SALE.POSNO,PAY.NAME PAYNAME,HIS_SALE_GOODS_PAY.AMOUNT
                          FROM HIS_SALE 
                         LEFT JOIN HIS_SALE_GOODS_PAY ON HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=HIS_SALE_GOODS_PAY.PAYID
@@ -857,7 +857,7 @@ namespace z.ERP.Services
 
 
             //当天交易数据
-            String sql1 = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,SALE.SALE_TIME,SALE.DEALID,SALE.POSNO,PAY.NAME PAYNAME,SALE_GOODS_PAY.AMOUNT
+            String sql1 = @"SELECT DISTINCT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,SALE.SALE_TIME,SALE.DEALID,SALE.POSNO,PAY.NAME PAYNAME,SALE_GOODS_PAY.AMOUNT
                          FROM SALE 
                         LEFT JOIN SALE_GOODS_PAY ON SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE.POSNO=SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=SALE_GOODS_PAY.PAYID
@@ -887,62 +887,15 @@ namespace z.ERP.Services
 
             if (count > 0)
             {
-                //历史交易金额汇总
-                String sqlSum = @"SELECT NVL(SUM(HIS_SALE_GOODS_PAY.AMOUNT),0) AMOUNT
-                         FROM HIS_SALE 
-                        LEFT JOIN HIS_SALE_GOODS_PAY ON HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO
-                        LEFT JOIN PAY ON PAY.PAYID=HIS_SALE_GOODS_PAY.PAYID
-                        LEFT JOIN HIS_SALE_GOODS ON HIS_SALE.DEALID=HIS_SALE_GOODS.DEALID AND HIS_SALE.POSNO=HIS_SALE_GOODS.POSNO
-                        LEFT JOIN CONTRACT_SHOP ON HIS_SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
-                        LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
-                        LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
-						LEFT JOIN GOODS ON GOODS.GOODSID=HIS_SALE_GOODS.GOODSID
-						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
-                        where 1=1
-                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-                item.HasKey("BRANCHID", a => sqlSum += $" and CONTRACT.BRANCHID = {a}");
-                item.HasDateKey("RQ_START", a => sqlSum += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
-                item.HasDateKey("RQ_END", a => sqlSum += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
-                item.HasKey("MERCHANTID", a => sqlSum += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
-                item.HasKey("MERCHANTNAME", a => sqlSum += $" and MERCHANT.NAME LIKE '%{a}%'");
-                item.HasKey("Pay", a => sqlSum += $" and PAY.PAYID= {a}");
-                item.HasKey("YEARMONTH_START", a => sqlSum += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
-                item.HasKey("YEARMONTH_END", a => sqlSum += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
-                item.HasKey("BRANDID", a => sqlSum += $" and BRAND.ID = {a}");
-                item.HasKey("BRANDNAME", a => sqlSum += $" and BRAND.NAME LIKE '%{a}%'");
+                //历史交易金额汇总                
 
-                //当天交易金额汇总
-                String sqlSum1 = @"SELECT NVL(SUM(SALE_GOODS_PAY.AMOUNT),0) AMOUNT
-                         FROM SALE 
-                        LEFT JOIN SALE_GOODS_PAY ON SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE.POSNO=SALE_GOODS_PAY.POSNO
-                        LEFT JOIN PAY ON PAY.PAYID=SALE_GOODS_PAY.PAYID
-                        LEFT JOIN SALE_GOODS ON SALE.DEALID=SALE_GOODS.DEALID AND SALE.POSNO=SALE_GOODS.POSNO
-                        LEFT JOIN CONTRACT_SHOP ON SALE_GOODS.SHOPID=CONTRACT_SHOP.SHOPID
-                        LEFT JOIN CONTRACT ON CONTRACT.CONTRACTID=CONTRACT_SHOP.CONTRACTID
-                        LEFT JOIN MERCHANT ON MERCHANT.MERCHANTID=CONTRACT.MERCHANTID
-						LEFT JOIN GOODS ON GOODS.GOODSID=SALE_GOODS.GOODSID
-						LEFT JOIN BRAND ON GOODS.BRANDID=BRAND.ID
-                        where 1=1
-                          and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-                item.HasKey("BRANCHID", a => sqlSum1 += $" and CONTRACT.BRANCHID = {a}");
-                item.HasDateKey("RQ_START", a => sqlSum1 += $" and TRUNC(SALE.SALE_TIME) >= {a}");
-                item.HasDateKey("RQ_END", a => sqlSum1 += $" and TRUNC(SALE.SALE_TIME) <= {a}");
-                item.HasKey("MERCHANTID", a => sqlSum1 += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
-                item.HasKey("MERCHANTNAME", a => sqlSum1 += $" and MERCHANT.NAME LIKE '%{a}%'");
-                item.HasKey("Pay", a => sqlSum1 += $" and PAY.PAYID= {a}");
-                item.HasKey("YEARMONTH_START", a => sqlSum1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
-                item.HasKey("YEARMONTH_END", a => sqlSum1 += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
-                item.HasKey("BRANDID", a => sqlSum1 += $" and BRAND.ID = {a}");
-                item.HasKey("BRANDNAME", a => sqlSum1 += $" and BRAND.NAME LIKE '%{a}%'");
-
-                string sqlunions = sqlSum + " union all " + sqlSum1;
+                string sqlunions = "SELECT NVL(SUM(AMOUNT),0) AMOUNT FROM ( select * from(" + sql + " union all " + sql1 + "))";
 
                 DataTable dtSum = DbHelper.ExecuteTable(sqlunions);
                 decimal stsum = Convert.ToDecimal(dtSum.Rows[0]["AMOUNT"]);
-                decimal stsum1 = Convert.ToDecimal(dtSum.Rows[1]["AMOUNT"]);
                 DataRow dr = dt.NewRow();
                 dr["MERCHANTID"] = "合计";
-                dr["AMOUNT"] = (stsum + stsum1).ToString();
+                dr["AMOUNT"] = stsum.ToString();
 
                 dt.Rows.Add(dr);
             }
@@ -957,7 +910,7 @@ namespace z.ERP.Services
         public DataGridResult PayTypeSaleS(SearchItem item)
         {
             //历史记录
-            string sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,PAY.NAME PAYNAME,HIS_SALE.POSNO,HIS_SALE_GOODS_PAY.AMOUNT
+            string sql = @"SELECT DISTINCT MERCHANT.MERCHANTID,MERCHANT.NAME,PAY.NAME PAYNAME,HIS_SALE.POSNO,HIS_SALE_GOODS_PAY.AMOUNT,HIS_SALE.SALE_TIME
                          FROM HIS_SALE 
                         LEFT JOIN HIS_SALE_GOODS_PAY ON HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=HIS_SALE_GOODS_PAY.PAYID
@@ -980,7 +933,7 @@ namespace z.ERP.Services
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
             //当天记录
-            string sql1 = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,PAY.NAME PAYNAME,SALE.POSNO,SALE_GOODS_PAY.AMOUNT
+            string sql1 = @"SELECT DISTINCT MERCHANT.MERCHANTID,MERCHANT.NAME,PAY.NAME PAYNAME,SALE.POSNO,SALE_GOODS_PAY.AMOUNT,SALE.SALE_TIME
                          FROM SALE 
                         LEFT JOIN SALE_GOODS_PAY ON SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE.POSNO=SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=SALE_GOODS_PAY.PAYID
@@ -1034,7 +987,7 @@ namespace z.ERP.Services
         public string PayTypeSaleOutput(SearchItem item)
         {
             //历史交易数据
-            String sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,to_char(HIS_SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,HIS_SALE.DEALID,HIS_SALE.POSNO,PAY.NAME PAYNAME,HIS_SALE_GOODS_PAY.AMOUNT
+            String sql = @"SELECT DISTINCT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,to_char(HIS_SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,HIS_SALE.DEALID,HIS_SALE.POSNO,PAY.NAME PAYNAME,HIS_SALE_GOODS_PAY.AMOUNT
                          FROM HIS_SALE 
                         LEFT JOIN HIS_SALE_GOODS_PAY ON HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=HIS_SALE_GOODS_PAY.PAYID
@@ -1058,7 +1011,7 @@ namespace z.ERP.Services
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
 
             //当天交易数据
-            String sql1 = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,to_char(SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,SALE.DEALID,SALE.POSNO,PAY.NAME PAYNAME,SALE_GOODS_PAY.AMOUNT
+            String sql1 = @"SELECT DISTINCT MERCHANT.MERCHANTID,MERCHANT.NAME,BRAND.NAME BRANDNAME,to_char(SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,SALE.DEALID,SALE.POSNO,PAY.NAME PAYNAME,SALE_GOODS_PAY.AMOUNT
                          FROM SALE 
                         LEFT JOIN SALE_GOODS_PAY ON SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE.POSNO=SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=SALE_GOODS_PAY.PAYID
@@ -1098,7 +1051,7 @@ namespace z.ERP.Services
         public string PayTypeSaleSOutput(SearchItem item)
         {
             //历史记录
-            string sql = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,PAY.NAME PAYNAME,HIS_SALE.POSNO,HIS_SALE_GOODS_PAY.AMOUNT
+            string sql = @"SELECT DISTINCT MERCHANT.MERCHANTID,MERCHANT.NAME,PAY.NAME PAYNAME,HIS_SALE.POSNO,HIS_SALE_GOODS_PAY.AMOUNT,HIS_SALE.SALE_TIME
                          FROM HIS_SALE 
                         LEFT JOIN HIS_SALE_GOODS_PAY ON HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID AND HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=HIS_SALE_GOODS_PAY.PAYID
@@ -1121,7 +1074,7 @@ namespace z.ERP.Services
             item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
             //当天记录
-            string sql1 = @"SELECT MERCHANT.MERCHANTID,MERCHANT.NAME,PAY.NAME PAYNAME,SALE.POSNO,SALE_GOODS_PAY.AMOUNT
+            string sql1 = @"SELECT DISTINCT MERCHANT.MERCHANTID,MERCHANT.NAME,PAY.NAME PAYNAME,SALE.POSNO,SALE_GOODS_PAY.AMOUNT,SALE.SALE_TIME
                          FROM SALE 
                         LEFT JOIN SALE_GOODS_PAY ON SALE.DEALID=SALE_GOODS_PAY.DEALID AND SALE.POSNO=SALE_GOODS_PAY.POSNO
                         LEFT JOIN PAY ON PAY.PAYID=SALE_GOODS_PAY.PAYID
@@ -1525,6 +1478,22 @@ namespace z.ERP.Services
 
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+
+            if (count > 0)
+            {
+                //历史交易金额汇总                
+
+                string sqlunions = "SELECT NVL(SUM(AMOUNT),0) AMOUNT FROM ( select * from (" + sql + " ))";
+
+                DataTable dtSum = DbHelper.ExecuteTable(sqlunions);
+                decimal stsum = Convert.ToDecimal(dtSum.Rows[0]["AMOUNT"]);
+                DataRow dr = dt.NewRow();
+                dr["NAME"] = "合计";
+                dr["AMOUNT"] = stsum.ToString();
+
+                dt.Rows.Add(dr);
+            }
+
             return new DataGridResult(dt, count);
         }
         public string GoodsSaleDetailOutput(SearchItem item)
