@@ -31,7 +31,6 @@ namespace z.ATR._96262API
                 throw new Exception(res.return_msg);
             using (Stream st = new MemoryStream(Convert.FromBase64String(res.fileData)))
             {
-                File.WriteAllBytes(@"C:\Users\zgy\Desktop\新建文件夹\" + res.fileName, Convert.FromBase64String(res.fileData));
                 IOExtension.GetTempPathAndDo(path =>
                 {
                     CompressBase cm = new ZipCompress();
@@ -54,7 +53,10 @@ namespace z.ATR._96262API
                                 { 7,"g" },
                                 { 8,"h" },
                                 { 9,"i" },
-                                { 10,"j" }
+                                { 10,"j" },
+                                { 11,"k" },
+                                { 12,"l" },
+                                { 13,"m" }
                             }
                         }));
                     });
