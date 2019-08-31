@@ -44,7 +44,7 @@ namespace z.WSTools.Compress
                             Directory.CreateDirectory(dic);
                         }
                         fs = File.Create(fileName);
-                        int size = 2048;
+                        long size = zipStream.Length;
                         byte[] data = new byte[size];
                         while (true)
                         {

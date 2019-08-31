@@ -26,7 +26,7 @@ namespace z.ATR.WinService.Tests
             try
             {
                 ReportForm t = new ReportForm();
-                List<DataTable> dts = t.Get("010200000000129", "20171201");
+                List<DataTable> dts = t.Get("010100000000122", "20171201");
             }
             catch (Exception ex)
             {
