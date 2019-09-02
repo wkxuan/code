@@ -18,7 +18,7 @@ namespace z.WSTools.Compress
         {
             throw new NotImplementedException();
         }
-
+         
         public override void DeCompression(Stream from, string zipedFolder, string password = null)
         {
             FileStream fs = null;
