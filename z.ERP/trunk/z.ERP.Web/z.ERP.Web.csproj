@@ -168,6 +168,7 @@
     <Compile Include="Areas\BJGL\FLOORMAP\FloorMapController.cs" />
     <Compile Include="Areas\BJGL\MAPSHOPDATA\MAPSHOPDATAController.cs" />
     <Compile Include="Areas\BJGL\MAPFLOORDATA\MAPFLOORDATAController.cs" />
+    <Compile Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALEController.cs" />
     <Compile Include="Areas\BJGL\MAPSHOW\MAPSHOWController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
@@ -313,6 +314,7 @@
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.js" />
     <Content Include="Areas\BJGL\MAPSHOPDATA\MAPSHOPDATA.js" />
     <Content Include="Areas\BJGL\MAPFLOORDATA\MAPFLOORDATA.js" />
+    <Content Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALE.js" />
     <Content Include="Areas\BJGL\MAPSHOW\MAPSHOW.js" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
@@ -479,6 +481,7 @@
     <Content Include="Content\Editor\wangEditor.css" />
     <Content Include="Content\Editor\wangEditor.js" />
     <Content Include="Content\jquery-1.7.2.min.js" />
+    <Content Include="Content\macarons.js" />
     <Content Include="Content\Maps\1.jpg" />
     <Content Include="Content\Maps\contextMenu.min.js" />
     <Content Include="Content\Maps\contextMenu.css" />
@@ -763,6 +766,7 @@
     <Content Include="File\Template\销售采集处理记录查询.xlsx" />
     <Content Include="File\Template\终端密钥查询.xlsx" />
     <Content Include="File\Template\费用账单查询.xlsx" />
+    <Content Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALE.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
