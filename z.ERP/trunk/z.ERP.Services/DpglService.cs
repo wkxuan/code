@@ -263,15 +263,15 @@ namespace z.ERP.Services
             assetchange.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
             string sqlitem = $@"SELECT M.*,P.CODE " +
-                " FROM ASSETCHANGEITEM M，SHOP P " +
-                " where M.ASSETID=P.SHOPID ";
+                                " FROM ASSETCHANGEITEM M，SHOP P " +
+                               " where M.ASSETID=P.SHOPID ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             DataTable assetchangeitem = DbHelper.ExecuteTable(sqlitem);
 
-            string sqlitem2 = $@"SELECT M.*,P.CODE " +
-                " FROM ASSETCHANGEITEM2 M，SHOP P " +
-                " where M.ASSETID=P.SHOPID ";
+            string sqlitem2 = $@"SELECT M.*,P.CODE CODE_OLD " +
+                                 " FROM ASSETCHANGEITEM2 M，SHOP P " +
+                                " where M.ASSETID=P.SHOPID ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem2 += (" and M.BILLID= " + Data.BILLID);
             DataTable assetchangeitem2 = DbHelper.ExecuteTable(sqlitem2);
