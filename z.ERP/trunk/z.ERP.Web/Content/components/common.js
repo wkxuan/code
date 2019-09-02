@@ -198,7 +198,7 @@ Vue.component('yx-table', {
                 data.push({ type: 'selection', width: 50, align: 'center', fixed: 'left' });
             }
             if (this.showindex) {
-                data.unshift({ key: 'N', title: '序号', width: 80, align: 'center', fixed: 'left' });
+                data.unshift({ key: 'N', title: '序号', width: 70, align: 'center', fixed: 'left' });
             }
             return this.initRender(data);
         },

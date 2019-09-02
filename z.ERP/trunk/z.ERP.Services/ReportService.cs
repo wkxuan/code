@@ -12,17 +12,13 @@ namespace z.ERP.Services
         internal ReportService()
         {
         }
+
+
         #region 租约销售
-        public DataGridResult ContractSale(SearchItem item)
+        public string ContractSaleSqlParm(SearchItem item)
         {
-            string sql = $"select C.*,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,M.NAME MERCHANTNAME,"+
-                         " S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME ";
-
-            string sqlsum = $"select nvl(SUM(C.AMOUNT),0) AMOUNT,nvl(SUM(C.COST),0) COST,nvl(SUM(C.DIS_AMOUNT),0) DIS_AMOUNT," +
-                              "nvl(SUM(C.PER_AMOUNT),0) PER_AMOUNT ";
-
-            string sqlParam= " from CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F";
-            sqlParam += " where C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
+            string sqlParam = " from CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,CATEGORY G,FLOOR F";
+            sqlParam += " where C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID";
             sqlParam += "  and B.CATEGORYID=G.CATEGORYID and S.FLOORID=F.ID";
             sqlParam += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             sqlParam += "  and F.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
@@ -31,24 +27,38 @@ namespace z.ERP.Services
             {
                 sqlParam += " and " + SqlyTQx;
             }
-           
 
             item.HasKey("CATEGORYCODE", a => sqlParam += $" and G.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sqlParam += $" and F.ID = {a}");
+            item.HasKey("FLOORID", a => sqlParam += $" and F.ID in ({a})");
             item.HasKey("BRANCHID", a => sqlParam += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sqlParam += $" and C.CONTRACTID = '{a}'");
             item.HasDateKey("RQ_START", a => sqlParam += $" and C.RQ >= {a}");
             item.HasDateKey("RQ_END", a => sqlParam += $" and C.RQ <= {a}");
             item.HasKey("MERCHANTID", a => sqlParam += $" and C.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sqlParam += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sqlParam += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
             item.HasKey("BRANDID", a => sqlParam += $" and C.BRANDID = {a}");
             item.HasKey("BRANDNAME", a => sqlParam += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sqlParam += $" and C.YEARMONTH >= {a}");
             item.HasKey("YEARMONTH_END", a => sqlParam += $" and C.YEARMONTH <= {a}");
+            return sqlParam;
+        }
+
+        public DataGridResult ContractSale(SearchItem item)
+        {
+            string sql = @"select C.RQ,C.CONTRACTID,C.MERCHANTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,
+                                  G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,F.NAME FLOORNAME,
+                                  B.NAME BRANDNAME,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT";
+
+            string sqlsum = $"select nvl(SUM(C.AMOUNT),0) AMOUNT,nvl(SUM(C.COST),0) COST,nvl(SUM(C.DIS_AMOUNT),0) DIS_AMOUNT," +
+                              "nvl(SUM(C.PER_AMOUNT),0) PER_AMOUNT ";
+
+            string sqlParam = ContractSaleSqlParm(item);
 
             sql += sqlParam;
-            sql += " ORDER BY  C.RQ,C.MERCHANTID,C.CONTRACTID ";
+            
+            sql += @" GROUP BY C.RQ,C.CONTRACTID,C.MERCHANTID,M.NAME,S.CODE,S.NAME,
+                             G.CATEGORYCODE,G.CATEGORYNAME,F.CODE,F.NAME,B.NAME 
+                      ORDER BY  C.RQ,C.MERCHANTID,C.CONTRACTID ";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
 
@@ -76,40 +86,15 @@ namespace z.ERP.Services
             string sql = $"SELECT C.YEARMONTH,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,"+
                           " SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,"+
                           " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,"+
-                          " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,"+
+                          " B.NAME BRANDNAME,"+
                           " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
 
             string sqlsum = $"SELECT SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT ";
 
-            string sqlParam = " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F ";
-            sqlParam += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
-            sqlParam += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
-            sqlParam += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            sqlParam += "  and F.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
-
-            string SqlyTQx = GetYtQx("G");
-            if (SqlyTQx != "")  //业态权限
-            {
-                sqlParam += " and " + SqlyTQx;
-            }
-            
-
-            item.HasKey("CATEGORYCODE", a => sqlParam += $" and G.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sqlParam += $" and F.ID = {a}");
-            item.HasKey("BRANCHID", a => sqlParam += $" and C.BRANCHID = {a}");
-            item.HasKey("CONTRACTID", a => sqlParam += $" and C.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sqlParam += $" and C.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sqlParam += $" and C.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sqlParam += $" and C.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sqlParam += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sqlParam += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
-            item.HasKey("BRANDID", a => sqlParam += $" and C.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sqlParam += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sqlParam += $" and C.YEARMONTH >= {a}");
-            item.HasKey("YEARMONTH_END", a => sqlParam += $" and C.YEARMONTH <= {a}");
+            string sqlParam = ContractSaleSqlParm(item);
 
             sql += sqlParam;
-            sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,K.CODE,K.NAME,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE";
+            sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE";
             sql += " ORDER BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID ";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -134,80 +119,28 @@ namespace z.ERP.Services
         }
         public string ContractSaleOutput(SearchItem item)
         {
-            string SqlyTQx = GetYtQx("G");
-            string sql = $"SELECT  to_char(C.RQ,'yyyy-mm-dd') RQ,C.AMOUNT,C.COST,C.DIS_AMOUNT,C.PER_AMOUNT,C.MERCHANTID,C.CONTRACTID,";
-            sql += "  M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME, ";
-            sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
-            sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F  ";
-            sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
-            sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
-
-            sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            sql += "  and F.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
-
-            if (SqlyTQx != "") //业态权限
+            string sql;
+            if (item.Values["SrchTYPE"] == "2")  //月数据
             {
-                sql += " and " + SqlyTQx;
+                sql = $"SELECT C.YEARMONTH RQ,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
+                sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME, ";
+                sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,F.NAME FLOORNAME";
+                sql += ContractSaleSqlParm(item);
+                sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE,F.NAME";
+                sql += " ORDER BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID ";
+
             }
-
-            item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
-            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
-            item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sql += $" and C.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sql += $" and C.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
-            item.HasKey("BRANDID", a => sql += $" and C.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sql += $" and C.YEARMONTH >= {a}");
-            item.HasKey("YEARMONTH_END", a => sql += $" and C.YEARMONTH <= {a}");
-
-            sql += " ORDER BY  C.RQ,C.MERCHANTID,C.CONTRACTID ";
-
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "ContractSale";
-            return GetExport("租约销售导出", a =>
+            else
             {
-                a.SetTable(dt);
-            });
-        }
+                sql = @"select to_char(C.RQ,'yyyy-mm-dd') RQ,C.CONTRACTID,C.MERCHANTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,
+                               G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,F.NAME FLOORNAME,
+                               B.NAME BRANDNAME,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT";
+                sql += ContractSaleSqlParm(item); ;
 
-        public string ContractSaleMOutput(SearchItem item)
-        {
-            string SqlyTQx = GetYtQx("G");
-            string sql = $"SELECT C.YEARMONTH RQ,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
-            sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME, ";
-            sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
-            sql += " FROM CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,GOODS_KIND K,CATEGORY G,FLOOR F  ";
-            sql += " WHERE C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID AND C.KINDID=K.ID";
-            sql += "  and B.CATEGORYID=G.CATEGORYID  and S.FLOORID=F.ID";
-
-            sql += "  and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            sql += "  and F.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
-
-            if (SqlyTQx != "")  //业态权限
-            {
-                sql += " and " + SqlyTQx;
+                sql += @" GROUP BY C.RQ,C.CONTRACTID,C.MERCHANTID,M.NAME,S.CODE,S.NAME,
+                             G.CATEGORYCODE,G.CATEGORYNAME,F.CODE,F.NAME,B.NAME 
+                      ORDER BY  C.RQ,C.MERCHANTID,C.CONTRACTID ";
             }
-
-            item.HasKey("CATEGORYCODE", a => sql += $" and G.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and F.ID = {a}");
-            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
-            item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sql += $" and C.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sql += $" and C.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasArrayKey("KINDID", a => sql += $" and K.PKIND_ID LIKE '{ a.SuperJoin(",", b => b) }%'");
-            item.HasKey("BRANDID", a => sql += $" and C.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sql += $" and C.YEARMONTH >= {a}");
-            item.HasKey("YEARMONTH_END", a => sql += $" and C.YEARMONTH <= {a}");
-
-            sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,K.CODE,K.NAME,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE";
-            sql += " ORDER BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID ";
 
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.TableName = "ContractSale";
