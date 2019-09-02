@@ -641,6 +641,10 @@ namespace z.ERP.Services
                 a.SetTable(dt);
             });
         }
+
+
+        #region 合同信息表ContractInfo
+
         public DataTable SEARCHFEE()
         {
             {
@@ -650,7 +654,8 @@ namespace z.ERP.Services
             }
         }
 
-        public DataGridResult ContractInfo(SearchItem item)
+
+        public string ContractInfoSql(SearchItem item)
         {
             var feedata = SEARCHFEE();
             var sql1 = "";
@@ -658,42 +663,48 @@ namespace z.ERP.Services
             {
                 foreach (DataRow data in feedata.Rows)
                 {
-                    sql1 += " , (SELECT MAX(CC.PRICE)  FROM CONTRACT_COST CC"
+                    sql1 += ", (SELECT MIN(CC.COST)  FROM CONTRACT_COST CC"
                            + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = " + data["TRIMID"].ToString() + ") " + data["PYM"].ToString() + " ";
                 }
             }
             string SqlyTQx = GetYtQx("Y");
-            string sql = " SELECT C.CONTRACTID,F.CODE FLOORCODE,S.CODE SHOPCODE,D.NAME BRANDNAME,"
-                       + " M.MERCHANTID,M.NAME MERCHANTNAME, C.AREAR,to_char(C.CONT_START,'YYYY-MM-DD') CONT_START,"
-                       + " to_char(C.CONT_END,'YYYY-MM-DD') CONT_END,O.NAME RENTWAY, CR.RENTPRICE,FR.NAME RENTRULE "
+            string sql = " SELECT C.CONTRACTID,CS.SHOPDM SHOPCODE,CB.BRANDNAME,CS.FLOORCODE,"
+                       + "        M.MERCHANTID,M.NAME MERCHANTNAME, C.AREAR,to_char(C.CONT_START,'YYYY-MM-DD') CONT_START,"
+                       + "        to_char(C.CONT_END,'YYYY-MM-DD') CONT_END,O.NAME RENTWAY, CR.RENTPRICE,FR.NAME RENTRULE "
                        + sql1
-                       + "  FROM CONTRACT C, MERCHANT M,CONTRACT_SHOP CS, CONTRACT_RENTPRICE CR,"
-                       + "       SHOP S, FLOOR F,CONTRACT_BRAND CB, OPERATIONRULE O,FEERULE FR,"
-                       + "       BRAND D,CATEGORY Y"
+                       + "  FROM CONTRACT C, MERCHANT M,CONTRACT_SHOPXX CS, CONTRACT_RENTPRICE CR,"
+                       + "       CONTRACT_BRANDXX CB, OPERATIONRULE O,FEERULE FR"
                        + " WHERE C.MERCHANTID = M.MERCHANTID AND C.CONTRACTID = CS.CONTRACTID"
-                       + "   AND C.CONTRACTID = CR.CONTRACTID AND CS.SHOPID = S.SHOPID"
-                       + "   AND S.FLOORID = F.ID AND C.CONTRACTID = CB.CONTRACTID"
+                       + "   AND C.CONTRACTID = CR.CONTRACTID "
+                       + "   AND C.CONTRACTID = CB.CONTRACTID"
                        + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
-                       + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
                        + "   AND C.HTLX=1 "  //AND C.STATUS !=5
-                       + "    AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            sql += " and F.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
+                       + "   AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += @"  and exists(select 1 from CONTRACT_SHOP CP, SHOP S where C.CONTRACTID = CP.CONTRACTID 
+                                    and CP.SHOPID = S.SHOPID AND S.FLOORID in (" + GetPermissionSql(PermissionType.Floor) + ")) ";  //楼层权限
             if (SqlyTQx != "") //业态权限
             {
-                sql += " and " + SqlyTQx;
+                sql += @" and exists(select 1 from CONTRACT_BRAND CD,BRAND D,CATEGORY Y 
+                                      where CD.CONTRACTID=C.CONTRACTID and CD.BRANDID=D.ID and D.CATEGORYID=Y.CATEGORYID AND " + SqlyTQx + ") ";
             }
-
-            item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and F.ID in ({a})");
+            item.HasKey("CATEGORYCODE", a => sql += $" and exists(select 1 from CONTRACT_BRAND CD,BRAND D,CATEGORY Y where CD.CONTRACTID = C.CONTRACTID and CD.BRANDID = D.ID and D.CATEGORYID = Y.CATEGORYID and Y.CATEGORYCODE LIKE '{a}%') ");
+            item.HasKey("FLOORID", a => sql += $" and exists(select 1 from CONTRACT_SHOP CP,SHOP S where C.CONTRACTID = CP.CONTRACTID and CP.SHOPID = S.SHOPID AND S.FLOORID in ({a})) ");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
             item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasKey("BRANDID", a => sql += $" and D.ID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and D.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and exists(select 1 from CONTRACT_BRAND CD where C.CONTRACTID=CD.CONTRACTID and CD.BRANDID IN ({a})) ");
 
-            sql += " ORDER BY F.CODE,C.CONTRACTID";
 
+            sql += " ORDER BY CS.FLOORCODE,C.CONTRACTID ";
+
+            return sql;
+        }
+
+        public DataGridResult ContractInfo(SearchItem item)
+        {
+
+            string sql = ContractInfoSql(item);
 
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -701,48 +712,7 @@ namespace z.ERP.Services
         }
         public string ContractInfoOutput(SearchItem item)
         {
-            string SqlyTQx = GetYtQx("Y");
-            string sql = " SELECT C.CONTRACTID,F.CODE FLOORCODE,S.CODE SHOPCODE,D.NAME BRANDNAME,"
-                       + " M.MERCHANTID,M.NAME MERCHANTNAME, C.AREAR,to_char(C.CONT_START,'YYYY-MM-DD') CONT_START,"
-                       + " to_char(C.CONT_END,'YYYY-MM-DD') CONT_END,O.NAME RENTWAY, CR.RENTPRICE,FR.NAME RENTRULE,"
-                       + " (SELECT MAX(FW.NAME)  FROM CONTRACT_COST CC, FEERULE FW"
-                       + "   WHERE CC.CONTRACTID = C.CONTRACTID"
-                       + "     AND CC.FEERULEID = FW.ID AND CC.TERMID = 1) WYFRULE,"
-                       + " (SELECT MAX(CC.PRICE)  FROM CONTRACT_COST CC"
-                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 1) WYFPRICE,"
-                       + " (SELECT MAX(CC.COST)  FROM CONTRACT_COST CC"
-                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 2) LYBZJ,"
-                       + " (SELECT MAX(CC.COST)  FROM CONTRACT_COST CC"
-                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 3) ZXBZJ,"
-                       + " (SELECT MAX(CC.COST)  FROM CONTRACT_COST CC"
-                       + "   WHERE CC.CONTRACTID = C.CONTRACTID AND CC.TERMID = 4) POSYJ"
-                       + "  FROM CONTRACT C, MERCHANT M,CONTRACT_SHOP CS, CONTRACT_RENTPRICE CR,"
-                       + "       SHOP S, FLOOR F,CONTRACT_BRAND CB, OPERATIONRULE O,FEERULE FR,"
-                       + "       BRAND D,CATEGORY Y"
-                       + " WHERE C.MERCHANTID = M.MERCHANTID AND C.CONTRACTID = CS.CONTRACTID"
-                       + "   AND C.CONTRACTID = CR.CONTRACTID AND CS.SHOPID = S.SHOPID"
-                       + "   AND S.FLOORID = F.ID AND C.CONTRACTID = CB.CONTRACTID"
-                       + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
-                       + "   AND CB.BRANDID=D.ID AND D.CATEGORYID=Y.CATEGORYID"
-                       + "   AND C.HTLX=1 "  //AND C.STATUS !=5
-                       + "    AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            sql += " and F.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
-            if (SqlyTQx != "") //业态权限
-            {
-                sql += " and " + SqlyTQx;
-            }
-
-
-            item.HasKey("CATEGORYCODE", a => sql += $" and Y.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sql += $" and F.ID in ({a})");
-            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
-            item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
-            item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasKey("BRANDID", a => sql += $" and D.ID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and D.NAME LIKE '%{a}%'");
-
-            sql += " ORDER BY F.CODE,C.CONTRACTID";
+            string sql = ContractInfoSql(item);
 
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.TableName = "ContractInfo";
@@ -751,6 +721,8 @@ namespace z.ERP.Services
                 a.SetTable(dt);
             });
         }
+
+        #endregion
 
         #region 收款方式销售报表
         /// <summary>
