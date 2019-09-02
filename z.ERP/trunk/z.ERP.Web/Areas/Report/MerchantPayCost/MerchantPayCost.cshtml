@@ -26,6 +26,7 @@
                 {
                     vModel = "searchParam.BRANCHID",
                     ServiceMothod = m => m.branch(),
+                    Multiple = true
                 });
             }
         </i-col>
@@ -73,49 +74,24 @@
             债权发生月
         </i-col>
         <i-col span="3" class="RowText">
-            @{
-                RenderControl(new YearMonthBoxRender()
-                {
-                    vModel = "searchParam.YEARMONTH_START"
-                });
-            }
+            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_START"></yx-year-month-picker>
         </i-col>
         <i-col span="3" class="RowText">
-            @{
-                RenderControl(new YearMonthBoxRender()
-                {
-                    vModel = "searchParam.YEARMONTH_END"
-                });
-            }
+            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_END"></yx-year-month-picker>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            收付实现月
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_START"></yx-year-month-picker>
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_END"></yx-year-month-picker>
         </i-col>
     </row>
 }
 
 @section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopMerchant",
-                    Caption = "选择商户",
-                    Width = "900",
-                    Src = "screenParam.srcPopMerchant"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopBrand",
-                    Caption = "选择品牌",
-                    Width = "900",
-                    Src = "screenParam.srcPopBrand"
-                });
-            }
-        </i-col>
-    </row>
+    <yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
+              v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }
