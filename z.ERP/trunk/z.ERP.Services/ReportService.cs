@@ -120,7 +120,7 @@ namespace z.ERP.Services
         public string ContractSaleOutput(SearchItem item)
         {
             string sql;
-            if (item.Values["SrchTYPE"] == "2")  //月数据
+            if (item.Values["SrchTYPE"] == ((int)查询类型.月数据).ToString()) 
             {
                 sql = $"SELECT C.YEARMONTH RQ,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
                 sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME, ";
@@ -168,7 +168,6 @@ namespace z.ERP.Services
             {
                 sql += " and " + SqlyTQx;
             }
-
 
             item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
@@ -977,6 +976,7 @@ namespace z.ERP.Services
             string sqlparam = @" from MERCHANT M,BILL B,FEESUBJECT F,CONTRACT_BRAND C,BRAND D
                                 where M.MERCHANTID = B.MERCHANTID AND F.TRIMID = B.TERMID AND C.CONTRACTID = B.CONTRACTID
                                   and M.MERCHANTID = B.MERCHANTID AND D.ID = C.BRANDID
+                                  and B.STATUS IN (2,3,4)
                                   and B.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
             item.HasKey("BRANCHID", a => sqlparam += $" and B.BRANCHID in ({a})");
@@ -996,11 +996,11 @@ namespace z.ERP.Services
             {
                 if (ISPAYS == "4")
                 {
-                    sqlparam += $" and B.STATUS = " + ISPAYS + "";
+                    sqlparam += $" and B.STATUS in (2,3)";
                 }
                 else
                 {
-                    sqlparam += $" and B.STATUS <> " + ISPAYS + "";
+                    sqlparam += $" and B.STATUS in (4) ";
                 }
             }
             
