@@ -113,7 +113,6 @@
             loadFloor.prototype.load = function () {
                 var floor = this.data;
                 var Branchid = floor.BRANCHID, Regionid = floor.REGIONID; floorid = floor.FLOORID;
-                Mapshow.SHOPINFO.BRANCHID = Branchid; Mapshow.SHOPINFO.REGIONID = Regionid; Mapshow.SHOPINFO.FLOORID = floorid;
 
                 var buidlingItem = floor.MAPSHOPLIST;
                 for (var i = 0; i < buidlingItem.length; i++) {

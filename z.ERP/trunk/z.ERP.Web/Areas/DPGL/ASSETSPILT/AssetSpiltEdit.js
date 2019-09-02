@@ -1,221 +1,198 @@
-﻿var tempItem2;
-var itemCurRow;
-editDetail.beforeVue = function () {
-    editDetail.stepsCurrent = 0;
-    editDetail.others = false;
-    editDetail.branchid = true;
+﻿editDetail.beforeVue = function () {
     editDetail.service = "DpglService";
     editDetail.method = "SearchAssetSpilt";
-    editDetail.Key = 'BILLID';
     editDetail.dataParam.CHANGE_TYPE = 3;  //资产拆分
-    editDetail.screenParam.componentVisible = false;
-    editDetail.screenParam.showPopShop = false;
-    editDetail.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
+
+    editDetail.screenParam.showPop = false;
+    editDetail.screenParam.srcPop = "";
+    editDetail.screenParam.title = "";
     editDetail.screenParam.popParam = {};
-    editDetail.dataParam.ASSETCHANGEITEM = [];
-    editDetail.dataParam.ASSETCHANGEITEM2 = [];
 
     editDetail.screenParam.colDef = [
-    { title: '店铺ID', key: 'ASSETID', width: 100, hidden: true },
-    { title: '店铺代码', key: 'CODE', width: 150 },
-    { title: '原建筑面积', key: 'AREA_BUILD_OLD', width: 150 },
-    { title: '原使用面积', key: 'AREA_USABLE_OLD', width: 150 },
-    { title: '原租赁面积', key: 'AREA_RENTABLE_OLD', width: 150 }
+        { title: '店铺代码', key: 'CODE',width:200 },
+        { title: '原建筑面积', key: 'AREA_BUILD_OLD', width: 200 },
+        { title: '原使用面积', key: 'AREA_USABLE_OLD', width: 200 },
+        { title: '原租赁面积', key: 'AREA_RENTABLE_OLD', width: 200 }
     ];
     editDetail.screenParam.colDef2 = [
-
         {
-            title: "新店铺代码", key: 'ASSETCODE_NEW', width: 150, cellType: "input",
-            onBlur: function (index, row, data) {
-                editDetail.dataParam.ASSETCHANGEITEM[index].ASSETCODE_NEW = row.ASSETCODE_NEW;
-            }
-
+            title: "原店铺代码", key: 'CODE_OLD', width: 200
         },
-            {
-                title: "新建筑面积", key: 'AREA_BUILD_NEW', width: 150, cellType: "input", cellDataType: "number",
-                onBlur: function (index, row, data) {
-                    editDetail.dataParam.ASSETCHANGEITEM[index].AREA_BUILD_NEW = row.AREA_BUILD_NEW;
-                }
-            },
-            {
-                title: "新使用面积", key: 'AREA_USABLE_NEW', width: 150, cellType: "input", cellDataType: "number",
-                onBlur: function (index, row, data) {
-                    editDetail.dataParam.ASSETCHANGEITEM[index].AREA_USABLE_NEW = row.AREA_USABLE_NEW;
-                }
-            },
-            {
-                title: "新租赁面积", key: 'AREA_RENTABLE_NEW', width: 150, cellType: "input", cellDataType: "number",
-                onBlur: function (index, row, data) {
-                    editDetail.dataParam.ASSETCHANGEITEM[index].AREA_RENTABLE_NEW = row.AREA_RENTABLE_NEW;
-                }
-            }
+        {
+            title: "新店铺代码", key: 'ASSETCODE_NEW', cellType: "input", width: 200
+        },
+        {
+            title: "新建筑面积", key: 'AREA_BUILD_NEW', cellType: "input", cellDataType: "number", width: 200
+        },
+        {
+            title: "新使用面积", key: 'AREA_USABLE_NEW', cellType: "input", cellDataType: "number", width: 200
+        },
+        {
+            title: "新租赁面积", key: 'AREA_RENTABLE_NEW', cellType: "input", cellDataType: "number", width: 200
+        }
     ];
-
-    if (!editDetail.dataParam.ASSETCHANGEITEM) {
-        editDetail.dataParam.ASSETCHANGEITEM = [{
-            ASSETID: "",
-            ASSET_TYPE_OLD: "",
-        }]
-    }
-    if (!editDetail.dataParam.ASSETCHANGEITEM2) {
-        editDetail.dataParam.ASSETCHANGEITEM2 = [{
-            ASSETID: "",
-            ASSET_TYPE_NEW: "",
-        }]
-    }
-    editDetail.screenParam.addCol = function () {
-        var temp = editDetail.dataParam.ASSETCHANGEITEM || [];
-        temp.push({});
-        editDetail.dataParam.ASSETCHANGEITEM = temp;
-    }
-
 }
+
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchAssetSpilt', {
         Data: { BILLID: data }
     }, function (data) {
         $.extend(editDetail.dataParam, data.assetSpilt);
-        editDetail.dataParam.BILLID = data.assetSpilt.BILLID;
         editDetail.dataParam.ASSETCHANGEITEM = data.assetSpiltitem;
         editDetail.dataParam.ASSETCHANGEITEM2 = data.assetSpiltitem2;
-        //editDetail.filter(editDetail.dataParam.ASSETCHANGEITEM[0], 1);
         callback && callback(data);
     });
 }
-editDetail.IsValidSave = function () {
 
+editDetail.IsValidSave = function () {
     if (!editDetail.dataParam.BRANCHID) {
         iview.Message.info("请选择门店!");
         return false;
     };
-
-    if (editDetail.dataParam.ASSETCHANGEITEM.length == 0) {
-        iview.Message.info("请选择单元!");
+    let item = editDetail.dataParam.ASSETCHANGEITEM;
+    if (item.length == 0) {
+        iview.Message.info("请确定旧单元!");
         return false;
-    } else {
-        for (var i = 0; i < editDetail.dataParam.ASSETCHANGEITEM.length; i++) {
-            if (!editDetail.dataParam.ASSETCHANGEITEM[i].ASSETID) {
-                iview.Message.info("请选择单元!");
+    }
+    let item2 = editDetail.dataParam.ASSETCHANGEITEM2;
+    if (item2.length == 0) {
+        iview.Message.info("请确定新单元!");
+        return false;
+    }
+    for (let i = 0; i < item.length; i++) {
+        item[i].AREA_BUILD_NEW = 0;
+        item[i].AREA_USABLE_NEW = 0;
+        item[i].AREA_RENTABLE_NEW = 0;
+        let num = 0;
+        for (let j = 0; j < item2.length; j++) {
+            if (!item2[j].ASSETCODE_NEW) {
+                iview.Message.info("请确定新店铺代码!");
+                return false;
+            };           
+            if (!item2[j].AREA_BUILD_NEW) {
+                iview.Message.info("请确定新建筑面积!");
                 return false;
             };
-        };
+            if (!item2[j].AREA_USABLE_NEW) {
+                iview.Message.info("请确定新使用面积!");
+                return false;
+            };
+            if (!item2[j].AREA_RENTABLE_NEW) {
+                iview.Message.info("请确定新租赁面积!");
+                return false;
+            };
+            if (item[i].ASSETID == item2[j].ASSETID) {
+                num++;
+                item[i].AREA_BUILD_NEW += Number(item2[j].AREA_BUILD_NEW);
+                item[i].AREA_USABLE_NEW += Number(item2[j].AREA_USABLE_NEW);
+                item[i].AREA_RENTABLE_NEW += Number(item2[j].AREA_RENTABLE_NEW);
+            }
+        }; 
+        if (num < 2) {
+            iview.Message.info(`原店铺代码“${item[i].CODE}的至少拆成2个店铺”!`);
+            return false;
+        }
     };
 
-    //处理拆分信息
-    tempItem2 = tempItem2.filter(function (row2) {
-        return parseInt(row2.ASSETID) !== itemCurRow.ASSETID;
-    })
-    for (inx in editDetail.dataParam.ASSETCHANGEITEM2) {
-        tempItem2.push(editDetail.dataParam.ASSETCHANGEITEM2[inx]);
-    }
-    editDetail.dataParam.ASSETCHANGEITEM2 = tempItem2;
     return true;
 }
+
+editDetail.branchChange = function () {
+    editDetail.dataParam.ASSETCHANGEITEM = [];
+    editDetail.dataParam.ASSETCHANGEITEM2 = [];
+};
 
 editDetail.otherMethods = {
     SelShop: function () {
         if (!editDetail.dataParam.BRANCHID) {
             iview.Message.info("请选择门店!");
             return;
-        } else {
-            editDetail.screenParam.showPopShop = true;
+        } else  {
+            editDetail.screenParam.title = "选择单元";
+            editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopShopList/";
             editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, STATUS: "2" };
-        }
+            editDetail.screenParam.showPop = true;
+        }         
     },
     delShop: function () {
-        var selectton = this.$refs.refGroup.getSelection();
-        if (selectton.length == 0) {
+        let selection = this.$refs.refOldCell.getSelection();
+        if (selection.length == 0) {
             iview.Message.info("请选中要删除的单元!");
         } else {
-            for (var i = 0; i < selectton.length; i++) {
-                for (var j = 0; j < editDetail.dataParam.ASSETCHANGEITEM.length; j++) {
-                    if (editDetail.dataParam.ASSETCHANGEITEM[j].ASSETID == selectton[i].ASSETID) {
-                        editDetail.dataParam.ASSETCHANGEITEM.splice(j, 1);
-                    }
-                };
-                //删除单元，同时删除新增单元
-                for (var j = 0; j < editDetail.dataParam.ASSETCHANGEITEM2.length; j++) {
-                    if (editDetail.dataParam.ASSETCHANGEITEM2[j].ASSETID == selectton[i].ASSETID) {
-                        editDetail.dataParam.ASSETCHANGEITEM2.splice(j, 1);
+            let data = [];
+            for (let i = 0; i < selection.length; i++) {
+                let item = editDetail.dataParam.ASSETCHANGEITEM;
+                for (let j = 0; j < item.length; j++) {
+                    if (item[j].ASSETID == selection[i].ASSETID) {
+                        item.splice(j, 1);
+                        break;
                     }
                 }
-            }
+                let item2 = editDetail.dataParam.ASSETCHANGEITEM2;
+                editDetail.dataParam.ASSETCHANGEITEM2 = item2.filter(function (a) {
+                    return a.ASSETID != selection[i].ASSETID
+                });
+            }          
         }
     },
     addCol2: function () {
+        let itemCurRow = this.$refs.refOldCell.getCurrentRow();
         if (!itemCurRow) {
             iview.Message.info("请选择单元!");
             return;
         }
-        var temp = editDetail.dataParam.ASSETCHANGEITEM2 || [];
-        temp.push({});
+        let temp = editDetail.dataParam.ASSETCHANGEITEM2 || [];
+        let loc = {};
+        editDetail.screenParam.colDef2.forEach(item=> {
+            loc[item.key] = null;
+        });
+        loc["ASSETID"] = itemCurRow.ASSETID;
+        loc["CODE_OLD"] = itemCurRow.CODE;
+        temp.push(loc);
         editDetail.dataParam.ASSETCHANGEITEM2 = temp;
     },
     delCol2: function () {
-        var selectton = this.$refs.refCol2.getSelection();
-        if (selectton.length == 0) {
+        var selection = this.$refs.refNewCell.getSelection();
+        if (selection.length == 0) {
             iview.Message.info("请选中要删除的单元!");
         } else {
-            for (var i = 0; i < selectton.length; i++) {
-                for (var j = 0; j < editDetail.dataParam.ASSETCHANGEITEM2.length; j++) {
-                    if (editDetail.dataParam.ASSETCHANGEITEM2[j].ASSETID == selectton[i].ASSETID) {
-                        editDetail.dataParam.ASSETCHANGEITEM2.splice(j, 1);
+            for (let i = 0; i < selection.length; i++) {
+                let temp = editDetail.dataParam.ASSETCHANGEITEM2;
+                for (let j = 0; j < temp.length; j++) {
+                    if (temp[j].ASSETID == selection[i].ASSETID) {
+                        temp.splice(j, 1);
+                        break;
                     }
                 }
             }
         }
     },
-    currentChange: function (curRow, oldRow) {
-         debugger
-        itemCurRow = curRow;
-        if (tempItem2 === undefined) {
-            tempItem2 = editDetail.dataParam.ASSETCHANGEITEM2
-        }
-        else {
-            for (inx in editDetail.dataParam.ASSETCHANGEITEM2) {
-                if ((tempItem2.length === 0) || (tempItem2.length > 0 && tempItem2.filter(function (item) {
-              return item.ASSETCODE_NEW === editDetail.dataParam.ASSETCHANGEITEM2[inx].ASSETCODE_NEW;
-                }).length === 0)) {
-                    tempItem2.push(editDetail.dataParam.ASSETCHANGEITEM2[inx]);
-                }
-            }
-        }
-        filterdata = tempItem2.filter(function (row2) {
-            return parseInt(row2.ASSETID) === curRow.ASSETID;
-        });
-        Vue.set(editDetail.dataParam, "ASSETCHANGEITEM2", filterdata);
-        if (tempItem2 !== undefined) {
-            tempItem2 = tempItem2.filter(function (row2) {
-                return parseInt(row2.ASSETID) !== curRow.ASSETID;
-            })
-        }
-    }
 }
 
 //接收子页面返回值
 editDetail.popCallBack = function (data) {
-    editDetail.screenParam.showPopShop = false;
-    for (var i = 0; i < data.sj.length; i++) {
-        if ((editDetail.dataParam.ASSETCHANGEITEM.length === 0)
-              || (editDetail.dataParam.ASSETCHANGEITEM.length > 0
-              && editDetail.dataParam.ASSETCHANGEITEM.filter(function (item) {
-              return parseInt(item.ASSETID) === data.sj[i].SHOPID;
-        }).length === 0)) {
-            var shop = {};
-            shop.ASSETID = data.sj[i].SHOPID;
-            shop.CODE = data.sj[i].SHOPCODE;
-            shop.AREA_BUILD_OLD = data.sj[i].AREA_BUILD;
-            shop.AREA_USABLE_OLD = data.sj[i].AREA_USABLE;
-            shop.AREA_RENTABLE_OLD = data.sj[i].AREA_RENTABLE;
-            editDetail.dataParam.ASSETCHANGEITEM.push(shop);
-        }
-    };
+    editDetail.screenParam.showPop = false;
+    if (editDetail.screenParam.title == "选择单元") {
+        let itemData = editDetail.dataParam.ASSETCHANGEITEM;
+        for (let i = 0; i < data.sj.length; i++) {
+            if (itemData.filter(item=> { return (data.sj[i].SHOPID == item.ASSETID) }).length == 0) {
+                let shop = {};
+                shop.ASSETID = data.sj[i].SHOPID;
+                shop.CODE = data.sj[i].SHOPCODE;
+                shop.AREA_BUILD_OLD = data.sj[i].AREA_BUILD;
+                shop.AREA_USABLE_OLD = data.sj[i].AREA_USABLE;
+                shop.AREA_RENTABLE_OLD = data.sj[i].AREA_RENTABLE;
+                itemData.push(shop);
+            }
+        };
+    }
 };
-
 
 editDetail.clearKey = function () {
     editDetail.dataParam.BILLID = null;
+    editDetail.dataParam.BRANCHID = null;
     editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.CHANGE_TYPE = 3;  //资产拆分
     editDetail.dataParam.ASSETCHANGEITEM = [];
     editDetail.dataParam.ASSETCHANGEITEM2 = [];
 }

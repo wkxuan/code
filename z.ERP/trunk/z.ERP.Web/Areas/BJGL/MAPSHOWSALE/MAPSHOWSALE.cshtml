@@ -1,0 +1,117 @@
+﻿@inherits ViewBase<dynamic>
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+                    "Areas/BJGL/MAPSHOWSALE/MAPSHOWSALE.js"
+                };
+}
+@section head{
+    @InitFiles(new string[] {
+        "/Content/three/three.js",
+        "/Content/three/OrbitControls.js",
+        "/Content/three/Earcut.js",
+        "/Content/three/ThreeMap.js",
+        "/Content/echarts.js",
+        "/Content/macarons.js"
+    })
+    <style>
+        #MapShow {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+        }
+
+            #MapShow .ivu-split-pane {
+                margin: 8px;
+                overflow: auto;
+            }
+
+        .ivu-split-trigger-vertical {
+            display: none;
+        }
+
+        .ivu-split-horizontal .ivu-split-trigger-con {
+            border-left: 1px solid #e8eaec;
+        }
+
+        .RowText {
+            line-height: 30px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        [v-cloak] {
+            display: none !important;
+        }
+
+        .sbutton {
+            position: absolute;
+            padding-left: 10px;
+            padding-top: 10px;
+        }
+        .lilist {
+            cursor:pointer;
+            font-size: 15px;
+            font-style: oblique;
+        }
+    </style>
+}
+
+<div id="MapShow" v-cloak>
+    <Split v-model="splitVal">
+        <div slot="left" class="leftPane" ref="tree">
+            <Tabs v-model="Tabs">
+                <Tab-Pane label="楼层选择" name="selectfloor">
+                    <yx-tree ref="treeRef" v-bind:data="data" v-on:onselectchange="onselectchange"
+                             v-bind:showcheckbox="false"></yx-tree>
+                </Tab-Pane>
+                <Tab-Pane label="筛选条件" name="selecttime">
+                    <row>
+                        <i-col span="8" class="RowTitle">销售日期 起 ：</i-col>
+                        <i-col span="16" class="RowText">
+                            <date-picker type="date" format="yyyy-MM-dd" v-on:on-change="starttime=$event" v-bind:transfer="true" v-model="starttime"></date-picker>
+                        </i-col>
+                    </row>
+                    <row>
+                        <i-col span="8" class="RowTitle">销售日期 止 ：</i-col>
+                        <i-col span="16" class="RowText">
+                            <date-picker type="date" format="yyyy-MM-dd" v-on:on-change="endtime=$event" v-bind:transfer="true" v-model="endtime"></date-picker>
+                        </i-col>
+                    </row>
+                    <br/>
+                    <br />
+                    <row>
+                        <div style="width:100%;text-align:center">
+                            <i-Button type="primary" shape="circle" icon="ios-search" size="large" v-on:click="searchclick">查询</i-Button>
+                        </div>
+                    </row>
+                </Tab-Pane>
+            </Tabs>
+            
+        </div>
+        <div slot="right" class="rightPane">
+            <div ref="maps" style="height:100%;width:100%;position:absolute"></div>
+            <div class="sbutton" style="display:block" v-show="tool">
+                <ul>
+                    <li v-for="item in salelist" class="lilist" v-on:click="clickli(item.SHOPID)">
+                        <span style="font-weight:600;"> NO.{{ item.NO }} </span> {{ item.SHOPNAME }}   <span style="color:#FF6715"> ￥ {{item.AMOUNT}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </Split>
+    <div>
+        @*信息展示抽屉*@
+        <Drawer v-model="DrawerModel" width="40" v-bind:draggable="true">
+            <p slot="header">
+                <Icon type="ios-cube"></Icon> {{SHOPINFO.MERCHANTNAME}}
+            </p>
+            <div style="width:100%">
+                <div id="echart1" style="height:250px;width:100%"></div>
+            </div>
+        </Drawer>
+    </div>
+</div>

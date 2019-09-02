@@ -263,15 +263,15 @@ namespace z.ERP.Services
             assetchange.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
             string sqlitem = $@"SELECT M.*,P.CODE " +
-                " FROM ASSETCHANGEITEM M，SHOP P " +
-                " where M.ASSETID=P.SHOPID ";
+                                " FROM ASSETCHANGEITEM M，SHOP P " +
+                               " where M.ASSETID=P.SHOPID ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
             DataTable assetchangeitem = DbHelper.ExecuteTable(sqlitem);
 
-            string sqlitem2 = $@"SELECT M.*,P.CODE " +
-                " FROM ASSETCHANGEITEM2 M，SHOP P " +
-                " where M.ASSETID=P.SHOPID ";
+            string sqlitem2 = $@"SELECT M.*,P.CODE CODE_OLD " +
+                                 " FROM ASSETCHANGEITEM2 M，SHOP P " +
+                                " where M.ASSETID=P.SHOPID ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem2 += (" and M.BILLID= " + Data.BILLID);
             DataTable assetchangeitem2 = DbHelper.ExecuteTable(sqlitem2);
@@ -856,6 +856,58 @@ namespace z.ERP.Services
             DataTable dt1 = DbHelper.ExecuteTable(sql1);
             dt1.NewEnumColumns<核算方式>("STYLE", "STYLENAME");
             return new Tuple<dynamic, dynamic>(dt.ToOneLine(), dt1.ToOneLine());
+        }
+        #endregion
+
+        #region 布局图销售数据
+        public DataTable GETFLOORSALELIST(string floorid,string stime,string etime) {
+            string sql = @"SELECT * FROM ( select row_number() over(order by SUM(AMOUNT) desc) NO,S.SHOPID,B.NAME SHOPNAME,SUM(AMOUNT) AMOUNT
+                             from CONTRACT_SUMMARY A,BRAND B,SHOP S
+                             WHERE A.BRANDID=B.ID AND A.SHOPID=S.SHOPID  ";
+            if (!string.IsNullOrEmpty(floorid)) {
+                sql += @" AND S.FLOORID="+ floorid + " ";
+            }
+            if (!string.IsNullOrEmpty(stime))
+            {
+                sql += @" AND RQ>=to_date('" + stime + "','yyyy-MM-dd') ";
+            }
+            if (!string.IsNullOrEmpty(etime))
+            {
+                sql += @" AND RQ<=to_date('" + etime + "','yyyy-MM-dd') ";
+            }
+            sql += " GROUP BY B.NAME,S.AREA_RENTABLE,S.SHOPID) Z  WHERE ROWNUM <=10";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+        public Tuple<dynamic, DataTable> GetSHOPSALE(string shopid,string starttime,string endtime) {
+            //shop信息
+            string sql = @"SELECT S.* ,M.NAME MERCHANTNAME
+                FROM SHOP S,CONTRACT C,CONTRACT_SHOP CS,MERCHANT M
+                WHERE  CS.SHOPID(+)=S.SHOPID AND C.CONTRACTID(+)=CS.CONTRACTID AND M.MERCHANTID(+)=C.MERCHANTID";
+            if (!string.IsNullOrEmpty(shopid))
+            {
+                sql += " AND S.SHOPID=" + shopid + "";
+            }
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            //shopsale信息
+            string sql1 = @" select CS.* ,M.NAME MERCHANTNAME ,TO_CHAR(RQ,'YYYY-MM-DD') RQS
+                        from CONTRACT_SUMMARY CS,CONTRACT C,MERCHANT M
+                        where CS.CONTRACTID=C.CONTRACTID AND CS.MERCHANTID=M.MERCHANTID AND C.STATUS IN (2,3) ";
+            if (!string.IsNullOrEmpty(shopid))
+            {
+                sql1 += " AND CS.SHOPID=" + shopid + "";
+            }
+            if (!string.IsNullOrEmpty(starttime))
+            {
+                sql1 += @" AND RQ>=to_date('" + starttime + "','yyyy-MM-dd') ";
+            }
+            if (!string.IsNullOrEmpty(endtime))
+            {
+                sql1 += @" AND RQ<=to_date('" + endtime + "','yyyy-MM-dd') ";
+            }
+            sql1 += @" ORDER BY RQ ";
+            DataTable dt1 = DbHelper.ExecuteTable(sql1);
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(),dt1);
         }
         #endregion
     }
