@@ -30,68 +30,63 @@ srch.beforeVue = function () {
     srch.service = "ReportService";
     srch.method = "MerchantBusinessStatus";
 
-    srch.screenParam.showPopMerchant = false;
-    srch.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-    srch.screenParam.showPopBrand = false;
-    srch.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
-
+    srch.screenParam.showPop = false;
+    srch.screenParam.srcPop = "";
+    srch.screenParam.title = "";
     srch.screenParam.popParam = {};
     srch.searchParam.SrchTYPE = 1;
 };
 
 srch.newCondition = function () {
+    srch.searchParam.SrchTYPE = 1;
     srch.searchParam.BRANCHID = "";
+    srch.searchParam.MERCHANTID = "";
     srch.searchParam.MERCHANTNAME = "";
     srch.searchParam.BRANDNAME = "";
+    srch.searchParam.NIANYUE_END = "";
+    srch.searchParam.NIANYUE_START = "";
     srch.searchParam.YEARMONTH_END = "";
     srch.searchParam.YEARMONTH_START = "";
 };
 
-srch.mountedInit = function () {
-    _.Ajax('SearchKind', {
-        Data: {}
-    }, function (data) {
-        Vue.set(srch.screenParam, "dataKind", data.treeorg.Obj);
-    });
-}
-
 srch.otherMethods = {
     SelMerchant: function () {
-        srch.screenParam.showPopMerchant = true;
+        srch.screenParam.title = "选择商户";
+        srch.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        srch.screenParam.showPop = true;
     },
     SelBrand: function () {
-        srch.screenParam.showPopBrand = true;
+        srch.screenParam.title = "选择品牌";
+        srch.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopBrandList/";
+        srch.screenParam.showPop = true;
     },
     changeSrchType: function (value) {
         if (value == 1) {
             Vue.set(this, "data", []);   //清空table
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
             Vue.set(srch.screenParam, "colDef", colD);
-            Vue.set(srch, "method", "MerchantBusinessStatus");
         } else {
             Vue.set(this, "data", []);   //清空table
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
             Vue.set(srch.screenParam, "colDef", colGD);
-            Vue.set(srch, "method", "MerchantBusinessStatusGD");
         }
     }
 }
 
 srch.popCallBack = function (data) {
-
-    if (srch.screenParam.showPopMerchant) {
-        srch.screenParam.showPopMerchant = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+    if (srch.screenParam.showPop) {
+        srch.screenParam.showPop = false;
+        if (srch.screenParam.title == "选择商户") {
+            for (var i = 0; i < data.sj.length; i++) {
+                srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+                srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            }
         }
-    }
-
-    if (srch.screenParam.showPopBrand) {
-        srch.screenParam.showPopBrand = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.BRANDID = data.sj[i].BRANDID;
-            srch.searchParam.BRANDNAME = data.sj[i].NAME;
+        if (srch.screenParam.title == "选择品牌") {
+            for (var i = 0; i < data.sj.length; i++) {
+                srch.searchParam.BRANDID = data.sj[i].BRANDID;
+                srch.searchParam.BRANDNAME = data.sj[i].NAME;
+            }
         }
     }
 };

@@ -1,11 +1,7 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Edit;
-@using z.ERP.Entities;
+﻿@using z.ERP.Web.Areas.Layout.Edit;
 @inherits EditViewBase<string>
 @section baseParam{
     <row>
-
         <i-col span="2" class="RowTitle">
             备注
         </i-col>
@@ -23,8 +19,8 @@
                 <i-button type="primary" v-on:click="SelShop">选择单元</i-button>
                 <i-button type="error" v-on:click="delShop">删除</i-button>
             </div>
-            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true v-on:currentchange="currentChange"
-                      v-bind:data="dataParam.ASSETCHANGEITEM" v-bind:disabled="!disabled" ref="refGroup">
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="240" selection=true
+                      v-bind:data="dataParam.ASSETCHANGEITEM" v-bind:disabled="!disabled" ref="refOldCell">
             </yx-table>
         </Card>
     </i-col>
@@ -34,12 +30,12 @@
     <i-col span="24">
         <Card v-bind:padding=0>
             <p slot="title">新单元</p>
-            <div slot="extra">
+            <div slot="extra" v-show="disabled">
                 <i-button type="primary" v-on:click="addCol2">添加一行</i-button>
                 <i-button type="error" v-on:click="delCol2">删除</i-button>
             </div>
             <yx-table v-bind:columns="screenParam.colDef2" v-bind:height="300" selection=true
-                      v-bind:data="dataParam.ASSETCHANGEITEM2" v-bind:disabled="!disabled" ref="refCol2">
+                      v-bind:data="dataParam.ASSETCHANGEITEM2" v-bind:disabled="!disabled" ref="refNewCell">
             </yx-table>
         </Card>
     </i-col>
@@ -47,14 +43,7 @@
 }
 
 @section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopShop",
-            Src = "screenParam.srcPopShop",
-            Caption = "选择单元",
-            Width = "800"
-        });
-    }
+<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="800"
+          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }
 

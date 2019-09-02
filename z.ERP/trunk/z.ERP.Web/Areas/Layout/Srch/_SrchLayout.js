@@ -75,8 +75,18 @@
                 exp: function (event) {
                     event.stopPropagation();
                     let _self = this;
+                    let param = {};
+                    for (let item in _self.searchParam) {
+                        if (_self.searchParam[item]) {
+                            if (Array.isArray(_self.searchParam[item])) {
+                                param[item] = _self.searchParam[item].join(',');
+                            } else {
+                                param[item] = _self.searchParam[item];
+                            }
+                        }
+                    }
                     _.Ajax('Output', {
-                        Values: _self.searchParam
+                        Values: param
                     }, function (data) {
                         window.open(__BaseUrl + data);
                     });
@@ -121,11 +131,13 @@
             ve.tbLoading = true;
             let param = {};
             for (let item in ve.searchParam) {
-                if (Array.isArray(ve.searchParam[item])) {
-                    param[item] = ve.searchParam[item].join(',');
-                } else {
-                    param[item] = ve.searchParam[item];
-                }
+                if (ve.searchParam[item]) {
+                    if (Array.isArray(ve.searchParam[item])) {
+                        param[item] = ve.searchParam[item].join(',');
+                    } else {
+                        param[item] = ve.searchParam[item];
+                    }
+                }               
             }
             _.Search({
                 Service: _this.service,

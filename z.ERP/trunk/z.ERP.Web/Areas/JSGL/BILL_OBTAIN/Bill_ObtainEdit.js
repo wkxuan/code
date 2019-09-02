@@ -89,6 +89,11 @@ editDetail.otherMethods = {
         editDetail.dataParam.ALL_MONEY = sum;
     }
 };
+
+editDetail.newRecord = function () {
+    editDetail.dataParam.TYPE = 2;
+}
+
 ///接收弹窗返回参数
 editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopBill) {
