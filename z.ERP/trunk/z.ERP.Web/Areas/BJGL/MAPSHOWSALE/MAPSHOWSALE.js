@@ -37,16 +37,16 @@ var Mapshow = new Vue({
                 }
             })
         },
+        //楼层选择
         onselectchange: function (selectArr, node) {
             if (node.parentId == "REGION") {
                 Mapshow.Floorid = node.code;
                 Mapshow.Tabs = "selecttime";
             }
         },
+        //查询按钮触发方法
         searchclick: function () {
-            if (isEmpty(Mapshow.Floorid)) {
-                iview.Message.info("请选择楼层!");
-            } else {
+            if (Mapshow.verify()) {
                 Mapshow.B_Floorid = Mapshow.Floorid; Mapshow.B_starttime = Mapshow.starttime; Mapshow.B_endtime = Mapshow.endtime; //三个参数备份，防止图已生成，参数改变
                 Mapshow.INITMAP();
             }
@@ -67,6 +67,7 @@ var Mapshow = new Vue({
                 }
             });
         },
+        //排行榜点击事件
         clickli: function (event) {
             ThreeMapClick(event);
         },
@@ -80,7 +81,7 @@ var Mapshow = new Vue({
             echart1.setOption({
                 title: {
                     text: '经营情况',
-                    subtext: '选择日期内历史数据',
+                    subtext: Mapshow.starttime + " ~ " + Mapshow.endtime,
                     x: 'center'
                 },
                 tooltip: {
@@ -139,6 +140,7 @@ var Mapshow = new Vue({
                     break;
             }
         },
+        //饼图 类别改变重置Echart2
         TypeChange: function () {
             _.Ajax('GetTypeChange', {
                 shopid: SHOPID, starttime: Mapshow.B_starttime, endtime: Mapshow.B_endtime, type: Mapshow.Radiovalue
@@ -184,8 +186,29 @@ var Mapshow = new Vue({
                 animationEasing: "backIn"
             });
         },
+        //抽屉关闭方法
         Drawerclose: function () {
             Mapshow.Radiovalue = "1";
+        },
+        //验证方法
+        verify: function () {
+            if (isEmpty(Mapshow.Floorid)) {
+                iview.Message.info("请选择楼层!");
+                return false
+            }
+            if (isEmpty(Mapshow.starttime)) {
+                iview.Message.info("请选择开始时间!");
+                return false
+            }
+            if (isEmpty(Mapshow.endtime)) {
+                iview.Message.info("请选择结束时间!");
+                return false
+            }
+            if (Mapshow.starttime > Mapshow.endtime) {
+                iview.Message.info("开始时间不能大于结束时间!");
+                return false
+            }
+            return true;
         }
     },
 });
