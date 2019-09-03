@@ -1510,8 +1510,8 @@ namespace z.ERP.Services
             item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
             item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
 
-            item.HasKey("POSNO", a => sqlsum += $" and POSNO={a}");
-            item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
+            item.HasKey("POSNO", a => sqlsum += $" and POSNO='{a}'");
+            item.HasKey("DEALID", a => sqlsum += $" and DEALID='{a}'");
             //item.HasKey("INX", a => sqlsum += $" and INX={a}");
             //item.HasKey("NAME", a => sqlsum += $" and NAME={a}");
             //item.HasKey("CARDNO", a => sqlsum += $" and CARDNO={a}");
@@ -1548,8 +1548,8 @@ namespace z.ERP.Services
             item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
             item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
 
-            item.HasKey("POSNO", a => sqlsum += $" and POSNO={a}");
-            item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
+            item.HasKey("POSNO", a => sqlsum += $" and POSNO='{a}'");
+            item.HasKey("DEALID", a => sqlsum += $" and DEALID='{a}'");
             //item.HasKey("INX", a => sqlsum += $" and INX={a}");
             //item.HasKey("NAME", a => sqlsum += $" and NAME={a}");
             //item.HasKey("CARDNO", a => sqlsum += $" and CARDNO={a}");
