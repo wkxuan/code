@@ -82,11 +82,14 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchBill_Obtain', {
         Data: { BILLID: data }
     }, function (data) {
-        $.extend(editDetail.dataParam, data.billObtain);
-        editDetail.dataParam.NIANYUE += "";
-        editDetail.dataParam.BILL_OBTAIN_ITEM = data.billObtainItem;
-        editDetail.dataParam.BILL_OBTAIN_INVOICE = data.billObtainInvoice || [];
-        callback && callback(data);
+        editDetail.dataParam.BRANCHID = data.billObtain.BRANCHID;
+        editDetail.otherMethods.branchChange(function () {
+            $.extend(editDetail.dataParam, data.billObtain);
+            editDetail.dataParam.NIANYUE += "";
+            editDetail.dataParam.BILL_OBTAIN_ITEM = data.billObtainItem;
+            editDetail.dataParam.BILL_OBTAIN_INVOICE = data.billObtainInvoice || [];
+            callback && callback(data);
+        });
     });
 }
 //新增初始化
@@ -110,7 +113,7 @@ editDetail.clearKey = function () {
 
 ///html中绑定方法
 editDetail.otherMethods = {
-    branchChange: function () {
+    branchChange: function (func) {
         editDetail.dataParam.MERCHANTID = null;
         editDetail.dataParam.MERCHANTNAME = null;
         editDetail.dataParam.MERCHANT_MONEY = 0;
@@ -120,9 +123,13 @@ editDetail.otherMethods = {
         }, function (data) {
             var list = [];
             for (var i = 0; i < data.length; i++) {
-                list.push({ value: data[i].Key, label: data[i].Value })
+                list.push({ value: Number(data[i].Key), label: data[i].Value })
             }
             editDetail.screenParam.FEE_ACCOUNT = list;
+
+            if (typeof func == "function") {
+                func();
+            }
         });
     },
     SelMerchant: function () {
@@ -214,7 +221,6 @@ editDetail.otherMethods = {
         editDetail.dataParam.ALL_MONEY = fkje - editDetail.dataParam.ADVANCE_MONEY;
     },
     balance: function () {
-        debugger
         //收款方式和商户不为空，验证余额，其余情况置未0
         if (editDetail.dataParam.MERCHANTNAME != null && editDetail.dataParam.MERCHANTNAME != undefined && editDetail.dataParam.FEE_ACCOUNT_ID != null && editDetail.dataParam.FEE_ACCOUNT_ID != undefined) {
             _.Ajax('SearchBalance', {

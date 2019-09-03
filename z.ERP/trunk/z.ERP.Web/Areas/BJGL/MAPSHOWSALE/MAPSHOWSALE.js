@@ -173,7 +173,7 @@ var Mapshow = new Vue({
                     {
                         name: Mapshow.echart2seriesname,
                         type: 'pie',
-                        radius: '55%',
+                        radius: '50%',
                         center: ['50%','60%'],
                         data: Mapshow.echart2seriesdata
                     }
@@ -184,6 +184,9 @@ var Mapshow = new Vue({
                 animationEasing: "backIn"
             });
         },
+        Drawerclose: function () {
+            Mapshow.Radiovalue = "1";
+        }
     },
 });
 function isEmpty(obj) {

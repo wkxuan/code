@@ -18,7 +18,9 @@ editDetail.showOne = function (data, callback) {
         Vue.set(editDetail.dataParam, data.billObtainYsk);
         editDetail.dataParam.NIANYUE += "";
         editDetail.dataParam.BILLID = data.billObtainYsk.BILLID;
+        editDetail.otherMethods.branchChange();
         callback && callback(data);
+        
     });
 }
 
@@ -30,9 +32,9 @@ editDetail.otherMethods = {
         _.Ajax('GETfee', {
             Data: { BRANCHID: editDetail.dataParam.BRANCHID }
         }, function (data) {
-            var list = [];
+            var list = []; 
             for (var i = 0; i < data.length; i++) {
-                list.push({ value: data[i].Key, label: data[i].Value })
+                list.push({ value: Number(data[i].Key), label: data[i].Value })
             }
             editDetail.screenParam.FEE_ACCOUNT = list;
         });
