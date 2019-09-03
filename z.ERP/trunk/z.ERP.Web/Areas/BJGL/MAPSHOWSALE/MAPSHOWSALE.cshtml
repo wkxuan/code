@@ -57,6 +57,12 @@
             font-size: 15px;
             font-style: oblique;
         }
+        .rgclass {
+            height:50px;
+            text-align:center;
+            line-height: 50px;
+            /*border-top: 1px dashed;*/
+        }
     </style>
 }
 
@@ -111,6 +117,16 @@
             </p>
             <div style="width:100%">
                 <div id="echart1" style="height:250px;width:100%"></div>
+            </div>
+            <row class="rgclass">
+                <Radio-Group v-model="Radiovalue" v-on:on-change="radiochange">
+                    <Radio label="1">同楼层占比</Radio>
+                    <Radio label="2">同业态占比</Radio>
+                    <Radio label="3">同门店占比</Radio>
+                </Radio-Group>
+            </row>
+            <div style="width:100%">
+                <div id="echart2" style="height:250px;width:100%"></div>
             </div>
         </Drawer>
     </div>

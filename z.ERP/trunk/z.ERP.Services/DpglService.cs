@@ -897,17 +897,53 @@ namespace z.ERP.Services
             {
                 sql1 += " AND CS.SHOPID=" + shopid + "";
             }
-            if (!string.IsNullOrEmpty(starttime))
-            {
-                sql1 += @" AND RQ>=to_date('" + starttime + "','yyyy-MM-dd') ";
-            }
-            if (!string.IsNullOrEmpty(endtime))
-            {
-                sql1 += @" AND RQ<=to_date('" + endtime + "','yyyy-MM-dd') ";
-            }
+            sql1 += shopsql(starttime, endtime);   //时间条件拼接
             sql1 += @" ORDER BY RQ ";
             DataTable dt1 = DbHelper.ExecuteTable(sql1);
             return new Tuple<dynamic, DataTable>(dt.ToOneLine(),dt1);
+        }
+        public DataTable GetSHOPSALEPERCENT(string shopid, string starttime, string endtime,string type) {
+            var sql = @" SELECT '店铺总计' NAME,NVL(SUM(A.AMOUNT),0) VALUE FROM ( select AMOUNT from CONTRACT_SUMMARY CS where SHOPID = "+ shopid ;
+            sql += shopsql(starttime, endtime);   //时间条件拼接
+            sql +=" ) A";
+            var sqlsum = "";
+            switch (type) {
+                case "1":   //同楼层
+                    sqlsum = @" SELECT '楼层总计' NAME,NVL(SUM(A.AMOUNT),0) VALUE FROM (select AMOUNT 
+                     from CONTRACT_SUMMARY CS
+                     where   SHOPID IN (SELECT SHOPID FROM  SHOP WHERE FLOORID =(SELECT FLOORID FROM SHOP WHERE SHOPID= " + shopid+ " ) AND SHOPID <> " + shopid + " ) ";
+                    sqlsum += shopsql(starttime, endtime);   //时间条件拼接
+                    sqlsum += ") A";
+                    break;
+                case "2":  //同业态
+                    sqlsum = @" SELECT '门店单业态总计' NAME,NVL(SUM(A.AMOUNT),0) VALUE FROM (select AMOUNT 
+                     from CONTRACT_SUMMARY CS
+                     where   SHOPID IN (SELECT SHOPID FROM  SHOP WHERE CATEGORYID =(SELECT CATEGORYID FROM SHOP WHERE SHOPID= " + shopid + " ) AND BRANCHID =(SELECT BRANCHID FROM SHOP WHERE SHOPID="+ shopid + ") AND SHOPID <> " + shopid + " ) ";
+                    sqlsum += shopsql(starttime, endtime);   //时间条件拼接
+                    sqlsum += ") A";
+                    break;
+                case "3":  //同门店
+                    sqlsum = @" SELECT '门店总计' NAME,NVL(SUM(A.AMOUNT),0) VALUE FROM (select AMOUNT 
+                     from CONTRACT_SUMMARY CS
+                     where   SHOPID IN (SELECT SHOPID FROM  SHOP WHERE  BRANCHID =(SELECT BRANCHID FROM SHOP WHERE SHOPID=" + shopid + ") AND SHOPID <> " + shopid + " ) ";
+                    sqlsum += shopsql(starttime, endtime);   //时间条件拼接
+                    sqlsum += ") A";
+                    break;
+            }
+            DataTable dt = DbHelper.ExecuteTable(sql+ " UNION ALL " + sqlsum);
+            return dt;
+        }
+        public string shopsql(string starttime, string endtime) {
+            var sql = "";
+            if (!string.IsNullOrEmpty(starttime))
+            {
+                sql += @" AND RQ>=to_date('" + starttime + "','yyyy-MM-dd') ";
+            }
+            if (!string.IsNullOrEmpty(endtime))
+            {
+                sql += @" AND RQ<=to_date('" + endtime + "','yyyy-MM-dd') ";
+            }
+            return sql;
         }
         #endregion
     }

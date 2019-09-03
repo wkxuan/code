@@ -1,4 +1,6 @@
 ﻿var echart1;
+var echart2;
+var SHOPID;
 var Mapshow = new Vue({
     el: "#MapShow",
     data: {
@@ -11,9 +13,13 @@ var Mapshow = new Vue({
         starttime: "",
         endtime: "",
         SHOPINFO: Object,
-        salelist:"",
+        salelist: "",
+        Radiovalue:"1",
         salelistX: [],
         salelistY: [],
+        echart2legend: ['店铺总计', '楼层总计'],
+        echart2seriesname: '楼层占比',
+        echart2seriesdata:[],
         B_Floorid: "",        //三个参数备份，防止图已生成，参数改变
         B_starttime: "",
         B_endtime: "",
@@ -64,13 +70,12 @@ var Mapshow = new Vue({
         clickli: function (event) {
             ThreeMapClick(event);
         },
-        createEchart: function () {
+        createEchart1: function () {
             //销售历史数据
             if (!isEmpty(echart1)) {
                 echart1.dispose();    //清空数据
             }
             $('#echart1').width(window.innerWidth * 0.4-32);
-            debugger
             echart1 = echarts.init(document.getElementById('echart1'), 'macarons');
             echart1.setOption({
                 title: {
@@ -114,7 +119,71 @@ var Mapshow = new Vue({
                 animationDurationUpdate: 1000,
                 animationEasing: "bounceIn"
             });
-        }
+        },
+        radiochange: function (event) {
+            switch (event) {
+                case '1':
+                    Mapshow.echart2legend = ['店铺总计', '楼层总计'];
+                    Mapshow.echart2seriesname = "楼层占比";
+                    Mapshow.TypeChange();
+                    break;
+                case '2':
+                    Mapshow.echart2legend = ['店铺总计', '门店单业态总计'];
+                    Mapshow.echart2seriesname = "业态占比";
+                    Mapshow.TypeChange();
+                    break;
+                case '3':
+                    Mapshow.echart2legend = ['店铺总计', '门店总计'];
+                    Mapshow.echart2seriesname = "门店占比";
+                    Mapshow.TypeChange();
+                    break;
+            }
+        },
+        TypeChange: function () {
+            _.Ajax('GetTypeChange', {
+                shopid: SHOPID, starttime: Mapshow.B_starttime, endtime: Mapshow.B_endtime, type: Mapshow.Radiovalue
+            }, function (data) {
+                Mapshow.echart2seriesdata = data.shopsalepercent;
+                Mapshow.createEchart2();
+            });
+        },
+        createEchart2: function () {
+            //销售历史数据
+            if (!isEmpty(echart2)) {
+                echart2.dispose();    //清空数据
+            }
+            $('#echart2').width(window.innerWidth * 0.4-32);
+            echart2 = echarts.init(document.getElementById('echart2'), 'macarons');
+            echart2.setOption({
+                title: {
+                    text: '销售占比',
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    x: 'center',
+                    y: 'bottom',
+                    data: Mapshow.echart2legend
+                },
+                calculable: true,
+                series: [
+                    {
+                        name: Mapshow.echart2seriesname,
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%','60%'],
+                        data: Mapshow.echart2seriesdata
+                    }
+                ],
+                //动画效果
+                animationDuration: 4000,
+                animationDurationUpdate: 1000,
+                animationEasing: "backIn"
+            });
+        },
     },
 });
 function isEmpty(obj) {
@@ -125,8 +194,9 @@ function isEmpty(obj) {
     }
 }
 function ThreeMapClick(id) {
+    SHOPID = id;
     _.Ajax('GetSHOPSALE', {
-        shopid: id,starttime:Mapshow.B_starttime,endtime:Mapshow.B_endtime
+        shopid: id, starttime: Mapshow.B_starttime, endtime: Mapshow.B_endtime, type: Mapshow.Radiovalue
     }, function (data) {
         Mapshow.SHOPINFO = data.shopdata;
         if (Mapshow.SHOPINFO.RENT_STATUS == "1") {
@@ -135,7 +205,9 @@ function ThreeMapClick(id) {
             Mapshow.DrawerModel = true;
             Mapshow.salelistY = data.shopsalelistY;
             Mapshow.salelistX = data.shopsalelistX;
-            Mapshow.createEchart();
+            Mapshow.echart2seriesdata = data.shopsalepercent;
+            Mapshow.createEchart1();
+            Mapshow.createEchart2();
         }
     });
 };

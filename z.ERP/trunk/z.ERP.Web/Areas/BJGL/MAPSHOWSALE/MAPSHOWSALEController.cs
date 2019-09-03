@@ -29,15 +29,27 @@ namespace z.ERP.Web.Areas.BJGL.MAPSHOWSALE
                 }
                 );
         }
-        public UIResult GetSHOPSALE(string shopid,string starttime,string endtime)
+        public UIResult GetSHOPSALE(string shopid,string starttime,string endtime,string type)
         {
             var data = service.DpglService.GetSHOPSALE(shopid, starttime,endtime);
+            var datas= service.DpglService.GetSHOPSALEPERCENT(shopid, starttime, endtime,type);
+            var shopsalepercent= service.DefaultDataService.EchartData(datas, "NAME", "VALUE");
             return new UIResult(
                 new
                 {
                     shopdata = data.Item1,
                     shopsalelistY = data.Item2.AsEnumerable().Select<DataRow, decimal>(x => Convert.ToDecimal(x["AMOUNT"])).ToList<decimal>(),
                     shopsalelistX = data.Item2.AsEnumerable().Select<DataRow, string>(x => Convert.ToString(x["RQS"])).ToList<string>(),
+                    shopsalepercent = shopsalepercent
+                });
+        }
+        public UIResult GetTypeChange(string shopid, string starttime, string endtime, string type) {
+            var datas = service.DpglService.GetSHOPSALEPERCENT(shopid, starttime, endtime, type);
+            var shopsalepercent = service.DefaultDataService.EchartData(datas, "NAME", "VALUE");
+            return new UIResult(
+                new
+                {
+                    shopsalepercent = shopsalepercent
                 });
         }
     }
