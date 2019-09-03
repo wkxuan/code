@@ -538,6 +538,7 @@ namespace z.ERP.Services
         }
         #endregion
 
+        #region 商户租金计提表
         public DataGridResult MerchantRent(SearchItem item)
         {
             string SqlyTQx = GetYtQx("C");
@@ -640,7 +641,7 @@ namespace z.ERP.Services
                 a.SetTable(dt);
             });
         }
-
+        #endregion
 
         #region 合同信息表ContractInfo
 
@@ -1093,87 +1094,34 @@ namespace z.ERP.Services
         private string MerchantBusinessStatusSQLStr(SearchItem item)
         {
             string sqlParam = "";
-            item.HasKey("BRANCHID", a => sqlParam += $" and b.BRANCHID = {a}");
-            item.HasKey("MERCHANTID", a => sqlParam += $" and m.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sqlParam += $" and m.NAME LIKE '%{a}%'");
-            item.HasKey("BRANDID", a => sqlParam += $" and d.ID = {a}");
-            item.HasKey("BRANDNAME", a => sqlParam += $" and d.NAME LIKE '%{a}%'");
-            item.HasKey("NIANYUE_START", a => sqlParam += $" and b.NIANYUE >= {a}");
-            item.HasKey("NIANYUE_END", a => sqlParam += $" and b.NIANYUE <= {a}");
-            item.HasKey("YEARMONTH_START", a => sqlParam += $" and b.YEARMONTH >= {a}");
-            item.HasKey("YEARMONTH_END", a => sqlParam += $" and b.YEARMONTH <= {a}");
-            
-            //固定租金
-            string sqlGd= @"SELECT m.MERCHANTID,m.NAME MERCHANTNAME,d.NAME BRANDNAME,b.NIANYUE,
-                                   c.AREA_RENTABLE,b.MUST_MONEY,y.AMOUNT,
-                                   decode(c.AREA_RENTABLE, 0, 0, ROUND(y.AMOUNT / c.AREA_RENTABLE, 2)) AMOUNT_AREA,
-                                   decode(y.AMOUNT, 0, 0, ROUND(b.MUST_MONEY / y.AMOUNT, 2)) AREA_MONEY
-                              from BILL b,CONTRACT t,MERCHANT m,CONTRACT_BRAND cb,BRAND d,CONTRACT_SHOPAREA c,CONTRACT_SUMMARY_YM y
-                             where t.CONTRACTID = b.CONTRACTID and b.MERCHANTID = m.MERCHANTID 
-                               and cb.BRANDID = d.ID and cb.CONTRACTID = b.CONTRACTID
-                               and b.MERCHANTID = m.MERCHANTID and c.CONTRACTID = b.CONTRACTID
-                               and y.YEARMONTH = b.NIANYUE and y.CONTRACTID = b.CONTRACTID                     
-                               and t.OPERATERULE in (select ID from OPERATIONRULE where PROCESSTYPE={0}) 
-                               and b.status not in (1,6) 
-                               and b.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";
-            //提成租金
-            string sqlTc = @"select TC.* ,b1.MUST_MONEY+TC.MUST_MONEY PAID_MONEY,
-                                    decode(TC.AREA_RENTABLE,0,0,round(TC.AMOUNT/TC.AREA_RENTABLE,2)) AMOUNT_AREA,
-                                    decode(TC.AMOUNT,0,0,round((b1.MUST_MONEY+TC.MUST_MONEY)/TC.AMOUNT,2)) AREA_MONEY  
-                               from (
-                             select m.MERCHANTID,m.NAME MERCHANTNAME,d.NAME BRANDNAME,
-                                    b.CONTRACTID,b.NIANYUE,s.AREA_RENTABLE,b.MUST_MONEY,
-                                    t.TCZJ,y.AMOUNT 
-                               from BILL b,CONTRACT_TCZJ t,CONTRACT ct,MERCHANT m,CONTRACT_BRAND c,BRAND d,CONTRACT_SHOPAREA s,CONTRACT_SUMMARY_YM y
-                              where b.CONTRACTID=t.CONTRACTID and b.CONTRACTID=ct.CONTRACTID 
-                                and b.NIANYUE=t.YEARMONTH and c.CONTRACTID=b.CONTRACTID
-                                and b.MERCHANTID=m.MERCHANTID and c.BRANDID=d.ID and c.BRANDID=c.BRANDID
-                                and b.MERCHANTID=m.MERCHANTID and s.CONTRACTID=b.CONTRACTID 
-                                and y.YEARMONTH=b.NIANYUE and y.CONTRACTID=b.CONTRACTID
-                                and b.status not in (1,6) 
-                                and ct.OPERATERULE not in (select ID from OPERATIONRULE where PROCESSTYPE={0}) 
-                                and b.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ") {1} "+ 
-                          "group by m.MERCHANTID,m.NAME,d.NAME,b.CONTRACTID,b.NIANYUE,s.AREA_RENTABLE,b.MUST_MONEY,t.TCZJ,y.AMOUNT"+
-                                 ") TC,BILL b1"+
-                            " where TC.MERCHANTID=b1.MERCHANTID and TC.NIANYUE=b1.NIANYUE " +
-                               "and b1.CONTRACTID=TC.CONTRACTID and b1.TERMID=1000 " +
-                               "and b1.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
-           
-            string sql = "";
+            item.HasKey("BRANCHID", a => sqlParam += $" and C.BRANCHID = {a}");
+            item.HasKey("MERCHANTID", a => sqlParam += $" and M.MERCHANTID = '{a}'");
+            item.HasKey("BRANDID", a => sqlParam += $" and exists(select 1 from CONTRACT_BRAND CB where C.CONTRACTID = CB.CONTRACTID and CB.BRANDID in ({a}))");
+            item.HasKey("NIANYUE_START", a => sqlParam += $" and P.YEARMONTH >= {a}");
+            item.HasKey("NIANYUE_END", a => sqlParam += $" and P.YEARMONTH <= {a}");
+
+
+            string sqlstr = @"select M.MERCHANTID,M.NAME MERCHANTNAME,CB.BRANDNAME,P.YEARMONTH,CS.AREA_RENTABLE AREA,
+                                   (select nvl(sum(B.MUST_MONEY),0) from BILL B where B.CONTRACTID = C.CONTRACTID and B.NIANYUE = P.YEARMONTH and B.TERMID = 1000 and B.STATUS IN (2,3,4)) JCZJ,
+                                   (select nvl(sum(B.MUST_MONEY),0) from BILL B where B.CONTRACTID = C.CONTRACTID and B.NIANYUE = P.YEARMONTH and B.TERMID = 1001 and B.STATUS IN (2,3,4)) JCZJTZ,
+                                   (select nvl(sum(CT.TCZJ),0) from CONTRACT_TCZJ CT where CT.CONTRACTID = C.CONTRACTID and CT.YEARMONTH = P.YEARMONTH) TCZJ,
+                                   (select nvl(sum(CY.AMOUNT),0) from CONTRACT_SUMMARY_YM CY where CY.CONTRACTID = C.CONTRACTID and CY.YEARMONTH = P.YEARMONTH) AMOUNT
+                              from CONTRACT C,MERCHANT M,CONTRACT_BRANDXX CB,CONTRACT_SHOPAREA CS,PERIOD P   
+                             where C.MERCHANTID = M.MERCHANTID 
+                               and C.CONTRACTID = CB.CONTRACTID
+                               and C.CONTRACTID = CS.CONTRACTID
+                               and P.YEARMONTH in (select B.NIANYUE from BILL B where B.CONTRACTID = C.CONTRACTID and B.STATUS in (2,3,4))
+                               and C.HTLX = 1 ";
+
             if (item.Values["SrchTYPE"] == ((int)租金收取方式.固定租金).ToString())
-            {
-                sql += string.Format(sqlGd, ((int)合作方式.纯租).ToString()) + sqlParam;
-            }
+                sqlstr += " and C.OPERATERULE in (select ID from OPERATIONRULE where PROCESSTYPE = 2)";
             else
-            {
-                sql += string.Format(sqlTc, ((int)合作方式.纯租).ToString(), sqlParam);
-            }
-            return sql;
-        }
-        //提成租金查询链接字符串（提取公共部分）
-        private string MerchantBusinessStatusSQLStrTC(SearchItem item)
-        {
-            string sql = @"select TC.* ,b1.MUST_MONEY+TC.MUST_MONEY PAID_MONEY,
-                                  decode(TC.AREA_RENTABLE,0,0,round(TC.AMOUNT/TC.AREA_RENTABLE,2)) AMOUNT_AREA,
-                                  decode(TC.AMOUNT,0,0,round((b1.MUST_MONEY+TC.MUST_MONEY)/TC.AMOUNT,2)) AREA_MONEY  
-                             from (
-                           select m.MERCHANTID,m.NAME MERCHANTNAME,d.NAME BRANDNAME,
-                                  b.CONTRACTID,b.NIANYUE,s.AREA_RENTABLE,b.MUST_MONEY,
-                                  t.TCZJ,y.AMOUNT 
-                             from BILL b,CONTRACT_TCZJ t,CONTRACT ct,MERCHANT m,CONTRACT_BRAND c,BRAND d,CONTRACT_SHOPAREA s,CONTRACT_SUMMARY_YM y
-                            where b.CONTRACTID=t.CONTRACTID and b.CONTRACTID=ct.CONTRACTID and b.NIANYUE=t.YEARMONTH and c.CONTRACTID=b.CONTRACTID
-                              and b.MERCHANTID=m.MERCHANTID and c.BRANDID=d.ID and c.BRANDID=c.BRANDID
-                              and b.MERCHANTID=m.MERCHANTID and s.CONTRACTID=b.CONTRACTID 
-                              and y.YEARMONTH=b.NIANYUE and y.CONTRACTID=b.CONTRACTID
-                              and b.status not in (1,6) 
-                              and t.OPERATERULE not in (select ID from OPERATIONRULE where PROCESSTYPE={0}) 
-                              and b.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            sql += @" group by m.MERCHANTID,m.NAME,d.NAME,b.CONTRACTID,b.NIANYUE,s.AREA_RENTABLE,b.MUST_MONEY,t.TCZJ,y.AMOUNT
-                      ) TC,BILL b1 
-                      where TC.MERCHANTID=b1.MERCHANTID and TC.NIANYUE=b1.NIANYUE 
-                            and b1.CONTRACTID=TC.CONTRACTID and b1.TERMID=1000 
-                            and b1.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
-            return sql;
+                sqlstr += " and C.OPERATERULE not in (select ID from OPERATIONRULE where PROCESSTYPE = 2)";
+
+            sqlstr += " and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";
+
+
+            return sqlstr + sqlParam;
         }
         /// <summary>
         /// 商户租金经营状况查询
@@ -1182,9 +1130,34 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult MerchantBusinessStatus(SearchItem item)
         {
-            string sql = MerchantBusinessStatusSQLStr(item);
+
+            string sql = @"select Z.MERCHANTID,Z.MERCHANTNAME,Z.BRANDNAME,Z.YEARMONTH,SUM(Z.AREA) AREA,SUM(Z.JCZJ) JCZJ,SUM(Z.TCZJ) TCZJ,
+                          SUM(Z.JCZJ + Z.JCZJTZ) SJZJ,SUM(Z.AMOUNT) AMOUNT,decode(SUM(Z.AREA),0,0,round(SUM(Z.AMOUNT) / SUM(Z.AREA),2)) BX,
+                          decode(SUM(Z.AREA),0,0,round(SUM(Z.JCZJ + Z.JCZJTZ) / SUM(Z.AREA),2)) ZSB from (";
+            sql += MerchantBusinessStatusSQLStr(item);
+            sql += " ) Z  group by Z.MERCHANTID,Z.MERCHANTNAME,Z.BRANDNAME,Z.YEARMONTH order by Z.MERCHANTID,Z.YEARMONTH";
+
+            string sqlsum = @"select SUM(Z.AREA) AREA,SUM(Z.JCZJ) JCZJ,SUM(Z.TCZJ) TCZJ,
+                              SUM(Z.JCZJ + Z.JCZJTZ) SJZJ,SUM(Z.AMOUNT) AMOUNT,decode(SUM(Z.AREA),0,0,round(SUM(Z.AMOUNT) / SUM(Z.AREA),2)) BX,
+                              decode(SUM(Z.AREA),0,0,round(SUM(Z.JCZJ + Z.JCZJTZ) / SUM(Z.AREA),2)) ZSB from (";
+            sqlsum += MerchantBusinessStatusSQLStr(item) + ") Z";
+
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            if (dt.Rows.Count > 0)
+            {
+                DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
+                DataRow dr = dt.NewRow();
+                dr["MERCHANTID"] = "合计";
+                dr["AREA"] = dtSum.Rows[0]["AREA"].ToString();
+                dr["JCZJ"] = dtSum.Rows[0]["JCZJ"].ToString();
+                dr["TCZJ"] = dtSum.Rows[0]["TCZJ"].ToString();
+                dr["SJZJ"] = dtSum.Rows[0]["SJZJ"].ToString();
+                dr["AMOUNT"] = dtSum.Rows[0]["AMOUNT"].ToString();
+                dr["BX"] = dtSum.Rows[0]["BX"].ToString();
+                dr["ZSB"] = dtSum.Rows[0]["ZSB"].ToString();
+                dt.Rows.Add(dr);
+            }
             return new DataGridResult(dt, count);
         }
         /// <summary>
@@ -1193,8 +1166,13 @@ namespace z.ERP.Services
         /// <param name="item"></param>
         /// <returns></returns>
         public string MerchantBusinessStatusOutput(SearchItem item)
-        {          
-            string sql = MerchantBusinessStatusSQLStr(item);
+        {
+            string sql = @"select Z.MERCHANTID,Z.MERCHANTNAME,Z.BRANDNAME,Z.YEARMONTH,SUM(Z.AREA) AREA,SUM(Z.JCZJ) JCZJ,SUM(Z.TCZJ) TCZJ,
+                          SUM(Z.JCZJ + Z.JCZJTZ) SJZJ,SUM(Z.AMOUNT) AMOUNT,decode(SUM(Z.AREA),0,0,round(SUM(Z.AMOUNT) / SUM(Z.AREA),2)) BX,
+                          decode(SUM(Z.AREA),0,0,round(SUM(Z.JCZJ + Z.JCZJTZ) / SUM(Z.AREA),2)) ZSB from (";
+            sql += MerchantBusinessStatusSQLStr(item);
+            sql += " ) Z  group by Z.MERCHANTID,Z.MERCHANTNAME,Z.BRANDNAME,Z.YEARMONTH order by Z.MERCHANTID,Z.YEARMONTH";
+
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.TableName = "MerchantBusinessStatus";
             return GetExport("商户租金经营状况导出", a =>
@@ -1510,8 +1488,8 @@ namespace z.ERP.Services
             item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
             item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
 
-            item.HasKey("POSNO", a => sqlsum += $" and POSNO={a}");
-            item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
+            item.HasKey("POSNO", a => sqlsum += $" and POSNO='{a}'");
+            item.HasKey("DEALID", a => sqlsum += $" and DEALID='{a}'");
             //item.HasKey("INX", a => sqlsum += $" and INX={a}");
             //item.HasKey("NAME", a => sqlsum += $" and NAME={a}");
             //item.HasKey("CARDNO", a => sqlsum += $" and CARDNO={a}");
@@ -1548,8 +1526,8 @@ namespace z.ERP.Services
             item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
             item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
 
-            item.HasKey("POSNO", a => sqlsum += $" and POSNO={a}");
-            item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
+            item.HasKey("POSNO", a => sqlsum += $" and POSNO='{a}'");
+            item.HasKey("DEALID", a => sqlsum += $" and DEALID='{a}'");
             //item.HasKey("INX", a => sqlsum += $" and INX={a}");
             //item.HasKey("NAME", a => sqlsum += $" and NAME={a}");
             //item.HasKey("CARDNO", a => sqlsum += $" and CARDNO={a}");
@@ -1613,7 +1591,7 @@ namespace z.ERP.Services
 
     #endregion
 
-    #region 费用账单查询导出
+        #region 费用账单查询导出
     public string Bill_SrcOutput(SearchItem item)
         {
             string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME, A.BILLID, D.NAME FEENAME, A.CONTRACTID, 

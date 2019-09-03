@@ -50,6 +50,7 @@ namespace z.ERP.Services
                 "  WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID = D.MERCHANTID(+) ";
             sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and B.ID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
@@ -404,6 +405,7 @@ namespace z.ERP.Services
                 " FROM BILL_OBTAIN L,BRANCH B,MERCHANT C ,FKFS D" +
                 "  WHERE L.FKFSID=D.ID AND L.BRANCHID = B.ID and L.MERCHANTID=C.MERCHANTID(+)  ";
             sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
+            item.HasKey("BRANCHID", a => sql += $" and B.ID = {a}");
             item.HasKey("TYPE", a => sql += $" and L.TYPE = {a}");
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
@@ -610,6 +612,7 @@ namespace z.ERP.Services
                 " WHERE L.BRANCHID = B.ID and L.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)  "+
                 "   AND L.FEE_ACCOUNTID = F.ID(+)";
             sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
+            item.HasKey("BRANCHID", a => sql += $" and B.ID= {a}");
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID= {a}");
             item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID = {a}");
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");

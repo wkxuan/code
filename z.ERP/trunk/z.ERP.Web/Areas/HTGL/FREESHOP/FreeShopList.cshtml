@@ -41,13 +41,23 @@
             退铺日期_起
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="date" v-model="searchParam.FREEDATE_START" clearable></date-picker>
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.FREEDATE_START"
+                });
+            }     
         </i-col>
         <i-col span="2" class="RowTitle">
             退铺日期_止
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="date" v-model="searchParam.FREEDATE_END" clearable></date-picker>
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.FREEDATE_END"
+                });
+            }
         </i-col>
     </row>
     <row>
@@ -61,13 +71,23 @@
             登记时间_起
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="datetime" v-model="searchParam.REPORTER_TIME_START" clearable></date-picker>
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_TIME_START"
+                });
+            }
         </i-col>
         <i-col span="2" class="RowTitle">
             登记时间_止
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="datetime" v-model="searchParam.REPORTER_TIME_END" clearable></date-picker>
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_TIME_END"
+                });
+            }
         </i-col>
     </row>
     <row>
@@ -81,13 +101,23 @@
             审核时间_起
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="datetime" v-model="searchParam.VERIFY_TIME_START" clearable></date-picker>
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.VERIFY_TIME_START"
+                });
+            }
         </i-col>
         <i-col span="2" class="RowTitle">
             审核时间_止
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="datetime" v-model="searchParam.VERIFY_TIME_END" clearable></date-picker>
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.VERIFY_TIME_END"
+                });
+            }
         </i-col>
     </row>
 }
