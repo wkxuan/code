@@ -59,6 +59,7 @@
         }
         .rgclass {
             height:50px;
+            margin-top:30px;
             text-align:center;
             line-height: 50px;
             /*border-top: 1px dashed;*/
@@ -111,7 +112,7 @@
     </Split>
     <div>
         @*信息展示抽屉*@
-        <Drawer v-model="DrawerModel" width="40" v-bind:draggable="true">
+        <Drawer v-model="DrawerModel" width="40" v-bind:draggable="true" v-on:on-close="Drawerclose">
             <p slot="header">
                 <Icon type="ios-cube"></Icon> {{SHOPINFO.MERCHANTNAME}}
             </p>
