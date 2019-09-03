@@ -46,10 +46,13 @@ editDetail.showOne = function (data, callback) {
     _.Ajax('SearchBill_Notice', {
         Data: { BILLID: data }
     }, function (data) {
-        $.extend(editDetail.dataParam, data.billNotice);
-        editDetail.dataParam.NIANYUE += "";
-        editDetail.dataParam.BILL_NOTICE_ITEM = data.billNoticeItem;
-        callback && callback(data);
+        editDetail.dataParam.BRANCHID = data.billNotice.BRANCHID;
+        editDetail.otherMethods.branchChange(function () {
+            $.extend(editDetail.dataParam, data.billNotice);
+            editDetail.dataParam.NIANYUE += "";
+            editDetail.dataParam.BILL_NOTICE_ITEM = data.billNoticeItem;
+            callback && callback(data);
+        });
     });
 }
 
@@ -58,7 +61,7 @@ editDetail.otherMethods = {
     ContractChange: function () {
         editDetail.dataParam.BILL_NOTICE_ITEM = [];
     },
-    branchChange: function () {
+    branchChange: function (func) {
         editDetail.dataParam.CONTRACTID = null;
         editDetail.dataParam.MERCHANTID = null;
         editDetail.dataParam.MERCHANTNAME = null;
@@ -68,9 +71,13 @@ editDetail.otherMethods = {
         }, function (data) {
             var list = [];
             for (var i = 0; i < data.length; i++) {
-                list.push({ value: data[i].Key, label: data[i].Value })
+                list.push({ value: Number(data[i].Key), label: data[i].Value })
             }
             editDetail.screenParam.FEE_ACCOUNT = list;
+
+            if (typeof func == "function") {
+                func();
+            }
         });
     },
     SelMerchant: function () {
