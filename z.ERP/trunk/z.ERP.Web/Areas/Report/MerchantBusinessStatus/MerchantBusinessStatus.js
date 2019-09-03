@@ -1,27 +1,27 @@
 ﻿var colD = [
-    { title: '商户编码', key: 'MERCHANTID', width: 150,sortable:true },
-    { title: '商户名称', key: 'MERCHANTNAME', width: 250, sortable: true },
+    { title: '商户编码', key: 'MERCHANTID', width: 120,sortable:true },
+    { title: '商户名称', key: 'MERCHANTNAME', width: 200, sortable: true },
     { title: '品牌名称', key: 'BRANDNAME', width: 150, sortable: true },
-    { title: '年月', key: 'NIANYUE', width: 150, sortable: true },
-    { title: '铺位面积', key: 'AREA_RENTABLE', width: 150, align: "right", sortable: true },
-    { title: '基础租金', key: 'MUST_MONEY', width: 150, align: "right", sortable: true },
-    { title: '抽成租金', key: 'TCZJ', width: 150, align: "right", sortable: true },
-    { title: '实际租金', key: 'PAID_MONEY', width: 150, align: "right", sortable: true },
-    { title: '销售额', key: 'AMOUNT', width: 150, align: "right", sortable: true },
-    { title: '坪效', key: 'AMOUNT_AREA', width: 150, align: "right", sortable: true },
-    { title: '租售比', key: 'AREA_MONEY', width: 150, align: "right", sortable: true },
+    { title: '年月', key: 'YEARMONTH', width: 120, sortable: true },
+    { title: '铺位面积', key: 'AREA', width: 120, align: "right", sortable: true },
+    { title: '基础租金', key: 'JCZJ', width: 120, align: "right", sortable: true },
+    { title: '抽成租金', key: 'TCZJ', width: 120, align: "right", sortable: true },
+    { title: '实际租金', key: 'SJZJ', width: 120, align: "right", sortable: true },
+    { title: '销售额', key: 'AMOUNT', width: 120, align: "right", sortable: true },
+    { title: '坪效', key: 'BX', width: 120, align: "right", sortable: true },
+    { title: '租售比', key: 'ZSB', width: 120, align: "right", sortable: true },
 ];
 
 var colGD = [
-    { title: '商户编码', key: 'MERCHANTID', width: 150, sortable: true },
-    { title: '商户名称', key: 'MERCHANTNAME', width: 250, sortable: true },
+    { title: '商户编码', key: 'MERCHANTID', width: 120, sortable: true },
+    { title: '商户名称', key: 'MERCHANTNAME', width: 200, sortable: true },
     { title: '品牌名称', key: 'BRANDNAME', width: 150, sortable: true },
-    { title: '年月', key: 'NIANYUE', width: 150, sortable: true },
-    { title: '铺位面积', key: 'AREA_RENTABLE', width: 150, align: "right", sortable: true },
-    { title: '基础租金', key: 'MUST_MONEY', width: 150, align: "right", sortable: true },
-    { title: '销售额', key: 'AMOUNT', width: 150, align: "right", sortable: true },
-    { title: '坪效', key: 'AMOUNT_AREA', width: 150, align: "right", sortable: true },
-    { title: '租售比', key: 'AREA_MONEY', width: 150, align: "right", sortable: true },
+    { title: '年月', key: 'YEARMONTH', width: 120, sortable: true },
+    { title: '铺位面积', key: 'AREA', width: 120, align: "right", sortable: true },
+    { title: '基础租金', key: 'JCZJ', width: 120, align: "right", sortable: true },
+    { title: '销售额', key: 'AMOUNT', width: 120, align: "right", sortable: true },
+    { title: '坪效', key: 'BX', width: 120, align: "right", sortable: true },
+    { title: '租售比', key: 'ZSB', width: 120, align: "right", sortable: true },
 
 ];
 
@@ -42,11 +42,10 @@ srch.newCondition = function () {
     srch.searchParam.BRANCHID = "";
     srch.searchParam.MERCHANTID = "";
     srch.searchParam.MERCHANTNAME = "";
+    srch.searchParam.BRANDID = "";
     srch.searchParam.BRANDNAME = "";
     srch.searchParam.NIANYUE_END = "";
     srch.searchParam.NIANYUE_START = "";
-    srch.searchParam.YEARMONTH_END = "";
-    srch.searchParam.YEARMONTH_START = "";
 };
 
 srch.otherMethods = {
