@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="TextModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="YHDZXX.cs" />
+    <Compile Include="YHDZJL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\z.DbHelper\z.DbHelper.csproj">

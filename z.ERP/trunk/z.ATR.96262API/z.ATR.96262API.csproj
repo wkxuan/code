@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\z.ATR.Entities\z.ATR.Entities.csproj">
+      <Project>{3bfbb3bc-1850-4697-8166-bb768a9a90c1}</Project>
+      <Name>z.ATR.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\z.WSTools\z.WSTools.csproj">
       <Project>{185A3072-C6C7-4F58-9EC3-E261E5C734C6}</Project>
       <Name>z.WSTools</Name>

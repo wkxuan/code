@@ -4,33 +4,29 @@ using z.DBHelper.DBDomain;
 namespace z.ATR.Entities
 {
 
-    [DbTable("YHDZXX", "")]
-    public class YHDZXX : TableEntityBase
+    [DbTable("YHDZJL", "")]
+    public class YHDZJL : TableEntityBase
     {
-        public string SHBM
+        public string SHBH
         {
             get; set;
         }
 
-        public string ZDBM
+        public string ZDBH
         {
             get; set;
         }
 
-        public string ZDLSH
+        public string YHKH
         {
             get; set;
         }
 
-        public string JYLX
+        public string JYJE
         {
             get; set;
         }
-        public string JYCD
-        {
-            get; set;
-        }
-        public string DDBH
+        public string SXF
         {
             get; set;
         }
@@ -42,23 +38,32 @@ namespace z.ATR.Entities
         {
             get; set;
         }
-
-        public string JYJE
+        public string JYLBH
         {
             get; set;
         }
 
-        public string YHKH
+        public string JYLBM
         {
             get; set;
         }
 
-        public string JSZH
+        public string QFSJ
         {
             get; set;
         }
 
-        public string SXF
+        public string JGM
+        {
+            get; set;
+        }
+
+        public string ZFFS
+        {
+            get; set;
+        }
+
+        public string LSBH
         {
             get; set;
         }
