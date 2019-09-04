@@ -7,6 +7,7 @@ var Mapshow = new Vue({
         splitVal: 0.2,   //切割面板宽度
         data: [],
         Floorid: "",
+        Floorname:"",
         Tabs: "selectfloor",
         DrawerModel: false,      //右弹出抽屉
         tool: false,        //工具栏
@@ -20,9 +21,10 @@ var Mapshow = new Vue({
         echart2legend: ['店铺总计', '楼层总计'],
         echart2seriesname: '楼层占比',
         echart2seriesdata:[],
-        B_Floorid: "",        //三个参数备份，防止图已生成，参数改变
+        B_Floorid: "",        //参数备份，防止图已生成，参数改变
         B_starttime: "",
         B_endtime: "",
+        B_Floorname: "",
     },
     mounted: function () {
         this.initTree();
@@ -41,13 +43,14 @@ var Mapshow = new Vue({
         onselectchange: function (selectArr, node) {
             if (node.parentId == "REGION") {
                 Mapshow.Floorid = node.code;
+                Mapshow.Floorname = node.title;
                 Mapshow.Tabs = "selecttime";
             }
         },
         //查询按钮触发方法
         searchclick: function () {
             if (Mapshow.verify()) {
-                Mapshow.B_Floorid = Mapshow.Floorid; Mapshow.B_starttime = Mapshow.starttime; Mapshow.B_endtime = Mapshow.endtime; //三个参数备份，防止图已生成，参数改变
+                Mapshow.B_Floorid = Mapshow.Floorid; Mapshow.B_starttime = Mapshow.starttime; Mapshow.B_endtime = Mapshow.endtime; Mapshow.B_Floorname = Mapshow.Floorname; //参数备份，防止图已生成，参数改变
                 Mapshow.INITMAP();
             }
         },

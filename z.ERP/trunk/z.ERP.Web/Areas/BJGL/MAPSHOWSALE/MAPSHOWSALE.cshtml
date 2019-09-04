@@ -64,6 +64,12 @@
             line-height: 50px;
             /*border-top: 1px dashed;*/
         }
+        .titletop {
+            font-size: 20px;
+            font-weight: 600;
+            color: red;
+        }
+
     </style>
 }
 
@@ -102,6 +108,7 @@
         <div slot="right" class="rightPane">
             <div ref="maps" style="height:100%;width:100%;position:absolute"></div>
             <div class="sbutton" style="display:block" v-show="tool">
+                <div class="titletop">{{B_Floorname}} - 销售排行榜(TOP 10)</div>
                 <ul>
                     <li v-for="item in salelist" class="lilist" v-on:click="clickli(item.SHOPID)">
                         <span style="font-weight:600;"> NO.{{ item.NO }} </span> {{ item.SHOPNAME }}   <span style="color:#FF6715"> ￥ {{item.AMOUNT}}</span>
