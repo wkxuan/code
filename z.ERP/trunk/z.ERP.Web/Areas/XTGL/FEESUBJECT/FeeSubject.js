@@ -14,18 +14,23 @@
     define.method = "GetFeeSubjectElement";
     define.methodList = "GetFeeSubject";
     define.Key = 'TRIMID';
+
+    define.dataParam.PYM = "";
+    define.dataParam.NAME = "";
 };
 
 define.otherMethods = {
-    NameChange: function(){ 
-        define.dataParam.PYM=define.dataParam.NAME.toPYM();
+    NameChange: function () {
+        if (define.myve.dataParam.NAME)
+            define.myve.dataParam.PYM = define.myve.dataParam.NAME.toPYM();
     },
 };
 
 
 define.newRecord = function () {
-    define.dataParam.VOID_FLAG = "1";
-    define.dataParam.ACCOUNT = "2";
+    define.myve.dataParam.VOID_FLAG = 1;
+    define.myve.dataParam.ACCOUNT = "2";
+
 };
 
 
