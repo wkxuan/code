@@ -7,6 +7,7 @@ var Mapshow = new Vue({
         splitVal: 0.2,   //切割面板宽度
         data: [],
         Floorid: "",
+        Floorname:"",
         Tabs: "selectfloor",
         DrawerModel: false,      //右弹出抽屉
         tool: false,        //工具栏
@@ -20,9 +21,10 @@ var Mapshow = new Vue({
         echart2legend: ['店铺总计', '楼层总计'],
         echart2seriesname: '楼层占比',
         echart2seriesdata:[],
-        B_Floorid: "",        //三个参数备份，防止图已生成，参数改变
+        B_Floorid: "",        //参数备份，防止图已生成，参数改变
         B_starttime: "",
         B_endtime: "",
+        B_Floorname: "",
     },
     mounted: function () {
         this.initTree();
@@ -37,17 +39,18 @@ var Mapshow = new Vue({
                 }
             })
         },
+        //楼层选择
         onselectchange: function (selectArr, node) {
             if (node.parentId == "REGION") {
                 Mapshow.Floorid = node.code;
+                Mapshow.Floorname = node.title;
                 Mapshow.Tabs = "selecttime";
             }
         },
+        //查询按钮触发方法
         searchclick: function () {
-            if (isEmpty(Mapshow.Floorid)) {
-                iview.Message.info("请选择楼层!");
-            } else {
-                Mapshow.B_Floorid = Mapshow.Floorid; Mapshow.B_starttime = Mapshow.starttime; Mapshow.B_endtime = Mapshow.endtime; //三个参数备份，防止图已生成，参数改变
+            if (Mapshow.verify()) {
+                Mapshow.B_Floorid = Mapshow.Floorid; Mapshow.B_starttime = Mapshow.starttime; Mapshow.B_endtime = Mapshow.endtime; Mapshow.B_Floorname = Mapshow.Floorname; //参数备份，防止图已生成，参数改变
                 Mapshow.INITMAP();
             }
         },
@@ -67,6 +70,7 @@ var Mapshow = new Vue({
                 }
             });
         },
+        //排行榜点击事件
         clickli: function (event) {
             ThreeMapClick(event);
         },
@@ -80,7 +84,7 @@ var Mapshow = new Vue({
             echart1.setOption({
                 title: {
                     text: '经营情况',
-                    subtext: '选择日期内历史数据',
+                    subtext: Mapshow.starttime + " ~ " + Mapshow.endtime,
                     x: 'center'
                 },
                 tooltip: {
@@ -139,6 +143,7 @@ var Mapshow = new Vue({
                     break;
             }
         },
+        //饼图 类别改变重置Echart2
         TypeChange: function () {
             _.Ajax('GetTypeChange', {
                 shopid: SHOPID, starttime: Mapshow.B_starttime, endtime: Mapshow.B_endtime, type: Mapshow.Radiovalue
@@ -184,8 +189,29 @@ var Mapshow = new Vue({
                 animationEasing: "backIn"
             });
         },
+        //抽屉关闭方法
         Drawerclose: function () {
             Mapshow.Radiovalue = "1";
+        },
+        //验证方法
+        verify: function () {
+            if (isEmpty(Mapshow.Floorid)) {
+                iview.Message.info("请选择楼层!");
+                return false
+            }
+            if (isEmpty(Mapshow.starttime)) {
+                iview.Message.info("请选择开始时间!");
+                return false
+            }
+            if (isEmpty(Mapshow.endtime)) {
+                iview.Message.info("请选择结束时间!");
+                return false
+            }
+            if (Mapshow.starttime > Mapshow.endtime) {
+                iview.Message.info("开始时间不能大于结束时间!");
+                return false
+            }
+            return true;
         }
     },
 });
