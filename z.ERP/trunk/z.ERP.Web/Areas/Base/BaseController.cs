@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using System.Web.Mvc;
 using z.DBHelper.DBDomain;
 using z.ERP.Services;
@@ -8,7 +7,6 @@ using z.MVC5.Results;
 using z.SSO;
 using z.SSO.Model;
 using z.Verify;
-using z.DBHelper.Helper;
 
 namespace z.ERP.Web.Areas.Base
 {
@@ -123,12 +121,6 @@ namespace z.ERP.Web.Areas.Base
                 data.Add(obj);
             }
             return new UIResult(data);
-        }
-        public class MenuAuthority
-        {
-            public string id { set; get; }
-            public string authority { set; get; }
-            public bool enable { set; get; }
         }
     }
 }

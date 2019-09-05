@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using z.ERP.Web.Areas.Base;
 using z.MVC5.Results;
 
@@ -33,13 +34,10 @@ namespace z.ERP.Web.Areas.Report.GoodsSale
                 }
             );
         }
-
-        public string Output(SearchItem item)
-        {
-           if( item.Values["SrchTYPE"]=="2")
-             return service.ReportService.GoodsSaleMOutput(item);
-           else
-             return service.ReportService.GoodsSaleOutput(item);
-        }
+        //public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
+        //{
+        //    var dtSource = service.ReportService.GoodsSaleOutput(item);
+        //    return NPOIHelper.ExportExcel(dtSource, Name, Cols);
+        //}
     }
 }

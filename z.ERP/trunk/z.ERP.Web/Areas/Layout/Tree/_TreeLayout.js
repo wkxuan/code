@@ -147,6 +147,7 @@
                     _self.toolBtnList = data;
                 },
                 addtj: function (event) {
+                    _this.backData = DeepClone(this.dataParam);
                     if (this.data.length) {
                         if (!this.keyVal) {
                             iview.Message.error("请选择数据");
@@ -154,8 +155,7 @@
                         };
                     }                
                     if (!_this.IsValidTj())
-                        return;
-                    _this.backData = DeepClone(this.dataParam);
+                        return;          
                     _this.newRecord();
                     _this.AddTar = 'tj';
                     this.dataParam = {};
@@ -163,13 +163,13 @@
                     this.nodedisabled = true;
                 },
                 addxj: function (event) {
+                    _this.backData = DeepClone(this.dataParam);
                     if (!this.keyVal) {
                         iview.Message.error("请选择数据");
                         return;
                     };
                     if (!_this.IsValidXj())
                         return;
-                    _this.backData = DeepClone(this.dataParam);
                     _this.newRecord();
                     _this.AddTar = 'xj';
                     this.dataParam = {};

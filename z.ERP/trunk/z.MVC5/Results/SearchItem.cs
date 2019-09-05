@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
 using z.DBHelper.DBDomain;
 using z.Extensions;
 
@@ -92,6 +89,12 @@ namespace z.MVC5.Results
                 return false;
             }
         }
+    }
+    public class MenuAuthority
+    {
+        public string id { set; get; }
+        public string authority { set; get; }
+        public bool enable { set; get; }
     }
 }
 

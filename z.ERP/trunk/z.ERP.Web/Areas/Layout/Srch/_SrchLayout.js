@@ -85,10 +85,19 @@
                             }
                         }
                     }
+                    let cols = {};
+                    for(let i=0;i<_self.columns.length;i++){
+                        cols[_self.columns[i].key] = _self.columns[i].title
+                    }
+
                     _.Ajax('Output', {
+                        Name: window.document.title,
+                        Cols: cols,
                         Values: param
                     }, function (data) {
-                        window.open(__BaseUrl + data);
+                        if (data) {
+                            window.open(__BaseUrl + data);
+                        }                       
                     });
                 },
                 //打印待完善
