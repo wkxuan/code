@@ -562,6 +562,12 @@
     <Content Include="Content\VUE\styles\fonts\ionicons.eot" />
     <Content Include="Content\VUE\styles\fonts\ionicons.ttf" />
     <Content Include="Content\VUE\styles\fonts\ionicons.woff" />
+    <Content Include="Npoi\NPOI.DDF.dll" />
+    <Content Include="Npoi\NPOI.dll" />
+    <Content Include="Npoi\NPOI.HPSF.dll" />
+    <Content Include="Npoi\NPOI.HSSF.dll" />
+    <Content Include="Npoi\NPOI.POIFS.dll" />
+    <Content Include="Npoi\NPOI.Util.dll" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
