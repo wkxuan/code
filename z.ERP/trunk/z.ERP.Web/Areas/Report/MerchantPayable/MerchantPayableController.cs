@@ -1,8 +1,8 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Web.Areas.Base;
 using z.MVC5.Results;
-using System.Collections.Generic;
+
 namespace z.ERP.Web.Areas.Report.MerchantPayable
 {
     public class MerchantPayableController : BaseController
@@ -23,47 +23,10 @@ namespace z.ERP.Web.Areas.Report.MerchantPayable
                 }
             );
         }
-        public void outputExcel(string filename, List<tableCols> cols, SearchItem item)
-        {
-            Application excel = new Application();
-            //设置工作表的个数
-            excel.SheetsInNewWorkbook = 1;
-            //创建Wprkbook
-            excel.Workbooks.Add();
-            //取出第一个工作表
-            Worksheet sheet1 = (Worksheet)excel.ActiveWorkbook.Worksheets[1];
-            sheet1.Name = "data";
-            var row = 1;
-            var data = service.ReportService.getData(item);
-            for (var i = 0; i < cols.Count; i++)
-            {
-                var col = i + 1;
-                sheet1.Cells[row, col] = cols[i].name;
-                while(row< data.Rows.Count)
-                {
-                    sheet1.Cells[row, col] = data.Rows[row - 1][cols[i].key].ToString();
-                    row++;
-                }
-            }
-            //显示excel
-            excel.Visible = true;
-        }
-        public string Output(SearchItem item)
-        {
-            return service.ReportService.MerchantPayableOutput(item);
-        }
-    }
-    public class tableCols
-    {
-        public string key
-        {
-            set;
-            get;
-        }
-        public string name
-        {
-            set;
-            get;
-        }
+        //public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
+        //{
+        //    var dtSource = service.ReportService.MerchantPayableOutput(item);
+        //    return NPOIHelper.ExportExcel(dtSource, Name, Cols);
+        //}
     }
 }

@@ -1,23 +1,4 @@
-﻿var colD = [
-    { title: '日期', key: 'RQ', width: 130, cellType: "date",sortable:true },
-    { title: '商品编码', key: 'GOODSDM', width: 130, sortable: true },
-    { title: '商品条码', key: 'BARCODE', width: 130, sortable: true },
-    { title: '商品名称', key: 'GOODSNAME', width: 130, sortable: true },
-    { title: '租约号', key: 'CONTRACTID', width: 130, sortable: true },
-    { title: '商户编码', key: 'MERCHANTID', width: 130, sortable: true },
-    { title: '商户名称', key: 'MERCHANTNAME', width: 200, sortable: true },
-    { title: '分类编码', key: 'KINDCODE', width: 130, sortable: true },
-    { title: '分类名称', key: 'KINDNAME', width: 130, sortable: true },
-    { title: '品牌', key: 'BRANDNAME', width: 130, sortable: true },
-    { title: '销售金额', key: 'AMOUNT', width: 130, align: "right" },
-    { title: '销售成本', key: 'COST', width: 130, align: "right" },
-    { title: '折扣金额', key: 'DIS_AMOUNT', width: 130, align: "right" },
-    { title: '优惠金额', key: 'PER_AMOUNT', width: 130, align: "right" },
-
-];
-
-var colM = [
-    { title: '年月', key: 'YEARMONTH', width: 130, sortable: true },
+﻿var cols = [
     { title: '商品编码', key: 'GOODSDM', width: 130, sortable: true },
     { title: '商品条码', key: 'BARCODE', width: 130, sortable: true },
     { title: '商品名称', key: 'GOODSNAME', width: 130, sortable: true },
@@ -31,7 +12,6 @@ var colM = [
     { title: '销售成本', key: 'COST', width: 130, align: "right" },
     { title: '折扣金额', key: 'DIS_AMOUNT', width: 100, align: "right" },
     { title: '优惠金额', key: 'PER_AMOUNT', width: 100, align: "right" },
-
 ];
 
 var echartTypeList = [{ label: "按租约", value: "CONTRACTID" },
@@ -41,7 +21,7 @@ var echartTypeList = [{ label: "按租约", value: "CONTRACTID" },
                      { label: "按品牌", value: "BRANDNAME" }];
 
 srch.beforeVue = function () {
-    srch.screenParam.colDef = colD;
+    srch.screenParam.colDef = [{ title: '日期', key: 'RQ', width: 130, cellType: "date", sortable: true }].concat(cols);
     srch.service = "ReportService";
     srch.method = "GoodsSale";
     srch.echartResult = true;
@@ -108,15 +88,13 @@ srch.otherMethods = {
         if (value == 1) {
             Vue.set(this, "data", []);
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colD);
-            Vue.set(srch, "method", "GoodsSale");
+            srch.screenParam.colDef = [{ title: '日期', key: 'RQ', width: 130, cellType: "date", sortable: true }].concat(cols);
             srch.screenParam.echartType = echartTypeList.concat({ label: "按日期", value: "RQ" });
             srch.screenParam.echartRadioVal = "RQ";
         } else {
             Vue.set(this, "data", []);
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colM);
-            Vue.set(srch, "method", "GoodsSaleM");
+            srch.screenParam.colDef = [{ title: '年月', key: 'YEARMONTH', width: 130, sortable: true }].concat(cols);
             srch.screenParam.echartType = echartTypeList.concat({ label: "按年月", value: "YEARMONTH" });
             srch.screenParam.echartRadioVal = "YEARMONTH";
         }

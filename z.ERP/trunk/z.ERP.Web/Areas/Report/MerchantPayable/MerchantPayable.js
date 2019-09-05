@@ -1,8 +1,8 @@
 ﻿var cols = [
-    { title: '商户代码', key: 'MERCHANTID', minWidth: 100, ellipsis: true, tooltip: true ,sortable:true},
-    { title: '商户名称', key: 'MERCHANTNAME', minWidth: 100, ellipsis: true, tooltip: true, sortable: true },
-    { title: '债权发生月', key: 'NIANYUE', minWidth: 100, ellipsis: true, tooltip: true, sortable: true },
-    { title: '收付实现月', key: 'YEARMONTH', minWidth: 100, ellipsis: true, tooltip: true, sortable: true },
+    { title: '商户代码', key: 'MERCHANTID', minWidth: 100,sortable:true},
+    { title: '商户名称', key: 'MERCHANTNAME', minWidth: 100, sortable: true },
+    { title: '债权发生月', key: 'NIANYUE', minWidth: 100, sortable: true },
+    { title: '收付实现月', key: 'YEARMONTH', minWidth: 100, sortable: true },
 
 ];
 srch.mountedInit = function () {
