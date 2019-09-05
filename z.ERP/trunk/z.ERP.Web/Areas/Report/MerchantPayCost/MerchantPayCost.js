@@ -1,24 +1,24 @@
 ﻿var colD = [
-    { title: '商户编码', key: 'MERCHANTID', width: 120,sortable:true },
-    { title: '商户名称', key: 'MERCHANTNAME', width: 250, sortable: true },
-    { title: '品牌名称', key: 'BRANDNAME', width: 150, sortable: true },
-    { title: '债权发生月', key: 'NIANYUE', width: 150, sortable: true },
-    { title: '收付实现月', key: 'YEARMONTH', width: 150, sortable: true },
-    { title: '收费项目', key: 'TRIMNAME', width: 150, sortable: true },
-    { title: '应收金额', key: 'MUST_MONEY', width: 150, align: "right", sortable: true },
-    { title: '已收金额', key: 'RECEIVE_MONEY', width: 150, align: "right", sortable: true },
-    { title: '未付金额', key: 'UNPAID_MONEY', width: 150, align: "right", sortable: true },
+    { title: '商户编码', key: 'MERCHANTID', width: 120, sortable: true, ellipsis: true, tooltip: true },
+    { title: '商户名称', key: 'MERCHANTNAME', width: 250, sortable: true, ellipsis: true, tooltip: true },
+    { title: '品牌名称', key: 'BRANDNAME', width: 150, sortable: true, ellipsis: true, tooltip: true },
+    { title: '债权发生月', key: 'NIANYUE', width: 150, sortable: true, ellipsis: true, tooltip: true },
+    { title: '收付实现月', key: 'YEARMONTH', width: 150, sortable: true, ellipsis: true, tooltip: true },
+    { title: '收费项目', key: 'TRIMNAME', width: 150, sortable: true, ellipsis: true, tooltip: true },
+    { title: '应收金额', key: 'MUST_MONEY', width: 150, align: "right", sortable: true, ellipsis: true, tooltip: true },
+    { title: '已收金额', key: 'RECEIVE_MONEY', width: 150, align: "right", sortable: true, ellipsis: true, tooltip: true },
+    { title: '未付金额', key: 'UNPAID_MONEY', width: 150, align: "right", sortable: true, ellipsis: true, tooltip: true },
 
 ];
 
 var colM = [
-    { title: '商户编码', key: 'MERCHANTID', width: 120, sortable: true },
-    { title: '商户名称', key: 'MERCHANTNAME', width: 250, sortable: true },
-    { title: '品牌名称', key: 'BRANDNAME', width: 150, sortable: true },
-    { title: '收费项目', key: 'TRIMNAME', width: 150, sortable: true },
-    { title: '应收金额', key: 'MUST_MONEY', width: 150, align: "right", sortable: true },
-    { title: '已收金额', key: 'RECEIVE_MONEY', width: 150, align: "right", sortable: true },
-    { title: '未付金额', key: 'UNPAID_MONEY', width: 150, align: "right", sortable: true },
+    { title: '商户编码', key: 'MERCHANTID', width: 120, sortable: true, ellipsis: true, tooltip: true },
+    { title: '商户名称', key: 'MERCHANTNAME', width: 250, sortable: true, ellipsis: true, tooltip: true },
+    { title: '品牌名称', key: 'BRANDNAME', width: 150, sortable: true, ellipsis: true, tooltip: true },
+    { title: '收费项目', key: 'TRIMNAME', width: 150, sortable: true, ellipsis: true, tooltip: true },
+    { title: '应收金额', key: 'MUST_MONEY', width: 150, align: "right", sortable: true, ellipsis: true, tooltip: true },
+    { title: '已收金额', key: 'RECEIVE_MONEY', width: 150, align: "right", sortable: true, ellipsis: true, tooltip: true },
+    { title: '未付金额', key: 'UNPAID_MONEY', width: 150, align: "right", sortable: true, ellipsis: true, tooltip: true },
 
 ];
 

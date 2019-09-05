@@ -25,12 +25,10 @@ namespace z.ERP.Web.Areas.Report.PayTypeSale
                 }
             );
         }
-        public string Output(SearchItem item)
+        public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
         {
-            if (item.Values["SrchTYPE"] == "2")
-                return service.ReportService.PayTypeSaleSOutput(item);
-            else
-                return service.ReportService.PayTypeSaleOutput(item);
+            var dtSource = service.ReportService.PayTypeSaleOutput(item);
+            return NPOIHelper.ExportExcel(dtSource, Name, Cols);
         }
     }
 }

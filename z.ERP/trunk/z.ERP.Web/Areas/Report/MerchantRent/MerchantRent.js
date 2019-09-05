@@ -3,7 +3,7 @@
         { title: '年月', key: 'YEARMONTH', width: 120, sortable: true, ellipsis: true, tooltip: true },
         { title: '业态编码', key: 'CATEGORYCODE', width: 120, sortable: true, ellipsis: true, tooltip: true },
         { title: '业态名称', key: 'CATEGORYNAME', width: 120, sortable: true, ellipsis: true, tooltip: true },
-        { title: '楼层', key: 'FLOORCODE', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '楼层', key: 'FLOORNAME', width: 120, sortable: true, ellipsis: true, tooltip: true },
         { title: '铺位号', key: 'SHOPCODE', width: 120, sortable: true, ellipsis: true, tooltip: true },
         { title: '经营面积(平米)', key: 'AREA', width: 120, align: "right",  ellipsis: true, tooltip: true },
         { title: '品牌', key: 'BRANDNAME', width: 120, sortable: true, ellipsis: true, tooltip: true },

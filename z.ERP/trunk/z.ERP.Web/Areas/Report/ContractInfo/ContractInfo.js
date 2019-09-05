@@ -1,21 +1,21 @@
 ﻿srch.beforeVue = function () {
     var col = [
-        { title: '租约号', key: 'CONTRACTID', width: 90, sortable: true },
-        { title: '楼层', key: 'FLOORCODE', width: 80, sortable: true },
-        { title: '铺位号', key: 'SHOPCODE', width: 120, sortable: true },
-        { title: '品牌', key: 'BRANDNAME', width: 120, sortable: true },
-        { title: '客户编码', key: 'MERCHANTID', width: 120, sortable: true },
-        { title: '客户名称', key: 'MERCHANTNAME', width: 150, sortable: true },
-        { title: '经营面积(平米)', key: 'AREAR', width: 110, align: "right" },
+        { title: '租约号', key: 'CONTRACTID', width: 150, sortable: true, ellipsis: true, tooltip: true },
+        { title: '楼层', key: 'FLOORCODE', width: 80, sortable: true, ellipsis: true, tooltip: true },
+        { title: '铺位号', key: 'SHOPCODE', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '品牌', key: 'BRANDNAME', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '客户编码', key: 'MERCHANTID', width: 120, sortable: true, ellipsis: true, tooltip: true },
+        { title: '客户名称', key: 'MERCHANTNAME', width: 150, sortable: true, ellipsis: true, tooltip: true },
+        { title: '经营面积(平米)', key: 'AREAR', width: 110, align: "right", ellipsis: true, tooltip: true },
         {
-            title: '合同有效期起', key: 'CONT_START', width: 110
+            title: '合同有效期起', key: 'CONT_START', width: 110, ellipsis: true, tooltip: true
         },
         {
-            title: '合同有效期止', key: 'CONT_END', width: 110
+            title: '合同有效期止', key: 'CONT_END', width: 110, ellipsis: true, tooltip: true
         },
-        { title: '租金收取方式', key: 'RENTWAY', width: 150, sortable: true },
-        { title: '固定租金标准(年:元/平米/月)', key: 'RENTPRICE', width: 150 },
-        { title: '固定租金收费规则', key: 'RENTRULE', width: 150},
+        { title: '租金收取方式', key: 'RENTWAY', width: 150, sortable: true, ellipsis: true, tooltip: true },
+        { title: '固定租金标准(年:元/平米/月)', key: 'RENTPRICE', width: 200, ellipsis: true, tooltip: true },
+        { title: '固定租金收费规则', key: 'RENTRULE', width: 150, ellipsis: true, tooltip: true },
         //{ title: '物业费收费规则', key: 'WYFRULE', width: 110 },
     ];
     srch.screenParam.colDef = col;
