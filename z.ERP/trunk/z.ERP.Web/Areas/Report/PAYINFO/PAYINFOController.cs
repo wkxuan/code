@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using z.ERP.Web.Areas.Base;
 using z.MVC5.Results;
 
@@ -12,9 +13,11 @@ namespace z.ERP.Web.Areas.Report.PAYINFO
             return View();
         }
 
-        public string Output(SearchItem item)
+
+        public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
         {
-            return service.ReportService.PAYINFOOutput(item);
+            var dtSource = service.ReportService.PAYINFOOutput(item);
+            return NPOIHelper.ExportExcel(dtSource, Name, Cols);
         }
     }
 }

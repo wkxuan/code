@@ -26,6 +26,7 @@ srch.otherMethods = {
     }
 }
 
+
 srch.popCallBack = function (data) {
 
     if (srch.screenParam.showPopMerchant) {
