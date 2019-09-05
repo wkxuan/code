@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using z.ERP.Web.Areas.Base;
 using z.MVC5.Results;
 
@@ -11,9 +12,10 @@ namespace z.ERP.Web.Areas.Report.MerchantPayCost
             ViewBag.Title = "租赁商户缴费查询";
             return View();
         }
-        public string Output(SearchItem item)
+        public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
         {
-            return service.ReportService.MerchantPayCostOutput(item);
+            var dtSource = service.ReportService.MerchantPayCostOutput(item);
+            return NPOIHelper.ExportExcel(dtSource, Name, Cols);
         }
     }
 }

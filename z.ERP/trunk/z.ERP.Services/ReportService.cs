@@ -493,16 +493,12 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public string ContractInfoOutput(SearchItem item)
+        public DataTable ContractInfoOutput(SearchItem item)
         {
             string sql = ContractInfoSql(item);
 
             DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "ContractInfo";
-            return GetExport("合同信息表", a =>
-            {
-                a.SetTable(dt);
-            });
+            return dt;
         }
 
         #endregion
@@ -843,7 +839,7 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public string MerchantPayCostOutput(SearchItem item)
+        public DataTable MerchantPayCostOutput(SearchItem item)
         {
             string sql = "";
             if (item.Values["SrchTYPE"] == ((int)列表或汇总.普通列表).ToString())
@@ -864,11 +860,7 @@ namespace z.ERP.Services
                           order by M.MERCHANTID,F.NAME";
             }
             DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "MerchantPayCost";
-            return GetExport("租赁商户缴费记录导出", a =>
-            {
-                a.SetTable(dt);
-            });
+            return dt;
         }
         #endregion
 
