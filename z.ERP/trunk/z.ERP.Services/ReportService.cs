@@ -12,10 +12,8 @@ namespace z.ERP.Services
         internal ReportService()
         {
         }
-
-
         #region 租约销售
-        public string ContractSaleSqlParm(SearchItem item)
+        public string ContractSaleSqlParam(SearchItem item)
         {
             string sqlParam = " from CONTRACT_SUMMARY C,MERCHANT M,SHOP S,BRAND B,CATEGORY G,FLOOR F";
             sqlParam += " where C.MERCHANTID=M.MERCHANTID AND C.SHOPID=S.SHOPID AND C.BRANDID=B.ID";
@@ -42,29 +40,42 @@ namespace z.ERP.Services
             item.HasKey("YEARMONTH_END", a => sqlParam += $" and C.YEARMONTH <= {a}");
             return sqlParam;
         }
-
-        public DataGridResult ContractSale(SearchItem item)
+        public string ContractSaleSql(SearchItem item)
         {
-            string sql = @"select C.RQ,C.CONTRACTID,C.MERCHANTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,
-                                  G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,F.NAME FLOORNAME,
-                                  B.NAME BRANDNAME,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT";
+            string sql;
+            if (item.Values["SrchTYPE"] == ((int)查询类型.日数据).ToString())
+            {
+                sql = @"select to_char(C.RQ,'yyyy-mm-dd') RQ,C.CONTRACTID,C.MERCHANTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,
+                               G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,F.NAME FLOORNAME,
+                               B.NAME BRANDNAME,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT";
+                sql += ContractSaleSqlParam(item);
 
-            string sqlsum = $"select nvl(SUM(C.AMOUNT),0) AMOUNT,nvl(SUM(C.COST),0) COST,nvl(SUM(C.DIS_AMOUNT),0) DIS_AMOUNT," +
-                              "nvl(SUM(C.PER_AMOUNT),0) PER_AMOUNT ";
-
-            string sqlParam = ContractSaleSqlParm(item);
-
-            sql += sqlParam;
-            
-            sql += @" GROUP BY C.RQ,C.CONTRACTID,C.MERCHANTID,M.NAME,S.CODE,S.NAME,
+                sql += @" GROUP BY C.RQ,C.CONTRACTID,C.MERCHANTID,M.NAME,S.CODE,S.NAME,
                              G.CATEGORYCODE,G.CATEGORYNAME,F.CODE,F.NAME,B.NAME 
                       ORDER BY  C.RQ,C.MERCHANTID,C.CONTRACTID ";
+            }
+            else
+            {
+                sql = $"SELECT C.YEARMONTH,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
+                sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME, ";
+                sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,F.NAME FLOORNAME";
+                sql += ContractSaleSqlParam(item);
+                sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE,F.NAME";
+                sql += " ORDER BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID ";              
+            }
+            return sql;
+        }
+        public DataGridResult ContractSale(SearchItem item)
+        {
+            string sql = ContractSaleSql(item);
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-
             if (count > 0)
             {
-                sqlsum += sqlParam;
+                string sqlsum = $"select nvl(SUM(C.AMOUNT),0) AMOUNT,nvl(SUM(C.COST),0) COST,nvl(SUM(C.DIS_AMOUNT),0) DIS_AMOUNT," +
+                             "nvl(SUM(C.PER_AMOUNT),0) PER_AMOUNT ";
+
+                sqlsum += ContractSaleSqlParam(item);
 
                 DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
                 if (dtSum.Rows.Count > 0)
@@ -80,34 +91,81 @@ namespace z.ERP.Services
             }
             return new DataGridResult(dt, count);
         }
-        public DataGridResult ContractSaleM(SearchItem item)
+        public DataTable ContractSaleOutput(SearchItem item)
         {
-            
-            string sql = $"SELECT C.YEARMONTH,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,"+
-                          " SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,"+
-                          " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,"+
-                          " B.NAME BRANDNAME,"+
-                          " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE";
+            string sql = ContractSaleSql(item);
+            return DbHelper.ExecuteTable(sql);
+        }
+        #endregion
 
-            string sqlsum = $"SELECT SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT ";
+        #region 商品销售
+        public string GoodsSaleSqlParam(SearchItem item)
+        {
+            string sql = " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
+            sql += " WHERE G.MERCHANTID=M.MERCHANTID and B.CATEGORYID=C.CATEGORYID";
+            sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
+            sql += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            string SqlyTQx = GetYtQx("C");
+            if (SqlyTQx != "")  //业态权限
+            {
+                sql += " and " + SqlyTQx;
+            }
 
-            string sqlParam = ContractSaleSqlParm(item);
+            item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
+            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
+            item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
+            item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
+            item.HasDateKey("RQ_START", a => sql += $" and D.RQ >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
+            item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
+            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
+            item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
+            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
+            item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
 
-            sql += sqlParam;
-            sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE";
-            sql += " ORDER BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID ";
+            return sql;
+        }
+        public string GoodsSaleSql(SearchItem item)
+        {
+            string sql;
+            if (item.Values["SrchTYPE"] == ((int)查询类型.日数据).ToString())
+            {
+                sql = $"SELECT D.RQ,D.AMOUNT,D.COST,D.DIS_AMOUNT,D.PER_AMOUNT,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
+                sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
+                sql += GoodsSaleSqlParam(item);
+                sql += " ORDER BY  D.RQ,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
+
+            }
+            else
+            {
+                sql = $"SELECT D.YEARMONTH,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
+                sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME,";
+                sql += " sum(D.AMOUNT) AMOUNT,sum(D.COST) COST,sum(D.DIS_AMOUNT) DIS_AMOUNT,sum(D.PER_AMOUNT) PER_AMOUNT";
+                sql += GoodsSaleSqlParam(item);
+                sql += " GROUP BY D.YEARMONTH,M.NAME,G.CONTRACTID,G.MERCHANTID,";
+                sql += " B.NAME,K.CODE,K.NAME,G.GOODSDM,G.BARCODE,G.NAME";
+                sql += " ORDER BY D.YEARMONTH,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
+            }
+            return sql;
+        }
+        public DataGridResult GoodsSale(SearchItem item)
+        {
+            string sql = GoodsSaleSql(item);
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
 
             if (count > 0)
             {
-                sqlsum += sqlParam;
-
+                string sqlsum = @"SELECT SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,
+                                         SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT";
+                sqlsum += GoodsSaleSqlParam(item);
                 DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
                 if (dtSum.Rows.Count > 0)
                 {
                     DataRow dr = dt.NewRow();
-                    dr["CONTRACTID"] = "合计";
+                    dr["GOODSDM"] = "合计";
                     dr["AMOUNT"] = dtSum.Rows[0]["AMOUNT"].ToString();
                     dr["COST"] = dtSum.Rows[0]["COST"].ToString();
                     dr["DIS_AMOUNT"] = dtSum.Rows[0]["DIS_AMOUNT"].ToString();
@@ -117,273 +175,10 @@ namespace z.ERP.Services
             }
             return new DataGridResult(dt, count);
         }
-        public string ContractSaleOutput(SearchItem item)
+        public DataTable GoodsSaleOutput(SearchItem item)
         {
-            string sql;
-            if (item.Values["SrchTYPE"] == ((int)查询类型.月数据).ToString()) 
-            {
-                sql = $"SELECT C.YEARMONTH RQ,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT,";
-                sql += " C.MERCHANTID,C.CONTRACTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,B.NAME BRANDNAME, ";
-                sql += " G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,F.NAME FLOORNAME";
-                sql += ContractSaleSqlParm(item);
-                sql += " GROUP BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID,M.NAME,S.CODE,S.NAME,B.NAME,G.CATEGORYCODE,G.CATEGORYNAME,F.CODE,F.NAME";
-                sql += " ORDER BY C.YEARMONTH,C.MERCHANTID,C.CONTRACTID ";
-
-            }
-            else
-            {
-                sql = @"select to_char(C.RQ,'yyyy-mm-dd') RQ,C.CONTRACTID,C.MERCHANTID,M.NAME MERCHANTNAME,S.CODE SHOPCODE,S.NAME SHOPNAME,
-                               G.CATEGORYCODE,G.CATEGORYNAME,F.CODE FLOORCODE,F.NAME FLOORNAME,
-                               B.NAME BRANDNAME,SUM(C.AMOUNT) AMOUNT,SUM(C.COST) COST,SUM(C.DIS_AMOUNT) DIS_AMOUNT,SUM(C.PER_AMOUNT) PER_AMOUNT";
-                sql += ContractSaleSqlParm(item); ;
-
-                sql += @" GROUP BY C.RQ,C.CONTRACTID,C.MERCHANTID,M.NAME,S.CODE,S.NAME,
-                             G.CATEGORYCODE,G.CATEGORYNAME,F.CODE,F.NAME,B.NAME 
-                      ORDER BY  C.RQ,C.MERCHANTID,C.CONTRACTID ";
-            }
-
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "ContractSale";
-            return GetExport("租约销售导出", a =>
-            {
-                a.SetTable(dt);
-            });
-        }
-        #endregion
-
-        #region 商品销售
-        public DataGridResult GoodsSale(SearchItem item)
-        {
-            string SqlyTQx = GetYtQx("C");
-
-            string sql = $"SELECT D.RQ,D.AMOUNT,D.COST,D.DIS_AMOUNT,D.PER_AMOUNT,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
-            sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
-            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
-            sql += " WHERE G.MERCHANTID=M.MERCHANTID and B.CATEGORYID=C.CATEGORYID";
-            sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
-
-            sql += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
-            if (SqlyTQx != "")  //业态权限
-            {
-                sql += " and " + SqlyTQx;
-            }
-
-            item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
-            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
-            item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
-            item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sql += $" and D.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
-            item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
-
-            sql += " ORDER BY  D.RQ,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-
-            if (count > 0)
-            {
-                string sqlsum = $"SELECT SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT";
-                sqlsum += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
-                sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
-                sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
-                sqlsum += "  and B.CATEGORYID=C.CATEGORYID";
-
-                sqlsum += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
-                if (SqlyTQx != "")  //业态权限
-                {
-                    sqlsum += " and " + SqlyTQx;
-                }
-
-                item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
-                item.HasKey("GOODSDM", a => sqlsum += $" and G.GOODSDM = '{a}'");
-                item.HasKey("GOODSNAME", a => sqlsum += $" and G.NAME LIKE '%{a}%'");
-                item.HasKey("CONTRACTID", a => sqlsum += $" and G.CONTRACTID = '{a}'");
-                item.HasDateKey("RQ_START", a => sqlsum += $" and D.RQ >= {a}");
-                item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
-                item.HasKey("MERCHANTID", a => sqlsum += $" and G.MERCHANTID LIKE '%{a}%'");
-                item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
-                item.HasKey("CATEGORYCODE", a => sqlsum += $" and C.CATEGORYCODE LIKE '{a}%'");
-                item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
-                item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
-                item.HasKey("YEARMONTH_START", a => sqlsum += $" and D.YEARMONTH >= {a}");
-                item.HasKey("YEARMONTH_END", a => sqlsum += $" and D.YEARMONTH <= {a}");
-
-                DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
-                DataRow dr = dt.NewRow();
-                dr["GOODSDM"] = "合计";
-                dr["AMOUNT"] = dtSum.Rows[0]["AMOUNT"].ToString();
-                dr["COST"] = dtSum.Rows[0]["COST"].ToString();
-                dr["DIS_AMOUNT"] = dtSum.Rows[0]["DIS_AMOUNT"].ToString();
-                dr["PER_AMOUNT"] = dtSum.Rows[0]["PER_AMOUNT"].ToString();
-                dt.Rows.Add(dr);
-            }
-            return new DataGridResult(dt, count);
-        }
-        public DataGridResult GoodsSaleM(SearchItem item)
-        {
-            string SqlyTQx = GetYtQx("C");
-            string sql = $"SELECT D.YEARMONTH,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
-            sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME,";
-            sql += " sum(D.AMOUNT) AMOUNT,sum(D.COST) COST,sum(D.DIS_AMOUNT) DIS_AMOUNT,sum(D.PER_AMOUNT) PER_AMOUNT";
-            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
-            sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
-            sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
-            sql += "  and B.CATEGORYID=C.CATEGORYID";
-
-            sql += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
-            if (SqlyTQx != "")  //业态权限
-            {
-                sql += " and " + SqlyTQx;
-            }
-            item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
-            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
-            item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
-            item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sql += $" and D.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
-            item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
-
-            sql += " GROUP BY D.YEARMONTH,M.NAME,G.CONTRACTID,G.MERCHANTID,";
-            sql += " B.NAME,K.CODE,K.NAME,G.GOODSDM,G.BARCODE,G.NAME";
-
-            sql += " ORDER BY D.YEARMONTH,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-
-            if (count > 0)
-            {
-                string sqlsum = $"SELECT SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT";
-                sqlsum += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
-                sqlsum += " WHERE G.MERCHANTID=M.MERCHANTID ";
-                sqlsum += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
-                sqlsum += "  and B.CATEGORYID=C.CATEGORYID";
-
-                sqlsum += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
-                if (SqlyTQx != "") //业态权限
-                {
-                    sqlsum += " and " + SqlyTQx;
-                }
-                item.HasKey("BRANCHID", a => sqlsum += $" and D.BRANCHID = {a}");
-                item.HasKey("GOODSDM", a => sqlsum += $" and G.GOODSDM = '{a}'");
-                item.HasKey("GOODSNAME", a => sqlsum += $" and G.NAME LIKE '%{a}%'");
-                item.HasKey("CONTRACTID", a => sqlsum += $" and G.CONTRACTID = '{a}'");
-                item.HasDateKey("RQ_START", a => sqlsum += $" and D.RQ >= {a}");
-                item.HasDateKey("RQ_END", a => sqlsum += $" and D.RQ <= {a}");
-                item.HasKey("MERCHANTID", a => sqlsum += $" and G.MERCHANTID LIKE '%{a}%'");
-                item.HasKey("MERCHANTNAME", a => sqlsum += $" and M.NAME LIKE '%{a}%'");
-                item.HasKey("CATEGORYCODE", a => sqlsum += $" and C.CATEGORYCODE LIKE '{a}%'");
-                item.HasKey("BRANDID", a => sqlsum += $" and G.BRANDID = {a}");
-                item.HasKey("BRANDNAME", a => sqlsum += $" and B.NAME LIKE '%{a}%'");
-                item.HasKey("YEARMONTH_START", a => sqlsum += $" and D.YEARMONTH >= {a}");
-                item.HasKey("YEARMONTH_END", a => sqlsum += $" and D.YEARMONTH <= {a}");
-
-                DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
-                DataRow dr = dt.NewRow();
-                dr["GOODSDM"] = "合计";
-                dr["AMOUNT"] = dtSum.Rows[0]["AMOUNT"].ToString();
-                dr["COST"] = dtSum.Rows[0]["COST"].ToString();
-                dr["DIS_AMOUNT"] = dtSum.Rows[0]["DIS_AMOUNT"].ToString();
-                dr["PER_AMOUNT"] = dtSum.Rows[0]["PER_AMOUNT"].ToString();
-                dt.Rows.Add(dr);
-            }
-            return new DataGridResult(dt, count);
-        }
-        public string GoodsSaleOutput(SearchItem item)
-        {
-            string SqlyTQx = GetYtQx("C");
-            string sql = $"SELECT to_char(D.RQ,'yyyy-mm-dd') RQ,D.AMOUNT,D.COST,D.DIS_AMOUNT,D.PER_AMOUNT,";
-            sql += " M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
-            sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
-            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C  ";
-            sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
-            sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
-            sql += "  and B.CATEGORYID=C.CATEGORYID";
-
-            sql += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
-            if (SqlyTQx != "") //业态权限
-            {
-                sql += " and " + SqlyTQx;
-            }
-
-            item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
-            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
-            item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
-            item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sql += $" and D.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
-            item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
-
-            sql += " ORDER BY  D.RQ,G.MERCHANTID,G.CONTRACTID,D.GOODSID ";
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "GoodsSale";
-            return GetExport("商品销售导出", a =>
-            {
-                a.SetTable(dt);
-            });
-        }
-        public string GoodsSaleMOutput(SearchItem item)
-        {
-            string SqlyTQx = GetYtQx("C");
-            string sql = $"SELECT D.YEARMONTH RQ,SUM(D.AMOUNT) AMOUNT,SUM(D.COST) COST,SUM(D.DIS_AMOUNT) DIS_AMOUNT,SUM(D.PER_AMOUNT) PER_AMOUNT,";
-            sql += " M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
-            sql += " B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
-            sql += " FROM GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C  ";
-            sql += " WHERE G.MERCHANTID=M.MERCHANTID ";
-            sql += "   AND D.GOODSID=G.GOODSID  AND G.BRANDID=B.ID AND G.KINDID=K.ID";
-            sql += "  and B.CATEGORYID=C.CATEGORYID";
-
-            sql += "  and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
-            if (SqlyTQx != "") //业态权限
-            {
-                sql += " and " + SqlyTQx;
-            }
-
-            item.HasKey("BRANCHID", a => sql += $" and D.BRANCHID = {a}");
-            item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
-            item.HasKey("GOODSNAME", a => sql += $" and G.NAME LIKE '%{a}%'");
-            item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
-            item.HasDateKey("RQ_START", a => sql += $" and D.RQ >= {a}");
-            item.HasDateKey("RQ_END", a => sql += $" and D.RQ <= {a}");
-            item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
-            item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("BRANDID", a => sql += $" and G.BRANDID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and B.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sql += $" and D.YEARMONTH >= {a}");
-            item.HasKey("YEARMONTH_END", a => sql += $" and D.YEARMONTH <= {a}");
-
-            sql += " GROUP BY D.YEARMONTH,M.NAME,G.CONTRACTID,G.MERCHANTID,B.NAME,K.CODE,K.NAME,G.GOODSDM,G.BARCODE,G.NAME";
-            sql += " ORDER BY D.YEARMONTH,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "GoodsSale";
-            return GetExport("商品销售导出", a =>
-            {
-                a.SetTable(dt);
-            });
+            string sql = GoodsSaleSql(item);
+            return DbHelper.ExecuteTable(sql);
         }
         #endregion
 
@@ -484,7 +279,7 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
 
         }
-        public string SaleRecordOutput(SearchItem item)
+        public DataTable SaleRecordOutput(SearchItem item)
         {
             string sql = $"SELECT S.POSNO,S.DEALID,to_char(S.SALE_TIME,'yy-mm-dd hh24:mi:ss') SALE_TIME,";
             sql += " to_char(trunc(S.ACCOUNT_DATE),'yy-mm-dd') ACCOUNT_DATE,U.USERNAME CASHIERNAME, U.USERCODE CASHIERCODE,";
@@ -529,12 +324,7 @@ namespace z.ERP.Services
             item.HasKey("CASHIERID", a => sql += $" and S.CASHIERID = {a}");
 
             sql += " ORDER BY  1,2 ";
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "SaleRecord";
-            return GetExport("POS销售导出", a =>
-            {
-                a.SetTable(dt);
-            });
+            return DbHelper.ExecuteTable(sql);
         }
         #endregion
 
@@ -644,17 +434,12 @@ namespace z.ERP.Services
         #endregion
 
         #region 合同信息表ContractInfo
-
         public DataTable SEARCHFEE()
         {
-            {
-                string sql = $@"SELECT TRIMID,NAME,PYM FROM FeeSubject A WHERE TRIMID<1000 ORDER BY TRIMID";
-                DataTable dt = DbHelper.ExecuteTable(sql);
-                return dt;
-            }
+            string sql = $@"SELECT TRIMID,NAME,PYM FROM FeeSubject A WHERE TRIMID<1000 ORDER BY TRIMID";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
         }
-
-
         public string ContractInfoSql(SearchItem item)
         {
             var feedata = SEARCHFEE();
@@ -700,10 +485,8 @@ namespace z.ERP.Services
 
             return sql;
         }
-
         public DataGridResult ContractInfo(SearchItem item)
         {
-
             string sql = ContractInfoSql(item);
 
             int count;
@@ -1091,7 +874,7 @@ namespace z.ERP.Services
 
         #region 商户租金经营状况
         //固定租金查询链接字符串（提取公共部分）
-        private string MerchantBusinessStatusSQLStr(SearchItem item)
+        private string MerchantBusinessStatusSqlParam(SearchItem item)
         {
             string sqlParam = "";
             item.HasKey("BRANCHID", a => sqlParam += $" and C.BRANCHID = {a}");
@@ -1099,7 +882,6 @@ namespace z.ERP.Services
             item.HasKey("BRANDID", a => sqlParam += $" and exists(select 1 from CONTRACT_BRAND CB where C.CONTRACTID = CB.CONTRACTID and CB.BRANDID in ({a}))");
             item.HasKey("NIANYUE_START", a => sqlParam += $" and P.YEARMONTH >= {a}");
             item.HasKey("NIANYUE_END", a => sqlParam += $" and P.YEARMONTH <= {a}");
-
 
             string sqlstr = @"select M.MERCHANTID,M.NAME MERCHANTNAME,CB.BRANDNAME,P.YEARMONTH,CS.AREA_RENTABLE AREA,
                                    (select nvl(sum(B.MUST_MONEY),0) from BILL B where B.CONTRACTID = C.CONTRACTID and B.NIANYUE = P.YEARMONTH and B.TERMID = 1000 and B.STATUS IN (2,3,4)) JCZJ,
@@ -1119,9 +901,20 @@ namespace z.ERP.Services
                 sqlstr += " and C.OPERATERULE not in (select ID from OPERATIONRULE where PROCESSTYPE = 2)";
 
             sqlstr += " and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";
+            sqlstr += sqlParam;
 
-
-            return sqlstr + sqlParam;
+            return sqlstr;
+        }
+        private string MerchantBusinessStatusSql(SearchItem item)
+        {
+            string sql = @"select Z.MERCHANTID,Z.MERCHANTNAME,Z.BRANDNAME,Z.YEARMONTH,SUM(Z.AREA) AREA,
+                                  sum(Z.JCZJ) JCZJ,sum(Z.TCZJ) TCZJ,
+                                  sum(Z.JCZJ + Z.JCZJTZ) SJZJ,sum(Z.AMOUNT) AMOUNT,
+                                  decode(sum(Z.AREA),0,0,round(sum(Z.AMOUNT) / sum(Z.AREA),2)) BX,
+                                  decode(sum(Z.AREA),0,0,round(sum(Z.JCZJ + Z.JCZJTZ) / sum(Z.AREA),2)) ZSB from (";
+            sql += MerchantBusinessStatusSqlParam(item);
+            sql += " ) Z  group by Z.MERCHANTID,Z.MERCHANTNAME,Z.BRANDNAME,Z.YEARMONTH order by Z.MERCHANTID,Z.YEARMONTH";
+            return sql;
         }
         /// <summary>
         /// 商户租金经营状况查询
@@ -1129,23 +922,17 @@ namespace z.ERP.Services
         /// <param name="item"></param>
         /// <returns></returns>
         public DataGridResult MerchantBusinessStatus(SearchItem item)
-        {
-
-            string sql = @"select Z.MERCHANTID,Z.MERCHANTNAME,Z.BRANDNAME,Z.YEARMONTH,SUM(Z.AREA) AREA,SUM(Z.JCZJ) JCZJ,SUM(Z.TCZJ) TCZJ,
-                          SUM(Z.JCZJ + Z.JCZJTZ) SJZJ,SUM(Z.AMOUNT) AMOUNT,decode(SUM(Z.AREA),0,0,round(SUM(Z.AMOUNT) / SUM(Z.AREA),2)) BX,
-                          decode(SUM(Z.AREA),0,0,round(SUM(Z.JCZJ + Z.JCZJTZ) / SUM(Z.AREA),2)) ZSB from (";
-            sql += MerchantBusinessStatusSQLStr(item);
-            sql += " ) Z  group by Z.MERCHANTID,Z.MERCHANTNAME,Z.BRANDNAME,Z.YEARMONTH order by Z.MERCHANTID,Z.YEARMONTH";
-
-            string sqlsum = @"select SUM(Z.AREA) AREA,SUM(Z.JCZJ) JCZJ,SUM(Z.TCZJ) TCZJ,
-                              SUM(Z.JCZJ + Z.JCZJTZ) SJZJ,SUM(Z.AMOUNT) AMOUNT,decode(SUM(Z.AREA),0,0,round(SUM(Z.AMOUNT) / SUM(Z.AREA),2)) BX,
-                              decode(SUM(Z.AREA),0,0,round(SUM(Z.JCZJ + Z.JCZJTZ) / SUM(Z.AREA),2)) ZSB from (";
-            sqlsum += MerchantBusinessStatusSQLStr(item) + ") Z";
-
+        {    
             int count;
+            string sql = MerchantBusinessStatusSql(item);
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             if (dt.Rows.Count > 0)
             {
+                string sqlsum = @"select sum(Z.AREA) AREA,sum(Z.JCZJ) JCZJ,sum(Z.TCZJ) TCZJ,
+                                         sum(Z.JCZJ + Z.JCZJTZ) SJZJ,sum(Z.AMOUNT) AMOUNT,
+                                         decode(sum(Z.AREA),0,0,round(sum(Z.AMOUNT) / sum(Z.AREA),2)) BX,
+                                         decode(sum(Z.AREA),0,0,round(sum(Z.JCZJ + Z.JCZJTZ) / sum(Z.AREA),2)) ZSB from (";
+                sqlsum += MerchantBusinessStatusSqlParam(item) + ") Z";
                 DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
                 DataRow dr = dt.NewRow();
                 dr["MERCHANTID"] = "合计";
@@ -1165,106 +952,25 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public string MerchantBusinessStatusOutput(SearchItem item)
-        {
-            string sql = @"select Z.MERCHANTID,Z.MERCHANTNAME,Z.BRANDNAME,Z.YEARMONTH,SUM(Z.AREA) AREA,SUM(Z.JCZJ) JCZJ,SUM(Z.TCZJ) TCZJ,
-                          SUM(Z.JCZJ + Z.JCZJTZ) SJZJ,SUM(Z.AMOUNT) AMOUNT,decode(SUM(Z.AREA),0,0,round(SUM(Z.AMOUNT) / SUM(Z.AREA),2)) BX,
-                          decode(SUM(Z.AREA),0,0,round(SUM(Z.JCZJ + Z.JCZJTZ) / SUM(Z.AREA),2)) ZSB from (";
-            sql += MerchantBusinessStatusSQLStr(item);
-            sql += " ) Z  group by Z.MERCHANTID,Z.MERCHANTNAME,Z.BRANDNAME,Z.YEARMONTH order by Z.MERCHANTID,Z.YEARMONTH";
-
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "MerchantBusinessStatus";
-            return GetExport("商户租金经营状况导出", a =>
-            {
-                a.SetTable(dt);
-            });
+        public DataTable MerchantBusinessStatusOutput(SearchItem item)
+        {         
+            string sql = MerchantBusinessStatusSql(item);
+            return DbHelper.ExecuteTable(sql);
         }
         #endregion
 
         #region 商品销售明细查询
-        public DataGridResult GoodsSaleDetail(SearchItem item)
+        public string GoodsSaleDetailSql(SearchItem item)
         {
-            string sql = @" SELECT *
-                              FROM (select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,
+            string sql = @" select *
+                              from (select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,
                                            GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT,
                                            NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
                                       from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
-                                     where HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO AND HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID 
-                                       AND HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID 
-                                       AND CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID 
-                                       AND CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
-                                       AND CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
-            item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
-            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
-            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) <= {a}");
-            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') >= {a}");
-            item.HasKey("YEARMONTH_END", a => sql += $" and to_char(HIS_SALE.SALE_TIME,'yyyyMM') <= {a}");
-            item.HasKey("GOODSDM", a => sql += $" and GOODS.GOODSDM = '{a}'");
-            item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
-            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-
-            sql += @" UNION ALL ";
-
-            sql += @"select SALE.SALE_TIME,SALE.POSNO,SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,
-                            PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,
-                            NVL(SALE.DEALID_OLD,0) DEALID_OLD
-                       from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
-                      where SALE.POSNO=SALE_GOODS_PAY.POSNO AND SALE.DEALID=SALE_GOODS_PAY.DEALID 
-                        and SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND SALE_GOODS_PAY.PAYID=PAY.PAYID 
-                        and CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID 
-                        and CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
-                        and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
-            item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
-            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(SALE.SALE_TIME) >= {a}");
-            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(SALE.SALE_TIME) <= {a}");
-            item.HasKey("MERCHANTID", a => sql += $" and MERCHANT.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and MERCHANT.NAME LIKE '%{a}%'");
-            item.HasKey("YEARMONTH_START", a => sql += $" and to_char(SALE.SALE_TIME,'yyyyMM') >= {a}");
-            item.HasKey("YEARMONTH_END", a => sql += $" and to_char(SALE.SALE_TIME,'yyyyMM') <= {a}");
-            item.HasKey("GOODSDM", a => sql += $" and GOODS.GOODSDM = '{a}'");
-            item.HasKey("GOODSNAME", a => sql += $" and GOODS.NAME LIKE '%{a}%'");
-            item.HasKey("BRANDID", a => sql += $" and BRAND.ID = {a}");
-            item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
-
-            sql += @" ) ORDER BY POSNO,SALE_TIME DESC,DEALID";
-
-            int count;
-            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-
-            if (count > 0)
-            {
-                //历史交易金额汇总                
-
-                string sqlunions = "SELECT NVL(SUM(AMOUNT),0) AMOUNT FROM ( select * from (" + sql + " ))";
-
-                DataTable dtSum = DbHelper.ExecuteTable(sqlunions);
-                decimal stsum = Convert.ToDecimal(dtSum.Rows[0]["AMOUNT"]);
-                DataRow dr = dt.NewRow();
-                dr["NAME"] = "合计";
-                dr["AMOUNT"] = stsum.ToString();
-
-                dt.Rows.Add(dr);
-            }
-
-            return new DataGridResult(dt, count);
-        }
-        public string GoodsSaleDetailOutput(SearchItem item)
-        {
-            string sql = @" SELECT * 
-                              FROM (select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,
-                                           GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT,
-                                           NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
-                                      from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
-                                     where HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO AND HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID 
-                                       and HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID 
-                                       and CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID 
-                                       and CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
+                                     where HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO and HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID 
+                                       and HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID and HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID 
+                                       and CONTRACT.CONTRACTID=GOODS.CONTRACTID and CONTRACT.BRANCHID=BRANCH.ID 
+                                       and CONTRACT.MERCHANTID=MERCHANT.MERCHANTID and GOODS.BRANDID=BRAND.ID
                                        and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
@@ -1285,10 +991,10 @@ namespace z.ERP.Services
                             PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,
                             NVL(SALE.DEALID_OLD,0) DEALID_OLD
                        from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
-                      where SALE.POSNO=SALE_GOODS_PAY.POSNO AND SALE.DEALID=SALE_GOODS_PAY.DEALID 
-                        and SALE_GOODS_PAY.GOODSID=GOODS.GOODSID AND SALE_GOODS_PAY.PAYID=PAY.PAYID 
-                        and CONTRACT.CONTRACTID=GOODS.CONTRACTID AND CONTRACT.BRANCHID=BRANCH.ID 
-                        and CONTRACT.MERCHANTID=MERCHANT.MERCHANTID AND GOODS.BRANDID=BRAND.ID
+                      where SALE.POSNO=SALE_GOODS_PAY.POSNO and SALE.DEALID=SALE_GOODS_PAY.DEALID 
+                        and SALE_GOODS_PAY.GOODSID=GOODS.GOODSID and SALE_GOODS_PAY.PAYID=PAY.PAYID 
+                        and CONTRACT.CONTRACTID=GOODS.CONTRACTID and CONTRACT.BRANCHID=BRANCH.ID 
+                        and CONTRACT.MERCHANTID=MERCHANT.MERCHANTID and GOODS.BRANDID=BRAND.ID
                         and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID = {a}");
@@ -1304,12 +1010,33 @@ namespace z.ERP.Services
             item.HasKey("BRANDNAME", a => sql += $" and BRAND.NAME LIKE '%{a}%'");
 
             sql += @" ) ORDER BY POSNO,SALE_TIME DESC,DEALID";
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "GoodsSaleDetail";
-            return GetExport("商品销售明细导出", a =>
+            return sql;
+        }
+        public DataGridResult GoodsSaleDetail(SearchItem item)
+        {
+            string sql = GoodsSaleDetailSql(item);
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+
+            if (count > 0)
             {
-                a.SetTable(dt);
-            });
+                //历史交易金额汇总                
+                string sqlunions = "select nvl(sum(AMOUNT),0) AMOUNT from ( select * from (" + sql + " ))";
+
+                DataTable dtSum = DbHelper.ExecuteTable(sqlunions);
+                decimal stsum = Convert.ToDecimal(dtSum.Rows[0]["AMOUNT"]);
+                DataRow dr = dt.NewRow();
+                dr["NAME"] = "合计";
+                dr["AMOUNT"] = stsum.ToString();
+                dt.Rows.Add(dr);
+            }
+
+            return new DataGridResult(dt, count);
+        }
+        public DataTable GoodsSaleDetailOutput(SearchItem item)
+        {
+            string sql = GoodsSaleDetailSql(item);
+            return DbHelper.ExecuteTable(sql);
         }
         #endregion
 
@@ -1354,15 +1081,10 @@ namespace z.ERP.Services
         /// <summary>
         /// 商户应交已付报表导出
         /// </summary>
-        public string MerchantPayableOutput(SearchItem item)
+        public DataTable MerchantPayableOutput(SearchItem item)
         {
             string sql = "";
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "MerchantPayable";
-            return GetExport("商户应交已付报表", a =>
-            {
-                a.SetTable(dt);
-            });
+            return DbHelper.ExecuteTable(sql);
         }
         public DataTable getData(SearchItem item)
         {
@@ -1592,7 +1314,7 @@ namespace z.ERP.Services
     #endregion
 
         #region 费用账单查询导出
-    public string Bill_SrcOutput(SearchItem item)
+        public string Bill_SrcOutput(SearchItem item)
         {
             string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME, A.BILLID, D.NAME FEENAME, A.CONTRACTID, 
                                          A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,

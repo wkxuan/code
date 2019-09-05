@@ -25,10 +25,10 @@ namespace z.ERP.Web.Areas.Report.GoodsSaleDetail
                 }
             );
         }
-        //public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
-        //{
-        //    var dtSource = service.ReportService.GoodsSaleDetailOutput(item);
-        //    return NPOIHelper.ExportExcel(dtSource, Name, Cols);
-        //}
+        public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
+        {
+            var dtSource = service.ReportService.GoodsSaleDetailOutput(item);
+            return NPOIHelper.ExportExcel(dtSource, Name, Cols);
+        }
     }
 }

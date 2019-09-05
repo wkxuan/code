@@ -23,10 +23,10 @@ namespace z.ERP.Web.Areas.Report.MerchantPayable
                 }
             );
         }
-        //public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
-        //{
-        //    var dtSource = service.ReportService.MerchantPayableOutput(item);
-        //    return NPOIHelper.ExportExcel(dtSource, Name, Cols);
-        //}
+        public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
+        {
+            var dtSource = service.ReportService.MerchantPayableOutput(item);
+            return NPOIHelper.ExportExcel(dtSource, Name, Cols);
+        }
     }
 }

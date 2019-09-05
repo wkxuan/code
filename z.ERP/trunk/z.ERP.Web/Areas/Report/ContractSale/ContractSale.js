@@ -93,7 +93,7 @@ srch.otherMethods = {
         } else {
             Vue.set(this, "data", []);   //清空table
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            srch.screenParam.colDef = [{ title: '年月', key: 'RQ', width: 100, sortable: true }].concat(cols);
+            srch.screenParam.colDef = [{ title: '年月', key: 'YEARMONTH', width: 100, sortable: true }].concat(cols);
             srch.screenParam.echartType = echartTypeList.concat({ label: "按年月", value: "YEARMONTH" });
         }
     },

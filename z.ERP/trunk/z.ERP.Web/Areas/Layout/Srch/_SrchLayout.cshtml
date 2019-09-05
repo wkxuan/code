@@ -41,7 +41,10 @@
         <panel name="result">
             查询结果
             <div style="float: right; width: 400px ;text-align: right;">
-                <i-button type="text" shape="circle" icon="md-download" v-on:click="exp">导出</i-button>
+                <i-button type="text" shape="circle" icon="md-download" v-bind:loading="outputLoading" v-on:click="exp">
+                    <span v-if="!outputLoading">导出</span>
+                    <span v-else>正在处理</span>
+                </i-button>
                 @*<i-button type="text" shape="circle" icon="md-print" v-on:click="print">打印</i-button>*@
 
                 @*增加结果按钮*@

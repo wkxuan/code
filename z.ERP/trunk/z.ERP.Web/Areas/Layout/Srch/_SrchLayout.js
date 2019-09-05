@@ -41,7 +41,8 @@
                 pagedataCount: 0,
                 pageSize: 10,
                 currentPage: 1,
-                echartResult: _this.echartResult
+                echartResult: _this.echartResult,
+                outputLoading:false
             },
             mounted: function () {
                 _this.mountedInit();
@@ -75,6 +76,7 @@
                 exp: function (event) {
                     event.stopPropagation();
                     let _self = this;
+                    _self.outputLoading = true;
                     let param = {};
                     for (let item in _self.searchParam) {
                         if (_self.searchParam[item]) {
@@ -95,9 +97,12 @@
                         Cols: cols,
                         Values: param
                     }, function (data) {
+                        _self.outputLoading = false;
                         if (data) {
                             window.open(__BaseUrl + data);
                         }                       
+                    }, function (data) {
+                        _self.outputLoading = false;                      
                     });
                 },
                 //打印待完善

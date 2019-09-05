@@ -12,10 +12,10 @@ namespace z.ERP.Web.Areas.Report.SaleRecord
             ViewBag.Title = "实时销售查询";
             return View();
         }
-        //public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
-        //{
-        //    var dtSource = service.ReportService.SaleRecordOutput(item);
-        //    return NPOIHelper.ExportExcel(dtSource, Name, Cols);
-        //}
+        public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
+        {
+            var dtSource = service.ReportService.SaleRecordOutput(item);
+            return NPOIHelper.ExportExcel(dtSource, Name, Cols);
+        }
     }
 }

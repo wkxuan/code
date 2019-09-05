@@ -34,10 +34,10 @@ namespace z.ERP.Web.Areas.Report.ContractSale
                 }
             );
         }
-        //public string Output(string Name,Dictionary<string, string> Cols, SearchItem item)
-        //{
-        //    var dtSource = service.ReportService.ContractSaleOutput(item);
-        //    return NPOIHelper.ExportExcel(dtSource, Name, Cols);
-        //}
+        public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
+        {
+            var dtSource = service.ReportService.ContractSaleOutput(item);
+            return NPOIHelper.ExportExcel(dtSource, Name, Cols);
+        }
     }
 }
