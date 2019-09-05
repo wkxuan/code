@@ -921,9 +921,8 @@ namespace z.ERP.Services
         #endregion
 
         #region 销售采集处理记录查询
-        public DataGridResult SALEGATHER(SearchItem item)
+        public string SALEGATHERsql(SearchItem item)
         {
-
             string sqlsum = $@"SELECT BRANCH.NAME, SALEGATHER.DEALID, SALEGATHER.SALETIME, SALEGATHER.FLAG,SALEGATHER.CREATE_TIME, SALEGATHER.REASON, STATION.STATIONBH
                     FROM SALEGATHER 
                     INNER JOIN STATION ON STATION.STATIONBH=SALEGATHER.POSNO 
@@ -939,8 +938,15 @@ namespace z.ERP.Services
 
             item.HasKey("STATIONBH", a => sqlsum += $" and STATIONBH={a}");
 
+            return sqlsum;
+        }
+
+        public DataGridResult SALEGATHER(SearchItem item)
+        {
+            string sql = SALEGATHERsql(item);
+        
             int count;
-            DataTable dt = DbHelper.ExecuteTable(sqlsum, item.PageInfo, out count);
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<处理标记>("FLAG", "FLAGMC");
             return new DataGridResult(dt, count);
         }
@@ -948,123 +954,67 @@ namespace z.ERP.Services
         #endregion
 
         #region 销售采集处理记录查询
-        public string SALEGATHEROutput(SearchItem item)
+        public DataTable SALEGATHEROutput(SearchItem item)
         {
 
-            string sqlsum = $@"SELECT BRANCH.NAME, SALEGATHER.DEALID, SALEGATHER.SALETIME, SALEGATHER.FLAG,SALEGATHER.CREATE_TIME, SALEGATHER.REASON, STATION.STATIONBH
-                    FROM SALEGATHER 
-                    INNER JOIN STATION ON STATION.STATIONBH=SALEGATHER.POSNO 
-                    INNER JOIN BRANCH ON BRANCH.ID=STATION.BRANCHID";
-            sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            sqlsum += "   WHERE TYPE= 3";
+            string sql = SALEGATHERsql(item);
 
-            //item.HasDateKey("SALETIME", a => sqlsum += $" and SALETIME={a}");
-            item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
-
-
-            item.HasDateKey("SALETIME_START", a => sqlsum += $" and SALETIME >= {a}");
-            item.HasDateKey("SALETIME_END", a => sqlsum += $" and SALETIME <= {a}");
-
-            item.HasDateKey("CREATE_TIME_START", a => sqlsum += $" and CREATE_TIME >={a}");
-            item.HasDateKey("CREATE_TIME_END", a => sqlsum += $" and CREATE_TIME <={a}");
-
-            item.HasKey("FLAG", a => sqlsum += $" and FLAG={a}");
-            item.HasKey("REASON", a => sqlsum += $" and REASON LIKE '%{a}%'");
-
-            item.HasKey("STATIONBH", a => sqlsum += $" and STATIONBH={a}");
-
-
-            DataTable dt = DbHelper.ExecuteTable(sqlsum);
+            DataTable dt = DbHelper.ExecuteTable(sql);
             dt.NewEnumColumns<处理标记>("FLAG", "FLAGMC");
-            dt.TableName = "SALEGATHER";
-            return GetExport("销售采集处理记录查询", a =>
-            {
-                a.SetTable(dt);
-            });
+            return dt;
         }
 
         #endregion
 
         #region 第三方支付记录查询
+        private string PAYINFOsql(SearchItem item)
+        {
+            string sqlsum = $@"SELECT A.OPERTIME,A.POSNO,A.DEALID,B.NAME,A.CARDNO,A.BANK,A.AMOUNT,A.SERIALNO,A.REFNO, D.NAME BRANCHNAME
+                                FROM PAYRECORD A 
+                                INNER JOIN PAY B ON(A.PAYID= B.PAYID)
+                                INNER JOIN STATION C ON(A.POSNO =C.STATIONBH)
+                                INNER JOIN BRANCH D ON(D.ID=C.BRANCHID)" +
+                            " and c.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                                                                                                     //sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID ={a}");
+            item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
+            item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
+            item.HasKey("POSNO", a => sqlsum += $" and POSNO='{a}'");
+            item.HasKey("DEALID", a => sqlsum += $" and DEALID='{a}'");
+            //item.HasKey("INX", a => sqlsum += $" and INX={a}");
+            //item.HasKey("NAME", a => sqlsum += $" and NAME={a}");
+            //item.HasKey("CARDNO", a => sqlsum += $" and CARDNO={a}");
+            //item.HasKey("BANK", a => sqlsum += $" and BANK={a}");
+            item.HasKey("AMOUNT", a => sqlsum += $" and AMOUNT={a}");
+            // item.HasKey("SERIALNO", a => sqlsum += $" and SERIALNO={a}");
+            //item.HasKey("REFNO", a => sqlsum += $" and REFNO={a}");
+            //item.HasKey("PAYID", a => sqlsum += $" and B.PAYID={a}");
+            item.HasKey("PAYID", a => sqlsum += $" and B.PAYID ={a}");
+
+            return sqlsum;
+        }
         public DataGridResult PAYINFO(SearchItem item)
         {
-
-            string sqlsum = $@"SELECT A.OPERTIME,A.POSNO,A.DEALID,B.NAME,A.CARDNO,A.BANK,A.AMOUNT,A.SERIALNO,A.REFNO, D.NAME BRANCHNAME
-                                FROM PAYRECORD A 
-                                INNER JOIN PAY B ON(A.PAYID= B.PAYID)
-                                INNER JOIN STATION C ON(A.POSNO =C.STATIONBH)
-                                INNER JOIN BRANCH D ON(D.ID=C.BRANCHID)" +
-                             " and c.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            //sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
-            item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID ={a}");
-            item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
-            item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
-
-            item.HasKey("POSNO", a => sqlsum += $" and POSNO='{a}'");
-            item.HasKey("DEALID", a => sqlsum += $" and DEALID='{a}'");
-            //item.HasKey("INX", a => sqlsum += $" and INX={a}");
-            //item.HasKey("NAME", a => sqlsum += $" and NAME={a}");
-            //item.HasKey("CARDNO", a => sqlsum += $" and CARDNO={a}");
-            //item.HasKey("BANK", a => sqlsum += $" and BANK={a}");
-            item.HasKey("AMOUNT", a => sqlsum += $" and AMOUNT={a}");
-            // item.HasKey("SERIALNO", a => sqlsum += $" and SERIALNO={a}");
-            //item.HasKey("REFNO", a => sqlsum += $" and REFNO={a}");
-            //item.HasKey("PAYID", a => sqlsum += $" and B.PAYID={a}");
-            item.HasKey("PAYID", a => sqlsum += $" and B.PAYID ={a}");
-
-
+            string sql = PAYINFOsql(item);
             int count;
-            DataTable dt = DbHelper.ExecuteTable(sqlsum, item.PageInfo, out count);
-            //dt.NewEnumColumns<处理标记>("FLAG", "FLAGMC");
-
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
+
         }
-
-        #endregion
-
-        #region 第三方支付记录查询导出
-        public string PAYINFOOutput(SearchItem item)
+        
+        public DataTable PAYINFOOutput(SearchItem item)
         {
-
-            string sqlsum = $@"SELECT A.OPERTIME,A.POSNO,A.DEALID,B.NAME,A.CARDNO,A.BANK,A.AMOUNT,A.SERIALNO,A.REFNO, D.NAME BRANCHNAME
-                                FROM PAYRECORD A 
-                                INNER JOIN PAY B ON(A.PAYID= B.PAYID)
-                                INNER JOIN STATION C ON(A.POSNO =C.STATIONBH)
-                                INNER JOIN BRANCH D ON(D.ID=C.BRANCHID)" +
-                             " and c.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            //sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-
-            item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID ={a}");
-            item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
-            item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
-
-            item.HasKey("POSNO", a => sqlsum += $" and POSNO='{a}'");
-            item.HasKey("DEALID", a => sqlsum += $" and DEALID='{a}'");
-            //item.HasKey("INX", a => sqlsum += $" and INX={a}");
-            //item.HasKey("NAME", a => sqlsum += $" and NAME={a}");
-            //item.HasKey("CARDNO", a => sqlsum += $" and CARDNO={a}");
-            //item.HasKey("BANK", a => sqlsum += $" and BANK={a}");
-            item.HasKey("AMOUNT", a => sqlsum += $" and AMOUNT={a}");
-            // item.HasKey("SERIALNO", a => sqlsum += $" and SERIALNO={a}");
-            //item.HasKey("REFNO", a => sqlsum += $" and REFNO={a}");
-            //item.HasKey("PAYID", a => sqlsum += $" and B.PAYID={a}");
-            item.HasKey("PAYID", a => sqlsum += $" and B.PAYID ={a}");
-
-            DataTable dt = DbHelper.ExecuteTable(sqlsum);
-
-            dt.TableName = "PAYINFO";
-            return GetExport("第三方支付记录查询", a =>
-            {
-                a.SetTable(dt);
-            });
+            string sql = PAYINFOsql(item);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
 
         }
 
         #endregion
 
         #region 费用账单查询
-        public DataGridResult Bill_Src(SearchItem item)
+        private string Bill_Srcsql(SearchItem item)
         {
             string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME,A.BILLID, D.NAME FEENAME, A.CONTRACTID, 
                                          A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,
@@ -1084,7 +1034,7 @@ namespace z.ERP.Services
             //item.HasKey("MERCHANTNAME", a => sqlsum += $" and c.NAME ={a}");
             item.HasKey("BILLID", a => sqlsum += $" and a.BILLID ={a}");
             item.HasKey("TRIMID", a => sqlsum += $" and d.TRIMID in ({a})");
-             item.HasKey("YEARMONTH_START", a => sqlsum += $" and A.YEARMONTH = {a}");
+            item.HasKey("YEARMONTH_START", a => sqlsum += $" and A.YEARMONTH = {a}");
             //item.HasKey("YEARMONTH_END", a => sqlsum += $" and A.YEARMONTH <= {a}");
             item.HasKey("NIANYUE_START", a => sqlsum += $" and A.NIANYUE = {a}");
             //item.HasKey("NIANYUE_END", a => sqlsum += $" and A.NIANYUE <= {a}");
@@ -1093,57 +1043,30 @@ namespace z.ERP.Services
             item.HasKey("CONTRACTID", a => sqlsum += $" and A.CONTRACTID = {a}");
             sqlsum += "     order by nianyue desc";
 
+            return sqlsum;
+        }
+        public DataGridResult Bill_Src(SearchItem item)
+        {
+            string sql = Bill_Srcsql(item);
+
             int count;
-            DataTable dt = DbHelper.ExecuteTable(sqlsum, item.PageInfo, out count);
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<账单状态>("STATUS", "STATUSMC");
             dt.NewEnumColumns<账单类型>("TYPE", "TYPEMC");
 
             return new DataGridResult(dt, count);
 
         }
-
-    #endregion
-
-        #region 费用账单查询导出
-        public string Bill_SrcOutput(SearchItem item)
+               
+        public DataTable Bill_SrcOutput(SearchItem item)
         {
-            string sqlsum = $@"SELECT B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME, A.BILLID, D.NAME FEENAME, A.CONTRACTID, 
-                                         A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,
-                                        A.RETURN_MONEY,A.START_DATE,A.END_DATE,A.TYPE,A.STATUS,F.NAME UNITNAME，A.DESCRIPTION
-                                        FROM BILL A, BRANCH B, MERCHANT C, FEESUBJECT D, FEESUBJECT_ACCOUNT E,FEE_ACCOUNT F
-                                        WHERE A.BRANCHID = B.ID AND
-                                        A.MERCHANTID=C.MERCHANTID AND
-                                        A.TERMID=D.TRIMID AND 
-                                        E.TERMID=D.TRIMID AND 
-                                        E.FEE_ACCOUNTID=F.ID AND
-                                        A.BRANCHID =E.BRANCHID";
 
-            sqlsum += "  AND A.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            string sql = Bill_Srcsql(item);
 
-            item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
-            item.HasKey("MERCHANTID", a => sqlsum += $" and c.MERCHANTID ={a}");
-            //item.HasKey("MERCHANTNAME", a => sqlsum += $" and c.NAME ={a}");
-            item.HasKey("BILLID", a => sqlsum += $" and a.BILLID ={a}");
-            item.HasKey("TRIMID", a => sqlsum += $" and D.TRIMID in ({a})");      
-            item.HasKey("YEARMONTH_START", a => sqlsum += $" and A.YEARMONTH = {a}");
-            //item.HasKey("YEARMONTH_END", a => sqlsum += $" and A.YEARMONTH <= {a}");
-            item.HasKey("NIANYUE_START", a => sqlsum += $" and A.NIANYUE = {a}");
-            //item.HasKey("NIANYUE_END", a => sqlsum += $" and A.NIANYUE <= {a}");  
-            item.HasKey("TYPE", a => sqlsum += $" and A.TYPE = {a}");
-            item.HasKey("STATUS", a => sqlsum += $" and A.STATUS = {a}");
-            item.HasKey("CONTRACTID", a => sqlsum += $" and A.CONTRACTID = {a}");
-            sqlsum += "     order by nianyue desc";
-
-            DataTable dt = DbHelper.ExecuteTable(sqlsum);
+        DataTable dt= DbHelper.ExecuteTable(sql);
             dt.NewEnumColumns<账单状态>("STATUS", "STATUSMC");
             dt.NewEnumColumns<账单类型>("TYPE", "TYPEMC");
-
-
-            dt.TableName = "Bill_Src";
-            return GetExport("费用账单查询", a =>
-            {
-                a.SetTable(dt);
-            });
+            return dt;
         }
         #endregion
     }

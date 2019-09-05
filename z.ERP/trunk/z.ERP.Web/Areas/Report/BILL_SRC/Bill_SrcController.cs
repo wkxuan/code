@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using z.ERP.Web.Areas.Base;
 using z.MVC5.Results;
 
@@ -13,11 +14,11 @@ namespace z.ERP.Web.Areas.Report.BILL_SRC
         }
 
 
-        public string Output(SearchItem item)
+        public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
         {
-            return service.ReportService.Bill_SrcOutput(item);
+            var dtSource = service.ReportService.Bill_SrcOutput(item);
+            return NPOIHelper.ExportExcel(dtSource, Name, Cols);
         }
-
     }
 
 

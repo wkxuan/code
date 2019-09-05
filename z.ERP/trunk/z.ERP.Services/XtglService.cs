@@ -1052,7 +1052,7 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public DataGridResult POSKEYSrch(SearchItem item)
+        public string POSKEYSrchSql(SearchItem item)
         {
             string sql = $@"SELECT STATION.STATIONBH,STATION.ENCRYPTION,BRANCH.NAME 
                         FROM STATION 
@@ -1061,33 +1061,27 @@ namespace z.ERP.Services
             sql += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BRANCHID LIKE '%{a}%'");
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH LIKE '%{a}%'");
+
+            return sql;
+        }
+
+        public DataGridResult POSKEYSrch(SearchItem item)
+        {
+            string sql = POSKEYSrchSql(item);
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
 
         }
-        /// <summary>
-        /// 终端密钥查询结果导出
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public string POSKEYSrchOutput(SearchItem item)
+  
+        public DataTable POSKEYSrchOutput(SearchItem item)
         {
-            string sql = $@"SELECT STATION.STATIONBH,STATION.ENCRYPTION,BRANCH.NAME 
-                        FROM STATION 
-                        LEFT JOIN BRANCH ON STATION.BRANCHID=BRANCH.ID";            
-               sql +=" WHERE TYPE = 3 ";
-               sql += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            item.HasKey("BRANCHID", a => sql += $" and BRANCHID LIKE '%{a}%'");
-            item.HasKey("STATIONBH", a => sql += $" and STATIONBH LIKE '%{a}%'");
-         
-          
+
+            string sql = POSKEYSrchSql(item);
+
             DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.TableName = "POSKEYSrch";
-            return GetExport("终端密钥查询", a =>
-            {
-                a.SetTable(dt);
-            });
+
+            return dt;
 
 
         }
