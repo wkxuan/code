@@ -1047,7 +1047,11 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new UIResult(dt);
         }
-
+        /// <summary>
+        /// 终端密钥查询
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public DataGridResult POSKEYSrch(SearchItem item)
         {
             string sql = $@"SELECT STATION.STATIONBH,STATION.ENCRYPTION,BRANCH.NAME 
@@ -1062,7 +1066,11 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
 
         }
-
+        /// <summary>
+        /// 终端密钥查询结果导出
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public string POSKEYSrchOutput(SearchItem item)
         {
             string sql = $@"SELECT STATION.STATIONBH,STATION.ENCRYPTION,BRANCH.NAME 

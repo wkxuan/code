@@ -24,6 +24,14 @@ srch.otherMethods = {
     }
 }
 
+srch.newCondition = function () {
+    srch.searchParam.BRANCHID = "";
+    srch.searchParam.MERCHANTNAME = "";
+    srch.searchParam.FEE_ACCOUNT_ID = "";
+
+};
+
+
 srch.popCallBack = function (data) {
 
     if (srch.screenParam.showPopMerchant) {
