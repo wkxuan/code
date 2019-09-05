@@ -101,23 +101,29 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NPOI">
-      <HintPath>..\..\..\..\workTool\Npoi\NPOI.dll</HintPath>
+    <Reference Include="NPOI, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Npoi\NPOI.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.DDF">
-      <HintPath>..\..\..\..\workTool\Npoi\NPOI.DDF.dll</HintPath>
+    <Reference Include="NPOI.DDF, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Npoi\NPOI.DDF.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.HPSF">
-      <HintPath>..\..\..\..\workTool\Npoi\NPOI.HPSF.dll</HintPath>
+    <Reference Include="NPOI.HPSF, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Npoi\NPOI.HPSF.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.HSSF">
-      <HintPath>..\..\..\..\workTool\Npoi\NPOI.HSSF.dll</HintPath>
+    <Reference Include="NPOI.HSSF, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Npoi\NPOI.HSSF.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.POIFS">
-      <HintPath>..\..\..\..\workTool\Npoi\NPOI.POIFS.dll</HintPath>
+    <Reference Include="NPOI.POIFS, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Npoi\NPOI.POIFS.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI.Util">
-      <HintPath>..\..\..\..\workTool\Npoi\NPOI.Util.dll</HintPath>
+    <Reference Include="NPOI.Util, Version=1.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Npoi\NPOI.Util.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
