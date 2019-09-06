@@ -216,7 +216,7 @@
     //租金表格
     editDetail.screenParam.colDefRENT = [
        { title: '时间段', key: 'INX', width: 80 },
-       { title: '开始日期', key: 'STARTDATE', cellType: "date", width: 100 },
+       { title: '开始日期', key: 'STARTDATE', cellType: "date" },
        {
            title: '结束日期', key: 'ENDDATE', cellType: "date", enableCellEdit: true,
            onChange: function (index, row, data) {
@@ -257,12 +257,12 @@
     editDetail.screenParam.colDefRENTITEM = [
         { title: '时间段', key: 'INX', width: 80 },
         {
-            title: '开始日期', key: 'STARTDATE', cellType: "date", width: 100
+            title: '开始日期', key: 'STARTDATE', cellType: "date"
         },
         {
-            title: '结束日期', key: 'ENDDATE', cellType: "date", width: 100
+            title: '结束日期', key: 'ENDDATE', cellType: "date"
         },
-        { title: '年月', key: 'YEARMONTH', width: 80 },
+        { title: '年月', key: 'YEARMONTH', width: 100 },
         {
             title: '租金', key: 'RENTS', cellType: "input", cellDataType: "number",
             onChange: function (index, row, data) {

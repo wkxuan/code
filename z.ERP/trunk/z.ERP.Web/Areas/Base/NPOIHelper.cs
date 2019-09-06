@@ -95,7 +95,7 @@ namespace z.ERP.Web.Areas.Base
         {
             cols.Remove("undefined");
             var list = cols.Keys;
-            ListColumnsName = new SortedList();
+            ListColumnsName = new SortedList(new NoSort());
             foreach(var item in list)
             {
                 ListColumnsName.Add(item, cols[item]);
@@ -226,6 +226,13 @@ namespace z.ERP.Web.Areas.Base
                     Directory.Delete(d);
                 }
             }
+        }
+    }
+    public class NoSort : System.Collections.IComparer
+    {
+        public int Compare(object x, object y)
+        {
+            return -1;
         }
     }
 }

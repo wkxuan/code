@@ -130,11 +130,9 @@ namespace z.ERP.Services
             string sql;
             if (item.Values["SrchTYPE"] == ((int)查询类型.日数据).ToString())
             {
-                sql = $"select D.RQ,D.AMOUNT,D.COST,D.DIS_AMOUNT,D.PER_AMOUNT,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,";
-                sql += "       B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,G.GOODSDM,G.BARCODE,G.NAME GOODSNAME ";
+                sql = $"select D.RQ,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,";
+                sql += "       G.GOODSDM,G.BARCODE,G.NAME GOODSNAME，D.AMOUNT,D.COST,D.DIS_AMOUNT,D.PER_AMOUNT ";
                 sql += GoodsSaleSqlParam(item);
-                //sql += " group by D.RQ,M.NAME,G.CONTRACTID,G.MERCHANTID,";
-                //sql += "          B.NAME,K.CODE,K.NAME,G.GOODSDM,G.BARCODE,G.NAME";
                 sql += " order by D.RQ,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
             }
             else
