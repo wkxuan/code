@@ -130,7 +130,7 @@ namespace z.ERP.Services
             string sql;
             if (item.Values["SrchTYPE"] == ((int)查询类型.日数据).ToString())
             {
-                sql = $"select D.RQ,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,";
+                sql = $"select to_char(D.RQ,'yyyy-mm-dd') RQ,M.NAME MERCHANTNAME,G.CONTRACTID,G.MERCHANTID,B.NAME BRANDNAME,K.CODE KINDCODE,K.NAME KINDNAME,";
                 sql += "       G.GOODSDM,G.BARCODE,G.NAME GOODSNAME，D.AMOUNT,D.COST,D.DIS_AMOUNT,D.PER_AMOUNT ";
                 sql += GoodsSaleSqlParam(item);
                 sql += " order by D.RQ,G.MERCHANTID,G.CONTRACTID,G.GOODSDM ";
@@ -214,7 +214,8 @@ namespace z.ERP.Services
         }
         private string SaleRecordSql(SearchItem item)
         {
-            string selSql = @"select S.POSNO,S.DEALID,S.SALE_TIME,trunc(S.ACCOUNT_DATE) ACCOUNT_DATE,
+            string selSql = @"select S.POSNO,S.DEALID,to_char(S.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,
+                                     to_char(S.ACCOUNT_DATE,'yyyy-mm-dd') ACCOUNT_DATE,
                                      U.USERNAME CASHIERNAME,U.USERCODE CASHIERCODE,
                                      S.SALE_AMOUNT,S.CHANGE_AMOUNT,S.POSNO_OLD,S.DEALID_OLD ";
             string sql = string.Format(SaleRecordParam(item), selSql);
@@ -689,7 +690,8 @@ namespace z.ERP.Services
         public string GoodsSaleDetailSql(SearchItem item)
         {
             string sql = @" select *
-                              from (select HIS_SALE.SALE_TIME,HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,
+                              from (select to_char(HIS_SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,
+                                           HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,
                                            GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT,
                                            NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
                                       from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
@@ -713,7 +715,8 @@ namespace z.ERP.Services
 
             sql += @" UNION ALL ";
 
-            sql += @"select SALE.SALE_TIME,SALE.POSNO,SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,
+            sql += @"select to_char(SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,
+                            SALE.POSNO,SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,
                             PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,
                             NVL(SALE.DEALID_OLD,0) DEALID_OLD
                        from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND

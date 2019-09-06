@@ -1,5 +1,5 @@
 ﻿var colD = [
-    { title: '交易日期', key: 'SALE_TIME', width: 200,sortable:true },
+    { title: '交易时间', key: 'SALE_TIME', width: 200,sortable:true },
     { title: '终端号', key: 'POSNO', width: 150, sortable: true },
     { title: '交易号', key: 'DEALID', width: 150, sortable: true },
     { title: '商品名称', key: 'GOODSNAME', width: 200, sortable: true },
