@@ -868,7 +868,7 @@ namespace z.ERP.Services
         #region 销售采集处理记录查询
         public string SALEGATHERsql(SearchItem item)
         {
-            string sqlsum = $@"SELECT BRANCH.NAME, SALEGATHER.DEALID, SALEGATHER.SALETIME, SALEGATHER.FLAG,SALEGATHER.CREATE_TIME, SALEGATHER.REASON, STATION.STATIONBH
+            string sqlsum = $@"SELECT BRANCH.NAME, SALEGATHER.DEALID, to_char(SALEGATHER.SALETIME,'yyyy-mm-dd hh24:mi:ss')SALETIME_START, to_char(SALEGATHER.SALETIME,'yyyy-mm-dd hh24:mi:ss')SALETIME_END,SALEGATHER.FLAG, to_char(SALEGATHER.CREATE_TIME,'yyyy-mm-dd hh24:mi:ss')CREATE_TIME_START, to_char(SALEGATHER.CREATE_TIME,'yyyy-mm-dd hh24:mi:ss')CREATE_TIME_END,SALEGATHER.REASON, STATION.STATIONBH
                     FROM SALEGATHER 
                     INNER JOIN STATION ON STATION.STATIONBH=SALEGATHER.POSNO 
                     INNER JOIN BRANCH ON BRANCH.ID=STATION.BRANCHID";
@@ -914,17 +914,17 @@ namespace z.ERP.Services
         #region 第三方支付记录查询
         private string PAYINFOsql(SearchItem item)
         {
-            string sqlsum = $@"SELECT A.OPERTIME,A.POSNO,A.DEALID,B.NAME,A.CARDNO,A.BANK,A.AMOUNT,A.SERIALNO,A.REFNO, D.NAME BRANCHNAME
+            string sqlsum = $@"SELECT to_char(A.OPERTIME,'yyyy-mm-dd hh24:mi:ss') OPERTIME_START, to_char(A.OPERTIME,'yyyy-mm-dd hh24:mi:ss') OPERTIME_END,
+                                A.POSNO,A.DEALID,B.NAME,A.AMOUNT,A.SERIALNO,A.REFNO, D.NAME BRANCHNAME
                                 FROM PAYRECORD A 
                                 INNER JOIN PAY B ON(A.PAYID= B.PAYID)
                                 INNER JOIN STATION C ON(A.POSNO =C.STATIONBH)
                                 INNER JOIN BRANCH D ON(D.ID=C.BRANCHID)" +
                             " and c.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-                                                                                                     //sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
             item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID ={a}");
-            item.HasDateKey("START", a => sqlsum += $" and OPERTIME>={a}");
-            item.HasDateKey("END", a => sqlsum += $" and OPERTIME<={a}");
+            item.HasDateKey("START", a => sqlsum += $" and OPERTIME START>={a}");
+            item.HasDateKey("END", a => sqlsum += $" and OPERTIME END<={a}");
             item.HasKey("POSNO", a => sqlsum += $" and POSNO='{a}'");
             item.HasKey("DEALID", a => sqlsum += $" and DEALID='{a}'");
             //item.HasKey("INX", a => sqlsum += $" and INX={a}");
