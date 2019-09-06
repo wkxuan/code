@@ -4,12 +4,12 @@
             //数据处理  X,Z,Y //由于图像原因  Y轴为负值
             for (var i = 0; i < labelArray.length; i++) {
                 var item = JSON.parse(labelArray[i].POINTS);
-                labelArray[i].POINTS = [item[0], item[1], -item[2]];
+                labelArray[i].POINTS = [item[0], 6.5, -item[1]];
             }            
             for (var i = 0; i < floorInfo.MAPSHOPLIST.length; i++) {
                 var pointlist = JSON.parse(floorInfo.MAPSHOPLIST[i].POINTS);
                 for(var j = 0; j < pointlist.length; j++){
-                    pointlist[j] = [pointlist[j][0], pointlist[j][1], -pointlist[j][2]];
+                    pointlist[j] = [pointlist[j][0], 0, -pointlist[j][1]];
                 }
                 floorInfo.MAPSHOPLIST[i].POINTS=pointlist;
             }
@@ -136,7 +136,7 @@
                     var color = item.COLOR;
                     switch (type) {
                         case ObjType.CELL:
-                            this.addCell(points, 3, color, item.SHOPINFO);
+                            this.addCell(points, 6, color, item.SHOPINFO);
                             break;
                         case ObjType.FLOOR:
                             this.addFloor(points, 0.5, item.SHOPINFO);
@@ -209,7 +209,7 @@
                 var topPoints = [];
                 for (var i = 0; i < points.length; i++) {
                     var vertice = points[i];
-                    topPoints.push([vertice[0], vertice[1] + height, vertice[2]]);
+                    topPoints.push([vertice[0], height, vertice[2]]);
                 }
                 var totalPoints = points.concat(topPoints);
                 var vertices = [];
