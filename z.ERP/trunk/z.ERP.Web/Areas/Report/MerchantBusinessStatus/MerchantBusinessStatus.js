@@ -29,7 +29,7 @@ srch.beforeVue = function () {
     srch.screenParam.colDef = colD;
     srch.service = "ReportService";
     srch.method = "MerchantBusinessStatus";
- 
+    srch.searchParam.SrchTYPE = 1;
     srch.screenParam.showPop = false;
     srch.screenParam.srcPop = "";
     srch.screenParam.title = "";

@@ -30,9 +30,11 @@ srch.newCondition = function () {
     srch.searchParam.MERCHANTID = "";
     srch.searchParam.MERCHANTNAME = "";
     srch.searchParam.SFXMLX = "";
-    srch.searchParam.NIANYUE = "";
     srch.searchParam.SFXM = "";
-    srch.searchParam.YEARMONTH = "";
+    srch.searchParam.NIANYUE_START = "";
+    srch.searchParam.NIANYUE_END = "";
+    srch.searchParam.YEARMONTH_START = "";
+    srch.searchParam.YEARMONTH_END = "";
 };
 srch.afterResult = function (data) {
     if (data.length) {
