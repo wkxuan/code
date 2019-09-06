@@ -856,14 +856,6 @@ namespace z.ERP.Services
             string sql = MerchantPayableSql(item);
             return DbHelper.ExecuteTable(sql);
         }
-        /// <summary>
-        ///获取收费项目list
-        /// </summary>
-        public DataTable GetSfxmList()
-        {
-            string sql = "select * from feesubject";
-            return DbHelper.ExecuteTable(sql);
-        }
         #endregion
 
         #region 销售采集处理记录查询

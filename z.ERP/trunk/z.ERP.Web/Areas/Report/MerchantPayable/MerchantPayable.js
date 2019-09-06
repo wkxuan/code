@@ -11,8 +11,8 @@ srch.mountedInit = function () {
     }, function (data) {
         let list = $.map(data.res, (item, index) => {
             return {
-                value: item.TRIMID,
-                label: item.NAME
+                value: item.Key,
+                label: item.Value
             };
         });
         Vue.set(srch.screenParam, "sfxmList", list);

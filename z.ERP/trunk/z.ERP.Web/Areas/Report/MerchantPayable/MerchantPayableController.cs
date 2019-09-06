@@ -15,7 +15,7 @@ namespace z.ERP.Web.Areas.Report.MerchantPayable
         //获取收费项目list
         public UIResult GetSfxmList()
         {
-            var res = service.ReportService.GetSfxmList();
+            var res = service.DataService.feesubject();
             return new UIResult(
                 new
                 {
