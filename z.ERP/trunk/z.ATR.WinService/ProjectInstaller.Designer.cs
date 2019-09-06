@@ -39,7 +39,7 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.Description = "自动执行一些动作";
+            this.serviceInstaller1.Description = "自动执行水牌银行对账信息写入ERP";
             this.serviceInstaller1.ServiceName = "AotuService";
             // 
             // ProjectInstaller

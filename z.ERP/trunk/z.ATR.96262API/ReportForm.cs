@@ -74,7 +74,7 @@ namespace z.ATR._96262API
             ReportFormRequest res = Post<ReportFormResponse, ReportFormRequest>(Url, t);
 
             if (res.return_code != "00")
-                throw new Exception(res.return_msg);
+                 throw new Exception(res.return_msg);
             using (Stream st = new MemoryStream(Convert.FromBase64String(res.fileData)))
             {
                 IOExtension.GetTempPathAndDo(path =>
