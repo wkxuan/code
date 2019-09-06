@@ -29,12 +29,11 @@ srch.beforeVue = function () {
     srch.screenParam.colDef = colD;
     srch.service = "ReportService";
     srch.method = "MerchantBusinessStatus";
-
+ 
     srch.screenParam.showPop = false;
     srch.screenParam.srcPop = "";
     srch.screenParam.title = "";
     srch.screenParam.popParam = {};
-    srch.searchParam.SrchTYPE = 1;
 };
 
 srch.newCondition = function () {
@@ -46,8 +45,18 @@ srch.newCondition = function () {
     srch.searchParam.BRANDNAME = "";
     srch.searchParam.NIANYUE_END = "";
     srch.searchParam.NIANYUE_START = "";
-};
+    srch.searchParam.FLOORID = null;
+    srch.searchParam.CATEGORYCODE = null;
 
+    srch.screenParam.CATEGORY = [];
+};
+srch.mountedInit = function () {
+    _.Ajax('SearchCate', {
+        Data: {}
+    }, function (data) {
+        Vue.set(srch.screenParam, "CATEData", data.treeOrg.Obj);
+    });
+}
 srch.otherMethods = {
     SelMerchant: function () {
         srch.screenParam.title = "选择商户";
@@ -69,6 +78,9 @@ srch.otherMethods = {
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
             Vue.set(srch.screenParam, "colDef", colGD);
         }
+    },
+    changeCate: function (value, selectedData) {
+        srch.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
     }
 }
 

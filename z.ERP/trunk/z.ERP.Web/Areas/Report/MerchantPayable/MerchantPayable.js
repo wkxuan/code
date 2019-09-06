@@ -27,6 +27,7 @@ srch.beforeVue = function () {
 };
 srch.newCondition = function () {
     srch.searchParam.BRANCHID = "";
+    srch.searchParam.MERCHANTID = "";
     srch.searchParam.MERCHANTNAME = "";
     srch.searchParam.SFXMLX = "";
     srch.searchParam.NIANYUE = "";
@@ -53,15 +54,11 @@ srch.afterResult = function (data) {
                             {
                                 title: '应交',
                                 key: 'MUST_MONEY' + lx[0].value,
-                                minWidth: 100,
-                                ellipsis: true,
-                                tooltip: true
+                                align: "right"
                             }, {
                                 title: '已付',
                                 key: 'RECEIVE_MONEY' + lx[0].value,
-                                minWidth: 100,
-                                ellipsis: true,
-                                tooltip: true
+                                align: "right"
                             }
                         ]
                     };
@@ -76,15 +73,11 @@ srch.afterResult = function (data) {
                 {
                     title: '应交',
                     key: 'MUST_MONEYSUM',
-                    minWidth: 100,
-                    ellipsis: true,
-                    tooltip: true
+                    align: "right"
                 }, {
                     title: '已付',
                     key: 'RECEIVE_MONEYSUM',
-                    minWidth: 100,
-                    ellipsis: true,
-                    tooltip: true
+                    align: "right"
                 }
             ]
         };

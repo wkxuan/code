@@ -24,7 +24,15 @@ namespace z.ERP.Web.Areas.Report.MerchantPayable
             );
         }
         public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
-        {
+        {           
+            var sfxmDt = service.ReportService.GetFeesubject(item);
+            for(var i=0;i< sfxmDt.Rows.Count; i++)
+            {
+                Cols.Add("MUST_MONEY" + sfxmDt.Rows[i][0].ToString(), sfxmDt.Rows[i][1].ToString() + "应交");
+                Cols.Add("RECEIVE_MONEY" + sfxmDt.Rows[i][0].ToString(), sfxmDt.Rows[i][1].ToString() + "已付");
+            }
+            Cols.Add("MUST_MONEYSUM", "合计应交");
+            Cols.Add("RECEIVE_MONEYSUM","合计已付");
             var dtSource = service.ReportService.MerchantPayableOutput(item);
             return NPOIHelper.ExportExcel(dtSource, Name, Cols);
         }

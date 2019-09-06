@@ -191,6 +191,7 @@
     setTimeout(function () {
         _this.vueInit();
         _this.beforeVue();
+        _this.newCondition();
         _this.vue();
     }, 100);
 }

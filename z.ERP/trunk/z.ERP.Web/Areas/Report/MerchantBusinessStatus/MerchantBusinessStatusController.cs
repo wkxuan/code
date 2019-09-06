@@ -17,5 +17,15 @@ namespace z.ERP.Web.Areas.Report.MerchantBusinessStatus
             var dtSource = service.ReportService.MerchantBusinessStatusOutput(item);
             return NPOIHelper.ExportExcel(dtSource, Name, Cols);
         }
+        public UIResult SearchCate()
+        {
+            var res = service.DataService.GetTreeCategory();
+            return new UIResult(
+                new
+                {
+                    treeOrg = res.Item1
+                }
+            );
+        }
     }
 }

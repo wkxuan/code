@@ -46,14 +46,17 @@ srch.beforeVue = function () {
     srch.screenParam.echartData = [];
 };
 srch.newCondition = function () {
+    srch.searchParam.SrchTYPE = 1;
+    srch.searchParam.FLOORID = "";
+    srch.searchParam.CONTRACTID = "";
     srch.searchParam.BRANCHID = "";
     srch.searchParam.CATEGORYCODE = "";
-    srch.searchParam.RQ_START = "";
+    srch.searchParam.MERCHANTID = "";
     srch.searchParam.MERCHANTNAME = "";
-    srch.searchParam.CONTRACTID = "";
+    srch.searchParam.BRANDID = "";
     srch.searchParam.BRANDNAME = "";
+    srch.searchParam.RQ_START = "";
     srch.searchParam.RQ_END = "";
-    srch.searchParam.FLOORID = "";
     srch.searchParam.YEARMONTH_END = "";
     srch.searchParam.YEARMONTH_START = "";
 };

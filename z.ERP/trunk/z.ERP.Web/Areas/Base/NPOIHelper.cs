@@ -93,6 +93,7 @@ namespace z.ERP.Web.Areas.Base
         /// </summary>
         protected static void CreateCols(Dictionary<string, string> cols)
         {
+            cols.Remove("undefined");
             var list = cols.Keys;
             ListColumnsName = new SortedList();
             foreach(var item in list)

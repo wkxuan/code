@@ -36,6 +36,11 @@
     search.screenParam.popParam = {};
 }
 
+search.newCondition = function () {
+    search.searchParam.STYLE = "1";  //只查询租赁合同
+    search.searchParam.HTLX = "1"; //默认查询原始合同
+}
+
 search.otherMethods = {
     SelSigner: function () {
         search.screenParam.title = "选择合同员";

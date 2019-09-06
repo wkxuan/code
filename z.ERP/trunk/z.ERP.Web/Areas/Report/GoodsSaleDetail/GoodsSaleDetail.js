@@ -26,15 +26,16 @@ srch.beforeVue = function () {
     srch.screenParam.showPopBrand = false;
     srch.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
     srch.screenParam.popParam = {};
-    srch.screenParam.KINDID = [];
     srch.searchParam.SrchTYPE = 1;
 };
 
 srch.newCondition = function () {
     srch.searchParam.BRANCHID = "";
+    srch.searchParam.MERCHANTID = "";
     srch.searchParam.MERCHANTNAME = "";
     srch.searchParam.GOODSDM = "";
     srch.searchParam.GOODSNAME = "";
+    srch.searchParam.BRANDID = "";
     srch.searchParam.BRANDNAME = "";
     srch.searchParam.RQ_START = "";
     srch.searchParam.RQ_END = "";

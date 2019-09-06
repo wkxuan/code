@@ -44,13 +44,17 @@ srch.beforeVue = function () {
                                         { label: "折扣金额", value: "DIS_AMOUNT" }, { label: "优惠金额", value: "PER_AMOUNT" }];
     srch.screenParam.echartData = [];
 };
+
 srch.newCondition = function () {
+    srch.searchParam.SrchTYPE = 1;
     srch.searchParam.BRANCHID = "";
     srch.searchParam.CATEGORYCODE = "";
+    srch.searchParam.MERCHANTID = "";
     srch.searchParam.MERCHANTNAME = "";
     srch.searchParam.GOODSDM = "";
     srch.searchParam.GOODSNAME = "";
     srch.searchParam.CONTRACTID = "";
+    srch.searchParam.BRANDNID = "";
     srch.searchParam.BRANDNAME = "";
     srch.searchParam.RQ_START = "";
     srch.searchParam.RQ_END = "";
