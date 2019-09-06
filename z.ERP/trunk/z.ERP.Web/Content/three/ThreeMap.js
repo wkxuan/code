@@ -1,4 +1,5 @@
-﻿(function (window, undefined) {   
+﻿(function (window, undefined) {
+    var listM = [];
     ThreeMapInit = function (floorInfo, labelArray, $ref) {
             //数据处理  X,Z,Y //由于图像原因  Y轴为负值
             for (var i = 0; i < labelArray.length; i++) {
@@ -17,6 +18,14 @@
             var INTERSECTED;
             var raycaster;
             var mouse;
+            if (listM.length > 0) {
+                for (var i = 0; i < listM.length; i++) {
+                    var mesh = listM[i];
+                    mesh.geometry.dispose();
+                    mesh.material.dispose();
+                }
+            }
+
             var controls;
             // 边框线的高度
             var lineHeight = 1.75;
@@ -26,12 +35,17 @@
             var $tree = $ref.tree;  //左面目标元素
             var $map = $ref.maps;    //右面目标元素
             var width = $map.clientWidth;     //获取画布「canvas3d」的宽
-            var height = window.innerHeight-22;   //获取画布「canvas3d」的高
+            var height = window.innerHeight - 22;   //获取画布「canvas3d」的高
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            clearRenderer();
+
             function init() {
                 renderer = new THREE.WebGLRenderer({
                     antialias: true
                 });
-
+              
                 renderer.setClearColor(0xF1F2F7);
                 renderer.setSize(width, height);
                 scene = new THREE.Scene();
@@ -140,6 +154,7 @@
                 var material = new THREE.MeshLambertMaterial({ color: "#C1C1C1", side: THREE.DoubleSide });         //MeshLambertMaterial
                 var mesh = new THREE.Mesh(geometry, material);
                 mesh.castShadow = true;
+                listM.push(mesh);
                 this.container.add(mesh);				//添加填充
             }
 
@@ -156,11 +171,13 @@
                     material = new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide });         //模块颜色
                 }
                 var mesh = new THREE.Mesh(geometry, material);
+                listM.push(mesh);
                 this.container.add(mesh);				//添加填充
 
                 var lineMaterial = new THREE.LineBasicMaterial({ color: "#F7A540" });     //线颜色
                 var lineGeometry = this.getGeometry(points, height, info);
                 var line = new THREE.Line(lineGeometry, lineMaterial);
+                listM.push(mesh);
                 this.container.add(line);
             }
 
@@ -456,7 +473,13 @@
                     y: y
                 };
             }
-            
+            function clearRenderer() {
+                renderer.dispose();
+                renderer.forceContextLoss();
+                renderer.context = null;
+                renderer.domElement = null;
+                renderer = null;
+            }
         ////外放方法
         //    function ThreeMapClick(id) {
         //        alert(id);
