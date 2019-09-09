@@ -5,8 +5,8 @@
 @section conditionParam{
 
     <row>
-        <i-col span="3" class="RowTitle">门店</i-col>
-        <i-col span="4" class="RowText">
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -17,25 +17,25 @@
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             商户
         </i-col>
-        <i-col span="4" class="RowText">
+        <i-col span="6" class="RowText">
             <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
         </i-col>
 
-        <i-col span="3" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             租约
         </i-col>
-        <i-col span="4" class="RowText">
+        <i-col span="6" class="RowText">
             <i-input readonly icon="md-search" v-model="searchParam.CONTRACTID" v-on:on-click="SelContract" />
         </i-col>
-       
+
     </row>
 
     <row>
-        <i-col span="3" class="RowTitle">账单号</i-col>
-        <i-col span="4" class="RowText">
+        <i-col span="2" class="RowTitle">账单号</i-col>
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -45,8 +45,8 @@
         </i-col>
 
 
-        <i-col span="3" class="RowTitle">账单类型</i-col>
-        <i-col span="4" class="RowText">
+        <i-col span="2" class="RowTitle">账单类型</i-col>
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<账单类型>()
                 {
@@ -56,8 +56,8 @@
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">账单状态</i-col>
-        <i-col span="4">
+        <i-col span="2" class="RowTitle">账单状态</i-col>
+        <i-col span="6">
             @{
                 RenderControl(new EnumDropDownListRender<账单状态>()
                 {
@@ -68,8 +68,8 @@
     </row>
 
     <row>
-        <i-col span="3" class="RowTitle">收费项目名称 </i-col>
-        <i-col span="4" class="RowText">
+        <i-col span="2" class="RowTitle">收费项目名称 </i-col>
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -80,33 +80,75 @@
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             收付实现月
         </i-col>
-        <i-col span="4" class="RowText">
-            @{
-                RenderControl(new YearMonthBoxRender()
-                {
-                    vModel = "searchParam.YEARMONTH_START"
-                });
-            }
+        <i-col span="3" class="RowText">
+            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_START"></yx-year-month-picker>
         </i-col>
-
-        <i-col span="3" class="RowTitle">
-            权责发生月
+        <i-col span="3" class="RowText">
+            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_END"></yx-year-month-picker>
         </i-col>
-        <i-col span="4" class="RowText">
-            @{
-                RenderControl(new YearMonthBoxRender()
-                {
-                    vModel = "searchParam.NIANYUE_START"         
-                });
-            }
+        @*<i-col span="4" class="RowText">
+                @{
+                    RenderControl(new YearMonthBoxRender()
+                    {
+                        vModel = "searchParam.YEARMONTH_START"
+                    });
+                }
+            </i-col>*@
+
+        <i-col span="2" class="RowTitle">
+            债权发生月
         </i-col>
-
-
-
+        @*<i-col span="4" class="RowText">
+                @{
+                    RenderControl(new YearMonthBoxRender()
+                    {
+                        vModel = "searchParam.NIANYUE_START"
+                    });
+                }
+            </i-col>*@
+        <i-col span="3" class="RowText">
+            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_START"></yx-year-month-picker>
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_END"></yx-year-month-picker>
+        </i-col>
     </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            业态
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new CascaderRender()
+                {
+                    vModel = "screenParam.CATEGORY",
+                    Data = "screenParam.CATEData",
+                    Change = "changeCate",
+                    Not_level_last = true
+                });
+            }
+        </i-col>
+      
+        <i-col span="2" class="RowTitle">
+            楼层
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.FLOORID",
+                    ServiceMothod = m => m.floor(),
+                    Multiple = true
+                });
+            }
+        </i-col>
+    </row>
+
+
 
 }
 
@@ -125,18 +167,25 @@
         </i-col>
     </row>
 
-<row>
-    <i-col>
-        @{
-            RenderControl(new PopsRender()
-            {
-                vModel = "screenParam.showPopContract",
-                Caption = "选择租约",
-                Width = "900",
-                Src = "screenParam.srcPopContract"
-            });
-        }
-    </i-col>
-</row>
+    <row>
+        <i-col>
+            @{
+                RenderControl(new PopsRender()
+                {
+                    vModel = "screenParam.showPopContract",
+                    Caption = "选择租约",
+                    Width = "900",
+                    Src = "screenParam.srcPopContract"
+                });
+            }
+        </i-col>
+    </row>
+
+    <row>
+        <yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
+                  v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
+    </row>
+
+
 
 }

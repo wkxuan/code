@@ -5,10 +5,12 @@
         { title: '门店', key: 'BRANCHNAME', width: 180 },
       //{ title: '商户编码', key: 'MERCHANTIDE', width: 120 },
 { title: '商户名称', key: 'MERCHANTNAME', width: 120 },
+{ title: '楼层', key: 'FLOORNAME', width: 120 },
+{ title: '业态', key: 'CATEGORYNAME', width: 120 },
 { title: '账单号', key: 'BILLID', width: 100 },
 { title: '收费项目名称', key: 'FEENAME', width: 120 },
  { title: '租约号', key: 'CONTRACTID', width: 100 },
-{ title: '权责发生月', key: 'NIANYUE', width: 100 },
+{ title: '债权发生月', key: 'NIANYUE', width: 100 },
 { title: '收付实现月', key: 'YEARMONTH', width: 100 },
 { title: '账单类型', key: 'TYPEMC', width: 100 },
 { title: '账单状态', key: 'STATUSMC', width: 100 },
@@ -26,6 +28,8 @@
     //srch.echartResult = true;
     srch.screenParam.popParam = {};
     //srch.searchParam.SrchTYPE = 1;
+    srch.searchParam.CATEGORYCODE = "";
+    //srch.screenParam.CATEGORY = [];
 
     srch.screenParam.showPopMerchant = false;
     srch.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
@@ -43,8 +47,20 @@ srch.newCondition = function () {
     srch.searchParam.STATUS = "";
     srch.searchParam.TRIMID = "";
     srch.searchParam.NIANYUE_START = "";
+    srch.searchParam.NIANYUE_END = "";
     srch.searchParam.YEARMONTH_START = "";
+    srch.searchParam.NIANYUE_END = "";
+    srch.searchParam.FLOORID = "";
+    srch.searchParam.CATEGORYCODE = "";
 };
+
+srch.mountedInit = function () {
+    _.Ajax('SearchCate', {
+        Data: {}
+    }, function (data) {
+        Vue.set(srch.screenParam, "CATEData", data.treeOrg.Obj);
+    });
+}
 
 
 
@@ -56,7 +72,9 @@ srch.otherMethods = {
         srch.screenParam.showPopContract = true;
     },
  
-    
+    changeCate: function (value, selectedData) {
+    srch.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
+},
 
 }
 

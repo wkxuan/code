@@ -243,8 +243,13 @@ namespace z.ERP.Services
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
             item.HasKey("TYPE", a => sql += $" and L.TYPE={a}");
             item.HasKey("BRANCHID", a => sql += $" and L.BRANCHID={a}");
-            item.HasKey("NIANYUE", a => sql += $" and L.NIANYUE={a}");
-            item.HasKey("YEARMONTH", a => sql += $" and L.YEARMONTH={a}");
+         
+            item.HasKey("NIANYUE_START", a => sql += $" and L.NIANYUE >= {a}");
+            item.HasKey("NIANYUE_END", a => sql += $" and L.NIANYUE <= {a}");
+
+            item.HasKey("YEARMONTH_START", a => sql += $" and L.YEARMONTH >= {a}");
+            item.HasKey("YEARMONTH_END", a => sql += $" and L.YEARMONTH <= {a}");
+
             item.HasKey("REPORTER_NAME", a => sql += $" and L.REPORTER_NAME  LIKE '%{a}%'");
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and L.REPORTER_TIME>={a}");
             item.HasDateKey("REPORTER_TIME_END", a => sql += $" and L.REPORTER_TIME<={a}");
@@ -617,7 +622,10 @@ namespace z.ERP.Services
             item.HasKey("CONTRACTID", a => sql += $" and L.CONTRACTID = {a}");
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("TYPE", a => sql += $" and L.TYPE={a}");
-            item.HasKey("NIANYUE", a => sql += $" and L.NIANYUE={a}");
+
+            item.HasKey("NIANYUE_START", a => sql += $" and L.NIANYUE >= {a}");
+            item.HasKey("NIANYUE_END", a => sql += $" and L.NIANYUE <= {a}");
+
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
             item.HasKey("FEE_ACCOUNTID", a => sql += $" and L.FEE_ACCOUNTID={a}");

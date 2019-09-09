@@ -12,12 +12,20 @@ namespace z.ERP.Web.Areas.Report.BILL_SRC
             ViewBag.Title = "费用账单查询";
             return View();
         }
-
-
         public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
         {
             var dtSource = service.ReportService.Bill_SrcOutput(item);
             return NPOIHelper.ExportExcel(dtSource, Name, Cols);
+        }
+        public UIResult SearchCate()
+        {
+            var res = service.DataService.GetTreeCategory();
+            return new UIResult(
+                new
+                {
+                    treeOrg = res.Item1
+                }
+            );
         }
     }
 

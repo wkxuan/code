@@ -87,9 +87,13 @@
         <i-col span="2" class="RowTitle">
             年月
         </i-col>
-        <i-col span="6"  class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE"></yx-year-month-picker>
+        <i-col span="3"  class="RowText">
+            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_START"></yx-year-month-picker>
         </i-col>
+        <i-col span="3" class="RowText">
+            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_END"></yx-year-month-picker>
+        </i-col>
+
     </row>
     <row>
         <i-col span="2" class="RowTitle">
