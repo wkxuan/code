@@ -17,14 +17,14 @@ define.newRecord = function () {
 }
 
 define.IsValidXj = function () {
-    if (define.backData.LEVEL_LAST == 2) {
+    if (define.dataParam.LEVEL_LAST == 2) {
         iview.Message.info("该节点已是末级节点不能再添加下级节点！");
         return false;
     }
     return true;
 }
 define.IsValidDel = function () {
-    if (define.backData.LEVEL_LAST == 1) {
+    if (define.dataParam.LEVEL_LAST == 1) {
         iview.Message.info("该节点是非末级节点不能删除！");
         return false;
     }
