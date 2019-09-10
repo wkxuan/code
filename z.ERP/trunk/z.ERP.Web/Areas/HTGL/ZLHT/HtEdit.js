@@ -16,24 +16,9 @@
     editDetail.screenParam.fkrList = tempList;
 
     editDetail.screenParam.popParam = {};
-
-    editDetail.screenParam.showSysuser = false;
-    editDetail.screenParam.srcPopSigner = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-
-    editDetail.screenParam.showPopMerchant = false;
-    editDetail.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-
-    editDetail.screenParam.showPopBrand = false;
-    editDetail.screenParam.srcPopBrand = __BaseUrl + "/Pop/Pop/PopBrandList/";
-
-    editDetail.screenParam.showPopShop = false;
-    editDetail.screenParam.srcPopShop = __BaseUrl + "/Pop/Pop/PopShopList/";
-
-    editDetail.screenParam.showPopFeeSubject = false;
-    editDetail.screenParam.srcPopFeeSubject = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
-
-    editDetail.screenParam.showPopPay = false;
-    editDetail.screenParam.srcPopPay = __BaseUrl + "/Pop/Pop/PopPayList/";
+    editDetail.screenParam.show = false;
+    editDetail.screenParam.srcPop = "";
+    editDetail.screenParam.title = "";
    
     _.Ajax('SearchInit', {
         Data: {}
@@ -74,6 +59,7 @@
                     }, function (data) {
                         if (data.dt) {
                             row.NAME = data.dt.NAME;
+                            row.TYPE = data.dt.TYPE;                         
                         } else {
                             row.TERMID = null;
                             row.NAME = null;
@@ -83,8 +69,24 @@
                 }
             },
             { title: "费用项目名称", key: 'NAME' },
-            { title: '开始日期', key: 'STARTDATE', width: 150, cellType: "date", enableCellEdit: true },
-            { title: '结束日期', key: 'ENDDATE', width: 150, cellType: "date", enableCellEdit: true },
+            {
+                title: '开始日期', key: 'STARTDATE', width: 150, cellType: "date", enableCellEdit: true,
+                onChange: function (index, row, data) {
+                    if (row.TYPE == 1) {
+                        row.ENDDATE = row.STARTDATE;
+                        row.SFFS = 4;
+                    }
+                }
+            },
+            {
+                title: '结束日期', key: 'ENDDATE', width: 150, cellType: "date", enableCellEdit: true,
+                onChange: function (index, row, data) {
+                    if (row.TYPE == 1) {
+                        row.STARTDATE = row.ENDDATE;
+                        row.SFFS = 4;
+                    }
+                }
+            },
             {
                 title: '收费方式', key: 'SFFS', cellType: "select", width: 150, enableCellEdit: true,
                 selectList: [{ label: "日金额", value: 1 },
@@ -344,58 +346,42 @@ editDetail.branchChange = function () {
     editDetail.otherMethods.calculateArea();
 };
 editDetail.popCallBack = function (data) {
-    if (editDetail.screenParam.showSysuser) {
-        editDetail.screenParam.showSysuser = false;
-        for (let i = 0; i < data.sj.length; i++) {
-            editDetail.dataParam.SIGNER = data.sj[i].USERID;
-            editDetail.dataParam.SIGNER_NAME = data.sj[i].USERNAME;
-        };
-    }
-    if (editDetail.screenParam.showPopMerchant) {
-        editDetail.screenParam.showPopMerchant = false;
-        editDetail.dataParam.CONTRACT_BRAND = [];
-        for (let i = 0; i < data.sj.length; i++) {
-            editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
-            editDetail.dataParam.MERNAME = data.sj[i].NAME;
-        };
-    }
-    if (editDetail.screenParam.showPopBrand) {
-        editDetail.screenParam.showPopBrand = false;
-        let brand = editDetail.dataParam.CONTRACT_BRAND;
-        for (let i = 0; i < data.sj.length; i++) {
-            if (brand.filter(item=> { return (data.sj[i].BRANDID == item.BRANDID) }).length == 0) {
-                brand.push(data.sj[i]);
-            }
-        };
-    }
-    if (editDetail.screenParam.showPopShop) {
-        editDetail.screenParam.showPopShop = false;
-        let shop = editDetail.dataParam.CONTRACT_SHOP;
-        for (let i = 0; i < data.sj.length; i++) {
-            if (shop.filter(item=> { return (data.sj[i].SHOPID == item.SHOPID) }).length == 0) {
-                shop.push(data.sj[i]);
-            }
-        };
-        editDetail.otherMethods.calculateArea();
-    }
-    if (editDetail.screenParam.showPopFeeSubject) {
-        editDetail.screenParam.showPopFeeSubject = false;
-        if (editDetail.screenParam.payCost) {
-            let selection = editDetail.veObj.$refs.refPay.getSelection();
-            let pay = editDetail.dataParam.CONTRACT_PAY
-            for (let i = 0; i < selection.length; i++) {
-                for (let j = 0; j < pay.length; j++) {
-                    if (selection[i].PAYID == pay[j].PAYID) {
-                        pay[j].TERMID = data.sj[0].TERMID;
-                        pay[j].TERMNAME = data.sj[0].NAME;
-                    }
+    if (editDetail.screenParam.showPop) {
+        editDetail.screenParam.showPop = false;
+        if (editDetail.screenParam.title == "选择人员") {
+            for (let i = 0; i < data.sj.length; i++) {
+                editDetail.dataParam.SIGNER = data.sj[i].USERID;
+                editDetail.dataParam.SIGNER_NAME = data.sj[i].USERNAME;
+            };
+        }
+        if (editDetail.screenParam.title == "选择商户") {
+            for (let i = 0; i < data.sj.length; i++) {
+                editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
+                editDetail.dataParam.MERNAME = data.sj[i].NAME;
+            };
+        }
+        if (editDetail.screenParam.title == "选择品牌") {
+            let brand = editDetail.dataParam.CONTRACT_BRAND;
+            for (let i = 0; i < data.sj.length; i++) {
+                if (brand.filter(item=> { return (data.sj[i].BRANDID == item.BRANDID) }).length == 0) {
+                    brand.push(data.sj[i]);
                 }
-            }
-        } else {
+            };
+        }
+        if (editDetail.screenParam.title == "选择商铺") {
+            let shop = editDetail.dataParam.CONTRACT_SHOP;
+            for (let i = 0; i < data.sj.length; i++) {
+                if (shop.filter(item=> { return (data.sj[i].SHOPID == item.SHOPID) }).length == 0) {
+                    shop.push(data.sj[i]);
+                }
+            };
+            editDetail.otherMethods.calculateArea();
+        }
+        if (editDetail.screenParam.title == "选择费用项目") {
             let cost = editDetail.dataParam.CONTRACT_COST;
             for (let i = 0; i < data.sj.length; i++) {
                 let loc = {};
-                editDetail.screenParam.colDefCOST.forEach(function(item) {
+                editDetail.screenParam.colDefCOST.forEach(function (item) {
                     switch (item.key) {
                         case "TERMID":
                             loc[item.key] = data.sj[i].TERMID;
@@ -408,36 +394,48 @@ editDetail.popCallBack = function (data) {
                             break;
                     }
                 });
+                loc["TYPE"] = data.sj[i].TYPE;
                 cost.push(loc);
             };
             for (let i = 0; i < cost.length; i++) {
                 cost[i].INX = i + 1;
             }
         }
-    }
-    if (editDetail.screenParam.showPopPay) {
-        editDetail.screenParam.showPopPay = false;
-        let pay = editDetail.dataParam.CONTRACT_PAY;
-        for (let i = 0; i < data.sj.length; i++) {
-            let len = pay.filter(item=> { return data.sj[i].PAYID == item.PAYID });
-            if (!len.length) {
-                let loc = {};
-                editDetail.screenParam.colDefPAY.forEach(item=> {
-                    switch (item.key) {
-                        case "PAYID":
-                            loc[item.key] = data.sj[i].PAYID;
-                            break;
-                        case "NAME":
-                            loc[item.key] = data.sj[i].NAME;
-                            break;
-                        default:
-                            loc[item.key] = null;
-                            break;
+        if (editDetail.screenParam.title == "选择收款方式的费用项目") {
+            let selection = editDetail.veObj.$refs.refPay.getSelection();
+            let pay = editDetail.dataParam.CONTRACT_PAY
+            for (let i = 0; i < selection.length; i++) {
+                for (let j = 0; j < pay.length; j++) {
+                    if (selection[i].PAYID == pay[j].PAYID) {
+                        pay[j].TERMID = data.sj[0].TERMID;
+                        pay[j].TERMNAME = data.sj[0].NAME;
                     }
-                });
-                pay.push(loc);
+                }
             }
-        };
+        }
+        if (editDetail.screenParam.title == "选择收款方式") {
+            let pay = editDetail.dataParam.CONTRACT_PAY;
+            for (let i = 0; i < data.sj.length; i++) {
+                let len = pay.filter(item=> { return data.sj[i].PAYID == item.PAYID });
+                if (!len.length) {
+                    let loc = {};
+                    editDetail.screenParam.colDefPAY.forEach(item=> {
+                        switch (item.key) {
+                            case "PAYID":
+                                loc[item.key] = data.sj[i].PAYID;
+                                break;
+                            case "NAME":
+                                loc[item.key] = data.sj[i].NAME;
+                                break;
+                            default:
+                                loc[item.key] = null;
+                                break;
+                        }
+                    });
+                    pay.push(loc);
+                }
+            };
+        }
     }
 };
 
@@ -505,12 +503,16 @@ editDetail.otherMethods = {
     },
     //点击合同员
     srchSigner: function () {
-        Vue.set(editDetail.screenParam, "showSysuser", true);
+        editDetail.screenParam.title = "选择人员";
         editDetail.screenParam.popParam = { USER_TYPE: "7" };
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";       
+        Vue.set(editDetail.screenParam, "showPop", true);
     },
     //点击商户弹窗
     srchMerchant: function () {
-        Vue.set(editDetail.screenParam, "showPopMerchant", true);
+        editDetail.screenParam.title = "选择商户";
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        Vue.set(editDetail.screenParam, "showPop", true);
     },
     //点击品牌弹窗
     srchBrand: function () {
@@ -518,8 +520,10 @@ editDetail.otherMethods = {
             iview.Message.info("请先选择商户!");
             return;
         }
+        editDetail.screenParam.title = "选择品牌";
         editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID };
-        Vue.set(editDetail.screenParam, "showPopBrand", true);
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopBrandList/";
+        Vue.set(editDetail.screenParam, "showPop", true);
     },
     delBrand: function () {
         let selection = this.$refs.refBrand.getSelection();
@@ -544,8 +548,10 @@ editDetail.otherMethods = {
             return;
         }
         //查询空置的资产
+        editDetail.screenParam.title = "选择商铺";
         editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, RENT_STATUS: 1 };
-        Vue.set(editDetail.screenParam, "showPopShop", true);
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopShopList/";
+        Vue.set(editDetail.screenParam, "showPop", true);
     },
     addRowShop: function () {
         if (!editDetail.dataParam.BRANCHID) {
@@ -579,8 +585,9 @@ editDetail.otherMethods = {
     },
     //点击费用项目弹窗
     srchFeeSubject: function () {
-        editDetail.screenParam.payCost = false;
-        Vue.set(editDetail.screenParam, "showPopFeeSubject", true);
+        editDetail.screenParam.title = "选择费用项目";
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
+        Vue.set(editDetail.screenParam, "showPop", true);
     },
     //添加租约收费项目信息
     addRowFeeSubject: function () {
@@ -589,6 +596,7 @@ editDetail.otherMethods = {
         editDetail.screenParam.colDefCOST.forEach(item=> {
             loc[item.key] = null;
         });
+        loc["TYPE"] = null;
         temp.push(loc);
         for (let i = 0; i < temp.length; i++) {
             temp[i].INX = i + 1;
@@ -615,7 +623,9 @@ editDetail.otherMethods = {
     },
     //点击收款方式弹窗
     srchPay: function () {
-        Vue.set(editDetail.screenParam, "showPopPay", true);
+        editDetail.screenParam.title = "选择收款方式";
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPayList/";
+        Vue.set(editDetail.screenParam, "showPop", true);
     },
     srchPayCost: function () {
         let selection = this.$refs.refPay.getSelection();
@@ -623,8 +633,9 @@ editDetail.otherMethods = {
             iview.Message.info("请先添加收款方式并且选中收款方式!");
             return;
         };
-        editDetail.screenParam.payCost = true;
-        Vue.set(editDetail.screenParam, "showPopFeeSubject", true);
+        editDetail.screenParam.title = "选择收款方式的费用项目";
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
+        Vue.set(editDetail.screenParam, "showPop", true);
     },
     //删除收款方式手续费
     delPay: function () {
@@ -1356,17 +1367,18 @@ editDetail.IsValidSave = function () {
                 iview.Message.info(`请确定收费项目中序号${contract_cost[i].INX}的起始日期!`);
                 return false;
             };
+            if (contract_cost[i].TYPE != 1) {
+                if (new Date(contract_cost[i].STARTDATE).Format('yyyy-MM-dd') < new Date(data.CONT_START).Format('yyyy-MM-dd')) {
+                    iview.Message.info(`收费项目中序号${contract_cost[i].INX}的开始日期必须在租约有效期内!`);
+                    return false;
+                };
 
-            if (new Date(contract_cost[i].STARTDATE).Format('yyyy-MM-dd') < new Date(data.CONT_START).Format('yyyy-MM-dd')) {
-                iview.Message.info(`收费项目中序号${contract_cost[i].INX}的开始日期必须在租约有效期内!`);
-                return false;
-            };
-
-            if (new Date(contract_cost[i].ENDDATE).Format('yyyy-MM-dd') > new Date(data.CONT_END).Format('yyyy-MM-dd')) {
-                iview.Message.info(`收费项目中序号${contract_cost[i].INX}的结束日期必须在租约有效期内!`);
-                return false;
-            };
-
+                if (new Date(contract_cost[i].ENDDATE).Format('yyyy-MM-dd') > new Date(data.CONT_END).Format('yyyy-MM-dd')) {
+                    iview.Message.info(`收费项目中序号${contract_cost[i].INX}的结束日期必须在租约有效期内!`);
+                    return false;
+                };
+            }
+            
             if (!contract_cost[i].ENDDATE) {
                 iview.Message.info(`请确定收费项目中序号${contract_cost[i].INX}的结束日期!`);
                 return false;

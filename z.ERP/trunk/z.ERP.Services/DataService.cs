@@ -424,6 +424,8 @@ namespace z.ERP.Services
                        + "   FROM CONTRACT A,MERCHANT B,BRANCH C "
                        + "  WHERE A.MERCHANTID=B.MERCHANTID AND A.BRANCHID=C.ID"
                        + "    AND C.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+            sql += " and A.HTLX=" + ((int)合同类型.原始合同).ToString();
+
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID like '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and B.NAME like '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
