@@ -966,34 +966,28 @@ namespace z.ERP.Services
         #region 费用账单查询
         private string Bill_Srcsql(SearchItem item)
         {
-            string sqlsum = $@"  SELECT  B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME,A.BILLID, D.NAME FEENAME, A.CONTRACTID, 
-                                         A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,A.RETURN_MONEY,A.START_DATE,A.END_DATE,
-                                         A.TYPE, A.STATUS, F.NAME UNITNAME，A.DESCRIPTION,
-                                         G.CATEGORYCODE,G.CATEGORYNAME,H.CODE FLOORCODE,H.NAME FLOORNAME
-                                         FROM BILL A
-                                          LEFT JOIN BRANCH B ON A.BRANCHID=B.ID
-                                          LEFT JOIN MERCHANT C ON A.MERCHANTID=C.MERCHANTID
-                                          LEFT JOIN FEESUBJECT_ACCOUNT E ON A.TERMID=E.TERMID AND A.BRANCHID=E.BRANCHID
-                                          LEFT JOIN FEESUBJECT D ON E.TERMID=D.TRIMID
-                                          LEFT JOIN FEE_ACCOUNT F ON E.FEE_ACCOUNTID=F.ID AND F.BRANCHID=A.BRANCHID
-                                          LEFT JOIN CONTRACT_SHOP CS ON A.CONTRACTID =CS.CONTRACTID
-                                          LEFT JOIN SHOP S ON CS.SHOPID=S.SHOPID
-                                          LEFT JOIN FLOOR H ON S.FLOORID=H.ID
-                                          LEFT JOIN CATEGORY G ON S.CATEGORYID=G.CATEGORYID";
+            string sqlsum = $@"SELECT  B.NAME BRANCHNAME, C.MERCHANTID,C.NAME MERCHANTNAME,A.BILLID, D.NAME FEENAME, A.CONTRACTID, 
+        A.NIANYUE, A.YEARMONTH, A.MUST_MONEY, A.RECEIVE_MONEY,A.RETURN_MONEY,A.START_DATE,A.END_DATE,
+        A.TYPE, A.STATUS, F.NAME UNITNAME，A.DESCRIPTION
+        FROM BILL A
+        LEFT JOIN BRANCH B ON A.BRANCHID=B.ID
+        LEFT JOIN MERCHANT C ON A.MERCHANTID=C.MERCHANTID
+        LEFT JOIN FEESUBJECT_ACCOUNT E ON A.TERMID=E.TERMID AND A.BRANCHID=E.BRANCHID
+        LEFT JOIN FEESUBJECT D ON E.TERMID=D.TRIMID
+        LEFT JOIN FEE_ACCOUNT F ON E.FEE_ACCOUNTID=F.ID AND F.BRANCHID=A.BRANCHID
 
-        //  WHERE A.BRANCHID = B.ID(+) AND
-        //  A.MERCHANTID = C.MERCHANTID(+) AND
-        //  A.TERMID = E.TERMID(+) AND
-        //  A.BRANCHID = E.BRANCHID(+) AND
-        //  E.FEE_ACCOUNTID = F.ID(+) AND
-        //  E.TERMID = D.TRIMID(+) AND A.CONTRACTID = CS.CONTRACTID(+) AND CS.SHOPID = S.SHOPID(+) AND S.FLOORID = FR.ID(+) AND S.CATEGORYID = G.CATEGORYID(+)
+     
+    ";
 
             sqlsum += "  AND A.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            sqlsum += "  and H.ID in (" + GetPermissionSql(PermissionType.Floor) + ")";  //楼层权限
-            string SqlyTQx = GetYtQx("G");
-            if (SqlyTQx != "")  //业态权限
+            
+
+            //sqlsum += @"  and exists(select 1 from SHOP S, FLOOR FL, CONTRACT_SHOP CS where S.FLOORID=FL.ID and S.SHOPID=CS.SHOPID) in (" + GetPermissionSql(PermissionType.Floor) + ")) ";  //楼层权限
+
+            string SqlyTQx = GetYtQx("Y");
+            if (SqlyTQx != "") //业态权限
             {
-                sqlsum += " and " + SqlyTQx;
+                sqlsum += @" and exists(select 1 from CONTRACT_SHOP CS,CATEGORY Y, BILL A where CS.CATEGORYID = Y.CATEGORYID AND CS.CONTRACTID = A.CONTRACTID AND " + SqlyTQx + ") ";
             }
 
             item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID ={a}");
@@ -1007,12 +1001,13 @@ namespace z.ERP.Services
             item.HasKey("NIANYUE_END", a => sqlsum += $" and A.NIANYUE <= {a}");
 
             item.HasKey("TYPE", a => sqlsum += $" and A.TYPE = {a}");
-            item.HasKey("STATUS", a => sqlsum += $" and A.STATUS = {a}");
+            item.HasKey("STATUS", a => sqlsum += $" and A.STATUS = {a}");   
             item.HasKey("CONTRACTID", a => sqlsum += $" and A.CONTRACTID = {a}");
-            item.HasKey("CATEGORYCODE", a => sqlsum += $" and G.CATEGORYCODE LIKE '{a}%'");
-            item.HasKey("FLOORID", a => sqlsum += $" and H.ID in ({a})");
+           // item.HasKey("CATEGORYCODE", a => sqlsum += $" and Y.CATEGORYCODE LIKE '{a}%'");
+            //item.HasKey("FLOORID", a => sqlsum += $" and S.FLOORID in ({a})");
 
-
+            item.HasKey("CATEGORYCODE", a => sqlsum += $" and exists(select 1 from CONTRACT_SHOP CS,CATEGORY Y, BILL A where CS.CATEGORYID = Y.CATEGORYID AND CS.CONTRACTID = A.CONTRACTID AND Y.CATEGORYCODE LIKE '{a}%') ");
+            item.HasKey("FLOORID", a => sqlsum += $" and exists(select 1 from SHOP S, FLOOR FL, CONTRACT_SHOP CS where S.FLOORID=FL.ID and S.SHOPID=CS.SHOPID and FL.ID in ({a})) ");
 
             sqlsum += "     order by nianyue desc";
 
