@@ -504,7 +504,7 @@ namespace z.ERP.Services
                 {
                     PERIODEntity PerioYm = new PERIODEntity();
                     PerioYm = DbHelper.Select(new PERIODEntity() { YEARMONTH = (scn * 100 + scy).ToString() });
-                    if(PerioYm == null)
+                    if (PerioYm == null)
                         throw new LogicException($"请定义{scn}年的财务月区间!");
                     zjfj.CREATEDATE = PerioYm.DATE_END;
                 }
@@ -765,6 +765,15 @@ namespace z.ERP.Services
                 DbHelper.Save(SaveData);
                 Tran.Commit();
             }
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.BILLID,
+                MENUID = "10600302",
+                BRABCHID = SaveData.BRANCHID,
+                URL = "HTGL/FREESHOP/FreeShopEdit/"
+            };
+            InsertDclRw(dcl);
+
             return SaveData.BILLID;
         }
         public void DeleteFreeShop(List<FREESHOPEntity> DeleteData)
@@ -781,6 +790,15 @@ namespace z.ERP.Services
             {
                 foreach (var item in DeleteData)
                 {
+                    var dcl = new BILLSTATUSEntity
+                    {
+                        BILLID = item.BILLID,
+                        MENUID = "10600302",
+                        BRABCHID = item.BRANCHID,
+                        URL = "HTGL/FREESHOP/FreeShopEdit/"
+                    };
+                    DelDclRw(dcl);
+
                     DbHelper.Delete(item);
                 }
                 Tran.Commit();
@@ -857,6 +875,15 @@ namespace z.ERP.Services
                 DbHelper.Save(freeShop);
                 Tran.Commit();
             }
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = freeShop.BILLID,
+                MENUID = "10600302",
+                BRABCHID = freeShop.BRANCHID,
+                URL = "HTGL/FREESHOP/FreeShopEdit/"
+            };
+            DelDclRw(dcl);
+
             return freeShop.BILLID;
         }
         public string StopFreeShop(FREESHOPEntity Data)
@@ -864,7 +891,7 @@ namespace z.ERP.Services
             FREESHOPEntity freeShop = DbHelper.Select(Data);
             if (Convert.ToDateTime(freeShop.FREEDATE) > Convert.ToDateTime(DateTime.Now.ToShortString()))
             {
-                throw new LogicException("退铺日期大于当前日期不能终止合同!");
+                throw new LogicException("退铺日期大于当前日期不能合同终止!");
             }
             if (freeShop.STATUS != ((int)退铺单状态.审核).ToString())
             {
@@ -878,6 +905,24 @@ namespace z.ERP.Services
                     P_TERMINATE = employee.Id
                 };
                 DbHelper.ExecuteProcedure(stopFreeShop);
+                Tran.Commit();
+            }
+            return freeShop.BILLID;
+        }
+        public string BackOoutFreeShop(FREESHOPEntity Data)
+        {
+            FREESHOPEntity freeShop = DbHelper.Select(Data);
+            if (freeShop.STATUS != ((int)退铺单状态.审核).ToString())
+            {
+                throw new LogicException("不是审核状态,不能退铺!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                string sql1 = @" update SHOP set RENT_STATUS = 1
+                                  where SHOPID in (select SHOPID from FREESHOPITEM where BILLID = {0})";
+                string sql2 = @" update FREESHOP set STATUS = 3 WHERE BILLID = {0}";
+                DbHelper.ExecuteNonQuery(string.Format(sql1,freeShop.BILLID));
+                DbHelper.ExecuteNonQuery(string.Format(sql2, freeShop.BILLID));
                 Tran.Commit();
             }
             return freeShop.BILLID;

@@ -52,5 +52,9 @@ namespace z.ERP.Web.Areas.HTGL.FREESHOP
         {
             service.HtglService.StopFreeShop(Data);
         }
+        public void BackOout(FREESHOPEntity Data)
+        {
+            service.HtglService.BackOoutFreeShop(Data);
+        }
     }
 }

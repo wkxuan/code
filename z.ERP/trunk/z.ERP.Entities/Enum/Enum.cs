@@ -294,7 +294,8 @@ namespace z.ERP.Entities.Enum
     {
         未审核 = 1,
         审核 = 2,
-        终止 = 3,
+        退铺 = 3,
+        终止合同 = 4
     }
 
     public enum 查询类型

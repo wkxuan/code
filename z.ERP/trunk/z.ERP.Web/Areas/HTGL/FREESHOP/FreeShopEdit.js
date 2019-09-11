@@ -62,15 +62,38 @@ editDetail.mountedInit = function () {
         },
         isNewAdd: true
     }, {
+        id: "BackOout",
+        name: "退铺",
+        icon: "md-close",
+        authority: "10600302",
+        fun: function () {
+            _.Ajax('BackOout', {
+                Data: { BILLID: editDetail.dataParam.BILLID },
+            }, function (data) {
+                iview.Message.info("退铺成功");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
+            });
+        },
+        enabled: function (disabled, data) {
+            if (!disabled && data.STATUS == 2) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        isNewAdd: true
+    }, {
         id: "stop",
-        name: "终止",
+        name: "合同终止",
         icon: "md-close",
         authority: "10600302",
         fun: function () {
             _.Ajax('StopData', {
                 Data: { BILLID: editDetail.dataParam.BILLID },
             }, function (data) {
-                iview.Message.info("终止成功");
+                iview.Message.info("合同终止成功");
                 setTimeout(function () {
                     window.location.reload();
                 }, 100);
