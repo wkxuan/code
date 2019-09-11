@@ -131,6 +131,16 @@
 
         function showList() {
             let ve = _this.vueObj;
+            let param = {};
+            for (let item in ve.searchParam) {
+                if (ve.searchParam[item]) {
+                    if (Array.isArray(ve.searchParam[item])) {
+                        param[item] = ve.searchParam[item].join(',');
+                    } else {
+                        param[item] = ve.searchParam[item];
+                    }
+                }
+            }
             ve.data = [];
             ve.pagedataCount = 0;
             ve.tbLoading = true;
@@ -138,7 +148,7 @@
             _.Search({
                 Service: _this.service,
                 Method: _this.method,
-                Data: ve.searchParam,
+                Data: param,
                 PageInfo: {
                     PageSize: ve.pageSize,
                     PageIndex: ve.currentPage - 1
