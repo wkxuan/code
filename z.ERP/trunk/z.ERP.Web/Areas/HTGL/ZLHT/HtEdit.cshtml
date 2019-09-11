@@ -460,58 +460,6 @@
 }
 
 @section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showSysuser",
-            Caption = "选择人员",
-            Width = "900",
-            Src = "screenParam.srcPopSigner"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopMerchant",
-            Caption = "选择商户",
-            Width = "900",
-            Src = "screenParam.srcPopMerchant"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopBrand",
-            Caption = "选择品牌",
-            Width = "900",
-            Src = "screenParam.srcPopBrand"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopShop",
-            Caption = "选择商铺",
-            Width = "900",
-            Src = "screenParam.srcPopShop"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopFeeSubject",
-            Caption = "选择费用项目",
-            Width = "900",
-            Src = "screenParam.srcPopFeeSubject"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopPay",
-            Caption = "选择收款方式",
-            Width = "900",
-            Src = "screenParam.srcPopPay"
-        });
-    }
+<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
+          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }

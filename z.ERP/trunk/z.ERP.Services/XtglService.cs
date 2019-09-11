@@ -91,11 +91,16 @@ namespace z.ERP.Services
         }
         public DataGridResult GetFeeSubject(SearchItem item)
         {
-            string sql = $@"SELECT TRIMID,NAME,TRIMID TERMID FROM FEESUBJECT  WHERE 1=1";
+            string sql = $@"SELECT TRIMID,NAME,TRIMID TERMID,TYPE FROM FEESUBJECT  WHERE 1=1";
 
             item.HasKey("NAME", a => sql += $" and NAME LIKE '%{a}%'");
-            item.HasKey("TRIMID", a => sql += $" and TRIMID LIKE '%{a}%'");
+            item.HasKey("TRIMID", a => sql += $" and TRIMID={a}");
+            item.HasKey("PYM", a => sql += $" and PYM LIKE '%{a}%'");
+            item.HasKey("TYPE", a => sql += $" and TYPE in ({a})");
+            item.HasKey("ACCOUNT", a => sql += $" and ACCOUNT in ({a})");
+            item.HasKey("DEDUCTION", a => sql += $" and DEDUCTION in ({a})");
             item.HasKey("SqlCondition", a => sql += $" and {a}");
+
             sql += " ORDER BY  TRIMID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
