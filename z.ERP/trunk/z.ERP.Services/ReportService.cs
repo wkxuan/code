@@ -342,10 +342,10 @@ namespace z.ERP.Services
                                     and CP.SHOPID = S.SHOPID AND S.FLOORID in (" + GetPermissionSql(PermissionType.Floor) + ")) ";  //楼层权限
             if (SqlyTQx != "") //业态权限
             {
-                sql += @" and exists(select 1 from CONTRACT_BRAND CD,BRAND D,CATEGORY Y 
-                                      where CD.CONTRACTID=C.CONTRACTID and CD.BRANDID=D.ID and D.CATEGORYID=Y.CATEGORYID AND " + SqlyTQx + ") ";
+                sql += @" and exists(select 1 from CONTRACT_SHOP CD,CATEGORY Y 
+                                      where CD.CONTRACTID=C.CONTRACTID and CD.CATEGORYID=Y.CATEGORYID AND " + SqlyTQx + ") ";
             }
-            item.HasKey("CATEGORYCODE", a => sql += $" and exists(select 1 from CONTRACT_BRAND CD,BRAND D,CATEGORY Y where CD.CONTRACTID = C.CONTRACTID and CD.BRANDID = D.ID and D.CATEGORYID = Y.CATEGORYID and Y.CATEGORYCODE LIKE '{a}%') ");
+            item.HasKey("CATEGORYCODE", a => sql += $" and exists(select 1 from CONTRACT_SHOP CD,CATEGORY Y where CD.CONTRACTID = C.CONTRACTID and  CD.CATEGORYID = Y.CATEGORYID and Y.CATEGORYCODE LIKE '{a}%') ");
             item.HasKey("FLOORID", a => sql += $" and exists(select 1 from CONTRACT_SHOP CP,SHOP S where C.CONTRACTID = CP.CONTRACTID and CP.SHOPID = S.SHOPID AND S.FLOORID in ({a})) ");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
