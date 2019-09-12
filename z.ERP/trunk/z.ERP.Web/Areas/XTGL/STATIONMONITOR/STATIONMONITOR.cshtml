@@ -1,0 +1,83 @@
+﻿@inherits ViewBase<dynamic>
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {                    
+                    "Areas/XTGL/STATIONMONITOR/STATIONMONITOR.js"
+                };
+}
+@section head{
+    @InitFiles(new string[] {
+        "Areas/XTGL/STATIONMONITOR/STATIONMONITOR.css"
+    })
+}
+
+<div id="DataShow" v-cloak>
+    <Split v-model="splitVal">
+        <div slot="left" class="leftPane">
+            <row>
+                <i-col span="8" style="text-align:center">
+                    <div>
+                        <Icon type="ios-desktop" size="40" />
+                    </div>
+                    <p>关机</p>
+                </i-col>
+                <i-col span="8" style="text-align:center">
+                    <div class="changecolor">
+                        <Icon type="ios-desktop" size="40" />
+                    </div>
+                    <p>工作</p>
+                </i-col>
+                <i-col span="8" style="text-align:center">
+                    <div>
+                        <Icon type="ios-desktop" size="40" color="red" />
+                    </div>
+                    <p>断网</p>
+                </i-col>
+            </row>
+            <row>
+                <i-col span="10" class="RowTitle">
+                    数据刷新时间：
+                </i-col>
+                <i-col span="14" class="RowText">
+                    {{lastrefreshtime}}
+                </i-col>
+            </row>
+            <row style="width:100%;text-align:center;">
+                <i-Button type="primary" shape="circle" icon="ios-refresh" long v-on:click="refreshclick">刷新</i-Button>
+            </row>
+            <row v-if="cardshow">
+                <card v-bind:bordered="false" shadow>
+                    <p slot="title">门店总销售：￥ {{branchamount}}</p>
+                    <p slot="title">终端号：{{stationbh}}</p>
+                    <p slot="title">收银员：{{cashiername}}</p>
+                    <p slot="title">终端更新时间：{{stationrefreshtime}}</p>
+                    <yx-table v-bind:columns="colDef" v-bind:height="400" 
+                              v-bind:data="SALEITEM"  ref="SALETABLE">
+                    </yx-table>
+                </card>
+            </row>
+        </div>
+        <div slot="right" class="rightPane">
+            <row v-for="item in Listdata" v-bind:key="item.BRANCHID">
+                <h1>{{item.BRANCHNAME}}</h1>
+                <div class="station-list">
+                    <div class="station-item" v-for="items in item.STATIONINFOList" v-bind:key="items.STATIONBH" v-on:click="staionclick(items.STATIONBH,items.CASHIERNAME,items.REFRESHTIME)">
+                        <div v-if="items.STATIONSTATUS===1">
+                            <Icon  type="ios-desktop" size="40" />                            
+                        </div>
+                        <div v-if="items.STATIONSTATUS===2" class="changecolor">
+                            <Icon type="ios-desktop" size="40" />
+                        </div>
+                        <div v-if="items.STATIONSTATUS===3">
+                            <Icon type="ios-desktop" size="40" color="red" />
+                        </div>
+                        <p>{{items.STATIONBH}}</p>
+                    </div>
+                </div>
+            </row>
+        </div>
+    </Split>
+</div>
