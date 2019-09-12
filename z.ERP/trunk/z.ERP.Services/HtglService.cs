@@ -891,11 +891,11 @@ namespace z.ERP.Services
             FREESHOPEntity freeShop = DbHelper.Select(Data);
             if (Convert.ToDateTime(freeShop.FREEDATE) > Convert.ToDateTime(DateTime.Now.ToShortString()))
             {
-                throw new LogicException("退铺日期大于当前日期不能合同终止!");
+                throw new LogicException("退铺日期未到,不能终止合同!");
             }
-            if (freeShop.STATUS != ((int)退铺单状态.审核).ToString())
+            if (freeShop.STATUS == ((int)退铺单状态.终止合同).ToString())
             {
-                throw new LogicException("不是审核状态,不能终止!");
+                throw new LogicException("已经终止合同,不重复操作!");
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
