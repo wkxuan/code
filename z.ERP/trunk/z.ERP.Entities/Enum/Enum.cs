@@ -430,4 +430,10 @@ namespace z.ERP.Entities.Enum
         已核销=2,
         已作废=3
     }
+    public enum 收银终端状态
+    {
+        关机 = 1,
+        工作 = 2,
+        掉网 = 3
+    }
 }
