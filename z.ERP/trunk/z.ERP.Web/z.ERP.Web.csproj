@@ -196,6 +196,7 @@
     <Compile Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALEController.cs" />
     <Compile Include="Areas\BJGL\MAPSHOW\MAPSHOWController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
+    <Compile Include="Areas\CXGL\PROMOTION\PromotionController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
     <Compile Include="Areas\HTGL\DJDW\DjdwController.cs" />
@@ -343,6 +344,8 @@
     <Content Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALE.js" />
     <Content Include="Areas\BJGL\MAPSHOW\MAPSHOW.js" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
+    <Content Include="Areas\CXGL\PROMOTION\Promotion.js" />
+    <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.js" />
@@ -802,6 +805,8 @@
     <Content Include="File\Template\费用账单查询.xlsx" />
     <Content Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALE.cshtml" />
     <Content Include="Areas\XTGL\STATIONMONITOR\STATIONMONITOR.cshtml" />
+    <Content Include="Areas\CXGL\PROMOTION\Promotion.cshtml" />
+    <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

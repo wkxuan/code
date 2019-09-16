@@ -45,6 +45,7 @@
     <Compile Include="Auto\MAPSHOPDATAEntity.cs" />
     <Compile Include="Auto\NOTICEEntity.cs" />
     <Compile Include="Auto\NOTICE_BRANCHEntity.cs" />
+    <Compile Include="Auto\PROMOTIONEntity.cs" />
     <Compile Include="Auto\READNOTOCELOGEntity.cs" />
     <Compile Include="Auto\ROLE_ALERTEntity.cs" />
     <Compile Include="Auto\ROLE_BRANCHEntity.cs" />

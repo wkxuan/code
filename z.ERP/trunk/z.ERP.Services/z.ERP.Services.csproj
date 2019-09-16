@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CwglService.cs" />
+    <Compile Include="CxglService.cs" />
     <Compile Include="DefaultDataService.cs" />
     <Compile Include="JsglService.cs" />
     <Compile Include="PosService.cs" />

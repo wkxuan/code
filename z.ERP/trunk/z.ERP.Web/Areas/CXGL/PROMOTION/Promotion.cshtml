@@ -1,0 +1,89 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.DefineNew
+@inherits DefineViewNewBase
+
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            主题名称
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.NAME" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            年度
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-year-picker v-bind:value.sync="searchParam.YEAR"></yx-year-picker>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            内容
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.CONTENT" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            开始日期
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.START_DATE_START",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.START_DATE_END",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            结束日期
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.END_DATE_START",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.END_DATE_END",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                {
+                    vModel = "searchParam.STATUS",
+                    Enable= false
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section pops{
+    <yx-modal v-bind:src="screenParam.defineDetailSrc" v-bind:title="screenParam.title"
+              width="500" height="350"
+              v-bind:modal-visible.sync="screenParam.showDefineDetail"></yx-modal>
+}

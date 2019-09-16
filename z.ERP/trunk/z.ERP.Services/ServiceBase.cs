@@ -180,6 +180,13 @@ namespace z.ERP.Services
                 return ioc.Create<DefaultDataService>();
             }
         }
+        public CxglService CxglService
+        {
+            get
+            {
+                return ioc.Create<CxglService>();
+            }
+        }
         #endregion
 
         #region 通用方法
