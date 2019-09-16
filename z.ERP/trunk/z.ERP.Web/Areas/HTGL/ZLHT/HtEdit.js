@@ -1558,7 +1558,7 @@ editDetail.mountedInit = function () {
             }); 
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.BILLID && (data.STATUS == 2 || data.STATUS == 3) && data.HTLX == 1) {
+            if (!disabled && data.BILLID && (data.STATUS == 2 || data.STATUS == 3 || data.STATUS == 4) && data.HTLX == 1) {
                 return true;
             } else {
                 return false;
