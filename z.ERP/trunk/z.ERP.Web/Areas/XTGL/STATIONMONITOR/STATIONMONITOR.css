@@ -44,15 +44,15 @@
 
 @keyframes change {
     0% {
-        color: #458B00;
+        color: #7CFC00;
     }
 
     50% {
-        color: #FF7F24;
+        color: #00EE00;
     }
 
     100% {
-        color: #98FB98;
+        color: #32CD32;
     }
 }
 .RowText {

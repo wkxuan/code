@@ -72,23 +72,7 @@
 }
 
 @section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopBill",
-            Caption = "选择账单",
-            Width = "900",
-            Src = "screenParam.srcPopBill"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopMerchant",
-            Caption = "选择商户",
-            Width = "900",
-            Src = "screenParam.srcPopMerchant"
-        });
-    }
+<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
+          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }
 
