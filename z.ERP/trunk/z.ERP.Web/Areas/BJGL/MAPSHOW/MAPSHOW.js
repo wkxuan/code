@@ -49,9 +49,6 @@
                 }
             });
         },
-        checkchange: function () {
-            Mapshow.INITMAP();
-        }
     },
     filters:{
         formatDate: function (val) {

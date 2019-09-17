@@ -265,7 +265,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID = '{a}'");
             item.HasKey("TRIMID", a => sql += $" and A.TERMID = {a}");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = {a}");
-            item.HasArrayKey("STATUS", a => sql += $" and A.STATUS in ( { a.SuperJoin(",", b => b) } ) ");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS in ( { a } ) ");
             item.HasKey("TYPE", a => sql += $" and A.TYPE = {a}");
             item.HasKey("NIANYUE", a => sql += $" and A.NIANYUE = {a}");
             item.HasKey("YEARMONTH", a => sql += $" and A.YEARMONTH = {a}");
@@ -273,7 +273,7 @@ namespace z.ERP.Services
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= {a}");
             item.HasDateKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= {a}");
             item.HasKey("WFDJ", a => sql += $" and A.MUST_MONEY - A.RECEIVE_MONEY<>0");
-            item.HasArrayKey("FTYPE", a => sql += $" and F.TYPE in ( { a.SuperJoin(",", b =>  b ) } ) ");
+            item.HasKey("FTYPE", a => sql += $" and F.TYPE in ( { a } ) ");
             item.HasKey("RRETURNFLAG", a => sql += $" and A.RECEIVE_MONEY - A.RETURN_MONEY <> 0");
             item.HasKey("SCFS_TZD", a => sql += $" and F.SCFS_TZD = {a}");
             item.HasKey("FEE_ACCOUNTID", a => sql += $" and FA.FEE_ACCOUNTID = {a}");

@@ -1018,3 +1018,28 @@ Vue.component('yx-year-month-picker', {
         }
     }
 });
+Vue.component('yx-year-picker', {
+    props: ['value', 'disabled', 'clearable', 'clearable', 'editable'],
+    template: `<date-picker :value="curValue" type="year" transfer :disabled="disabled"` +
+              `:clearable="clearable" :editable="editable" v-on:on-change="onChange">` +
+              `</date-picker>`,
+    data() {
+        return {
+            curValue: null
+        }
+    },
+    watch: {
+        value: {
+            handler: function (nv, ov) {
+                this.curValue = nv + "";
+            },
+            immediate: true,
+            deep: true
+        }
+    },
+    methods: {
+        onChange(val, type) {
+            this.$emit('update:value', val);
+        }
+    }
+});

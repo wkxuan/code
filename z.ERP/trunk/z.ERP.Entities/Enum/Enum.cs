@@ -294,7 +294,8 @@ namespace z.ERP.Entities.Enum
     {
         未审核 = 1,
         审核 = 2,
-        终止 = 3,
+        退铺 = 3,
+        终止合同 = 4
     }
 
     public enum 查询类型
@@ -428,5 +429,18 @@ namespace z.ERP.Entities.Enum
         已开具=1,
         已核销=2,
         已作废=3
+    }
+    public enum 收银终端状态
+    {
+        关机 = 1,
+        工作 = 2,
+        掉网 = 3
+    }
+    public enum 促销单状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        启动 = 3,
+        终止 = 4
     }
 }

@@ -1,0 +1,60 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Web.Areas.Layout.DefineDetail
+@inherits DefineDetailViewBase
+
+@section baseParam{
+    <row>
+        <i-col span="6" class="RowTitle">
+            <span class="mustElement">*</span>
+            主题名称
+        </i-col>
+        <i-col span="16" class="RowText">
+            <i-input v-model="dataParam.NAME" v-bind:disabled="!disabled"/>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="6" class="RowTitle">
+            <span class="mustElement">*</span>
+            年度
+        </i-col>
+        <i-col span="16" class="RowText">
+            <yx-year-picker v-bind:value.sync="dataParam.YEAR" v-bind:disabled="!disabled"></yx-year-picker>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="6" class="RowTitle">
+            内容
+        </i-col>
+        <i-col span="16" class="RowText">
+            <i-input type="textarea" :rows="4" v-model="dataParam.CONTENT" v-bind:disabled="!disabled"/>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="6" class="RowTitle">
+            <span class="mustElement">*</span>
+            开始日期
+        </i-col>
+        <i-col span="16" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.START_DATE",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="6" class="RowTitle">
+            <span class="mustElement">*</span>
+            结束日期
+        </i-col>
+        <i-col span="16" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.END_DATE",
+                });
+            }
+        </i-col>
+    </row>
+}

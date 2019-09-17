@@ -114,6 +114,17 @@ namespace z.ERP.Services
             v.Verify();
             DbHelper.Save(SaveData);
 
+            //增加审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.GOODSID,
+                MENUID = "10500202",
+                BRABCHID = (SaveData.CONTRACTID).Substring(1,2),
+                URL = "SPGL/GOODS/GoodsEdit/"
+            };
+
+            InsertDclRw(dcl);
+
             return SaveData.GOODSID;
         }
         
@@ -129,6 +140,23 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    var dcl = new BILLSTATUSEntity
+                    {
+                        BILLID = item.GOODSID,
+                        MENUID = "10500202"
+                    };
+                    DelDclRw(dcl);
+                }
+                Tran.Commit();
+            }
+
+
         }
         public Tuple<dynamic, DataTable, DataTable> ShowOneEdit(GOODSEntity Data)
         {
@@ -231,6 +259,22 @@ namespace z.ERP.Services
             {
                 throw new LogicException("商品(" + Data.GOODSDM+ ")已经审核不能再次审核!");
             }
+
+            string sql = $"SELECT DISTINCT C.CONTRACTID FROM GOODS A,GOODS_SHOP B,CONTRACT C "
+                            + "  WHERE A.GOODSID=B.GOODSID "
+                             + "     AND A.CONTRACTID = C.CONTRACTID "
+                             + "   AND C.HTLX =1 "
+                             + $"   AND A.CONTRACTID !=  '{Data.CONTRACTID}'"
+                             + $"   AND B.SHOPID IN (SELECT SHOPID FROM GOODS_SHOP WHERE GOODSID= {Data.GOODSID})"
+                             + "    AND A.STATUS=2";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            if (dt.Rows.Count > 0)
+            {
+                throw new LogicException("该商品所选店铺下存在其它合同("+dt.Rows[0][0].ToString()+")的正常状态商品,请先处理再审核");
+            }
+
             using (var Tran = DbHelper.BeginTransaction())
             {
                 mer.VERIFY = employee.Id;
@@ -240,6 +284,16 @@ namespace z.ERP.Services
                 DbHelper.Save(mer);
                 Tran.Commit();
             }
+
+            //删除审核待办任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.GOODSID,
+                MENUID = "10500202"
+            };
+
+            DelDclRw(dcl);
+
             return mer.GOODSDM;
         }        
         public DataGridResult GetSaleBillList(SearchItem item)

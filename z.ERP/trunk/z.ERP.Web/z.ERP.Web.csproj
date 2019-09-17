@@ -196,6 +196,7 @@
     <Compile Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALEController.cs" />
     <Compile Include="Areas\BJGL\MAPSHOW\MAPSHOWController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
+    <Compile Include="Areas\CXGL\PROMOTION\PromotionController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
     <Compile Include="Areas\HTGL\DJDW\DjdwController.cs" />
@@ -322,6 +323,7 @@
     <Compile Include="Areas\XTGL\SHOP\ShopController.cs" />
     <Compile Include="Areas\XTGL\SrchORG\SrchORGController.cs" />
     <Compile Include="Areas\XTGL\SrchSPLC\SrchSPLCController.cs" />
+    <Compile Include="Areas\XTGL\STATIONMONITOR\STATIONMONITORController.cs" />
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\SYSUSER\SysuserController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
@@ -342,6 +344,8 @@
     <Content Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALE.js" />
     <Content Include="Areas\BJGL\MAPSHOW\MAPSHOW.js" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
+    <Content Include="Areas\CXGL\PROMOTION\Promotion.js" />
+    <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.js" />
@@ -488,6 +492,8 @@
     <Content Include="Areas\XTGL\SHOP\ShopDetail.js" />
     <Content Include="Areas\XTGL\SrchORG\SrchORG.js" />
     <Content Include="Areas\XTGL\SrchSPLC\SrchSPLC.js" />
+    <Content Include="Areas\XTGL\STATIONMONITOR\STATIONMONITOR.css" />
+    <Content Include="Areas\XTGL\STATIONMONITOR\STATIONMONITOR.js" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.js" />
     <Content Include="Areas\XTGL\ORG\Org.js" />
     <Content Include="Areas\XTGL\SHOP\Shop.js" />
@@ -798,6 +804,9 @@
     <Content Include="File\Template\终端密钥查询.xlsx" />
     <Content Include="File\Template\费用账单查询.xlsx" />
     <Content Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALE.cshtml" />
+    <Content Include="Areas\XTGL\STATIONMONITOR\STATIONMONITOR.cshtml" />
+    <Content Include="Areas\CXGL\PROMOTION\Promotion.cshtml" />
+    <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

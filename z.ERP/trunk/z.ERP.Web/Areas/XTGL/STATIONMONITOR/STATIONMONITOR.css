@@ -1,0 +1,69 @@
+﻿body {
+}
+
+#DataShow {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+    #DataShow .ivu-split-pane {
+        margin: 8px;
+        overflow: auto;
+    }
+
+[v-cloak] {
+    display: none !important;
+}
+
+.station-list {
+    overflow: hidden;
+    zoom: 1;
+}
+
+.station-item {
+    float: left;
+    margin: 6px;
+    width: 100px;
+    text-align: center;
+    list-style: none;
+    cursor: pointer;
+    height: 80px;
+    color: #5c6b77;
+    transition: all .2s ease;
+    position: relative;
+}
+
+    .station-item p {
+        padding-top: 10px;
+    }
+
+.changecolor {
+    animation: change 5s linear 0s infinite;
+}
+
+@keyframes change {
+    0% {
+        color: #7CFC00;
+    }
+
+    50% {
+        color: #00EE00;
+    }
+
+    100% {
+        color: #32CD32;
+    }
+}
+.RowText {
+    line-height:30px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+.ivu-btn-long {
+    font-size: 15px;
+}
+.ivu-card-body {
+    padding:0 !important;
+}

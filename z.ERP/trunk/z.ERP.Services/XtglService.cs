@@ -1090,7 +1090,85 @@ namespace z.ERP.Services
 
 
         }
+        #region 收银终端监控
+        public List<STATIONMONITOR> GetSTATIONMONITOR() {
+            List<STATIONMONITOR> STATIONMONITORList = new List<STATIONMONITOR>();
+            var branch = DataService.branch();
+            foreach (var item in branch) {
+                STATIONMONITOR stationinfo = new STATIONMONITOR
+                {
+                    BRANCHID = item.Key,
+                    BRANCHNAME = item.Value
+                };
+                var sdata = GETSTATIONL(stationinfo.BRANCHID);
+                if (sdata.Rows.Count>0) {
+                    List<STATIONINFO> stationlist = new List<STATIONINFO>();
+                    foreach (DataRow item1 in sdata.Rows) {
 
+                        STATIONINFO station = new STATIONINFO();
+                        station.STATIONBH = item1["STATIONBH"].ToString();
+                        station.REFRESHTIME= item1["REFRESH_TIME"].ToString();
+                        station.GAPTIME= item1["DT"].ToString().ToInt();
+                        station.CASHIERNAME = item1["CASHIERNAME"].ToString();
+                        if (station.GAPTIME <= 6 && station.GAPTIME >= 0)
+                        {
+                            station.STATIONSTATUS = (int)收银终端状态.工作;
+                        }
+                        else if (station.GAPTIME < 30 && station.GAPTIME > 6)
+                        {
+                            station.STATIONSTATUS = (int)收银终端状态.掉网;
+                        }
+                        else {
+                            station.STATIONSTATUS = (int)收银终端状态.关机;
+                        }
+                        stationlist.Add(station);
+                    }
+                    stationinfo.STATIONINFOList = stationlist;
+                }
+                STATIONMONITORList.Add(stationinfo);
+            }
+            return STATIONMONITORList;
+        }
+        public DataTable GETSTATIONL(string branchid) {
+            string sql = $@" SELECT stationbh,floor(nvl((sysdate-refresh_time),-1) * 24*60)  dt,to_char(refresh_time,'yyyy-mm-dd hh24:mi:ss') refresh_time,SYSUSER.USERNAME CASHIERNAME 
+                        FROM STATION,SYSUSER where STATION.CASHIERID=SYSUSER.USERID(+) AND STATION.TYPE<>3 AND branchid = {branchid} ORDER BY stationbh";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            return dt;
+        }
+        public Tuple<dynamic, DataTable> GetSTATIONSALE(string stationid) {
+            string sql = $@" SELECT TO_CHAR(NVL(SUM(SS.SALE_AMOUNT),0),'FM999999999990.00') BRANCHAMOUNT FROM (
+                SELECT S.*,ST.BRANCHID 
+                FROM SALE S,STATION ST
+                WHERE S.POSNO=ST.STATIONBH AND ST.BRANCHID  = (SELECT BRANCHID FROM STATION WHERE STATION.STATIONBH = '{stationid}')) SS ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+
+            string sql1 = $@" SELECT STATIONBH,PAYID,PAYNAME,TO_CHAR(NVL(SUM(AMOUNT),0),'FM999999999990.00') AMOUNT FROM 
+                    (SELECT STP.STATIONBH, PAY.PAYID ,PAY.NAME PAYNAME ,SAP.AMOUNT
+                    FROM STATION_PAY STP,SALE_PAY SAP,PAY 
+                    WHERE STP.STATIONBH=SAP.POSNO(+) AND  STP.PAYID=SAP.PAYID(+) AND STP.PAYID=PAY.PAYID(+) AND STP.STATIONBH={stationid}
+                    )
+                    GROUP BY STATIONBH,PAYNAME,PAYID
+                    ORDER BY PAYID";
+
+            DataTable dti = DbHelper.ExecuteTable(sql1);
+            if (dti.Rows.Count > 0)
+            {
+                var sqlsum = "SELECT TO_CHAR(NVL(SUM(AMOUNT),0),'FM999999999990.00') AMOUNT FROM ( " + sql1 + ")";
+                DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
+                //交易金额汇总                
+                decimal stsum = Convert.ToDecimal(dtSum.Rows[0]["AMOUNT"]);
+                DataRow dr = dti.NewRow();
+                dr["PAYNAME"] = "合计";
+                dr["AMOUNT"] = stsum.ToString();
+
+                dti.Rows.Add(dr);
+            }
+
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(),dti);
+        }
+        #endregion
 
     }
 

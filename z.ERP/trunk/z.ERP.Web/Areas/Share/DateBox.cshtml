@@ -3,7 +3,6 @@
 
 <date-picker  type="date" format="yyyy-MM-dd" v-on:on-change="@Model.vModel=$event" :transfer="true"
               :value= "@Model.vModel" 
-              :disabled="@(Model.Enable?"!disabled":"disabled")"
-              :readonly="@(Model.Enable?"false":"true")"></date-picker>  
+              :disabled="@(Model.Enable?"!disabled":"disabled")"></date-picker>  
 
 <!--v-model="@Model.vModel"-->

@@ -2,10 +2,9 @@
     //保证金收款
     editDetail.dataParam.TYPE = 2;
     //初始化弹窗所要传递参数
-    editDetail.screenParam.showPopBill = false;
-    editDetail.screenParam.showPopMerchant = false;
-    editDetail.screenParam.srcPopBill = __BaseUrl + "/" + "Pop/Pop/PopBillList/";
-    editDetail.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+    editDetail.screenParam.showPop = false;
+    editDetail.screenParam.title = "";
+    editDetail.screenParam.srcPop = "";
     editDetail.screenParam.popParam = {};
 
     editDetail.screenParam.colDef = [
@@ -16,7 +15,7 @@
     { title: '应收金额', key: 'MUST_MONEY', width: 100 },
     { title: '未付金额', key: 'UNPAID_MONEY', width: 100 },
     {
-        title: "付款金额", key: 'RECEIVE_MONEY', width: 100,
+        title: "付款金额", key: 'RECEIVE_MONEY', width: 150,
         cellType: "input", cellDataType: "number",
         onChange: function (index, row, data) {
             if (Number(row.RECEIVE_MONEY) > Number(row.UNPAID_MONEY)) {
@@ -46,21 +45,25 @@ editDetail.otherMethods = {
             iview.Message.info("请选择门店!");
             return;
         }
-        editDetail.screenParam.showPopMerchant = true;
         editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
+        editDetail.screenParam.title = "选择商户";
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        editDetail.screenParam.showPop = true;
     },
     selBill: function () {
         if (!editDetail.dataParam.MERCHANTID) {
             iview.Message.info("请选择商户!");
             return;
         };
-        editDetail.screenParam.showPopBill = true;
         editDetail.screenParam.popParam = {
             BRANCHID: editDetail.dataParam.BRANCHID,
             MERCHANTID: editDetail.dataParam.MERCHANTID,
             FTYPE: [1],   //保证金类型
             STATUS:[2,3]
         };
+        editDetail.screenParam.title = "选择账单";
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopBillList/";
+        editDetail.screenParam.showPop = true;
     },
     delBill: function () {
         let selection = this.$refs.refZd.getSelection();
@@ -96,33 +99,34 @@ editDetail.newRecord = function () {
 
 ///接收弹窗返回参数
 editDetail.popCallBack = function (data) {
-    if (editDetail.screenParam.showPopBill) {
-        editDetail.screenParam.showPopBill = false;
-        let itemData = editDetail.dataParam.BILL_OBTAIN_ITEM;
-        //接收选中的数据
-        for (var i = 0; i < data.sj.length; i++) {
-            if (!itemData.length || (itemData.length && !itemData.filter(function (item) {
-                return item.FINAL_BILLID == data.sj[i].BILLID;
-            }).length))
-                itemData.push({
-                    FINAL_BILLID: data.sj[i].BILLID,
-                    YEARMONTH: data.sj[i].YEARMONTH,
-                    CONTRACTID: data.sj[i].CONTRACTID,
-                    TERMMC: data.sj[i].TERMMC,
-                    MUST_MONEY: data.sj[i].MUST_MONEY,
-                    UNPAID_MONEY: data.sj[i].UNPAID_MONEY,
-                    TYPE: data.sj[i].TYPE,
-                    RECEIVE_MONEY: data.sj[i].UNPAID_MONEY,
-                });
+    if (editDetail.screenParam.showPop) {
+        editDetail.screenParam.showPop = false;
+        if (editDetail.screenParam.title == "选择商户") {
+            editDetail.dataParam.BILL_OBTAIN_ITEM = [];
+            for (var i = 0; i < data.sj.length; i++) {
+                editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
+                editDetail.dataParam.MERCHANTNAME = data.sj[i].NAME;
+            }
         }
-    }
-    if (editDetail.screenParam.showPopMerchant) {
-        editDetail.screenParam.showPopMerchant = false;
-        editDetail.dataParam.BILL_OBTAIN_ITEM = [];
-        for (var i = 0; i < data.sj.length; i++) {
-            editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
-            editDetail.dataParam.MERCHANTNAME = data.sj[i].NAME;
-        }
+        if (editDetail.screenParam.title == "选择账单") {
+            let itemData = editDetail.dataParam.BILL_OBTAIN_ITEM;
+            //接收选中的数据
+            for (var i = 0; i < data.sj.length; i++) {
+                if (!itemData.length || (itemData.length && !itemData.filter(function (item) {
+                    return item.FINAL_BILLID == data.sj[i].BILLID;
+                }).length))
+                    itemData.push({
+                        FINAL_BILLID: data.sj[i].BILLID,
+                        YEARMONTH: data.sj[i].YEARMONTH,
+                        CONTRACTID: data.sj[i].CONTRACTID,
+                        TERMMC: data.sj[i].TERMMC,
+                        MUST_MONEY: data.sj[i].MUST_MONEY,
+                        UNPAID_MONEY: data.sj[i].UNPAID_MONEY,
+                        TYPE: data.sj[i].TYPE,
+                        RECEIVE_MONEY: data.sj[i].UNPAID_MONEY,
+                    });
+            }
+        }   
     }
 };
 

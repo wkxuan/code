@@ -70,11 +70,12 @@
                             _self.del();
                         },
                         enabled: function (disabled, data) {
-                            if (!disabled && data[_this.Key]) {
-                                return true;
-                            } else {
-                                return false;
-                            }
+                            //if (!disabled && data[_this.Key]) {
+                            //    return true;
+                            //} else {
+                            //    return false;
+                            //}
+                            return true;
                         }
                     }, {
                         id: "save",

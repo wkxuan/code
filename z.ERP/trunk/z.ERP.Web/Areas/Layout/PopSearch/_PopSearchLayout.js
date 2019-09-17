@@ -47,7 +47,8 @@
 
                     if (!_this.IsValidSrch())
                         return;
-
+                    this.pageSize = 10;
+                    this.currentPage = 1;
                     showList();
                 },
                 initParam: function () {
@@ -131,6 +132,7 @@
 
         function showList() {
             let ve = _this.vueObj;
+            ve.initParam();
             let param = {};
             for (let item in ve.searchParam) {
                 if (ve.searchParam[item]) {
@@ -144,7 +146,7 @@
             ve.data = [];
             ve.pagedataCount = 0;
             ve.tbLoading = true;
-            ve.initParam();
+            
             _.Search({
                 Service: _this.service,
                 Method: _this.method,

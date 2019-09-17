@@ -94,7 +94,7 @@ editDetail.mountedInit = function () {
         authority: "10500202",
         fun: function () {
             _.Ajax('ExecData', {
-                Data: { GOODSID: editDetail.dataParam.GOODSID },
+                Data:  editDetail.dataParam ,
             }, function (data) {
                 iview.Message.info("审核成功");
                 setTimeout(function () {
