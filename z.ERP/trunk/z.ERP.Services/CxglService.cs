@@ -30,7 +30,7 @@ namespace z.ERP.Services
             sql += " ORDER BY ID DESC";
             int count;
             var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
         public PROMOTIONEntity ShowOneData(PROMOTIONEntity data)
