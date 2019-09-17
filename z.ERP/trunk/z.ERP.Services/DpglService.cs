@@ -808,21 +808,17 @@ namespace z.ERP.Services
         }
         public DataTable GETSHOPDATA( string FLOORID,string shopstatus)
         {
-            string SQL = @"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS,C.COLOR,NVL(MT.NAME,' ') MERCHANTNAME
+            string SQL = $@"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS,C.COLOR,NVL(MT.NAME,' ') MERCHANTNAME
                     FROM MAPSHOPDATA M
                     LEFT JOIN SHOP S ON M.SHOPID=S.SHOPID
                     LEFT JOIN CATEGORY C ON  S.CATEGORYID=C.CATEGORYID
                     LEFT JOIN CONTRACT_SHOP CS ON S.SHOPID=CS.SHOPID
                     LEFT JOIN CONTRACT CT ON CS.CONTRACTID=CT.CONTRACTID
-                    LEFT JOIN MERCHANT MT ON CT.MERCHANTID=MT.MERCHANTID AND CT.HTLX=1 AND CT.STATUS IN (2,3)";
-            if (!FLOORID.IsEmpty())
-            {
-                SQL += " WHERE S.FLOORID =" + FLOORID + " ";
+                    LEFT JOIN MERCHANT MT ON CT.MERCHANTID=MT.MERCHANTID AND CT.HTLX=1 AND CT.STATUS IN (2,3) WHERE S.FLOORID = {FLOORID}";
+            if (!string.IsNullOrEmpty(shopstatus)) {
+                SQL= $@" select SHOPID,TITLEPOINTS,POINTS,NAME,STATUS,RENT_STATUS,CASE SS.RENT_STATUS  WHEN 1 THEN '#FFFFFF' WHEN 2 THEN '#00FF00' END COLOR,MERCHANTNAME FROM (" +SQL+") SS";
             }
-            if (!shopstatus.IsEmpty())
-            {
-                SQL += " AND S.RENT_STATUS IN (" + shopstatus + ") ";
-            }
+
             DataTable dt = DbHelper.ExecuteTable(SQL);
             return dt;
         }
