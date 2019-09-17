@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,5 +40,52 @@ namespace z.ERP.Services
             var res = DbHelper.ExecuteOneObject<PROMOTIONEntity>(sql);
             return res;
         }
+        #region 满减方案
+        public DataGridResult GetFRPLAN(SearchItem item)
+        {
+            string sql = $@"SELECT * FROM FR_PLAN WHERE 1=1 ";
+            item.HasKey("NAME", a => sql += $" and NAME LIKE '%{a}%'");
+            item.HasKey("ID", a => sql += $" and ID= {a}");
+            sql += " ORDER BY ID DESC";
+            int count;
+            var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<使用状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+        public string SaveFRPLAN(FR_PLANEntity DefineSave)
+        {
+            var v = GetVerify(DefineSave);
+            if (DefineSave.ID.IsEmpty())
+                DefineSave.ID = CommonService.NewINC("FR_PLAN");
+            v.Require(a => a.NAME);
+            v.Require(a => a.LIMIT);
+            v.Require(a => a.FRTYPE);
+            DefineSave.FR_PLAN_ITEM?.ForEach(sdb =>
+            {
+                GetVerify(sdb).Require(a => a.ID);
+            });
+            v.Verify();
+            using (var tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(DefineSave);
+                tran.Commit();
+            }
+            return DefineSave.ID;
+        }
+        public Tuple<dynamic, DataTable> GetFRPLANInfo(FR_PLANEntity Data)
+        {
+            string sql = $@"SELECT * FROM FR_PLAN WHERE ID={Data.ID}";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<使用状态>("STATUS", "STATUSMC");
+
+            var sql1 = $@"SELECT * from FR_PLAN_ITEM WHERE ID={Data.ID} ";
+
+            sql1 += " order by INX";
+            DataTable dt1 = DbHelper.ExecuteTable(sql1);
+
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dt1);
+        }
+        #endregion
     }
 }
