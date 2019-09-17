@@ -443,4 +443,14 @@ namespace z.ERP.Entities.Enum
         启动 = 3,
         终止 = 4
     }
+    public enum 满减方式
+    {
+        阶梯满减 = 1,
+        循环满减 = 2
+    }
+    public enum 使用状态
+    {
+        未使用 = 1,
+        已使用 = 2
+    }
 }
