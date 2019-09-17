@@ -436,4 +436,11 @@ namespace z.ERP.Entities.Enum
         工作 = 2,
         掉网 = 3
     }
+    public enum 促销单状态
+    {
+        未审核 = 1,
+        审核 = 2,
+        启动 = 3,
+        终止 = 4
+    }
 }
