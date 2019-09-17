@@ -1170,6 +1170,50 @@ namespace z.ERP.Services
         }
         #endregion
 
+
+        /// <summary>
+        /// 交易小票信息设置
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public string TicketInfoSql(SearchItem item)
+        {
+            string sql = $@"SELECT BRANCHID, BRANCH.NAME, HEAD, TAIL, ADQRCODE, ADCONTENT
+                            FROM TICKETINFO,BRANCH
+                            WHERE BRANCH.ID=TICKETINFO.BRANCHID";
+            sql += "  AND TICKETINFO.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            item.HasKey("BRANCHID", a => sql += $" and BRANCHID LIKE '%{a}%'");
+            item.HasKey("HEAD", a => sql += $" and HEAD LIKE '%{a}%'");
+            item.HasKey("TAIL", a => sql += $" and TAIL LIKE '%{a}%'");
+            item.HasKey("ADQRCODE", a => sql += $" and ADQRCODE LIKE '%{a}%'");
+            item.HasKey("ADCONTENT", a => sql += $" and ADCONTENT LIKE '%{a}%'");
+            return sql;
+
+        }
+        public DataGridResult TicketInfo(SearchItem item)
+        {
+            string sql = TicketInfoSql(item);
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataTable TicketInfoDetail(SearchItem item)
+        {
+            string sql = TicketInfoSql(item);
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+        public DataTable GetTicketInfo(TicketInfoEntity data)
+        {
+            string sql = $@"SELECT BRANCHID, BRANCH.NAME, HEAD, TAIL, ADQRCODE, ADCONTENT
+                            FROM TICKETINFO,BRANCH
+                            WHERE BRANCH.ID=TICKETINFO.BRANCHID";
+            sql += "  AND TICKETINFO.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += " and TICKETINFO.BRANCHID=" + data.BRANCHID;
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
     }
 
 }

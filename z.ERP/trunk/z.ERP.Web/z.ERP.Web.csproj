@@ -327,6 +327,8 @@
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\SYSUSER\SysuserController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
+    <Compile Include="Areas\XTGL\TicketInfo\TicketInfo.cs" />
+    <Compile Include="Areas\XTGL\TicketInfo\TicketInfoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -506,6 +508,8 @@
     <Content Include="Areas\XTGL\PERIOD\Period.js" />
     <Content Include="Areas\XTGL\STATION\Station.js" />
     <Content Include="Areas\XTGL\test\List.js" />
+    <Content Include="Areas\XTGL\TicketInfo\TicketInfo.js" />
+    <Content Include="Areas\XTGL\TicketInfo\TicketInfoDetail.js" />
     <Content Include="Content\components\common.js" />
     <Content Include="Content\echarts-wordcloud.js" />
     <Content Include="Content\echarts.js" />
@@ -807,6 +811,8 @@
     <Content Include="Areas\XTGL\STATIONMONITOR\STATIONMONITOR.cshtml" />
     <Content Include="Areas\CXGL\PROMOTION\Promotion.cshtml" />
     <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.cshtml" />
+    <Content Include="Areas\XTGL\TicketInfo\TicketInfo.cshtml" />
+    <Content Include="Areas\XTGL\TicketInfo\TicketInfoDetail.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
