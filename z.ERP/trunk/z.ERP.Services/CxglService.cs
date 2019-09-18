@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
+using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
 
@@ -55,11 +56,17 @@ namespace z.ERP.Services
         public string SaveFRPLAN(FR_PLANEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
-            if (DefineSave.ID.IsEmpty())
+            if (DefineSave.ID.IsEmpty()) { 
                 DefineSave.ID = CommonService.NewINC("FR_PLAN");
+                DefineSave.STATUS = "1";
+            }
             v.Require(a => a.NAME);
             v.Require(a => a.LIMIT);
             v.Require(a => a.FRTYPE);
+            if (DefineSave.STATUS == "2")
+            {
+                throw new LogicException("数据已使用状态不能更改!");
+            };
             DefineSave.FR_PLAN_ITEM?.ForEach(sdb =>
             {
                 GetVerify(sdb).Require(a => a.ID);

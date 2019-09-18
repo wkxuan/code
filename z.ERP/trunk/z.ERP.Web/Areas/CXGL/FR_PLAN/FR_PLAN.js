@@ -38,8 +38,8 @@ define.otherMethods = {
     addItem: function () {
         define.dataParam.FR_PLAN_ITEM.push({
             INX: define.dataParam.FR_PLAN_ITEM.length+1,
-            FULL: 0,
-            CUT: 0,
+            FULL: "",
+            CUT: "",
         });
     },
     delItem: function () {
@@ -88,6 +88,12 @@ define.IsValidSave = function () {
         iview.Message.info("请确认满减方案明细!");
         return false;
     };
-    define.dataParam.STATUS = 1;
+    return true;
+}
+define.IsValidMod = function () {
+    if (define.dataParam.STATUS=="2") {
+        iview.Message.info("数据已使用状态不能更改");
+        return false;
+    };
     return true;
 }

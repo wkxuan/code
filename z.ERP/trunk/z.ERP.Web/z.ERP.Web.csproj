@@ -328,7 +328,6 @@
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\SYSUSER\SysuserController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
-    <Compile Include="Areas\XTGL\TicketInfo\TicketInfo.cs" />
     <Compile Include="Areas\XTGL\TicketInfo\TicketInfoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
