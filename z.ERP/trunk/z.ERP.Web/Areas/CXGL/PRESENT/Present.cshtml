@@ -1,0 +1,63 @@
+﻿@using z.ERP.Web.Areas.Layout.DefineNew
+@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+
+
+@inherits DefineViewNewBase
+
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                    Enable=false
+                });
+            }
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            赠品编号
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.ID" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            赠品名称
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.NAME" />
+        </i-col>
+    </row>
+   
+    <row>
+        <i-col span="2" class="RowTitle">
+            价格
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.PRICE" />
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<促销单状态>()
+                {
+                    vModel = "searchParam.STATUS",
+                    Enable = false
+                });
+            }
+           </i-col>   
+</row>
+}
+
+@section pops{
+    <yx-modal v-bind:src="screenParam.defineDetailSrc" v-bind:title="screenParam.title"
+              width="500" height="350"
+              v-bind:modal-visible.sync="screenParam.showDefineDetail"></yx-modal>
+}

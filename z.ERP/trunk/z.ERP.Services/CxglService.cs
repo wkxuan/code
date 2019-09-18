@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using z.Encryption;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
+using z.Exceptions;
 using z.Extensions;
+using z.ERP.Model.Vue;
+using z.Exceptions;
 using z.MVC5.Results;
+using z.SSO.Model;
 
 namespace z.ERP.Services
 {
@@ -39,5 +45,115 @@ namespace z.ERP.Services
             var res = DbHelper.ExecuteOneObject<PROMOTIONEntity>(sql);
             return res;
         }
+        #region 满减方案
+        public DataGridResult GetFRPLAN(SearchItem item)
+        {
+            string sql = $@"SELECT * FROM FR_PLAN WHERE 1=1 ";
+            item.HasKey("NAME", a => sql += $" and NAME LIKE '%{a}%'");
+            item.HasKey("ID", a => sql += $" and ID= {a}");
+            sql += " ORDER BY ID DESC";
+            int count;
+            var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<使用状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+        public string SaveFRPLAN(FR_PLANEntity DefineSave)
+        {
+            var v = GetVerify(DefineSave);
+            if (DefineSave.ID.IsEmpty()) { 
+                DefineSave.ID = CommonService.NewINC("FR_PLAN");
+                DefineSave.STATUS = "1";
+            }
+            v.Require(a => a.NAME);
+            v.Require(a => a.LIMIT);
+            v.Require(a => a.FRTYPE);
+            if (DefineSave.STATUS == "2")
+            {
+                throw new LogicException("数据已使用状态不能更改!");
+            };
+            DefineSave.FR_PLAN_ITEM?.ForEach(sdb =>
+            {
+                GetVerify(sdb).Require(a => a.ID);
+            });
+            v.Verify();
+            using (var tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(DefineSave);
+                tran.Commit();
+            }
+            return DefineSave.ID;
+        }
+        public Tuple<dynamic, DataTable> GetFRPLANInfo(FR_PLANEntity Data)
+        {
+            string sql = $@"SELECT * FROM FR_PLAN WHERE ID={Data.ID}";
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<使用状态>("STATUS", "STATUSMC");
+
+            var sql1 = $@"SELECT * from FR_PLAN_ITEM WHERE ID={Data.ID} ";
+
+            sql1 += " order by INX";
+            DataTable dt1 = DbHelper.ExecuteTable(sql1);
+
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dt1);
+        }
+        #endregion
+
+        /// <summary>
+        /// 赠品定义
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult PresentSql(SearchItem item)
+        {
+            string sql = $@"SELECT BRANCHID, BRANCH.NAME, ID, NAME, PRICE, STATUS
+                            FROM PRESENT,BRANCH
+                            WHERE BRANCH.ID=PRESENT.BRANCHID";
+            sql += "  AND PRESENT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            item.HasKey("BRANCHID", a => sql += $" and BRANCHID LIKE '%{a}%'");
+            item.HasKey("ID", a => sql += $" and ID LIKE '%{a}%'");
+            item.HasKey("NAME", a => sql += $" and NAME LIKE '%{a}%'");
+            item.HasKey("PRICE", a => sql += $" and PRICE LIKE '%{a}%'");
+            item.HasKey("STATUS", a => sql += $" and STATUS LIKE '%{a}%'");
+            sql += " ORDER BY ID DESC";
+            int count;
+            var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+
+          
+
+        }
+        public DataGridResult Present(SearchItem item)
+        {
+            string sql = "";
+            int count;
+            var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+
+        public DataTable PresentDetail(SearchItem item)
+        {
+            //DataGridResult sql = PresentSql(item);
+            string sql = "";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+        
+            return dt;
+        }
+        public DataTable GetPresent(PresentEntity data)
+        {
+            string sql = "";
+            string yTQx = GetPermissionSql(PermissionType.Category);
+            
+            //string sql = PresentSql(item);
+            //    $@"SELECT BRANCHID, BRANCH.NAME, HEAD, TAIL, ADQRCODE, ADCONTENT
+            //                    FROM PRESENT,BRANCH
+            //                    WHERE BRANCH.ID=PRESENT.BRANCHID";
+            //sql += "  AND TICKETINFO.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += " and Present.ID=" + data.ID;
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+
     }
 }

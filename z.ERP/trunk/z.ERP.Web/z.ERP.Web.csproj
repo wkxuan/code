@@ -196,6 +196,8 @@
     <Compile Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALEController.cs" />
     <Compile Include="Areas\BJGL\MAPSHOW\MAPSHOWController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
+    <Compile Include="Areas\CXGL\PRESENT\PresentController.cs" />
+    <Compile Include="Areas\CXGL\FR_PLAN\FR_PLANController.cs" />
     <Compile Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisController.cs" />
     <Compile Include="Areas\CXGL\PROMOTION\PromotionController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
@@ -328,6 +330,7 @@
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\SYSUSER\SysuserController.cs" />
     <Compile Include="Areas\XTGL\test\testController.cs" />
+    <Compile Include="Areas\XTGL\TicketInfo\TicketInfoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -347,6 +350,9 @@
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
     <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisEdit.js" />
     <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisList.js" />
+    <Content Include="Areas\CXGL\PRESENT\Present.js" />
+    <Content Include="Areas\CXGL\PRESENT\PresentDetail.js" />
+    <Content Include="Areas\CXGL\FR_PLAN\FR_PLAN.js" />
     <Content Include="Areas\CXGL\PROMOTION\Promotion.js" />
     <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
@@ -510,6 +516,8 @@
     <Content Include="Areas\XTGL\PERIOD\Period.js" />
     <Content Include="Areas\XTGL\STATION\Station.js" />
     <Content Include="Areas\XTGL\test\List.js" />
+    <Content Include="Areas\XTGL\TicketInfo\TicketInfo.js" />
+    <Content Include="Areas\XTGL\TicketInfo\TicketInfoDetail.js" />
     <Content Include="Content\components\common.js" />
     <Content Include="Content\echarts-wordcloud.js" />
     <Content Include="Content\echarts.js" />
@@ -814,6 +822,11 @@
     <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisEdit.cshtml" />
     <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopPromotionList.cshtml" />
+    <Content Include="Areas\XTGL\TicketInfo\TicketInfo.cshtml" />
+    <Content Include="Areas\XTGL\TicketInfo\TicketInfoDetail.cshtml" />
+    <Content Include="Areas\CXGL\PRESENT\Present.cshtml" />
+    <Content Include="Areas\CXGL\PRESENT\PresentDetail.cshtml" />
+    <Content Include="Areas\CXGL\FR_PLAN\FR_PLAN.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
