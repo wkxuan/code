@@ -50,7 +50,6 @@
     <Compile Include="Auto\ROLE_ALERTEntity.cs" />
     <Compile Include="Auto\ROLE_BRANCHEntity.cs" />
     <Compile Include="Auto\ROLE_FLOOREntity.cs" />
-    <Compile Include="Auto\PRESENTEntity.cs" />
     <Compile Include="Auto\TicketInfoEntity.cs" />
     <Compile Include="STATIONMONITOR.cs" />
     <Compile Include="MAPFLOORINFOEntity.cs" />
