@@ -12,6 +12,9 @@
     this.IsValidSave = function () {
         return true;
     }
+    this.IsValidMod = function () {
+        return true;
+    }
     //添加后初始化数据信息
     this.newRecord = function () { }
     this.beforeDel = function () {
@@ -58,6 +61,8 @@
                     _this.newRecord();
                 },
                 mod: function (event) {
+                    if (!_this.IsValidMod())
+                        return;
                     _this.dataParam = this.dataParam;
                     if (!this.dataParam[_this.Key]) {
                         iview.Message.error("请选择数据");

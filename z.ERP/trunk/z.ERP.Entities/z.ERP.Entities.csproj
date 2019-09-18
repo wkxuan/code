@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auto\FEESUBJECT_ACCOUNTEntity.cs" />
+    <Compile Include="Auto\FR_PLANEntity.cs" />
+    <Compile Include="Auto\FR_PLAN_ITEMEntity.cs" />
     <Compile Include="Auto\MAPFLOORDATAEntity.cs" />
     <Compile Include="Auto\MAPSHOPDATAEntity.cs" />
     <Compile Include="Auto\NOTICEEntity.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="Auto\ROLE_FLOOREntity.cs" />
     <Compile Include="Auto\PRESENTEntity.cs" />
     <Compile Include="Auto\TicketInfoEntity.cs" />
+    <Compile Include="FR_PLANEntity.cs" />
     <Compile Include="STATIONMONITOR.cs" />
     <Compile Include="MAPFLOORINFOEntity.cs" />
     <Compile Include="MAPTITLEEntity.cs" />

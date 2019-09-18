@@ -197,6 +197,7 @@
     <Compile Include="Areas\BJGL\MAPSHOW\MAPSHOWController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
     <Compile Include="Areas\CXGL\PRESENT\PresentController.cs" />
+    <Compile Include="Areas\CXGL\FR_PLAN\FR_PLANController.cs" />
     <Compile Include="Areas\CXGL\PROMOTION\PromotionController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
@@ -348,6 +349,7 @@
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
     <Content Include="Areas\CXGL\PRESENT\Present.js" />
     <Content Include="Areas\CXGL\PRESENT\PresentDetail.js" />
+    <Content Include="Areas\CXGL\FR_PLAN\FR_PLAN.js" />
     <Content Include="Areas\CXGL\PROMOTION\Promotion.js" />
     <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
@@ -817,6 +819,7 @@
     <Content Include="Areas\XTGL\TicketInfo\TicketInfoDetail.cshtml" />
     <Content Include="Areas\CXGL\PRESENT\Present.cshtml" />
     <Content Include="Areas\CXGL\PRESENT\PresentDetail.cshtml" />
+    <Content Include="Areas\CXGL\FR_PLAN\FR_PLAN.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
