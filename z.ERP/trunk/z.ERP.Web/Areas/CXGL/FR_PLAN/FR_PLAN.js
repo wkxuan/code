@@ -14,7 +14,7 @@
         }];
     define.screenParam.dataDef = [];
     define.screenParam.itemDef = [
-        { title: '序号', key: 'INX', width: 100, cellType: "input", cellDataType: "number", },
+        { title: '序号', key: 'INX', width: 100 },
         { title: '满额', key: 'FULL', width: 200, cellType: "input", cellDataType: "number", },
         { title: '减额', key: 'CUT', width: 200, cellType: "input", cellDataType: "number", },
     ]

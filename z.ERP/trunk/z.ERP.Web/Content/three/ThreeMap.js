@@ -98,7 +98,8 @@
             //楼层子项的分类类型
             var ObjType = {
                 FLOOR: "floor",        //地板
-                CELL: "shop",          //常用的小隔间
+                SHOP: "shop",          //单元
+                CELL: "cell",            //常用的小隔间
             }
 
             var floorGroup;     //楼层元素组
@@ -135,8 +136,8 @@
                     var points = item.POINTS;
                     var color = item.COLOR;
                     switch (type) {
-                        case ObjType.CELL:
-                            this.addCell(points, 6, color, item.SHOPINFO);
+                        case ObjType.SHOP:
+                            this.addShop(points, 6, color, item.SHOPINFO);
                             break;
                         case ObjType.FLOOR:
                             this.addFloor(points, 0.5, item.SHOPINFO);
@@ -161,15 +162,11 @@
             /*
             *   创建不规则的小室
             * */
-            loadFloor.prototype.addCell = function (points, height, color, info) {
+            loadFloor.prototype.addShop = function (points, height, color, info) {
                 var geometry = this.getGeometry(points, height, info);
                 geometry.computeFaceNormals();          //计算法向量
                 var material;
-                if (info.RENT_STATUS == "1") {
-                    material = new THREE.MeshLambertMaterial({ color: "#C3C1BD", side: THREE.DoubleSide });         //模块颜色    单元空置
-                } else {
-                    material = new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide });         //模块颜色
-                }
+                material = new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide });         //模块颜色
                 var mesh = new THREE.Mesh(geometry, material);
                 listM.push(mesh);
                 this.container.add(mesh);				//添加填充

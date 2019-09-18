@@ -808,7 +808,7 @@ namespace z.ERP.Services
         }
         public DataTable GETSHOPDATA( string FLOORID,string shopstatus)
         {
-            string SQL = $@"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS,C.COLOR,NVL(MT.NAME,' ') MERCHANTNAME
+            string SQL = $@"SELECT M.*,S.NAME,S.STATUS,S.RENT_STATUS,CASE S.RENT_STATUS  WHEN 1 THEN '#FFFFFF' WHEN 2 THEN C.COLOR END COLOR,NVL(MT.NAME,' ') MERCHANTNAME
                     FROM MAPSHOPDATA M
                     LEFT JOIN SHOP S ON M.SHOPID=S.SHOPID
                     LEFT JOIN CATEGORY C ON  S.CATEGORYID=C.CATEGORYID
