@@ -1,0 +1,99 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Edit;
+@using z.ERP.Entities;
+@using z.ERP.Model;
+@using z.Extensions;
+@inherits EditViewBase<string>
+@section head{}
+
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            营销活动
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.PROMOTIONNAME" v-on:on-click="srchPromotion" v-bind:disabled="!disabled" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            开始日期
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.START_DATE",
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            结束日期
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "dataParam.END_DATE",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            促销周期
+        </i-col>
+        <i-col span="6" class="RowText">
+            <checkbox-group v-model="screenParam.WEEK">
+                <checkbox label="1">星期一</checkbox>
+                <checkbox label="2">星期二</checkbox>
+                <checkbox label="3">星期三</checkbox>
+                <checkbox label="4">星期四</checkbox>
+                <checkbox label="5">星期五</checkbox>
+                <checkbox label="6">星期六</checkbox>
+                <checkbox label="7">星期日</checkbox>
+            </checkbox-group>
+        </i-col>  
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            开始时间
+        </i-col>
+        <i-col span="6">
+            <time-picker format="HH:mm" v-model="screenParam.START_TIME"></time-picker>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            结束时间
+        </i-col>
+        <i-col span="6" class="RowText">
+            <time-picker format="HH:mm" v-model="screenParam.END_TIME"></time-picker>
+        </i-col>     
+    </row>
+}
+@section detailParam{
+    <row>
+        <i-col span="24">
+            <Card v-bind:padding=0>
+                <p slot="title"><span class="mustElement">*</span>商品</p>
+                <div slot="extra">
+                    <div class="tableBtnDiv" v-if="disabled">
+                        <i-button type="primary" v-on:click="srchGoods">选择</i-button>
+                        <i-button type="error" v-on:click="delGoods">删除</i-button>
+                    </div>
+                </div>
+                <yx-table v-bind:columns="screenParam.colDefGoods" v-bind:height="400" selection=true
+                          v-bind:data="dataParam.PROMOBILL_GOODS" v-bind:disabled="!disabled" ref="refShop">
+                </yx-table>
+            </Card>
+        </i-col>      
+    </row>
+}
+
+@section pops{
+<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
+          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
+}

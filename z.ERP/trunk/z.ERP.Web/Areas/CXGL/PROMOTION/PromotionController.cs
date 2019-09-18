@@ -7,7 +7,7 @@ using z.ERP.Web.Areas.Layout.DefineDetail;
 using z.Extensions;
 using z.MVC5.Results;
 
-namespace z.ERP.Web.Areas.XTGL.SHOP
+namespace z.ERP.Web.Areas.CXGL.PROMOTION
 {
     public class PromotionController : BaseController
     {
@@ -69,7 +69,7 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
         }
         public UIResult ShowOneData(PROMOTIONEntity Data)
         {
-            var res = service.CxglService.ShowOneData(Data);
+            var res = service.CxglService.PromotionShowOneData(Data);
             return new UIResult(
                 new
                 {

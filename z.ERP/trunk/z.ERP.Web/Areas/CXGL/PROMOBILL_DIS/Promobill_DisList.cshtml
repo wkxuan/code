@@ -1,27 +1,37 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.DefineNew
-@inherits DefineViewNewBase
-
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
 @section conditionParam{
     <row>
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                    Multiple= true
+                });
+            }
+        </i-col>
         <i-col span="2" class="RowTitle">
-            主题名称
+            营销活动
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input v-model="searchParam.NAME" />
+            <i-input icon="md-search" v-model="searchParam.PROMOTIONNAME" v-on:on-click="SelPromotion" />
         </i-col>
         <i-col span="2" class="RowTitle">
-            年度
+            状态
         </i-col>
         <i-col span="6" class="RowText">
-            <yx-year-picker v-bind:value.sync="searchParam.YEAR"></yx-year-picker>
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            内容
-        </i-col>
-        <i-col span="6" class="RowText">
-            <i-input v-model="searchParam.CONTENT" />
+            @{
+                RenderControl(new EnumDropDownListRender<促销单状态>()
+                {
+                    vModel = "searchParam.STATUS",
+                    Multiple = true
+                });
+            }
         </i-col>
     </row>
     <row>
@@ -33,7 +43,6 @@
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "searchParam.START_DATE_START",
-                    Enable = false
                 });
             }
         </i-col>
@@ -42,7 +51,6 @@
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "searchParam.START_DATE_END",
-                    Enable = false
                 });
             }
         </i-col>
@@ -54,7 +62,6 @@
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "searchParam.END_DATE_START",
-                    Enable = false
                 });
             }
         </i-col>
@@ -63,27 +70,26 @@
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "searchParam.END_DATE_END",
-                    Enable = false
                 });
             }
-        </i-col>
+        </i-col>  
+    </row>
+    <row>
         <i-col span="2" class="RowTitle">
-            状态
+            登记人
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
-                {
-                    vModel = "searchParam.STATUS",
-                    Enable= false
-                });
-            }
+            <i-input icon="md-search" v-model="searchParam.REPORTER_NAME" v-on:on-click="SelReporter" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            审核人
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input icon="md-search" v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
         </i-col>
     </row>
 }
-
 @section pops{
-    <yx-modal v-bind:src="screenParam.defineDetailSrc" v-bind:title="screenParam.title"
-              width="500" height="350"
-              v-bind:modal-visible.sync="screenParam.showDefineDetail"></yx-modal>
+    <yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
+              v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }
