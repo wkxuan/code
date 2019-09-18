@@ -83,7 +83,7 @@ namespace z.ERP.Services
 
             string sqlitem = @"select P.*,G.GOODSDM,G.NAME GOODSNAME,B.NAME BRANDMC 
                                  from PROMOBILL_GOODS P,GOODS G,BRAND B 
-                                where P.GOODSID=G.GOODSID and G.BRANDID=B.ID and P.BILLID={0}";
+                                where P.GOODSID=G.GOODSID and G.BRANDID=B.ID and P.BILLID={0} order by P.INX ASC";
             var itemdt = DbHelper.ExecuteTable(string.Format(sqlitem, data.BILLID));
             return new Tuple<dynamic, DataTable>(dt.ToOneLine(), itemdt);
         }

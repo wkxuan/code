@@ -69,3 +69,7 @@
     #edit .ivu-table-wrapper {
         border: none;
     }
+
+    #edit .tableBtnDiv{
+        display:flex;
+    }

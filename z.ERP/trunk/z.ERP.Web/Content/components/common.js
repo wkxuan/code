@@ -1043,3 +1043,76 @@ Vue.component('yx-year-picker', {
         }
     }
 });
+Vue.component('yx-check-group', {
+    props: ['value', 'disabled'],
+    template: ` <checkbox-group :value="curValue" v-on:on-change="onChange">` +
+                `<checkbox label="1" :disabled="disabled">星期一</checkbox>` +
+                `<checkbox label="2" :disabled="disabled">星期二</checkbox>` +
+                `<checkbox label="3" :disabled="disabled">星期三</checkbox>` +
+                `<checkbox label="4" :disabled="disabled">星期四</checkbox>` +
+                `<checkbox label="5" :disabled="disabled">星期五</checkbox>` +
+                `<checkbox label="6" :disabled="disabled">星期六</checkbox>` +
+                `<checkbox label="7" :disabled="disabled">星期日</checkbox>` +
+            `</checkbox-group>`,
+    data() {
+        return {
+            curValue: []
+        }
+    },
+    watch: {
+        value: {
+            handler: function (nv, ov) {
+                if (nv && typeof nv == "string") {
+                    this.curValue = nv.split(",");
+                } else {
+                    this.curValue = [];
+                }
+            },
+            immediate: true,
+            deep: true
+        }
+    },
+    methods: {
+        onChange(val, type) {
+            this.$emit('update:value', val.join(","));
+        }
+    }
+});
+Vue.component('yx-time-picker', {
+    props: ['value', 'disabled'],
+    template: `<time-picker format="HH:mm" :value="curValue" :disabled="disabled" v-on:on-change="onChange"></time-picker>`,
+    data() {
+        return {
+            curValue: ""
+        }
+    },
+    watch: {
+        value: {
+            handler: function (nv, ov) {
+                this.curValue = this.dataZhTime(nv);
+            },
+            immediate: true,
+            deep: true
+        }
+    },
+    methods: {
+        onChange(val, type) {
+            this.$emit('update:value', this.dataZhNum(val));
+        },
+        dataZhNum (val) {
+            if (!val) {
+                return "";
+            }
+            let strArr = val.split(":");
+            let num = Number(strArr[0]) * 60 + Number(strArr[1]);
+            return num;
+        },
+        dataZhTime (val) {
+            let m = Number(val) / 60;
+            let s = Number(val) % 60;
+            let strM = m == 0 ? "00" : parseInt(m);
+            let strS = s == 0 ? "00" : parseInt(s);
+            return strM + ":" + strS;
+        }
+    }
+});

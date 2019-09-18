@@ -6,6 +6,8 @@
     editDetail.screenParam.srcPop = "";
     editDetail.screenParam.title = "";
     editDetail.screenParam.popParam = {};
+
+    editDetail.screenParam.setVal = null;
     //商铺表格
     editDetail.screenParam.colDefGoods = [
        { title: '序号', key: 'INX',width:100 },
@@ -25,6 +27,8 @@ editDetail.popCallBack = function (data) {
             if (editDetail.screenParam.title == "选择营销活动") {
                 editDetail.dataParam.PROMOTIONID = data.sj[i].ID;
                 editDetail.dataParam.PROMOTIONNAME = data.sj[i].NAME;
+                editDetail.dataParam.START_DATE = data.sj[i].START_DATE;
+                editDetail.dataParam.END_DATE = data.sj[i].END_DATE;
             }
             if (editDetail.screenParam.title == "选择商品") {
                 let itemData = editDetail.dataParam.PROMOBILL_GOODS;
@@ -61,7 +65,7 @@ editDetail.otherMethods = {
         editDetail.screenParam.showPop = true;
     },
     delGoods: function () {
-        let selection = this.$refs.refShop.getSelection();
+        let selection = this.$refs.refGoods.getSelection();
         if (selection.length == 0) {
             iview.Message.info("请选中要删除的商品!");
         } else {
@@ -72,6 +76,27 @@ editDetail.otherMethods = {
                         temp.splice(j, 1);
                         break;
                     }
+                }
+            }
+        }
+    },
+    settingVal: function () {
+        let selection = this.$refs.refGoods.getSelection();
+        if (selection.length == 0) {
+            iview.Message.info("请选中要设置折扣率的商品!");
+            return;
+        }
+        let val = editDetail.screenParam.setVal;
+        if (!val) {
+            iview.Message.info("请确定要设置的折扣率!");
+            return;
+        }
+        for (let i = 0; i < selection.length; i++) {
+            let itemData = editDetail.dataParam.PROMOBILL_GOODS;
+            for (let j = 0; j < itemData.length; j++) {
+                if (itemData[j].GOODSID == selection[i].GOODSID) {
+                    itemData[j].VALUE1 = val;
+                    continue;
                 }
             }
         }
@@ -86,14 +111,14 @@ editDetail.clearKey = function () {
     editDetail.dataParam.PROMOTIONNAME = null;
     editDetail.dataParam.START_DATE = null;
     editDetail.dataParam.END_DATE = null;
-    editDetail.dataParam.START_TIME = null;
-    editDetail.dataParam.END_TIME = null;
-    editDetail.dataParam.WEEK = null;
+    editDetail.dataParam.START_TIME = 0;
+    editDetail.dataParam.END_TIME = 1439;
+    editDetail.dataParam.WEEK = "1,2,3,4,5,6,7";
     editDetail.dataParam.PROMOBILL_GOODS = [];
+};
 
-    editDetail.screenParam.START_TIME = null;
-    editDetail.screenParam.END_TIME = null;
-    editDetail.screenParam.WEEK =  ["1", "2", "3", "4", "5", "6", "7"];
+editDetail.newRecord = function () {
+    editDetail.clearKey();
 };
 
 editDetail.IsValidSave = function () {
@@ -101,6 +126,7 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请确认门店!");
         return false;
     };
+
     if (!editDetail.dataParam.PROMOTIONID) {
         iview.Message.info("请确认营销活动!");
         return false;
@@ -116,36 +142,24 @@ editDetail.IsValidSave = function () {
     if (new Date(editDetail.dataParam.START_DATE).Format('yyyy-MM-dd') > new Date(editDetail.dataParam.END_DATE).Format('yyyy-MM-dd')) {
         iview.Message.info(`结束日期不能小于开始日期!`);
         return false;
-    };   
-    if (!editDetail.screenParam.START_TIME) {
-        iview.Message.info("请确认开始时间!");
-        return false;
     };
-    if (!editDetail.screenParam.END_TIME) {
-        iview.Message.info("请确认结束时间!");
-        return false;
-    };
-    let dataZh = function (val) {
-        if (!val) {
-            return "";
-        }
-        let strArr = val.split(":");
-        let num = Number(strArr[0]) * 60 + Number(strArr[1]);
-        return num;
-    }
-    let vl1 = dataZh(editDetail.screenParam.START_TIME);
-    let vl2 = dataZh(editDetail.screenParam.END_TIME);
-    if (vl1 > vl2) {
-        iview.Message.info("结束时间不能小于开始时间!");
-        return false;
-    }
-    if (!editDetail.screenParam.WEEK || editDetail.screenParam.WEEK.length == 0) {
+    if (!editDetail.dataParam.WEEK) {
         iview.Message.info("请确认促销周期!");
         return false;
     };
-    editDetail.dataParam.START_TIME = vl1;
-    editDetail.dataParam.END_TIME = vl2;
-    editDetail.dataParam.WEEK = editDetail.screenParam.WEEK.join(",");
+    if (editDetail.dataParam.START_TIME == null) {
+        iview.Message.info("请确认开始时间!");
+        return false;
+    };
+
+    if (editDetail.dataParam.END_TIME == null) {
+        iview.Message.info("请确认结束时间!");
+        return false;
+    };
+    if (editDetail.dataParam.START_TIME > editDetail.dataParam.END_TIME) {
+        iview.Message.info("结束时间不能小于开始时间!");
+        return false;
+    }
 
     let itemData = editDetail.dataParam.PROMOBILL_GOODS;
     if (!itemData.length) {
@@ -170,9 +184,6 @@ editDetail.showOne = function (data, callback) {
         Data: { BILLID: data }
     }, function (data) {
         $.extend(editDetail.dataParam, data.mainData);
-        //editDetail.dataParam = data.mainData;
-        editDetail.screenParam.WEEK = data.mainData.WEEK.split(",");
-        debugger
         editDetail.dataParam.PROMOBILL_GOODS = data.itemData;
     });
 };
