@@ -1,0 +1,61 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.DefineDetail
+@inherits DefineDetailViewBase
+
+@section baseParam{
+    <row>
+        <i-col span="5" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="17">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "dataParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+                    Enable = true
+
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            赠品编号
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ID" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            赠品名称
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.NAME" />
+        </i-col>
+      
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
+            价格
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.PRICE" />
+        </i-col>
+
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<促销单状态>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>   
+    </row>
+
+}
