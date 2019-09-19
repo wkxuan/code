@@ -113,17 +113,10 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "满减方案";
             return View();
         }
-        //public UIResult SearchFloorMapData(FLOORMAPEntity Data)
-        //{
-        //    var res = service.DpglService.GetFLOORMAPDATA(Data);
-        //    return new UIResult(
-        //        new
-        //        {
-        //            floormap = res.Item1,
-        //            floorshopdata = res.Item2
-        //        }
-        //    );
-        //}
+        public ActionResult PopPRESENTList()
+        {
+            ViewBag.Title = "赠品";
+            return View();
+        }
     }
-
 }
