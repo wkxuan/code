@@ -199,6 +199,7 @@
     <Compile Include="Areas\CXGL\PRESENT\PresentController.cs" />
     <Compile Include="Areas\CXGL\FR_PLAN\FR_PLANController.cs" />
     <Compile Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisController.cs" />
+    <Compile Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGController.cs" />
     <Compile Include="Areas\CXGL\PROMOTION\PromotionController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
@@ -353,6 +354,8 @@
     <Content Include="Areas\CXGL\PRESENT\Present.js" />
     <Content Include="Areas\CXGL\PRESENT\PresentDetail.js" />
     <Content Include="Areas\CXGL\FR_PLAN\FR_PLAN.js" />
+    <Content Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGEdit.js" />
+    <Content Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGList.js" />
     <Content Include="Areas\CXGL\PROMOTION\Promotion.js" />
     <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
@@ -831,6 +834,8 @@
     <Content Include="Areas\CXGL\FR_PLAN\FR_PLAN.cshtml" />
     <Content Include="Areas\Pop\Pop\PopFR_PlanList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopPRESENTList.cshtml" />
+    <Content Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGList.cshtml" />
+    <Content Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGEdit.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

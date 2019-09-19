@@ -7,7 +7,7 @@
         { title: '价格', key: 'PRICE', tooltip: true },
         { title: '状态', key: 'STATUSMC', tooltip: true }];
     search.service = "CxglService";
-    search.method = "Present";
+    search.method = "PresentSql";
 }
 ////获取父页面参数
 search.popInitParam = function (data) {

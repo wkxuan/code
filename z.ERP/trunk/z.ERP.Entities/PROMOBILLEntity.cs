@@ -11,5 +11,11 @@ namespace z.ERP.Entities
             get;
             set;
         }
+        [ForeignKey(nameof(BILLID), nameof(PROMOBILL_FG_RULEEntity.BILLID))]
+        public List<PROMOBILL_FG_RULEEntity> PROMOBILL_FG_RULE
+        {
+            get;
+            set;
+        }
     }
 }
