@@ -37,9 +37,6 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-        /// <summary>
-        /// 值1 折扣率
-        /// <summary>
         [PrimaryKey]
         [Field("赠品id")]
         public string PRESENTID
