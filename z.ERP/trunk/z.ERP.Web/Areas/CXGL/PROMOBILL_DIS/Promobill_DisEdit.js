@@ -52,6 +52,7 @@ editDetail.otherMethods = {
     srchPromotion: function () {
         editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPromotionList/";
         editDetail.screenParam.title = "选择营销活动";
+        editDetail.screenParam.popParam = { STATUS: 2 };
         editDetail.screenParam.showPop = true;
     },
     srchGoods: function () {
