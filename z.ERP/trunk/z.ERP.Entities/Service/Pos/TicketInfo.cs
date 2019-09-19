@@ -20,5 +20,17 @@
             set;
         }
 
+        public string adqrcode
+        {
+            get;
+            set;
+        }
+
+        public string adcontent
+        {
+            get;
+            set;
+        }
+
     }
 }

@@ -29,13 +29,17 @@ namespace z.ERP.Services
 
         }
 
-
+        /// <summary>
+        /// 获取终端配置信息及第三方支付配置信息
+        /// </summary>
+        /// <returns></returns>
         public LoginConfigInfo GetConfig()
         {
             string sql = " select S.BRANCHID,B.CRMSTORECODE,P.SHOPID,P.CODE SHOPCODE,P.NAME SHOPNAME,UPPER(trim(S.NETWORK_NODE_ADDRESS)) MACADDRESS"
                        + " from BRANCH B,STATION S,SHOP P,SYSUSER R"
                        + " where B.ID= S.BRANCHID and S.SHOPID=R.SHOPID"
                        + "  AND R.USER_TYPE in (1,2) "
+                       + "  AND S.TYPE IN (1,2) "
                        + " AND S.SHOPID = P.SHOPID(+)"
                        + $" AND S.STATIONBH = '{employee.PlatformId}'"
                        + $" AND R.USERID = {employee.Id}";
@@ -51,24 +55,27 @@ namespace z.ERP.Services
 
             LoginConfigInfo lgi = DbHelper.ExecuteOneObject<LoginConfigInfo>(sql);
 
-
+            string sqlTicket = $"select HEAD TICKETHEAD,TAIL TICKETTAIL,PRINTCOUNT,ADQRCODE,ADCONTENT from TICKETINFO where BRANCHID={lgi.branchid}";
 
             if (lgi!=null)
             {
-                TicketInfo ticket = new TicketInfo();
-                ticket.tickethead = ConfigExtension.GetConfig("TicketHead");
-                ticket.tickettail = ConfigExtension.GetConfig("TicketTail");
-                ticket.printCount = ConfigExtension.GetConfig("PrintCount");
-                lgi.ticketInfo = ticket;
+               // TicketInfo ticket = new TicketInfo();
+              //  ticket.tickethead = ConfigExtension.GetConfig("TicketHead");
+              //  ticket.tickettail = ConfigExtension.GetConfig("TicketTail");
+              //  ticket.printCount = ConfigExtension.GetConfig("PrintCount");
+              //  lgi.ticketInfo = ticket;
+                lgi.ticketInfo = DbHelper.ExecuteOneObject<TicketInfo>(sqlTicket);
                 lgi.posWFTConfig = DbHelper.ExecuteOneObject<PosWFTConfig>(sqlWFT);
                 lgi.posUMSConfig = DbHelper.ExecuteOneObject<PosUMSConfig>(sqlUMS);
             }
-
-
             return lgi;
 
         }
 
+        /// <summary>
+        /// 绑定终端MAC地址或SN序列号
+        /// </summary>
+        /// <param name="ads"></param>
         public void BindAddress(Address ads)
         {
             if (ads.address.IsEmpty())
@@ -95,6 +102,33 @@ namespace z.ERP.Services
             }
          }
 
+
+         /// <summary>
+         /// 刷新终端连接时间
+         /// </summary>
+         /// <param name="isQuit"></param>
+        public void RefreshTime(bool isQuit = false)
+        {
+            string sql = "";
+            if (isQuit)
+               sql = $"update STATION set REFRESH_TIME = null,CASHIERID = null where STATIONBH = '{employee.PlatformId}'"; 
+            else   
+               sql = $"update STATION set REFRESH_TIME = sysdate,CASHIERID = {employee.Id} where STATIONBH = '{employee.PlatformId}'";
+
+            try
+            {
+                DbHelper.ExecuteNonQuery(sql);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="passw"></param>
         public void ChangePassword(PasswordInfo passw)
         {
             if (string.IsNullOrEmpty(passw.oldPassword))
@@ -149,12 +183,15 @@ namespace z.ERP.Services
         /// <returns></returns>
         public long GetLastDealid()
         {
-            string sql = $"select nvl(max(dealid),0) from sale where posno = '{employee.PlatformId}'";
+            string sqlerp = $"select nvl(max(dealid),0) from sale where posno = '{employee.PlatformId}'";
+            string sqlcrm = $"select nvl(max(JLBH),0) from BFCRM10.HYK_XFJL where STATUS in (1,2) and SKTNO='{employee.PlatformId}'";
+                        
+            long lastDealidErp = long.Parse(DbHelper.ExecuteTable(sqlerp).Rows[0][0].ToString());
+            long lastDealidCrm = long.Parse(DbHelper.ExecuteTable(sqlcrm).Rows[0][0].ToString());
 
-            long lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
-
-            sql = $"select nvl(max(dealid),0) from his_sale where posno = '{employee.PlatformId}'";
-            long lastDealid_his = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
+            long lastDealid = (lastDealidErp > lastDealidCrm) ? lastDealidErp : lastDealidCrm;
+            sqlerp = $"select nvl(max(dealid),0) from his_sale where posno = '{employee.PlatformId}'";
+            long lastDealid_his = long.Parse(DbHelper.ExecuteTable(sqlerp).Rows[0][0].ToString());
 
             return (lastDealid > lastDealid_his) ? lastDealid : lastDealid_his;
         }
@@ -191,6 +228,10 @@ namespace z.ERP.Services
 
         }
 
+        /// <summary>
+        /// 获取终端配置支付方式
+        /// </summary>
+        /// <returns></returns>
         public List<FKFSResult> GetPayList()
         {
             string sql = $"select b.payid,b.name,b.type,b.fk,b.jf,b.zlfs,b.flag ";

@@ -37,10 +37,8 @@
     }, function (data) {
         var list = [];
         for (var i = 0; i < data.length;i++) {
-            debugger
             list.push({ title: data[i].NAME, key: data[i].PYM, width: 130, align: "right" });
         }
-        debugger
         srch.screenParam.colDef.push(list);
     });
 };

@@ -38,11 +38,10 @@ namespace z.ERP.WebService.Controllers
         }
 
         /// <summary>
-        /// 
+        /// 获取登陆配置
         /// </summary>
-        /// <param name="code"></param>
         /// <returns></returns>
-        /// 
+                 
         public LoginConfigInfo GetConfig()
         {
             return service.PosService.GetConfig();
@@ -52,6 +51,12 @@ namespace z.ERP.WebService.Controllers
         public void BindAddress(Address ads)
         {
              service.PosService.BindAddress(ads);
+        }
+
+        [ServiceAble("RefreshTime")]
+        public void RefreshTime(bool isQuit = false)
+        {
+            service.PosService.RefreshTime(isQuit);
         }
 
         /// <summary>
