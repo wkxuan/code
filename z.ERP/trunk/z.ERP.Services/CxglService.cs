@@ -67,6 +67,7 @@ namespace z.ERP.Services
             int count;
             var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
+            dt.NewEnumStrColumns<星期>("WEEK", "WEEKMC");
             return new DataGridResult(dt, count);
         }
         public Tuple<dynamic, DataTable> PromobillShowOneData(PROMOBILLEntity data)

@@ -11,6 +11,7 @@
         return true;
     }
     this.popInitParam = function (data) { }
+
     this.popCallBack = function (data) { };
     this.mountedInit = function () { }
     this.vue = function VueOperate() {
@@ -31,6 +32,7 @@
             },
             mounted: function () {
                 _this.mountedInit();
+                this.initParam();
             },
             watch: {
                 "screenParam.colDef": {
@@ -52,25 +54,27 @@
                     showList();
                 },
                 initParam: function () {
+                    let param;
                     //父页面是单据
                     if (window.parent.editDetail != undefined)
-                        _this.popInitParam(window.parent.editDetail.screenParam.popParam);
+                        param = window.parent.editDetail.screenParam.popParam;
                         //父页面是报表
                     else if (window.parent.srch != undefined)
-                        _this.popInitParam(window.parent.srch.screenParam.popParam);
+                        param = window.parent.srch.screenParam.popParam;
                         //父页面是查询
                     else if (window.parent.search != undefined)
-                        _this.popInitParam(window.parent.search.screenParam.popParam);
+                        param = window.parent.search.screenParam.popParam;
                         //父页面是简单定义
                     else if (window.parent.define != undefined)
-                        _this.popInitParam(window.parent.define.screenParam.popParam);
+                        param = window.parent.define.screenParam.popParam;
                     else if (window.parent.defineNew != undefined)
-                        _this.popInitParam(window.parent.defineNew.screenParam.popParam);
+                        param = window.parent.defineNew.screenParam.popParam;
                     else if (window.parent.defineDetail != undefined)
-                        _this.popInitParam(window.parent.defineDetail.screenParam.popParam);
+                        param = window.parent.defineDetail.screenParam.popParam;
 
-                    this.searchParam = _this.searchParam;
-
+                    for (let i in param) {
+                        this.searchParam[i] = param[i];
+                    }
                 },
                 callBack: function (data) {
                     if (window.parent.editDetail != undefined)

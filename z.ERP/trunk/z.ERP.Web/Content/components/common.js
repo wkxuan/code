@@ -323,17 +323,14 @@ Vue.component('yx-table', {
                                 });
                             };
                             break;
-                        case "time ":
+                        case "time":
                             data[i].render = function (h, params) {
-                                formatStr = params.column.format || "HH:mm:ss";
                                 if (_self.disabled || !data[i].enableCellEdit) {
-                                    return params.row[params.column.key] ? new Date(params.row[params.column.key]).Format(formatStr) : null;
+                                    return params.row[params.column.key] ? _self.dataZhTime(params.row[params.column.key]) : null;
                                 }
-                                return h("TimePicker ", {
+                                return h("yx-time-picker", {
                                     props: {
-                                        value: params.row[params.column.key],
-                                        transfer: true,
-                                        format: formatStr
+                                        value: params.row[params.column.key]
                                     },
                                     on: _self.initOn(params)
                                 });
@@ -378,6 +375,24 @@ Vue.component('yx-table', {
                 },
             };
             return onFun;
+        },
+        dataZhTime (val) {
+            let m = Number(val) / 60;
+            let s = Number(val) % 60;
+            let strM = m == 0 ? "00" : parseInt(m);
+            let strS = s == 0 ? "00" : parseInt(s);
+            let strM1, strS1;
+            if (strM != "00" && strM < 10) {
+                 strM1 = "0" + strM;
+            } else {
+                 strM1 = strM;
+            }
+            if (strS != "00" && strS < 10) {
+                 strS1 = "0" + strS;
+            } else {
+                 strS1 = strS;
+            }          
+            return strM1 + ":" + strS1;
         },
         //列显示隐藏控制checkBox chang事件
         checkBoxChange(val) {
@@ -1080,7 +1095,7 @@ Vue.component('yx-check-group', {
 });
 Vue.component('yx-time-picker', {
     props: ['value', 'disabled'],
-    template: `<time-picker format="HH:mm" :value="curValue" :disabled="disabled" v-on:on-change="onChange"></time-picker>`,
+    template: `<time-picker format="HH:mm" :value="curValue" :disabled="disabled" v-on:on-change="onChange" transfer></time-picker>`,
     data() {
         return {
             curValue: ""
@@ -1112,7 +1127,18 @@ Vue.component('yx-time-picker', {
             let s = Number(val) % 60;
             let strM = m == 0 ? "00" : parseInt(m);
             let strS = s == 0 ? "00" : parseInt(s);
-            return strM + ":" + strS;
+            let strM1, strS1;
+            if (strM != "00" && strM < 10) {
+                strM1 = "0" + strM;
+            } else {
+                strM1 = strM;
+            }
+            if (strS != "00" && strS < 10) {
+                strS1 = "0" + strS;
+            } else {
+                strS1 = strS;
+            }
+            return strM1 + ":" + strS1;
         }
     }
 });

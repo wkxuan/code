@@ -84,7 +84,39 @@ namespace z.Extensions
                 }
             }
         }
-        
+        /// <summary>
+        /// 为表格创建一个枚举文字的列（转化列数据符合str="1,2,3,4"）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dt"></param>
+        /// <param name="enumname"></param>
+        /// <param name="newname"></param>
+        public static void NewEnumStrColumns<T>(this DataTable dt, string enumname, string newname) where T : struct
+        {
+            if (dt.Columns.Contains(newname))
+            {
+                throw new Exception("表中已包含指定项");
+            }
+            if (!dt.Columns.Contains(enumname))
+            {
+                throw new Exception("表中不包含指定枚举项");
+            }
+            dt.Columns.Add(newname);
+            foreach (DataRow dr in dt.Rows)
+            {
+                var v = EnumExtension.EnumToDictionary<T>();
+                var arr = dr[enumname].ToString().Split(',');
+                List<string> earr = new List<string>();
+                foreach (string item in arr)
+                {
+                    if (v.ContainsKey(item.ToInt()))
+                    {
+                        earr.Add(v[item.ToInt()]);
+                    }
+                }
+                dr[newname] = string.Join(";", earr);
+            }
+        }
         /// <summary>
         /// 转化表格为对象数组
         /// </summary>
