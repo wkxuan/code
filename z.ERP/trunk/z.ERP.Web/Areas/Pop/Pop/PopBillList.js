@@ -19,18 +19,18 @@
     search.service = "DataService";
     search.method = "GetBillPart";
 }
-////获取父页面参数
-search.popInitParam = function (data) {
-    if (data) {
-        search.searchParam.BRANCHID = data.BRANCHID;
-        search.searchParam.MERCHANTID = data.MERCHANTID;
-        search.searchParam.CONTRACTID = data.CONTRACTID;
-        search.searchParam.WFDJ = data.WFDJ;
-        search.searchParam.FTYPE = data.FTYPE;   //费用项目类型
-        search.searchParam.RRETURNFLAG = data.RRETURNFLAG;
-        search.searchParam.SCFS_TZD = data.SCFS_TZD;  //出单类型
-        search.searchParam.FEE_ACCOUNTID = data.FEE_ACCOUNTID;  //收费单位
-        search.searchParam.STATUS = data.STATUS;
-    }
+search.initSearchParam = function () {
+    search.searchParam.BILLID = "";
+    search.searchParam.BRANCHID = "";
+    search.searchParam.STATUS = [];
+    search.searchParam.CONTRACTID = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.TYPE = [];
+    search.searchParam.TRIMID = [];
+    search.searchParam.NIANYUE = "";
+    search.searchParam.YEARMONTH = "";
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
 }
 

@@ -9,5 +9,12 @@
     search.service = "ShglService";
     search.method = "GetMerchant";
 }
-
+search.initSearchParam = function () {
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.REPORTER_NAME = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
+}
 

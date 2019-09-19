@@ -5,17 +5,12 @@
     ];
     search.service = "XtglService";
     search.method = "GetFeeSubject";
-
+}
+search.initSearchParam = function () {
     search.searchParam.TRIMID = "";
     search.searchParam.NAME = "";
     search.searchParam.PYM = "";
-    search.searchParam.TYPE = "";
-    search.searchParam.ACCOUNT = "";
-    search.searchParam.DEDUCTION = "";
-}
-////获取父页面参数
-search.popInitParam = function (data) {
-    if (data) {
-        search.searchParam.SqlCondition = data.SqlCondition;
-    }
+    search.searchParam.TYPE = [];
+    search.searchParam.ACCOUNT = [];
+    search.searchParam.DEDUCTION = [];
 }

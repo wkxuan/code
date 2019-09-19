@@ -18,5 +18,11 @@
     search.service = "CxglService";
     search.method = "GetFRPLAN";
 }
+search.initSearchParam = function () {
+    search.searchParam.TRIMID = "";
+    search.searchParam.NAME = "";
+    search.searchParam.FRTYPE = "";
+    search.searchParam.STATUS = "";
+}
 
 

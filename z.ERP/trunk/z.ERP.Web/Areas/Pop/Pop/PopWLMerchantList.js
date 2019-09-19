@@ -9,5 +9,11 @@
     search.service = "WyglService";
     search.method = "GetWlMerchant";
 }
-
+search.initSearchParam = function () {
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
+}
 

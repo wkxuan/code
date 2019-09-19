@@ -4,8 +4,8 @@
 @inherits PopSearchViewBase
 @section conditionParam{
     <row>
-        <i-col span="3" class="RowTitle">账单号</i-col>
-        <i-col span="5">
+        <i-col span="2" class="RowTitle">账单号</i-col>
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -13,96 +13,83 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">门店</i-col>
-        <i-col span="5">
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
                     vModel = "searchParam.BRANCHID",
                     ServiceMothod = m => m.branch(),
+
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">状态</i-col>
-        <i-col span="5">
+        <i-col span="2" class="RowTitle">状态</i-col>
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<账单状态Part>()
                 {
                     vModel = "searchParam.STATUS",
+                    Multiple = true
                 });
             }
         </i-col>
-        </row>
-        <row>
-            <i-col span="3" class="RowTitle">
-                租约号
-            </i-col>
-            <i-col span="5">
-
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "searchParam.CONTRACTID"
-                    });
-                }
-            </i-col>
-            <i-col span="3" class="RowTitle">
-                商户
-            </i-col>
-            <i-col span="5">
-
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "searchParam.MERCHANTID"
-                    });
-                }
-            </i-col>
-            <i-col span="3" class="RowTitle">
-                类型
-            </i-col>
-            <i-col span="5">
-                @{
-                    RenderControl(new EnumDropDownListRender<账单类型Part>()
-                    {
-                        vModel = "searchParam.TYPE",
-                    });
-                }
-            </i-col>
-        </row>
+    </row>
     <row>
-        <i-col span="3" class="RowTitle">
-            @*    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "SelFeeSubject",
-            Text = "收费项目",
-            Enable = true,
-            Type = "primary"
-        });
-    } *@
+        <i-col span="2" class="RowTitle">
+            租约号
+        </i-col>
+        <i-col span="6" class="RowText">
+
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.CONTRACTID"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            商户
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.MERCHANTID"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            类型
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<账单类型Part>()
+                {
+                    vModel = "searchParam.TYPE",
+                    Multiple = true
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
             收费项目
         </i-col>
-        <i-col span="5">
-
-       @*     @{
-        RenderControl(new TextBoxRender()
-        {
-            vModel = "searchParam.TERMNAME"
-        });
-    }*@
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
                     vModel = "searchParam.TRIMID",
                     ServiceMothod = m => m.feesubject(),
+                    Multiple = true
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             债权发生月
         </i-col>
-        <i-col span="5">
+        <i-col span="6" class="RowText">
 
             @{
                 RenderControl(new TextBoxRender()
@@ -112,10 +99,10 @@
             }
         </i-col>
 
-        <i-col span="3" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             收付实现月
         </i-col>
-        <i-col span="5">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -124,55 +111,36 @@
             }
         </i-col>
     </row>
-        <row>
-            <i-col span="3" class="RowTitle">
-                登记人
-            </i-col>
-            <i-col span="5">
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "searchParam.REPORTER"
-                    });
-                }
-            </i-col>
-            <i-col span="3" class="RowTitle">
-                登记时间_起
-            </i-col>
-            <i-col span="5">
-                @{
-                    RenderControl(new DateBoxRender()
-                    {
-                        vModel = "searchParam.REPORTER_TIME_START"
-                    });
-                }
-            </i-col>
-            <i-col span="3" class="RowTitle">
-                登记时间_止
-            </i-col>
-            <i-col span="5">
-                @{
-                    RenderControl(new DateBoxRender()
-                    {
-                        vModel = "searchParam.REPORTER_TIME_END"
-                    });
-                }
-            </i-col>
-        </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            登记人
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.REPORTER"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            登记时间
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_TIME_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_TIME_END"
+                });
+            }
+        </i-col>
+    </row>
 }
-@*
-    @section pops{
-        <row>
-            <i-col>
-                @{
-                    RenderControl(new PopsRender()
-                    {
-                        vModel = "screenParam.showPopFeeSubject",
-                        Src = "screenParam.srcPopFeeSubject",
-                        Caption = "选择收费项目",
-                        Width = "800"
-                    });
-                }
-            </i-col>
-        </row>
-    }*@

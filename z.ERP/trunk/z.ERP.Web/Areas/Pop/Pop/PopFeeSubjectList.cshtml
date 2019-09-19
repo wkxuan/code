@@ -3,69 +3,69 @@
 @using z.ERP.Web.Areas.Layout.PopSearch;
 @inherits PopSearchViewBase
 @section conditionParam{
-<row>
-    <i-col span="3" class="RowTitle">
-        代码
-    </i-col>
-    <i-col span="5" class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "screenParam.TRIMID"
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">名称</i-col>
-    <i-col span="5" class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "searchParam.NAME"
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">拼音码</i-col>
-    <i-col span="5" class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "searchParam.PYM"
-            });
-        }
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">项目类型</i-col>
-    <i-col span="5" class="RowText">
-        @{
-            RenderControl(new EnumDropDownListRender<收费项目类型>()
-            {
-                vModel = "searchParam.TYPE",
-                Multiple= true
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">成本费用</i-col>
-    <i-col span="5" class="RowText">
-        @{
-            RenderControl(new EnumDropDownListRender<收费项目成本费用>()
-            {
-                vModel = "searchParam.ACCOUNT",
-                Multiple = true
-            });
-        }
-    </i-col>
+    <row>
+        <i-col span="3" class="RowTitle">
+            代码
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "screenParam.TRIMID"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">名称</i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.NAME"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">拼音码</i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.PYM"
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">项目类型</i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<收费项目类型>()
+                {
+                    vModel = "searchParam.TYPE",
+                    Multiple = true
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">成本费用</i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<收费项目成本费用>()
+                {
+                    vModel = "searchParam.ACCOUNT",
+                    Multiple = true
+                });
+            }
+        </i-col>
 
-    <i-col span="3" class="RowTitle">现金货扣</i-col>
-    <i-col span="5" class="RowText">
-        @{
-            RenderControl(new EnumDropDownListRender<收费项目现金货扣>()
-            {
-                vModel = "searchParam.DEDUCTION",
-                Multiple = true
-            });
-        }
-    </i-col>
-</row>
+        <i-col span="3" class="RowTitle">现金货扣</i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<收费项目现金货扣>()
+                {
+                    vModel = "searchParam.DEDUCTION",
+                    Multiple = true
+                });
+            }
+        </i-col>
+    </row>
 }
 

@@ -8,11 +8,7 @@
     search.service = "DataService";
     search.method = "GetGoodsList";
 }
-
-//获取父页面参数
-search.popInitParam = function (data) {
-    if (data) {
-        search.searchParam.CONTRACTID = data.CONTRACTID;        
-        search.searchParam.YYY = data.YYY;
-    }
+search.initSearchParam = function () {
+    search.searchParam.GOODSDM = "";
+    search.searchParam.NAME = "";
 }

@@ -7,9 +7,7 @@
     search.service = "DataService";
     search.method = "GetJsklGroup";
 }
-//获取父页面参数
-search.popInitParam = function (data) {
-    if (data) {
-        search.searchParam.CONTRACTID = data.CONTRACTID;
-    }
+search.initSearchParam = function () {
+    search.searchParam.GROUPNO = "";
+    search.searchParam.DESCRIPTION = "";
 }

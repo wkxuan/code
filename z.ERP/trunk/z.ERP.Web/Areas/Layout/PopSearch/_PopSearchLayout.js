@@ -10,8 +10,7 @@
     this.IsValidSrch = function () {
         return true;
     }
-    this.popInitParam = function (data) { }
-
+    this.initSearchParam = function () { };
     this.popCallBack = function (data) { };
     this.mountedInit = function () { }
     this.vue = function VueOperate() {
@@ -110,11 +109,12 @@
                 },
                 clear: function (event) {
                     event.stopPropagation();
-                    _this.searchParam = {};
-                    this.searchParam = _this.searchParam;
                     this.data = [];
                     this.pagedataCount = 0;
+                    _this.initSearchParam();
                     _this.newCondition();
+                    this.initParam();
+                    this.panelName = ["condition", "result"];
                 },
                 changePageCount: function (index) {
                     this.currentPage = index;
@@ -139,11 +139,14 @@
             ve.initParam();
             let param = {};
             for (let item in ve.searchParam) {
-                if (ve.searchParam[item]) {
-                    if (Array.isArray(ve.searchParam[item])) {
-                        param[item] = ve.searchParam[item].join(',');
-                    } else {
-                        param[item] = ve.searchParam[item];
+                let p = ve.searchParam[item];
+                if (Array.isArray(p)) {
+                    if (p.length) {
+                        param[item] = p.join(',');
+                    }                    
+                } else {
+                    if (p) {
+                        param[item] = p;
                     }
                 }
             }
@@ -184,6 +187,7 @@
     setTimeout(function () {
         _this.vueInit();
         _this.beforeVue();
+        _this.initSearchParam();
         _this.vue();
     }, 100);
 }

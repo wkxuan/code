@@ -13,26 +13,14 @@
     search.service = "DataService";
     search.method = "GetContract";
 }
-//获取父页面参数
-search.popInitParam = function (data) {
-    if (data) {
-        search.searchParam.BRANCHID = data.BRANCHID;
-        search.searchParam.YXHTBJ = data.YXHTBJ;
-        search.searchParam.FREESHOPBJ = data.FREESHOPBJ;
-    }
+search.initSearchParam = function () {
+    search.searchParam.CONTRACTID = "";
+    search.searchParam.BRANCHID = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
 }
-search.otherMethods = {
-    SelFeeSubject: function () {
-        search.screenParam.showPopFeeSubject = true;
-    }
-}
-//接收子页面返回值
-search.popCallBack = function (data) {
-    search.screenParam.showFeeSubject = false;
-    for (var i = 0; i < data.sj.length; i++) {
-        search.screenParam.TERMID = data.sj[i].TERMID;
-        search.screenParam.TERMNAME = data.sj[i].NAME;
-    };
-
-};
 

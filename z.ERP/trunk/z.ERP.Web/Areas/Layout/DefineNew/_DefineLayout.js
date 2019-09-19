@@ -151,11 +151,14 @@
 
             let param = {};
             for (let item in ve.searchParam) {
-                if (ve.searchParam[item]) {
-                    if (Array.isArray(ve.searchParam[item])) {
-                        param[item] = ve.searchParam[item].join(',');
-                    } else {
-                        param[item] = ve.searchParam[item];
+                let p = ve.searchParam[item];
+                if (Array.isArray(p)) {
+                    if (p.length) {
+                        param[item] = p.join(',');
+                    }
+                } else {
+                    if (p) {
+                        param[item] = p;
                     }
                 }
             }

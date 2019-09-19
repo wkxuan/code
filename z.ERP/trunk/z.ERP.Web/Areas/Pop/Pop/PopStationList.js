@@ -7,9 +7,8 @@
     search.service = "XtglService";
     search.method = "GetStationList";
 }
-////获取父页面参数
-search.popInitParam = function (data) {
-    if (data) {
-        search.searchParam.SqlCondition = data.SqlCondition;
-    }
+search.initSearchParam = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.POSNO = "";
+    search.searchParam.POSTYPE = "";
 }

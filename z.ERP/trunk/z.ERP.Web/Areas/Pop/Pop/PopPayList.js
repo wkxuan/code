@@ -6,4 +6,8 @@
     search.service = "XtglService";
     search.method = "GetPay";
 }
+search.initSearchParam = function () {
+    search.searchParam.PAYID = "";
+    search.searchParam.NAME = "";
+}
 

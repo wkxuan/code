@@ -8,4 +8,7 @@
     search.service = "UserService";
     search.method = "GetRole";
 }
-
+search.initSearchParam = function () {
+    search.searchParam.ROLECODE = "";
+    search.searchParam.ROLENAME = "";
+}

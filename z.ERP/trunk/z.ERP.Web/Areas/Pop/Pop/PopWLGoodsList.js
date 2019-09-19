@@ -11,10 +11,10 @@
     search.service = "WyglService";
     search.method = "GetWlGoods";
 }
-search.popInitParam = function (data) {
-    if (data) {
-        search.searchParam.MERCHANTID = data.MERCHANTID;
-    }
+search.initSearchParam = function () {
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.NAME = "";
+    search.searchParam.GOODSDM = "";
+    search.searchParam.GOODSNAME = "";
 }
-
 

@@ -2,29 +2,29 @@
 @using z.ERP.Web.Areas.Layout.PopSearch;
 @inherits PopSearchViewBase
 @section conditionParam{
-<row>
-    <i-col span="3" class="RowTitle">
-        收款编码
-    </i-col>
-    <i-col span="5" class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "searchParam.PAYID",
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">
-        收款名称
-    </i-col>
-    <i-col span="5" class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "searchParam.NAME",
-            });
-        }
-    </i-col>
-</row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            收款编码
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.PAYID",
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            收款名称
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.NAME",
+                });
+            }
+        </i-col>
+    </row>
 }
 
