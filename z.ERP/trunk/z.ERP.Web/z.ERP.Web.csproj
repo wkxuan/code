@@ -401,12 +401,6 @@
     <Content Include="Areas\Layout\Srch\SrchStyle.css" />
     <Content Include="Areas\Layout\Srch\_SrchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
-    <Content Include="Areas\Pop\PopPay.js" />
-    <Content Include="Areas\Pop\PopFeeSubject.js" />
-    <Content Include="Areas\Pop\PopShop.js" />
-    <Content Include="Areas\Pop\PopBrand.js" />
-    <Content Include="Areas\Pop\PopMerchant.js" />
-    <Content Include="Areas\Pop\PopContract.js" />
     <Content Include="Areas\Pop\Pop\PopFR_PlanList.js" />
     <Content Include="Areas\Pop\Pop\PopPRESENTList.js" />
     <Content Include="Areas\Pop\Pop\PopPromotionList.js" />

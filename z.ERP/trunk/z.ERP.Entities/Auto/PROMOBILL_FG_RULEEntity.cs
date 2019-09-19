@@ -8,7 +8,7 @@ using z.DBHelper.DBDomain;
 namespace z.ERP.Entities
 {
     [DbTable("PROMOBILL_FG_RULE", "促销单赠品子表")]
-    public partial class PROMOBILL_FG_RULEEntity
+    public partial class PROMOBILL_FG_RULEEntity: TableEntityBase
     {
         public PROMOBILL_FG_RULEEntity() { }
         public PROMOBILL_FG_RULEEntity(string id,string presentid) {

@@ -39,7 +39,8 @@ editDetail.popCallBack = function (data) {
                             GOODSID: data.sj[i].GOODSID,
                             GOODSDM: data.sj[i].GOODSDM,
                             GOODSNAME: data.sj[i].NAME,
-                            BRANDMC: data.sj[i].BRANDMC
+                            BRANDMC: data.sj[i].BRANDMC,
+                            VALUE1: null
                         });
                     }
                 };
