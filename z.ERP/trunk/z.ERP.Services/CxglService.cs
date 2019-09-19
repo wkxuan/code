@@ -222,10 +222,13 @@ namespace z.ERP.Services
             string sql = $@"SELECT * FROM FR_PLAN WHERE 1=1 ";
             item.HasKey("NAME", a => sql += $" and NAME LIKE '%{a}%'");
             item.HasKey("ID", a => sql += $" and ID= {a}");
+            item.HasKey("FRTYPE", a => sql += $" and FRTYPE= {a}");
+            item.HasKey("STATUS", a => sql += $" and STATUS= {a}");
             sql += " ORDER BY ID DESC";
             int count;
             var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<使用状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<满减方式>("FRTYPE", "FRTYPEMC");
             return new DataGridResult(dt, count);
         }
         public string SaveFRPLAN(FR_PLANEntity DefineSave)

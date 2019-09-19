@@ -108,6 +108,11 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "促销活动主题";
             return View();
         }
+        public ActionResult PopFR_PlanList()
+        {
+            ViewBag.Title = "满减方案";
+            return View();
+        }
         //public UIResult SearchFloorMapData(FLOORMAPEntity Data)
         //{
         //    var res = service.DpglService.GetFLOORMAPDATA(Data);

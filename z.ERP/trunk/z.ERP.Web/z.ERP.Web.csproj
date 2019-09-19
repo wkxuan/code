@@ -406,6 +406,7 @@
     <Content Include="Areas\Pop\PopBrand.js" />
     <Content Include="Areas\Pop\PopMerchant.js" />
     <Content Include="Areas\Pop\PopContract.js" />
+    <Content Include="Areas\Pop\Pop\PopFR_PlanList.js" />
     <Content Include="Areas\Pop\Pop\PopPromotionList.js" />
     <Content Include="Areas\Pop\Pop\PopPayList.js" />
     <Content Include="Areas\Pop\Pop\PopBrandList.js" />
@@ -827,6 +828,7 @@
     <Content Include="Areas\CXGL\PRESENT\Present.cshtml" />
     <Content Include="Areas\CXGL\PRESENT\PresentDetail.cshtml" />
     <Content Include="Areas\CXGL\FR_PLAN\FR_PLAN.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopFR_PlanList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

@@ -3,10 +3,14 @@
     define.screenParam.colDef = [
         {
             title: '编码',
-            key: 'ID', width: 120
+            key: 'ID', width: 80
         }, {
             title: "方案名称",
             key: 'NAME', tooltip: true
+        },
+        {
+            title: "满减方式",
+            key: 'FRTYPEMC', width: 120
         },
         {
             title: "状态",
