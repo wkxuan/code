@@ -11,7 +11,7 @@ using z.SSO.Model;
 
 namespace z.ERP.Services
 {
-    public class CxglService:ServiceBase
+    public class CxglService : ServiceBase
     {
         internal CxglService()
         {
@@ -65,6 +65,7 @@ namespace z.ERP.Services
             dt.NewEnumStrColumns<星期>("WEEK", "WEEKMC");
             return new DataGridResult(dt, count);
         }
+
         public Tuple<dynamic, DataTable> PromobillShowOneData(PROMOBILLEntity data)
         {
             string sql = @"select P.*,T.NAME PROMOTIONNAME 
@@ -330,7 +331,8 @@ namespace z.ERP.Services
         public string SaveFRPLAN(FR_PLANEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
-            if (DefineSave.ID.IsEmpty()) { 
+            if (DefineSave.ID.IsEmpty())
+            {
                 DefineSave.ID = CommonService.NewINC("FR_PLAN");
                 DefineSave.STATUS = "1";
             }
@@ -374,56 +376,78 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public DataGridResult PresentSql(SearchItem item)
+        public string PresentSql(SearchItem item)
         {
-            string sql = $@"SELECT BRANCHID, BRANCH.NAME, ID, NAME, PRICE, STATUS
-                            FROM PRESENT,BRANCH
-                            WHERE BRANCH.ID=PRESENT.BRANCHID";
-            sql += "  AND PRESENT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            item.HasKey("BRANCHID", a => sql += $" and BRANCHID LIKE '%{a}%'");
-            item.HasKey("ID", a => sql += $" and ID LIKE '%{a}%'");
-            item.HasKey("NAME", a => sql += $" and NAME LIKE '%{a}%'");
-            item.HasKey("PRICE", a => sql += $" and PRICE LIKE '%{a}%'");
-            item.HasKey("STATUS", a => sql += $" and STATUS LIKE '%{a}%'");
-            sql += " ORDER BY ID DESC";
-            int count;
-            var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
-            return new DataGridResult(dt, count);
+            string sql = $@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS
+                            FROM PRESENT P,BRANCH B
+                            WHERE B.ID=P.BRANCHID";
+            sql += "  AND B.ID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
-          
-
+            item.HasKey("ID", a => sql += $" and P.ID LIKE '%{a}%'");
+            item.HasKey("BRANCHID", a => sql += $" and B.ID LIKE '%{a}%'");
+            item.HasKey("NAME", a => sql += $" and P.NAME LIKE '%{a}%'");
+            item.HasKey("PRICE", a => sql += $" and P.PRICE LIKE '%{a}%'");
+            item.HasKey("STATUS", a => sql += $" and P.STATUS LIKE '%{a}%'");
+            sql += " ORDER BY B.ID DESC";
+            return sql;
+            //int count;
+            //var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            //dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
+            //return new DataGridResult(dt, count);
         }
         public DataGridResult Present(SearchItem item)
         {
-            string sql = "";
+            string sql = PresentSql(item);
             int count;
             var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            //dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
 
         public DataTable PresentDetail(SearchItem item)
         {
-            //DataGridResult sql = PresentSql(item);
-            string sql = "";
+            string sql = PresentSql(item);
             DataTable dt = DbHelper.ExecuteTable(sql);
-        
             return dt;
         }
         public DataTable GetPresent(PresentEntity data)
         {
-            string sql = "";
-            string yTQx = GetPermissionSql(PermissionType.Category);
-            
-            //string sql = PresentSql(item);
-            //    $@"SELECT BRANCHID, BRANCH.NAME, HEAD, TAIL, ADQRCODE, ADCONTENT
-            //                    FROM PRESENT,BRANCH
-            //                    WHERE BRANCH.ID=PRESENT.BRANCHID";
-            //sql += "  AND TICKETINFO.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            sql += " and Present.ID=" + data.ID;
+
+            string sql = $@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS
+                            FROM PRESENT P,BRANCH B
+                            WHERE B.ID=P.ID";
+            sql += "  AND B.ID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += " and P.ID=" + data.ID;
+            //sql += " and P.NAME PRESENTNAME=" + data.NAME;
+            //sql += " and P.PRICE=" + data.PRICE;
+            //sql += " and P.STATUS=" + data.STATUS;
+            sql += " ORDER BY B.ID DESC";
             DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<使用状态>("STATUS", "STATUSMC");
             return dt;
         }
-
+        //public void DeletePresent(PresentEntity data)
+        //{
+        //    throw new NotImplementedException();
+        //}
+        public void DeletePresent(List<PresentEntity> DeleteData)
+        {
+            foreach (var item in DeleteData)
+            {
+                PresentEntity Data = DbHelper.Select(item);
+                //if (Data.STATUS == ((int)状态.审核).ToString())
+                //{
+                //    throw new LogicException("已经审核不能删除!");
+                //}
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in DeleteData)
+                {
+                    DbHelper.Delete(item);
+                }
+                Tran.Commit();
+            }
+        }
     }
 }

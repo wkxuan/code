@@ -6,10 +6,9 @@
 defineDetail.clearKey = function () {
 
     defineDetail.dataParam.BRANCHID = null;
-    defineDetail.dataParam.ID = null;
     defineDetail.dataParam.NAME = null;
     defineDetail.dataParam.PRICE = null;
-    defineDetail.dataParam.STATUS = null;
+    defineDetail.dataParam.STATUS = "未使用";
 };
 
 defineDetail.mountedInit = function () {
@@ -18,6 +17,7 @@ defineDetail.mountedInit = function () {
         //authority: "10102001"
     }, {
         id: "edit",
+        
         //authority: "10102001"
     }, {
         id: "del",
@@ -44,7 +44,7 @@ defineDetail.IsValidSave = function () {
         return false;
     };
     if (!defineDetail.dataParam.NAME) {
-        iview.Message.info("名称不能为空!");
+        iview.Message.info("赠品名称不能为空!");
         return false;
     };
     if (!defineDetail.dataParam.PRICE) {

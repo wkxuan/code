@@ -21,38 +21,61 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle">
+        <i-col span="5" class="RowTitle">
             赠品编号
         </i-col>
-        <i-col span="6" class="RowText">
-            <i-input v-model="dataParam.ID" />
+        <i-col span="17" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ID",
+                    Readonly = "true",
+                });
+            }
         </i-col>
-        <i-col span="2" class="RowTitle">
+        </ROW>
+    <ROW>
+        <i-col span="5" class="RowTitle">
             赠品名称
         </i-col>
-        <i-col span="6" class="RowText">
-            <i-input v-model="dataParam.NAME" />
+        <i-col span="17" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.NAME",
+                    //Enable = false,
+                });
+            }
+        </i-col>
+</ROW>
+    <row>
+        <i-col span="5" class="RowTitle">
+            价格
+        </i-col>
+        <i-col span="17" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.PRICE",
+                    type = "number",
+                    //Enable = false,
+                });
+            }
         </i-col>
       
     </row>
 
     <row>
-        <i-col span="2" class="RowTitle">
-            价格
-        </i-col>
-        <i-col span="6" class="RowText">
-            <i-input v-model="dataParam.PRICE" />
-        </i-col>
-
-        <i-col span="2" class="RowTitle">
+      <i-col span="5" class="RowTitle">
             状态
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="17" class="RowText">
             @{
-                RenderControl(new EnumDropDownListRender<促销单状态>()
+                RenderControl(new TextBoxRender()
                 {
-                    vModel = "dataParam.STATUS",
-                    Enable = false
+                    vModel = "dataParam.STATUSMC",
+                    Enable = false,
+                    Readonly = "true",
                 });
             }
         </i-col>   

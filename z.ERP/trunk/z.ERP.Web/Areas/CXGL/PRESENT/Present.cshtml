@@ -1,8 +1,6 @@
 ﻿@using z.ERP.Web.Areas.Layout.DefineNew
 @using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-
-
 @inherits DefineViewNewBase
 
 @section conditionParam{
@@ -23,41 +21,33 @@
             赠品编号
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input v-model="searchParam.ID" />
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.ID",
+                    Enable = false
+                });
+            }
         </i-col>
+
         <i-col span="2" class="RowTitle">
             赠品名称
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input v-model="searchParam.NAME" />
-        </i-col>
-    </row>
-   
-    <row>
-        <i-col span="2" class="RowTitle">
-            价格
-        </i-col>
-        <i-col span="6" class="RowText">
-            <i-input v-model="searchParam.PRICE" />
-        </i-col>
-
-        <i-col span="2" class="RowTitle">
-            状态
-        </i-col>
-        <i-col span="6" class="RowText">
             @{
-                RenderControl(new EnumDropDownListRender<促销单状态>()
+                RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.STATUS",
+                    vModel = "searchParam.NAME",
                     Enable = false
                 });
             }
-           </i-col>   
-</row>
+        </i-col>
+    </row>
+   
 }
 
 @section pops{
     <yx-modal v-bind:src="screenParam.defineDetailSrc" v-bind:title="screenParam.title"
-              width="500" height="350"
+              width="350" height="250"
               v-bind:modal-visible.sync="screenParam.showDefineDetail"></yx-modal>
 }

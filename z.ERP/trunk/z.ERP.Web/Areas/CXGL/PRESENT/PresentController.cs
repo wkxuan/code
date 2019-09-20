@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.ERP.Entities.Enum;
 using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.DefineDetail;
-using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
-using System;
 
 namespace z.ERP.Web.Areas.CXGL.PRESENT
 {
@@ -28,24 +25,34 @@ namespace z.ERP.Web.Areas.CXGL.PRESENT
         public string Save(PresentEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
-
-
-            v.Require(a => a.ID);
-            v.Require(a => a.BRANCHID); 
+            if (DefineSave.ID.IsEmpty())
+            {
+                DefineSave.ID = service.CommonService.NewINC("PRESENT");
+                DefineSave.STATUS = "1";
+            }
+            v.IsUnique(a => a.ID);
+            v.Require(a => a.BRANCHID);
             v.Require(a => a.NAME);
             v.Require(a => a.PRICE);
-            v.Require(a => a.STATUS);
+            //if (DefineSave.STATUS == "2")
+            //{
+            //    throw new LogicException("数据已使用状态不能更改!");
+            //};
             v.Verify();
             return CommonSave(DefineSave);
+
         }
 
-
+        //public void Delete(List<PROMOTIONEntity> DefineDelete)
+        //{
+        //    foreach (var con in DefineDelete)
+        //    {
+        //        CommenDelete(con);
+        //    }
+        //}
         public void Delete(List<PresentEntity> DefineDelete)
         {
-            foreach (var con in DefineDelete)
-            {
-                CommenDelete(con);
-            }
+            service.CxglService.DeletePresent(DefineDelete);
         }
         /// <summary>
         /// 编辑列表
@@ -57,12 +64,12 @@ namespace z.ERP.Web.Areas.CXGL.PRESENT
             var dt = service.CxglService.GetPresent(data);
             return new UIResult(
                 new
-                    {
-                       dt
-                    }
-                ); 
+                {
+                    dt
+                }
+                );
         }
 
-     
+
     }
 }

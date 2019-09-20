@@ -6,10 +6,11 @@
     defineNew.screenParam.title = "赠品定义";
     defineNew.screenParam.branchData = [];
     defineNew.key = 'ID';
+    defineNew.screenParam.STATUSMC = "未使用";
 
     defineNew.columnsDef = [
                 { title: '门店编号', key: 'BRANCHID' },
-            { title: '门店名称', key: 'NAME' },
+            { title: '门店名称', key: 'BRANCHNAME' },
             { title: '赠品编号', key: 'ID' },
             { title: '赠品名称', key: 'NAME' },
             { title: '价格', key: 'PRICE' },
