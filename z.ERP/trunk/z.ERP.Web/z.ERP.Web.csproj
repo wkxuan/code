@@ -199,7 +199,7 @@
     <Compile Include="Areas\CXGL\PRESENT\PresentController.cs" />
     <Compile Include="Areas\CXGL\FR_PLAN\FR_PLANController.cs" />
     <Compile Include="Areas\CXGL\PROMOBILL_FR\Promobill_FRController.cs" />
-    <Compile Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisController.cs" />
+    <Compile Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DISController.cs" />
     <Compile Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGController.cs" />
     <Compile Include="Areas\CXGL\PROMOTION\PromotionController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
@@ -351,8 +351,8 @@
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
     <Content Include="Areas\CXGL\PROMOBILL_FR\Promobill_FREdit.js" />
     <Content Include="Areas\CXGL\PROMOBILL_FR\Promobill_FRList.js" />
-    <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisEdit.js" />
-    <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisList.js" />
+    <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DISEdit.js" />
+    <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DISList.js" />
     <Content Include="Areas\CXGL\PRESENT\Present.js" />
     <Content Include="Areas\CXGL\PRESENT\PresentDetail.js" />
     <Content Include="Areas\CXGL\FR_PLAN\FR_PLAN.js" />
@@ -816,8 +816,8 @@
     <Content Include="Areas\XTGL\STATIONMONITOR\STATIONMONITOR.cshtml" />
     <Content Include="Areas\CXGL\PROMOTION\Promotion.cshtml" />
     <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.cshtml" />
-    <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisEdit.cshtml" />
-    <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DisList.cshtml" />
+    <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DISEdit.cshtml" />
+    <Content Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DISList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopPromotionList.cshtml" />
     <Content Include="Areas\XTGL\TicketInfo\TicketInfo.cshtml" />
     <Content Include="Areas\XTGL\TicketInfo\TicketInfoDetail.cshtml" />

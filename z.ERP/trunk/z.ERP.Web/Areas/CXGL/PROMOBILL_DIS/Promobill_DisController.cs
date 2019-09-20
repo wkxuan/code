@@ -9,15 +9,15 @@ namespace z.ERP.Web.Areas.CXGL.PROMOBILL_DIS
 {
     public class PROMOBILL_DISController : BaseController
     {
-        public ActionResult Promobill_DisList()
+        public ActionResult Promobill_DISList()
         {
             ViewBag.Title = "促销折扣单";
-            return View("Promobill_DisList");
+            return View("Promobill_DISList");
         }
-        public ActionResult Promobill_DisEdit(string Id)
+        public ActionResult Promobill_DISEdit(string Id)
         {
             ViewBag.Title = "促销折扣单信息";
-            return View("Promobill_DisEdit", model: (EditRender)Id);
+            return View("Promobill_DISEdit", model: (EditRender)Id);
         }
         public string Save(PROMOBILLEntity SaveData)
         {

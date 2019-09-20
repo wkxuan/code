@@ -217,7 +217,7 @@ editDetail.mountedInit = function () {
         authority: "10600502",
         fun: function () {
             _.Ajax('ExecData', {
-                Data: editDetail.dataParam,
+                SaveData: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("审核成功");
                 editDetail.refreshDataParam(data);
@@ -238,7 +238,7 @@ editDetail.mountedInit = function () {
         authority: "10600502",
         fun: function () {
             _.Ajax('BeginData', {
-                Data: editDetail.dataParam,
+                SaveData: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("启动成功");
                 editDetail.refreshDataParam(data);
@@ -259,7 +259,7 @@ editDetail.mountedInit = function () {
         authority: "10600502",
         fun: function () {
             _.Ajax('StopData', {
-                Data: editDetail.dataParam,
+                SaveData: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("终止成功");
                 editDetail.refreshDataParam(data);
