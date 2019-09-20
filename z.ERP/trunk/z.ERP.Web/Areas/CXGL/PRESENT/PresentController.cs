@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.DefineDetail;
+using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
 
@@ -34,22 +35,14 @@ namespace z.ERP.Web.Areas.CXGL.PRESENT
             v.Require(a => a.BRANCHID);
             v.Require(a => a.NAME);
             v.Require(a => a.PRICE);
-            //if (DefineSave.STATUS == "2")
-            //{
-            //    throw new LogicException("数据已使用状态不能更改!");
-            //};
+            if (DefineSave.STATUS == "2")
+            {
+                throw new LogicException("数据已使用状态不能更改!");
+            };
             v.Verify();
             return CommonSave(DefineSave);
 
         }
-
-        //public void Delete(List<PROMOTIONEntity> DefineDelete)
-        //{
-        //    foreach (var con in DefineDelete)
-        //    {
-        //        CommenDelete(con);
-        //    }
-        //}
         public void Delete(List<PresentEntity> DefineDelete)
         {
             service.CxglService.DeletePresent(DefineDelete);

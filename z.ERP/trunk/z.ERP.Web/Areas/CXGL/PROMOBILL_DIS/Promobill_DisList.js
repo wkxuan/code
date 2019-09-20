@@ -25,7 +25,7 @@
                 _.OpenPage({
                     id: 10600501,
                     title: '促销折扣单详情',
-                    url: "CXGL/PROMOBILL_DIS/Promobill_DisEdit/" + row.BILLID
+                    url: "CXGL/PROMOBILL_DIS/Promobill_DISEdit/" + row.BILLID
                 });
             }
         }
@@ -79,6 +79,6 @@ search.addHref = function (row) {
     _.OpenPage({
         id: 10600401,
         title: '促销折扣单详情',
-        url: "CXGL/PROMOBILL_DIS/Promobill_DisEdit/"
+        url: "CXGL/PROMOBILL_DIS/Promobill_DISEdit/"
     });
 }

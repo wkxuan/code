@@ -379,7 +379,7 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string PresentSql(SearchItem item)
         {
-            string sql = $@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS
+            string sql = $@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS STATUSMC
                             FROM PRESENT P,BRANCH B
                             WHERE B.ID=P.BRANCHID";
             sql += "  AND B.ID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
@@ -414,23 +414,17 @@ namespace z.ERP.Services
         public DataTable GetPresent(PresentEntity data)
         {
 
-            string sql = $@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS
+            string sql =$@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS 
                             FROM PRESENT P,BRANCH B
-                            WHERE B.ID=P.ID";
+                            WHERE B.ID=P.BRANCHID";
             sql += "  AND B.ID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             sql += " and P.ID=" + data.ID;
-            //sql += " and P.NAME PRESENTNAME=" + data.NAME;
-            //sql += " and P.PRICE=" + data.PRICE;
-            //sql += " and P.STATUS=" + data.STATUS;
             sql += " ORDER BY B.ID DESC";
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.NewEnumColumns<使用状态>("STATUS", "STATUSMC");
             return dt;
         }
-        //public void DeletePresent(PresentEntity data)
-        //{
-        //    throw new NotImplementedException();
-        //}
+
         public void DeletePresent(List<PresentEntity> DeleteData)
         {
             foreach (var item in DeleteData)
