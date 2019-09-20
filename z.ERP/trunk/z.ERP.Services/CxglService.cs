@@ -216,6 +216,102 @@ namespace z.ERP.Services
         }
         #endregion
 
+        #region 促销赠品单
+        public string SavePromobill_FG(PROMOBILLEntity data)
+        {
+            var v = GetVerify(data);
+            if (data.BILLID.IsEmpty())
+                data.BILLID = NewINC("PROMOBILL");
+
+            data.STATUS = ((int)促销单状态.未审核).ToString();
+            data.REPORTER = employee.Id;
+            data.REPORTER_NAME = employee.Name;
+            data.REPORTER_TIME = DateTime.Now.ToString();
+
+            v.IsUnique(a => a.BILLID);
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.PROMOTYPE);
+            v.Require(a => a.PROMOTIONID);
+            v.Require(a => a.START_DATE);
+            v.Require(a => a.END_DATE);
+            v.Require(a => a.WEEK);
+            v.Require(a => a.START_TIME);
+            v.Require(a => a.END_TIME);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                data.PROMOBILL_FG_RULE?.ForEach(item =>
+                {
+                    GetVerify(item).Require(a => a.BILLID);
+                    GetVerify(item).Require(a => a.INX);
+                    GetVerify(item).Require(a => a.FULL);
+                    GetVerify(item).Require(a => a.PRESENTID);
+                });
+                DbHelper.Save(data);
+
+                Tran.Commit();
+            }
+
+            ////增加审核待办任务
+            //var dcl = new BILLSTATUSEntity
+            //{
+            //    BILLID = data.BILLID,
+            //    MENUID = "",
+            //    BRABCHID = data.BRANCHID,
+            //    URL = "CXGL/PROMOBILL_DIS/Promobill_DisEdit/"
+            //};
+            //InsertDclRw(dcl);
+
+            return data.BILLID;
+        }
+        public void DeletePromobill_FG(List<PROMOBILLEntity> data)
+        {
+            foreach (var con in data)
+            {
+                var Data = DbHelper.Select(con);
+                if (Data.STATUS != ((int)促销单状态.未审核).ToString())
+                    throw new LogicException($"单据(" + Data.BILLID + ")已经不是未审核不能删除!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var con in data)
+                {
+                    ////删除审核待办任务
+                    //var dcl = new BILLSTATUSEntity
+                    //{
+                    //    BILLID = con.BILLID,
+                    //    MENUID = "",
+                    //    BRABCHID = con.BRANCHID
+                    //};
+                    //DelDclRw(dcl);
+
+                    DbHelper.Delete(con);
+                }
+                Tran.Commit();
+            }
+        }
+        public Tuple<dynamic, DataTable> Promobill_FGShowOneData(PROMOBILLEntity data)
+        {
+            string sql = @"select P.*,T.NAME PROMOTIONNAME 
+                             from PROMOBILL P,PROMOTION T 
+                            where P.PROMOTIONID=T.ID and P.BILLID={0}";
+            var dt = DbHelper.ExecuteTable(string.Format(sql, data.BILLID));
+            if (dt.Rows.Count == 0)
+            {
+                throw new LogicException("找不到促销赠品单!");
+            }
+            dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
+
+            string sqlitem = @"select P.*,G.GOODSDM,G.NAME GOODSNAME,B.NAME BRANDMC 
+                                 from PROMOBILL_FG_RULE P,PRESENT G,BRAND B 
+                                where P.PRESENTID=G.ID and G.BRANDID=B.ID and P.BILLID={0} order by P.INX ASC";
+            var itemdt = DbHelper.ExecuteTable(string.Format(sqlitem, data.BILLID));
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), itemdt);
+        }
+        #endregion
+
         #region 满减方案
         public DataGridResult GetFRPLAN(SearchItem item)
         {
