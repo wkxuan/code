@@ -1,6 +1,7 @@
 ﻿defineDetail.beforeVue = function () {
     defineDetail.Key = "ID";
     defineDetail.screenParam.idData = [];
+    defineDetail.dataParam.STATUSMC = "未使用";
 };
 
 defineDetail.clearKey = function () {
@@ -8,7 +9,7 @@ defineDetail.clearKey = function () {
     defineDetail.dataParam.BRANCHID = null;
     defineDetail.dataParam.NAME = null;
     defineDetail.dataParam.PRICE = null;
-    defineDetail.dataParam.STATUS = "未使用";
+    defineDetail.dataParam.STATUSMC = "未使用"
 };
 
 defineDetail.mountedInit = function () {
@@ -51,5 +52,9 @@ defineDetail.IsValidSave = function () {
         iview.Message.info("价值不能为空!");
         return false;
     };
+    //if (define.dataParam.STATUS == "2") {
+    //    iview.Message.info("数据已使用状态不能更改");
+    //    return false;
+    //};
     return true;
 }
