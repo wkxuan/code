@@ -379,7 +379,7 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string PresentSql(SearchItem item)
         {
-            string sql = $@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS STATUSMC
+            string sql = $@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS 
                             FROM PRESENT P,BRANCH B
                             WHERE B.ID=P.BRANCHID";
             sql += "  AND B.ID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
@@ -430,10 +430,10 @@ namespace z.ERP.Services
             foreach (var item in DeleteData)
             {
                 PresentEntity Data = DbHelper.Select(item);
-                //if (Data.STATUS == ((int)状态.审核).ToString())
-                //{
-                //    throw new LogicException("已经审核不能删除!");
-                //}
+            //    if (Data.STATUS == ((int)使用状态.已使用).ToString())
+            //    {
+            //        throw new LogicException("已经审核不能删除!");
+            //    }
             }
             using (var Tran = DbHelper.BeginTransaction())
             {

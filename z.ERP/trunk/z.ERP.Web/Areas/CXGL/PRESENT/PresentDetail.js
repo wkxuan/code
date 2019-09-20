@@ -6,11 +6,13 @@
 
 defineDetail.clearKey = function () {
 
+    defineDetail.dataParam.ID = [];
     defineDetail.dataParam.BRANCHID = null;
     defineDetail.dataParam.NAME = null;
     defineDetail.dataParam.PRICE = null;
     defineDetail.dataParam.STATUSMC = "未使用"
 };
+
 
 defineDetail.mountedInit = function () {
     defineDetail.btnConfig = [{
@@ -18,11 +20,25 @@ defineDetail.mountedInit = function () {
         //authority: "10102001"
     }, {
         id: "edit",
-        
+        enabled: function (disabled, data) {
+            if (!disabled && data && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         //authority: "10102001"
     }, {
         id: "del",
+        enabled: function (disabled, data) {
+            if (!disabled && data && data.STATUS < 2) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         //authority: "10102001"
+
     }, {
         id: "save",
         //authority: "10102001"
