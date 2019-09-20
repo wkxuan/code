@@ -40,6 +40,28 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+
+
+        [Field("商户类型")]
+        public string TYPE
+        {
+            get;
+            set;
+        }
+
+        [Field("身份证号")]
+        public string IDCARD
+        {
+            get;
+            set;
+        }
+
+        [Field("营业执照号")]
+        public string LICENSE
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// 税号
         /// <summary>

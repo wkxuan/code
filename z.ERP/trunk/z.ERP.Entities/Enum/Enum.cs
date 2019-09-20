@@ -469,4 +469,9 @@ namespace z.ERP.Entities.Enum
         满减 = 3,
         满赠 = 4
     }
+    public enum 商户类型
+    {
+        公司 = 1,
+        个人 = 2
+    }
 }

@@ -33,12 +33,13 @@ namespace z.ERP.Services
             item.HasKey("REPORTER_NAME", a => sql += $" and REPORTER_NAME  LIKE '%{a}%'");
             item.HasKey("REPORTER_TIME_START", a => sql += $" and REPORTER_TIME>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
             item.HasKey("REPORTER_TIME_END", a => sql += $" and REPORTER_TIME< to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS') + 1");
-            item.HasKey("STATUS", a => sql += $" and STATUS = {a}");
-            item.HasKey("STATUSL", a => sql += $" and STATUS={a}");
+            item.HasKey("STATUS", a => sql += $" and STATUS in ({a})");
+            item.HasKey("TYPE", a => sql += $" and TYPE in ({a})");
             sql += " ORDER BY  MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<商户类型>("TYPE", "TYPENAME");
             return new DataGridResult(dt, count);
         }
 
@@ -93,6 +94,12 @@ namespace z.ERP.Services
             v.Require(a => a.NAME);
             v.IsUnique(a => a.MERCHANTID);
             v.IsUnique(a => a.NAME);
+
+            if (SaveData.TYPE == "1")
+                v.IsUnique(a => a.LICENSE);
+            else
+                v.IsUnique(a => a.IDCARD);
+
             v.Verify();
             using (var Tran = DbHelper.BeginTransaction())
             {

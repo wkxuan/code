@@ -72,6 +72,9 @@ editDetail.popCallBack = function (data) {
 editDetail.clearKey = function () {
     editDetail.dataParam.MERCHANTID = null;
     editDetail.dataParam.NAME = null;
+    editDetail.dataParam.TYPE = null;
+    editDetail.dataParam.IDCARD = null;
+    editDetail.dataParam.LICENSE = null;
     editDetail.dataParam.SH = null;
     editDetail.dataParam.BANK_NAME = null;
     editDetail.dataParam.BANK = null;
@@ -134,6 +137,21 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请商户名称!");
         return false;
     };
+
+    if (!editDetail.dataParam.TYPE) {
+        iview.Message.info("请选择商户类型!");
+        return false;
+    }
+
+    if (editDetail.dataParam.TYPE == "1" && !editDetail.dataParam.LICENSE) {
+        iview.Message.info("商户类型为公司时，营业执照号不能为空!");
+        return false;
+    }
+
+    if (editDetail.dataParam.TYPE == "2" && !editDetail.dataParam.IDCARD) {
+        iview.Message.info("商户类型为个人时，身份证号不能为空!");
+        return false;
+    }
 
     if (editDetail.dataParam.MERCHANT_BRAND.length == 0) {
         iview.Message.info("请维护品牌!");

@@ -23,16 +23,17 @@
             });
         }
     </i-col>
-
-    <i-col span="2" class="RowTitle">税号</i-col>
+    <i-col span="2" class="RowTitle">商户类型</i-col>
     <i-col span="6" class="RowText">
         @{
-            RenderControl(new TextBoxRender()
+            RenderControl(new EnumDropDownListRender<商户类型>()
             {
-                vModel = "searchParam.SH"
+                vModel = "searchParam.TYPE",
+                Multiple = true
             });
         }
     </i-col>
+
 </row>
 
  <row>
@@ -46,12 +47,23 @@
          }
      </i-col>
 
+     <i-col span="2" class="RowTitle">税号</i-col>
+     <i-col span="6" class="RowText">
+         @{
+             RenderControl(new TextBoxRender()
+             {
+                 vModel = "searchParam.SH"
+             });
+         }
+     </i-col>
+
      <i-col span="2" class="RowTitle">状态</i-col>
      <i-col span="6" class="RowText">
          @{
              RenderControl(new EnumDropDownListRender<普通单据状态>()
              {
                  vModel = "searchParam.STATUS",
+                 Multiple = true
              });
          }
      </i-col>
