@@ -24,8 +24,8 @@
             title: '操作', key: 'operate', authority: "10600503", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10600501,
-                    title: '促销折扣单详情',
-                    url: "CXGL/PROMOBILL_DIS/Promobill_DisEdit/" + row.BILLID
+                    title: '促销满减单详情',
+                    url: "CXGL/PROMOBILL_FR/Promobill_FREdit/" + row.BILLID
                 });
             }
         }
@@ -34,10 +34,10 @@
     search.screenParam.srcPop = "";
     search.screenParam.title = "";
     search.screenParam.popParam = {};
-    search.searchParam.PROMOTYPE = 2;
+    search.searchParam.PROMOTYPE = 3;
 }
 search.newCondition = function () {
-    search.searchParam.PROMOTYPE = 2;
+    search.searchParam.PROMOTYPE = 3;
 };
 search.otherMethods = {
     SelPromotion: function () {
@@ -78,7 +78,7 @@ search.popCallBack = function (data) {
 search.addHref = function (row) {
     _.OpenPage({
         id: 10600401,
-        title: '促销折扣单详情',
-        url: "CXGL/PROMOBILL_DIS/Promobill_DisEdit/"
+        title: '促销满减单详情',
+        url: "CXGL/PROMOBILL_FR/Promobill_FREdit/"
     });
 }

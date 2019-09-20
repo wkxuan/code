@@ -3,7 +3,6 @@
     editDetail.method = "GetContract";
     editDetail.screenParam.yearLoading = false;
     editDetail.screenParam.monthLoading = false;
-    editDetail.defaultFooter = false;
     //初始化返款日信息
     //转换为string 是为了保持从后台返回后一致，来显示
     let tempList = [];
