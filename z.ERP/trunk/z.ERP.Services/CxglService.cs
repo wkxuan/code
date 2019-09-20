@@ -305,9 +305,9 @@ namespace z.ERP.Services
             }
             dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
 
-            string sqlitem = @"select P.*,G.GOODSDM,G.NAME GOODSNAME,B.NAME BRANDMC 
-                                 from PROMOBILL_FG_RULE P,PRESENT G,BRAND B 
-                                where P.PRESENTID=G.ID and G.BRANDID=B.ID and P.BILLID={0} order by P.INX ASC";
+            string sqlitem = @"select P.*,G.ID,G.NAME PRESENTNAME
+                                 from PROMOBILL_FG_RULE P,PRESENT G
+                                where P.PRESENTID=G.ID and P.BILLID={0} order by P.INX ASC";
             var itemdt = DbHelper.ExecuteTable(string.Format(sqlitem, data.BILLID));
             return new Tuple<dynamic, DataTable>(dt.ToOneLine(), itemdt);
         }

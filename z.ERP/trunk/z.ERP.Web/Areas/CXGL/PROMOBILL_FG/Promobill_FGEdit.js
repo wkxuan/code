@@ -102,7 +102,6 @@ editDetail.otherMethods = {
 editDetail.clearKey = function () {
     editDetail.dataParam.BILLID = null;
     editDetail.dataParam.BRANCHID = null;
-    editDetail.dataParam.PROMOTYPE = 2;
     editDetail.dataParam.PROMOTIONID = null;
     editDetail.dataParam.PROMOTIONNAME = null;
     editDetail.dataParam.START_DATE = null;
@@ -118,6 +117,7 @@ editDetail.newRecord = function () {
 };
 
 editDetail.IsValidSave = function () {
+    editDetail.dataParam.PROMOTYPE = 4;  //4.满赠
     if (!editDetail.dataParam.BRANCHID) {
         iview.Message.info("请确认门店!");
         return false;
@@ -207,12 +207,10 @@ editDetail.mountedInit = function () {
         authority: "10600502",
         fun: function () {
             _.Ajax('ExecData', {
-                Data: editDetail.dataParam,
+                Data: editDetail.dataParam
             }, function (data) {
                 iview.Message.info("审核成功");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 100);
+                editDetail.refreshDataParam(data);
             });
         },
         enabled: function (disabled, data) {
@@ -233,9 +231,7 @@ editDetail.mountedInit = function () {
                 Data: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("启动成功");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 100);
+                editDetail.refreshDataParam(data);
             });
         },
         enabled: function (disabled, data) {
@@ -256,9 +252,7 @@ editDetail.mountedInit = function () {
                 Data: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("终止成功");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 100);
+                editDetail.refreshDataParam(data);
             });
         },
         enabled: function (disabled, data) {

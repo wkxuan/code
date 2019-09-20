@@ -34,8 +34,11 @@
     search.screenParam.srcPop = "";
     search.screenParam.title = "";
     search.screenParam.popParam = {};
+    search.searchParam.PROMOTYPE = 4;  //4.满赠
 }
-
+search.newCondition = function () {   //清空后，重新赋值单据状态
+    search.searchParam.PROMOTYPE = 4;
+}
 search.otherMethods = {
     SelPromotion: function () {
         search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPromotionList/";

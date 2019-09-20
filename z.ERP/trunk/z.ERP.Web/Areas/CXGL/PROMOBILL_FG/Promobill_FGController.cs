@@ -41,5 +41,17 @@ namespace z.ERP.Web.Areas.CXGL.PROMOBILL_FG
                 }
             );
         }
+        public string ExecData(PROMOBILLEntity Data)
+        {
+            return service.CxglService.ExecPromobill(Data);
+        }
+        public string BeginData(PROMOBILLEntity Data)
+        {
+            return service.CxglService.BeginPromobill(Data);
+        }
+        public string StopData(PROMOBILLEntity Data)
+        {
+            return service.CxglService.StopPromobill(Data);
+        }
     }
 }
