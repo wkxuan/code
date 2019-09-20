@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using z.Encryption;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
+using z.ERP.Entities.Procedures;
 using z.Exceptions;
 using z.Extensions;
-using z.ERP.Model.Vue;
-using z.Exceptions;
 using z.MVC5.Results;
 using z.SSO.Model;
 
@@ -121,18 +116,18 @@ namespace z.ERP.Services
                 });
                 DbHelper.Save(data);
 
+                ////增加审核待办任务
+                //var dcl = new BILLSTATUSEntity
+                //{
+                //    BILLID = data.BILLID,
+                //    MENUID = "",
+                //    BRABCHID = data.BRANCHID,
+                //    URL = "CXGL/PROMOBILL_DIS/Promobill_DisEdit/"
+                //};
+                //InsertDclRw(dcl);
+
                 Tran.Commit();
             }
-
-            ////增加审核待办任务
-            //var dcl = new BILLSTATUSEntity
-            //{
-            //    BILLID = data.BILLID,
-            //    MENUID = "",
-            //    BRABCHID = data.BRANCHID,
-            //    URL = "CXGL/PROMOBILL_DIS/Promobill_DisEdit/"
-            //};
-            //InsertDclRw(dcl);
 
             return data.BILLID;
         }
@@ -144,22 +139,24 @@ namespace z.ERP.Services
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
-                data.VERIFY = employee.Id;
-                data.VERIFY_NAME = employee.Name;
-                data.VERIFY_TIME = DateTime.Now.ToString();
-                data.STATUS = ((int)促销单状态.审核).ToString();
-                DbHelper.Save(data);
+                EXEC_PROMOBILL exec = new EXEC_PROMOBILL()
+                {
+                    in_BILLID = data.BILLID,
+                    in_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec);
+
+                ////删除审核待办任务
+                //var dcl = new BILLSTATUSEntity
+                //{
+                //    BILLID = data.BILLID,
+                //    MENUID = "",
+                //    BRABCHID = data.BRANCHID
+                //};
+                //DelDclRw(dcl);
+
                 Tran.Commit();
             }
-
-            ////删除审核待办任务
-            //var dcl = new BILLSTATUSEntity
-            //{
-            //    BILLID = data.BILLID,
-            //    MENUID = "",
-            //    BRABCHID = data.BRANCHID
-            //};
-            //DelDclRw(dcl);
 
             return data.BILLID;
         }
@@ -193,11 +190,12 @@ namespace z.ERP.Services
         {
             using (var Tran = DbHelper.BeginTransaction())
             {
-                data.INITINATE = employee.Id;
-                data.INITINATE_NAME = employee.Name;
-                data.INITINATE_TIME = DateTime.Now.ToString();
-                data.STATUS = ((int)促销单状态.启动).ToString();
-                DbHelper.Save(data);
+                EXEC_PROMOBILL_STARTUP exec = new EXEC_PROMOBILL_STARTUP()
+                {
+                    in_BILLID = data.BILLID,
+                    in_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec);
                 Tran.Commit();
             }
             return data.BILLID;
@@ -206,11 +204,12 @@ namespace z.ERP.Services
         {
             using (var Tran = DbHelper.BeginTransaction())
             {
-                data.TERMINATE = employee.Id;
-                data.TERMINATE_NAME = employee.Name;
-                data.TERMINATE_TIME = DateTime.Now.ToString();
-                data.STATUS = ((int)促销单状态.终止).ToString();
-                DbHelper.Save(data);
+                EXEC_PROMOBILL_STOP exec = new EXEC_PROMOBILL_STOP()
+                {
+                    in_BILLID = data.BILLID,
+                    in_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec);
                 Tran.Commit();
             }
             return data.BILLID;

@@ -469,9 +469,7 @@ editDetail.otherMethods = {
                 },
             }, function (data) {
                 iview.Message.info("审批成功");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 100);
+                window.location.reload();
             });
         }
         else {
@@ -479,9 +477,7 @@ editDetail.otherMethods = {
                 Data: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("审核成功");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 100);
+                editDetail.refreshDataParam(data);
             });
         }
     },
@@ -1104,6 +1100,12 @@ editDetail.clearKey = function () {
     editDetail.screenParam.TQFKR = [];
 };
 
+editDetail.afterEdit = function () {
+    if (editDetail.dataParam.HTLX == 2) {
+        editDetail.veObj.branchDisabled = true;
+    }
+};
+
 editDetail.afterAbandon = function () {
     if (editDetail.dataParam.TQFKR) {
         editDetail.screenParam.TQFKR = editDetail.dataParam.TQFKR.split(',');
@@ -1576,8 +1578,7 @@ editDetail.mountedInit = function () {
                     Data: editDetail.dataParam
                 }, function (data) {
                     iview.Message.info("启动成功！");
-
-                    window.location.reload();
+                    editDetail.refreshDataParam(data);
                 });
             });
         },
@@ -1600,8 +1601,7 @@ editDetail.mountedInit = function () {
                     Data: editDetail.dataParam
                 }, function (data) {
                     iview.Message.info("终止成功！");
-
-                    window.location.reload();
+                    editDetail.refreshDataParam(data);
                 });
             });
         },

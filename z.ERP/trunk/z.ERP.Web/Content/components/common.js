@@ -326,7 +326,7 @@ Vue.component('yx-table', {
                         case "time":
                             data[i].render = function (h, params) {
                                 if (_self.disabled || !data[i].enableCellEdit) {
-                                    return params.row[params.column.key] ? _self.dataZhTime(params.row[params.column.key]) : null;
+                                    return _self.dataZhTime(params.row[params.column.key]);
                                 }
                                 return h("yx-time-picker", {
                                     props: {

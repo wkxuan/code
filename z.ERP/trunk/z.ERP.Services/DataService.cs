@@ -471,6 +471,8 @@ namespace z.ERP.Services
                       + "     AND T.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("NAME", a => sql += $" and G.NAME like '%{a}%'");
+            item.HasKey("STATUS", a => sql += $" and G.STATUS in ({a})");
+            item.HasKey("BRANCHID", a => sql += $" and T.BRANCHID = {a}");
             sql += " ORDER BY  G.GOODSDM";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
