@@ -17,6 +17,13 @@
     this.enabled = function (val) { return val; }
     this.clearKey = function () { }
     this.newRecord = function () { }
+    //根据主表id刷新页面数据
+    this.refreshDataParam = function (id) {
+        editDetail.showOne(id);
+        _this.veObj.disabled = _this.enabled(false);
+        _this.veObj.branchDisabled = false;
+    }
+    this.afterEdit = function () { }
     //取消成功后
     this.afterAbandon = function () { }
     //功能按钮配置数组
@@ -135,6 +142,7 @@
                     _self.disabled = _this.enabled(true);
                     _self.branchDisabled = false;
                     _self.dataParam = ClearObject(_self.dataParam);
+                    _this.clearKey();
                     _this.newRecord();                 
                 },
                 //编辑
@@ -143,6 +151,7 @@
                     _this.backData = DeepClone(_self.dataParam);
                     _self.disabled = _this.enabled(true);
                     _self.branchDisabled = false;
+                    _this.afterEdit();
                 },
                 //删除
                 del: function () {
@@ -152,11 +161,7 @@
                             DeleteData: [_self.dataParam]
                         }, function (data) {
                             iview.Message.info("删除成功");
-
-                            let win = window.location;
-                            let pathnameArr = win.pathname.split("/");
-                            pathnameArr[pathnameArr.length - 1] = null;
-                            win.replace(pathnameArr.join("/"));
+                            _self.replacePage();
                         });
                     });
                 },
@@ -188,15 +193,17 @@
                         SaveData: _this.veObj.dataParam
                     }, function (data) {
                         iview.Message.info("保存成功");
-
-                        let win = window.location;
-                        let pathnameArr = win.pathname.split("/");
-                        pathnameArr[pathnameArr.length - 1] = data;
-                        win.replace(pathnameArr.join("/"));
+                        _self.replacePage(data);
                     });
                 },
                 branchChange: function () {
                     _this.branchChange();
+                },
+                replacePage: function (id) {
+                    let win = window.location;
+                    let pathnameArr = win.pathname.split("/");
+                    pathnameArr[pathnameArr.length - 1] = id;
+                    win.replace(pathnameArr.join("/"));
                 }
             }
         };
