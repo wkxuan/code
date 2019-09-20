@@ -47,7 +47,7 @@ namespace z.ERP.Services
         public DataGridResult GetPromobill(SearchItem item)
         {
             string sql = $@"select P.*,B.NAME BRANCHNAME,T.NAME PROMOTIONNAME 
-                              from PROMOBILL P,BRANCH B,PROMOTION T 
+                              from PROMOBILL P,BRANCH B,PROMOTION T
                              where P.BRANCHID=B.ID and P.PROMOTIONID=T.ID ";
             item.HasKey("PROMOTIONNAME", a => sql += $" and T.NAME LIKE '%{a}%'");
             item.HasKey("REPORTER_NAME", a => sql += $" and P.REPORTER_NAME LIKE '%{a}%'");
@@ -58,6 +58,7 @@ namespace z.ERP.Services
             item.HasDateKey("END_DATE_END", a => sql += $" and P.END_DATE <= {a}");
             item.HasKey("STATUS", a => sql += $" and P.STATUS in ({a})");
             item.HasKey("BRANCHID", a => sql += $" and P.BRANCHID in ({a})");
+            item.HasKey("PROMOTYPE", a => sql += $" and P.PROMOTYPE in ({a})");
             sql += " ORDER BY BILLID DESC";
             int count;
             var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -78,9 +79,9 @@ namespace z.ERP.Services
             }
             dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
 
-            string sqlitem = @"select P.*,G.GOODSDM,G.NAME GOODSNAME,B.NAME BRANDMC 
-                                 from PROMOBILL_GOODS P,GOODS G,BRAND B 
-                                where P.GOODSID=G.GOODSID and G.BRANDID=B.ID and P.BILLID={0} order by P.INX ASC";
+            string sqlitem = @"select P.*,G.GOODSDM,G.NAME GOODSNAME,B.NAME BRANDMC,F.NAME VALUE2MC 
+                                 from PROMOBILL_GOODS P,GOODS G,BRAND B,FR_PLAN F  
+                                where P.GOODSID=G.GOODSID and G.BRANDID=B.ID and P.VALUE2=F.ID(+) and P.BILLID={0} order by P.INX ASC";
             var itemdt = DbHelper.ExecuteTable(string.Format(sqlitem, data.BILLID));
             return new Tuple<dynamic, DataTable>(dt.ToOneLine(), itemdt);
         }
@@ -305,9 +306,9 @@ namespace z.ERP.Services
             }
             dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
 
-            string sqlitem = @"select P.*,G.GOODSDM,G.NAME GOODSNAME,B.NAME BRANDMC 
-                                 from PROMOBILL_FG_RULE P,PRESENT G,BRAND B 
-                                where P.PRESENTID=G.ID and G.BRANDID=B.ID and P.BILLID={0} order by P.INX ASC";
+            string sqlitem = @"select P.*,G.ID,G.NAME PRESENTNAME
+                                 from PROMOBILL_FG_RULE P,PRESENT G
+                                where P.PRESENTID=G.ID and P.BILLID={0} order by P.INX ASC";
             var itemdt = DbHelper.ExecuteTable(string.Format(sqlitem, data.BILLID));
             return new Tuple<dynamic, DataTable>(dt.ToOneLine(), itemdt);
         }

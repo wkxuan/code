@@ -49,7 +49,7 @@
         </i-col>
         <i-col span="6" class="RowText">
             <yx-check-group v-bind:value.sync="dataParam.WEEK" v-bind:disabled="!disabled"></yx-check-group>
-        </i-col>  
+        </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
             开始时间
@@ -63,7 +63,7 @@
         </i-col>
         <i-col span="6" class="RowText">
             <yx-time-picker v-bind:value.sync="dataParam.END_TIME" v-bind:disabled="!disabled"></yx-time-picker>
-        </i-col>     
+        </i-col>
     </row>
 }
 @section detailParam{
@@ -75,15 +75,14 @@
                     <div class="tableBtnDiv" v-if="disabled">
                         <i-button type="primary" v-on:click="srchGoods">选择</i-button>
                         <i-button type="error" v-on:click="delGoods">删除</i-button>
-                        <i-input type="number" clearable v-model="screenParam.setVal" ></i-input>
-                        <i-button type="primary" icon="md-settings" v-on:click="settingVal" >批量设置</i-button>
+                        <i-button type="primary" icon="md-settings" v-on:click="settingVal">批量设置</i-button>
                     </div>
                 </div>
                 <yx-table v-bind:columns="screenParam.colDefGoods" v-bind:height="400" selection=true
                           v-bind:data="dataParam.PROMOBILL_GOODS" v-bind:disabled="!disabled" ref="refGoods">
                 </yx-table>
             </Card>
-        </i-col>      
+        </i-col>
     </row>
 }
 @section detailParamFooter{
@@ -115,6 +114,6 @@
     </row>
 }
 @section pops{
-<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
-          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
+    <yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
+              v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }

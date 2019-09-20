@@ -3,7 +3,7 @@
     search.method = "GetPromobill";
     search.screenParam.colDef = [
         { title: '促销单号', key: 'BILLID' },
-        { title: '营销活动', key: 'PROMOTIONNAME' },
+        { title: '营销活动', key: 'PROMOTIONNAME'},
         { title: "开始日期", key: 'START_DATE', cellType: "date", width: 120 },
         { title: '结束日期', key: 'END_DATE', cellType: "date", width: 120 },
         { title: '促销周期', key: 'WEEKMC', width: 240 },
@@ -24,8 +24,8 @@
             title: '操作', key: 'operate', authority: "10600503", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10600501,
-                    title: '促销赠品单详情',
-                    url: "CXGL/PROMOBILL_FG/Promobill_FGEdit/" + row.BILLID
+                    title: '促销满减单详情',
+                    url: "CXGL/PROMOBILL_FR/Promobill_FREdit/" + row.BILLID
                 });
             }
         }
@@ -34,11 +34,11 @@
     search.screenParam.srcPop = "";
     search.screenParam.title = "";
     search.screenParam.popParam = {};
-    search.searchParam.PROMOTYPE = 4;  //4.满赠
+    search.searchParam.PROMOTYPE = 3;
 }
-search.newCondition = function () {   //清空后，重新赋值单据状态
-    search.searchParam.PROMOTYPE = 4;
-}
+search.newCondition = function () {
+    search.searchParam.PROMOTYPE = 3;
+};
 search.otherMethods = {
     SelPromotion: function () {
         search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPromotionList/";
@@ -71,14 +71,14 @@ search.popCallBack = function (data) {
             if (search.screenParam.title == "选择审核人") {
                 search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
             }
-        };
+        };      
     }
 };
 
 search.addHref = function (row) {
     _.OpenPage({
         id: 10600401,
-        title: '促销赠品单详情',
-        url: "CXGL/PROMOBILL_FG/PROMOBILL_FGEdit/"
+        title: '促销满减单详情',
+        url: "CXGL/PROMOBILL_FR/Promobill_FREdit/"
     });
 }

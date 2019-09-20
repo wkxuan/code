@@ -34,8 +34,11 @@
     search.screenParam.srcPop = "";
     search.screenParam.title = "";
     search.screenParam.popParam = {};
+    search.searchParam.PROMOTYPE = 2;
 }
-
+search.newCondition = function () {
+    search.searchParam.PROMOTYPE = 2;
+};
 search.otherMethods = {
     SelPromotion: function () {
         search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPromotionList/";
