@@ -19,7 +19,9 @@
     this.IsValidXj = function () {
         return true;
     }
+    this.initDataParam = function () { }
     this.newRecord = function () { }
+
     this.vue = function VueOperate() {
         var options = {
             el: '#treeDef',
@@ -30,8 +32,7 @@
                 nodedisabled: false,
                 splitVal: 0.3,
                 data: [],
-                toolBtnList: [],
-                keyVal: null
+                toolBtnList: []
             },
             mounted(){
                 this.seachList();
@@ -149,35 +150,35 @@
                 addtj: function (event) {
                     _this.backData = DeepClone(this.dataParam);
                     if (this.data.length) {
-                        if (!this.keyVal) {
+                        if (!this.dataParam[_this.Key]) {
                             iview.Message.error("请选择数据");
                             return;
                         };
-                    }                
+                    }
                     if (!_this.IsValidTj())
-                        return;          
+                        return;
+                    this.dataParam = ClearObject(this.dataParam);
                     _this.newRecord();
                     _this.AddTar = 'tj';
-                    this.dataParam = {};
                     this.disabled = _this.enabled(true);
                     this.nodedisabled = true;
                 },
                 addxj: function (event) {
                     _this.backData = DeepClone(this.dataParam);
-                    if (!this.keyVal) {
+                    if (!this.dataParam[_this.Key]) {
                         iview.Message.error("请选择数据");
                         return;
                     };
                     if (!_this.IsValidXj())
                         return;
+                    this.dataParam = ClearObject(this.dataParam);
                     _this.newRecord();
                     _this.AddTar = 'xj';
-                    this.dataParam = {};
                     this.disabled = _this.enabled(true);
                     this.nodedisabled = true;
                 },          
                 edit: function (event) {
-                    if (!this.keyVal) {
+                    if (!this.dataParam[_this.Key]) {
                         iview.Message.error("请选择数据");
                         return;
                     };
@@ -191,7 +192,7 @@
                     var _self = this;
                     _.Ajax('Save', {
                         Tar: _this.AddTar,
-                        Key: _self.keyVal,
+                        Key: _this.backData[_this.Key],
                         DefineSave: _self.dataParam
                     }, function (data) {
                         iview.Message.info("保存成功");
@@ -204,27 +205,25 @@
                 quit: function (event) {
                     var _self = this;
                     _.MessageBox("是否取消？", function () {
-                        _self.dataParam = _this.backData;
+                        $.extend(_this.dataParam, _this.backData);
                         _self.disabled = _this.enabled(false);
                         _self.nodedisabled = false;
                     });
                 },               
                 del: function (event) {
                     var _self = this;
-                    if (!_self.keyVal) {
+                    if (!_self.dataParam[_this.Key]) {
                         iview.Message.error("请选择数据");
                         return;
                     };
                     if (!_this.IsValidDel())
                         return;
-
                     _.MessageBox("是否删除？", function () {
                         _.Ajax('Delete', {
                             DefineDelete: _self.dataParam
-                        }, function (data) {      
-                            _self.dataParam = {};
+                        }, function (data) {
+                            _self.dataParam = ClearObject(_self.dataParam);
                             iview.Message.info("删除成功");
-
                             _self.seachList();
                         });
                     });
@@ -241,7 +240,7 @@
                             _self.data = data;
                         }
                     })
-                }
+                },               
             }
         }
         _this.otherMethods && $.extend(options.methods, _this.otherMethods);
@@ -257,8 +256,7 @@
                 code: key
             },
             Success: function (data) {
-                _this.vueObj.dataParam = data.rows[0];
-                _this.vueObj.keyVal = _this.vueObj.dataParam[_this.Key];              
+                $.extend(_this.dataParam, data.rows[0]);
                 callback && callback();
             }
         });
@@ -275,6 +273,7 @@
     setTimeout(function () {
         _this.vueInit();
         _this.beforeVue();
+        _this.initDataParam();
         _this.vue();
     }, 100);
 }

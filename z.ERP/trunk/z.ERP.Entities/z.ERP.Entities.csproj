@@ -55,6 +55,9 @@
     <Compile Include="Auto\ROLE_ALERTEntity.cs" />
     <Compile Include="Auto\ROLE_BRANCHEntity.cs" />
     <Compile Include="Auto\ROLE_FLOOREntity.cs" />
+    <Compile Include="Procedures\EXEC_PROMOBILL.cs" />
+    <Compile Include="Procedures\EXEC_PROMOBILL_STARTUP.cs" />
+    <Compile Include="Procedures\EXEC_PROMOBILL_STOP.cs" />
     <Compile Include="PROMOBILLEntity.cs" />
     <Compile Include="Auto\PRESENTEntity.cs" />
     <Compile Include="Auto\TicketInfoEntity.cs" />

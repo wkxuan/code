@@ -61,7 +61,7 @@ editDetail.otherMethods = {
             iview.Message.info('请先确认门店!');
             return;
         }
-        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
+        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, STATUS: 2 };
         editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopGoodsList/";
         editDetail.screenParam.title = "选择商品";
         editDetail.screenParam.showPop = true;
@@ -80,6 +80,10 @@ editDetail.otherMethods = {
                     }
                 }
             }
+        }
+        let data = editDetail.dataParam.PROMOBILL_GOODS;
+        for (let i = 0; i < data.length; i++) {
+            data[i].INX = i + 1;
         }
     },
     settingVal: function () {
@@ -216,9 +220,7 @@ editDetail.mountedInit = function () {
                 Data: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("审核成功");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 100);
+                editDetail.refreshDataParam(data);
             });
         },
         enabled: function (disabled, data) {
@@ -239,9 +241,7 @@ editDetail.mountedInit = function () {
                 Data: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("启动成功");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 100);
+                editDetail.refreshDataParam(data);
             });
         },
         enabled: function (disabled, data) {
@@ -262,9 +262,7 @@ editDetail.mountedInit = function () {
                 Data: editDetail.dataParam,
             }, function (data) {
                 iview.Message.info("终止成功");
-                setTimeout(function () {
-                    window.location.reload();
-                }, 100);
+                editDetail.refreshDataParam(data);
             });
         },
         enabled: function (disabled, data) {

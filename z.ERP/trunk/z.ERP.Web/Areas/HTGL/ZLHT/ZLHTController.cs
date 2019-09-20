@@ -40,17 +40,17 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             service.HtglService.DeleteContract(DeleteData);
         }
         [Permission("10600202")]
-        public void ExecData(CONTRACTEntity Data)
+        public string ExecData(CONTRACTEntity Data)
         {
-            service.HtglService.ExecData(Data);
+            return service.HtglService.ExecData(Data);
         }
-        public void StartUp(CONTRACTEntity Data)
+        public string StartUp(CONTRACTEntity Data)
         {
-            service.HtglService.StartUp(Data);
+            return service.HtglService.StartUp(Data);
         }
-        public void Stop(CONTRACTEntity Data)
+        public string Stop(CONTRACTEntity Data)
         {
-            service.HtglService.Stop(Data);
+            return service.HtglService.Stop(Data);
         }
         public UIResult SearchContract(CONTRACTEntity Data)
         {
