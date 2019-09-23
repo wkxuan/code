@@ -86,7 +86,11 @@ editDetail.otherMethods = {
         }
     },
     SUMticketamount: function () {
-
+        var sum = 0;
+        for (let i = 0; i < editDetail.dataParam.PRESENT_SEND_TICKET.length; i++) {
+            sum += parseFloat(editDetail.dataParam.PRESENT_SEND_TICKET[i].AMOUNT);
+        }
+        editDetail.screenParam.AMOUNTS = sum;
     },
     addpresentss: function () {
 
