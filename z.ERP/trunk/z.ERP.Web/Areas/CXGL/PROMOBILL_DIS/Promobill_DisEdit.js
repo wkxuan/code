@@ -14,7 +14,7 @@
        { title: "商品代码", key: 'GOODSDM' },
        { title: '商品名称', key: 'GOODSNAME' },
        { title: '品牌', key: 'BRANDMC' },
-       { title: '折扣率', key: 'VALUE1', cellType: "input" }
+       { title: '折扣率(%)', key: 'VALUE1', cellType: "input", cellDataType: "number"}
     ];
 }
 editDetail.branchChange = function () {
@@ -182,10 +182,11 @@ editDetail.IsValidSave = function () {
             iview.Message.info(`请确认第${i + 1}行的商品!`);
             return false;
         }
-        if (!itemData[i].VALUE1 || parseFloat(itemData[i].VALUE1) < 0) {
-            iview.Message.info(`第${i + 1}行的商品的折扣率不能小于0!`);
+        if (!itemData[i].VALUE1 || parseFloat(itemData[i].VALUE1) < 0 || parseFloat(itemData[i].VALUE1) > 100) {
+            iview.Message.info(`第${i + 1}行的商品的折扣率不能小于0、大于100!`);
             return false;
         }
+        itemData[i].VALUE1 = parseFloat(itemData[i].VALUE1).toFixed(2);         
     }
     return true;
 };
