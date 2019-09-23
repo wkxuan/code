@@ -14,8 +14,6 @@
                 {
                     vModel = "dataParam.BRANCHID",
                     ServiceMothod = m => m.branch(),
-                    Enable = true
-
                 });
             }
         </i-col>
@@ -25,15 +23,9 @@
             赠品编号
         </i-col>
         <i-col span="17" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ID",
-                    Readonly = "true",
-                });
-            }
+            <i-input v-model="dataParam.ID" disabled />
         </i-col>
-        </ROW>
+    </row>
     <ROW>
         <i-col span="5" class="RowTitle">
             赠品名称
@@ -43,11 +35,10 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.NAME",
-                    //Enable = false,
                 });
             }
         </i-col>
-</ROW>
+    </ROW>
     <row>
         <i-col span="5" class="RowTitle">
             价格
@@ -58,27 +49,19 @@
                 {
                     vModel = "dataParam.PRICE",
                     type = "number",
-                    //Enable = false,
                 });
             }
         </i-col>
-      
+
     </row>
 
     <row>
-      <i-col span="5" class="RowTitle">
+        <i-col span="5" class="RowTitle">
             状态
         </i-col>
         <i-col span="17" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.STATUSMC",
-                    Enable = true,
-                    Readonly = "true",
-                });
-            }
-        </i-col>   
+            <i-input v-model="dataParam.STATUSMC" disabled />
+        </i-col>
     </row>
 
 }

@@ -24,6 +24,9 @@ editDetail.popCallBack = function (data) {
                 editDetail.dataParam.PROMOTIONNAME = data.sj[i].NAME;
                 editDetail.dataParam.START_DATE = data.sj[i].START_DATE;
                 editDetail.dataParam.END_DATE = data.sj[i].END_DATE;
+
+                editDetail.dataParam.START_DATE_LIMIT = data.sj[i].START_DATE;
+                editDetail.dataParam.END_DATE_LIMIT = data.sj[i].END_DATE;
             }
             if (editDetail.screenParam.title == "选择商品") {
                 let itemData = editDetail.dataParam.PROMOBILL_GOODS;
@@ -114,6 +117,9 @@ editDetail.clearKey = function () {
     editDetail.dataParam.END_TIME = 1439;
     editDetail.dataParam.WEEK = "1,2,3,4,5,6,7";
     editDetail.dataParam.PROMOBILL_GOODS = [];
+
+    editDetail.dataParam.START_DATE_LIMIT = null;
+    editDetail.dataParam.END_DATE_LIMIT = null;
 };
 
 editDetail.newRecord = function () {

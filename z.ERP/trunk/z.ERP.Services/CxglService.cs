@@ -46,7 +46,7 @@ namespace z.ERP.Services
         #region 促销折扣单
         public DataGridResult GetPromobill(SearchItem item)
         {
-            string sql = $@"select P.*,B.NAME BRANCHNAME,T.NAME PROMOTIONNAME 
+            string sql = $@"select P.*,B.NAME BRANCHNAME,T.NAME PROMOTIONNAME  
                               from PROMOBILL P,BRANCH B,PROMOTION T
                              where P.BRANCHID=B.ID and P.PROMOTIONID=T.ID ";
             item.HasKey("PROMOTIONNAME", a => sql += $" and T.NAME LIKE '%{a}%'");
@@ -69,7 +69,7 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable> PromobillShowOneData(PROMOBILLEntity data)
         {
-            string sql = @"select P.*,T.NAME PROMOTIONNAME 
+            string sql = @"select P.*,T.NAME PROMOTIONNAME,T.START_DATE START_DATE_LIMIT,T.END_DATE END_DATE_LIMIT 
                              from PROMOBILL P,PROMOTION T 
                             where P.PROMOTIONID=T.ID and P.BILLID={0}";
             var dt = DbHelper.ExecuteTable(string.Format(sql, data.BILLID));
@@ -83,13 +83,18 @@ namespace z.ERP.Services
                                  from PROMOBILL_GOODS P,GOODS G,BRAND B,FR_PLAN F  
                                 where P.GOODSID=G.GOODSID and G.BRANDID=B.ID and P.VALUE2=F.ID(+) and P.BILLID={0} order by P.INX ASC";
             var itemdt = DbHelper.ExecuteTable(string.Format(sqlitem, data.BILLID));
+            foreach (DataRow dr in itemdt.Rows)
+            {
+                if(!dr["VALUE1"].ToString().IsEmpty())
+                    dr["VALUE1"] = dr["VALUE1"].ToString().ToDouble() * 100;
+            }
             return new Tuple<dynamic, DataTable>(dt.ToOneLine(), itemdt);
         }
         public string SavePromobill(PROMOBILLEntity data)
         {
             var v = GetVerify(data);
             if (data.BILLID.IsEmpty())
-                data.BILLID = NewINC("PROMOBILL");
+                data.BILLID = data.BRANCHID + NewINC("PROMOBILL_" + data.BRANCHID).PadLeft(7, '0');
 
             data.STATUS = ((int)促销单状态.未审核).ToString();
             data.REPORTER = employee.Id;
@@ -115,6 +120,10 @@ namespace z.ERP.Services
                     GetVerify(item).Require(a => a.BILLID);
                     GetVerify(item).Require(a => a.INX);
                     GetVerify(item).Require(a => a.GOODSID);
+                    if (!item.VALUE1.IsEmpty())
+                    {
+                        item.VALUE1 = (item.VALUE1.ToDouble() / 100).ToString();
+                    }
                 });
                 DbHelper.Save(data);
 
@@ -379,7 +388,7 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string PresentSql(SearchItem item)
         {
-            string sql = $@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS STATUSMC
+            string sql = $@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS 
                             FROM PRESENT P,BRANCH B
                             WHERE B.ID=P.BRANCHID";
             sql += "  AND B.ID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
@@ -430,10 +439,10 @@ namespace z.ERP.Services
             foreach (var item in DeleteData)
             {
                 PresentEntity Data = DbHelper.Select(item);
-                //if (Data.STATUS == ((int)状态.审核).ToString())
-                //{
-                //    throw new LogicException("已经审核不能删除!");
-                //}
+            //    if (Data.STATUS == ((int)使用状态.已使用).ToString())
+            //    {
+            //        throw new LogicException("已经审核不能删除!");
+            //    }
             }
             using (var Tran = DbHelper.BeginTransaction())
             {

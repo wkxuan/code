@@ -14,7 +14,7 @@
             { title: '赠品编号', key: 'ID' },
             { title: '赠品名称', key: 'NAME' },
             { title: '价格', key: 'PRICE' },
-            { title: '状态', key: 'STATUSMC' },
+            { title: '状态', key: 'STATUS' },
 
         {
             title: '操作', key: 'operate', authority: "104004", onClick: function (index, row, data) {

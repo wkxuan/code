@@ -1158,3 +1158,68 @@ Vue.component('yx-time-picker', {
         }
     }
 });
+Vue.component('yx-date-picker', {
+    props: ['value', 'disabled', 'clearable', 'clearable', 'editable','start','end'],
+    template: `<date-picker :value="curValue" type="date" format="yyyy-MM-dd" transfer :disabled="disabled"` +
+              `:clearable="clearable" :editable="editable" :options="options" v-on:on-change="onChange">` +
+              `</date-picker>`,
+    data() {
+        return {
+            curValue: null,
+            options: {}
+        }
+    },
+    mounted() {
+        this.initOptions();
+       
+    },
+    watch: {
+        value: {
+            handler: function (nv, ov) {
+                this.curValue = nv + "";
+            },
+            immediate: true,
+            deep: true
+        },
+        start: {
+            handler: function (nv, ov) {
+                if (nv)
+                    this.initOptions();
+            },
+            deep: true
+        },
+        end: {
+            handler: function (nv, ov) {
+                 if (nv)
+                    this.initOptions();
+            },
+            deep: true
+        }
+    },
+    methods: {
+        onChange(val, type) {
+            this.$emit('update:value', val);
+        },
+        initOptions() {
+            let _self = this;
+            _self.options = {
+                disabledDate (date) {
+                    if (_self.start && !_self.end) {
+                        return date < new Date(_self.start);
+                    }
+                    if (!_self.start && _self.end) {
+                        return date > new Date(_self.end);
+                    }
+                    if (_self.start && _self.end) {
+                        if (date < new Date(_self.start) || date > new Date(_self.end)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    return false;
+                }
+            };
+        }
+    }
+});

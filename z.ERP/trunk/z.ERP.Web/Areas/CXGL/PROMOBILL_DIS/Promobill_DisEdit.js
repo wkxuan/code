@@ -10,11 +10,11 @@
     editDetail.screenParam.setVal = null;
     //商铺表格
     editDetail.screenParam.colDefGoods = [
-       { title: '序号', key: 'INX',width:100 },
-       { title: "商品代码", key: 'GOODSDM'},
+       { title: '序号', key: 'INX', width: 100 },
+       { title: "商品代码", key: 'GOODSDM' },
        { title: '商品名称', key: 'GOODSNAME' },
        { title: '品牌', key: 'BRANDMC' },
-       { title: '折扣率', key: 'VALUE1', cellType: "input" }
+       { title: '折扣率(%)', key: 'VALUE1', cellType: "input", cellDataType: "number"}
     ];
 }
 editDetail.branchChange = function () {
@@ -29,6 +29,9 @@ editDetail.popCallBack = function (data) {
                 editDetail.dataParam.PROMOTIONNAME = data.sj[i].NAME;
                 editDetail.dataParam.START_DATE = data.sj[i].START_DATE;
                 editDetail.dataParam.END_DATE = data.sj[i].END_DATE;
+
+                editDetail.dataParam.START_DATE_LIMIT = data.sj[i].START_DATE;
+                editDetail.dataParam.END_DATE_LIMIT = data.sj[i].END_DATE;
             }
             if (editDetail.screenParam.title == "选择商品") {
                 let itemData = editDetail.dataParam.PROMOBILL_GOODS;
@@ -45,7 +48,7 @@ editDetail.popCallBack = function (data) {
                     }
                 };
             }
-        };   
+        };
     }
 };
 
@@ -121,6 +124,9 @@ editDetail.clearKey = function () {
     editDetail.dataParam.END_TIME = 1439;
     editDetail.dataParam.WEEK = "1,2,3,4,5,6,7";
     editDetail.dataParam.PROMOBILL_GOODS = [];
+
+    editDetail.dataParam.START_DATE_LIMIT = null;
+    editDetail.dataParam.END_DATE_LIMIT = null;
 };
 
 editDetail.newRecord = function () {
@@ -132,7 +138,6 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请确认门店!");
         return false;
     };
-
     if (!editDetail.dataParam.PROMOTIONID) {
         iview.Message.info("请确认营销活动!");
         return false;
@@ -177,10 +182,11 @@ editDetail.IsValidSave = function () {
             iview.Message.info(`请确认第${i + 1}行的商品!`);
             return false;
         }
-        if (!itemData[i].VALUE1 || parseFloat(itemData[i].VALUE1) < 0) {
-            iview.Message.info(`第${i + 1}行的商品的折扣率不能小于0!`);
+        if (!itemData[i].VALUE1 || parseFloat(itemData[i].VALUE1) < 0 || parseFloat(itemData[i].VALUE1) > 100) {
+            iview.Message.info(`第${i + 1}行的商品的折扣率不能小于0、大于100!`);
             return false;
         }
+        itemData[i].VALUE1 = parseFloat(itemData[i].VALUE1).toFixed(2);         
     }
     return true;
 };
