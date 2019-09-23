@@ -22,24 +22,18 @@
             开始日期
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.START_DATE",
-                });
-            }
+            <yx-date-picker v-bind:value.sync="dataParam.START_DATE" v-bind:disabled="!disabled"
+                            v-bind:start="dataParam.START_DATE_LIMIT" v-bind:end="dataParam.END_DATE_LIMIT">
+            </yx-date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
             结束日期
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.END_DATE",
-                });
-            }
+            <yx-date-picker v-bind:value.sync="dataParam.END_DATE" v-bind:disabled="!disabled"
+                            v-bind:start="dataParam.START_DATE_LIMIT" v-bind:end="dataParam.END_DATE_LIMIT">
+            </yx-date-picker>
         </i-col>
     </row>
     <row>

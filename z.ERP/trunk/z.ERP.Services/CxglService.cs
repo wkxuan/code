@@ -46,7 +46,7 @@ namespace z.ERP.Services
         #region 促销折扣单
         public DataGridResult GetPromobill(SearchItem item)
         {
-            string sql = $@"select P.*,B.NAME BRANCHNAME,T.NAME PROMOTIONNAME 
+            string sql = $@"select P.*,B.NAME BRANCHNAME,T.NAME PROMOTIONNAME  
                               from PROMOBILL P,BRANCH B,PROMOTION T
                              where P.BRANCHID=B.ID and P.PROMOTIONID=T.ID ";
             item.HasKey("PROMOTIONNAME", a => sql += $" and T.NAME LIKE '%{a}%'");
@@ -69,7 +69,7 @@ namespace z.ERP.Services
 
         public Tuple<dynamic, DataTable> PromobillShowOneData(PROMOBILLEntity data)
         {
-            string sql = @"select P.*,T.NAME PROMOTIONNAME 
+            string sql = @"select P.*,T.NAME PROMOTIONNAME,T.START_DATE START_DATE_LIMIT,T.END_DATE END_DATE_LIMIT 
                              from PROMOBILL P,PROMOTION T 
                             where P.PROMOTIONID=T.ID and P.BILLID={0}";
             var dt = DbHelper.ExecuteTable(string.Format(sql, data.BILLID));
