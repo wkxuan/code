@@ -38,7 +38,6 @@ editDetail.popCallBack = function (data) {
                 let itemData = editDetail.dataParam.PROMOBILL_FG_RULE;
                 for (let i = 0; i < data.sj.length; i++) {
                     if (itemData.filter(function (item) { return (data.sj[i].ID == item.PRESENTID) }).length == 0) {
-                        debugger
                         editDetail.dataParam.PROMOBILL_FG_RULE[editDetail.screenParam.INX].PRESENTID = data.sj[i].ID;
                         editDetail.dataParam.PROMOBILL_FG_RULE[editDetail.screenParam.INX].PRESENTNAME = data.sj[i].NAME;
                     }
@@ -91,7 +90,6 @@ editDetail.otherMethods = {
                     }
                 }
             };
-            debugger
             for (var j = 0; j < editDetail.dataParam.PROMOBILL_FG_RULE.length; j++) {
                 editDetail.dataParam.PROMOBILL_FG_RULE[j].INX = j + 1;
             };

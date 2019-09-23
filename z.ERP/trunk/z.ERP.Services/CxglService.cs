@@ -444,5 +444,37 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
         }
+
+        #region 赠品发放 
+        public DataGridResult Present_SendList(SearchItem item)
+        {
+            string sql = $@"select P.*,B.NAME BRANCHNAME,PI.PRESENTID,PI.COUNT PRESENTCOUNT,PT.NAME PRESENTNAME
+                              from PRESENT_SEND P,BRANCH B,PRESENT_SEND_ITEM PI,PRESENT PT
+                             where P.BRANCHID=B.ID and P.BILLID=PI.BILLID AND PI.PRESENTID=PT.ID ";
+            item.HasKey("BILLID", a => sql += $" and P.BILLID = '{a}'");
+            item.HasKey("REPORTER_NAME", a => sql += $" and P.REPORTER_NAME LIKE '%{a}%'");
+            item.HasKey("VERIFY_NAME", a => sql += $" and P.VERIFY_NAME LIKE '%{a}%'");
+            item.HasDateKey("REPORTER_TIME_START", a => sql += $" and TRUNC(P.REPORTER_TIME)>={a}");
+            item.HasDateKey("REPORTER_TIME_END", a => sql += $" and TRUNC(P.REPORTER_TIME)<={a}");
+            item.HasDateKey("VERIFY_TIME_START", a => sql += $" and TRUNC(P.VERIFY_TIME)>={a}");
+            item.HasDateKey("VERIFY_TIME_END", a => sql += $" and TRUNC(P.VERIFY_TIME)<={a}");
+            item.HasKey("STATUS", a => sql += $" and P.STATUS in ({a})");
+            item.HasKey("BRANCHID", a => sql += $" and P.BRANCHID in ({a})");
+            sql += " ORDER BY P.BILLID DESC";
+            int count;
+            var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+        public DataTable GetSaleTicket(string BRANCHID, string POSNO, string DEALID) {
+            string sql = $@"SELECT S.POSNO ,S.DEALID,S.SALE_AMOUNT AMOUNT,S.SALE_TIME
+                    FROM ALLSALE S,STATION ST
+                    WHERE S.POSNO =ST.STATIONBH AND S.ISFG=2 AND S.SALE_AMOUNT>0 AND S.POSNO='{POSNO}' AND DEALID='{DEALID}' AND ST.BRANCHID='{BRANCHID}' 
+                    AND NOT EXISTS (SELECT POSNO,DEALID FROM ALLSALE WHERE POSNO_OLD='{POSNO}' AND DEALID_OLD='{DEALID}')";
+            var dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+        #endregion
+
     }
 }
