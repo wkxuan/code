@@ -21,30 +21,13 @@ namespace z.ERP.Services
         }
         public DataGridResult GetBrandData(SearchItem item)
         {
-            string SqlyTQx = "";
-            string yTQx = GetPermissionSql(PermissionType.Category);
-            DataTable yTdt = DbHelper.ExecuteTable(yTQx);
-            for (var i = 0; i <= yTdt.Rows.Count - 1; i++)
-            {
-                if (i == 0)
-                {
-                    SqlyTQx = "( C.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
-                }
-                else
-                {
-                    SqlyTQx += " or C.CATEGORYCODE LIKE '" + yTdt.Rows[i][0].ToString() + "%'";
-                }
-                if (i == yTdt.Rows.Count - 1)
-                {
-                    SqlyTQx += ")";
-                }
-            }
-            string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME,B.ID BRANDID FROM BRAND B,CATEGORY C where B.CATEGORYID=C.CATEGORYID ";
+            string SqlyTQx = GetYtQx("C");
+            string sql = $@"SELECT B.*,C.CATEGORYCODE,C.CATEGORYNAME,B.ID BRANDID FROM BRAND B,CATEGORY C where B.CATEGORYID = C.CATEGORYID ";
             if (SqlyTQx != "")
             {
                 sql += " and " + SqlyTQx;
             }
-            item.HasKey("ID", a => sql += $" and B.ID = '{a}'");
+            item.HasKey("ID", a => sql += $" and B.ID = {a}");
             item.HasKey("NAME", a => sql += $" and B.NAME LIKE '%{a}%'");
             item.HasKey("CATEGORYCODE", a => sql += $" and C.CATEGORYCODE LIKE '{a}%'");
             item.HasKey("ADRESS", a => sql += $" and B.ADRESS LIKE '%{a}%'");

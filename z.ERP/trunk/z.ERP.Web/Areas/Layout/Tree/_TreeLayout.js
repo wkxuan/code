@@ -237,7 +237,9 @@
                         Service: _this.service,
                         Method: _this.methodList,
                         Success: function (data) {
-                            _self.data = data;
+                            if (data && data.length) {
+                                _self.data = data;
+                            }
                         }
                     })
                 },               
