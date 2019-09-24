@@ -9,6 +9,7 @@
 
     defineNew.columnsDef = [
                 { title: '门店编号', key: 'BRANCHID' },
+                { title: '打印次数', key: 'PRINTCOUNT' },
             { title: '门店名称', key: 'NAME' },
             { title: '票头文字', key: 'HEAD' },
             { title: '票尾文字', key: 'TAIL' },

@@ -6,6 +6,7 @@
 defineDetail.clearKey = function () {
 
     defineDetail.dataParam.BRANCHID = null;
+    defineDetail.dataParam.PRINTCOUNT = null;
     defineDetail.dataParam.HEAD = null;
     defineDetail.dataParam.TAIL = null;
     defineDetail.dataParam.ADQRCODE = null;
@@ -43,6 +44,10 @@ defineDetail.IsValidSave = function () {
         iview.Message.info("请选择门店!");
         return false;
     };
+    //if (!defineDetail.dataParam.PRINTCOUNT) {
+    //    ivew.Message.info("请填写打印次数")；
+    // return false;
+    //};
     if (!defineDetail.dataParam.HEAD) {
         iview.Message.info("票头文字不能为空!");
         return false;

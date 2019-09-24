@@ -8,7 +8,7 @@
         <i-col span="5" class="RowTitle">
             门店
         </i-col>
-        <i-col span="17">
+        <i-col span="6">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -19,20 +19,29 @@
                 });
             }
         </i-col>
+
+        <i-col span="5" class="RowTitle">
+            打印次数
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="dataParam.PRINTCOUNT" v-bind:disabled="!disabled" />
+        </i-col>
+
     </row>
     <row>
 
         <i-col span="5" class="RowTitle">
             票头文字
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="17" class="RowText">
             <i-input v-model="dataParam.HEAD" v-bind:disabled="!disabled" />
         </i-col>
-
+        </ROW>
+    <row>
         <i-col span="5" class="RowTitle">
             票尾文字
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="17" class="RowText">
             <i-input v-model="dataParam.TAIL" v-bind:disabled="!disabled" />
         </i-col>
 
@@ -42,15 +51,33 @@
         <i-col span="5" class="RowTitle">
             二维码广告位
         </i-col>
-        <i-col span="6" class="RowText">
-            <i-input v-model="dataParam.ADQRCODE" v-bind:disabled="!disabled" />
+        <i-col span="17" class="RowText">    
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ADQRCODE",
+                    type = "textarea",
+                    rows = "2"
+                    //v - bind:disabled = "!disabled"
+                });
+            }
         </i-col>
-
+ </row>
+     
+    <row>
         <i-col span="5" class="RowTitle">
             文字广告位
         </i-col>
-        <i-col span="6" class="RowText">
-            <i-input v-model="dataParam.ADCONTENT" v-bind:disabled="!disabled" />
+        <i-col span="17" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.ADCONTENT",
+                    type = "textarea",
+                    rows = "2"
+                    //v - bind:disabled = "!disabled"
+                });
+            }
         </i-col>
     </row>
 

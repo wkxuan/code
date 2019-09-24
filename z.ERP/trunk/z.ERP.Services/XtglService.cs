@@ -1178,15 +1178,15 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string TicketInfoSql(SearchItem item)
         {
-            string sql = $@"SELECT BRANCHID, BRANCH.NAME, HEAD, TAIL, ADQRCODE, ADCONTENT
+            string sql = $@"SELECT BRANCHID, PRINTCOUNT, BRANCH.NAME, HEAD, TAIL, ADQRCODE, ADCONTENT
                             FROM TICKETINFO,BRANCH
                             WHERE BRANCH.ID=TICKETINFO.BRANCHID";
             sql += "  AND TICKETINFO.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BRANCHID", a => sql += $" and BRANCHID LIKE '%{a}%'");
-            item.HasKey("HEAD", a => sql += $" and HEAD LIKE '%{a}%'");
-            item.HasKey("TAIL", a => sql += $" and TAIL LIKE '%{a}%'");
-            item.HasKey("ADQRCODE", a => sql += $" and ADQRCODE LIKE '%{a}%'");
-            item.HasKey("ADCONTENT", a => sql += $" and ADCONTENT LIKE '%{a}%'");
+            //item.HasKey("HEAD", a => sql += $" and HEAD LIKE '%{a}%'");
+            //item.HasKey("TAIL", a => sql += $" and TAIL LIKE '%{a}%'");
+            //item.HasKey("ADQRCODE", a => sql += $" and ADQRCODE LIKE '%{a}%'");
+            //item.HasKey("ADCONTENT", a => sql += $" and ADCONTENT LIKE '%{a}%'");
             return sql;
 
         }
@@ -1206,7 +1206,7 @@ namespace z.ERP.Services
         }
         public DataTable GetTicketInfo(TicketInfoEntity data)
         {
-            string sql = $@"SELECT BRANCHID, BRANCH.NAME, HEAD, TAIL, ADQRCODE, ADCONTENT
+            string sql = $@"SELECT BRANCHID, PRINTCOUNT, BRANCH.NAME, HEAD, TAIL, ADQRCODE, ADCONTENT
                             FROM TICKETINFO,BRANCH
                             WHERE BRANCH.ID=TICKETINFO.BRANCHID";
             sql += "  AND TICKETINFO.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
