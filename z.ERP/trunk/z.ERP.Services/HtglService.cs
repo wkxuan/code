@@ -361,23 +361,33 @@ namespace z.ERP.Services
 
             CONFIGEntity configBzybj = new CONFIGEntity();
             configBzybj = DbHelper.Select(new CONFIGEntity() { ID = "1004" });
+            if (configBzybj == null)
+                throw new LogicException("未设置参数1004(不足月时月金额算法)");
 
             if (!"012".Contains(configBzybj.CUR_VAL))
                 throw new LogicException("参数1004(不足月时月金额算法)设置有误");
 
             CONFIGEntity configBzyts = new CONFIGEntity();
             configBzyts = DbHelper.Select(new CONFIGEntity() { ID = "1003" });
+            if (configBzyts == null)
+                throw new LogicException("未设置参数1003(不足月天数设定)");
 
             if (configBzyts.CUR_VAL.ToInt() <= 0)
                 throw new LogicException("参数1003(不足月天数设定)设置有误");
 
             CONFIGEntity configBlxsw = new CONFIGEntity();
             configBlxsw = DbHelper.Select(new CONFIGEntity() { ID = "1002" });
+            if (configBlxsw == null)
+                throw new LogicException("未设置参数1002(提成租金精度)");
 
 
             //季度分解日期生成
             CONFIGEntity configJDFJGZ = new CONFIGEntity();
             configJDFJGZ = DbHelper.Select(new CONFIGEntity() { ID = "1005" });
+
+            if(configJDFJGZ == null)
+                throw new LogicException("未设置参数1005(季度缴费生成方式)");
+
 
             //PAY_CYCLE缴费周期
             //ADVANCE_CYCLE 提前周期
