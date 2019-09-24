@@ -27,9 +27,12 @@ namespace z.ERP.Web.Areas.XTGL.TicketInfo
         public string Save(TicketInfoEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
-
-            v.Require(a => a.BRANCHID);
-            
+            if (DefineSave.PRINTCOUNT.IsEmpty())
+            {
+                DefineSave.PRINTCOUNT = "1";
+            }
+            v.Require(a => a.PRINTCOUNT);
+            v.Require(a => a.BRANCHID);  
             v.Require(a => a.HEAD);
             v.Require(a => a.TAIL);
             v.Require(a => a.ADQRCODE);
@@ -37,7 +40,6 @@ namespace z.ERP.Web.Areas.XTGL.TicketInfo
             v.Verify();
             return CommonSave(DefineSave);
         }
-
 
         public void Delete(List<TicketInfoEntity> DefineDelete)
         {

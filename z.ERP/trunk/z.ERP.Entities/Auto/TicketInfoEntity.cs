@@ -51,6 +51,14 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
+        /// 打印次数
+        /// </summary>
+        [Field("打印次数")]
+        public string PRINTCOUNT
+        {
+            get; set;
+        }
+        /// <summary>
         /// 二维码广告
         /// <summary>
         [Field("二维码广告")]
