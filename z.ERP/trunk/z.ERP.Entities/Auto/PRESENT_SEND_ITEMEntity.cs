@@ -11,8 +11,9 @@ namespace z.ERP.Entities
     public partial class PRESENT_SEND_ITEMEntity : TableEntityBase
     {
         public PRESENT_SEND_ITEMEntity(){}
-        public PRESENT_SEND_ITEMEntity(string id) {
+        public PRESENT_SEND_ITEMEntity(string id,string presentid) {
             BILLID = id;
+            PRESENTID = presentid;
         }
         /// <summary>
         /// id
@@ -23,6 +24,7 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        [PrimaryKey]
         [Field("赠品id")]
         public string PRESENTID
         {

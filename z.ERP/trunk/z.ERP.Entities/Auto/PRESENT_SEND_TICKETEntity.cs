@@ -12,8 +12,10 @@ namespace z.ERP.Entities
     public partial class PRESENT_SEND_TICKETEntity: TableEntityBase
     {
         public PRESENT_SEND_TICKETEntity() { }
-        public PRESENT_SEND_TICKETEntity(string id) {
+        public PRESENT_SEND_TICKETEntity(string id,string posno,string dealid) {
             BILLID = id;
+            POSNO = posno;
+            DEALID = dealid;
         }
         /// <summary>
         /// id
@@ -24,11 +26,13 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        [PrimaryKey]
         [Field("小票终端号")]
         public string POSNO
         {
             get; set;
         }
+        [PrimaryKey]
         [Field("小票号")]
         public string DEALID
         {

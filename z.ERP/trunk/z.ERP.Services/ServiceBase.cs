@@ -384,12 +384,16 @@ namespace z.ERP.Services
                     return SqlRegion;
                 case PermissionType.Category:
                     string SqlCategory = "";
-                    SqlCategory = " select CATEGORYCODE from CATEGORY where 1=1  ";
                     if (!employee.Id.IsEmpty() && employee.Id != "-1")
                     {
+                        SqlCategory = " select CATEGORYCODE from CATEGORY where 1=1  ";
                         SqlCategory += " and exists(select 1 from USER_ROLE, ROLE_YT where USER_ROLE.USERID = " + employee.Id;
                         SqlCategory += " and USER_ROLE.ROLEID = ROLE_YT.ROLEID and ROLE_YT.YTID = CATEGORY.CATEGORYID ) ";
                     }
+                    else
+                    {
+                        SqlCategory = "select CATEGORYCODE from CATEGORY where length(CATEGORYCODE) = 2";
+                     }
                     return SqlCategory;
                 case PermissionType.Alert:
                     String SqlAlert = "";
