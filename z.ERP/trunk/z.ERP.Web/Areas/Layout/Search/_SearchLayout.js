@@ -50,6 +50,8 @@
                     event.stopPropagation();
                     if (!_this.IsValidSrch())
                         return;
+                    this.pageSize = 10;
+                    this.currentPage = 1;
                     showList();
                 },
                 clear: function (event) {
