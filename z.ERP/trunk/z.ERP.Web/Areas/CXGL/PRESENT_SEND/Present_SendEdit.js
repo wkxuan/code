@@ -8,17 +8,15 @@
     ];
     //赠品列表
     editDetail.screenParam.colDefpresent = [
-       { title: '规则编码', key: 'FG_RULEID', width: 100 },
-       { title: '满额', key: 'FULL', width: 100 },
        { title: '赠品编码', key: 'PRESENTID', width: 100 },
        { title: '赠品名称', key: 'PRESENTNAME' },
-       { title: '价值', key: 'PRICE', cellType: "input", cellDataType: "number", width: 100 },
+       { title: '价值', key: 'PRICE', width: 100 },
     ];
     //赠品发放明细
     editDetail.screenParam.colDefpresents = [
        { title: '赠品编码', key: 'PRESENTID', width: 100 },
        { title: '赠品名称', key: 'PRESENTNAME' },
-       { title: '数量', key: 'COUNT', width: 100 },
+       { title: '数量', key: 'COUNT', cellType: "input", cellDataType: "number", width: 150 },
     ];
     editDetail.dataParam.PRESENT_SEND_TICKET = [];
     editDetail.dataParam.PRESENT_SEND_ITEM = [];
@@ -52,21 +50,29 @@ editDetail.otherMethods = {
         _.Ajax('GetSaleTicket', {
             BRANCHID: editDetail.dataParam.BRANCHID, POSNO: editDetail.screenParam.POSNO, DEALID: editDetail.screenParam.DEALID
         }, function (data) {
-            if (data.length > 0) { //判断是否又有效数据
-                if (editDetail.dataParam.PRESENT_SEND_TICKET.filter(function (item) { return (data[0].POSNO == item.POSNO, data[0].DEALID == item.DEALID) }).length == 0) {     //已添加数据 跳过
-                    editDetail.dataParam.PRESENT_SEND_TICKET.push({
-                        POSNO: data[0].POSNO,
-                        DEALID: data[0].DEALID,
-                        AMOUNT: data[0].AMOUNT,
-                        SALE_TIME: data[0].SALE_TIME,
-                    })
-                    iview.Message.success('交易数据添加成功!');
-                } else {
-                    iview.Message.warning('该交易数据已添加!');
-                }
-            } else {
-                iview.Message.warning('暂无有效交易数据!');
-            }
+            switch (data.Status) {
+                case 1:
+                    if (editDetail.dataParam.PRESENT_SEND_TICKET.filter(function (item) { return (data.ticketinfo.POSNO == item.POSNO&&data.ticketinfo.DEALID == item.DEALID) }).length == 0) {     //已添加数据 跳过
+                        editDetail.dataParam.PRESENT_SEND_TICKET.push({
+                            POSNO: data.ticketinfo.POSNO,
+                            DEALID: data.ticketinfo.DEALID,
+                            AMOUNT: data.ticketinfo.AMOUNT,
+                            SALE_TIME: data.ticketinfo.SALE_TIME,
+                            FGID: data.ticketinfo.FGID,
+                        })
+                        editDetail.otherMethods.cleardata();  //小票列表数据改变，清空赠品列表
+                        iview.Message.success('交易数据添加成功!');
+                    } else {
+                        iview.Message.warning('该交易数据已添加!');
+                    }
+                    break;
+                case 2:
+                    iview.Message.warning('暂无有效交易数据!');
+                    break;
+                case 3:
+                    iview.Message.warning('小票交易时间未在活动内!');
+                    break;
+            }        
         });
     },
     delticket: function () {
@@ -83,21 +89,78 @@ editDetail.otherMethods = {
                     }
                 }
             };
+            editDetail.otherMethods.cleardata();  //小票列表数据改变，清空赠品列表
         }
     },
-    SUMticketamount: function () {
+    SUMticketamount: function () {        
+        var PROMOBILL_FG_RULE = [];
         var sum = 0;
-        for (let i = 0; i < editDetail.dataParam.PRESENT_SEND_TICKET.length; i++) {
-            sum += parseFloat(editDetail.dataParam.PRESENT_SEND_TICKET[i].AMOUNT);
+        let itemd = editDetail.dataParam.PRESENT_SEND_TICKET;
+        if (!itemd.length) {
+            iview.Message.warning("请确认交易小票!");
+            return;
+        };
+        for (let i = 0; i < itemd.length; i++) {
+            sum += parseFloat(itemd[i].AMOUNT);
+            if (PROMOBILL_FG_RULE.filter(function (item) { return (itemd[i].FGID == item.BILLID) }).length == 0) {
+                PROMOBILL_FG_RULE.push({
+                    BILLID: itemd[i].FGID,
+                    FULL: itemd[i].AMOUNT,
+                })
+            } else {
+                for (let j = 0; j < PROMOBILL_FG_RULE.length; j++) {
+                    if (itemd[i].FGID == PROMOBILL_FG_RULE[j].BILLID) {
+                        PROMOBILL_FG_RULE[j].FULL += itemd[i].AMOUNT;
+                    }
+                }
+            }
         }
-        editDetail.screenParam.AMOUNTS = sum;
+        editDetail.screenParam.AMOUNTS = sum;    //计算合计金额
+        _.Ajax('GetPresentList', {
+            Data: PROMOBILL_FG_RULE
+        }, function (data) {
+            editDetail.screenParam.PRESENT = data;
+        });
     },
     addpresentss: function () {
-
+        let selection = this.$refs.refpresents.getSelection();
+        if (selection.length == 0) {
+            iview.Message.info("请选择赠品列表中的赠品!");
+        } else {
+            for (let i = 0; i < selection.length; i++) {
+                if (editDetail.dataParam.PRESENT_SEND_ITEM.filter(
+                    function (item)
+                    { return (selection[i].PRESENTID == item.PRESENTID ) }).length == 0){     //已添加数据 跳过
+                    editDetail.dataParam.PRESENT_SEND_ITEM.push({
+                        PRESENTID: selection[i].PRESENTID,
+                        PRESENTNAME: selection[i].PRESENTNAME,
+                        COUNT: 1,
+                    })
+                }
+            };
+        }       
     },
     delpresentss: function () {
-
+        let selection = this.$refs.refpresentss.getSelection();
+        if (selection.length == 0) {
+            iview.Message.info("请选中要删除的数据!");
+        } else {
+            for (let i = 0; i < selection.length; i++) {
+                let temp = editDetail.dataParam.PRESENT_SEND_ITEM;
+                for (let j = 0; j < temp.length; j++) {
+                    if (temp[j].PRESENTID == selection[i].PRESENTID) {
+                        temp.splice(j, 1);
+                        break;
+                    }
+                }
+            };
+            editDetail.cleardata();  //小票列表数据改变，清空赠品列表
+        }
     },
+    cleardata: function () {
+        editDetail.dataParam.PRESENT_SEND_ITEM = [];
+        editDetail.screenParam.PRESENT = [];
+    }
 };
 
 editDetail.clearKey = function () {
@@ -139,14 +202,18 @@ editDetail.IsValidSave = function () {
 };
 
 editDetail.showOne = function (data, callback) {
-    //_.Ajax('ShowOneData', {
-    //    Data: { BILLID: data }
-    //}, function (data) {
-    //    $.extend(editDetail.dataParam, data.mainData);
-    //    editDetail.dataParam.PROMOBILL_FG_RULE = data.itemData;
-    //});
+    _.Ajax('ShowOneData', {
+        Data: { BILLID: data }
+    }, function (data) {
+        $.extend(editDetail.dataParam, data.mainData);
+        editDetail.dataParam.PRESENT_SEND_TICKET = data.ticketData;
+        editDetail.dataParam.PRESENT_SEND_ITEM = data.itemData;
+        //editDetail.otherMethods.SUMticketamount();
+    });
 };
-
+//editDetail.afterAbandon = function () {
+//    editDetail.otherMethods.SUMticketamount();
+//}
 editDetail.mountedInit = function () {
     editDetail.btnConfig = [{
         id: "add",

@@ -43,6 +43,11 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        [Field("活动id")]
+        public string FGID
+        {
+            get; set;
+        }
         [Field("时间")]
         [DbType(DbType.DateTime)]
         public string SALE_TIME

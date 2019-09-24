@@ -457,9 +457,9 @@ namespace z.ERP.Services
         #region 赠品发放 
         public DataGridResult Present_SendList(SearchItem item)
         {
-            string sql = $@"select P.*,B.NAME BRANCHNAME,PI.PRESENTID,PI.COUNT PRESENTCOUNT,PT.NAME PRESENTNAME
-                              from PRESENT_SEND P,BRANCH B,PRESENT_SEND_ITEM PI,PRESENT PT
-                             where P.BRANCHID=B.ID and P.BILLID=PI.BILLID AND PI.PRESENTID=PT.ID ";
+            string sql = $@"select P.*,B.NAME BRANCHNAME
+                              from PRESENT_SEND P,BRANCH B
+                             where P.BRANCHID=B.ID ";
             item.HasKey("BILLID", a => sql += $" and P.BILLID = '{a}'");
             item.HasKey("REPORTER_NAME", a => sql += $" and P.REPORTER_NAME LIKE '%{a}%'");
             item.HasKey("VERIFY_NAME", a => sql += $" and P.VERIFY_NAME LIKE '%{a}%'");
@@ -475,13 +475,167 @@ namespace z.ERP.Services
             dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
-        public DataTable GetSaleTicket(string BRANCHID, string POSNO, string DEALID) {
+        public Tuple<dynamic, int> GetSaleTicket(string BRANCHID, string POSNO, string DEALID) {
+            int status=0;
             string sql = $@"SELECT S.POSNO ,S.DEALID,S.SALE_AMOUNT AMOUNT,S.SALE_TIME
                     FROM ALLSALE S,STATION ST
                     WHERE S.POSNO =ST.STATIONBH AND S.ISFG=2 AND S.SALE_AMOUNT>0 AND S.POSNO='{POSNO}' AND DEALID='{DEALID}' AND ST.BRANCHID='{BRANCHID}' 
                     AND NOT EXISTS (SELECT POSNO,DEALID FROM ALLSALE WHERE POSNO_OLD='{POSNO}' AND DEALID_OLD='{DEALID}')";
             var dt = DbHelper.ExecuteTable(sql);
+            if (dt.Rows.Count > 0)
+            {
+                var time = dt.Rows[0]["SALE_TIME"].ToString();
+                string sql1 = $@" select billid from promobill
+                     where promotype = 4 
+                       and status = 3
+                       and branchid={BRANCHID} 
+                       and trunc(TO_DATE('{time}','yyyy-mm-dd hh24:mi:ss')) >= start_date
+                       and trunc(TO_DATE('{time}','yyyy-mm-dd hh24:mi:ss')) <= end_date
+                       and instr(week, to_char(TO_DATE('{time}','yyyy-mm-dd hh24:mi:ss')-1,'d'))>0
+                       and to_number(to_char(TO_DATE('{time}','yyyy-mm-dd hh24:mi:ss'),'hh24'))*60 +to_number(to_char(TO_DATE('{time}','yyyy-mm-dd hh24:mi:ss'),'mi'))>= start_time 
+                       and to_number(to_char(TO_DATE('{time}','yyyy-mm-dd hh24:mi:ss'),'hh24'))*60 +to_number(to_char(TO_DATE('{time}','yyyy-mm-dd hh24:mi:ss'),'mi'))<= end_time
+                       order by billid desc";
+                var dt1 = DbHelper.ExecuteTable(sql1);
+                if (dt1.Rows.Count > 0)
+                {
+                    dt.Columns.Add("FGID", typeof(string));
+                    dt.Rows[0]["FGID"] = dt1.Rows[0]["BILLID"].ToString();
+                    status = 1;   //正常
+                }
+                else {
+                    status = 3;  //没有参加活动
+                }
+            }
+            else {
+                status = 2;  //无数据
+            }
+            return new Tuple<dynamic, int>(dt.ToOneLine(), status);
+        }
+        /// <summary>
+        /// 获取符合条件的赠品
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public DataTable GetPresentList(List<PROMOBILL_FG_RULEEntity> Data) {
+            string sql = "";
+            if (Data==null) { return null; }
+            for(var i=0;i<Data.Count;i++) {
+                if (i!=0) {
+                    sql += " union all ";
+                }
+                sql += $@"SELECT A.PRESENTID,P.NAME PRESENTNAME,P.PRICE
+                FROM PROMOBILL_FG_RULE A,PRESENT P
+                WHERE A.PRESENTID=P.ID AND A.BILLID ={Data[i].BILLID} AND  A.FULL <={Data[i].FULL}";
+            }
+            string sqlall = $@" SELECT DISTINCT * FROM (" + sql + ") ORDER BY PRESENTID";
+            var dt = DbHelper.ExecuteTable(sqlall);
             return dt;
+        }
+        public string SavePresent_Send(PRESENT_SENDEntity data)
+        {
+            var v = GetVerify(data);
+            if (data.BILLID.IsEmpty())
+                data.BILLID = NewINC("PRESENT_SEND");
+
+            data.STATUS = ((int)促销单状态.未审核).ToString();
+            data.REPORTER = employee.Id;
+            data.REPORTER_NAME = employee.Name;
+            data.REPORTER_TIME = DateTime.Now.ToString();
+
+            v.IsUnique(a => a.BILLID);
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                data.PRESENT_SEND_TICKET?.ForEach(item =>
+                {
+                    item.SALE_TIME.ToDateTime().ToString();
+                });
+                DbHelper.Save(data);
+                Tran.Commit();
+            }
+            ////增加审核待办任务
+            //var dcl = new BILLSTATUSEntity
+            //{
+            //    BILLID = data.BILLID,
+            //    MENUID = "",
+            //    BRABCHID = data.BRANCHID,
+            //    URL = "CXGL/PROMOBILL_DIS/Promobill_DisEdit/"
+            //};
+            //InsertDclRw(dcl);
+
+            return data.BILLID;
+        }
+        public void DeletePresent_Send(List<PRESENT_SENDEntity> data)
+        {
+            foreach (var con in data)
+            {
+                var Data = DbHelper.Select(con);
+                if (Data.STATUS != ((int)促销单状态.未审核).ToString())
+                    throw new LogicException($"单据(" + Data.BILLID + ")已经不是未审核不能删除!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var con in data)
+                {
+                    ////删除审核待办任务
+                    //var dcl = new BILLSTATUSEntity
+                    //{
+                    //    BILLID = con.BILLID,
+                    //    MENUID = "",
+                    //    BRABCHID = con.BRANCHID
+                    //};
+                    //DelDclRw(dcl);
+
+                    DbHelper.Delete(con);
+                }
+                Tran.Commit();
+            }
+        }       
+        public string ExecPresent_Send(PRESENT_SENDEntity data)
+        {
+            if (data.STATUS == ((int)促销单状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + data.BILLID + ")已经审核不能再次审核!");
+            }
+            data.STATUS = ((int)促销单状态.审核).ToString();
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                EXEC_PRESENT_SEND exec = new EXEC_PRESENT_SEND()
+                {
+                    in_BILLID = data.BILLID,
+                    in_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec);
+                ////删除审核待办任务
+                //var dcl = new BILLSTATUSEntity
+                //{
+                //    BILLID = data.BILLID,
+                //    MENUID = "",
+                //    BRABCHID = data.BRANCHID
+                //};
+                //DelDclRw(dcl);
+
+                Tran.Commit();
+            }
+
+            return data.BILLID;
+        }
+        public Tuple<dynamic, DataTable,DataTable> Present_SendShowOneData(PRESENT_SENDEntity data)
+        {
+            string sql = $@"SELECT * FROM PRESENT_SEND WHERE BILLID={data.BILLID} ";
+            var dt = DbHelper.ExecuteTable(sql);
+            
+            string sql1 = $@"SELECT * FROM PRESENT_SEND_TICKET WHERE BILLID ={data.BILLID} ORDER BY SALE_TIME";
+            var dt1 = DbHelper.ExecuteTable(string.Format(sql1));
+
+            string sql2 = $@"SELECT A.*,B.NAME PRESENTNAME FROM PRESENT_SEND_ITEM A,PRESENT B
+                    WHERE A.PRESENTID=B.ID AND A.BILLID={data.BILLID} ORDER BY A.PRESENTID";
+            var dt2 = DbHelper.ExecuteTable(string.Format(sql2));
+
+            return new Tuple<dynamic, DataTable, DataTable>(dt.ToOneLine(), dt1, dt2);
         }
         #endregion
 
