@@ -66,11 +66,11 @@
 @section element{
 
     <row>
-        <i-col span="4" class="RowTitle">
+        <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             通知编号
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="5" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -79,15 +79,28 @@
                 });
             }
         </i-col>
-        <i-col span="4" class="RowTitle">
+        <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             通知状态
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="5" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<通知状态>()
                 {
                     vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            通知类型
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<通知类型>()
+                {
+                    vModel = "dataParam.TYPE",
                     Enable = false
                 });
             }

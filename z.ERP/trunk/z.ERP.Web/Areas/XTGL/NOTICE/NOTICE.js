@@ -21,6 +21,7 @@
     define.dataParam.ID = null;
     define.dataParam.STATUS = null;
     define.dataParam.TITLE = null;
+    define.dataParam.TYPE = null;
     define.dataParam.NOTICE_BRANCH = [];
     define.screenParam.BRANCHID = [];
     define.service = "XtglService";
@@ -87,6 +88,10 @@ define.mountedInit = function () {
 define.IsValidSave = function () {
     if (!define.dataParam.STATUS) {
         iview.Message.info("通知状态不能为空!");
+        return false;
+    }
+    if (!define.dataParam.TYPE) {
+        iview.Message.info("通知类型不能为空!");
         return false;
     }
     if (!define.dataParam.TITLE) {
