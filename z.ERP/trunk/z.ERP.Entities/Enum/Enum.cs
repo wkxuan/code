@@ -426,8 +426,8 @@ namespace z.ERP.Entities.Enum
     }
     public enum 通知类型
     {
-        PC端 = 1,
-        移动端 = 2
+        ERP = 1,
+        POS = 2
     }
     public enum 发票状态
     {
