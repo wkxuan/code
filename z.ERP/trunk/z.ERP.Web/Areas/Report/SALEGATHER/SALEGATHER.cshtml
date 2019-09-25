@@ -43,7 +43,7 @@
         <i-col span="2" class="RowTitle">
             上传时间
         </i-col>
-        <i-col span="2" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -52,7 +52,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -89,11 +89,12 @@
         <i-col span="2" class="RowTitle">
             处理标记
         </i-col>
-        <i-col span="4" class="RowText">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<处理标记>()
                 {
                     vModel = "searchParam.FLAG",
+                    Multiple =true
                 });
             }
         </i-col>
@@ -102,7 +103,7 @@
         <i-col span="2" class="RowTitle">
             失败原因
         </i-col>
-        <i-col span="20" class="RowText">
+        <i-col span="14" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {

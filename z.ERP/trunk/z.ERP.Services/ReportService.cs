@@ -879,11 +879,12 @@ namespace z.ERP.Services
                     INNER JOIN BRANCH ON BRANCH.ID=STATION.BRANCHID";
             sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             sqlsum += "   WHERE TYPE= 3";
-
-            item.HasDateKey("SALETIME", a => sqlsum += $" and SALETIME={a}");
-            item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
-            item.HasDateKey("CREATE_TIME", a => sqlsum += $" and CREATE_TIME={a}");
-            item.HasKey("FLAG", a => sqlsum += $" and FLAG={a}");
+            item.HasDateKey("SALETIME_START", a => sqlsum += $" and SALETIME>={a}");
+            item.HasDateKey("SALETIME_END", a => sqlsum += $" and SALETIME<={a}");    
+            item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");        
+            item.HasDateKey("CREATE_TIME_START", a => sqlsum += $" and CREATE_TIME>={a}");
+            item.HasDateKey("CREATE_TIME_END", a => sqlsum += $" and CREATE_TIME<={a}"); 
+            item.HasKey("FLAG", a => sqlsum += $" and FLAG IN ({a})");
             item.HasKey("REASON", a => sqlsum += $" and REASON LIKE '%{a}%'");
 
             item.HasKey("STATIONBH", a => sqlsum += $" and STATIONBH={a}");
@@ -928,8 +929,8 @@ namespace z.ERP.Services
                             " and c.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
             item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID ={a}");
-            item.HasDateKey("START", a => sqlsum += $" and OPERTIME START>={a}");
-            item.HasDateKey("END", a => sqlsum += $" and OPERTIME END<={a}");
+            item.HasDateKey("START", a => sqlsum += $" and OPERTIME_START>={a}");
+            item.HasDateKey("END", a => sqlsum += $" and OPERTIME_END<={a}");
             item.HasKey("POSNO", a => sqlsum += $" and POSNO='{a}'");
             item.HasKey("DEALID", a => sqlsum += $" and DEALID='{a}'");
             //item.HasKey("INX", a => sqlsum += $" and INX={a}");
