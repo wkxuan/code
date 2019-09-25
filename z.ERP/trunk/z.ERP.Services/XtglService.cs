@@ -142,7 +142,7 @@ namespace z.ERP.Services
         }
         public DataGridResult GetFeeRule(SearchItem item)
         {
-            string sql = $@"select * from FEERULE where 1=1 ";
+            string sql = $@"select ID, NAME, to_char(UP_DATE) UP_DATE, PAY_CYCLE, PAY_UP_CYCLE, ADVANCE_CYCLE, VOID_FLAG, to_char(FEE_DAY) FEE_DAY from FEERULE where 1=1 ";
             item.HasKey("ID", a => sql += $" and ID = '{a}'");
             sql += "order by ID";
             int count;
@@ -150,6 +150,7 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
         public DataGridResult GetLateFeeRule(SearchItem item)
+
         {
             string sql = $@"select A.ID,A.NAME,A.DAYS,A.AMOUNTS,A.RATIO*100 RATIO from LATEFEERULE A where 1=1 ";
             item.HasKey("ID", a => sql += $" and A.ID = '{a}'");
