@@ -236,10 +236,10 @@ namespace z.ERP.Entities.Enum
     }
 
 
-    public enum 周期方式
+    public enum 月周期方式
     {
-        合同起始日期 = 1,
-        自然周期 = 2
+        自然月 = 1,
+        合同月 = 2
     }
 
     public enum 起始日清算
@@ -423,6 +423,11 @@ namespace z.ERP.Entities.Enum
     {
         草稿状态 = 1,
         发布状态 = 2
+    }
+    public enum 通知类型
+    {
+        ERP = 1,
+        POS = 2
     }
     public enum 发票状态
     {

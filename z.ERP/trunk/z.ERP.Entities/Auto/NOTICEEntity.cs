@@ -91,5 +91,10 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        [Field("1.pc端 2.移动端")]
+        public string TYPE
+        {
+            get; set;
+        }
     }
 }
