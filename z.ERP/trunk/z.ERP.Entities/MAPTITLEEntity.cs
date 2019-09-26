@@ -11,6 +11,10 @@ namespace z.ERP.Entities
         /// <summary>
         /// 商铺名称
         /// </summary>
+        public string TYPE { set; get; }
+        /// <summary>
+        /// 商铺名称
+        /// </summary>
         public string SHOPNAME { set; get; }
         /// <summary>
         /// 定位坐标

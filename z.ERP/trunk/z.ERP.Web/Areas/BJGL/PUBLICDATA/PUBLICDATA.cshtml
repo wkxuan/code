@@ -1,0 +1,96 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+@section head{   
+    <style>
+        .ivu-radio {
+            margin-top:-60px;
+        }
+        .img-radio {
+            width:80px;
+            height:80px;
+        }
+    </style>
+}
+@section search{
+    <row>
+        <i-col span="4" class="RowTitle">
+            编码
+        </i-col>
+        <i-col span="8" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.ID"
+                });
+            }
+        </i-col>
+        <i-col span="4" class="RowTitle">
+            名称
+        </i-col>
+        <i-col span="8" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.NAME"
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section element{
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            编码
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-model="dataParam.ID"  v-bind:disabled="!disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            名称
+        </i-col>
+        <i-col span="10" class="RowText">
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled" />
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            颜色
+        </i-col>
+        <i-col span="6" class="RowText">
+            <Color-Picker v-model="dataParam.COLOR" transfer recommend v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <br />
+    <br />
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            图标选择
+        </i-col>
+        <i-col span="19" class="RowText">
+            <Radio-Group v-model="dataParam.IMAGEURL" >
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/Elevator.png"><img class="img-radio" src="~/Content/three/PublicImage/Elevator.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/Escator.png"><img class="img-radio" src="~/Content/three/PublicImage/Escator.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/Exit.png"><img class="img-radio" src="~/Content/three/PublicImage/Exit.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/fire.png"><img class="img-radio" src="~/Content/three/PublicImage/fire.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/Lost.png"><img class="img-radio" src="~/Content/three/PublicImage/Lost.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/Man.png"><img  class="img-radio" src="~/Content/three/PublicImage/Man.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/WoMan.png"><img class="img-radio" src="~/Content/three/PublicImage/WoMan.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/Pay.png"><img class="img-radio" src="~/Content/three/PublicImage/Pay.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/Stairs.png"><img class="img-radio" src="~/Content/three/PublicImage/Stairs.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/WayIn.png"><img class="img-radio" src="~/Content/three/PublicImage/WayIn.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/WayOut.png"><img class="img-radio" src="~/Content/three/PublicImage/WayOut.png"></Radio>
+                <Radio v-bind:disabled="disabled" label="/Content/three/PublicImage/Wc.png"><img class="img-radio" src="~/Content/three/PublicImage/Wc.png"></Radio>
+            </Radio-Group>
+        </i-col>
+    </row>
+}
+
+
+

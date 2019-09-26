@@ -89,12 +89,23 @@
                 floor.load();
 
                 for (var i = 0; i < labelArray.length; i++) {
-                    addLabelSprite(labelArray[i].SHOPNAME, 13, labelArray[i].POINTS);
+                    switch (labelArray[i].TYPE) {
+                        case SpriteType.TEXT:
+                            addLabelSprite(labelArray[i].SHOPNAME, 13, labelArray[i].POINTS);
+                            break;
+                        case SpriteType.IMG:
+                            addImgSprite(labelArray[i].SHOPNAME,labelArray[i].POINTS);
+                            break;
+                    }                   
                 }
 
                 render();
             }
-
+            //楼层子项的分类类型
+            var SpriteType = {
+                TEXT: "text",          //单元
+                IMG: "img",            //常用的小隔间
+            }
             //楼层子项的分类类型
             var ObjType = {
                 FLOOR: "floor",        //地板
@@ -141,6 +152,9 @@
                             break;
                         case ObjType.FLOOR:
                             this.addFloor(points, 0.5, item.SHOPINFO);
+                            break;
+                        case ObjType.CELL:
+                            this.addShop(points, 3, color, item.SHOPINFO);
                             break;
                     }
                 }
@@ -334,7 +348,20 @@
                 mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
                 mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
             }
-
+            
+            //使用图片标注
+            function addImgSprite(message, position) {
+                var map = new THREE.TextureLoader().load(message);     //图片标注
+                var spriteMaterial = new THREE.SpriteMaterial({ map: map, depthWrite: false });
+                var sprite = new THREE.Sprite(spriteMaterial);
+                sprite.renderOrder = 0;
+                sprite.center = new THREE.Vector2(0.5, 0);
+                sprite.position.x = position[0];
+                sprite.position.y = 3.5;
+                sprite.position.z = position[2];
+                //sprite.visible = false;
+                labelGroup.add(sprite);
+            }
 
             //使用sprite制作标注
             function addLabelSprite(message, fontsize, position) {
@@ -362,8 +389,6 @@
             function makeCanvasSprite(canvas, position) {
                 var texture = new THREE.Texture(canvas);
                 texture.needsUpdate = true;
-                //var map = new THREE.TextureLoader().load("../../Content/three/a.png");     //图片标注
-                //var spriteMaterial = new THREE.SpriteMaterial({ map: map, depthWrite: false });
                 var spriteMaterial = new THREE.SpriteMaterial({ map: texture, depthWrite: false });
                 var sprite = new THREE.Sprite(spriteMaterial);
                 sprite.renderOrder = 0;
