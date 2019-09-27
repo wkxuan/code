@@ -65,7 +65,7 @@
     <Tabs type="card" value="name1">
         <Tab-Pane label="菜单权限" name="name1">
             <yx-tree v-bind:data="screenParam.userModule"  v-bind:disablecheckbox="!disabled"  ref="moduleTreeRef"
-                     v-bind:showcheckbox="true"></yx-tree>
+                     v-bind:showcheckbox="true" v-bind:checkstrictly="true" v-on:oncheckchange="onCheckChangeModule"></yx-tree>
         </Tab-Pane>
         <Tab-Pane label="门店权限" name="name2">
             <div class="zzc" v-if="!disabled"></div>

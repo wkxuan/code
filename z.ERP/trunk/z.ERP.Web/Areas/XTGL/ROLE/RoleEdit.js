@@ -152,6 +152,73 @@ editDetail.IsValidSave = function () {
 }
 
 editDetail.otherMethods = {
+    onCheckChangeModule: function (checkArr, node) {
+        this.setCurNodeChlCheck(node);
+        this.setCurNodeParentCheck(node);
+    },
+    getNodeParentNode: function (node) {
+        let data = editDetail.screenParam.userModule;
+        return this.filterFunc(node, data);
+    },
+    filterFunc (node, data) {
+        if (!node || !data || !data.length) {
+            return;
+        }
+        for (let i = 0; i < data.length; i++) {
+            if (node.parentId == data[i].code) {
+                return data[i];
+            }
+            if (data[i].children && data[i].children.length) {
+                let pnode = this.filterFunc(node, data[i].children);
+                if (pnode) {
+                    return pnode;
+                }
+            }
+        }
+    },
+    //设置node的子节点checked状态
+    setCurNodeParentCheck: function (node) {
+        let pnode = this.getNodeParentNode(node);
+        if (pnode && pnode.children && pnode.children.length) {
+            let num = 0;
+            for (let i = 0; i < pnode.children.length; i++) {
+                if (pnode.children[i].checked) {
+                    num++;
+                }
+            }
+            if (num == pnode.children.length) {
+                pnode.checked = true;
+                pnode.indeterminate = false;
+            } else if (num == 0) {
+                if (pnode.code.length == 2 || pnode.code.length == 4) {
+                    pnode.checked = false;
+                    pnode.indeterminate = false;
+                }
+            } else {
+                if (pnode.code.length == 2 || pnode.code.length == 4) {
+                    pnode.checked = false;
+                    pnode.indeterminate = true;
+                } else {
+                    pnode.checked = true;
+                    pnode.indeterminate = false;
+                }
+            }
+            if (this.getNodeParentNode(pnode)) {
+                this.setCurNodeParentCheck(this.getNodeParentNode(pnode));
+            }
+        }
+    },
+    setCurNodeChlCheck: function (node) {
+        if (node.children && node.children.length) {
+            for (let i = 0; i < node.children.length; i++) {
+                node.children[i].checked = node.checked;
+
+                if (node.children[i]) {
+                    this.setCurNodeChlCheck(node.children[i]);
+                }
+            }
+        }
+    },
     orgChange: function (value, selectedData) {
         editDetail.dataParam.ORGID = value[value.length - 1];
     },

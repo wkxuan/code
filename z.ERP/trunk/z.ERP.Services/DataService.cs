@@ -540,5 +540,12 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("id", "name");
         }
+        public List<SelectItem> PUBLICDATA()
+        {
+            string sql = $@"SELECT A.ID,A.NAME FROM PUBLICDATA A WHERE 1=1"                          
+                         + " ORDER BY  A.ID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ID", "NAME");
+        }
     }
 }
