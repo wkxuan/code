@@ -8,13 +8,13 @@
 //{ title: '楼层', key: 'FLOORNAME', width: 120 },
 //{ title: '业态', key: 'CATEGORYNAME', width: 120 },
 { title: '账单号', key: 'BILLID', width: 100 },
-{ title: '收费项目名称', key: 'FEENAME', width: 120 },
+{ title: '收费项目', key: 'FEENAME', width: 120 },
  { title: '租约号', key: 'CONTRACTID', width: 100 },
 { title: '债权发生月', key: 'NIANYUE', width: 100 },
 { title: '收付实现月', key: 'YEARMONTH', width: 100 },
 { title: '账单类型', key: 'TYPEMC', width: 100 },
 { title: '账单状态', key: 'STATUSMC', width: 100 },
-{ title: '核算单位名称', key: 'UNITNAME', width: 120 },
+{ title: '核算单位', key: 'UNITNAME', width: 120 },
  { title: '应收金额', key: 'MUST_MONEY', width: 100, align: "right" },
  { title: '已收金额', key: 'RECEIVE_MONEY', width: 100, align: "right" },
  { title: '返还金额', key: 'RETURN_MONEY', width: 100, align: "right" },
@@ -29,7 +29,7 @@
     srch.screenParam.popParam = {};
     //srch.searchParam.SrchTYPE = 1;
     srch.searchParam.CATEGORYCODE = "";
-    //srch.screenParam.CATEGORY = [];
+    srch.screenParam.CATEGORY = [];
 
     srch.screenParam.showPopMerchant = false;
     srch.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
@@ -49,8 +49,9 @@ srch.newCondition = function () {
     srch.searchParam.NIANYUE_START = "";
     srch.searchParam.NIANYUE_END = "";
     srch.searchParam.YEARMONTH_START = "";
-    srch.searchParam.NIANYUE_END = "";
+    srch.searchParam.YEARMONTH_END = "";
     srch.searchParam.FLOORID = "";
+    srch.searchParam.CATEGORY = "";
     srch.searchParam.CATEGORYCODE = "";
 };
 

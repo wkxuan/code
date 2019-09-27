@@ -51,6 +51,7 @@
                 RenderControl(new EnumDropDownListRender<账单类型>()
                 {
                     vModel = "searchParam.TYPE",
+                    Multiple = true
 
                 });
             }
@@ -62,13 +63,14 @@
                 RenderControl(new EnumDropDownListRender<账单状态>()
                 {
                     vModel = "searchParam.STATUS",
+                    Multiple = true
                 });
             }
         </i-col>
     </row>
 
     <row>
-        <i-col span="2" class="RowTitle">收费项目名称 </i-col>
+        <i-col span="2" class="RowTitle">收费项目</i-col>
         <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
@@ -148,8 +150,7 @@
         </i-col>
     </row>
 
-
-
+    
 }
 
 @section pops{
