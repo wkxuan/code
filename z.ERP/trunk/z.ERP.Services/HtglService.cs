@@ -351,8 +351,67 @@ namespace z.ERP.Services
             };
             return zjfjList;
         }
+
+        /// <summary>
+        /// 根据合同开始结束日期生成合同月明细
+        /// </summary>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        public List<PERIODEntity> createHTY(DateTime begin,DateTime end)
+        {
+            List<PERIODEntity> Perio = new List<PERIODEntity>();
+
+            DateTime datetmp = begin;
+            int day = datetmp.Day;
+            int leftDay = 0;
+
+            if (day >= 29)
+            {
+                leftDay = DateTime.DaysInMonth(datetmp.Year, datetmp.Month)-day + 1;
+            }
+
+
+            while(datetmp < end)
+            {
+                PERIODEntity per = new PERIODEntity();
+                per.YEARMONTH = datetmp.Year.ToString() + datetmp.Month.ToString().PadLeft(2, '0');
+                per.DATE_START = datetmp.ToString();
+
+                if (leftDay > 0)
+                {
+                    datetmp = datetmp.AddMonths(1).AddDays(1 - datetmp.AddMonths(1).Day).AddMonths(1).AddDays( - 1 - leftDay);
+                }
+                else
+                    datetmp = datetmp.AddMonths(1).AddDays(-1);
+
+                //if (datetmp > end)
+                //{
+                //    datetmp = end;
+                //}
+
+                per.DATE_END = datetmp.ToString();
+
+                Perio.Add(per);
+
+                datetmp = datetmp.AddDays(1);
+            }
+
+            return Perio;
+        }
+
+
         public List<CONTRACT_RENTITEMEntity> zlYdFj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
         {
+           // ContractData.OPERATERULE
+           // ContractData.STANDARD
+
+            OPERATIONRULEEntity oprule = DbHelper.Select(new OPERATIONRULEEntity() { ID = ContractData.OPERATERULE });
+
+            if (oprule.PROCESSTYPE != "2" && ContractData.STANDARD == "2")
+            {
+                throw new LogicException("合作方式不是纯租类型,月周期方式不能选择合同月");
+            }
+
             List<CONTRACT_RENTITEMEntity> zjfjList = new List<CONTRACT_RENTITEMEntity>();
             //当月度分解没定义的时候抛出异常提示待完善
 
@@ -473,9 +532,10 @@ namespace z.ERP.Services
 
 
             List<PERIODEntity> Perio = new List<PERIODEntity>();
+
             Perio = DbHelper.SelectList(new PERIODEntity()).
-                Where(a => (a.DATE_START.ToDateTime() <= ContractData.CONT_END.ToDateTime())
-                && (a.DATE_END.ToDateTime() >= ContractData.CONT_START.ToDateTime())).OrderBy(b => b.YEARMONTH).ToList();
+            Where(a => (a.DATE_START.ToDateTime() <= ContractData.CONT_END.ToDateTime())
+            && (a.DATE_END.ToDateTime() >= ContractData.CONT_START.ToDateTime())).OrderBy(b => b.YEARMONTH).ToList();
 
             List<CONTRACT_RENTITEMEntity> zjfjListGd = new List<CONTRACT_RENTITEMEntity>();
             foreach (var per in Perio)
@@ -545,9 +605,16 @@ namespace z.ERP.Services
             {
                 List<PERIODEntity> Period = new List<PERIODEntity>();
 
-                Period = DbHelper.SelectList(new PERIODEntity()).
-                    Where(a => (a.DATE_START.ToDateTime() <= ydfj.ENDDATE.ToDateTime())
-                  && (a.DATE_END.ToDateTime() >= ydfj.STARTDATE.ToDateTime())).OrderBy(b => b.YEARMONTH).ToList();
+                if (ContractData.STANDARD == "2")  //合同月
+                {
+                    Period = createHTY(ydfj.STARTDATE.ToDateTime(), ydfj.ENDDATE.ToDateTime());
+                }
+                else
+                {
+                    Period = DbHelper.SelectList(new PERIODEntity()).
+                        Where(a => (a.DATE_START.ToDateTime() <= ydfj.ENDDATE.ToDateTime())
+                        && (a.DATE_END.ToDateTime() >= ydfj.STARTDATE.ToDateTime())).OrderBy(b => b.YEARMONTH).ToList();
+                }
 
                 foreach (var per in Period)
                 {
