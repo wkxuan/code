@@ -269,7 +269,7 @@ editDetail.mountedInit = function () {
             });
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.STATUS == 2) {
+            if (!disabled && data.STATUS <= 2) {
                 return true;
             } else {
                 return false;
