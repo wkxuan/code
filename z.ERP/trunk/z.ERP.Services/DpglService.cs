@@ -668,6 +668,21 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public DataGridResult SearchMAPPUBLICDATA(SearchItem item)
+        {
+            string sql = $@"SELECT M.*,P.NAME 
+                            FROM MAPPUBLICDATA M,PUBLICDATA P,FLOOR F
+                            WHERE P.ID=PUBLICDATAID AND F.ID=FLOORID "
+                   + " and F.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"; //门店权限
+            item.HasKey("BRANCHID", a => sql += $" and F.BRANCHID = '{a}'");
+            item.HasKey("FLOORID", a => sql += $" and F.ID = '{a}'");
+            item.HasKey("REGIONID", a => sql += $" and F.REGIONID = {a}");
+            item.HasKey("ID", a => sql += $" and M.ID = {a}");
+            sql += " ORDER BY M.ID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
         public Tuple<dynamic> GetFloorMD(MAPFLOORDATAEntity Data) {
             string sql = $@"SELECT M.* FROM MAPFLOORDATA M,FLOOR F WHERE M.FLOORID=F.ID AND M.BRANCHID=F.BRANCHID AND M.REGIONID=F.REGIONID ";
             if (!Data.BRANCHID.IsEmpty()) {
@@ -684,6 +699,46 @@ namespace z.ERP.Services
             DataTable floormap = DbHelper.ExecuteTable(sql);
             return new Tuple<dynamic>(floormap.ToOneLine());
         }
+
+        #region 公共设施数据定义
+        public DataGridResult SearchPUBLICDATA(SearchItem item)
+        {
+            string sql = $@"SELECT * FROM PUBLICDATA  WHERE 1=1 ";
+            item.HasKey("ID", a => sql += $" and ID = '{a}'");
+            item.HasKey("NAME", a => sql += $" and NAME like '%{a}%'");
+            sql += " ORDER BY ID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public string PUBLICDATASave(PUBLICDATAEntity DefineSave)
+        {
+            var v = GetVerify(DefineSave);
+            if (DefineSave.ID.IsEmpty())
+                DefineSave.ID = NewINC("PUBLICDATA");
+            v.Require(a => a.ID);
+            v.Require(a => a.NAME);
+            v.Require(a => a.COLOR);
+            v.Require(a => a.IMAGEURL);
+            v.Verify();
+            DbHelper.Save(DefineSave);
+            return DefineSave.ID;
+        }
+        public string SaveMAPPUBLICDATA(MAPPUBLICDATAEntity DefineSave)
+        {
+            var v = GetVerify(DefineSave);
+            if (DefineSave.ID.IsEmpty())
+                DefineSave.ID = NewINC("MAPPUBLICDATA");
+            v.Require(a => a.ID);
+            v.Require(a => a.PUBLICDATAID);
+            v.Require(a => a.IMAGEPOINTS);
+            v.Require(a => a.POINTS);
+            v.Verify();
+            DbHelper.Save(DefineSave);
+            return DefineSave.ID;
+        }
+        #endregion
+
         #endregion
 
         #region 布局图展示数据
@@ -783,8 +838,33 @@ namespace z.ERP.Services
                     };
                     //标题信息
                     MAPTITLEEntity mte = new MAPTITLEEntity();
+                    mte.TYPE = "text";    //文字
                     mte.SHOPNAME = item["MERCHANTNAME"].ToString();  //商户名称
                     mte.POINTS = item["TITLEPOINTS"].ToString();
+                    maptitlelist.Add(mte);
+                    mapshoplist.Add(shopi);
+                }
+            }
+            //cell
+            var cell = GETCELLDATA(floorid);
+            if (cell.Rows.Count>0) {
+                foreach (DataRow item in cell.Rows)
+                {
+                    MAPSHOP shopi = new MAPSHOP();
+                    shopi.TYPE = "cell";    //类型
+                    shopi.POINTS = item["POINTS"].ToString();
+                    if (string.IsNullOrEmpty(shopstatus))
+                    {
+                        shopi.COLOR = item["COLOR"].ToString();
+                    }
+                    else {
+                        shopi.COLOR = "#F08080";
+                    }
+                    //标题
+                    MAPTITLEEntity mte = new MAPTITLEEntity();
+                    mte.TYPE = "img";    //文字
+                    mte.SHOPNAME = item["IMAGEURL"].ToString();  //商户名称
+                    mte.POINTS = item["IMAGEPOINTS"].ToString();
                     maptitlelist.Add(mte);
                     mapshoplist.Add(shopi);
                 }
@@ -819,6 +899,16 @@ namespace z.ERP.Services
                 SQL= $@" select SHOPID,TITLEPOINTS,POINTS,NAME,STATUS,RENT_STATUS,CASE SS.RENT_STATUS  WHEN 1 THEN '#FFFFFF' WHEN 2 THEN '#00FF00' END COLOR,MERCHANTNAME FROM (" +SQL+") SS";
             }
 
+            DataTable dt = DbHelper.ExecuteTable(SQL);
+            return dt;
+        }
+        public DataTable GETCELLDATA(string FLOORID)
+        {
+            string SQL = @"SELECT M.*,P.IMAGEURL,P.COLOR FROM MAPPUBLICDATA M,PUBLICDATA P WHERE P.ID=PUBLICDATAID ";
+            if (!FLOORID.IsEmpty())
+            {
+                SQL += " and M.FLOORID =" + FLOORID + " ";
+            }
             DataTable dt = DbHelper.ExecuteTable(SQL);
             return dt;
         }

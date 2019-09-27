@@ -275,6 +275,18 @@
                           v-bind:key="k">{{ i.label }}</i-option>
             </i-select>
         </i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            月周期方式
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<月周期方式>()
+                {
+                    vModel = "dataParam.STANDARD"
+                });
+            }
+        </i-col>
         <i-col span="2" class="RowTitle" v-if="dataParam.CONTRACT_OLD">
             <span class="mustElement">*</span>
             变更启动日期

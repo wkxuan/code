@@ -634,7 +634,7 @@ namespace z.ERP.Services
             item.HasKey("VERIFY", a => sql += $" and L.VERIFY={a}");
             item.HasDateKey("VERIFY_TIME_START", a => sql += $" and L.VERIFY_TIME>={a}");
             item.HasDateKey("VERIFY_TIME_END", a => sql += $" and L.VERIFY_TIME<={a}");
-            sql += " ORDER BY  L.BILLID DESC";
+            sql += " ORDER BY  to_number(L.BILLID) DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
@@ -729,7 +729,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT A.*,B.NAME BRANCHNAME,D.NAME MERCHANTNAME,F.NAME FEE_ACCOUNTNAME "
                         + " FROM BILL_NOTICE A,BRANCH B,CONTRACT C,MERCHANT D,FEE_ACCOUNT F "
                         + "WHERE A.BRANCHID=B.ID and A.CONTRACTID=C.CONTRACTID(+) and C.MERCHANTID=D.MERCHANTID(+)"
-                        + "  AND A.FEE_ACCOUNTID=F.ID";
+                        + "  AND A.FEE_ACCOUNTID=F.ID(+)";
             sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             if (!Data.BILLID.IsEmpty())
                 sql += (" AND A.BILLID= " + Data.BILLID);

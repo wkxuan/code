@@ -844,7 +844,11 @@ editDetail.otherMethods = {
             }
         };
         if (!editDetail.dataParam.FEERULE_RENT) {
-            iview.Message.info("请先维护租金收费规则!");
+            iview.Message.info("请先选择租金收费规则!");
+            return;
+        };
+        if (!editDetail.dataParam.OPERATERULE) {
+            iview.Message.info("请先选择合作方式!");
             return;
         };
 
@@ -855,7 +859,8 @@ editDetail.otherMethods = {
                 CONT_START: editDetail.dataParam.CONT_START,
                 CONT_END: editDetail.dataParam.CONT_END,
                 FEERULE_RENT: editDetail.dataParam.FEERULE_RENT,
-                STANDARD: editDetail.dataParam.STANDARD
+                STANDARD: editDetail.dataParam.STANDARD,
+                OPERATERULE: editDetail.dataParam.OPERATERULE
             }
         }, function (data) {
             let contractRent = editDetail.dataParam.CONTRACT_RENT;
@@ -1094,7 +1099,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.CONTJSKL = [];
     editDetail.dataParam.CONTRACT_COST = [];
     editDetail.dataParam.CONTRACT_PAY = [];
-
+    editDetail.dataParam.STANDARD = 1;
     editDetail.dataParam.TQFKR = null;
     editDetail.screenParam.TQFKR = [];
 };

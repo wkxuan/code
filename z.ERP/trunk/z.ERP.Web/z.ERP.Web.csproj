@@ -191,10 +191,12 @@
     <Compile Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustController.cs" />
     <Compile Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShowController.cs" />
     <Compile Include="Areas\BJGL\FLOORMAP\FloorMapController.cs" />
+    <Compile Include="Areas\BJGL\MAPPUBLICDATA\MAPPUBLICDATAController.cs" />
     <Compile Include="Areas\BJGL\MAPSHOPDATA\MAPSHOPDATAController.cs" />
     <Compile Include="Areas\BJGL\MAPFLOORDATA\MAPFLOORDATAController.cs" />
     <Compile Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALEController.cs" />
     <Compile Include="Areas\BJGL\MAPSHOW\MAPSHOWController.cs" />
+    <Compile Include="Areas\BJGL\PUBLICDATA\PUBLICDATAController.cs" />
     <Compile Include="Areas\CWGL\PZDC\PzdcController.cs" />
     <Compile Include="Areas\CXGL\PRESENT\PresentController.cs" />
     <Compile Include="Areas\CXGL\FR_PLAN\FR_PLANController.cs" />
@@ -345,10 +347,12 @@
     <Content Include="Areas\BJGL\FLOORMAPSHOW\FloorMapShow.js" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapEdit.js" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.js" />
+    <Content Include="Areas\BJGL\MAPPUBLICDATA\MAPPUBLICDATA.js" />
     <Content Include="Areas\BJGL\MAPSHOPDATA\MAPSHOPDATA.js" />
     <Content Include="Areas\BJGL\MAPFLOORDATA\MAPFLOORDATA.js" />
     <Content Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALE.js" />
     <Content Include="Areas\BJGL\MAPSHOW\MAPSHOW.js" />
+    <Content Include="Areas\BJGL\PUBLICDATA\PUBLICDATA.js" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.js" />
     <Content Include="Areas\CXGL\PRESENT_SEND\Present_SendEdit.js" />
     <Content Include="Areas\CXGL\PRESENT_SEND\Present_SendList.js" />
@@ -539,6 +543,18 @@
     <Content Include="Content\jquery.min.js" />
     <Content Include="Areas\Layout\Define\_DefineLayout.js" />
     <Content Include="Content\three\Earcut.js" />
+    <Content Include="Content\three\PublicImage\Elevator.png" />
+    <Content Include="Content\three\PublicImage\Escator.png" />
+    <Content Include="Content\three\PublicImage\Exit.png" />
+    <Content Include="Content\three\PublicImage\fire.png" />
+    <Content Include="Content\three\PublicImage\Lost.png" />
+    <Content Include="Content\three\PublicImage\Man.png" />
+    <Content Include="Content\three\PublicImage\Pay.png" />
+    <Content Include="Content\three\PublicImage\Stairs.png" />
+    <Content Include="Content\three\PublicImage\WayIn.png" />
+    <Content Include="Content\three\PublicImage\WayOut.png" />
+    <Content Include="Content\three\PublicImage\Wc.png" />
+    <Content Include="Content\three\PublicImage\WoMan.png" />
     <Content Include="Content\three\ThreeMap.js" />
     <Content Include="Content\three\OrbitControls.js" />
     <Content Include="Content\three\three.js" />
@@ -835,6 +851,8 @@
     <Content Include="Areas\CXGL\PROMOBILL_FR\Promobill_FRList.cshtml" />
     <Content Include="Areas\CXGL\PRESENT_SEND\Present_SendList.cshtml" />
     <Content Include="Areas\CXGL\PRESENT_SEND\Present_SendEdit.cshtml" />
+    <Content Include="Areas\BJGL\PUBLICDATA\PUBLICDATA.cshtml" />
+    <Content Include="Areas\BJGL\MAPPUBLICDATA\MAPPUBLICDATA.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

@@ -44,6 +44,7 @@
     <Compile Include="Auto\FR_PLANEntity.cs" />
     <Compile Include="Auto\FR_PLAN_ITEMEntity.cs" />
     <Compile Include="Auto\MAPFLOORDATAEntity.cs" />
+    <Compile Include="Auto\MAPPUBLICDATA.cs" />
     <Compile Include="Auto\MAPSHOPDATAEntity.cs" />
     <Compile Include="Auto\NOTICEEntity.cs" />
     <Compile Include="Auto\NOTICE_BRANCHEntity.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Auto\PROMOBILL_FG_RULEEntity.cs" />
     <Compile Include="Auto\PROMOBILL_GOODSEntity.cs" />
     <Compile Include="Auto\PROMOTIONEntity.cs" />
+    <Compile Include="Auto\PUBLICDATAEntity.cs" />
     <Compile Include="Auto\READNOTOCELOGEntity.cs" />
     <Compile Include="Auto\ROLE_ALERTEntity.cs" />
     <Compile Include="Auto\ROLE_BRANCHEntity.cs" />
