@@ -997,7 +997,7 @@ namespace z.ERP.Services
             item.HasKey("TYPE", a => sqlsum += $" and A.TYPE in ({a})");
             item.HasKey("STATUS", a => sqlsum += $" and A.STATUS in ({a})");
             item.HasKey("CONTRACTID", a => sqlsum += $" and A.CONTRACTID = {a}");
-            item.HasKey("CATEGORYCODE", a => sqlsum += $" and exists(select 1 from CONTRACT_SHOP CS,CATEGORY Y where A.CONTRACTID =CS.CONTRACTID AND CS.CATEGORYID = Y.CATEGORYID AND Y.CATEGORYCODE LIKE '{a}%') ");
+            item.HasKey("CATEGORYCODE", a => sqlsum += $" and exists(select 1 from CONTRACT_SHOP CS,CATEGORY Y where A.CONTRACTID = CS.CONTRACTID AND CS.CATEGORYID = Y.CATEGORYID AND Y.CATEGORYCODE LIKE '{a}%') ");
             item.HasKey("FLOORID", a => sqlsum += $" and exists(select 1 from SHOP S, CONTRACT_SHOP CS where A.BRANCHID = S.BRANCHID AND S.SHOPID = CS.SHOPID AND S.FLOORID in （{a}))");
             return sqlsum;
         }

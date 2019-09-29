@@ -1043,13 +1043,14 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string POSKEYSrchSql(SearchItem item)
         {
-            string sql = $@"SELECT STATION.STATIONBH,STATION.ENCRYPTION,BRANCH.NAME 
-                        FROM STATION 
-                        LEFT JOIN BRANCH ON STATION.BRANCHID=BRANCH.ID";
-            sql += " WHERE TYPE = 3 ";
-            sql += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-            item.HasKey("BRANCHID", a => sql += $" and BRANCHID LIKE '%{a}%'");
-            item.HasKey("STATIONBH", a => sql += $" and STATIONBH LIKE '%{a}%'");
+            string sql = $@" SELECT B.NAME, S.STATIONBH, S.ENCRYPTION 
+                             FROM STATION S
+                             FULL OUTER JOIN BRANCH B
+                             ON B.ID=S.BRANCHID  
+                             WHERE ENCRYPTION IS NOT NULL";
+                   sql += "  AND S.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                   item.HasKey("BRANCHID", a => sql += $" and S.BRANCHID LIKE '%{a}%'");
+                   item.HasKey("STATIONBH", a => sql += $" and S.STATIONBH LIKE '%{a}%'");
 
             return sql;
         }
