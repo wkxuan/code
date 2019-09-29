@@ -920,7 +920,7 @@ namespace z.ERP.Services
         #region 第三方支付记录查询
         private string PAYINFOsql(SearchItem item)
         {
-            string sqlsum = $@"SELECT to_char(A.OPERTIME,'yyyy-mm-dd hh24:mi:ss') OPERTIME_START, to_char(A.OPERTIME,'yyyy-mm-dd hh24:mi:ss') OPERTIME_END,
+            string sqlsum = $@"SELECT to_char(A.OPERTIME,'yyyy-mm-dd hh24:mi:ss') OPERTIME,
                                 A.POSNO,A.DEALID,B.NAME,A.AMOUNT,A.SERIALNO,A.REFNO, D.NAME BRANCHNAME
                                 FROM PAYRECORD A 
                                 INNER JOIN PAY B ON(A.PAYID= B.PAYID)
@@ -929,15 +929,15 @@ namespace z.ERP.Services
                             " and c.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
 
             item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID ={a}");
-            item.HasDateKey("START", a => sqlsum += $" and OPERTIME_START>={a}");
-            item.HasDateKey("END", a => sqlsum += $" and OPERTIME_END<={a}");
-            item.HasKey("POSNO", a => sqlsum += $" and POSNO='{a}'");
-            item.HasKey("DEALID", a => sqlsum += $" and DEALID='{a}'");
+            item.HasDateKey("START", a => sqlsum += $" and A.OPERTIME>={a}");
+            item.HasDateKey("END", a => sqlsum += $" and A.OPERTIME<={a}");
+            item.HasKey("POSNO", a => sqlsum += $" and A.POSNO='{a}'");
+            item.HasKey("DEALID", a => sqlsum += $" and A.DEALID='{a}'");
             //item.HasKey("INX", a => sqlsum += $" and INX={a}");
             //item.HasKey("NAME", a => sqlsum += $" and NAME={a}");
             //item.HasKey("CARDNO", a => sqlsum += $" and CARDNO={a}");
             //item.HasKey("BANK", a => sqlsum += $" and BANK={a}");
-            item.HasKey("AMOUNT", a => sqlsum += $" and AMOUNT={a}");
+            item.HasKey("AMOUNT", a => sqlsum += $" and A.AMOUNT={a}");
             // item.HasKey("SERIALNO", a => sqlsum += $" and SERIALNO={a}");
             //item.HasKey("REFNO", a => sqlsum += $" and REFNO={a}");
             //item.HasKey("PAYID", a => sqlsum += $" and B.PAYID={a}");
