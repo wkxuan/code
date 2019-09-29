@@ -879,6 +879,7 @@ namespace z.ERP.Services
                     INNER JOIN BRANCH ON BRANCH.ID=STATION.BRANCHID";
             sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             sqlsum += "   WHERE TYPE= 3";
+            item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID ={a}");
             item.HasDateKey("SALETIME_START", a => sqlsum += $" and SALETIME>={a}");
             item.HasDateKey("SALETIME_END", a => sqlsum += $" and SALETIME<={a}");
             item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
