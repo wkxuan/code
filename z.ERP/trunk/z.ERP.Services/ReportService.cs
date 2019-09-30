@@ -880,11 +880,11 @@ namespace z.ERP.Services
             sqlsum += "  AND STATION.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             sqlsum += "   WHERE TYPE= 3";
             item.HasKey("BRANCHID", a => sqlsum += $" and C.BRANCHID ={a}");
-            item.HasDateKey("SALETIME_START", a => sqlsum += $" and SALETIME>={a}");
-            item.HasDateKey("SALETIME_END", a => sqlsum += $" and SALETIME<={a}");
+            item.HasDateKey("SALETIME_START", a => sqlsum += $" and TRUNC(SALETIME) >= {a}");
+            item.HasDateKey("SALETIME_END", a => sqlsum += $" and TRUNC(SALETIME) <= {a}");
             item.HasKey("DEALID", a => sqlsum += $" and DEALID={a}");
-            item.HasDateKey("CREATE_TIME_START", a => sqlsum += $" and CREATE_TIME>={a}");
-            item.HasDateKey("CREATE_TIME_END", a => sqlsum += $" and CREATE_TIME<={a}");
+            item.HasDateKey("CREATE_TIME_START", a => sqlsum += $" and TRUNC(CREATE_TIME) >={a}");
+            item.HasDateKey("CREATE_TIME_END", a => sqlsum += $" and TRUNC(CREATE_TIME) <={a}");
             item.HasKey("FLAG", a => sqlsum += $" and FLAG IN ({a})");
             item.HasKey("REASON", a => sqlsum += $" and REASON LIKE '%{a}%'");
 
