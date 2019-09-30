@@ -85,68 +85,84 @@ editDetail.IsValidSave = function () {
     //业态权限数据
     editDetail.dataParam.ROLE_YT = [];
     let ytSaveData = editDetail.veObj.$refs.ytTreeRef.getFilterCheckedNodes();
-    for (let i = 0; i < ytSaveData.length; i++) {
-        editDetail.dataParam.ROLE_YT.push({
-            ROLEID: editDetail.dataParam.ROLEID,
-            YTID: ytSaveData[i].value
-        });
+    if (ytSaveData) {
+        for (let i = 0; i < ytSaveData.length; i++) {
+            editDetail.dataParam.ROLE_YT.push({
+                ROLEID: editDetail.dataParam.ROLEID,
+                YTID: ytSaveData[i].value
+            });
+        };
     };
     
     //菜单权限数据
     editDetail.dataParam.ROLE_MENU = [];
     let moduleSaveData = editDetail.veObj.$refs.moduleTreeRef.getCheckedNodes();
-    for (let i = 0; i < moduleSaveData.length; i++) {
-        editDetail.dataParam.ROLE_MENU.push({
-            MENUID: moduleSaveData[i].value,
-            MODULECODE: moduleSaveData[i].code
-        });
+    if (moduleSaveData) {
+        for (let i = 0; i < moduleSaveData.length; i++) {
+            editDetail.dataParam.ROLE_MENU.push({
+                MENUID: moduleSaveData[i].value,
+                MODULECODE: moduleSaveData[i].code
+            });
+        };
     };
 
     //区域权限数据、楼层权限数据
     editDetail.dataParam.ROLE_REGION = [];
     editDetail.dataParam.ROLE_FLOOR = [];
     let regionData = editDetail.screenParam.regionTreeData;
-    for (let i = 0; i < regionData.length; i++) {
-        if (regionData[i].checked || regionData[i].indeterminate) {
-            editDetail.dataParam.ROLE_REGION.push({
-                ROLEID: editDetail.dataParam.ROLEID,
-                REGIONID: regionData[i].value
-            });
+    if (regionData) {
+        for (let i = 0; i < regionData.length; i++) {
+            if (regionData[i].checked || regionData[i].indeterminate) {
+                editDetail.dataParam.ROLE_REGION.push({
+                    ROLEID: editDetail.dataParam.ROLEID,
+                    REGIONID: regionData[i].value
+                });
 
-            let chl = regionData[i].children;
-            if (chl && chl.length) {
-                for (let j = 0; j < chl.length; j++) {
-                    if (chl[j].checked) {
-                        editDetail.dataParam.ROLE_FLOOR.push({
-                            ROLEID: editDetail.dataParam.ROLEID,
-                            FLOORID: chl[j].value
-                        });
+                let chl = regionData[i].children;
+                if (chl && chl.length) {
+                    for (let j = 0; j < chl.length; j++) {
+                        if (chl[j].checked) {
+                            editDetail.dataParam.ROLE_FLOOR.push({
+                                ROLEID: editDetail.dataParam.ROLEID,
+                                FLOORID: chl[j].value
+                            });
+                        }
                     }
                 }
             }
-        }  
-    }
+        }
+    };
+
     
     //门店权限数据
     editDetail.dataParam.ROLE_BRANCH = [];
     let branchSaveData = editDetail.veObj.$refs.branchRef.getSelection();
-    for (var i = 0; i < branchSaveData.length; i++) {
-        editDetail.dataParam.ROLE_BRANCH.push({ BRANCHID: branchSaveData[i].BRANCHID });
-    };
+    if (branchSaveData)
+    {
+        for (var i = 0; i < branchSaveData.length; i++) {
+            editDetail.dataParam.ROLE_BRANCH.push({ BRANCHID: branchSaveData[i].BRANCHID });
+        };
+    }
+
 
     //费用项权限数据
     editDetail.dataParam.ROLE_FEE = [];
     let feeSaveData = editDetail.veObj.$refs.feeRef.getSelection();
-    for (var i = 0; i < feeSaveData.length; i++) {
-        editDetail.dataParam.ROLE_FEE.push({ TRIMID: feeSaveData[i].TRIMID });
+    if (feeSaveData) {
+        for (var i = 0; i < feeSaveData.length; i++) {
+            editDetail.dataParam.ROLE_FEE.push({ TRIMID: feeSaveData[i].TRIMID });
+        };
     };
 
     //预警权限数据
     editDetail.dataParam.ROLE_ALERT = [];
     let alertSaveData = editDetail.veObj.$refs.alertRef.getSelection();
-    for (var i = 0; i < alertSaveData.length; i++) {
-        editDetail.dataParam.ROLE_ALERT.push({ ALERTID: alertSaveData[i].ALERTID });
-    };
+    if (alertSaveData)
+    {
+        for (var i = 0; i < alertSaveData.length; i++) {
+            editDetail.dataParam.ROLE_ALERT.push({ ALERTID: alertSaveData[i].ALERTID });
+        };
+    }
 
     return true;
 }

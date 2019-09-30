@@ -95,6 +95,17 @@ namespace z.ERP.Services
                     }
                 }
             }
+
+            if (SaveData.STYLE.ToInt() == (int)核算方式.租赁合同)
+            {
+                OPERATIONRULEEntity oprule = DbHelper.Select(new OPERATIONRULEEntity() { ID = SaveData.OPERATERULE });
+
+                if (oprule.PROCESSTYPE != "2" && SaveData.STANDARD == "2")
+                {
+                    throw new LogicException("合作方式不是纯租类型,月周期方式不能选择合同月");
+                }
+            }
+
             // 合同号规则:核算方式(1租赁2联营)+门店(2位)+5位流水  变更合同 9开头
             if (SaveData.CONTRACTID.IsEmpty())
             {
@@ -533,9 +544,20 @@ namespace z.ERP.Services
 
             List<PERIODEntity> Perio = new List<PERIODEntity>();
 
-            Perio = DbHelper.SelectList(new PERIODEntity()).
-            Where(a => (a.DATE_START.ToDateTime() <= ContractData.CONT_END.ToDateTime())
-            && (a.DATE_END.ToDateTime() >= ContractData.CONT_START.ToDateTime())).OrderBy(b => b.YEARMONTH).ToList();
+            if (ContractData.STANDARD == "2")  //合同月
+            {
+                Perio = createHTY(ContractData.CONT_START.ToDateTime(), ContractData.CONT_END.ToDateTime());
+            }
+            else
+            {
+                Perio = DbHelper.SelectList(new PERIODEntity()).
+                Where(a => (a.DATE_START.ToDateTime() <= ContractData.CONT_END.ToDateTime())
+                && (a.DATE_END.ToDateTime() >= ContractData.CONT_START.ToDateTime())).OrderBy(b => b.YEARMONTH).ToList();
+            }
+
+            List<PERIODEntity> PerioTMP =  Perio.DeepClone();
+
+
 
             List<CONTRACT_RENTITEMEntity> zjfjListGd = new List<CONTRACT_RENTITEMEntity>();
             foreach (var per in Perio)
@@ -543,15 +565,20 @@ namespace z.ERP.Services
                 CONTRACT_RENTITEMEntity zjfj = new CONTRACT_RENTITEMEntity();
 
                 var scny = 0;
+                int iCYCLE = feeRule.ADVANCE_CYCLE.ToInt();
+
+                if (feeRule.ADVANCE_CYCLE.ToInt() == -1) 
+                    iCYCLE = 0;
+
                 //可以通过日期上加月份处理
-                if ((ym.ToString().Substring(4, 2).ToInt() - feeRule.ADVANCE_CYCLE.ToInt()) <= 0)
+                if ((ym.ToString().Substring(4, 2).ToInt() - iCYCLE) <= 0)
                 {
                     scny = (ym.ToString().Substring(0, 4).ToInt() - 1) * 100 +
-                        ((ym.ToString().Substring(4, 2).ToInt() + 12 - feeRule.ADVANCE_CYCLE.ToInt()));
+                        ((ym.ToString().Substring(4, 2).ToInt() + 12 - iCYCLE));
                 }
                 else
                 {
-                    scny = ym - feeRule.ADVANCE_CYCLE.ToInt();
+                    scny = ym - iCYCLE;
                 }
 
                 var ymLast = 0;
@@ -572,16 +599,48 @@ namespace z.ERP.Services
                 zjfj.YEARMONTH = per.YEARMONTH;
                 if (feeRule.FEE_DAY.ToInt() == -1)
                 {
-                    PERIODEntity PerioYm = new PERIODEntity();
-                    PerioYm = DbHelper.Select(new PERIODEntity() { YEARMONTH = (scn * 100 + scy).ToString() });
-                    if (PerioYm == null)
-                        throw new LogicException($"请定义{scn}年的财务月区间!");
-                    zjfj.CREATEDATE = PerioYm.DATE_END;
+                    if (ContractData.STANDARD == "2")  //合同月
+                    {
+                        foreach (var pertmp in PerioTMP)
+                        {
+                            if (scn * 100 + scy == int.Parse(pertmp.YEARMONTH))
+                                zjfj.CREATEDATE = pertmp.DATE_END;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        PERIODEntity PerioYm = new PERIODEntity();
+                        PerioYm = DbHelper.Select(new PERIODEntity() { YEARMONTH = (scn * 100 + scy).ToString() });
+                        if (PerioYm == null)
+                            throw new LogicException($"请定义{scn}年的财务月区间!");
+                        zjfj.CREATEDATE = PerioYm.DATE_END;
+                    }
+
                 }
                 else
                 {
-                    zjfj.CREATEDATE = (new DateTime(scn, scy, feeRule.FEE_DAY.ToInt())).ToString().ToDateTime().ToString();
+                    if(feeRule.ADVANCE_CYCLE.ToInt() == -1)  // 提前多少天出单
+                    {
+                        foreach (var pertmp in PerioTMP)
+                        {
+                            if (scn * 100 + scy == int.Parse(pertmp.YEARMONTH))
+                            {
+                                zjfj.CREATEDATE = pertmp.DATE_START.ToDateTime().AddDays(feeRule.FEE_DAY.ToInt() * -1).ToString();
+                                break;
+                            }
+
+                        }
+                              
+                    }
+                    else
+                    {
+                        zjfj.CREATEDATE = (new DateTime(scn, scy, feeRule.FEE_DAY.ToInt())).ToString().ToDateTime().ToString();
+                    }
+                        
                 }
+
+
                 zjfjListGd.Add(zjfj);
 
 

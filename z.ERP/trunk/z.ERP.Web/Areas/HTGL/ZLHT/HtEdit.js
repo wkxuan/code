@@ -1055,6 +1055,13 @@ editDetail.otherMethods = {
         editDetail.dataParam.CONTRACT_RENTITEM = [];
         editDetail.dataParam.CONTJSKL = [];
     },
+    STANDARDChange: function ($event) {
+            editDetail.dataParam.CONTRACT_RENTITEM = [];
+    },
+    FEERULE_RENTChange: function ($event) {
+        editDetail.dataParam.CONTRACT_RENTITEM = [];
+    },
+
 };
 
 editDetail.clearKey = function () {

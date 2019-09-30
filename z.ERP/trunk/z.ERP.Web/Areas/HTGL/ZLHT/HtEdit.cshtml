@@ -136,7 +136,7 @@
             合作方式
         </i-col>
         <i-col span="6" class="RowText">
-            <i-select v-model="dataParam.OPERATERULE" transfer
+            <i-select v-model="dataParam.OPERATERULE" transfer 
                       v-bind:disabled="(!disabled||dataParam.CONTRACT_OLD)? true:false">
                 <i-option v-for="item in screenParam.operateruleList" v-bind:value="item.value"
                           v-bind:key="item.value">{{ item.label }}</i-option>
@@ -240,7 +240,8 @@
                 RenderControl(new ServiceDropDownListRender()
                 {
                     vModel = "dataParam.FEERULE_RENT",
-                    ServiceMothod = m => m.feeRule()
+                    ServiceMothod = m => m.feeRule(),
+                    Change = "FEERULE_RENTChange"
                 });
             }
         </i-col>
@@ -283,7 +284,8 @@
             @{
                 RenderControl(new EnumDropDownListRender<月周期方式>()
                 {
-                    vModel = "dataParam.STANDARD"
+                    vModel = "dataParam.STANDARD",
+                    Change = "STANDARDChange"
                 });
             }
         </i-col>

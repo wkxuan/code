@@ -35,7 +35,8 @@ namespace z.ERP.Web.Areas.XTGL.FEERULE
             v.Require(a => a.ADVANCE_CYCLE);    //提前周期
             v.Require(a => a.FEE_DAY);          //出单日期            
             v.Verify();            
-            if ((Convert.ToInt32(DefineSave.FEE_DAY) <= 0 && Convert.ToInt32(DefineSave.FEE_DAY) != -1) || Convert.ToInt32(DefineSave.FEE_DAY) > 28)
+            if ((Convert.ToInt32(DefineSave.FEE_DAY) <= 0 && Convert.ToInt32(DefineSave.FEE_DAY) != -1) 
+                || (Convert.ToInt32(DefineSave.FEE_DAY) > 28 && Convert.ToInt32(DefineSave.ADVANCE_CYCLE) >0))
             {
                 throw new Exception("出单日期不能小于0或者大于28");
             }
