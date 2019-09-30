@@ -3,12 +3,11 @@
 @using z.ERP.Entities.Enum;
 @inherits SrchViewBase
 @section conditionParam{
-
     <row>
         <i-col span="2" class="RowTitle">
             门店
         </i-col>
-        <i-col span="6" class="RowTitle">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -27,7 +26,7 @@
         <i-col span="2" class="RowTitle">
             收费单位
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -41,7 +40,7 @@
         <i-col span="2" class="RowTitle">
             收款类型
         </i-col>
-        <i-col span="6" class="RowTitle">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<收款类型>()
                 {
@@ -52,7 +51,7 @@
         <i-col span="2" class="RowTitle">
             变更日期
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -60,7 +59,7 @@
                 });
             }
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -69,7 +68,7 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">单号</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -78,7 +77,6 @@
             }
         </i-col>
     </row>
-
 }
 
 @section pops{

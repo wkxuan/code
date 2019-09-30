@@ -648,7 +648,6 @@
     <Content Include="Areas\PPGL\BRAND\BrandEdit.cshtml" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.cshtml" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterEdit.cshtml" />
-    <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterDetail.cshtml" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.cshtml" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.cshtml" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeList.cshtml" />
@@ -657,7 +656,6 @@
     <Content Include="Areas\XTGL\ORG\Org.cshtml" />
     <Content Include="Areas\HTGL\LYHT\HtList.cshtml" />
     <Content Include="Areas\HTGL\LYHT\HtEdit.cshtml" />
-    <Content Include="Areas\PPGL\BRAND\BrandDetail.cshtml" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.cshtml" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.cshtml" />
     <Content Include="Areas\SPGL\GOODS\GoodsEdit.cshtml" />
@@ -760,10 +758,8 @@
     <Content Include="Areas\Pop\Pop\PopWLGoodsDjxxList.cshtml" />
     <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearList.cshtml" />
     <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearEdit.cshtml" />
-    <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearDetail.cshtml" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessList.cshtml" />
     <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessEdit.cshtml" />
-    <Content Include="Areas\WYGL\OPENBUSINESS\OpenBusinessDetail.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwEdit.cshtml" />
     <Content Include="Areas\HTGL\DJDW\DjdwList.cshtml" />
     <Content Include="File\Template\K3凭证.xlsx" />
@@ -772,7 +768,6 @@
     <Content Include="Areas\Layout\MapShow\_MapShow.cshtml" />
     <Content Include="Areas\WYGL\COMPLAIN\ComPlainList.cshtml" />
     <Content Include="Areas\WYGL\COMPLAIN\ComPlainEdit.cshtml" />
-    <Content Include="Areas\WYGL\COMPLAIN\ComPlainDetail.cshtml" />
     <Content Include="Areas\XTGL\FEEACCOUNT\FeeAccount.cshtml" />
     <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustDetail.cshtml" />
     <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustEdit.cshtml" />
