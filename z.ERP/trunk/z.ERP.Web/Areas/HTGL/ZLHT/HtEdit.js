@@ -582,6 +582,7 @@ editDetail.otherMethods = {
     srchFeeSubject: function () {
         editDetail.screenParam.title = "选择费用项目";
         editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
+        editDetail.screenParam.popParam = { CUSTOM: 1 }
         Vue.set(editDetail.screenParam, "showPop", true);
     },
     //添加租约收费项目信息
@@ -630,6 +631,7 @@ editDetail.otherMethods = {
         };
         editDetail.screenParam.title = "选择收款方式的费用项目";
         editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
+        editDetail.screenParam.popParam = { CUSTOM :1};
         Vue.set(editDetail.screenParam, "showPop", true);
     },
     //删除收款方式手续费
@@ -1380,7 +1382,7 @@ editDetail.IsValidSave = function () {
                 iview.Message.info(`请确定收费项目中序号${contract_cost[i].INX}的起始日期!`);
                 return false;
             };
-            if (contract_cost[i].TYPE != 1) {
+            if ((!data.CONTRACT_OLD) || (contract_cost[i].TYPE != 1 && data.CONTRACT_OLD)) {
                 if (new Date(contract_cost[i].STARTDATE).Format('yyyy-MM-dd') < new Date(data.CONT_START).Format('yyyy-MM-dd')) {
                     iview.Message.info(`收费项目中序号${contract_cost[i].INX}的开始日期必须在租约有效期内!`);
                     return false;
