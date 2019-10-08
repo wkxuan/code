@@ -1,6 +1,6 @@
 ﻿.hide { display: none; }
-.RowTitle { text-align: right; font-size: small; height: 35px; }
-.RowText { text-align: center; font-size: small; }
+.RowTitle { text-align: right; font-size: small; height: 35px;line-height: 35px;}
+.RowText { text-align: center; font-size: small; padding-left: 20px;}
 .elementcard .ivu-row { height: 50px; }
 .topbutton .ivu-btn { margin-left: 10px; }
 .ivu-collapse-content{overflow:unset !important;color:#495060;padding:0 16px;background-color:#fff}
