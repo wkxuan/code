@@ -55,7 +55,9 @@ namespace z.ERP.Services
 
             LoginConfigInfo lgi = DbHelper.ExecuteOneObject<LoginConfigInfo>(sql);
 
-            string sqlTicket = $"select HEAD TICKETHEAD,TAIL TICKETTAIL,PRINTCOUNT,ADQRCODE,ADCONTENT from TICKETINFO where BRANCHID={lgi.branchid}";
+            string sqlTicket = $@"select A.HEAD TICKETHEAD,A.TAIL TICKETTAIL,A.PRINTCOUNT,A.ADQRCODE,A.ADCONTENT 
+                                    from TICKETINFO A,STATION B
+                                   where A.BRANCHID = B.BRANCHID and B.STATIONBH = '{employee.PlatformId}'";
 
             if (lgi!=null)
             {
@@ -176,6 +178,25 @@ namespace z.ERP.Services
 
             return goodsList;
         }
+
+
+        /// <summary>
+        /// 获取公告
+        /// </summary>
+        /// <returns></returns>
+        public NoticeResult GetNotice()
+        {
+            string sql = $@"select a.title,replace(replace(to_char(a.content),'<p>',''),'</p>','') CONTENT 
+                            from notice a,notice_branch b,station c
+                            where a.id=b.noticeid and b.branchid = c.branchid
+                                and a.status = 2 and a.type = 2
+                                and c.stationbh = '{employee.PlatformId}'
+                            order by a.id desc";
+
+            return DbHelper.ExecuteOneObject<NoticeResult>(sql);
+
+        }
+
 
         /// <summary>
         /// 最大交易号
@@ -2940,7 +2961,7 @@ namespace z.ERP.Services
                 if (transId < iRemoteTranID)
                 {
                     result = -1;
-                    msg = "数据检查失败：记录号错误[" + transId + "]";
+                    msg = "数据检查失败,记录号错误:" + transId + " -- "+ iRemoteTranID;
                     confirmResult.code = result;
                     confirmResult.text = msg;
                     throw new Exception(msg);
@@ -4929,7 +4950,7 @@ namespace z.ERP.Services
                 if (transId < iRemoteTranID)
                 {
                     result = -1;
-                    msg = sFunc + " 记录号错误：记录号错误[" + transId + "]";
+                    msg = sFunc + " 记录号错误:" + transId + " -- "+ iRemoteTranID;
                     confirmResult.code = result;
                     confirmResult.text = msg;
                     throw new Exception(msg);
@@ -6145,13 +6166,13 @@ namespace z.ERP.Services
 
             if (mPayTotal != mGoodTotal)
             {
-                msg = "错误:商品销售合计不等于付款合计[" + mGoodTotal + "--" + mPayTotal + "]";
+                msg = "错误:商品销售合计不等于付款合计[" + mGoodTotal + " -- " + mPayTotal + "]";
                 return result;
             }
 
             if (mPayTotalYHJE != mGoodTotalYHJE)
             {
-                msg = "错误:商品优惠合计不等于优惠券付款合计[" + mGoodTotalYHJE + "--" + mPayTotalYHJE + "]";
+                msg = "错误:商品优惠合计不等于优惠券付款合计[" + mGoodTotalYHJE + " -- " + mPayTotalYHJE + "]";
                 return result;
             }
 

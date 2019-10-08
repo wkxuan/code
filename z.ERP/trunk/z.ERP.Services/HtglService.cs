@@ -389,16 +389,11 @@ namespace z.ERP.Services
                 per.DATE_START = datetmp.ToString();
 
                 if (leftDay > 0)
-                {
+                {  //下个月月末 向前推leftDay 天
                     datetmp = datetmp.AddMonths(1).AddDays(1 - datetmp.AddMonths(1).Day).AddMonths(1).AddDays( - 1 - leftDay);
                 }
                 else
-                    datetmp = datetmp.AddMonths(1).AddDays(-1);
-
-                //if (datetmp > end)
-                //{
-                //    datetmp = end;
-                //}
+                    datetmp = datetmp.AddMonths(1).AddDays(-1);  //下个月
 
                 per.DATE_END = datetmp.ToString();
 

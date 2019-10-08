@@ -69,6 +69,7 @@
     <Compile Include="Auto\PRESENTEntity.cs" />
     <Compile Include="Auto\TicketInfoEntity.cs" />
     <Compile Include="FR_PLANEntity.cs" />
+    <Compile Include="Service\Pos\NoticeResult.cs" />
     <Compile Include="STATIONMONITOR.cs" />
     <Compile Include="MAPFLOORINFOEntity.cs" />
     <Compile Include="MAPTITLEEntity.cs" />

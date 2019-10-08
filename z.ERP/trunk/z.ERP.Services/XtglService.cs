@@ -78,6 +78,7 @@ namespace z.ERP.Services
 
             item.HasKey("NAME", a => sql += $" and NAME LIKE '%{a}%'");
             item.HasKey("TRIMID", a => sql += $" and TRIMID={a}");
+            item.HasKey("CUSTOM", a => sql += $" and TRIMID < 1000");
             item.HasKey("PYM", a => sql += $" and PYM LIKE '%{a}%'");
             item.HasKey("TYPE", a => sql += $" and TYPE in ({a})");
             item.HasKey("ACCOUNT", a => sql += $" and ACCOUNT in ({a})");
