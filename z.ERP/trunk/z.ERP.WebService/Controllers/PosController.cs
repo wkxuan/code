@@ -60,6 +60,16 @@ namespace z.ERP.WebService.Controllers
         }
 
         /// <summary>
+        /// 获取公告
+        /// </summary>
+        /// <returns></returns>
+        [ServiceAble("GetNotice")]
+        public NoticeResult GetNotice()
+        {
+            return service.PosService.GetNotice();
+        }
+
+        /// <summary>
         /// 修改密码
         /// </summary>
         /// <param name="passw"></param>
