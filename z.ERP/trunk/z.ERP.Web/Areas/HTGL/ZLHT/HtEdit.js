@@ -48,9 +48,9 @@
         });
         //收费项目
         editDetail.screenParam.colDefCOST = [
-            { title: '序号', key: 'INX' },
+            { title: '序号', key: 'INX', width: 50 },
             {
-                title: "费用项目", key: 'TERMID', cellType: "input",
+                title: "费用项目", key: 'TERMID',width: 90 , cellType: "input",
                 onEnter: function (index, row, data) {
                     let tbData = data;
                     _.Ajax('GetFeeSubject', {
@@ -67,9 +67,9 @@
                     });
                 }
             },
-            { title: "费用项目名称", key: 'NAME' },
+            { title: "费用项目名称", key: 'NAME', width: 120 },
             {
-                title: '开始日期', key: 'STARTDATE', width: 150, cellType: "date", enableCellEdit: true,
+                title: '开始日期', key: 'STARTDATE', width: 140, cellType: "date", enableCellEdit: true,
                 onChange: function (index, row, data) {
                     if (row.TYPE == 1) {
                         row.ENDDATE = row.STARTDATE;
@@ -78,7 +78,7 @@
                 }
             },
             {
-                title: '结束日期', key: 'ENDDATE', width: 150, cellType: "date", enableCellEdit: true,
+                title: '结束日期', key: 'ENDDATE', width: 140, cellType: "date", enableCellEdit: true,
                 onChange: function (index, row, data) {
                     if (row.TYPE == 1) {
                         row.STARTDATE = row.ENDDATE;
@@ -87,7 +87,7 @@
                 }
             },
             {
-                title: '收费方式', key: 'SFFS', cellType: "select", width: 150, enableCellEdit: true,
+                title: '收费方式', key: 'SFFS', cellType: "select", width: 130, enableCellEdit: true,
                 selectList: [{ label: "日金额", value: 1 },
                         { label: "月金额", value: 2 },
                         { label: "按销售金额比例", value: 3 },
@@ -109,13 +109,13 @@
                     }   
                 }
             },
-            { title: "比例(%)", key: 'KL', cellType: "input", cellDataType: "number" },
+            { title: "比例(%)", key: 'KL', cellType: "input", cellDataType: "number", width: 90 },
             {
-                title: '收费规则', key: 'FEERULEID', cellType: "select", width: 150, enableCellEdit: true,
+                title: '收费规则', key: 'FEERULEID', cellType: "select", width: 120, enableCellEdit: true,
                 selectList: FeeRule
             },
             {
-                title: '滞纳规则', key: 'ZNGZID', cellType: "select", width: 150, enableCellEdit: true,
+                title: '滞纳规则', key: 'ZNGZID', cellType: "select", width: 120, enableCellEdit: true,
                 selectList: LateFeeRule
             },
             {

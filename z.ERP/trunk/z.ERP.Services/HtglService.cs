@@ -141,6 +141,17 @@ namespace z.ERP.Services
 
             using (var Tran = DbHelper.BeginTransaction())
             {
+                SaveData.CONTRACT_PAY?.ForEach(item =>
+                {
+                    GetVerify(item).Require(a => a.PAYID);
+                    GetVerify(item).Require(a => a.TERMID);
+                    GetVerify(item).Require(a => a.KL);
+                    if (!item.KL.IsEmpty())
+                    {
+                        item.KL = (item.KL.ToDouble() / 100).ToString();
+                    }
+                });
+
                 DbHelper.Save(SaveData);
 
                 Tran.Commit();
@@ -211,7 +222,8 @@ namespace z.ERP.Services
             CONTRACT_RENTEntity ContractRentParm = new CONTRACT_RENTEntity();
             ContractRentParm.CONTRACT_RENTITEM = DbHelper.SelectList(new CONTRACT_RENTITEMEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
 
-            string sqlPay = $@"SELECT A.*,B.NAME,C.NAME TERMNAME FROM CONTRACT_PAY A,PAY B,FEESUBJECT C WHERE A.PAYID=B.PAYID AND A.TERMID=C.TRIMID ";
+            string sqlPay = $@"SELECT A.CONTRACTID,A.PAYID,A.TERMID,A.STARTDATE,A.ENDDATE,A.KL*100 KL,A.ZNGZID,B.NAME,C.NAME TERMNAME 
+                                 FROM CONTRACT_PAY A,PAY B,FEESUBJECT C WHERE A.PAYID=B.PAYID AND A.TERMID=C.TRIMID ";
             sqlPay += (" AND A.CONTRACTID= " + Data.CONTRACTID);
             sqlPay += " ORDER BY A.PAYID,A.STARTDATE";
             DataTable contract_pay = DbHelper.ExecuteTable(sqlPay);
