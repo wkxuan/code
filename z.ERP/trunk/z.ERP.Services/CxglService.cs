@@ -381,6 +381,7 @@ namespace z.ERP.Services
         }
         #endregion
 
+        #region 赠品定义
         /// <summary>
         /// 赠品定义
         /// </summary>
@@ -410,7 +411,7 @@ namespace z.ERP.Services
             string sql = PresentSql(item);
             int count;
             var dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
-            //dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
 
@@ -453,6 +454,7 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
         }
+#endregion
 
         #region 赠品发放 
         public DataGridResult Present_SendList(SearchItem item)
