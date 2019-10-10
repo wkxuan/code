@@ -46,7 +46,7 @@ defineDetail.IsValidSave = function () {
     };
 
     if (!defineDetail.dataParam.PRINTCOUNT) {
-        ivew.Message.info("请填写打印次数");
+        iview.Message.info("请填写打印次数");
         return false;
     };
 
@@ -54,19 +54,5 @@ defineDetail.IsValidSave = function () {
         iview.Message.info("票头文字不能为空!");
         return false;
     };
-
-    //if (!defineDetail.dataParam.TAIL) {
-    //    iview.Message.info("票尾文字不能为空!");
-    //    return false;
-    //};
-    //if (!defineDetail.dataParam.ADQRCODE) {
-    //    iview.Message.info("二维码广告位不能为空!");
-    //    return false;
-    //};
-    //if (!defineDetail.dataParam.ADCONTENT) {
-    //    iview.Message.info("文字广告位不能为空!");
-    //    return false;
-    //};
-
     return true;
 }
