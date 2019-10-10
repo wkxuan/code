@@ -34,9 +34,6 @@ namespace z.ERP.Web.Areas.XTGL.TicketInfo
             v.Require(a => a.PRINTCOUNT);
             v.Require(a => a.BRANCHID);  
             v.Require(a => a.HEAD);
-            v.Require(a => a.TAIL);
-            v.Require(a => a.ADQRCODE);
-            v.Require(a => a.ADCONTENT);
             v.Verify();
             return CommonSave(DefineSave);
         }
