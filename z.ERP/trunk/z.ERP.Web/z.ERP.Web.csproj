@@ -691,9 +691,6 @@
     <Content Include="Areas\Pop\Pop\PopRoleList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopContractList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopMerchantList.cshtml" />
-    <Content Include="File\Template\商户导出.xlsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Areas\Layout\Print\_PrintLayout.cshtml" />
     <Content Include="Areas\SHGL\MERCHANT\Print.cshtml" />
     <Content Include="Areas\Pop\Pop\PopSysuserList.cshtml" />
@@ -717,7 +714,6 @@
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.cshtml" />
     <Content Include="Areas\CWGL\PZDC\Pzdc.cshtml" />
     <Content Include="Areas\XTGL\REGION\Region.cshtml" />
-    <Content Include="File\Template\凭证导出.xlsx" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.cshtml" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherList.cshtml" />
     <Content Include="Areas\JSGL\BILL_NOTICE\Bill_Notice_PrintOther.cshtml" />
@@ -774,19 +770,9 @@
     <Content Include="Areas\BJGL\FLOORMAPADJUST\FloorMapAdjustList.cshtml" />
     <Content Include="Areas\XTGL\ALERT\ALERT.cshtml" />
     <Content Include="Areas\Report\PayTypeSale\PayTypeSale.cshtml" />
-    <Content Include="File\Template\收款方式销售导出.xlsx" />
-    <Content Include="File\Template\POS销售导出.xlsx" />
-    <Content Include="File\Template\合同信息表.xlsx" />
-    <Content Include="File\Template\商品销售导出.xlsx" />
-    <Content Include="File\Template\商户租金计提表.xlsx" />
-    <Content Include="File\Template\租约列表导出.xlsx" />
-    <Content Include="File\Template\租约销售导出.xlsx" />
     <Content Include="Areas\Report\MerchantPayCost\MerchantPayCost.cshtml" />
-    <Content Include="File\Template\租赁商户缴费记录导出.xlsx" />
     <Content Include="Areas\Report\MerchantBusinessStatus\MerchantBusinessStatus.cshtml" />
-    <Content Include="File\Template\商户租金经营状况导出.xlsx" />
     <Content Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetail.cshtml" />
-    <Content Include="File\Template\商品销售明细导出.xlsx" />
     <Content Include="Areas\XTGL\POSUMSCONFIG\POSUMSCONFIG.cshtml" />
     <Content Include="Areas\Pop\Pop\PopStationList.cshtml" />
     <Content Include="Areas\JSGL\Invoice\InvoiceList.cshtml" />
@@ -822,10 +808,6 @@
     <Content Include="Areas\Report\PAYINFO\PAYINFO.cshtml" />
     <Content Include="Areas\Report\BILL_SRC\Bill_Src.cshtml" />
     <Content Include="Areas\XTGL\POSKEYSrch\POSKEYSrch.cshtml" />
-    <Content Include="File\Template\第三方支付记录查询.xlsx" />
-    <Content Include="File\Template\销售采集处理记录查询.xlsx" />
-    <Content Include="File\Template\终端密钥查询.xlsx" />
-    <Content Include="File\Template\费用账单查询.xlsx" />
     <Content Include="Areas\BJGL\MAPSHOWSALE\MAPSHOWSALE.cshtml" />
     <Content Include="Areas\XTGL\STATIONMONITOR\STATIONMONITOR.cshtml" />
     <Content Include="Areas\CXGL\PROMOTION\Promotion.cshtml" />
