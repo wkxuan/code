@@ -1,0 +1,69 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Srch;
+@inherits SrchViewBase
+@section conditionParam{
+    <row>
+        <i-col span="3" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
+
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            终端号
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.STATIONBH",
+
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            收银员
+        </i-col>
+        <i-col span="5" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.USERNAME" v-on:on-click="srchUser"/>
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            店铺
+        </i-col>
+        <i-col span="5" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="searchParam.SHOPCODE" v-on:on-click="SelShop" />
+        </i-col>
+    </row>
+}
+@section pops{
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopUser",
+            Caption = "选择收银员",
+            Width = "900",
+            Src = "screenParam.srcPopUser"
+        });
+    }
+    @{
+        RenderControl(new PopsRender()
+        {
+            vModel = "screenParam.showPopShop",
+            Caption = "选择店铺",
+            Width = "900",
+            Src = "screenParam.srcPopShop"
+        });
+    }
+}

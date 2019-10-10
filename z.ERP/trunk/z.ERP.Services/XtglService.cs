@@ -1200,6 +1200,24 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
+        /// <summary>
+        /// 收银员查询
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult CashierSearch(SearchItem item) {
+            string sql = $@"SELECT S.STATIONBH,B.ID BRANCHID,B.NAME BRANCHNAME ,SHOP.SHOPID,SHOP.CODE SHOPCODE,SYSUSER.USERCODE,SYSUSER.USERNAME
+                        FROM STATION S,BRANCH B,SHOP ,SYSUSER
+                        WHERE S.BRANCHID=B.ID AND S.SHOPID=SHOP.SHOPID AND SYSUSER.SHOPID =S.SHOPID AND S.TYPE IN (1,2) ";
+            sql += "  AND S.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            item.HasKey("BRANCHID", a => sql += $" and S.BRANCHID = '{a}'");
+            item.HasKey("STATIONBH", a => sql += $" and S.STATIONBH = '{a}'");
+            item.HasKey("USERID", a => sql += $" and SYSUSER.USERID = '{a}'");
+            item.HasKey("SHOPID", a => sql += $" and S.SHOPID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 
 }
