@@ -15,5 +15,11 @@ namespace z.ERP.Entities
             get;
             set;
         }
+        [ForeignKey(nameof(MERCHANTID), nameof(MERCHANT_PAYMENTEntity.MERCHANTID))]
+        public List<MERCHANT_PAYMENTEntity> MERCHANT_PAYMENT
+        {
+            get;
+            set;
+        }
     }
 }

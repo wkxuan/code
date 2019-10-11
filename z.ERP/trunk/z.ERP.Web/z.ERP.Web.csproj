@@ -413,6 +413,7 @@
     <Content Include="Areas\Layout\Srch\_SrchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
     <Content Include="Areas\Pop\Pop\PopFR_PlanList.js" />
+    <Content Include="Areas\Pop\Pop\PopMerchantPaymentList.js" />
     <Content Include="Areas\Pop\Pop\PopPRESENTList.js" />
     <Content Include="Areas\Pop\Pop\PopPromotionList.js" />
     <Content Include="Areas\Pop\Pop\PopPayList.js" />
@@ -833,6 +834,7 @@
     <Content Include="Areas\BJGL\PUBLICDATA\PUBLICDATA.cshtml" />
     <Content Include="Areas\BJGL\MAPPUBLICDATA\MAPPUBLICDATA.cshtml" />
     <Content Include="Areas\XTGL\CashierSearch\CashierSearch.cshtml" />
+    <Content Include="Areas\Pop\Pop\PopMerchantPaymentList.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

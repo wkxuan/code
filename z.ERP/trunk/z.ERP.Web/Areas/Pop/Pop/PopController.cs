@@ -118,5 +118,10 @@ namespace z.ERP.Web.Areas.Pop.Pop
             ViewBag.Title = "赠品";
             return View();
         }
+        public ActionResult PopMerchantPaymentList()
+        {
+            ViewBag.Title = "商户付款信息";
+            return View();
+        }
     }
 }

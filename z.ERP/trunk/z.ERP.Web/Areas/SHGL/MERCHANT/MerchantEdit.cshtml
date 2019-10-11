@@ -115,8 +115,22 @@
                 <i-button type="primary" v-on:click="srchColPP">选择</i-button>
                 <i-button type="error" v-on:click="delColPP">删除</i-button>
             </div>
-            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="200" selection=true
                       v-bind:data="dataParam.MERCHANT_BRAND" v-bind:disabled="!disabled" ref="refGroup">
+            </yx-table>
+        </Card>
+    </i-col>
+</row>
+<row>
+    <i-col span="24">
+        <Card v-bind:padding=0>
+            <p slot="title">付款信息</p>
+            <div slot="extra" v-show="disabled">
+                <i-button type="primary" v-on:click="addColPay">添加一行</i-button>
+                <i-button type="error" v-on:click="delColPay">删除</i-button>
+            </div>
+            <yx-table v-bind:columns="screenParam.colDefpay" v-bind:height="200" selection=true
+                      v-bind:data="dataParam.MERCHANT_PAYMENT" v-bind:disabled="!disabled" ref="refGrouppay">
             </yx-table>
         </Card>
     </i-col>

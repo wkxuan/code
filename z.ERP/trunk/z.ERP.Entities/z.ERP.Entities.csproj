@@ -46,6 +46,7 @@
     <Compile Include="Auto\MAPFLOORDATAEntity.cs" />
     <Compile Include="Auto\MAPPUBLICDATA.cs" />
     <Compile Include="Auto\MAPSHOPDATAEntity.cs" />
+    <Compile Include="Auto\MERCHANT_PAYMENT.cs" />
     <Compile Include="Auto\NOTICEEntity.cs" />
     <Compile Include="Auto\NOTICE_BRANCHEntity.cs" />
     <Compile Include="Auto\PRESENT_SENDEntity.cs" />

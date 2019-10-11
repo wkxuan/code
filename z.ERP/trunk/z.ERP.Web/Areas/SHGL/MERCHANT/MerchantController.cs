@@ -98,7 +98,8 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
                 {
                     merchant = res.Item1,
                     merchantBrand = res.Item2,
-                    treeorg = res.Item3
+                    treeorg = res.Item3,
+                    payment= res.Item4
                 }
             );
         }

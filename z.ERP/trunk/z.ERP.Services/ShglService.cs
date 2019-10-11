@@ -152,7 +152,7 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
-        public Tuple<dynamic, DataTable, dynamic> GetMerchantElement(MERCHANTEntity Data)
+        public Tuple<dynamic, DataTable, dynamic, DataTable> GetMerchantElement(MERCHANTEntity Data)
         {
             if (Data.MERCHANTID.IsEmpty())
             {
@@ -164,14 +164,18 @@ namespace z.ERP.Services
             DataTable merchant = DbHelper.ExecuteTable(sql);
 
             merchant.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
-
+            //品牌
             string sqlitem = $@"SELECT M.BRANDID,C.NAME,D.CATEGORYCODE,D.CATEGORYNAME " +
                 " FROM MERCHANT_BRAND M,MERCHANT E,BRAND C,CATEGORY D " +
                 " where M.MERCHANTID = E.MERCHANTID AND M.BRANDID=C.ID AND  C.CATEGORYID = D.CATEGORYID ";
             if (!Data.MERCHANTID.IsEmpty())
                 sqlitem += (" and E.MERCHANTID= " + Data.MERCHANTID);
             DataTable merchantBrand = DbHelper.ExecuteTable(sqlitem);
-
+            //付款信息
+            string sqlitempay = $@" SELECT * FROM  MERCHANT_PAYMENT A WHERE 1=1 ";
+            if (!Data.MERCHANTID.IsEmpty())
+                sqlitempay += (" and A.MERCHANTID= " + Data.MERCHANTID);
+            DataTable merchantPayment = DbHelper.ExecuteTable(sqlitempay);
 
             List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
             var treeOrg = new UIResult(TreeModel.Create(p,
@@ -185,7 +189,7 @@ namespace z.ERP.Services
                     expand = true
                 })?.ToArray());
 
-            return new Tuple<dynamic, DataTable, dynamic>(merchant.ToOneLine(), merchantBrand, treeOrg);
+            return new Tuple<dynamic, DataTable, dynamic, DataTable>(merchant.ToOneLine(), merchantBrand, treeOrg, merchantPayment);
         }
 
 
@@ -257,6 +261,17 @@ namespace z.ERP.Services
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<收款类型>("REFERTYPE", "REFERTYPENAME");
+            return new DataGridResult(dt, count);
+        }
+        public DataGridResult GetMerchantPayment(SearchItem item)
+        {
+            string sql = $@"SELECT A.*,M.NAME MERCHANTNAME FROM  MERCHANT_PAYMENT A,MERCHANT M WHERE M.MERCHANTID=A.MERCHANTID";
+            item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME  LIKE '%{a}%'");
+            item.HasKey("PAYMENTID", a => sql += $" and A.PAYMENTID LIKE '%{a}%'");
+            sql += " ORDER BY  A.PAYMENTID ";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
     }

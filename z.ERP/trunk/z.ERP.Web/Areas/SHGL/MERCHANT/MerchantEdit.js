@@ -21,9 +21,19 @@
     { title: '业态代码', key: 'CATEGORYCODE' },
     { title: '业态名称', key: 'CATEGORYNAME' }
     ];
+    editDetail.screenParam.colDefpay = [
+    {
+        title: "编号", key: 'PAYMENTID'
+    },
+    { title: '银行卡号', key: 'CARDNO', cellType: "input", cellDataType: "number", },
+    { title: '银行名称', key: 'BANKNAME', cellType: "input", },
+    { title: '开户人', key: 'HOLDERNAME', cellType: "input", },
+    { title: '身份证号', key: 'IDCARD', cellType: "input", },
+    ];
     editDetail.screenParam.showPopBrand = false;
     editDetail.screenParam.srcPopBrand = __BaseUrl + "/Pop/Pop/PopBrandList/";
     editDetail.dataParam.MERCHANT_BRAND = editDetail.dataParam.MERCHANT_BRAND || [];
+    editDetail.dataParam.MERCHANT_PAYMENT = editDetail.dataParam.MERCHANT_PAYMENT || [];
 };
 
 editDetail.otherMethods = {
@@ -44,6 +54,34 @@ editDetail.otherMethods = {
     srchColPP: function () {
         Vue.set(editDetail.screenParam, "showPopBrand", true);
     },
+    addColPay: function () {
+        editDetail.dataParam.MERCHANT_PAYMENT.push({
+            PAYMENTID: editDetail.dataParam.MERCHANT_PAYMENT.length + 1,
+            CARDNO: "",
+            BANKNAME: "",
+            HOLDERNAME: "",
+            IDCARD:""
+        });
+    },
+    delColPay: function () {
+        let selection = this.$refs.refGrouppay.getSelection();
+        if (selection.length == 0) {
+            iview.Message.info("请选中要删除的数据!");
+        } else {
+            for (let i = 0; i < selection.length; i++) {
+                let temp = editDetail.dataParam.MERCHANT_PAYMENT;
+                for (let j = 0; j < temp.length; j++) {
+                    if (temp[j].PAYMENTID == selection[i].PAYMENTID) {
+                        temp.splice(j, 1);
+                        break;
+                    }
+                }
+            };
+            for (var j = 0; j < editDetail.dataParam.MERCHANT_PAYMENT.length; j++) {
+                editDetail.dataParam.MERCHANT_PAYMENT[j].PAYMENTID = j + 1;
+            };
+        }
+    }
 };
 
 editDetail.showOne = function (data, callback) {
@@ -53,6 +91,7 @@ editDetail.showOne = function (data, callback) {
         $.extend(editDetail.dataParam, data.merchant);
         editDetail.dataParam.BILLID = data.merchant.MERCHANTID;
         editDetail.dataParam.MERCHANT_BRAND = data.merchantBrand;
+        editDetail.dataParam.MERCHANT_PAYMENT = data.payment;
         callback && callback(data);
     });
 }
@@ -85,6 +124,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.WEIXIN = null;
     editDetail.dataParam.QQ = null;
     editDetail.dataParam.MERCHANT_BRAND = [];
+    editDetail.dataParam.MERCHANT_PAYMENT = [];
 }
 
 //按钮初始化
@@ -169,6 +209,24 @@ editDetail.IsValidSave = function () {
                 return;
             }
         }
+    };
+    for (var i = 0; i < editDetail.dataParam.MERCHANT_PAYMENT.length; i++) {
+        if (!editDetail.dataParam.MERCHANT_PAYMENT[i].CARDNO) {
+            iview.Message.info("请确认第" + (i + 1) + "行银行卡号!");
+            return false;
+        };
+        if (!editDetail.dataParam.MERCHANT_PAYMENT[i].BANKNAME) {
+            iview.Message.info("请确认第" + (i + 1) + "行银行名称!");
+            return false;
+        };
+        if (!editDetail.dataParam.MERCHANT_PAYMENT[i].HOLDERNAME) {
+            iview.Message.info("请确认第" + (i + 1) + "行开户人!");
+            return false;
+        };
+        if (!editDetail.dataParam.MERCHANT_PAYMENT[i].IDCARD) {
+            iview.Message.info("请确认第" + (i +1)+ "行身份证号!");
+            return false;
+        };
     };
 
     return true;
