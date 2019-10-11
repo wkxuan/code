@@ -435,6 +435,17 @@ editDetail.popCallBack = function (data) {
                 }
             };
         }
+        if (editDetail.screenParam.title == "选择商户付款信息") {
+            for (let i = 0; i < data.sj.length; i++) {
+                for (let i = 0; i < data.sj.length; i++) {
+                    editDetail.dataParam.PAYMENTID = data.sj[i].PAYMENTID;
+                    editDetail.screenParam.CARDNO = data.sj[i].CARDNO;
+                    editDetail.screenParam.BANKNAME = data.sj[i].BANKNAME;
+                    editDetail.screenParam.HOLDERNAME = data.sj[i].HOLDERNAME;
+                    editDetail.screenParam.IDCARD = data.sj[i].IDCARD;
+                };
+            };
+        }
     }
 };
 
@@ -535,6 +546,25 @@ editDetail.otherMethods = {
                 }
             }
         }
+    },
+    //商户付款信息
+    srchMPAYMENT: function () {
+        if (!editDetail.dataParam.MERCHANTID) {
+            iview.Message.info("请先选择商户!");
+            return;
+        }
+        editDetail.screenParam.title = "选择商户付款信息";
+        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID, MERCHANTNAME: editDetail.dataParam.MERNAME };
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantPaymentList/";
+        Vue.set(editDetail.screenParam, "showPop", true);
+    },
+    //清空付款信息
+    clearpayment: function () {
+        editDetail.dataParam.PAYMENTID = null;
+        editDetail.screenParam.CARDNO = null;
+        editDetail.screenParam.BANKNAME = null;
+        editDetail.screenParam.HOLDERNAME = null;
+        editDetail.screenParam.IDCARD = null;
     },
     //点击商铺弹窗
     srchShop: function () {
@@ -1111,6 +1141,11 @@ editDetail.clearKey = function () {
     editDetail.dataParam.STANDARD = 1;
     editDetail.dataParam.TQFKR = null;
     editDetail.screenParam.TQFKR = [];
+    editDetail.dataParam.PAYMENTID = null;
+    editDetail.screenParam.CARDNO = null;
+    editDetail.screenParam.BANKNAME = null;
+    editDetail.screenParam.HOLDERNAME = null;
+    editDetail.screenParam.IDCARD = null;
 };
 
 editDetail.afterEdit = function () {
@@ -1122,6 +1157,12 @@ editDetail.afterEdit = function () {
 editDetail.afterAbandon = function () {
     if (editDetail.dataParam.TQFKR) {
         editDetail.screenParam.TQFKR = editDetail.dataParam.TQFKR.split(',');
+    }
+    if (!editDetail.dataParam.PAYMENTID) {
+        editDetail.screenParam.CARDNO = null;
+        editDetail.screenParam.BANKNAME = null;
+        editDetail.screenParam.HOLDERNAME = null;
+        editDetail.screenParam.IDCARD = null;
     }
 };
 
@@ -1497,6 +1538,12 @@ editDetail.showOne = function (data) {
         editDetail.dataParam.CONTJSKL = data.ContractParm.CONTJSKL;
         editDetail.dataParam.CONTRACT_COST = data.contractCost;
         editDetail.dataParam.CONTRACT_PAY = data.contractPay;
+        if (data.contractPayment) {   //付款方式
+            editDetail.screenParam.CARDNO = data.contractPayment.CARDNO;
+            editDetail.screenParam.BANKNAME = data.contractPayment.BANKNAME;
+            editDetail.screenParam.HOLDERNAME = data.contractPayment.HOLDERNAME;
+            editDetail.screenParam.IDCARD = data.contractPayment.IDCARD;
+        }
         if (data.contract.TQFKR) {
             Vue.set(editDetail.screenParam, "TQFKR", data.contract.TQFKR.split(',') || []);
         };

@@ -404,8 +404,6 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-
-
         /// <summary>
         /// 提前返款日
         /// <summary>
@@ -414,7 +412,11 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-
+        [Field("付款方式")]
+        public string PAYMENTID
+        {
+            get; set;
+        }
 
     }
 }

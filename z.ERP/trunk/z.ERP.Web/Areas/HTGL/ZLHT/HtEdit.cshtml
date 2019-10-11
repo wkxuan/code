@@ -445,6 +445,48 @@
                 </yx-table>
             </i-col>
         </tab-pane>
+        <tab-pane label="商户付款信息" name="name4">
+            <row>
+                <i-col span="3" class="RowTitle">
+                    付款信息编码
+                </i-col>
+                <i-col span="5" class="RowText">
+                    <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                             v-model="dataParam.PAYMENTID" v-on:on-click="srchMPAYMENT" v-bind:disabled="!disabled" />
+                </i-col>               
+                <i-col span="3" class="RowTitle">
+                    <i-button type="error" v-on:click="clearpayment" v-if="disabled">清空付款信息</i-button>
+                </i-col>
+            </row>
+            <row>
+                <i-col span="3" class="RowTitle">
+                    银行卡号
+                </i-col>
+                <i-col span="9" class="RowText">
+                    <i-input readonly v-model="screenParam.CARDNO" v-bind:disabled="!disabled"  />
+                </i-col>
+                <i-col span="3" class="RowTitle">
+                    银行名称
+                </i-col>
+                <i-col span="9" class="RowText">
+                    <i-input readonly v-model="screenParam.BANKNAME" v-bind:disabled="!disabled" />
+                </i-col>
+            </row>
+            <row>
+                <i-col span="3" class="RowTitle">
+                    开户人
+                </i-col>
+                <i-col span="9" class="RowText">
+                    <i-input readonly v-model="screenParam.HOLDERNAME" v-bind:disabled="!disabled" />
+                </i-col>
+                <i-col span="3" class="RowTitle">
+                    身份证号
+                </i-col>
+                <i-col span="9" class="RowText">
+                    <i-input readonly v-model="screenParam.IDCARD" v-bind:disabled="!disabled" />
+                </i-col>
+            </row>
+        </tab-pane>
     </Tabs>
 }
 

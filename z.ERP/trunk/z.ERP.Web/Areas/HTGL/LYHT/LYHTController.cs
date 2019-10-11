@@ -46,6 +46,9 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         public UIResult SearchContract(CONTRACTEntity Data)
         {
             var res = service.HtglService.GetContractElement(Data);
+            var mid = res.Item1.MERCHANTID.Value;
+            var paymentid = res.Item1.PAYMENTID.Value + "";
+            var mpayment = service.ShglService.GetMerchantPayment(mid, paymentid);
             return new UIResult(
                 new
                 {
@@ -55,7 +58,8 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
                     ContractParm = res.Item4,
                     ContractRentParm = res.Item5,
                     contractPay = res.Item6,
-                    contractCost = res.Item7
+                    contractCost = res.Item7,
+                    contractPayment = mpayment
                 }
             );
         }

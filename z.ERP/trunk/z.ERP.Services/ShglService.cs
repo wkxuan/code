@@ -274,5 +274,13 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+        public MERCHANT_PAYMENTEntity GetMerchantPayment(string mid,string paymentid)
+        {
+            MERCHANT_PAYMENTEntity pay = new MERCHANT_PAYMENTEntity();
+            if (!string.IsNullOrEmpty(mid)&& !string.IsNullOrEmpty(paymentid)) {
+                pay = DbHelper.Select(new MERCHANT_PAYMENTEntity() { MERCHANTID = mid,PAYMENTID= paymentid });
+            }
+            return pay;
+        }
     }
 }
