@@ -79,6 +79,7 @@
                     save(function (data) {
                         _self.disabled = _this.enabled(true);
                         _this.showlist();
+                        _this.showOne(data);
                         iview.Message.info("保存成功");
                     })
                 },
