@@ -1,4 +1,5 @@
-﻿editDetail.beforeVue = function () {
+﻿var ORG;
+editDetail.beforeVue = function () {
     editDetail.service = "HtglService";
     editDetail.method = "GetContract";
     editDetail.screenParam.yearLoading = false;
@@ -34,10 +35,11 @@
                 value: item.ID
             }
         });
-        editDetail.screenParam.orgList = $.map(data.Org_zs,function (item) {
+        ORG = $.map(data.Org, function (item) {
             return {
-                label: item.Value,
-                value: Number(item.Key)
+                label: item.ORGNAME,
+                value: Number(item.ORGID),
+                branchid: item.BRANCHID,
             };
         });
         editDetail.screenParam.operateruleList = $.map(data.Operrule,function (item) {
@@ -342,6 +344,7 @@
 editDetail.branchChange = function () {
     editDetail.dataParam.CONTRACT_SHOP = [];
     editDetail.dataParam.ORGID = null;
+    editDetail.screenParam.orgList = ORG.filter(item=> { return item.branchid == editDetail.dataParam.BRANCHID });
     editDetail.otherMethods.calculateArea();
 };
 editDetail.popCallBack = function (data) {
@@ -1093,7 +1096,16 @@ editDetail.otherMethods = {
     FEERULE_RENTChange: function ($event) {
         editDetail.dataParam.CONTRACT_RENTITEM = [];
     },
-
+    //org加载
+    ORGOPEN: function (event) {
+        debugger        
+        if (event) {
+            if (!editDetail.dataParam.BRANCHID) {
+                iview.Message.info("请先选择门店!");
+                return;
+            }                     
+        }
+    }
 };
 
 editDetail.clearKey = function () {

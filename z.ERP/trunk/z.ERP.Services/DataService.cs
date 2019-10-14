@@ -95,6 +95,16 @@ namespace z.ERP.Services
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
 
+        public DataTable org_zslist()
+        {
+            string sql = $@"SELECT A.ORGID,A.ORGNAME,A.BRANCHID FROM ORG A WHERE LEVEL_LAST=" + ((int)末级标记.末级).ToString() +
+                            "  AND  ORG_TYPE=" + ((int)部门类型.招商部门).ToString() +
+                            "  AND  A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")" +
+                            "  ORDER BY  A.ORGID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+
         public List<SelectItem> operrule()
         {
             string sql = $@"SELECT A.ID,A.NAME FROM OPERATIONRULE A WHERE 1=1   ORDER BY  A.ID ";
