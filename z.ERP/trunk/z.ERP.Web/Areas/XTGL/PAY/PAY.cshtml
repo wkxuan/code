@@ -128,10 +128,9 @@
         </i-col>
         <i-col span="6">
             @{
-                RenderControl(new EnumCheckBoxListRender<停用标记>()
+                RenderControl(new EnumDropDownListRender<停用标记>()
                 {
                     vModel = "dataParam.VOID_FLAG",
-                    MultiSelect = false,
                     Enable = false
                 });
             }
