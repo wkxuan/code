@@ -35,10 +35,10 @@ editDetail.beforeVue = function () {
                 value: item.ID
             }
         });
-        editDetail.screenParam.orgList = $.map(data.Org_zs, function (item) {
+        editDetail.screenParam.orgList = $.map(data.Org, function (item) {
             return {
-            label: item.Value,
-            value: Number(item.Key)
+                label: item.ORGNAME,
+                value: Number(item.ORGID)
             };
         });
         ORG = $.map(data.Org, function (item) {
