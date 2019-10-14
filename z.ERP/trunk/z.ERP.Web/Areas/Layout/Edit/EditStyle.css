@@ -9,8 +9,8 @@
         top: 0;
         width: 100%;
         text-align: center;
-        background:#2d8cf0;
-        line-height:35px;
+        background: #2d8cf0;
+        line-height: 35px;
     }
 
         #edit .topMenuBtn .ivu-btn {
@@ -45,7 +45,7 @@
         font-size: 12px;
         font-weight: bold;
         color: #fff;
-        background:#2d8cf0;
+        background: #2d8cf0;
     }
 
     #edit .editParamContent {
@@ -70,6 +70,6 @@
         border: none;
     }
 
-    #edit .tableBtnDiv{
-        display:flex;
+    #edit .tableBtnDiv {
+        display: flex;
     }

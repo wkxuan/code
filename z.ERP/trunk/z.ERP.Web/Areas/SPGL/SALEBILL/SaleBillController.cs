@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Web.Mvc;
 using z.ERP.Entities;
+using z.ERP.Services;
 using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Attributes;
 using z.MVC5.Results;
+using z.Results;
 
 namespace z.ERP.Web.Areas.SPGL.SALEBILL
 {
@@ -28,25 +32,15 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
             ViewBag.Title = "编辑销售补录单";
             return View("SaleBillEdit", model: (EditRender)Id);
         }
-        public ActionResult SaleBillDetail(string Id)
-        {
-            ViewBag.Title = "浏览销售补录单";
-            var entity = service.SpglService.GetSaleBillDetail(new SALEBILLEntity(Id));
-            ViewBag.salebill = entity.Item1;
-            ViewBag.salebillitem = entity.Item2;
-            return View(entity);            
-        }
         [Permission("10500401")]
         public string Save(SALEBILLEntity SaveData)
         {
             return service.SpglService.SaveSaleBill(SaveData);            
         }
-
         public void Delete(List<SALEBILLEntity> DeleteData)
         {
             service.SpglService.DeleteSaleBill(DeleteData);
         }
-
         public UIResult ShowOneSaleBillEdit(SALEBILLEntity Data)
         {
             return new UIResult(service.SpglService.ShowOneSaleBillEdit(Data));
@@ -60,7 +54,6 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
         {
             return new UIResult(service.DataService.GetPay());
         }
-
         public UIResult SearchKind()
         {
             var res = service.SpglService.GetKindInit();
@@ -71,5 +64,9 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
                 }
             );
         }
+        public override ImportMsg ImportExcelDataHandle(DataTable dt)
+        {
+            return service.SpglService.SaleBillImport(dt);
+        }     
     }
 }

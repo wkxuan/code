@@ -5,7 +5,9 @@
 .hide {
     display: none;
 }
-
+[v-cloak] {
+    display: none;
+}
 .RowTitle {
     text-align: right;
     font-size: small;

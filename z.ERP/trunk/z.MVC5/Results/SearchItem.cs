@@ -96,5 +96,15 @@ namespace z.MVC5.Results
         public string authority { set; get; }
         public bool enable { set; get; }
     }
+    public class ImportMsg
+    {
+        private bool _succeFlag = true;
+        public bool SuccFlag
+        {
+            get { return _succeFlag; }
+            set { _succeFlag = value; }
+        }
+        public string Message { get; set; }
+    }
 }
 

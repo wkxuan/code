@@ -16,7 +16,7 @@
     @RenderSection("head", false)
 }
 
-<div id="search">
+<div id="search" v-cloak>
     <collapse v-model="panelName">
         <panel name="condition">
             查询条件
@@ -65,7 +65,16 @@
                         Icon = "md-trash"
                     });
                 }
-
+                @{
+                    RenderControl(new ButtonRender()
+                    {
+                        Click = "upload",
+                        Text = "导入",
+                        Enable = true,
+                        Type = "primary",
+                        Icon = "md-trash"
+                    });
+                }
                 @RenderSection("conditionBtn", false)
             </div>
             <div slot="content" class="searchParamContent">
@@ -113,6 +122,9 @@
             </div>
         </panel>
     </collapse>
+
+    <yx-upload v-bind:open.sync="importOpen"></yx-upload>
+
     @RenderSection("hide", false)
     @RenderSection("pops", false)
 

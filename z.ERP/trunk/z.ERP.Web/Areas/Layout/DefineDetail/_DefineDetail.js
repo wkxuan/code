@@ -62,21 +62,21 @@
                                 return false;
                             }
                         }
-                    }, {
-                        id: "del",
-                        name: "删除",
-                        icon: "md-trash",
-                        fun: function () {
-                            _self.del();
-                        },
-                        enabled: function (disabled, data) {
-                            //if (!disabled && data[_this.Key]) {
-                            //    return true;
-                            //} else {
-                            //    return false;
-                            //}
-                            return true;
-                        }
+                    //}, {
+                    //    id: "del",
+                    //    name: "删除",
+                    //    icon: "md-trash",
+                    //    fun: function () {
+                    //        _self.del();
+                    //    },
+                    //    enabled: function (disabled, data) {
+                    //        if (!disabled && data[_this.Key]) {
+                    //            return true;
+                    //        } else {
+                    //            return false;
+                    //        }
+                    //        return true;
+                    //    }
                     }, {
                         id: "save",
                         name: "存档",

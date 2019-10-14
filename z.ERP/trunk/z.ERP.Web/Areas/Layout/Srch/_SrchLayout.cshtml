@@ -17,7 +17,7 @@
     @RenderSection("head", false)
 }
 
-<div id="srch">
+<div id="srch" v-cloak>
     <collapse v-model="panelName">
         <panel name="condition">
             查询条件

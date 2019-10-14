@@ -31,15 +31,6 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
             ViewBag.Title = "编辑商品信息";
             return View("GoodsEdit", model: (EditRender)Id);
         }
-
-        public ActionResult GoodsDetail(string Id)
-        {
-            ViewBag.Title = "浏览商品信息";
-            var entity = service.SpglService.GetGoodsDetail(new GOODSEntity(Id));
-            ViewBag.goods = entity.Item1;
-            ViewBag.goodsshop = entity.Item2;
-            return View(entity);
-        }
         [Permission("10500201")]
         public string Save(GOODSEntity SaveData)
         {

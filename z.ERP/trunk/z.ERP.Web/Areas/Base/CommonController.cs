@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Web;
-using System.Web.Mvc;
-using z.DBHelper.DBDomain;
 using z.ERP.Services;
 using z.Extensions;
 using z.MVC5.Results;
-using z.WebPage;
 
 namespace z.ERP.Web.Areas.Base
 {
@@ -40,7 +35,6 @@ namespace z.ERP.Web.Areas.Base
             var d = mi.Invoke(list, new object[] { Data }) as DataGridResult;
             return d;
         }
-
 
         public UIResult SearchNoQuery(string Service, string Method)
         {

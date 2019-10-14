@@ -15,7 +15,7 @@
     @RenderSection("head", false)
 }
 
-<div id="popSearch">
+<div id="popSearch" v-cloak>
     <collapse v-model="panelName">
         <panel name="condition">
             查询条件

@@ -32,6 +32,7 @@
                 pagedataCount: 0,
                 pageSize: 10,
                 currentPage: 1,
+                importOpen:false
             },
             watch: {
                 "screenParam.colDef": {
@@ -82,6 +83,10 @@
                     } else {
                         iview.Message.error("尚未提供打印方法!");
                     }
+                },
+                upload: function (event) {
+                    event.stopPropagation();
+                    this.importOpen = true;
                 },
                 add: function (event) {
                     event.stopPropagation();

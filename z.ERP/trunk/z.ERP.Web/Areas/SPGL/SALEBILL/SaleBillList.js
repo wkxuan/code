@@ -1,7 +1,7 @@
 ﻿search.beforeVue = function () {
     search.screenParam.colDef = [
         { title: "单据编号", key: "BILLID",sortable: true },
-        { title: "记账日期", key: "ACCOUNT_DATE", sortable: true },
+        { title: "记账日期", key: "ACCOUNT_DATE", sortable: true, cellType: "date" },
         { title: "收银员", key: "SYYMC", sortable: true },
         { title: "营业员", key: "YYYMC",  sortable: true },
         { title: "状态", key: "STATUSMC"},

@@ -17,15 +17,14 @@ namespace z.ERP.Services
     {
         internal SpglService()
         {
-
         }
-
+        #region 商品信息
         public DataGridResult GetGoods(SearchItem item)
         {
             string sql = $@"SELECT G.*,K.CODE KINDCODE,K.NAME KINDNAME,M.NAME MERCHANTNAME ";
-                   sql += "   FROM GOODS G,GOODS_KIND K,MERCHANT M,CONTRACT C";
+            sql += "   FROM GOODS G,GOODS_KIND K,MERCHANT M,CONTRACT C";
             sql += " WHERE G.CONTRACTID = C.CONTRACTID and G.MERCHANTID=M.MERCHANTID(+) AND G.KINDID=K.ID(+)";
-            sql += "   and C.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+            sql += "   and C.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("BARCODE", a => sql += $" and G.BARCODE={a}");
             item.HasKey("NAME", a => sql += $" and G.NAME  LIKE '%{a}%'");
@@ -41,29 +40,7 @@ namespace z.ERP.Services
             dt.NewEnumColumns<商品类型>("TYPE", "TYPEMC");
             return new DataGridResult(dt, count);
         }
-
-        public Tuple<dynamic, DataTable> GetGoodsDetail(GOODSEntity Data)
-        {
-            string sql = $@"select G.*,K.NAME KINDNAME from GOODS G,GOODS_KIND K where G.KINDID=K.ID(+) ";
-            if (!Data.GOODSID.IsEmpty())
-                sql += (" and GOODSID= " + Data.GOODSID);
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.NewEnumColumns<商品状态>("STATUS", "STATUSMC");
-            dt.NewEnumColumns<商品类型>("TYPE", "TYPEMC");
-            dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
-            dt.Rows[0]["JXSL"] = dt.Rows[0]["JXSL"].ToString().ToDouble() * 100;
-            dt.Rows[0]["XXSL"] = dt.Rows[0]["XXSL"].ToString().ToDouble() * 100;
-            string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
-                "  FROM GOODS_SHOP G,SHOP S,CATEGORY Y  " +
-                "  WHERE G.SHOPID=S.SHOPID AND G.CATEGORYID= Y.CATEGORYID";
-            if (!Data.GOODSID.IsEmpty())
-                sqlshop += (" and G.GOODSID= " + Data.GOODSID);
-            DataTable dtshop = DbHelper.ExecuteTable(sqlshop);
-
-            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtshop);
-        }
-
-        public string SaveGoods (GOODSEntity SaveData)
+        public string SaveGoods(GOODSEntity SaveData)
         {
             var v = GetVerify(SaveData);
             var spbmcd = 6;
@@ -84,7 +61,7 @@ namespace z.ERP.Services
                 var barCode = string.Format(szFormatBarcode, SaveData.GOODSDM, 0);
                 SaveData.BARCODE = (barCode + sj.Next(10)).ToString();
             }
-                
+
             v.Require(a => a.GOODSDM);
             v.IsUnique(a => a.GOODSDM);
             v.Require(a => a.TYPE);
@@ -108,7 +85,7 @@ namespace z.ERP.Services
             {
                 GetVerify(sdb).Require(a => a.GOODSID);
                 GetVerify(sdb).Require(a => a.BRANCHID);
-                GetVerify(sdb).Require(a => a.SHOPID);                
+                GetVerify(sdb).Require(a => a.SHOPID);
                 GetVerify(sdb).Require(a => a.CATEGORYID);
             });
             v.Verify();
@@ -119,7 +96,7 @@ namespace z.ERP.Services
             {
                 BILLID = SaveData.GOODSID,
                 MENUID = "10500202",
-                BRABCHID = (SaveData.CONTRACTID).Substring(1,2),
+                BRABCHID = (SaveData.CONTRACTID).Substring(1, 2),
                 URL = "SPGL/GOODS/GoodsEdit/"
             };
 
@@ -127,7 +104,6 @@ namespace z.ERP.Services
 
             return SaveData.GOODSID;
         }
-        
         public void DeleteGoods(List<GOODSEntity> DeleteData)
         {
             using (var Tran = DbHelper.BeginTransaction())
@@ -155,8 +131,6 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
-
-
         }
         public Tuple<dynamic, DataTable, DataTable> ShowOneEdit(GOODSEntity Data)
         {
@@ -171,9 +145,9 @@ namespace z.ERP.Services
             }
             dt.Rows[0]["JXSL"] = dt.Rows[0]["JXSL"].ToString().ToDouble() * 100;
             dt.Rows[0]["XXSL"] = dt.Rows[0]["XXSL"].ToString().ToDouble() * 100;
+            dt.NewEnumColumns<商品状态>("STATUS", "STATUSMC");
+            dt.NewEnumColumns<商品类型>("TYPE", "TYPEMC");
             dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
-            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
-
             string sqlshop = $@"SELECT G.*,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME " +
                 "  FROM GOODS_SHOP G,SHOP S,CATEGORY Y  " +
                 "  WHERE G.SHOPID=S.SHOPID AND G.CATEGORYID= Y.CATEGORYID";
@@ -192,19 +166,18 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic, DataTable, DataTable>(dt.ToOneLine(), dtshop, jsklGroup);
         }
-
         public object GetContract(CONTRACTEntity Data)
         {
             string sql = $@"select T.MERCHANTID,S.NAME SHMC,T.STYLE,T.JXSL*100 JXSL,T.XXSL*100 XXSL ";
             sql += "from CONTRACT T,MERCHANT S where T.MERCHANTID=S.MERCHANTID ";
-            sql += " and T.BRANCHID in ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+            sql += " and T.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             if (!Data.CONTRACTID.IsEmpty())
                 sql += (" and T.CONTRACTID= " + Data.CONTRACTID);
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
 
             string sql_shop = $@"SELECT P.SHOPID,P.CATEGORYID,S.CODE,Y.CATEGORYCODE,Y.CATEGORYNAME,T.BRANCHID "
-                + " FROM CONTRACT_SHOP P,SHOP S,CATEGORY Y,CONTRACT T " 
+                + " FROM CONTRACT_SHOP P,SHOP S,CATEGORY Y,CONTRACT T "
                 + " WHERE  P.SHOPID=S.SHOPID and P.CATEGORYID=Y.CATEGORYID and P.CONTRACTID = T.CONTRACTID";
             if (!Data.CONTRACTID.IsEmpty())
                 sql_shop += (" and P.CONTRACTID= " + Data.CONTRACTID);
@@ -235,7 +208,6 @@ namespace z.ERP.Services
 
             return result;
         }
-
         public Tuple<dynamic> GetKindInit()
         {
             List<GOODS_KINDEntity> p = DbHelper.SelectList(new GOODS_KINDEntity()).OrderBy(a => a.CODE).ToList();
@@ -251,13 +223,12 @@ namespace z.ERP.Services
                 })?.ToArray());
             return new Tuple<dynamic>(treeOrg);
         }
-
         public string ExecData(GOODSEntity Data)
         {
             GOODSEntity mer = DbHelper.Select(Data);
             if (mer.STATUS == ((int)商品状态.审核).ToString())
             {
-                throw new LogicException("商品(" + Data.GOODSDM+ ")已经审核不能再次审核!");
+                throw new LogicException("商品(" + Data.GOODSDM + ")已经审核不能再次审核!");
             }
 
             string sql = $"SELECT DISTINCT C.CONTRACTID FROM GOODS A,GOODS_SHOP B,CONTRACT C "
@@ -272,7 +243,7 @@ namespace z.ERP.Services
 
             if (dt.Rows.Count > 0)
             {
-                throw new LogicException("该商品所选店铺下存在其它合同("+dt.Rows[0][0].ToString()+")的正常状态商品,请先处理再审核");
+                throw new LogicException("该商品所选店铺下存在其它合同(" + dt.Rows[0][0].ToString() + ")的正常状态商品,请先处理再审核");
             }
 
             using (var Tran = DbHelper.BeginTransaction())
@@ -295,13 +266,16 @@ namespace z.ERP.Services
             DelDclRw(dcl);
 
             return mer.GOODSDM;
-        }        
+        }
+        #endregion
+
+        #region 销售补录单
         public DataGridResult GetSaleBillList(SearchItem item)
         {
             string sql = $@"SELECT L.*,B.NAME BRANCHMC,S1.USERNAME SYYMC,S2.USERNAME YYYMC "
                + "  FROM SALEBILL L,BRANCH B,SYSUSER S1,SYSUSER S2"
-               + " where L.BRANCHID = B.ID  and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID  " 
-               + "   and  B.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+               + " where L.BRANCHID = B.ID  and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID  "
+               + "   and  B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("BILLID", a => sql += $" and L.BILLID = {a}");
             item.HasKey("BRANCHID", a => sql += $" and L.BRANCHID={a}");
             item.HasKey("MERCHANTID", a => sql += $" and  exists(select 1 from CONTRACT_SHOP S,CONTRACT C where S.CONTRACTID=C.CONTRACTID and S.SHOPID=S2.SHOPID and C.MERCHANTID={a})");
@@ -323,60 +297,19 @@ namespace z.ERP.Services
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
-        public string SaveSaleBill(SALEBILLEntity SaveData)
-        {
-            var v = GetVerify(SaveData);
-            if (SaveData.BILLID.IsEmpty())
-                SaveData.BILLID = NewINC("SALEBILL");
-            SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
-            SaveData.REPORTER = employee.Id;
-            SaveData.REPORTER_NAME = employee.Name;
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            SaveData.VERIFY = employee.Id;
-            v.Require(a => a.BILLID);
-            v.Require(a => a.BRANCHID);
-            v.Require(a => a.ACCOUNT_DATE);
-            v.Require(a => a.CASHIERID);
-            v.Require(a => a.CLERKID);
-            v.Verify();
-
-            using (var Tran = DbHelper.BeginTransaction())
-            {
-                SaveData.SALEBILLITEM?.ForEach(item =>
-                {
-                    GetVerify(item).Require(a => a.GOODSID);
-                    GetVerify(item).Require(a => a.PAYID);
-                    GetVerify(item).Require(a => a.QUANTITY);
-                    GetVerify(item).Require(a => a.AMOUNT);
-                });
-                DbHelper.Save(SaveData);
-                Tran.Commit();
-            }
-
-
-            var dcl = new BILLSTATUSEntity
-            {
-                BILLID = SaveData.BILLID,
-                MENUID = "10500402",
-                BRABCHID = SaveData.BRANCHID,
-                URL = "SPGL/SALEBILL/SaleBillEdit/"
-            };
-            InsertDclRw(dcl);
-
-            return SaveData.BILLID;
-        }
         public object ShowOneSaleBillEdit(SALEBILLEntity Data)
         {
             string sql = $@" SELECT L.*,B.NAME BRANCHMC,S1.USERNAME SYYMC,S2.USERNAME YYYMC" +
                 "   FROM SALEBILL L,BRANCH B,SYSUSER S1,SYSUSER S2 " +
                 "  where L.BRANCHID = B.ID and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID " +
-                "    and B.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+                "    and B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             if (!Data.BILLID.IsEmpty())
                 sql += (" and L.BILLID= " + Data.BILLID);
             DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
 
             string sqlsale = $@"SELECT G.*,S.GOODSDM,S.NAME,P.NAME PAYNAME,O.CODE   FROM SALEBILLITEM G,GOODS S,PAY P,SHOP O " +
-                "  WHERE G.GOODSID=S.GOODSID and G.PAYID = P.PAYID  and G.SHOPID= O.SHOPID" ;
+                "  WHERE G.GOODSID=S.GOODSID and G.PAYID = P.PAYID  and G.SHOPID= O.SHOPID";
             if (!Data.BILLID.IsEmpty())
                 sqlsale += (" and G.BILLID= " + Data.BILLID);
             DataTable dtsale = DbHelper.ExecuteTable(sqlsale);
@@ -390,7 +323,191 @@ namespace z.ERP.Services
             };
             return result;
         }
+        private void SaleBillPro(SALEBILLEntity data)
+        {
+            var v = GetVerify(data);
+            if (data.BILLID.IsEmpty())
+                data.BILLID = GetBillINC("SALEBILL", data.BRANCHID);
+            data.STATUS = ((int)普通单据状态.未审核).ToString();
+            data.REPORTER = employee.Id;
+            data.REPORTER_NAME = employee.Name;
+            data.REPORTER_TIME = DateTime.Now.ToString();
+            data.VERIFY = employee.Id;
+            data.POSNO = (data.BRANCHID + "0999").PadLeft(6, '0');
 
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.ACCOUNT_DATE);
+            v.Require(a => a.CASHIERID);
+            v.Require(a => a.CLERKID);
+            v.Verify();
+
+            data.SALEBILLITEM?.ForEach(item =>
+            {
+                GetVerify(item).Require(a => a.GOODSID);
+                GetVerify(item).Require(a => a.PAYID);
+                GetVerify(item).Require(a => a.QUANTITY);
+                GetVerify(item).Require(a => a.AMOUNT);
+            });
+            DbHelper.Save(data);
+
+            //添加待处理任务
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = data.BILLID,
+                MENUID = "10500402",
+                BRABCHID = data.BRANCHID,
+                URL = "SPGL/SALEBILL/SaleBillEdit/"
+            };
+            InsertDclRw(dcl);
+        }
+        public string SaveSaleBill(SALEBILLEntity SaveData)
+        {
+            SaleBillPro(SaveData);
+            return SaveData.BILLID;
+        }
+        public ImportMsg VerifyImportDataSaleBill(DataTable dt, ref List<SALEBILLEntity> SaveDataList)
+        {
+            var backData = new ImportMsg();
+            for (var i = 0; i < dt.Rows.Count; i++)
+            {
+                var SaveData = new SALEBILLEntity();
+
+                if (dt.Columns.Contains("门店编号"))
+                {
+                    var fdbh = dt.Rows[i]["门店编号"].ToString();
+                    if (string.IsNullOrEmpty(fdbh))
+                    {
+                        backData.Message = $@"第{i + 1}行的门店编号不能为空！";
+                        backData.SuccFlag = false;
+                        return backData;
+                    }
+                    SaveData.BRANCHID = fdbh;
+                }
+                else
+                {
+                    backData.Message = "导入项没有门店编号！";
+                    backData.SuccFlag = false;
+                    return backData;
+                }
+
+                if (dt.Columns.Contains("记账日期"))
+                {
+                    var jzri = dt.Rows[i]["记账日期"].ToString();
+                    if (string.IsNullOrEmpty(jzri))
+                    {
+                        backData.Message = $@"第{i + 1}行的记账日期不能为空！";
+                        backData.SuccFlag = false;
+                        return backData;
+                    }
+                    SaveData.ACCOUNT_DATE = jzri;
+                }
+                else
+                {
+                    backData.Message = "导入项没有记账日期！";
+                    backData.SuccFlag = false;
+                    return backData;
+                }
+
+                if (dt.Columns.Contains("收银员"))
+                {
+                    var syy = dt.Rows[i]["收银员"].ToString();
+                    if (string.IsNullOrEmpty(syy))
+                    {
+                        backData.Message = $@"第{i + 1}行的收银员不能为空！";
+                        backData.SuccFlag = false;
+                        return backData;
+                    }
+                    SaveData.CASHIERID = GetTableDataKey("SYSUSER", "USERCODE", syy, "USERID");
+                }
+                else
+                {
+                    backData.Message = "导入项没有收银员！";
+                    backData.SuccFlag = false;
+                    return backData;
+                }
+
+                if (dt.Columns.Contains("营业员"))
+                {
+                    var yyy = dt.Rows[i]["营业员"].ToString();
+                    if (string.IsNullOrEmpty(yyy))
+                    {
+                        backData.Message = $@"第{i + 1}行的营业员不能为空！";
+                        backData.SuccFlag = false;
+                        return backData;
+                    }
+                    SaveData.CLERKID = GetTableDataKey("SYSUSER", "USERCODE", yyy, "USERID");
+                }
+                else
+                {
+                    backData.Message = "导入项没有营业员！";
+                    backData.SuccFlag = false;
+                    return backData;
+                }
+
+                var list = new List<SALEBILLITEMEntity>();
+                var item = new SALEBILLITEMEntity();
+                if (dt.Columns.Contains("商品代码"))
+                {
+                    var goodsdm = dt.Rows[i]["商品代码"].ToString();
+                    if (string.IsNullOrEmpty(goodsdm))
+                    {
+                        backData.Message = $@"第{i + 1}行的商品代码不能为空！";
+                        backData.SuccFlag = false;
+                        return backData;
+                    }
+                    item.GOODSID = GetTableDataKey("GOODS", "GOODSDM", goodsdm, "GOODSID");
+                    item.SHOPID = GetTableDataKey("GOODS_SHOP", "GOODSID", item.GOODSID, "SHOPID");
+                }
+                else
+                {
+                    backData.Message = "导入项没有商品代码！";
+                    backData.SuccFlag = false;
+                    return backData;
+                }
+                if (dt.Columns.Contains("收款金额"))
+                {
+                    var skje = dt.Rows[i]["收款金额"].ToString();
+                    if (string.IsNullOrEmpty(skje))
+                    {
+                        backData.Message = $@"第{i + 1}行的收款金额不能为空！";
+                        backData.SuccFlag = false;
+                        return backData;
+                    }
+                    item.AMOUNT = skje;
+                }
+                else
+                {
+                    backData.Message = "导入项没有收款金额！";
+                    backData.SuccFlag = false;
+                    return backData;
+                }
+                item.PAYID = "1";
+                item.QUANTITY = "1";
+                list.Add(item);
+                SaveData.SALEBILLITEM = list;
+
+                SaveDataList.Add(SaveData);
+            }
+            return backData;
+        }
+        public ImportMsg SaleBillImport(DataTable dt)
+        {
+            var SaveDataList = new List<SALEBILLEntity>();
+            var data = VerifyImportDataSaleBill(dt, ref SaveDataList);
+            if (data.SuccFlag)
+            {
+                using (var Tran = DbHelper.BeginTransaction())
+                {
+                    for (var i = 0; i < SaveDataList.Count; i++)
+                    {
+                        SaleBillPro(SaveDataList[i]);
+                    }
+                    Tran.Commit();
+                }
+            }           
+            return data;
+        }
         public void DeleteSaleBill(List<SALEBILLEntity> DeleteData)
         {
             foreach (var con in DeleteData)
@@ -398,7 +515,7 @@ namespace z.ERP.Services
                 SALEBILLEntity Data = DbHelper.Select(con);
                 if (Data.STATUS != ((int)普通单据状态.未审核).ToString())
                 {
-                    throw new LogicException($"租约({Data.BILLID})已经不是未审核不能删除!");
+                    throw new LogicException($"补录单({Data.BILLID})已经不是未审核不能删除!");
                 }
             }
             using (var Tran = DbHelper.BeginTransaction())
@@ -420,24 +537,6 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
-        }
-        public Tuple<dynamic, DataTable> GetSaleBillDetail(SALEBILLEntity Data)
-        {
-            string sql = $@" SELECT L.*,B.NAME BRANCHMC,S1.USERNAME SYYMC,S2.USERNAME YYYMC" +
-                "   FROM SALEBILL L,BRANCH B,SYSUSER S1,SYSUSER S2 " +
-                "  where L.BRANCHID = B.ID and L.CASHIERID = S1.USERID  and L.CLERKID = S2.USERID ";
-            if (!Data.BILLID.IsEmpty())
-                sql += (" and L.BILLID= " + Data.BILLID);
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            dt.NewEnumColumns<退铺单状态>("STATUS", "STATUSMC");
-
-            string sqlsale = $@"SELECT G.*,S.GOODSDM,S.NAME,P.NAME PAYNAME,O.CODE  FROM SALEBILLITEM G,GOODS S,PAY P,SHOP O " +
-                "  WHERE G.GOODSID=S.GOODSID and G.PAYID = P.PAYID  and G.SHOPID= O.SHOPID";
-            if (!Data.BILLID.IsEmpty())
-                sqlsale += (" and G.BILLID= " + Data.BILLID);
-            DataTable dtsale = DbHelper.ExecuteTable(sqlsale);
-
-            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dtsale);
         }
         public string ExecSaleBillData(SALEBILLEntity Data)
         {
@@ -466,6 +565,8 @@ namespace z.ERP.Services
             DelDclRw(dcl);
             return mer.BILLID;
         }
+        #endregion
+
         #region 扣率调整单
         public DataGridResult GetRateAdjustList(SearchItem item)
         {
@@ -653,5 +754,5 @@ namespace z.ERP.Services
 
 
         #endregion
-    }
+    }    
 }

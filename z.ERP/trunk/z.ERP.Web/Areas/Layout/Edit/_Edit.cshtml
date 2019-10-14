@@ -17,7 +17,7 @@
     @RenderSection("head", false)
 }
 
-<div id="edit" style="overflow:hidden;">
+<div id="edit" style="overflow:hidden;" v-cloak>
     <div class="topMenuBtn">
         <yx-tool-bar v-bind:list="list" v-bind:disabled="disabled" v-bind:domdata="dataParam"></yx-tool-bar>
     </div>

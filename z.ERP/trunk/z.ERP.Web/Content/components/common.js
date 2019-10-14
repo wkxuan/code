@@ -1,7 +1,7 @@
 ﻿
 //table组件
 Vue.component('yx-table', {
-    props: ['columns', 'data', 'disabled', 'selection', 'stripe', 'showHeader', 'border', 'width', 'height', 'loading', 'highlightRow', 'size', 'showindex'],
+    props: ['columns', 'data', 'disabled', 'selection', 'stripe', 'showHeader', 'border', 'width', 'height', 'loading', 'highlightrow', 'size', 'showindex'],
     template: ` <div style="width:100%;height:100%;position: relative;"> ` +
                  ` <i-table ref="tableRef" v-bind:columns="curColumns" ` +
                     ` v-bind:data="curData" ` +
@@ -40,7 +40,6 @@ Vue.component('yx-table', {
             curWidth: null,
             curHeight: null,
             curMaxHeight: null,
-            curHighlightRow: true,
             curSize: "small",
             curTooltipTheme: "light",
             curStripe: null,
@@ -89,6 +88,9 @@ Vue.component('yx-table', {
         },
         curLoading() {
             return this.loading;
+        },
+        curHighlightRow() {
+            return this.highlightrow;
         }
     },
     methods: {
@@ -399,15 +401,15 @@ Vue.component('yx-table', {
             let strS = s == 0 ? "00" : parseInt(s);
             let strM1, strS1;
             if (strM != "00" && strM < 10) {
-                 strM1 = "0" + strM;
+                strM1 = "0" + strM;
             } else {
-                 strM1 = strM;
+                strM1 = strM;
             }
             if (strS != "00" && strS < 10) {
-                 strS1 = "0" + strS;
+                strS1 = "0" + strS;
             } else {
-                 strS1 = strS;
-            }          
+                strS1 = strS;
+            }
             return strM1 + ":" + strS1;
         },
         //列显示隐藏控制checkBox chang事件
@@ -881,8 +883,8 @@ Vue.component('yx-tree', {
     props: ['data', 'disabled', 'disablecheckbox', 'showcheckbox', 'multiple', 'checkstrictly'],
     template: `<Tree ref="treeRef" :data="curData" :multiple="multiple" :show-checkbox="showcheckbox" ` +
               ` :check-strictly="checkstrictly" ` +
-              ` v-on:on-select-change="onSelectChange" `+
-              ` v-on:on-check-change="onCheckChange" `+
+              ` v-on:on-select-change="onSelectChange" ` +
+              ` v-on:on-check-change="onCheckChange" ` +
               ` v-on:on-toggle-expand="onToggleExpand"></Tree> `,
     data() {
         return {
@@ -990,7 +992,7 @@ Vue.component('yx-tree', {
                         if (data[i].children.length) {
                             _func(data[i].children);
                         }
-                    }                   
+                    }
                 };
             }
             _func(this.data);
@@ -1032,7 +1034,7 @@ Vue.component('yx-year-month-picker', {
             curValue: null
         }
     },
-    mounted() {},
+    mounted() { },
     computed: {},
     watch: {
         value: {
@@ -1159,7 +1161,7 @@ Vue.component('yx-time-picker', {
     }
 });
 Vue.component('yx-date-picker', {
-    props: ['value', 'disabled', 'clearable', 'clearable', 'editable','start','end'],
+    props: ['value', 'disabled', 'clearable', 'clearable', 'editable', 'start', 'end'],
     template: `<date-picker :value="curValue" type="date" format="yyyy-MM-dd" transfer :disabled="disabled"` +
               `:clearable="clearable" :editable="editable" :options="options" v-on:on-change="onChange">` +
               `</date-picker>`,
@@ -1171,7 +1173,7 @@ Vue.component('yx-date-picker', {
     },
     mounted() {
         this.initOptions();
-       
+
     },
     watch: {
         value: {
@@ -1190,7 +1192,7 @@ Vue.component('yx-date-picker', {
         },
         end: {
             handler: function (nv, ov) {
-                 if (nv)
+                if (nv)
                     this.initOptions();
             },
             deep: true
@@ -1220,6 +1222,83 @@ Vue.component('yx-date-picker', {
                     return false;
                 }
             };
+        }
+    }
+});
+Vue.component('yx-upload', {
+    props: ['open'],
+    template: `<Modal :title="Title" v-model="curopen" :mask-closable="false" v-on:on-visible-change="onvisiblechange"> ` +
+                `<Upload type="drag" :action="curAction" accept="xlsx,xls" :format ="['xlsx','xls']" ` +
+                    `:on-error="onError":on-success="onSuccess" :on-format-error="onFormatError" :before-upload="beforeUpload" :on-progress="onProgress"> ` +
+                    `<div style="padding: 20px 0">` +
+                       ` <icon type="ios-cloud-upload" size="52" style="color: #3399ff"></icon> ` +
+                       ` <p>单击或拖动文件以上传</p> ` +
+                    `</div> ` +
+                `</Upload> ` +
+                `<div slot="footer"><i-button type="text" icon="md-download" v-on:click="download">下载模板</i-button></div> ` +
+            `</Modal>`,
+    data() {
+        return {
+            curopen: false,
+            Title: "导入",
+            curAction: _.AjaxUrl + "Import"
+        }
+    },
+    mounted() {
+    },
+    watch: {
+        open: {
+            handler: function (nv, ov) {
+                this.curopen = nv;
+            },
+            immediate: true,
+            deep: true
+        }
+    },
+    methods: {
+        onSuccess(response, file, fileList) {
+            this.$emit('update:open', false);
+            _.Ajax('ImportExcel', {
+                fileUrl: response
+            }, function (data) {
+                if (data.SuccFlag) {
+                    iview.Message.info("导入成功！");
+                } else {
+                    let option = {
+                        render: h=> {
+                            return h('div', {
+                                style: {
+                                    'table-layout': 'fixed',
+                                    'word-break': 'break-all',
+                                    'overflow': 'hidden',
+                                    'margin': '0 20px'
+                                }
+                            }, data.Message);
+                        },
+                        title: "提示",
+                        width: 350,
+                        okText: "确定",
+                        cancelText: "取消"
+                    }
+                    iview.Modal.warning(option);
+                }
+            });
+        },
+        onFormatError(file, fileList) {
+            iview.Message.error("导入的文件格式不对！");
+        },
+        onError(error, file, fileList) {
+            iview.Message.error("文件上传失败！");
+        },
+        beforeUpload(file) {
+        },
+        onProgress(event, file, fileList) {
+        },
+        download() {
+            window.open(__BaseUrl + "/File/Template/凭证导出.xlsx");
+        },
+        onvisiblechange(val) {
+            this.$emit('update:open', val);
         }
     }
 });

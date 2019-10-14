@@ -190,7 +190,6 @@ namespace z.ERP.Services
         #endregion
 
         #region 通用方法
-
         /// <summary>
         /// 获取新的记录编号
         /// </summary>
@@ -216,7 +215,6 @@ namespace z.ERP.Services
             string selsql = $"select value from INC_TAB where TBLNAME='{tableName}'";
             return DbHelper.ExecuteTable(selsql).Rows[0][0].ToString();
         }
-
         /// <summary>
         /// 获取对象的验证类
         /// </summary>
@@ -229,7 +227,6 @@ namespace z.ERP.Services
             v.SetDb(DbHelper);
             return v;
         }
-
         /// <summary>
         /// 记录用户可见的日志
         /// </summary>
@@ -252,7 +249,6 @@ namespace z.ERP.Services
             };
             DbHelper.Insert(note);
         }
-
         public string GetExport(string filename, Action<ExcelWriter> ew)
         {
             string newname = $@"{filename}_{DateTime.Now.ToString("yyyy年MM月dd日HH时mm分ss秒")}.xlsx";
@@ -283,10 +279,57 @@ namespace z.ERP.Services
             var v = GetVerify(billStatus);
             DbHelper.Delete(billStatus);
         }
+        /// <summary>
+        /// 根据Key,Value获取TableName的DataTable
+        /// </summary>
+        /// <param name="TableName">查询表名</param>
+        /// <param name="Key">查询条件字段</param>
+        /// <param name="Value">查询条件字段值</param>
+        /// <returns></returns>
+        public DataTable GetTableData(string TableName, string Key, string Value)
+        {
+            string sql = "select * from " + TableName + " where " + Key + "='" + Value + "'";
+            return DbHelper.ExecuteTable(sql);
+        }
+        /// <summary>
+        /// 根据Key,Value获取TableName的固定字段ValKey的值（取第一条数据）
+        /// </summary>
+        /// <param name="TableName">查询表名</param>
+        /// <param name="Key">查询条件字段</param>
+        /// <param name="Value">查询条件字段值</param>
+        /// <param name="ValKey">返回字段Key</param>
+        /// <returns></returns>
+        public string GetTableDataKey(string TableName, string Key, string Value, string ValKey)
+        {
+            DataTable dt = GetTableData(TableName, Key, Value);
+            if (dt.Rows.Count > 0)
+            {
+                return dt.Rows[0][ValKey].ToString();
+            }
+            return "";
+        }
+        /// <summary>
+        /// 根据门店ID生成Table流水号
+        /// </summary>
+        /// <param name="TbName">表名</param>
+        /// <param name="BranchId">门店ID</param>
+        /// <returns></returns>
+        public string GetBillINC(string TbName, string BranchId)
+        {
+            return BranchId + NewINC(TbName + "_" + BranchId).PadLeft(7, '0');
+        }
+        /// <summary>
+        /// 生成Table流水号
+        /// </summary>
+        /// <param name="TbName">表名</param>
+        /// <returns></returns>
+        public string GetBillINC(string TbName)
+        {
+            return NewINC(TbName);
+        }
         #endregion
 
         #region 权限
-
         public string GetPermissionSql(PermissionType type)
         {
             switch (type)
@@ -410,7 +453,6 @@ namespace z.ERP.Services
                     throw new Exception("无效的权限类型");
             }
         }
-
         //业态权限
         public string GetYtQx(string B)
         {
@@ -434,7 +476,6 @@ namespace z.ERP.Services
             }
             return SqlyTQx;
         }
-
         public string GetFullYtQX(string B)
         {
             string SqlyTQx = "";
@@ -457,10 +498,6 @@ namespace z.ERP.Services
             }
             return SqlyTQx;
         }
-
-
-
-
         #endregion
 
         #region 属性
@@ -487,7 +524,6 @@ namespace z.ERP.Services
         #endregion
 
         #region 配置
-
         /// <summary>
         /// 获取配置信息
         /// </summary>
@@ -501,7 +537,6 @@ namespace z.ERP.Services
                 throw new Exception($"找不到配置{ID}");
             return e.CUR_VAL;
         }
-
         #endregion
     }
     #endregion
