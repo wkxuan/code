@@ -35,6 +35,12 @@ editDetail.beforeVue = function () {
                 value: item.ID
             }
         });
+        editDetail.screenParam.orgList = $.map(data.Org_zs, function (item) {
+            return {
+            label: item.Value,
+            value: Number(item.Key)
+            };
+        });
         ORG = $.map(data.Org, function (item) {
             return {
                 label: item.ORGNAME,

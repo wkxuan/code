@@ -93,7 +93,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             SearchItem item = new SearchItem();
             var feeRule = service.XtglService.GetFeeRule(item);
             var lateFeeRule = service.XtglService.GetLateFeeRule(item);
-            //var org_zs = service.DataService.org_zs();
+            var org_zs = service.DataService.org_zs();
             var operrule = service.DataService.operrule(); 
             var org = service.DataService.org_zslist();
             return new UIResult(
@@ -101,7 +101,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                 {
                     FeeRule = feeRule,
                     LateFeeRule = lateFeeRule,
-                    //Org_zs = org_zs,
+                    Org_zs = org_zs,
                     Operrule = operrule,
                     Org= org
                 }
