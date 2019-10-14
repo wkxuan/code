@@ -1,0 +1,60 @@
+﻿@inherits ViewBase<dynamic>
+@using z.ERP.Web.Areas.Share.Render
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+                    "Areas/JSGL/ManualReturn/ManualReturn.js"
+                };
+}
+@section head{
+    <style>
+        #ManualReturn {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+        }
+
+            #ManualReturn .ivu-split-pane {
+                margin: 8px;
+                overflow: auto;
+            }      
+    </style>
+}
+
+<div id="ManualReturn">
+   <row>
+       <i-col span="4" class="RowTitle">门店</i-col>
+       <i-col span="6" class="RowText">
+           @{
+               RenderControl(new ServiceDropDownListRender()
+               {
+                   vModel = "BRANCHID",
+                   ServiceMothod = m => m.branch(),
+                   Enable=false
+               });
+           }
+       </i-col>
+   </row>
+    <row>
+        <i-col span="4" class="RowTitle">截至时间</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "ENDTIME",
+                    Enable = false
+                });
+            }
+        </i-col>
+    </row>
+    <row style="height:30px"></row>
+    <row>
+        <i-col span="4" class="RowTitle"></i-col>       
+        <i-col span="6" class="RowText">
+            <i-Button type="primary" shape="circle" icon="ios-construct" size="large" long v-on:click="Exec">执行</i-Button>
+        </i-col>
+    </row>
+</div>

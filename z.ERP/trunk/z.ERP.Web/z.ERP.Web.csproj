@@ -212,6 +212,7 @@
     <Compile Include="Areas\HTGL\LYHT\LYHTController.cs" />
     <Compile Include="Areas\HTGL\ZLHT\ZLHTController.cs" />
     <Compile Include="Areas\JSGL\Invoice\InvoiceController.cs" />
+    <Compile Include="Areas\JSGL\ManualReturn\ManualReturnController.cs" />
     <Compile Include="Areas\JSGL\VOUCHER\VoucherController.cs" />
     <Compile Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustController.cs" />
     <Compile Include="Areas\JSGL\BILL_NOTICE\Bill_NoticeController.cs" />
@@ -381,6 +382,7 @@
     <Content Include="Areas\HTGL\ZLHT\HtEdit.js" />
     <Content Include="Areas\HTGL\ZLHT\HtList.js" />
     <Content Include="Areas\JSGL\Invoice\InvoiceList.js" />
+    <Content Include="Areas\JSGL\ManualReturn\ManualReturn.js" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherEdit.js" />
     <Content Include="Areas\JSGL\VOUCHER\VoucherList.js" />
     <Content Include="Areas\JSGL\BILL_ADJUST\Bill_AdjustEdit.js" />
@@ -835,6 +837,7 @@
     <Content Include="Areas\BJGL\MAPPUBLICDATA\MAPPUBLICDATA.cshtml" />
     <Content Include="Areas\XTGL\CashierSearch\CashierSearch.cshtml" />
     <Content Include="Areas\Pop\Pop\PopMerchantPaymentList.cshtml" />
+    <Content Include="Areas\JSGL\ManualReturn\ManualReturn.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
