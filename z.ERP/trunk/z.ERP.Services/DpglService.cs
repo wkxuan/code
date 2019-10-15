@@ -98,6 +98,8 @@ namespace z.ERP.Services
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = '{a}'");
             item.HasKey("FLOORID", a => sql += $" and A.FLOORID = '{a}'");
             item.HasKey("REGIONID", a => sql += $" and A.REGIONID = {a}");
+            item.HasKey("STATUS", a => sql += $" and A.STATUS = '{a}'");
+            item.HasKey("RENT_STATUS", a => sql += $" and A.RENT_STATUS = {a}");
             item.HasKey("AREA_RENTABLE_S", a => sql += $" and A.AREA_RENTABLE >= {a}");
             item.HasKey("AREA_RENTABLE_E", a => sql += $" and A.AREA_RENTABLE <= {a}");
             sql += " ORDER BY A.SHOPID DESC";
@@ -127,6 +129,7 @@ namespace z.ERP.Services
                 sql += (" AND A.NAME like %" + Data.NAME + "%");
             DataTable shop = DbHelper.ExecuteTable(sql);
             shop.NewEnumColumns<租用状态>("RENT_STATUS", "RENT_STATUSMC");
+            shop.NewEnumColumns<单元状态>("STATUS", "STATUSMC");
             return new Tuple<dynamic, DataTable>(shop.ToOneLine(), shop);
         }
         public object GetOneShop(SHOPEntity Data)

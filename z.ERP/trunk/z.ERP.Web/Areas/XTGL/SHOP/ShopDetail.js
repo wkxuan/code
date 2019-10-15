@@ -6,8 +6,10 @@
 };
 
 defineDetail.clearKey = function () {
-    defineDetail.dataParam.STATUS = 1;
+    defineDetail.dataParam.STATUS = 2;
     defineDetail.dataParam.RENT_STATUS = 1;
+    defineDetail.dataParam.STATUSMC = "正常";
+    defineDetail.dataParam.RENT_STATUSMC = "空置";
     defineDetail.dataParam.SHOPID = null;
     defineDetail.dataParam.CODE = null;
     defineDetail.dataParam.NAME = null;
@@ -37,10 +39,24 @@ defineDetail.mountedInit = function () {
         authority: "104004"
     }, {
         id: "edit",
-        authority: "104004"
+        authority: "104004",
+        enabled: function (disabled, data) {
+            if (!disabled && data.RENT_STATUS!=2) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }, {
         id: "del",
-        authority: "104004"
+        authority: "104004",
+        enabled: function (disabled, data) {
+            if (!disabled && data.RENT_STATUS != 2) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }, {
         id: "save",
         authority: "104004"
@@ -121,8 +137,10 @@ defineDetail.showOne = function (data, callback) {
 };
 
 defineDetail.newRecord = function () {
-    defineDetail.dataParam.STATUS = 1;
+    defineDetail.dataParam.STATUS = 2;
     defineDetail.dataParam.RENT_STATUS = 1;
+    defineDetail.dataParam.STATUSMC = "正常";
+    defineDetail.dataParam.RENT_STATUSMC = "空置";
     defineDetail.dataParam.ORGIDCASCADER = [];
 }
 

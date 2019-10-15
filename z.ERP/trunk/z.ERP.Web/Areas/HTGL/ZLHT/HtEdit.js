@@ -583,7 +583,7 @@ editDetail.otherMethods = {
         }
         //查询空置的资产
         editDetail.screenParam.title = "选择商铺";
-        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, RENT_STATUS: 1 };
+        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, RENT_STATUS: 1,STATUS:2 };
         editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopShopList/";
         Vue.set(editDetail.screenParam, "showPop", true);
     },

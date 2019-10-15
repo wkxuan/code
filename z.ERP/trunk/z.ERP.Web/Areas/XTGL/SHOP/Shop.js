@@ -2,7 +2,7 @@
     search.service = "DpglService";
     search.method = "SearchShop";
     search.indexShow = true;
-    search.selectionShow = false;
+    search.selectionShow = true;
 
     search.popConfig = {
         title: "资产单元信息",
@@ -104,10 +104,7 @@ search.mountedInit = function () {
         authority: ""
     }, {
         id: "del",
-        enabled: function () {
-            return false;
-        },
-        authority: ""
+        authority: "",
     }];
 };
 

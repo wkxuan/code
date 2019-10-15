@@ -70,12 +70,9 @@ namespace z.ERP.Web.Areas.XTGL.SHOP
             v.Verify();
             return CommonSave(DefineSave);
         }
-        public void Delete(List<SHOPEntity> DefineDelete)
+        public void Delete(List<SHOPEntity> DeleteData)
         {
-            foreach (var con in DefineDelete)
-            {
-                CommenDelete(con);
-            }  
+            service.XtglService.DeleteShop(DeleteData);
         }
         public string Check(SHOPEntity DefineSave)
         {
