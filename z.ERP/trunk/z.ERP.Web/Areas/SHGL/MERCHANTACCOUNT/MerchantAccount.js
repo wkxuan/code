@@ -1,4 +1,4 @@
-﻿srch.beforeVue = function () {
+﻿search.beforeVue = function () {
     var col = [
         { title: '门店', key: 'BRANCHNAME'},
         { title: '商户编码', key: 'MERCHANTID' },
@@ -6,39 +6,42 @@
         { title: '收费单位', key: 'FEE_ACCOUNTNAME' },        
         { title: '商户预收款余额', key: 'BALANCE',align: "right" },
         { title: '已用金额', key: 'USED_MONEY', align: "right" }
-
     ];
-    srch.screenParam.colDef = col;
-    srch.service = "ShglService";
-    srch.method = "GetMerchantAccount";
-
-    srch.screenParam.showPopMerchant = false;
-    srch.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-
-    srch.screenParam.popParam = {};
+    search.screenParam.colDef = col;
+    search.service = "ShglService";
+    search.method = "GetMerchantAccount";
+    search.screenParam.showPopMerchant = false;
+    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+    search.screenParam.popParam = {};
+    search.indexShow = true;
+    search.selectionShow = false;
 };
-
-srch.otherMethods = {
+search.otherMethods = {
     SelMerchant: function () {
-        srch.screenParam.showPopMerchant = true;
+        search.screenParam.showPopMerchant = true;
     }
 }
-
-srch.newCondition = function () {
-    srch.searchParam.BRANCHID = "";
-    srch.searchParam.MERCHANTNAME = "";
-    srch.searchParam.FEE_ACCOUNT_ID = "";
+search.newCondition = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.FEE_ACCOUNT_ID = "";
 
 };
-
-
-srch.popCallBack = function (data) {
-
-    if (srch.screenParam.showPopMerchant) {
-        srch.screenParam.showPopMerchant = false;
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }];
+}
+search.popCallBack = function (data) {
+    if (search.screenParam.showPopMerchant) {
+        search.screenParam.showPopMerchant = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
         }
     }
 };

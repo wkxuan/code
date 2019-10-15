@@ -5,7 +5,7 @@
     { title: '收付实现月', key: 'YEARMONTH', minWidth: 100, sortable: true },
 
 ];
-srch.mountedInit = function () {
+search.mountedInit = function () {
     _.Ajax('GetSfxmList', {
         Data: {}
     }, function (data) {
@@ -15,35 +15,48 @@ srch.mountedInit = function () {
                 label: item.Value
             };
         });
-        Vue.set(srch.screenParam, "sfxmList", list);
+        Vue.set(search.screenParam, "sfxmList", list);
     });
+
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "export",
+        authority: ""
+    }];
 }
-srch.beforeVue = function () {
-    srch.service = "ReportService";
-    srch.method = "MerchantPayable";
-    srch.screenParam.colDef = cols;
-    srch.screenParam.showPopMerchant = false;
-    srch.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+search.beforeVue = function () {
+    search.service = "ReportService";
+    search.method = "MerchantPayable";
+    search.indexShow = true;
+    search.selectionShow = false;
+    search.screenParam.colDef = cols;
+    search.screenParam.showPopMerchant = false;
+    search.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
 };
-srch.newCondition = function () {
-    srch.searchParam.BRANCHID = "";
-    srch.searchParam.MERCHANTID = "";
-    srch.searchParam.MERCHANTNAME = "";
-    srch.searchParam.SFXMLX = "";
-    srch.searchParam.SFXM = "";
-    srch.searchParam.NIANYUE_START = "";
-    srch.searchParam.NIANYUE_END = "";
-    srch.searchParam.YEARMONTH_START = "";
-    srch.searchParam.YEARMONTH_END = "";
+search.newCondition = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.SFXMLX = "";
+    search.searchParam.SFXM = "";
+    search.searchParam.NIANYUE_START = "";
+    search.searchParam.NIANYUE_END = "";
+    search.searchParam.YEARMONTH_START = "";
+    search.searchParam.YEARMONTH_END = "";
 };
-srch.afterResult = function (data) {
+search.afterResult = function (data) {
     if (data.length) {
         let obj = data[0];
         let sfxmList = [];
         for (let item in obj) {
             if (item.indexOf("MUST_MONEY") > -1) {
                 let arr = item.split("MUST_MONEY");
-                let lx = srch.screenParam.sfxmList.filter(item=> {
+                let lx = search.screenParam.sfxmList.filter(item=> {
                     if (item.value == arr[1]) {
                         return true;
                     }
@@ -84,21 +97,21 @@ srch.afterResult = function (data) {
             ]
         };
         sfxmList.push(sumloc);
-        srch.screenParam.colDef = cols.concat(sfxmList);
+        search.screenParam.colDef = cols.concat(sfxmList);
     }
 }
-srch.otherMethods = {
+search.otherMethods = {
     //商户弹窗click
     SelMerchant: function () {
-        srch.screenParam.showPopMerchant = true;
+        search.screenParam.showPopMerchant = true;
     }
 }
-srch.popCallBack = function (data) {
-    if (srch.screenParam.showPopMerchant) {
-        srch.screenParam.showPopMerchant = false;
+search.popCallBack = function (data) {
+    if (search.screenParam.showPopMerchant) {
+        search.screenParam.showPopMerchant = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
         }
     }
 };

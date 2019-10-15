@@ -1,4 +1,4 @@
-﻿srch.beforeVue = function () {
+﻿search.beforeVue = function () {
     var col = [
         { title: '商户编码', key: 'MERCHANTID'},
         { title: '商户名称', key: 'MERCHANTNAME'},
@@ -10,30 +10,36 @@
         { title: '付款金额', key: 'USE_MONEY',  align: "right" },
         { title: '变更后余额', key: 'ACCOUNT',align: "right" },
     ];
-    srch.screenParam.colDef = col;
-    srch.service = "ShglService";
-    srch.method = "GetMerchantAccountDetail";
-
-    srch.screenParam.showPopMerchant = false;
-    srch.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-
-    srch.screenParam.popParam = {};
+    search.screenParam.colDef = col;
+    search.service = "ShglService";
+    search.method = "GetMerchantAccountDetail";
+    search.screenParam.showPopMerchant = false;
+    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+    search.screenParam.popParam = {};
+    search.indexShow = true;
+    search.selectionShow = false;
 };
-
-srch.otherMethods = {
+search.otherMethods = {
     SelMerchant: function () {
-        srch.screenParam.showPopMerchant = true;
+        search.screenParam.showPopMerchant = true;
     }
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }];
+}
+search.popCallBack = function (data) {
 
-
-srch.popCallBack = function (data) {
-
-    if (srch.screenParam.showPopMerchant) {
-        srch.screenParam.showPopMerchant = false;
+    if (search.screenParam.showPopMerchant) {
+        search.screenParam.showPopMerchant = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
         }
     }
 };

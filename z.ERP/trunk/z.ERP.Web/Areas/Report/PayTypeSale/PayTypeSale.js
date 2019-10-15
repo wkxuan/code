@@ -26,95 +26,107 @@ var echartTypeList2 = [{ label: "按商户", value: "NAME" },
                      { label: "按终端号", value: "POSNO" },
                      { label: "按收款方式", value: "PAYNAME" }];
 
-srch.beforeVue = function () {
-    srch.screenParam.colDef = colList;
-    srch.service = "ReportService";
-    srch.method = "PayTypeSale";
-    srch.echartResult = true;
-    srch.screenParam.showPopMerchant = false;
-    srch.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-    srch.screenParam.showPopBrand = false;
-    srch.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
+search.beforeVue = function () {
+    search.screenParam.colDef = colList;
+    search.service = "ReportService";
+    search.method = "PayTypeSale";
+    search.panelTwoShow = true;
+    search.screenParam.showPopMerchant = false;
+    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+    search.screenParam.showPopBrand = false;
+    search.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
+    search.indexShow = true;
+    search.selectionShow = false;
+    search.screenParam.popParam = {};
+    search.searchParam.SrchTYPE = 1;
 
-    srch.screenParam.popParam = {};
-    srch.searchParam.SrchTYPE = 1;
-
-    srch.screenParam.echartType = echartTypeList1;
-    srch.screenParam.echartRadioVal = "NAME";
-    srch.screenParam.dataSumTypeList = [{ label: "销售金额", value: "AMOUNT" }];
-    srch.screenParam.echartData = [];
+    search.screenParam.echartType = echartTypeList1;
+    search.screenParam.echartRadioVal = "NAME";
+    search.screenParam.dataSumTypeList = [{ label: "销售金额", value: "AMOUNT" }];
+    search.screenParam.echartData = [];
 };
 
-srch.newCondition = function () {
-    srch.searchParam.BRANCHID= "";
-    srch.searchParam.MERCHANTNAME = "";   
-    srch.searchParam.MERCHANTID = "";
-    srch.searchParam.BRANDNAME = "";
-    srch.searchParam.Pay = "";
-    srch.searchParam.RQ_START = "";
-    srch.searchParam.RQ_END = "";
-    srch.searchParam.YEARMONTH_START = "";
-    srch.searchParam.YEARMONTH_END = "";
+search.newCondition = function () {
+    search.searchParam.BRANCHID= "";
+    search.searchParam.MERCHANTNAME = "";   
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.BRANDNAME = "";
+    search.searchParam.Pay = "";
+    search.searchParam.RQ_START = "";
+    search.searchParam.RQ_END = "";
+    search.searchParam.YEARMONTH_START = "";
+    search.searchParam.YEARMONTH_END = "";
 };
 
-srch.echartInit = function (data) {
-    srch.screenParam.echartData = data;
+search.searchDataAfter = function (data) {
+    search.screenParam.echartData = data;
 };
 
-srch.mountedInit = function () {
+search.mountedInit = function () {
     _.Ajax('SearchKind', {
         Data: {}
     }, function (data) {
-        Vue.set(srch.screenParam, "dataKind", data.treeorg.Obj);
+        Vue.set(search.screenParam, "dataKind", data.treeorg.Obj);
     });
+
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "export",
+        authority: ""
+    }];
 }
 
-srch.otherMethods = {
+search.otherMethods = {
     SelMerchant: function () {
-        srch.screenParam.showPopMerchant = true;
+        search.screenParam.showPopMerchant = true;
     },
     SelBrand: function () {
-        srch.screenParam.showPopBrand = true;
+        search.screenParam.showPopBrand = true;
     },
     changeSrchType: function (value) {
-        srch.screenParam.echartData = [];
+        search.screenParam.echartData = [];
         debugger
         if (value == 1) {
             Vue.set(this, "data", []);   //清空table
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colList);
-            srch.screenParam.echartType = echartTypeList1;
-            srch.screenParam.echartRadioVal = "NAME";
+            Vue.set(search.screenParam, "colDef", colList);
+            search.screenParam.echartType = echartTypeList1;
+            search.screenParam.echartRadioVal = "NAME";
         } else {
             Vue.set(this, "data", []); //清空table
             Vue.set(this, "pagedataCount", 0); //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colSum);
-            srch.screenParam.echartType = echartTypeList2;
-            srch.screenParam.echartRadioVal = "PAYNAME";
+            Vue.set(search.screenParam, "colDef", colSum);
+            search.screenParam.echartType = echartTypeList2;
+            search.screenParam.echartRadioVal = "PAYNAME";
         }
     }
 }
 
-srch.popCallBack = function (data) {
+search.popCallBack = function (data) {
 
-    if (srch.screenParam.showPopMerchant) {
-        srch.screenParam.showPopMerchant = false;
+    if (search.screenParam.showPopMerchant) {
+        search.screenParam.showPopMerchant = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
         }
     }
-    if (srch.screenParam.showPopBrand) {
-        srch.screenParam.showPopBrand = false;
+    if (search.screenParam.showPopBrand) {
+        search.screenParam.showPopBrand = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.BRANDID = data.sj[i].BRANDID;
-            srch.searchParam.BRANDNAME = data.sj[i].NAME;
+            search.searchParam.BRANDID = data.sj[i].BRANDID;
+            search.searchParam.BRANDNAME = data.sj[i].NAME;
         }
     }
 };
 
-srch.IsValidSrch = function () {
-    if (!srch.searchParam.SrchTYPE) {
+search.IsValidSrch = function () {
+    if (!search.searchParam.SrchTYPE) {
         iview.Message.info("请选择查询类型!");
         return false;
     }

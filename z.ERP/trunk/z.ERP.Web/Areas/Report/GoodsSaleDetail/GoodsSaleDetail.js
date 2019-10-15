@@ -14,70 +14,80 @@
         }
     },
 ];
-
-
-srch.beforeVue = function () {
-    srch.screenParam.colDef = colD;
-    srch.service = "ReportService";
-    srch.method = "GoodsSaleDetail";
-
-    srch.screenParam.showPopMerchant = false;
-    srch.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-    srch.screenParam.showPopBrand = false;
-    srch.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
-    srch.screenParam.popParam = {};
-    srch.searchParam.SrchTYPE = 1;
+search.beforeVue = function () {
+    search.screenParam.colDef = colD;
+    search.service = "ReportService";
+    search.method = "GoodsSaleDetail";
+    search.indexShow = true;
+    search.selectionShow = false;
+    search.screenParam.showPopMerchant = false;
+    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+    search.screenParam.showPopBrand = false;
+    search.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
+    search.screenParam.popParam = {};
+    search.searchParam.SrchTYPE = 1;
 };
 
-srch.newCondition = function () {
-    srch.searchParam.BRANCHID = "";
-    srch.searchParam.MERCHANTID = "";
-    srch.searchParam.MERCHANTNAME = "";
-    srch.searchParam.GOODSDM = "";
-    srch.searchParam.GOODSNAME = "";
-    srch.searchParam.BRANDID = "";
-    srch.searchParam.BRANDNAME = "";
-    srch.searchParam.RQ_START = "";
-    srch.searchParam.RQ_END = "";
-    srch.searchParam.YEARMONTH_END = "";
-    srch.searchParam.YEARMONTH_START = "";
+search.newCondition = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.GOODSDM = "";
+    search.searchParam.GOODSNAME = "";
+    search.searchParam.BRANDID = "";
+    search.searchParam.BRANDNAME = "";
+    search.searchParam.RQ_START = "";
+    search.searchParam.RQ_END = "";
+    search.searchParam.YEARMONTH_END = "";
+    search.searchParam.YEARMONTH_START = "";
 };
 
-srch.mountedInit = function () {
+search.mountedInit = function () {
     _.Ajax('SearchKind', {
         Data: {}
     }, function (data) {
-        Vue.set(srch.screenParam, "dataKind", data.treeorg.Obj);
+        Vue.set(search.screenParam, "dataKind", data.treeorg.Obj);
     });
+
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "export",
+        authority: ""
+    }];
 }
 
-srch.otherMethods = {
+search.otherMethods = {
     SelMerchant: function () {
-        srch.screenParam.showPopMerchant = true;
+        search.screenParam.showPopMerchant = true;
     },
     SelBrand: function () {
-        srch.screenParam.showPopBrand = true;
+        search.screenParam.showPopBrand = true;
     },
 }
 
-srch.popCallBack = function (data) {
+search.popCallBack = function (data) {
 
-    if (srch.screenParam.showPopMerchant) {
-        srch.screenParam.showPopMerchant = false;
+    if (search.screenParam.showPopMerchant) {
+        search.screenParam.showPopMerchant = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
         }
     }
-    if (srch.screenParam.showPopBrand) {
-        srch.screenParam.showPopBrand = false;
+    if (search.screenParam.showPopBrand) {
+        search.screenParam.showPopBrand = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.BRANDID = data.sj[i].BRANDID;
-            srch.searchParam.BRANDNAME = data.sj[i].NAME;
+            search.searchParam.BRANDID = data.sj[i].BRANDID;
+            search.searchParam.BRANDNAME = data.sj[i].NAME;
         }
     }
 };
 
-srch.IsValidSrch = function () {
+search.IsValidSrch = function () {
     return true;
 }

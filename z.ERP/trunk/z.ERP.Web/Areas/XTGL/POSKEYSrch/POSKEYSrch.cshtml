@@ -1,38 +1,32 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Srch;
-@inherits SrchViewBase
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
 @section conditionParam{
+    <row>
+        <i-col span="3" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new ServiceDropDownListRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    ServiceMothod = m => m.branch(),
 
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            终端号
+        </i-col>
+        <i-col span="5" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.STATIONBH",
 
-<row>
-
-    <i-col span="3" class="RowTitle">
-        门店
-    </i-col>
-    <i-col span="5">
-        @{
-            RenderControl(new ServiceDropDownListRender()
-            {
-                vModel = "searchParam.BRANCHID",
-                ServiceMothod = m => m.branch(),
-             
-            });
-        }
-    </i-col>
-
-    <i-col span="3" class="RowTitle">
-        终端号
-    </i-col>
-    <i-col span="5">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "searchParam.STATIONBH",
-               
-            });
-        }
-    </i-col>
-    
-</row>
-    }
+                });
+            }
+        </i-col>
+    </row>
+}

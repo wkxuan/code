@@ -1,4 +1,4 @@
-﻿srch.beforeVue = function () {
+﻿search.beforeVue = function () {
     var col = [
         { title: '年月', key: 'YEARMONTH', width: 120, sortable: true, ellipsis: true, tooltip: true },
         { title: '业态编码', key: 'CATEGORYCODE', width: 120, sortable: true, ellipsis: true, tooltip: true },
@@ -20,77 +20,89 @@
         { title: '物业费(元)', key: 'WYJE', width: 120, align: "right", sortable: true, ellipsis: true, tooltip: true }
 
     ];
-    srch.screenParam.colDef = col;
-    srch.service = "ReportService";
-    srch.method = "MerchantRent";
+    search.screenParam.colDef = col;
+    search.service = "ReportService";
+    search.method = "MerchantRent";
+    search.indexShow = true;
+    search.selectionShow = false;
+    search.screenParam.showPopMerchant = false;
+    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
+    search.screenParam.showPopContract = false;
+    search.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
+    search.screenParam.showPopBrand = false;
+    search.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
 
-    srch.screenParam.showPopMerchant = false;
-    srch.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-    srch.screenParam.showPopContract = false;
-    srch.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
-    srch.screenParam.showPopBrand = false;
-    srch.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
-
-    srch.screenParam.popParam = {};
-    srch.searchParam.CATEGORYCODE = "";
-    srch.screenParam.CATEGORY = [];
+    search.screenParam.popParam = {};
+    search.searchParam.CATEGORYCODE = "";
+    search.screenParam.CATEGORY = [];
 };
-srch.newCondition = function () {
-    srch.searchParam.BRANCHID = "";
-    srch.searchParam.CATEGORY = "";
-    srch.searchParam.FLOORID = "";
-    srch.searchParam.MERCHANTNAME = "";
-    srch.searchParam.CONTRACTID = "";
-    srch.searchParam.BRANDNAME = "";
-    srch.searchParam.YEARMONTH_START = "";
-    srch.searchParam.YEARMONTH_END = "";
+search.newCondition = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.CATEGORY = "";
+    search.searchParam.FLOORID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.CONTRACTID = "";
+    search.searchParam.BRANDNAME = "";
+    search.searchParam.YEARMONTH_START = "";
+    search.searchParam.YEARMONTH_END = "";
 };
 
-srch.mountedInit = function () {
+search.mountedInit = function () {
     _.Ajax('SearchCate', {
         Data: {}
     }, function (data) {
-        Vue.set(srch.screenParam, "CATEData", data.treeOrg.Obj);
+        Vue.set(search.screenParam, "CATEData", data.treeOrg.Obj);
     });
+
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "export",
+        authority: ""
+    }];
 }
 
-srch.otherMethods = {
+search.otherMethods = {
     SelMerchant: function () {
-        srch.screenParam.showPopMerchant = true;
+        search.screenParam.showPopMerchant = true;
     },
     SelContract: function () {
-        srch.screenParam.showPopContract = true;
+        search.screenParam.showPopContract = true;
     },
     SelBrand: function () {
-        srch.screenParam.showPopBrand = true;
+        search.screenParam.showPopBrand = true;
     },
     changeCate: function (value, selectedData) {
-        srch.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
+        search.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
     }
 }
 
-srch.popCallBack = function (data) {
+search.popCallBack = function (data) {
 
-    if (srch.screenParam.showPopMerchant) {
-        srch.screenParam.showPopMerchant = false;
+    if (search.screenParam.showPopMerchant) {
+        search.screenParam.showPopMerchant = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
         }
     }
 
-    if (srch.screenParam.showPopContract) {
-        srch.screenParam.showPopContract = false;
+    if (search.screenParam.showPopContract) {
+        search.screenParam.showPopContract = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.CONTRACTID = data.sj[i].CONTRACTID;
+            search.searchParam.CONTRACTID = data.sj[i].CONTRACTID;
         }
     }
 
-    if (srch.screenParam.showPopBrand) {
-        srch.screenParam.showPopBrand = false;
+    if (search.screenParam.showPopBrand) {
+        search.screenParam.showPopBrand = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.BRANDID = data.sj[i].BRANDID;
-            srch.searchParam.BRANDNAME = data.sj[i].NAME;
+            search.searchParam.BRANDID = data.sj[i].BRANDID;
+            search.searchParam.BRANDNAME = data.sj[i].NAME;
         }
     }
 };

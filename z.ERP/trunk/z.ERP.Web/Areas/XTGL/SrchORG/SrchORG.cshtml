@@ -1,11 +1,11 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Srch;
-@inherits SrchViewBase
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
+
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">组织代码</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -13,9 +13,8 @@
                 });
             }
         </i-col>
-
         <i-col span="2" class="RowTitle">组织名称</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {

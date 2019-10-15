@@ -1,5 +1,5 @@
-﻿srch.beforeVue = function () {
-    srch.screenParam.colDef = [
+﻿search.beforeVue = function () {
+    search.screenParam.colDef = [
     { title: '终端号', key: 'STATIONBH', width: 130, sortable: true },
     { title: '门店编码', key: 'BRANCHID', width: 130, sortable: true },
     { title: '门店名称', key: 'BRANCHNAME',sortable: true },
@@ -7,50 +7,54 @@
     { title: '收银员编码', key: 'USERCODE', width: 150, sortable: true },
     { title: '收银员名称', key: 'USERNAME', sortable: true }
     ];
-    srch.service = "XtglService";
-    srch.method = "CashierSearch";
-    srch.screenParam.showPopUser = false;
-    srch.screenParam.srcPopUser = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-    srch.screenParam.showPopShop = false;
-    srch.screenParam.srcPopShop = __BaseUrl + "/Pop/Pop/PopShopList/";
-    srch.screenParam.popParam = {};
+    search.service = "XtglService";
+    search.method = "CashierSearch";
+    search.screenParam.showPopUser = false;
+    search.screenParam.srcPopUser = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+    search.screenParam.showPopShop = false;
+    search.screenParam.srcPopShop = __BaseUrl + "/Pop/Pop/PopShopList/";
+    search.screenParam.popParam = {};
+    search.indexShow = true;
+    search.selectionShow = false;
 };
-
-srch.newCondition = function () {
-    srch.searchParam.STATIONBH = "";
-    srch.searchParam.BRANCHID = "";
-    srch.searchParam.USERNAME = "";
-    srch.searchParam.USERID = "";
-    srch.searchParam.SHOPID = "";
-    srch.searchParam.SHOPCODE = "";
+search.newCondition = function () {
+    search.searchParam.STATIONBH = "";
+    search.searchParam.BRANCHID = "";
+    search.searchParam.USERNAME = "";
+    search.searchParam.USERID = "";
+    search.searchParam.SHOPID = "";
+    search.searchParam.SHOPCODE = "";
 };
-
-srch.mountedInit = function () {
-    
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }];
 }
-
-srch.otherMethods = {
+search.otherMethods = {
     srchUser: function () {
-        srch.screenParam.showPopUser = true;
+        search.screenParam.showPopUser = true;
     },
     SelShop: function () {
-        srch.screenParam.showPopShop = true;
+        search.screenParam.showPopShop = true;
     },
 };
-
-srch.popCallBack = function (data) {
-    if (srch.screenParam.showPopUser) {
-        srch.screenParam.showPopUser = false;
+search.popCallBack = function (data) {
+    if (search.screenParam.showPopUser) {
+        search.screenParam.showPopUser = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.USERID = data.sj[i].USERID;
-            srch.searchParam.USERNAME = data.sj[i].USERNAME;
+            search.searchParam.USERID = data.sj[i].USERID;
+            search.searchParam.USERNAME = data.sj[i].USERNAME;
         }
     }
-    if (srch.screenParam.showPopShop) {
-        srch.screenParam.showPopShop = false;
+    if (search.screenParam.showPopShop) {
+        search.screenParam.showPopShop = false;
         for (var i = 0; i < data.sj.length; i++) {
-            srch.searchParam.SHOPID = data.sj[i].SHOPID;
-            srch.searchParam.SHOPCODE = data.sj[i].SHOPCODE;
+            search.searchParam.SHOPID = data.sj[i].SHOPID;
+            search.searchParam.SHOPCODE = data.sj[i].SHOPCODE;
         }
     }
 };

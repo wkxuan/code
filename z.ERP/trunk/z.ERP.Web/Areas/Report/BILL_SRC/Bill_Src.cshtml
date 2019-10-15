@@ -1,7 +1,8 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Web.Areas.Layout.Srch;
 @using z.ERP.Entities.Enum;
-@inherits SrchViewBase
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
+
 @section conditionParam{
 
     <row>
@@ -134,7 +135,7 @@
                 });
             }
         </i-col>
-      
+
         <i-col span="2" class="RowTitle">
             楼层
         </i-col>
@@ -150,7 +151,7 @@
         </i-col>
     </row>
 
-    
+
 }
 
 @section pops{

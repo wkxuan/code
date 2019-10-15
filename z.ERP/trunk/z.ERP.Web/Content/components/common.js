@@ -159,6 +159,8 @@ Vue.component('yx-table', {
             let data = $.map(_self.colsList, item => {
                 item.ellipsis = true;
                 item.tooltip = true;
+                item.resizable = true;
+                
                 if (!item.width) {
                     item.minWidth = item.minWidth || 120;
                 }
@@ -179,7 +181,7 @@ Vue.component('yx-table', {
                     item.title = item.title || "操作";
                     item.align = item.align || "center";
                     item.fixed = item.fixed || "right";
-                    item.width = 120;
+                    item.width = 120;                   
                     item.render = function (h, params) {
                         return h('div',
                               [h('Button', {
@@ -721,7 +723,6 @@ Vue.component('yx-echart-bar', {
                     return;
                 }
                 this.curValue = nv;
-                debugger
                 this.initEchart();
             },
             deep: true

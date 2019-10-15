@@ -1,5 +1,4 @@
 ﻿@inherits ViewBase<SearchRender>
-@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Web.Areas.Layout.Search
 @using z.MVC5.Views
 @{
@@ -7,6 +6,7 @@
 }
 @{
     WebFiles = new string[] {
+                    "/Content/echarts.js",
                     "Areas/Layout/Search/SearchStyle.css",
                     "Areas/Layout/Search/_SearchLayout.js",
                 };
@@ -18,99 +18,27 @@
 
 <div id="search" v-cloak>
     <collapse v-model="panelName">
-        <panel name="condition">
+        <panel name="panelOne">
             查询条件
-            <div style="float: right; width: 400px ;text-align: right;z-index:99">
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "search",
-                        Text = "查询",
-                        Enable = true,
-                        Type = "primary",
-                        Icon = "md-search"
-                    });
-                }
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "clear",
-                        Text = "清空",
-                        Enable = true,
-                        Type = "primary",
-                        Icon = "md-refresh"
-                    });
-                }
-
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "add",
-                        Text = "新增",
-                        Enable = true,
-                        Type = "primary",
-                        PermissionKey = Model?.Permission_Add,
-                        Icon = "md-add"
-                    });
-                }
-
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "del",
-                        Text = "删除",
-                        Enable = true,
-                        Type = "error",
-                        PermissionKey = Model?.Permission_Del,
-                        Icon = "md-trash"
-                    });
-                }
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "upload",
-                        Text = "导入",
-                        Enable = true,
-                        Type = "primary",
-                        Icon = "md-trash"
-                    });
-                }
-                @RenderSection("conditionBtn", false)
+            <div style="float: right; width: calc(100% - 160px) ;height:100%;text-align: right;line-height: initial;padding-right: 10px;">
+                <yx-tool-bar v-bind:list="toolBtnList"></yx-tool-bar>
             </div>
             <div slot="content" class="searchParamContent">
                 @*查询条件*@
                 @RenderSection("conditionParam", true)
             </div>
         </panel>
-        <panel name="result">
-            查询结果
-            <div style="float: right; width: 400px ;text-align: right;">
-                @*@{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "exp",
-                        Text = "导出",
-                        Enable = true,
-                        Type = "primary",
-                        Icon = "md-download"
-                    });
-                }
-                @{
-                    RenderControl(new ButtonRender()
-                    {
-                        Click = "print",
-                        Text = "打印",
-                        Enable = true,
-                        Type = "primary",
-                        Icon = "md-print"
-                    });
-                }*@
-                @*增加结果按钮*@
-                @RenderSection("resultBtn", false)
+        <panel name="panelTwo" v-if="panelTwoShow">
+            {{panelTwoName}}
+            <div slot="content">
+                @RenderSection("panelTwoContent", false)
             </div>
+        </panel>
+        <panel name="panelThree">
+            查询结果
             <div slot="content">
                 @*结果显示*@
-                <yx-table v-bind:columns="columns" selection=true
+                <yx-table v-bind:columns="columns" v-bind:selection="selectionShow" v-bind:showindex="indexShow"
                           v-bind:data="data" v-bind:loading="tbLoading" ref="selectData">
                 </yx-table>
                 <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total

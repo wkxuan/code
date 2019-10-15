@@ -25,85 +25,98 @@ var colGD = [
 
 ];
 
-srch.beforeVue = function () {
-    srch.screenParam.colDef = colD;
-    srch.service = "ReportService";
-    srch.method = "MerchantBusinessStatus";
-    srch.searchParam.SrchTYPE = 1;
-    srch.screenParam.showPop = false;
-    srch.screenParam.srcPop = "";
-    srch.screenParam.title = "";
-    srch.screenParam.popParam = {};
+search.beforeVue = function () {
+    search.screenParam.colDef = colD;
+    search.service = "ReportService";
+    search.method = "MerchantBusinessStatus";
+    search.searchParam.SrchTYPE = 1;
+    search.screenParam.showPop = false;
+    search.screenParam.srcPop = "";
+    search.screenParam.title = "";
+    search.screenParam.popParam = {};
+    search.indexShow = true;
+    search.selectionShow = false;
 };
 
-srch.newCondition = function () {
-    srch.searchParam.SrchTYPE = 1;
-    srch.searchParam.BRANCHID = "";
-    srch.searchParam.MERCHANTID = "";
-    srch.searchParam.MERCHANTNAME = "";
-    srch.searchParam.BRANDID = "";
-    srch.searchParam.BRANDNAME = "";
-    srch.searchParam.NIANYUE_END = "";
-    srch.searchParam.NIANYUE_START = "";
-    srch.searchParam.FLOORID = null;
-    srch.searchParam.CATEGORYCODE = null;
+search.newCondition = function () {
+    search.searchParam.SrchTYPE = 1;
+    search.searchParam.BRANCHID = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.BRANDID = "";
+    search.searchParam.BRANDNAME = "";
+    search.searchParam.NIANYUE_END = "";
+    search.searchParam.NIANYUE_START = "";
+    search.searchParam.FLOORID = null;
+    search.searchParam.CATEGORYCODE = null;
 
-    srch.screenParam.CATEGORY = [];
+    search.screenParam.CATEGORY = [];
 };
-srch.mountedInit = function () {
+search.mountedInit = function () {
     _.Ajax('SearchCate', {
         Data: {}
     }, function (data) {
-        Vue.set(srch.screenParam, "CATEData", data.treeOrg.Obj);
+        Vue.set(search.screenParam, "CATEData", data.treeOrg.Obj);
     });
+
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "export",
+        authority: ""
+    }];
 }
-srch.otherMethods = {
+search.otherMethods = {
     SelMerchant: function () {
-        srch.screenParam.title = "选择商户";
-        srch.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-        srch.screenParam.showPop = true;
+        search.screenParam.title = "选择商户";
+        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.screenParam.showPop = true;
     },
     SelBrand: function () {
-        srch.screenParam.title = "选择品牌";
-        srch.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopBrandList/";
-        srch.screenParam.showPop = true;
+        search.screenParam.title = "选择品牌";
+        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopBrandList/";
+        search.screenParam.showPop = true;
     },
     changeSrchType: function (value) {
         if (value == 1) {
             Vue.set(this, "data", []);   //清空table
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colD);
+            Vue.set(search.screenParam, "colDef", colD);
         } else {
             Vue.set(this, "data", []);   //清空table
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colGD);
+            Vue.set(search.screenParam, "colDef", colGD);
         }
     },
     changeCate: function (value, selectedData) {
-        srch.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
+        search.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
     }
 }
 
-srch.popCallBack = function (data) {
-    if (srch.screenParam.showPop) {
-        srch.screenParam.showPop = false;
-        if (srch.screenParam.title == "选择商户") {
+search.popCallBack = function (data) {
+    if (search.screenParam.showPop) {
+        search.screenParam.showPop = false;
+        if (search.screenParam.title == "选择商户") {
             for (var i = 0; i < data.sj.length; i++) {
-                srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-                srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+                search.searchParam.MERCHANTNAME = data.sj[i].NAME;
             }
         }
-        if (srch.screenParam.title == "选择品牌") {
+        if (search.screenParam.title == "选择品牌") {
             for (var i = 0; i < data.sj.length; i++) {
-                srch.searchParam.BRANDID = data.sj[i].BRANDID;
-                srch.searchParam.BRANDNAME = data.sj[i].NAME;
+                search.searchParam.BRANDID = data.sj[i].BRANDID;
+                search.searchParam.BRANDNAME = data.sj[i].NAME;
             }
         }
     }
 };
 
-srch.IsValidSrch = function () {
-    if (!srch.searchParam.SrchTYPE) {
+search.IsValidSrch = function () {
+    if (!search.searchParam.SrchTYPE) {
         iview.Message.info("请选择查询类型!");
         return false;
     }

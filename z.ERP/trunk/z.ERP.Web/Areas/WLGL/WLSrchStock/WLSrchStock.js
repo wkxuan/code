@@ -1,5 +1,5 @@
-﻿srch.beforeVue = function () {
-    srch.searchParam.MERCHANTID = "";
+﻿search.beforeVue = function () {
+    search.searchParam.MERCHANTID = "";
     var col = [
         { title: "商户代码", key: 'MERCHANTID', width: 105, sortable: true },
         { title: '商户名称', key: 'NAME', width: 200 },
@@ -8,7 +8,18 @@
         { title: '库存数量', key: 'QTY', width: 100, sortable: true },
         { title: '库存金额', key: 'TAXAMOUNT', width: 100, sortable: true },
     ];
-    srch.screenParam.colDef = col;
-    srch.service = "WyglService";
-    srch.method = "WLSrchStock";
+    search.screenParam.colDef = col;
+    search.service = "WyglService";
+    search.method = "WLSrchStock";
+    search.indexShow = true;
+    search.selectionShow = false;
 };
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }];
+}

@@ -22,76 +22,88 @@ var colM = [
 
 ];
 
-srch.beforeVue = function () {
-    srch.screenParam.colDef = colD;
-    srch.service = "ReportService";
-    srch.method = "MerchantPayCost";
-
-    srch.screenParam.showPop = false;
-    srch.screenParam.srcPop = "";
-    srch.screenParam.title = "";
-    srch.screenParam.popParam = {};
-    srch.searchParam.SrchTYPE = 1;
+search.beforeVue = function () {
+    search.screenParam.colDef = colD;
+    search.service = "ReportService";
+    search.method = "MerchantPayCost";
+    search.indexShow = true;
+    search.selectionShow = false;
+    search.screenParam.showPop = false;
+    search.screenParam.srcPop = "";
+    search.screenParam.title = "";
+    search.screenParam.popParam = {};
+    search.searchParam.SrchTYPE = 1;
 };
 
-srch.newCondition = function () {
-    srch.searchParam.BRANCHID = "";
-    srch.searchParam.TRIMID = ""; 
-    srch.searchParam.MERCHANTID = "";
-    srch.searchParam.MERCHANTNAME = "";
-    srch.searchParam.ISpay = "";
-    srch.searchParam.BRANDID = "";
-    srch.searchParam.BRANDNAME = "";
-    srch.searchParam.NIANYUE_END = "";
-    srch.searchParam.NIANYUE_START = "";
-    srch.searchParam.YEARMONTH_END = "";
-    srch.searchParam.YEARMONTH_START = "";
+search.newCondition = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.TRIMID = ""; 
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.ISpay = "";
+    search.searchParam.BRANDID = "";
+    search.searchParam.BRANDNAME = "";
+    search.searchParam.NIANYUE_END = "";
+    search.searchParam.NIANYUE_START = "";
+    search.searchParam.YEARMONTH_END = "";
+    search.searchParam.YEARMONTH_START = "";
 };
-
-srch.otherMethods = {
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "export",
+        authority: ""
+    }];
+}
+search.otherMethods = {
     SelMerchant: function () {
-        srch.screenParam.title = "选择商户";
-        srch.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-        srch.screenParam.showPop = true;
+        search.screenParam.title = "选择商户";
+        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.screenParam.showPop = true;
     },
     SelBrand: function () {
-        srch.screenParam.title = "选择品牌";
-        srch.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopBrandList/";
-        srch.screenParam.showPop = true;
+        search.screenParam.title = "选择品牌";
+        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopBrandList/";
+        search.screenParam.showPop = true;
     },
     changeSrchType: function (value) {
         if (value == 1) {
             Vue.set(this, "data", []);   //清空table
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colD);
+            Vue.set(search.screenParam, "colDef", colD);
         } else {
             Vue.set(this, "data", []);   //清空table
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
-            Vue.set(srch.screenParam, "colDef", colM);
+            Vue.set(search.screenParam, "colDef", colM);
         }
     }
 }
 
-srch.popCallBack = function (data) {
-    if (srch.screenParam.showPop) {
-        srch.screenParam.showPop = false;
-        if (srch.screenParam.title == "选择商户") {
+search.popCallBack = function (data) {
+    if (search.screenParam.showPop) {
+        search.screenParam.showPop = false;
+        if (search.screenParam.title == "选择商户") {
             for (var i = 0; i < data.sj.length; i++) {
-                srch.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-                srch.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+                search.searchParam.MERCHANTNAME = data.sj[i].NAME;
             }
         }
-        if (srch.screenParam.title == "选择品牌") {
+        if (search.screenParam.title == "选择品牌") {
             for (var i = 0; i < data.sj.length; i++) {
-                srch.searchParam.BRANDID = data.sj[i].BRANDID;
-                srch.searchParam.BRANDNAME = data.sj[i].NAME;
+                search.searchParam.BRANDID = data.sj[i].BRANDID;
+                search.searchParam.BRANDNAME = data.sj[i].NAME;
             }
         }
     }
 };
 
-srch.IsValidSrch = function () {
-    if (!srch.searchParam.SrchTYPE) {
+search.IsValidSrch = function () {
+    if (!search.searchParam.SrchTYPE) {
         iview.Message.info("请选择查询类型!");
         return false;
     }
