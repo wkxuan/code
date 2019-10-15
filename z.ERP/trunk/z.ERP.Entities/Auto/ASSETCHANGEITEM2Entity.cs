@@ -38,7 +38,7 @@ namespace z.ERP.Entities
         /// 新资产类型
         /// <summary>
         [PrimaryKey]
-        [Field("新资产类型")]
+        [Field("原资产id")]
         public string ASSETID
         {
             get; set;
@@ -55,7 +55,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 原资产编号
         /// <summary>
-        [Field("原资产编号")]
+        [Field("资产类型")]
         public string ASSET_TYPE_NEW
         {
             get; set;
@@ -63,7 +63,7 @@ namespace z.ERP.Entities
         /// <summary>
         /// 新资产编号
         /// <summary>
-        [Field("新资产编号")]
+        [Field("新资产id")]
         public string ASSETID_NEW
         {
             get; set;
