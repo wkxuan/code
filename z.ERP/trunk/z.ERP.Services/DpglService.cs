@@ -220,7 +220,9 @@ namespace z.ERP.Services
             {
                 SaveData.ASSETCHANGEITEM2?.ForEach(newasset =>
                {
-                   GetVerify(newasset).Require(a => a.ASSETID);
+                   var e=GetVerify(new SHOPEntity() { CODE = newasset.ASSETCODE_NEW });
+                   e.IsUnique(a => a.CODE);
+                   e.Verify();      //验证code在shop表中是否重复
                });
                 DbHelper.Save(SaveData);
 

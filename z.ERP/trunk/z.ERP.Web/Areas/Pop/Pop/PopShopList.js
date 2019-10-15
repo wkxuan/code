@@ -11,4 +11,6 @@
 search.initSearchParam = function () {
     search.searchParam.CODE = "";
     search.searchParam.NAME = "";
+    search.searchParam.RENT_STATUS = "";
+    search.searchParam.STATUS = "";
 }

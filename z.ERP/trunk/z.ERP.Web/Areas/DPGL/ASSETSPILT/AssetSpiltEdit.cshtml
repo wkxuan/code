@@ -19,13 +19,12 @@
                 <i-button type="primary" v-on:click="SelShop">选择单元</i-button>
                 <i-button type="error" v-on:click="delShop">删除</i-button>
             </div>
-            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="240" selection=true
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="180" selection=true
                       v-bind:data="dataParam.ASSETCHANGEITEM" v-bind:disabled="!disabled" ref="refOldCell">
             </yx-table>
         </Card>
     </i-col>
 </row>
-    <br>
 <row>
     <i-col span="24">
         <Card v-bind:padding=0>
