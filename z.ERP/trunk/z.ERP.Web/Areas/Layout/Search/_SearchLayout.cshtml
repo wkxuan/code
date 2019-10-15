@@ -53,6 +53,10 @@
 
     <yx-upload v-bind:open.sync="importOpen"></yx-upload>
 
+    <yx-modal v-bind:src="popConfig.src" v-bind:title="popConfig.title"
+              v-bind:width="popConfig.width" v-bind:height="popConfig.height"
+              v-bind:modal-visible.sync="popConfig.open"></yx-modal>
+
     @RenderSection("hide", false)
     @RenderSection("pops", false)
 

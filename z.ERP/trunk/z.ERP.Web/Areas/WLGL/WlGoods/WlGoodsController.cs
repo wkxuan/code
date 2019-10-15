@@ -1,17 +1,10 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
-using z.MathTools;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.WLGL.WlGoods
 {
@@ -20,34 +13,14 @@ namespace z.ERP.Web.Areas.WLGL.WlGoods
         public ActionResult WlGoodsList()
         {
             ViewBag.Title = "物料列表信息";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10900203",
-                Permission_Add = "10900201",
-                Permission_Del = "10900201",
-                Permission_Edit = "10900201",
-                Permission_Exec = "10900202"
-            });
-        }
-
-
-        public ActionResult WlGoodsMx(string Id)
-        {
-            ViewBag.Title = "物料信息浏览";
-            var entity = service.WyglService.GetWlGoodsElement(new WL_GOODSEntity(Id));
-            ViewBag.goods = entity.Item1;
             return View();
         }
-
-
         public ActionResult WlGoodsEdit(string Id)
         {
             ViewBag.Title = "物料信息编辑";
 
             return View("WlGoodsEdit", model: (EditRender)Id);
-
         }
-
         [Permission("10900201")]
         public void Delete(List<WL_GOODSEntity> DeleteData)
         {

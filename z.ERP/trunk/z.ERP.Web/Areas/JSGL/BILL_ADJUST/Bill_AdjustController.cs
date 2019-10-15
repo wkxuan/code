@@ -1,11 +1,10 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
 {
@@ -14,14 +13,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_ADJUST
         public ActionResult Bill_AdjustList()
         {
             ViewBag.Title = "费用调整单";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10700200",
-                Permission_Add = "10700201",
-                Permission_Del = "10700201",
-                Permission_Edit = "10700201",
-                Permission_Exec = "10700202"
-            });
+            return View();
         }
         public ActionResult Bill_AdjustEdit(string Id)
         {

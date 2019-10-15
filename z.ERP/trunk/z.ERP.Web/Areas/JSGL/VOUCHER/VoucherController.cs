@@ -1,11 +1,10 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.JSGL.VOUCHER
 {
@@ -14,29 +13,13 @@ namespace z.ERP.Web.Areas.JSGL.VOUCHER
         public ActionResult VoucherList()
         {
             ViewBag.Title = "凭证模板";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "-108001",
-                Permission_Add = "108001",
-                Permission_Del = "108001",
-                Permission_Edit = "108001",
-                Permission_Exec = "-108001"
-            });
+            return View();
         }
         public ActionResult VoucherEdit(string Id)
         {
             ViewBag.Title = "凭证模板编辑";
             return View("VoucherEdit", model: (EditRender)Id);
         }
-        public ActionResult VoucherDetail(string Id)
-        {
-            ViewBag.Title = "凭证模板浏览";
-            var entity = service.CwglService.GetVoucherElement(new VOUCHEREntity(Id));
-            ViewBag.voucher = entity.Item1;
-            ViewBag.voucherSql = entity.Item2;
-            return View();  //entity
-        }
-
         public void Delete(List<VOUCHEREntity> DeleteData)
         {
             service.CwglService.DeleteVoucher(DeleteData);
@@ -54,7 +37,7 @@ namespace z.ERP.Web.Areas.JSGL.VOUCHER
             return new UIResult(
                 new
                 {
-                    voucher= res.Item1,
+                    voucher = res.Item1,
                     voucherSql = res.Item2,
                     voucherRecord = res.Item3,
                     voucherRecordPzkm = res.Item4,

@@ -11,7 +11,7 @@ using System.Data;
 using z.MathTools;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Web.Areas.Layout.Edit;
 
 namespace z.ERP.Web.Areas.WLGL.WLOutStock
 {
@@ -20,20 +20,6 @@ namespace z.ERP.Web.Areas.WLGL.WLOutStock
         public ActionResult WLOutStockList()
         {
             ViewBag.Title = "物料购进单冲红";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10900403",
-                Permission_Add = "10900401",
-                Permission_Del = "10900401",
-                Permission_Edit = "10900401",
-                Permission_Exec = "10900402"
-            });
-        }
-        public ActionResult WLOutStockMx(string Id)
-        {
-            ViewBag.Title = "物料购进单冲红信息浏览";
-            var entity = service.WyglService.GetWlOutStockElement(new WLOUTSTOCKEntity(Id));
-            ViewBag.data = entity.Item1;
             return View();
         }
         public ActionResult WLOutStockEdit(string Id)
@@ -41,10 +27,7 @@ namespace z.ERP.Web.Areas.WLGL.WLOutStock
             ViewBag.Title = "物料购进单冲红信息编辑";
 
             return View("WLOutStockEdit", model: (EditRender)Id);
-
         }
-
-
         [Permission("10900301")]
         public void Delete(List<WLOUTSTOCKEntity> DeleteData)
         {
@@ -62,8 +45,6 @@ namespace z.ERP.Web.Areas.WLGL.WLOutStock
         {
             service.WyglService.ExecWlOutStock(Data);
         }
-
-
         public UIResult SearchWLOUTSTOCK(WLOUTSTOCKEntity Data)
         {
             var res = service.WyglService.GetWlOutStockElement(Data);

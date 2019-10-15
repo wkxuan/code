@@ -1,17 +1,10 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
-using z.MathTools;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.WLGL.WLSETTLE
 {
@@ -20,20 +13,6 @@ namespace z.ERP.Web.Areas.WLGL.WLSETTLE
         public ActionResult WLSETTLEList()
         {
             ViewBag.Title = "物料结算单";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10900803",
-                Permission_Add = "10900801",
-                Permission_Del = "10900801",
-                Permission_Edit = "10900801",
-                Permission_Exec = "10900802"
-            });
-        }
-        public ActionResult WLSETTLEMx(string Id)
-        {
-            ViewBag.Title = "物料结算单浏览";
-            var entity = service.WyglService.GetWLSETTLEElement(new WLSETTLEEntity(Id));
-            ViewBag.data = entity.Item1;
             return View();
         }
         public ActionResult WLSETTLEEdit(string Id)
@@ -41,10 +20,7 @@ namespace z.ERP.Web.Areas.WLGL.WLSETTLE
             ViewBag.Title = "物料结算单信息编辑";
 
             return View("WLSETTLEEdit", model: (EditRender)Id);
-
         }
-
-
         [Permission("10900801")]
         public void Delete(List<WLSETTLEEntity> DeleteData)
         {
@@ -62,8 +38,6 @@ namespace z.ERP.Web.Areas.WLGL.WLSETTLE
         {
             service.WyglService.ExecWLSETTLE(Data);
         }
-
-
         public UIResult SearchWLSETTLE(WLSETTLEEntity Data)
         {
             var res = service.WyglService.GetWLSETTLEElement(Data);

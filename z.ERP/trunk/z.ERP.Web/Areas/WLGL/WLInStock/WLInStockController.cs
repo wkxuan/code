@@ -1,17 +1,10 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
-using z.MathTools;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.WLGL.WLInStock
 {
@@ -20,20 +13,6 @@ namespace z.ERP.Web.Areas.WLGL.WLInStock
         public ActionResult WLInStockList()
         {
             ViewBag.Title = "物料购进单";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10900303",
-                Permission_Add = "10900301",
-                Permission_Del = "10900301",
-                Permission_Edit = "10900301",
-                Permission_Exec = "10900302"
-            });
-        }
-        public ActionResult WLInStockMx(string Id)
-        {
-            ViewBag.Title = "物料购进单信息浏览";
-            var entity = service.WyglService.GetWlInStockElement(new WLINSTOCKEntity(Id));
-            ViewBag.data = entity.Item1;
             return View();
         }
         public ActionResult WLInStockEdit(string Id)
@@ -43,8 +22,6 @@ namespace z.ERP.Web.Areas.WLGL.WLInStock
             return View("WLInStockEdit", model: (EditRender)Id);
 
         }
-
-
         [Permission("10900301")]
         public void Delete(List<WLINSTOCKEntity> DeleteData)
         {

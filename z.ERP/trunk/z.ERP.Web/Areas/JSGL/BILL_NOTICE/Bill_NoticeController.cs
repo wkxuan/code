@@ -1,11 +1,10 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using System.Collections.Generic;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Results;
-using z.ERP.Web.Areas.Layout.EditDetail;
-using z.ERP.Web.Areas.Layout.Search;
-using System;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
 {
@@ -14,14 +13,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
         public ActionResult Bill_NoticeList()
         {
             ViewBag.Title = "商户缴费通知单";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10700500",
-                Permission_Add = "10700501",
-                Permission_Del = "10700501",
-                Permission_Edit = "10700501",
-                Permission_Exec = "10700502"
-            });
+            return View();
         }
         public ActionResult Bill_NoticeEdit(string Id)
         {
@@ -59,13 +51,10 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
         {
             service.JsglService.DeleteBillNotice(DeleteData);
         }
-
-
         public string Save(BILL_NOTICEEntity SaveData)
         {
             return service.JsglService.SaveBillNotice(SaveData);
         }
-
         public UIResult SearchBill_Notice(BILL_NOTICEEntity Data)
         {
             var res = service.JsglService.GetBillNoticeElement(Data);

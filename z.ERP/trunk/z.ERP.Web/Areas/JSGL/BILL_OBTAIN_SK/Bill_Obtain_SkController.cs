@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Results;
 using System;
@@ -10,33 +10,17 @@ using z.ERP.Entities.Auto;
 
 namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
 {
-    public class Bill_Obtain_SkController: BaseController
+    public class Bill_Obtain_SkController : BaseController
     {
         public ActionResult Bill_Obtain_SkList()
         {
             ViewBag.Title = "租赁核销单";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10700700",
-                Permission_Add = "10700701",
-                Permission_Del = "10700701",
-                Permission_Edit = "10700701",
-                Permission_Exec = "10700702"
-            });
+            return View();
         }
         public ActionResult Bill_Obtain_SkEdit(string Id)
         {
-            ViewBag.Title = "租赁核销单";            
+            ViewBag.Title = "租赁核销单";
             return View("Bill_Obtain_SkEdit", (EditRender)Id);
-        }
-        public ActionResult Bill_Obtain_SkDetail(string Id)
-        {
-            ViewBag.Title = "浏览租赁核销单";
-            var entity = service.JsglService.GetBillObtainElement(new BILL_OBTAINEntity(Id));
-            ViewBag.billObtain = entity.Item1;
-            ViewBag.billObtainItem = entity.Item2;
-            ViewBag.billObtainInvoice = entity.Item3;
-            return View(entity);
         }
 
         public void Delete(List<BILL_OBTAINEntity> DeleteData)
@@ -65,18 +49,19 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN_SK
                     billObtain = res.Item1,
                     billObtainItem = res.Item2,
                     billObtainInvoice = res.Item3,
-        }
+                }
                 );
         }
         public ActionResult Bill_Obtain_SkPrint(string Id)
         {
-              var entity = service.JsglService.GetBillObtainPrint(new BILL_OBTAINEntity(Id));
+            var entity = service.JsglService.GetBillObtainPrint(new BILL_OBTAINEntity(Id));
             ViewBag.billObtain = entity.Item1;
             ViewBag.billObtainItem = entity.Item2;
             ViewBag.CurrentDate = System.DateTime.Now;
             return View();
         }
-        public UIResult SearchBalance(MERCHANT_ACCOUNTEntity Data) {
+        public UIResult SearchBalance(MERCHANT_ACCOUNTEntity Data)
+        {
             return new UIResult(service.DataService.GetBalance(Data));
         }
     }

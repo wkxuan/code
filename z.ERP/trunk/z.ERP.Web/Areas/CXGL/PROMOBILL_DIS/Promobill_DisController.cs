@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.CXGL.PROMOBILL_DIS

@@ -1,11 +1,16 @@
-﻿defineNew.beforeVue = function () {
-    defineNew.service = "CxglService";
-    defineNew.method = "SearchPromotion";
-    defineNew.screenParam.defineDetailSrc = "";
-    defineNew.screenParam.title = "促销活动主题信息";
-    defineNew.screenParam.showDefineDetail = false;
-
-    defineNew.columnsDef = [
+﻿search.beforeVue = function () {
+    search.service = "CxglService";
+    search.method = "SearchPromotion";
+    search.indexShow = true;
+    search.selectionShow = false;
+    search.popConfig = {
+        title: "促销活动主题信息",
+        src: "",
+        width: 800,
+        height: 350,
+        open: false
+    };
+    search.screenParam.colDef = [
         { title: "活动ID", key: 'ID' },      
         { title: '主题名称', key: 'NAME' },
         { title: '年度', key: 'YEAR' },
@@ -19,19 +24,19 @@
         { title: '状态', key: 'STATUSMC' },
         {
             title: '操作', key: 'operate', authority: "104004", onClick: function (index, row, data) {
-                defineNew.screenParam.defineDetailSrc = __BaseUrl + "/CXGL/PROMOTION/PromotionDetail/" + row.ID;
-                defineNew.screenParam.showDefineDetail = true;
+                search.popConfig.src = __BaseUrl + "/CXGL/PROMOTION/PromotionDetail/" + row.ID;
+                search.popConfig.open = true;
             }
         }];
-    defineNew.searchParam.START_DATE_START = "";
-    defineNew.searchParam.START_DATE_END = "";
-    defineNew.searchParam.END_DATE_START = "";
-    defineNew.searchParam.END_DATE_END = "";
+    search.searchParam.START_DATE_START = "";
+    search.searchParam.START_DATE_END = "";
+    search.searchParam.END_DATE_START = "";
+    search.searchParam.END_DATE_END = "";
 };
 
-defineNew.mountedInit = function () {
-    defineNew.btnConfig = [{
-        id: "select",
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
         authority: "104004"
     }, {
         id: "clear",
@@ -45,14 +50,14 @@ defineNew.mountedInit = function () {
     }];
 };
 
-defineNew.add = function () {
-    defineNew.screenParam.defineDetailSrc = __BaseUrl + "/CXGL/PROMOTION/PromotionDetail/";
-    defineNew.screenParam.showDefineDetail = true;
+search.addHref = function () {
+    search.popConfig.src = __BaseUrl + "/CXGL/PROMOTION/PromotionDetail/";
+    search.popConfig.open = true;
 };
 
-defineNew.popCallBack = function (data) {
-    if (defineNew.screenParam.showDefineDetail) {
-        defineNew.screenParam.showDefineDetail = false;
-        defineNew.searchList();
+search.popCallBack = function (data) {
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        search.searchList();
     }
 };

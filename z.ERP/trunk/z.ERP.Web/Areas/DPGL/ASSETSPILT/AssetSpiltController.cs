@@ -1,11 +1,10 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
 {
@@ -15,29 +14,13 @@ namespace z.ERP.Web.Areas.DPGL.ASSETSPILT
         {
             ViewBag.Title = "资产拆分单";
             ViewBag.Type = "3";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10400200",
-                Permission_Add = "10400201",
-                Permission_Del = "10400201",
-                Permission_Edit = "10400201",
-                Permission_Exec = "10400202",
-            });
-        }
-        public ActionResult AssetSpiltDetail(string Id)
-        {
-            ViewBag.Title = "资产拆分单详情";
-            var entity = service.DpglService.GetAssetChangeElement(new ASSETCHANGEEntity(Id));
-            ViewBag.assetSpilt = entity.Item1;
-            ViewBag.assetSpiltitem = entity.Item2;
-            ViewBag.assetSpiltitem2 = entity.Item3;
-            return View(entity);
+            return View();
         }
 
         public ActionResult AssetSpiltEdit(string Id)
         {
             ViewBag.Title = "资产拆分单详情";
-            return View("AssetSpiltEdit",model: (EditRender)Id);
+            return View("AssetSpiltEdit", model: (EditRender)Id);
         }
 
         [Permission("10400201")]

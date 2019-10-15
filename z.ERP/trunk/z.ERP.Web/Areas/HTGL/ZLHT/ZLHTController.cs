@@ -1,12 +1,11 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.Search;
-using z.ERP.Web.Areas.Layout.EditDetail;
 using z.ERP.Entities.Enum;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
+using z.MVC5.Attributes;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.HTGL.ZLHT
 {
@@ -15,15 +14,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         public ActionResult HtList()
         {
             ViewBag.Title = "租约列表信息";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10600200",
-                Permission_Add = "10600201",
-                Permission_Edit = "10600201",
-                Permission_Del = "10600201",
-                Permission_Exec = "10600202",
-                Permission_Bg = "10600203"
-            });
+            return View();
         }
         public ActionResult HtEdit(string Id)
         {
@@ -56,7 +47,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         {
             var res = service.HtglService.GetContractElement(Data);
             var mid = res.Item1.MERCHANTID.Value;
-            var paymentid= res.Item1.PAYMENTID.Value+"";
+            var paymentid = res.Item1.PAYMENTID.Value + "";
             var mpayment = service.ShglService.GetMerchantPayment(mid, paymentid);
             return new UIResult(
                 new
@@ -68,7 +59,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                     ContractRentParm = res.Item5,
                     contractPay = res.Item6,
                     contractCost = res.Item7,
-                    contractPayment= mpayment
+                    contractPayment = mpayment
                 }
             );
         }
@@ -94,7 +85,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             var feeRule = service.XtglService.GetFeeRule(item);
             var lateFeeRule = service.XtglService.GetLateFeeRule(item);
             //var org_zs = service.DataService.org_zs();
-            var operrule = service.DataService.operrule(); 
+            var operrule = service.DataService.operrule();
             var org = service.DataService.org_zslist();
             return new UIResult(
                 new
@@ -103,7 +94,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                     LateFeeRule = lateFeeRule,
                     //Org_zs = org_zs,
                     Operrule = operrule,
-                    Org= org
+                    Org = org
                 }
             );
         }
@@ -138,7 +129,7 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
             else
             {
                 service.XtglService.ExecMenuSplc(Data);
-            }   
+            }
         }
         //检查合同做变更时是否已存在未启动的变更合同
         public string checkHtBgData(CONTRACTEntity Data)

@@ -223,13 +223,10 @@
     <Compile Include="Areas\JSGL\JOINBILL\JoinBillController.cs" />
     <Compile Include="Areas\Layout\DefineDetail\DefineDetailViewBase.cs" />
     <Compile Include="Areas\Layout\DefineDetail\DefineDetailRender.cs" />
-    <Compile Include="Areas\Layout\DefineNew\DefineNewRender.cs" />
-    <Compile Include="Areas\Layout\DefineNew\DefineViewNewBase.cs" />
     <Compile Include="Areas\Layout\Define\DefineRender.cs" />
     <Compile Include="Areas\Layout\Define\DefineViewBase.cs" />
     <Compile Include="Areas\Layout\Detail\DetailViewBase.cs" />
-    <Compile Include="Areas\Layout\EditDetail\EditDetailViewBase.cs" />
-    <Compile Include="Areas\Layout\EditDetail\EditRender.cs" />
+    <Compile Include="Areas\Layout\Edit\EditRender.cs" />
     <Compile Include="Areas\Layout\Edit\EditViewBase.cs" />
     <Compile Include="Areas\Layout\MapShow\MapShowViewBase.cs" />
     <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
@@ -238,8 +235,6 @@
     <Compile Include="Areas\Layout\Print\PrintViewBase.cs" />
     <Compile Include="Areas\Layout\Search\SearchRender.cs" />
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
-    <Compile Include="Areas\Layout\Srch\SrchRender.cs" />
-    <Compile Include="Areas\Layout\Srch\SrchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
     <Compile Include="Areas\Report\BILL_SRC\Bill_SrcController.cs" />
@@ -335,7 +330,6 @@
     <Compile Include="Areas\XTGL\STATIONMONITOR\STATIONMONITORController.cs" />
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
     <Compile Include="Areas\XTGL\SYSUSER\SysuserController.cs" />
-    <Compile Include="Areas\XTGL\test\testController.cs" />
     <Compile Include="Areas\XTGL\TicketInfo\TicketInfoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -399,11 +393,8 @@
     <Content Include="Areas\JSGL\BILL_RETURN\Bill_ReturnList.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillEdit.js" />
     <Content Include="Areas\JSGL\JOINBILL\JoinBillList.js" />
-    <Content Include="Areas\Layout\DefineNew\DefineStyle.css" />
-    <Content Include="Areas\Layout\DefineNew\_DefineLayout.js" />
     <Content Include="Areas\Layout\DefineDetail\DefineDetailStyle.css" />
     <Content Include="Areas\Layout\DefineDetail\_DefineDetail.js" />
-    <Content Include="Areas\Layout\EditDetail\_EditDetail.js" />
     <Content Include="Areas\Layout\Edit\EditStyle.css" />
     <Content Include="Areas\Layout\Edit\_Edit.js" />
     <Content Include="Areas\Layout\MapShow\MapShow.js" />
@@ -411,8 +402,6 @@
     <Content Include="Areas\Layout\PopSearch\_PopSearchLayout.js" />
     <Content Include="Areas\Layout\Search\SearchStyle.css" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
-    <Content Include="Areas\Layout\Srch\SrchStyle.css" />
-    <Content Include="Areas\Layout\Srch\_SrchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
     <Content Include="Areas\Pop\Pop\PopFR_PlanList.js" />
     <Content Include="Areas\Pop\Pop\PopMerchantPaymentList.js" />
@@ -526,7 +515,6 @@
     <Content Include="Areas\XTGL\PAY\Pay.js" />
     <Content Include="Areas\XTGL\PERIOD\Period.js" />
     <Content Include="Areas\XTGL\STATION\Station.js" />
-    <Content Include="Areas\XTGL\test\List.js" />
     <Content Include="Areas\XTGL\TicketInfo\TicketInfo.js" />
     <Content Include="Areas\XTGL\TicketInfo\TicketInfoDetail.js" />
     <Content Include="Content\components\common.js" />
@@ -589,7 +577,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Base\_LayoutBase.cshtml" />
-    <Content Include="Areas\XTGL\test\List.cshtml" />
     <Content Include="Areas\Base\Web.config" />
     <Content Include="Areas\Base\Error.cshtml" />
     <Content Include="Areas\Base\NoPermission.cshtml" />
@@ -648,7 +635,6 @@
     <Content Include="Areas\XTGL\STATION\Station.cshtml" />
     <Content Include="Areas\Layout\Empty\_EmptyLayout.cshtml" />
     <Content Include="Areas\Layout\Detail\_DetailLayout.cshtml" />
-    <Content Include="Areas\Layout\EditDetail\_EditDetail.cshtml" />
     <Content Include="Areas\SHGL\MERCHANT\MerchantEdit.cshtml" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.cshtml" />
     <Content Include="Areas\WYGL\ENERGYREGISTER\EnergyreGisterList.cshtml" />
@@ -711,7 +697,6 @@
     <Content Include="Areas\SPGL\SALEBILL\SaleBillEdit.cshtml" />
     <Content Include="Areas\Pop\Pop\PopGoodsList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopGoodsShopList.cshtml" />
-    <Content Include="Areas\Layout\Srch\_SrchLayout.cshtml" />
     <Content Include="Areas\XTGL\SrchORG\SrchORG.cshtml" />
     <Content Include="Areas\Report\ContractSale\ContractSale.cshtml" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.cshtml" />
@@ -725,18 +710,15 @@
     <Content Include="Areas\WYGL\COMPLAINDEPT\ComplainDept.cshtml" />
     <Content Include="Areas\WYGL\COMPLAINTYPE\ComplainType.cshtml" />
     <Content Include="Areas\Share\YearMonthBox.cshtml" />
-    <Content Include="Areas\WLGL\WlMerchant\WlMerchantMx.cshtml" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantEdit.cshtml" />
     <Content Include="Areas\WLGL\WlMerchant\WlMerchantList.cshtml" />
     <Content Include="Areas\WLGL\WlGoods\WlGoodsEdit.cshtml" />
     <Content Include="Areas\WLGL\WlGoods\WlGoodsList.cshtml" />
-    <Content Include="Areas\WLGL\WlGoods\WlGoodsMx.cshtml" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.cshtml" />
     <Content Include="Areas\Report\ContractInfo\ContractInfo.cshtml" />
     <Content Include="Areas\Pop\Pop\PopWLMerchantList.cshtml" />
     <Content Include="Areas\WLGL\WLInStock\WLInStockEdit.cshtml" />
     <Content Include="Areas\WLGL\WLInStock\WLInStockList.cshtml" />
-    <Content Include="Areas\WLGL\WLInStock\WLInStockMx.cshtml" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsList.cshtml" />
     <Content Include="Areas\BJGL\BJT\BJTDef.cshtml" />
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapDetail.cshtml" />
@@ -744,18 +726,14 @@
     <Content Include="Areas\BJGL\FLOORMAP\FloorMapList.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockEdit.cshtml" />
     <Content Include="Areas\WLGL\WLOutStock\WLOutStockList.cshtml" />
-    <Content Include="Areas\WLGL\WLOutStock\WLOutStockMx.cshtml" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsStockList.cshtml" />
     <Content Include="Areas\WLGL\WLUse\WLUseEdit.cshtml" />
     <Content Include="Areas\WLGL\WLUse\WLUseList.cshtml" />
-    <Content Include="Areas\WLGL\WLUse\WLUseMx.cshtml" />
     <Content Include="Areas\WLGL\WLCheck\WLCheckEdit.cshtml" />
     <Content Include="Areas\WLGL\WLCheck\WLCheckList.cshtml" />
-    <Content Include="Areas\WLGL\WLCheck\WLCheckMx.cshtml" />
     <Content Include="Areas\WLGL\WLSrchStock\WLSrchStock.cshtml" />
     <Content Include="Areas\WLGL\WLSETTLE\WLSETTLEEdit.cshtml" />
     <Content Include="Areas\WLGL\WLSETTLE\WLSETTLEList.cshtml" />
-    <Content Include="Areas\WLGL\WLSETTLE\WLSETTLEMx.cshtml" />
     <Content Include="Areas\Pop\Pop\PopWLGoodsDjxxList.cshtml" />
     <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearList.cshtml" />
     <Content Include="Areas\WYGL\MARCHINAREAR\MarchinArearEdit.cshtml" />
@@ -802,7 +780,6 @@
     <Content Include="Areas\XTGL\FEESUBJECT_ACCOUNT\FEESUBJECT_ACCOUNT.cshtml" />
     <Content Include="Areas\Layout\DefineDetail\_DefineDetail.cshtml" />
     <Content Include="Areas\XTGL\SHOP\ShopDetail.cshtml" />
-    <Content Include="Areas\Layout\DefineNew\_DefineLayout.cshtml" />
     <Content Include="Areas\XTGL\FLOOR\FloorDetail.cshtml" />
     <Content Include="Areas\XTGL\CONFIG\ConfigDetail.cshtml" />
     <Content Include="Areas\XTGL\BRANCH\BranchDetail.cshtml" />

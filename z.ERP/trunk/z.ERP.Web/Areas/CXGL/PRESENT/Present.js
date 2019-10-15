@@ -1,53 +1,55 @@
-﻿defineNew.beforeVue = function () {
-    defineNew.service = "CxglService";
-    defineNew.method = "Present";
-    defineNew.screenParam.defineDetailSrc = null;
-    defineNew.screenParam.showDefineDetail = false;
-    defineNew.screenParam.title = "赠品定义";
-    defineNew.screenParam.branchData = [];
-    defineNew.key = 'ID';
-    defineNew.screenParam.STATUSMC = "未使用";
-
-    defineNew.columnsDef = [
-                { title: '门店编号', key: 'BRANCHID' },
-            { title: '门店名称', key: 'BRANCHNAME' },
-            { title: '赠品编号', key: 'ID' },
-            { title: '赠品名称', key: 'NAME' },
-            { title: '价格', key: 'PRICE' },
-            { title: '状态', key: 'STATUSMC' },
-
+﻿search.beforeVue = function () {
+    search.service = "CxglService";
+    search.method = "Present";
+    search.indexShow = true;
+    search.selectionShow = false;
+    search.popConfig = {
+        title: "赠品定义",
+        src: "",
+        width: 350,
+        height: 250,
+        open: false
+    };
+    search.screenParam.colDef = [
+        { title: '门店编号', key: 'BRANCHID' },
+        { title: '门店名称', key: 'BRANCHNAME' },
+        { title: '赠品编号', key: 'ID' },
+        { title: '赠品名称', key: 'NAME' },
+        { title: '价格', key: 'PRICE' },
+        { title: '状态', key: 'STATUSMC' },
         {
-            title: '操作', key: 'operate', authority: "104004", onClick: function (index, row, data) {
-                defineNew.screenParam.defineDetailSrc = __BaseUrl + "/CXGL/PRESENT/PresentDetail/" + row.ID;
-                defineNew.screenParam.showDefineDetail = true;
+            title: '操作', key: 'operate', authority: "", onClick: function (index, row, data) {
+                search.popConfig.src = __BaseUrl + "/CXGL/PRESENT/PresentDetail/" + row.ID;
+                search.popConfig.open = true;
             }
         }];
 };
-defineNew.mountedInit = function () {
-  
-
-    defineNew.btnConfig = [{
-        id: "select",
-        authority: "104004"
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
     }, {
         id: "clear",
-        authority: "104004"
+        authority: ""
     }, {
         id: "add",
-        authority: "104004"
+        authority: ""
     }, {
         id: "del",
-        authority: "104004"
+        enabled: function () {
+            return false;
+        },
+        authority: ""
     }];
 };
-defineNew.add = function () {
-    defineNew.screenParam.defineDetailSrc = __BaseUrl + "/CXGL/PRESENT/PresentDetail/";
-    defineNew.screenParam.showDefineDetail = true;
+search.addHref = function () {
+    search.popConfig.src = __BaseUrl + "/CXGL/PRESENT/PresentDetail/";
+    search.popConfig.open = true;
 };
 
-defineNew.popCallBack = function (data) {
-    if (defineNew.screenParam.showDefineDetail) {
-        defineNew.screenParam.showDefineDetail = false;
-        defineNew.searchList();
+search.popCallBack = function (data) {
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        search.searchList();
     }
 };

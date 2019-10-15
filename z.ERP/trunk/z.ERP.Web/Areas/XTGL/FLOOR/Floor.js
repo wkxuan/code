@@ -1,13 +1,16 @@
-﻿defineNew.beforeVue = function () {
-    defineNew.service = "DpglService";
-    defineNew.method = "SearchFloor";
-    defineNew.screenParam.defineDetailSrc = null;
-    defineNew.screenParam.showDefineDetail = false;
-    defineNew.screenParam.title = "楼层信息";
-    defineNew.screenParam.branchData = [];
-    defineNew.screenParam.regionData = [];
-
-    defineNew.columnsDef = [
+﻿search.beforeVue = function () {
+    search.service = "DpglService";
+    search.method = "SearchFloor";
+    search.indexShow = true;
+    search.selectionShow = false;
+    search.popConfig = {
+        title: "楼层信息",
+        src: "",
+        width: 600,
+        height: 260,
+        open: false
+    };
+    search.screenParam.colDef = [
        { title: "楼层代码", key: 'CODE' },
        { title: '楼层名称', key: 'NAME' },
        { title: '门店', key: 'BRANCHNAME' },
@@ -19,17 +22,20 @@
        { title: '使用标记', key: 'STATUSMC' },
        {
            title: '操作', key: 'operate', onClick: function (index, row, data) {
-               defineNew.screenParam.defineDetailSrc = __BaseUrl + "/XTGL/FLOOR/FloorDetail/" + row.ID;
-               defineNew.screenParam.showDefineDetail = true;
+               search.popConfig.src = __BaseUrl + "/XTGL/FLOOR/FloorDetail/" + row.ID;
+               search.popConfig.open = true;
            }
        }];
+
+    search.screenParam.branchData = [];
+    search.screenParam.regionData = [];
 }
 
-defineNew.mountedInit = function () {
-    defineNew.otherMethods.initBranch();
+search.mountedInit = function () {
+    search.otherMethods.initBranch();
 
-    defineNew.btnConfig = [{
-        id: "select",
+    search.btnConfig = [{
+        id: "search",
         authority: ""
     }, {
         id: "clear",
@@ -39,26 +45,29 @@ defineNew.mountedInit = function () {
         authority: ""
     }, {
         id: "del",
+        enabled: function () {
+            return false;
+        },
         authority: ""
     }];
 };
 
-defineNew.add = function () {
-    defineNew.screenParam.defineDetailSrc = __BaseUrl + "/XTGL/FLOOR/FloorDetail/";
-    defineNew.screenParam.showDefineDetail = true;
+search.addHref = function () {
+    search.popConfig.src = __BaseUrl + "/XTGL/FLOOR/FloorDetail/";
+    search.popConfig.open = true;
 };
 
-defineNew.popCallBack = function (data) {
-    if (defineNew.screenParam.showDefineDetail) {
-        defineNew.screenParam.showDefineDetail = false;
-        defineNew.searchList();
+search.popCallBack = function (data) {
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        search.searchList();
     }
 };
 
-defineNew.otherMethods = {
+search.otherMethods = {
     branchChange: function () {
-        defineNew.otherMethods.initRegion();
-        defineNew.searchParam.REGIONID = undefined;
+        search.otherMethods.initRegion();
+        search.searchParam.REGIONID = undefined;
     },
     initBranch: function () {
         _.Ajax('GetBranch', {
@@ -66,22 +75,22 @@ defineNew.otherMethods = {
         }, function (data) {
             let dt = data.dt;
             if (dt && dt.length) {
-                defineNew.screenParam.branchData = [];
+                search.screenParam.branchData = [];
                 for (var i = 0; i < dt.length; i++) {
-                    defineNew.screenParam.branchData.push({ value: dt[i].ID, label: dt[i].NAME })
+                    search.screenParam.branchData.push({ value: dt[i].ID, label: dt[i].NAME })
                 }
             }
         });
     },
     initRegion: function () {
         _.Ajax('GetRegion', {
-            Data: { BRANCHID: defineNew.searchParam.BRANCHID }
+            Data: { BRANCHID: search.searchParam.BRANCHID }
         }, function (data) {
             let dt = data.dt;
             if (dt && dt.length) {
-                defineNew.screenParam.regionData = [];
+                search.screenParam.regionData = [];
                 for (var i = 0; i < dt.length; i++) {
-                    defineNew.screenParam.regionData.push({ value: dt[i].REGIONID, label: dt[i].NAME })
+                    search.screenParam.regionData.push({ value: dt[i].REGIONID, label: dt[i].NAME })
                 }
             }
         });

@@ -1,11 +1,16 @@
-﻿defineNew.beforeVue = function () {
-    defineNew.service = "XtglService";
-    defineNew.method = "GetConfig";
-    defineNew.screenParam.defineDetailSrc = null;
-    defineNew.screenParam.showDefineDetail = false;
-    defineNew.screenParam.title = "系统参数定义";
-
-    defineNew.columnsDef = [
+﻿search.beforeVue = function () {
+    search.service = "XtglService";
+    search.method = "GetConfig";
+    search.indexShow = true;
+    search.selectionShow = false;
+    search.popConfig = {
+        title: "系统参数定义",
+        src: "",
+        width: 800,
+        height: 350,
+        open: false
+    };
+    search.screenParam.colDef = [
         { title: "描述", key: "DESCRIPTION" },
         { title: "当前值", key: "CUR_VAL", width: 100 },
         { title: "缺省值", key: "DEF_VAL", width: 100 },
@@ -14,21 +19,22 @@
         { title: "编号", key: "ID", width: 100 },
         {
            title: '操作', key: 'operate', onClick: function (index, row, data) {
-               defineNew.screenParam.defineDetailSrc = __BaseUrl + "/XTGL/CONFIG/ConfigDetail/" + row.ID;
-               defineNew.screenParam.showDefineDetail = true;
+               search.popConfig.src = __BaseUrl + "/XTGL/CONFIG/ConfigDetail/" + row.ID;
+               search.popConfig.open = true;
            }
         }];
 }
 
-defineNew.popCallBack = function (data) {
-    if (defineNew.screenParam.showDefineDetail) {
-        defineNew.screenParam.showDefineDetail = false;
-        defineNew.searchList();
+search.popCallBack = function (data) {
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        search.searchList();
     }
 };
-defineNew.mountedInit = function () {
-    defineNew.btnConfig = [{
-        id: "select",
+
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
         authority: ""
     }, {
         id: "clear",

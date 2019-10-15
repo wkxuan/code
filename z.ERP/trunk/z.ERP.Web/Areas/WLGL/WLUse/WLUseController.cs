@@ -1,17 +1,10 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
-using z.MathTools;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.WLGL.WLUse
 {
@@ -20,20 +13,6 @@ namespace z.ERP.Web.Areas.WLGL.WLUse
         public ActionResult WLUseList()
         {
             ViewBag.Title = "物料领用单";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10900503",
-                Permission_Add = "10900501",
-                Permission_Del = "10900501",
-                Permission_Edit = "10900501",
-                Permission_Exec = "10900502"
-            });
-        }
-        public ActionResult WLUseMx(string Id)
-        {
-            ViewBag.Title = "物料领用单信息浏览";
-            var entity = service.WyglService.GetWlUsersElement(new WLUSESEntity(Id));
-            ViewBag.data = entity.Item1;
             return View();
         }
         public ActionResult WLUseEdit(string Id)
@@ -41,16 +20,12 @@ namespace z.ERP.Web.Areas.WLGL.WLUse
             ViewBag.Title = "物料领用单信息编辑";
 
             return View("WLUseEdit", model: (EditRender)Id);
-
         }
-
-
         [Permission("10900501")]
         public void Delete(List<WLUSESEntity> DeleteData)
         {
             service.WyglService.WLDeleteWlUser(DeleteData);
         }
-
         [Permission("10900501")]
         public string Save(WLUSESEntity SaveData)
         {

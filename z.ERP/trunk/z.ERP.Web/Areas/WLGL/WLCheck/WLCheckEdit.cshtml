@@ -1,11 +1,7 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.EditDetail;
-@using z.ERP.Entities;
-@inherits EditDetailViewBase<string>
-@section head{
-
-}
+@using z.ERP.Web.Areas.Layout.Edit;
+@inherits EditViewBase<string>
 
 @section baseParam{
     <row>
@@ -45,8 +41,6 @@
         </i-col>
     </row>
 }
-
-
 @section pops{
     <row>
         <i-col>
@@ -61,9 +55,6 @@
             }
         </i-col>
     </row>
-
-
-
     <row>
         <i-col>
             @{
@@ -77,5 +68,4 @@
             }
         </i-col>
     </row>
-
 }

@@ -8,7 +8,7 @@
         <i-col span="5" class="RowTitle">
             门店
         </i-col>
-        <i-col span="17">
+        <i-col span="17" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -48,7 +48,7 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "dataParam.PRICE",
-                    type = "number",
+                    type = "number"
                 });
             }
         </i-col>

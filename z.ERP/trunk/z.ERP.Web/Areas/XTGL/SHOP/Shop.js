@@ -1,14 +1,22 @@
-﻿defineNew.beforeVue = function () {
-    defineNew.service = "DpglService";
-    defineNew.method = "SearchShop";
-    defineNew.screenParam.defineDetailSrc = null;
-    defineNew.screenParam.showDefineDetail = false;
-    defineNew.screenParam.title = "资产单元信息";
-    defineNew.screenParam.branchData = [];
-    defineNew.screenParam.regionData = [];
-    defineNew.screenParam.floorData = [];
+﻿search.beforeVue = function () {
+    search.service = "DpglService";
+    search.method = "SearchShop";
+    search.indexShow = true;
+    search.selectionShow = false;
 
-    defineNew.columnsDef = [
+    search.popConfig = {
+        title: "资产单元信息",
+        src: "",
+        width: 800,
+        height: 350,
+        open: false
+    };
+
+    search.screenParam.branchData = [];
+    search.screenParam.regionData = [];
+    search.screenParam.floorData = [];
+    
+    search.screenParam.colDef = [
         { title: "代码", key: 'CODE' },
         { title: '名称', key: 'NAME' },
         { title: '门店', key: 'BRANCHNAME' },
@@ -23,22 +31,22 @@
         { title: '单元状态', key: 'STATUSMC' },
         { title: '租用状态', key: 'RENT_STATUSMC' },
         {
-            title: '操作', key: 'operate', authority: "104004", onClick: function (index, row, data) {
-                defineNew.screenParam.defineDetailSrc = __BaseUrl + "/XTGL/SHOP/ShopDetail/" + row.SHOPID;
-                defineNew.screenParam.showDefineDetail = true;
+            title: '操作', key: 'operate', authority: "", onClick: function (index, row, data) {
+                search.popConfig.src = __BaseUrl + "/XTGL/SHOP/ShopDetail/" + row.SHOPID;
+                search.popConfig.open = true;
             }
         }];
 };
 
-defineNew.otherMethods = {
+search.otherMethods = {
     branchChange: function () {
-        defineNew.otherMethods.initRegion();
-        defineNew.searchParam.REGIONID = undefined;
-        defineNew.searchParam.FLOORID = undefined;
+        search.otherMethods.initRegion();
+        search.searchParam.REGIONID = undefined;
+        search.searchParam.FLOORID = undefined;
     },
     regionChange: function () {
-        defineNew.otherMethods.initFloor();
-        defineNew.searchParam.FLOORID = undefined;
+        search.otherMethods.initFloor();
+        search.searchParam.FLOORID = undefined;
     },
     floorChange: function () { },
     initBranch: function () {
@@ -47,67 +55,70 @@ defineNew.otherMethods = {
         }, function (data) {
             let dt = data.dt;
             if (dt && dt.length) {
-                defineNew.screenParam.branchData = [];
+                search.screenParam.branchData = [];
                 for (var i = 0; i < dt.length; i++) {
-                    defineNew.screenParam.branchData.push({ value: dt[i].ID, label: dt[i].NAME })
+                    search.screenParam.branchData.push({ value: dt[i].ID, label: dt[i].NAME })
                 }
             }
         });
     },
     initRegion: function () {
         _.Ajax('GetRegion', {
-            Data: { BRANCHID: defineNew.searchParam.BRANCHID }
+            Data: { BRANCHID: search.searchParam.BRANCHID }
         }, function (data) {
             let dt = data.dt;
             if (dt && dt.length) {
-                defineNew.screenParam.regionData = [];
+                search.screenParam.regionData = [];
                 for (var i = 0; i < dt.length; i++) {
-                    defineNew.screenParam.regionData.push({ value: dt[i].REGIONID, label: dt[i].NAME })
+                    search.screenParam.regionData.push({ value: dt[i].REGIONID, label: dt[i].NAME })
                 }
             }
         });
     },
     initFloor: function () {
         _.Ajax('GetFloor', {
-            Data: { REGIONID: defineNew.searchParam.REGIONID }
+            Data: { REGIONID: search.searchParam.REGIONID }
         }, function (data) {
             let dt = data.dt;
             if (dt && dt.length) {
-                defineNew.screenParam.floorData = [];
+                search.screenParam.floorData = [];
                 for (var i = 0; i < dt.length; i++) {
-                    defineNew.screenParam.floorData.push({ value: dt[i].ID, label: dt[i].NAME })
+                    search.screenParam.floorData.push({ value: dt[i].ID, label: dt[i].NAME })
                 }
             }
         });
     },
 };
 
-defineNew.mountedInit = function () {
-    defineNew.otherMethods.initBranch();
+search.mountedInit = function () {
+    search.otherMethods.initBranch();
 
-    defineNew.btnConfig = [{
-        id: "select",
-        authority: "104004"
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
     }, {
         id: "clear",
-        authority: "104004"
+        authority: ""
     }, {
         id: "add",
-        authority: "104004"
+        authority: ""
     }, {
         id: "del",
-        authority: "104004"
+        enabled: function () {
+            return false;
+        },
+        authority: ""
     }];
 };
 
-defineNew.add = function () {
-    defineNew.screenParam.defineDetailSrc = __BaseUrl + "/XTGL/SHOP/ShopDetail/";
-    defineNew.screenParam.showDefineDetail = true;
+search.addHref = function () {
+    search.popConfig.src = __BaseUrl + "/XTGL/SHOP/ShopDetail/";
+    search.popConfig.open = true;
 };
 
-defineNew.popCallBack = function (data) {
-    if (defineNew.screenParam.showDefineDetail) {
-        defineNew.screenParam.showDefineDetail = false;
-        defineNew.searchList();
+search.popCallBack = function (data) {
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        search.searchList();
     }
 };

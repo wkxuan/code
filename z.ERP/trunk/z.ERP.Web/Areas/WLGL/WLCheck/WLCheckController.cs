@@ -1,17 +1,10 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
-using z.MathTools;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.WLGL.WLCheck
 {
@@ -20,20 +13,6 @@ namespace z.ERP.Web.Areas.WLGL.WLCheck
         public ActionResult WLCheckList()
         {
             ViewBag.Title = "物料损溢单";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10900603",
-                Permission_Add = "10900601",
-                Permission_Del = "10900601",
-                Permission_Edit = "10900601",
-                Permission_Exec = "10900602"
-            });
-        }
-        public ActionResult WLCheckMx(string Id)
-        {
-            ViewBag.Title = "物料损溢单信息浏览";
-            var entity = service.WyglService.GetWlCheckElement(new WLCHECKEntity(Id));
-            ViewBag.data = entity.Item1;
             return View();
         }
         public ActionResult WLCheckEdit(string Id)

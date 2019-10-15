@@ -4,6 +4,7 @@
     this.vueObj;
     this.service = "";
     this.method = "";
+    //默认功能按钮
     this.btnConfig = [{
         id: "search",
         authority: ""
@@ -17,6 +18,14 @@
         id: "del",
         authority: ""
     }];
+    //默认弹窗设置
+    this.popConfig = {
+        title: "弹窗",
+        src: "",
+        width: 800,
+        height: 500,
+        open: false
+    };
     //是否显示中间折叠面板
     this.panelTwoShow = false;
     //中间折叠面板的Header title
@@ -42,6 +51,10 @@
 
     this.searchDataAfter = function (data) { };
 
+    this.searchList = function () {
+        _this.vueObj.searchList();
+    };
+
     this.vue = function VueOperate() {
         var options = {
             el: '#search',
@@ -64,6 +77,7 @@
                 panelTwoName: _this.panelTwoName,
                 indexShow: _this.indexShow,
                 selectionShow: _this.selectionShow,
+                popConfig: _this.popConfig
             },
             watch: {
                 "screenParam.colDef": {
@@ -179,7 +193,8 @@
                 //清空
                 clear: function () {
                     let _self = this;
-                    _this.beforeVue();
+                    _this.searchParam = {};
+                    _self.searchParam = _this.searchParam;
                     _self.data = [];
                     _self.pagedataCount = 0;
                     _self.panelName = ["panelOne", "panelTwo", "panelThree"];
@@ -202,6 +217,8 @@
                             DeleteData: selectton
                         }, function (data) {
                             iview.Message.info("删除成功");
+                            _self.pageSize = 10;
+                            _self.currentPage = 1;
                             showList();
                         });
                     });
@@ -265,6 +282,9 @@
                 changePageSizer: function (value) {
                     this.pageSize = value;
                     this.currentPage = 1;
+                    showList();
+                },
+                searchList: function () {
                     showList();
                 }
             }

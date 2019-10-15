@@ -1,7 +1,7 @@
-﻿@using z.ERP.Web.Areas.Layout.DefineNew
-@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@inherits DefineViewNewBase
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum;
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
 
 @section conditionParam{
     <row>
@@ -12,11 +12,9 @@
                 {
                     vModel = "searchParam.BRANCHID",
                     ServiceMothod = m => m.branch(),
-                    Enable=false
                 });
             }
         </i-col>
-
         <i-col span="2" class="RowTitle">
             赠品编号
         </i-col>
@@ -25,7 +23,6 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "searchParam.ID",
-                    Enable = false
                 });
             }
         </i-col>
@@ -38,16 +35,8 @@
                 RenderControl(new TextBoxRender()
                 {
                     vModel = "searchParam.NAME",
-                    Enable = false
                 });
             }
         </i-col>
-    </row>
-   
-}
-
-@section pops{
-    <yx-modal v-bind:src="screenParam.defineDetailSrc" v-bind:title="screenParam.title"
-              width="350" height="250"
-              v-bind:modal-visible.sync="screenParam.showDefineDetail"></yx-modal>
+    </row>  
 }

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.ERP.Services;
 using z.ERP.Web.Areas.Base;
-using z.ERP.Web.Areas.Layout.EditDetail;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
 using z.MVC5.Results;
-using z.Results;
 
 namespace z.ERP.Web.Areas.SPGL.SALEBILL
 {
@@ -18,14 +14,7 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
         public ActionResult SaleBillList()
         {
             ViewBag.Title = "销售补录单";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10500400",
-                Permission_Add = "10500401",
-                Permission_Del = "10500401",
-                Permission_Edit = "10500401",
-                Permission_Exec = "10500402"
-            });
+            return View();
         }
         public ActionResult SaleBillEdit(string Id)
         {

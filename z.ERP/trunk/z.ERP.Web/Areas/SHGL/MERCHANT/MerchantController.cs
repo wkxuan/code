@@ -11,7 +11,7 @@ using System.Data;
 using z.MathTools;
 using z.ERP.Web.Areas.Layout.Search;
 using z.MVC5.Attributes;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.ERP.Web.Areas.Layout.Edit;
 
 namespace z.ERP.Web.Areas.SHGL.MERCHANT
 {
@@ -44,26 +44,8 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
             //list.Allocation(settings);
 
             ViewBag.Title = "商户列表信息";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10200100",
-                Permission_Add = "10200101",
-                // Permission_Del = "10200101",
-                Permission_Edit = "10200101",
-                //Permission_Exec = "10200102"
-            });
-        }
-
-
-        public ActionResult Detail(string Id)
-        {
-            ViewBag.Title = "商户信息浏览";
-            var entity = service.ShglService.GetMerchantElement(new MERCHANTEntity(Id));
-            ViewBag.merchant = entity.Item1;
-            ViewBag.merchantBrand = entity.Item2;
             return View();
         }
-
         public ActionResult Print(string Id)
         {
             var entity = service.ShglService.GetMerchantElement(new MERCHANTEntity(Id));
@@ -99,7 +81,7 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
                     merchant = res.Item1,
                     merchantBrand = res.Item2,
                     treeorg = res.Item3,
-                    payment= res.Item4
+                    payment = res.Item4
                 }
             );
         }

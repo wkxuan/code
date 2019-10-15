@@ -2,8 +2,7 @@
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
-using z.ERP.Web.Areas.Layout.EditDetail;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
 using z.MVC5.Results;
 
@@ -14,14 +13,7 @@ namespace z.ERP.Web.Areas.HTGL.DJDW
         public ActionResult DjdwList()
         {
             ViewBag.Title = "多经点位租约列表信息";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10600503",
-                Permission_Add = "10600501",
-                Permission_Edit = "10600501",
-                Permission_Del = "10600501",
-                Permission_Exec = "10600502"
-            });
+            return View();
         }
 
         public ActionResult DjdwEdit(string Id)

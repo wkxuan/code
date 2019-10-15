@@ -1,18 +1,8 @@
-﻿using z.ERP.Web.Areas.Base;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
-using z.MathTools;
+using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.Search;
-using z.MVC5.Attributes;
-using System.IO;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.BJGL.FLOORMAPSHOW
 {
@@ -21,18 +11,8 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAPSHOW
         public ActionResult FloorMapShowList()
         {
             ViewBag.Title = "楼层图纸信息";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10200100",
-                Permission_Add = "10200101",
-                Permission_Del = "10200101",
-                Permission_Edit = "10200101",
-                Permission_Exec = "10200102"
-            });
+            return View();
         }
-
-
-
         public ActionResult FloorMapShow(string Id)
         {
             ViewBag.Title = "楼层图纸信息编辑";

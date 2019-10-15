@@ -1,5 +1,7 @@
-﻿@using z.ERP.Web.Areas.Layout.DefineNew
-@inherits DefineViewNewBase
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum;
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
 
 @section conditionParam{
     <row>
@@ -16,10 +18,4 @@
             <i-input v-model="searchParam.ID" />
         </i-col>
     </row>
-}
-
-@section pops{
-    <yx-modal v-bind:src="screenParam.defineDetailSrc" v-bind:title="screenParam.title"
-              width="400" height="450"
-              v-bind:modal-visible.sync="screenParam.showDefineDetail"></yx-modal>
 }

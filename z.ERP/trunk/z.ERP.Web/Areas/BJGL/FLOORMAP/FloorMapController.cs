@@ -1,18 +1,12 @@
-﻿using z.ERP.Web.Areas.Base;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Web.Mvc;
 using z.ERP.Entities;
-using z.Extensions;
-using System;
-using System.Collections.Generic;
-using z.MVC5.Results;
-using z.ERP.Model;
-using z.ERP.Entities.Enum;
-using System.Data;
-using z.MathTools;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Base;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Attributes;
-using System.IO;
-using z.ERP.Web.Areas.Layout.EditDetail;
+using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.BJGL.FLOORMAP
 {
@@ -21,24 +15,6 @@ namespace z.ERP.Web.Areas.BJGL.FLOORMAP
         public ActionResult FloorMapList()
         {
             ViewBag.Title = "楼层图纸信息";
-            return View(new SearchRender()
-            {
-                
-                Permission_Add = "11010101",
-                Permission_Edit = "11010101",
-                Permission_Browse = "11010102",                
-                Permission_Exec = "11010103",
-                Permission_Del = "11010104"
-            });
-        }
-
-
-        public ActionResult FloorMapDetail(string Id)
-        {
-            ViewBag.Title = "楼层图纸信息浏览";
-            var res = service.DpglService.GetFloorMapElement(new FLOORMAPEntity(Id));
-            ViewBag.floorMap = res.Item1;
-            ViewBag.floorShop = res.Item2;
             return View();
         }
 

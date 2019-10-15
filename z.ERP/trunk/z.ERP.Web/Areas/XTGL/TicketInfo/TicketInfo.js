@@ -1,56 +1,60 @@
-﻿defineNew.beforeVue = function () {
-    defineNew.service = "XtglService";
-    defineNew.method = "TicketInfo";
-    defineNew.screenParam.defineDetailSrc = null;
-    defineNew.screenParam.showDefineDetail = false;
-    defineNew.screenParam.title = "交易小票信息设置";
-    defineNew.screenParam.branchData = [];
-    defineNew.key = 'BRANCHID';
+﻿search.beforeVue = function () {
+    search.service = "XtglService";
+    search.method = "TicketInfo";
+    search.indexShow = true;
+    search.selectionShow = false;
 
-    defineNew.columnsDef = [
-                { title: '门店编号', key: 'BRANCHID' },      
-            { title: '门店名称', key: 'NAME' },
-            { title: '打印次数', key: 'PRINTCOUNT' },
-            { title: '票头文字', key: 'HEAD' },
-            { title: '票尾文字', key: 'TAIL' },
-            { title: '二维码广告', key: 'ADQRCODE' },
-            { title: '文字广告位', key: 'ADCONTENT' },
-
+    search.popConfig = {
+        title: "交易小票信息设置",
+        src: "",
+        width: 800,
+        height: 350,
+        open: false
+    };
+    search.screenParam.colDef = [
+        { title: '门店编号', key: 'BRANCHID' },      
+        { title: '门店名称', key: 'NAME' },
+        { title: '打印次数', key: 'PRINTCOUNT' },
+        { title: '票头文字', key: 'HEAD' },
+        { title: '票尾文字', key: 'TAIL' },
+        { title: '二维码广告', key: 'ADQRCODE' },
+        { title: '文字广告位', key: 'ADCONTENT' },
         {
             title: '操作', key: 'operate', authority: "104004", onClick: function (index, row, data) {
-                defineNew.screenParam.defineDetailSrc = __BaseUrl + "/XTGL/TicketInfo/TicketInfoDetail/" + row.BRANCHID;
-                defineNew.screenParam.showDefineDetail = true;
+                search.popConfig.src = __BaseUrl + "/XTGL/TicketInfo/TicketInfoDetail/" + row.BRANCHID;
+                search.popConfig.open = true;
             }
         }];
 };
 
 
-defineNew.mountedInit = function () {
-  
-
-    defineNew.btnConfig = [{
-        id: "select",
-        authority: "104004"
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
     }, {
         id: "clear",
-        authority: "104004"
+        authority: ""
     }, {
         id: "add",
-        authority: "104004"
+        authority: ""
     }, {
         id: "del",
-        authority: "104004"
+        enabled: function () {
+            return false;
+        },
+        authority: ""
     }];
 };
 
-defineNew.add = function () {
-    defineNew.screenParam.defineDetailSrc = __BaseUrl + "/XTGL/TicketInfo/TicketInfoDetail/";
-    defineNew.screenParam.showDefineDetail = true;
+search.addHref = function () {
+    search.popConfig.src = __BaseUrl + "/XTGL/TicketInfo/TicketInfoDetail/";
+    search.popConfig.open = true;
 };
 
-defineNew.popCallBack = function (data) {
-    if (defineNew.screenParam.showDefineDetail) {
-        defineNew.screenParam.showDefineDetail = false;
-        defineNew.searchList();
+search.popCallBack = function (data) {
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        search.searchList();
     }
 };

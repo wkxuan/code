@@ -2,8 +2,7 @@
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
-using z.ERP.Web.Areas.Layout.EditDetail;
-using z.ERP.Web.Areas.Layout.Search;
+using z.ERP.Web.Areas.Layout.Edit;
 using z.MVC5.Results;
 
 namespace z.ERP.Web.Areas.SPGL.RATE_ADJUST
@@ -13,14 +12,7 @@ namespace z.ERP.Web.Areas.SPGL.RATE_ADJUST
         public ActionResult Rate_AdjustList()
         {
             ViewBag.Title = "扣率调整单";
-            return View(new SearchRender()
-            {
-                Permission_Browse = "10500700",
-                Permission_Add = "10500701",
-                Permission_Del = "10500701",
-                Permission_Edit = "10500701",
-                Permission_Exec = "10500702"
-            });
+            return View();
         }
             public ActionResult Rate_AdjustEdit(string Id)
         {

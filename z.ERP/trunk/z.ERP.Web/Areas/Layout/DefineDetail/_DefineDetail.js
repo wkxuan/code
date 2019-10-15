@@ -152,8 +152,8 @@
                         _self.dataParam = _this.dataParam;
                         iview.Message.info("保存成功");
 
-                        if (window.parent.defineNew != undefined) {
-                            window.parent.defineNew.popCallBack(data);
+                        if (window.parent.search != undefined) {
+                            window.parent.search.popCallBack(data);
                         }
                     });
                 },
@@ -186,8 +186,8 @@
                             _self.dataParam = _this.dataParam;
                             iview.Message.info("删除成功");
 
-                            if (window.parent.defineNew != undefined) {
-                                window.parent.defineNew.popCallBack(data);
+                            if (window.parent.search != undefined) {
+                                window.parent.search.popCallBack(data);
                             }
                         });
                     });
