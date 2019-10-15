@@ -103,7 +103,7 @@
                         fun: function () {
                             _self.search();
                         },
-                        enabled: function (disabled, data) {
+                        enabled: function () {
                             return true;
                         }
                     }, {
@@ -113,7 +113,7 @@
                         fun: function () {
                             _self.clear();
                         },
-                        enabled: function (disabled, data) {
+                        enabled: function () {
                             return true;
                         }
                     }, {
@@ -123,7 +123,7 @@
                         fun: function () {
                             _self.add();
                         },
-                        enabled: function (disabled, data) {
+                        enabled: function () {
                             return true;
                         }
                     }, {
@@ -133,7 +133,7 @@
                         fun: function () {
                             _self.del();
                         },
-                        enabled: function (disabled, data) {
+                        enabled: function () {
                             return true;
                         }
                     }, {
@@ -143,7 +143,7 @@
                         fun: function () {
                             _self.upload();
                         },
-                        enabled: function (disabled, data) {
+                        enabled: function () {
                             return true;
                         }
                     }, {
@@ -153,7 +153,7 @@
                         fun: function () {
                             _self.exp();
                         },
-                        enabled: function (disabled, data) {
+                        enabled: function () {
                             return true;
                         }
                     }, {
@@ -163,7 +163,7 @@
                         fun: function () {
                             _self.print();
                         },
-                        enabled: function (disabled, data) {
+                        enabled: function () {
                             return true;
                         }
                     }];
@@ -195,10 +195,11 @@
                     let _self = this;
                     _this.searchParam = {};
                     _self.searchParam = _this.searchParam;
-                    _self.data = [];
+                    _self.data = [];      
                     _self.pagedataCount = 0;
                     _self.panelName = ["panelOne", "panelTwo", "panelThree"];
                     _this.newCondition();
+                    _this.searchDataAfter(_self.data);
                 },               
                 //新增
                 add: function () {

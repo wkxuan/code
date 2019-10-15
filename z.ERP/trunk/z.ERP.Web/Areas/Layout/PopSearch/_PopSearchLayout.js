@@ -54,20 +54,12 @@
                 },
                 initParam: function () {
                     let param;
-                    //父页面是单据
                     if (window.parent.editDetail != undefined)
                         param = window.parent.editDetail.screenParam.popParam;
-                        //父页面是报表
-                    else if (window.parent.srch != undefined)
-                        param = window.parent.srch.screenParam.popParam;
-                        //父页面是查询
                     else if (window.parent.search != undefined)
                         param = window.parent.search.screenParam.popParam;
-                        //父页面是简单定义
                     else if (window.parent.define != undefined)
                         param = window.parent.define.screenParam.popParam;
-                    else if (window.parent.defineNew != undefined)
-                        param = window.parent.defineNew.screenParam.popParam;
                     else if (window.parent.defineDetail != undefined)
                         param = window.parent.defineDetail.screenParam.popParam;
 
@@ -78,16 +70,12 @@
                 callBack: function (data) {
                     if (window.parent.editDetail != undefined)
                         window.parent.editDetail.popCallBack(data)
-                    else if (window.parent.srch != undefined)
-                        window.parent.srch.popCallBack(data)
                     else if (window.parent.search != undefined)
                         window.parent.search.popCallBack(data)
                     else if (window.parent.define != undefined)
                         window.parent.define.popCallBack(data);
                     else if (window.parent.splc != undefined)
                         window.parent.splc.popCallBack(data);
-                    else if (window.parent.defineNew != undefined)
-                        window.parent.defineNew.popCallBack(data);
                     else if (window.parent.defineDetail != undefined)
                         window.parent.defineDetail.popCallBack(data);
                     this.data = [];

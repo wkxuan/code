@@ -144,7 +144,7 @@
                     @RenderSection("search", false)
                 </div>
 
-                <yx-table v-bind:columns="columns" v-bind:height="600" v-bind:data="data" 
+                <yx-table v-bind:columns="columns" v-bind:height="600" v-bind:data="data"  v-bind:highlightrow="true"
                           v-on:currentChange="currentChange" ref="selectData">
                 </yx-table>
             </div>

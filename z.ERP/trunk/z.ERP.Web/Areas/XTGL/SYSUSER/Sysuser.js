@@ -42,8 +42,8 @@
 }
 
 define.newRecord = function () {
-    define.dataParam.USER_FLAG = "1";
-    define.dataParam.VOID_FLAG = "2";
+    define.dataParam.USER_FLAG = 1;
+    define.dataParam.VOID_FLAG = 2;
     define.dataParam.USER_ROLE = [];
     define.dataParam.ORGIDCASCADER = [];
 }
