@@ -587,7 +587,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <Content Include="Areas\Layout\List\_ListLayout.cshtml" />
-    <Content Include="Content\VUE\styles\fonts\ionicons.eot" />
     <Content Include="Content\VUE\styles\fonts\ionicons.ttf" />
     <Content Include="Content\VUE\styles\fonts\ionicons.woff" />
     <Content Include="Npoi\NPOI.DDF.dll" />
