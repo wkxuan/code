@@ -19,7 +19,7 @@ editDetail.beforeVue = function () {
     editDetail.screenParam.show = false;
     editDetail.screenParam.srcPop = "";
     editDetail.screenParam.title = "";
-   
+
     _.Ajax('SearchInit', {
         Data: {}
     }, function (data) {
@@ -48,7 +48,7 @@ editDetail.beforeVue = function () {
                 branchid: item.BRANCHID,
             };
         });
-        editDetail.screenParam.operateruleList = $.map(data.Operrule,function (item) {
+        editDetail.screenParam.operateruleList = $.map(data.Operrule, function (item) {
             return {
                 label: item.Value,
                 value: Number(item.Key)
@@ -58,7 +58,7 @@ editDetail.beforeVue = function () {
         editDetail.screenParam.colDefCOST = [
             { title: '序号', key: 'INX', width: 50 },
             {
-                title: "费用项目", key: 'TERMID',width: 90 , cellType: "input",
+                title: "费用项目", key: 'TERMID', width: 90, cellType: "input",
                 onEnter: function (index, row, data) {
                     let tbData = data;
                     _.Ajax('GetFeeSubject', {
@@ -66,7 +66,7 @@ editDetail.beforeVue = function () {
                     }, function (data) {
                         if (data.dt) {
                             row.NAME = data.dt.NAME;
-                            row.TYPE = data.dt.TYPE;                         
+                            row.TYPE = data.dt.TYPE;
                         } else {
                             row.TERMID = null;
                             row.NAME = null;
@@ -114,7 +114,7 @@ editDetail.beforeVue = function () {
                 onChange: function (index, row, data) {
                     if (row.COST && editDetail.dataParam.AREAR) {
                         row.PRICE = (Number(row.COST) / Number(editDetail.dataParam.AREAR)).toFixed(2);
-                    }   
+                    }
                 }
             },
             { title: "比例(%)", key: 'KL', cellType: "input", cellDataType: "number", width: 90 },
@@ -135,7 +135,7 @@ editDetail.beforeVue = function () {
 
     //品牌表格
     editDetail.screenParam.colDefPP = [
-        { title: "品牌代码", key: 'BRANDID'},
+        { title: "品牌代码", key: 'BRANDID' },
         { title: '品牌名称', key: 'NAME' }
     ];
     //商铺表格
@@ -284,7 +284,7 @@ editDetail.beforeVue = function () {
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].INX == row.INX) {
                         sum += Number(data[i].RENTS);
-                     }
+                    }
                 }
                 for (let i = 0; i < rent.length; i++) {
                     if (rent[i].INX == row.INX) {
@@ -482,9 +482,9 @@ editDetail.otherMethods = {
                 Data: {
                     BILLID: editDetail.dataParam.CONTRACTID,
                     MENUID: "10600200",
-                    JDID: editDetail.screenParam.JDID,
+                    JGJDID: editDetail.screenParam.JDID,
                     BZ: editDetail.screenParam.BZ,
-                    JGTYPE: editDetail.screenParam.JGTYPE
+                    CURJDID: editDetail.screenParam.curLcjd
                 },
             }, function (data) {
                 iview.Message.info("审批成功");
@@ -520,7 +520,7 @@ editDetail.otherMethods = {
     srchSigner: function () {
         editDetail.screenParam.title = "选择人员";
         editDetail.screenParam.popParam = { USER_TYPE: "7" };
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";       
+        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
         Vue.set(editDetail.screenParam, "showPop", true);
     },
     //点击商户弹窗
@@ -583,7 +583,7 @@ editDetail.otherMethods = {
         }
         //查询空置的资产
         editDetail.screenParam.title = "选择商铺";
-        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, RENT_STATUS: 1,STATUS:2 };
+        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, RENT_STATUS: 1, STATUS: 2 };
         editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopShopList/";
         Vue.set(editDetail.screenParam, "showPop", true);
     },
@@ -670,7 +670,7 @@ editDetail.otherMethods = {
         };
         editDetail.screenParam.title = "选择收款方式的费用项目";
         editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
-        editDetail.screenParam.popParam = { CUSTOM :1};
+        editDetail.screenParam.popParam = { CUSTOM: 1 };
         Vue.set(editDetail.screenParam, "showPop", true);
     },
     //删除收款方式手续费
@@ -1097,19 +1097,19 @@ editDetail.otherMethods = {
         editDetail.dataParam.CONTJSKL = [];
     },
     STANDARDChange: function ($event) {
-            editDetail.dataParam.CONTRACT_RENTITEM = [];
+        editDetail.dataParam.CONTRACT_RENTITEM = [];
     },
     FEERULE_RENTChange: function ($event) {
         editDetail.dataParam.CONTRACT_RENTITEM = [];
     },
     //org加载
     ORGOPEN: function (event) {
-        debugger        
+        debugger
         if (event) {
             if (!editDetail.dataParam.BRANCHID) {
                 iview.Message.info("请先选择门店!");
                 return;
-            }                     
+            }
         }
     }
 };
@@ -1196,7 +1196,7 @@ editDetail.IsValidSave = function () {
             iview.Message.info("变更启动日期不能大于结束日期!");
             return false;
         };
-       
+
         data.CONTRACT_UPDATE = [];
         data.CONTRACT_UPDATE.push({
             CONTRACTID_OLD: data.CONTRACT_OLD,
@@ -1270,7 +1270,7 @@ editDetail.IsValidSave = function () {
             iview.Message.info("免租开始日期不能小于免租结束日期!");
             return false;
         }
-    }  
+    }
 
     if (data.FREE_END) {
         if (((new Date(data.FREE_END).Format('yyyy-MM-dd') < new Date(data.CONT_START).Format('yyyy-MM-dd')))
@@ -1452,7 +1452,7 @@ editDetail.IsValidSave = function () {
                     return false;
                 };
             }
-            
+
             if (!contract_cost[i].ENDDATE) {
                 iview.Message.info(`请确定收费项目中序号${contract_cost[i].INX}的结束日期!`);
                 return false;
@@ -1489,8 +1489,8 @@ editDetail.IsValidSave = function () {
                         iview.Message.info(`费用项目为"${contract_cost[i].NAME}"的开始日期与结束日期之间的时间段不能交叉!`);
                         return false;
                     };
-                }                
-            }           
+                }
+            }
         };
     };
     //收款方式数据校验
@@ -1635,7 +1635,7 @@ editDetail.mountedInit = function () {
                     editDetail.dataParam.TERMINATE_TIME = null;
                     editDetail.dataParam.STATUSMC = null;
                 }
-            }); 
+            });
         },
         enabled: function (disabled, data) {
             if (!disabled && data.BILLID && (data.STATUS == 2 || data.STATUS == 3 || data.STATUS == 4) && data.HTLX == 1) {
@@ -1660,7 +1660,7 @@ editDetail.mountedInit = function () {
                 });
             });
         },
-        enabled: function (disabled, data) {          
+        enabled: function (disabled, data) {
             if (!disabled && data.BILLID && data.STATUS == 2) {
                 return true;
             } else {
@@ -1684,7 +1684,7 @@ editDetail.mountedInit = function () {
             });
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.BILLID &&(data.HTLX == 2 && data.STATUS == 2)) {
+            if (!disabled && data.BILLID && (data.HTLX == 2 && data.STATUS == 2)) {
                 return true;
             } else {
                 return false;

@@ -134,7 +134,7 @@
             合作方式
         </i-col>
         <i-col span="6" class="RowText">
-            <i-select v-model="dataParam.OPERATERULE" transfer 
+            <i-select v-model="dataParam.OPERATERULE" transfer
                       v-bind:disabled="(!disabled||dataParam.CONTRACT_OLD)? true:false">
                 <i-option v-for="item in screenParam.operateruleList" v-bind:value="item.value"
                           v-bind:key="item.value">{{ item.label }}</i-option>
@@ -451,7 +451,7 @@
                 <i-col span="5" class="RowText">
                     <i-input readonly v-bind:icon="disabled? 'md-search':''"
                              v-model="dataParam.PAYMENTID" v-on:on-click="srchMPAYMENT" v-bind:disabled="!disabled" />
-                </i-col>               
+                </i-col>
                 <i-col span="3" class="RowTitle">
                     <i-button type="error" v-on:click="clearpayment" v-if="disabled">清空付款信息</i-button>
                 </i-col>
@@ -461,7 +461,7 @@
                     银行卡号
                 </i-col>
                 <i-col span="9" class="RowText">
-                    <i-input readonly v-model="screenParam.CARDNO" v-bind:disabled="!disabled"  />
+                    <i-input readonly v-model="screenParam.CARDNO" v-bind:disabled="!disabled" />
                 </i-col>
                 <i-col span="3" class="RowTitle">
                     银行名称
@@ -489,6 +489,6 @@
 }
 
 @section pops{
-<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
-          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
+    <yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
+              v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }

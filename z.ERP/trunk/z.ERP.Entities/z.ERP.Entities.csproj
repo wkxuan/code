@@ -61,6 +61,7 @@
     <Compile Include="Auto\ROLE_ALERTEntity.cs" />
     <Compile Include="Auto\ROLE_BRANCHEntity.cs" />
     <Compile Include="Auto\ROLE_FLOOREntity.cs" />
+    <Compile Include="SPLCMENUEntity.cs" />
     <Compile Include="PRESENT_SENDEntity.cs" />
     <Compile Include="Procedures\EXEC_PRESENT_SEND.cs" />
     <Compile Include="Procedures\EXEC_PROMOBILL.cs" />

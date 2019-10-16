@@ -115,21 +115,12 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                 }
             );
         }
-        public void ExecSplc(SPLCJG_MENUEntity Data)
+
+
+        public void ExecSplc(SPLCMENUEntity Data)
         {
-            if (Data.JGTYPE == ((int)审批流程节点类型.结束).ToString())
-            {
-                var Data1 = new CONTRACTEntity();
-                Data1.CONTRACTID = Data.BILLID;
-                var res = service.HtglService.GetContractElement(Data1);
-                Data1.HTLX = res.Item1.HTLX;
-                Data1.STATUS = res.Item1.STATUS;
-                service.HtglService.ExecData(Data1);
-            }
-            else
-            {
-                service.XtglService.ExecMenuSplc(Data);
-            }
+            service.XtglService.ExecMenuSplc(Data);
+
         }
         //检查合同做变更时是否已存在未启动的变更合同
         public string checkHtBgData(CONTRACTEntity Data)

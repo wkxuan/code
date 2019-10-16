@@ -106,7 +106,7 @@ namespace z.ERP.Services
             item.HasKey("ORGID", a => sql += $" and B.ORGID = {a}");
             item.HasKey("STATUS", a => sql += $" and B.STATUS = {a}");
             item.HasKey("AREA_BUILD_S", a => sql += $" and B.AREA_BUILD >= {a}");
-            item.HasKey("AREA_BUILD_E", a => sql += $" and B.AREA_BUILD <= {a}"); 
+            item.HasKey("AREA_BUILD_E", a => sql += $" and B.AREA_BUILD <= {a}");
             item.HasKey("CONTACT", a => sql += $" and B.CONTACT = {a}");
             sql += " ORDER BY B.ID desc";
             int count;
@@ -229,9 +229,9 @@ namespace z.ERP.Services
             item.HasKey("FLOORID", a => sql += $" and A.FLOORID = {a}");
             item.HasKey("STATUS", a => sql += $" and A.STATUS = {a}");
             item.HasKey("SqlCondition", a => sql += $" and {a}");
-            item.HasKey("RENT_STATUS", a => sql += $" and A.RENT_STATUS = {a}"); 
+            item.HasKey("RENT_STATUS", a => sql += $" and A.RENT_STATUS = {a}");
 
-             sql += " ORDER BY  A.CODE";
+            sql += " ORDER BY  A.CODE";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -268,7 +268,8 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-        public void DeleteShop(List<SHOPEntity> DefineDelete) {
+        public void DeleteShop(List<SHOPEntity> DefineDelete)
+        {
             foreach (var item in DefineDelete)
             {
                 SHOPEntity Data = DbHelper.Select(item);
@@ -319,7 +320,7 @@ namespace z.ERP.Services
             string sql = $@"select S.*,P.CODE SHOPCODE ,B.NAME BRANCHNAME from STATION S,SHOP P,BRANCH B where S.BRANCHID=B.ID AND S.SHOPID=P.SHOPID(+) ";
             sql += " AND S.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("STATIONBH", a => sql += $" and STATIONBH = '{a}'");
-            item.HasKey("BRANCHID",a=> sql += $" and S.BRANCHID = '{a}'");
+            item.HasKey("BRANCHID", a => sql += $" and S.BRANCHID = '{a}'");
             sql += "order by STATIONBH";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -391,8 +392,8 @@ namespace z.ERP.Services
             v.Require(a => a.STATIONBH);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.TYPE);
-          //  v.Require(a => a.IP);
-          //  v.IsUnique(a => a.IP);
+            //  v.Require(a => a.IP);
+            //  v.IsUnique(a => a.IP);
 
             //生成终端密钥，调用销售数据采集接口时用
             if (DefineSave.Encryption.IsEmpty())
@@ -604,7 +605,7 @@ namespace z.ERP.Services
         public DataGridResult GetStationList(SearchItem item)
         {
             string sql = @"select STATION.STATIONBH POSNO, STATION.TYPE,BRANCH.NAME BRANCHNAME from STATION ,BRANCH WHERE BRANCH.ID=STATION.BRANCHID ";
-            sql += " AND BRANCH.ID IN (" + GetPermissionSql(PermissionType.Branch)+")";    //分店权限 by：DZK
+            sql += " AND BRANCH.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("BRANCHID", a => sql += $" and STATION.BRANCHID= '{a}'");
             item.HasKey("POSNO", a => sql += $" and STATION.STATIONBH LIKE '%{a}%'");
             item.HasKey("POSTYPE", a => sql += $" and STATION.TYPE = '{a}'");
@@ -879,6 +880,8 @@ namespace z.ERP.Services
             //查找菜单对应的审批流程数据
             string sql = $@"select JDID,JDNAME from";
             sql += " SPLCDEFD A,SPLCJD B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+            sql += " AND  EXISTS(SELECT 1 FROM SYSUSER C,USER_ROLE D";
+            sql += " WHERE C.USERID = D.USERID AND B.ROLEID = D.ROLEID AND C.USERID=" + employee.Id + ")";
             sql += " AND A.MENUID= " + Data.MENUID;
             DataTable splcjd = DbHelper.ExecuteTable(sql);
 
@@ -898,19 +901,50 @@ namespace z.ERP.Services
             //根据菜单号和单据编号查询审批流执行节点的结果
             string sqlxz = $@"select JDID,JGID,JGTYPE,JGMC from";
             sqlxz += " SPLCDEFD A,SPLCJG B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+
+            sql += " AND  EXISTS(SELECT 1 FROM SPLCJD L,SYSUSER C,USER_ROLE D";
+            sql += " WHERE C.USERID = D.USERID AND L.ROLEID = D.ROLEID AND L.BILLID = B.BILLID AND C.USERID="+ employee.Id+ ")";
+
             sqlxz += " AND A.MENUID= " + Data.MENUID;
             sqlxz += " AND B.JDID= " + curJdid;
             DataTable splcjg = DbHelper.ExecuteTable(sqlxz);
             splcjg.NewEnumColumns<审批结果类型>("JGTYPE", "JGTYPENAME");
 
-            return new Tuple<DataTable, DataTable,int>(
+            return new Tuple<DataTable, DataTable, int>(
                  splcjd,
                  splcjg,
                  curJdid
             );
         }
-        public void ExecMenuSplc(SPLCJG_MENUEntity Data)
+        public void ExecMenuSplc(SPLCMENUEntity DataInto)
         {
+
+            string sqlxz = $@"select JDTYPE from";
+            sqlxz += " SPLCDEFD A,SPLCJD B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+            sqlxz += " AND A.MENUID= " + DataInto.MENUID;
+            sqlxz += " AND B.JDID= " + DataInto.JGJDID;
+            DataTable splcjg = DbHelper.ExecuteTable(sqlxz);
+            var JDTYPE = splcjg.Rows[0][0].ToString().ToInt();
+
+
+            SPLCJG_MENUEntity Data = new SPLCJG_MENUEntity();
+
+            Data.JGTYPE = JDTYPE.ToString();
+            Data.MENUID = DataInto.MENUID;
+            Data.JDID = DataInto.JGJDID;
+            Data.BILLID = DataInto.BILLID;
+            Data.BZ = DataInto.BZ;
+
+            if (Data.JGTYPE == ((int)审批流程节点类型.结束).ToString())
+            {
+                var Data1 = new CONTRACTEntity();
+                Data1.CONTRACTID = Data.BILLID;
+                var res = HtglService.GetContractElement(Data1);
+                Data1.HTLX = res.Item1.HTLX;
+                Data1.STATUS = res.Item1.STATUS;
+                HtglService.ExecData(Data1);
+            }
+
             var v = GetVerify(Data);
             v.Require(a => a.BILLID);
             v.Require(a => a.MENUID);
@@ -938,8 +972,9 @@ namespace z.ERP.Services
         public Tuple<dynamic, DataTable> GetNOTICEElement(NOTICEEntity item)
         {
             string sql = @"select * from NOTICE where 1=1 ";
-            if (!string.IsNullOrEmpty(item.ID)) {
-                sql += $" and ID ="+ item.ID + " ";
+            if (!string.IsNullOrEmpty(item.ID))
+            {
+                sql += $" and ID =" + item.ID + " ";
             }
             sql += " order by ID DESC";
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -1020,7 +1055,8 @@ namespace z.ERP.Services
             dt.NewEnumColumns<审批流程菜单号>("MENUID", "MENUIDMC");
             return new DataGridResult(dt, count);
         }
-        public string SAVEFEESUBJECT_ACCOUNT(FEESUBJECT_ACCOUNTEntity data) {
+        public string SAVEFEESUBJECT_ACCOUNT(FEESUBJECT_ACCOUNTEntity data)
+        {
             var v = GetVerify(data);
             v.Require(a => a.TERMID);
             v.Require(a => a.FEE_ACCOUNTID);
@@ -1068,9 +1104,9 @@ namespace z.ERP.Services
                              FULL OUTER JOIN BRANCH B
                              ON B.ID=S.BRANCHID  
                              WHERE ENCRYPTION IS NOT NULL";
-                   sql += "  AND S.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
-                   item.HasKey("BRANCHID", a => sql += $" and S.BRANCHID LIKE '%{a}%'");
-                   item.HasKey("STATIONBH", a => sql += $" and S.STATIONBH LIKE '%{a}%'");
+            sql += "  AND S.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            item.HasKey("BRANCHID", a => sql += $" and S.BRANCHID LIKE '%{a}%'");
+            item.HasKey("STATIONBH", a => sql += $" and S.STATIONBH LIKE '%{a}%'");
 
             return sql;
         }
@@ -1083,7 +1119,7 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
 
         }
-  
+
         public DataTable POSKEYSrchOutput(SearchItem item)
         {
 
@@ -1096,24 +1132,28 @@ namespace z.ERP.Services
 
         }
         #region 收银终端监控
-        public List<STATIONMONITOR> GetSTATIONMONITOR() {
+        public List<STATIONMONITOR> GetSTATIONMONITOR()
+        {
             List<STATIONMONITOR> STATIONMONITORList = new List<STATIONMONITOR>();
             var branch = DataService.branch();
-            foreach (var item in branch) {
+            foreach (var item in branch)
+            {
                 STATIONMONITOR stationinfo = new STATIONMONITOR
                 {
                     BRANCHID = item.Key,
                     BRANCHNAME = item.Value
                 };
                 var sdata = GETSTATIONL(stationinfo.BRANCHID);
-                if (sdata.Rows.Count>0) {
+                if (sdata.Rows.Count > 0)
+                {
                     List<STATIONINFO> stationlist = new List<STATIONINFO>();
-                    foreach (DataRow item1 in sdata.Rows) {
+                    foreach (DataRow item1 in sdata.Rows)
+                    {
 
                         STATIONINFO station = new STATIONINFO();
                         station.STATIONBH = item1["STATIONBH"].ToString();
-                        station.REFRESHTIME= item1["REFRESH_TIME"].ToString();
-                        station.GAPTIME= item1["DT"].ToString().ToInt();
+                        station.REFRESHTIME = item1["REFRESH_TIME"].ToString();
+                        station.GAPTIME = item1["DT"].ToString().ToInt();
                         station.CASHIERNAME = item1["CASHIERNAME"].ToString();
                         if (station.GAPTIME <= 6 && station.GAPTIME >= 0)
                         {
@@ -1123,7 +1163,8 @@ namespace z.ERP.Services
                         {
                             station.STATIONSTATUS = (int)收银终端状态.掉网;
                         }
-                        else {
+                        else
+                        {
                             station.STATIONSTATUS = (int)收银终端状态.关机;
                         }
                         stationlist.Add(station);
@@ -1134,7 +1175,8 @@ namespace z.ERP.Services
             }
             return STATIONMONITORList;
         }
-        public DataTable GETSTATIONL(string branchid) {
+        public DataTable GETSTATIONL(string branchid)
+        {
             string sql = $@" SELECT stationbh,floor(nvl((sysdate-refresh_time),-1) * 24*60)  dt,to_char(refresh_time,'yyyy-mm-dd hh24:mi:ss') refresh_time,SYSUSER.USERNAME CASHIERNAME 
                         FROM STATION,SYSUSER where STATION.CASHIERID=SYSUSER.USERID(+) AND STATION.TYPE<>3 AND branchid = {branchid} ORDER BY stationbh";
 
@@ -1142,7 +1184,8 @@ namespace z.ERP.Services
 
             return dt;
         }
-        public Tuple<dynamic, DataTable> GetSTATIONSALE(string stationid) {
+        public Tuple<dynamic, DataTable> GetSTATIONSALE(string stationid)
+        {
             string sql = $@" SELECT TO_CHAR(NVL(SUM(SS.SALE_AMOUNT),0),'FM999999999990.00') BRANCHAMOUNT FROM (
                 SELECT S.*,ST.BRANCHID 
                 FROM SALE S,STATION ST
@@ -1171,7 +1214,7 @@ namespace z.ERP.Services
                 dti.Rows.Add(dr);
             }
 
-            return new Tuple<dynamic, DataTable>(dt.ToOneLine(),dti);
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), dti);
         }
         #endregion
 
@@ -1224,7 +1267,8 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public DataGridResult CashierSearch(SearchItem item) {
+        public DataGridResult CashierSearch(SearchItem item)
+        {
             string sql = $@"SELECT S.STATIONBH,B.ID BRANCHID,B.NAME BRANCHNAME ,SHOP.SHOPID,SHOP.CODE SHOPCODE,SYSUSER.USERCODE,SYSUSER.USERNAME
                         FROM STATION S,BRANCH B,SHOP ,SYSUSER
                         WHERE S.BRANCHID=B.ID AND S.SHOPID=SHOP.SHOPID AND SYSUSER.SHOPID =S.SHOPID AND S.TYPE IN (1,2) ";
