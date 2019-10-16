@@ -67,6 +67,7 @@
     <Compile Include="Procedures\EXEC_PROMOBILL.cs" />
     <Compile Include="Procedures\EXEC_PROMOBILL_STARTUP.cs" />
     <Compile Include="Procedures\EXEC_PROMOBILL_STOP.cs" />
+    <Compile Include="Procedures\WRITE_BILL_REFUND.cs" />
     <Compile Include="PROMOBILLEntity.cs" />
     <Compile Include="Auto\PRESENTEntity.cs" />
     <Compile Include="Auto\TicketInfoEntity.cs" />

@@ -25,6 +25,7 @@
 }
 
 <div id="ManualReturn">
+    <row style="height:15px"></row>
    <row>
        <i-col span="4" class="RowTitle">门店</i-col>
        <i-col span="6" class="RowText">
@@ -54,7 +55,7 @@
     <row>
         <i-col span="4" class="RowTitle"></i-col>       
         <i-col span="6" class="RowText">
-            <i-Button type="primary" shape="circle" icon="ios-construct" size="large" long v-on:click="Exec">执行</i-Button>
+            <i-Button type="primary" shape="circle" icon="ios-construct" size="large" long v-on:click="Exec" v-bind:disabled="buttondisabled">执行</i-Button>
         </i-col>
     </row>
 </div>

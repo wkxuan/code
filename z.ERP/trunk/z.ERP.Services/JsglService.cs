@@ -1003,5 +1003,22 @@ namespace z.ERP.Services
             return new Tuple<dynamic, DataTable>(dt.ToOneLine(),dt);
         }
         #endregion
+
+        #region 手动生成返款单
+        public bool ExecReturn(string branchid, string endtime) {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                WRITE_BILL_REFUND exec_billreturn = new WRITE_BILL_REFUND()
+                {
+                    in_RQ = endtime.ToDateTime(),
+                    in_BRANCHID = branchid,
+                    in_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_billreturn);                
+                Tran.Commit();
+            }         
+            return true;
+        }
+        #endregion
     }
 }
