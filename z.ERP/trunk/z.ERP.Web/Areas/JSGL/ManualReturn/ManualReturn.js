@@ -4,7 +4,7 @@
         BRANCHID: "",
         ENDTIME: "",
         disabled: false,
-        buttondisabled:false
+        loading: false
     },
     methods: {
         Exec: function () {
@@ -16,9 +16,9 @@
                 iview.Message.info("请选择截至时间!");
                 return false
             }
-            MR.buttondisabled = true;
+            MR.loading = true;
             setTimeout(function () {
-                MR.buttondisabled = false;
+                MR.loading = false;
             }, 2000);
             _.Ajax('ExecReturn', {
                 branchid: MR.BRANCHID, endtime: MR.ENDTIME

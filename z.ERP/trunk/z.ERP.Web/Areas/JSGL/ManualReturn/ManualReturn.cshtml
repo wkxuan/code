@@ -55,7 +55,10 @@
     <row>
         <i-col span="4" class="RowTitle"></i-col>       
         <i-col span="6" class="RowText">
-            <i-Button type="primary" shape="circle" icon="ios-construct" size="large" long v-on:click="Exec" v-bind:disabled="buttondisabled">执行</i-Button>
+            <i-Button type="primary" shape="circle" icon="ios-construct" v-bind:loading="loading" size="large" long v-on:click="Exec">
+                <span v-if="!loading">执行</span>
+                <span v-else>执行中...</span>
+            </i-Button>
         </i-col>
     </row>
 </div>
