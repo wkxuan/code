@@ -255,7 +255,7 @@
                         Values: param
                     }, function (data) {
                         if (data) {
-                            window.open(__BaseUrl + data);
+                            window.location.href = __BaseUrl + data;
                         }
                     });
                 },
