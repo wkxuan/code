@@ -4,15 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using msWord = Microsoft.Office.Interop.Word;
 using z.Extensions;
 
 namespace z.ERP.Web.Areas.Base
 {
-    /// <summary>
-    /// Excel生成操作类
-    /// </summary>
     public class NPOIHelper
     {
+        #region Excel
         /// <summary>
         /// 导出列名
         /// </summary>
@@ -227,6 +226,24 @@ namespace z.ERP.Web.Areas.Base
                 }
             }
         }
+        #endregion
+
+        #region      
+        public static string ExportWord(DataTable dtSource) {
+            object oMissing = System.Reflection.Missing.Value;
+            //创建一个Word应用程序实例
+            msWord._Application oWord = new msWord.Application();
+            //设置为不可见
+            oWord.Visible = false;
+            //模板文件地址
+            object oTemplate = $@"{IOExtension.GetBaesDir()}\File\Template\合同模板.doc";
+            //以模板为基础生成文档
+            msWord._Document oDoc = oWord.Documents.Add(ref oTemplate, ref oMissing, ref oMissing, ref oMissing);
+            msWord.Bookmarks odf = oDoc.Bookmarks;
+
+            return null;
+        }
+        #endregion
     }
     public class NoSort : System.Collections.IComparer
     {

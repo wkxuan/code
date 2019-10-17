@@ -98,10 +98,6 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                 }
             );
         }
-        public string Output(SearchItem item)
-        {
-            return service.HtglService.GetContractOutput(item);
-        }
         //返回节点数据，并且返回当前节点要面临的操作步骤
         public UIResult Srchsplc(SPLCEntity Data)
         {
@@ -126,6 +122,10 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         public string checkHtBgData(CONTRACTEntity Data)
         {
             return service.HtglService.checkHtBgData(Data);
+        }
+        public string Output(List<CONTRACTEntity> Data)
+        {           
+            return null;
         }
     }
 }
