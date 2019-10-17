@@ -1,4 +1,5 @@
 ﻿using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -76,14 +77,14 @@ namespace z.ERP.Web.Areas.Base
         /// </summary>
         /// <param name="dgv"></param>
         /// <param name="excelSheet"></param>
-        protected static void CreateHeader(HSSFSheet excelSheet)
+        protected static void CreateHeader(ISheet excelSheet)
         {
             int cellIndex = 0;
+            IRow newRow = excelSheet.CreateRow(0);
             //循环导出列
             foreach (System.Collections.DictionaryEntry de in ListColumnsName)
             {
-                HSSFRow newRow = excelSheet.CreateRow(0);
-                HSSFCell newCell = newRow.CreateCell(cellIndex);
+                ICell newCell = newRow.CreateCell(cellIndex);
                 newCell.SetCellValue(de.Value.ToString());
                 cellIndex++;
             }
@@ -108,7 +109,7 @@ namespace z.ERP.Web.Areas.Base
         {
             int rowCount = 0;
             int sheetCount = 1;
-            HSSFSheet newsheet = excelWorkbook.CreateSheet("数据"+ sheetCount);
+            ISheet newsheet = excelWorkbook.CreateSheet("数据"+ sheetCount);
             //创建表头
             CreateHeader(newsheet);
             //循环数据源导出数据集
@@ -124,7 +125,7 @@ namespace z.ERP.Web.Areas.Base
                     CreateHeader(newsheet);
                 }
 
-                HSSFRow newRow = newsheet.CreateRow(rowCount);
+                IRow newRow = newsheet.CreateRow(rowCount);
                 InsertCell(dtSource, dr, newRow, newsheet, excelWorkbook);
             }
         }
@@ -136,13 +137,13 @@ namespace z.ERP.Web.Areas.Base
         /// <param name="currentExcelRow"></param>
         /// <param name="excelSheet"></param>
         /// <param name="excelWorkBook"></param>
-        protected static void InsertCell(DataTable dtSource, DataRow drSource, HSSFRow currentExcelRow, HSSFSheet excelSheet, HSSFWorkbook excelWorkBook)
+        protected static void InsertCell(DataTable dtSource, DataRow drSource, IRow currentExcelRow, ISheet excelSheet, HSSFWorkbook excelWorkBook)
         {
             for (int cellIndex = 0; cellIndex < ListColumnsName.Count; cellIndex++)
             {
                 //列名称
                 string columnsName = ListColumnsName.GetKey(cellIndex).ToString();
-                HSSFCell newCell = null;
+                ICell newCell = null;
                 System.Type rowType = drSource[columnsName].GetType();
                 string drValue = drSource[columnsName].ToString().Trim();
                 switch (rowType.ToString())
@@ -161,8 +162,8 @@ namespace z.ERP.Web.Areas.Base
                         newCell.SetCellValue(dateV);
 
                         //格式化显示
-                        HSSFCellStyle cellStyle = excelWorkBook.CreateCellStyle();
-                        HSSFDataFormat format = excelWorkBook.CreateDataFormat();
+                        ICellStyle cellStyle = excelWorkBook.CreateCellStyle();
+                        IDataFormat format = excelWorkBook.CreateDataFormat();
                         cellStyle.DataFormat = format.GetFormat("yyyy-mm-dd hh:mm:ss");
                         newCell.CellStyle = cellStyle;
                         break;
