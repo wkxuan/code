@@ -253,7 +253,7 @@
                     _.Ajax('Output', {
                         Name: window.document.title,
                         Cols: cols,
-                        Values: param
+                        Values: param,
                         Data:selectton
                     }, function (data) {
                         if (data) {
