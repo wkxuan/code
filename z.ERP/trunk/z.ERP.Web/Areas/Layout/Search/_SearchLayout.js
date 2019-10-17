@@ -34,6 +34,8 @@
     this.indexShow = false;
     //table是否显示checkbox
     this.selectionShow = true;
+    //导入模板名称
+    this.uploadName = "";
 
     this.beforeVue = function () { }
 
@@ -77,7 +79,8 @@
                 panelTwoName: _this.panelTwoName,
                 indexShow: _this.indexShow,
                 selectionShow: _this.selectionShow,
-                popConfig: _this.popConfig
+                popConfig: _this.popConfig,
+                uploadName: _this.uploadName
             },
             watch: {
                 "screenParam.colDef": {
@@ -245,18 +248,11 @@
                     for (let i = 0; i < _self.columns.length; i++) {
                         cols[_self.columns[i].key] = _self.columns[i].title
                     }
-                    let selectton = this.$refs.selectData.getSelection();
-                    if (_self.selectionShow) {
-                        if (selectton.length == 0) {
-                            iview.Message.info("请选中要导出的数据!");
-                            return;
-                        }
-                    }
+
                     _.Ajax('Output', {
                         Name: window.document.title,
                         Cols: cols,
-                        Values: param,
-                        Data:selectton
+                        Values: param
                     }, function (data) {
                         if (data) {
                             window.open(__BaseUrl + data);

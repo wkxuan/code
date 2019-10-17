@@ -51,7 +51,7 @@
         </panel>
     </collapse>
 
-    <yx-upload v-bind:open.sync="importOpen"></yx-upload>
+    <yx-upload v-bind:open.sync="importOpen" v-bind:name="uploadName"></yx-upload>
 
     <yx-modal v-bind:src="popConfig.src" v-bind:title="popConfig.title"
               v-bind:width="popConfig.width" v-bind:height="popConfig.height"

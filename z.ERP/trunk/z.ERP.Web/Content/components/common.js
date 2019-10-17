@@ -1227,7 +1227,7 @@ Vue.component('yx-date-picker', {
     }
 });
 Vue.component('yx-upload', {
-    props: ['open'],
+    props: ['open', "name"],
     template: `<Modal :title="Title" v-model="curopen" :mask-closable="false" v-on:on-visible-change="onvisiblechange"> ` +
                 `<Upload type="drag" :action="curAction" accept="xlsx,xls" :format ="['xlsx','xls']" ` +
                     `:on-error="onError":on-success="onSuccess" :on-format-error="onFormatError" :before-upload="beforeUpload" :on-progress="onProgress"> ` +
@@ -1296,18 +1296,10 @@ Vue.component('yx-upload', {
         onProgress(event, file, fileList) {
         },
         download() {
-            var fileName = "销售补录单.xls";
-            var fileUrl = __BaseUrl + "/File/Import/" + fileName;
-            _.Ajax('downloadTemplate', {
-                FileName: fileName
-            }, function (data) {
-                if (data.SuccFlag) {
-                    window.location.href = fileUrl;
-                    //window.open(__BaseUrl + "/File/Import/" + fileName);
-                } else {
-                    iview.Message.error(data.Message);
-                }             
-            }); 
+            if (this.name) {
+                var fileName = this.name + ".xls";
+                window.location.href = __BaseUrl + "/File/Import/" + fileName;
+            }
         },
         onvisiblechange(val) {
             this.$emit('update:open', val);
