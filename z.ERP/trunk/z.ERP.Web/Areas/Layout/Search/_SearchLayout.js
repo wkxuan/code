@@ -246,9 +246,11 @@
                         cols[_self.columns[i].key] = _self.columns[i].title
                     }
                     let selectton = this.$refs.selectData.getSelection();
-                    if (selectton.length == 0) {
-                        iview.Message.info("请选中要导出的数据!");
-                        return;
+                    if (_self.selectionShow) {
+                        if (selectton.length == 0) {
+                            iview.Message.info("请选中要导出的数据!");
+                            return;
+                        }
                     }
                     _.Ajax('Output', {
                         Name: window.document.title,
