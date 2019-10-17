@@ -814,6 +814,7 @@
     <Content Include="Areas\XTGL\CashierSearch\CashierSearch.cshtml" />
     <Content Include="Areas\Pop\Pop\PopMerchantPaymentList.cshtml" />
     <Content Include="Areas\JSGL\ManualReturn\ManualReturn.cshtml" />
+    <Content Include="File\Import\销售补录单.xls" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
