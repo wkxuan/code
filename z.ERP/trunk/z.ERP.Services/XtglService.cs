@@ -422,7 +422,7 @@ namespace z.ERP.Services
             DbHelper.ExecuteNonQuery(sql);
             DbHelper.Delete(DeleteData);
         }
-        public string SaveBrand(BRANDEntity SaveData)
+        public string BrandPro(BRANDEntity SaveData)
         {
             var v = GetVerify(SaveData);
             if (SaveData.ID.IsEmpty())
@@ -903,7 +903,7 @@ namespace z.ERP.Services
             sqlxz += " SPLCDEFD A,SPLCJG B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
 
             sql += " AND  EXISTS(SELECT 1 FROM SPLCJD L,SYSUSER C,USER_ROLE D";
-            sql += " WHERE C.USERID = D.USERID AND L.ROLEID = D.ROLEID AND L.BILLID = B.BILLID AND C.USERID="+ employee.Id+ ")";
+            sql += " WHERE C.USERID = D.USERID AND L.ROLEID = D.ROLEID AND L.BILLID = B.BILLID AND C.USERID=" + employee.Id + ")";
 
             sqlxz += " AND A.MENUID= " + Data.MENUID;
             sqlxz += " AND B.JDID= " + curJdid;
@@ -1281,6 +1281,40 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-    }
+        /// <summary>
+        /// BrandImport
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public ImportMsg BrandImport(DataTable dt)
+        {
+            var SaveDataList = new List<BRANDEntity>();
+            var data = VerifyImportBrand(dt, ref SaveDataList);
+            if (data.SuccFlag)
+            {
+                using (var Tran = DbHelper.BeginTransaction())
+                {
+                    for (var i = 0; i < SaveDataList.Count; i++)
+                    {
+                        BrandPro(SaveDataList[i]);
+                    }
 
+                    Tran.Commit();
+                }
+            }
+            return data;
+        }
+
+        public string SaveBrand(BRANDEntity SaveData)
+        {
+            BrandPro(SaveData);
+            return SaveData.ID;
+        }
+
+        public ImportMsg VerifyImportBrand(DataTable dt, ref List<BRANDEntity> SaveDataList)
+        {
+            var backData = new ImportMsg();
+
+        }
+    }
 }

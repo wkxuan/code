@@ -46,6 +46,26 @@ search.mountedInit = function () {
     }, function (data) {
         Vue.set(search.screenParam, "CATEData", data.treeOrg.Obj);
     });
+
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "add",
+        authority: ""
+    }, {
+        id: "del",
+        authority: ""
+    }, {
+        id: "upload",
+        authority: ""
+    }, {
+        id: "print",
+        authority: ""
+    }];
 }
 
 

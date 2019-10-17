@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
@@ -57,6 +58,10 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
                     treeOrg = res.Item1
                 }
             );
+        }
+        public override ImportMsg ImportExcelDataHandle(DataTable dt)
+        {
+            return service.SpglService.SaleBillImport(dt);
         }
 
     }
