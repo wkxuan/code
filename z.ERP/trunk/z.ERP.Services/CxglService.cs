@@ -85,7 +85,7 @@ namespace z.ERP.Services
             var itemdt = DbHelper.ExecuteTable(string.Format(sqlitem, data.BILLID));
             foreach (DataRow dr in itemdt.Rows)
             {
-                if(!dr["VALUE1"].ToString().IsEmpty())
+                if (!dr["VALUE1"].ToString().IsEmpty())
                     dr["VALUE1"] = dr["VALUE1"].ToString().ToDouble() * 100;
             }
             return new Tuple<dynamic, DataTable>(dt.ToOneLine(), itemdt);
@@ -424,7 +424,7 @@ namespace z.ERP.Services
         public DataTable GetPresent(PresentEntity data)
         {
 
-            string sql =$@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS 
+            string sql = $@"SELECT P.ID , B.NAME BRANCHNAME, B.ID BRANCHID, P.NAME, P.PRICE, P.STATUS 
                             FROM PRESENT P,BRANCH B
                             WHERE B.ID=P.BRANCHID";
             sql += "  AND B.ID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
@@ -440,10 +440,10 @@ namespace z.ERP.Services
             foreach (var item in DeleteData)
             {
                 PresentEntity Data = DbHelper.Select(item);
-            //    if (Data.STATUS == ((int)使用状态.已使用).ToString())
-            //    {
-            //        throw new LogicException("已经审核不能删除!");
-            //    }
+                //    if (Data.STATUS == ((int)使用状态.已使用).ToString())
+                //    {
+                //        throw new LogicException("已经审核不能删除!");
+                //    }
             }
             using (var Tran = DbHelper.BeginTransaction())
             {
@@ -454,7 +454,7 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
         }
-#endregion
+        #endregion
 
         #region 赠品发放 
         public DataGridResult Present_SendList(SearchItem item)
@@ -477,8 +477,9 @@ namespace z.ERP.Services
             dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
-        public Tuple<dynamic, int> GetSaleTicket(string BRANCHID, string POSNO, string DEALID) {
-            int status=0;
+        public Tuple<dynamic, int> GetSaleTicket(string BRANCHID, string POSNO, string DEALID)
+        {
+            int status = 0;
             string sql = $@"SELECT S.POSNO ,S.DEALID,S.SALE_AMOUNT AMOUNT,S.SALE_TIME
                     FROM ALLSALE S,STATION ST
                     WHERE S.POSNO =ST.STATIONBH AND S.ISFG=2 AND S.SALE_AMOUNT>0 AND S.POSNO='{POSNO}' AND DEALID='{DEALID}' AND ST.BRANCHID='{BRANCHID}' 
@@ -504,11 +505,13 @@ namespace z.ERP.Services
                     dt.Rows[0]["FGID"] = dt1.Rows[0]["BILLID"].ToString();
                     status = 1;   //正常
                 }
-                else {
+                else
+                {
                     status = 3;  //没有参加活动
                 }
             }
-            else {
+            else
+            {
                 status = 2;  //无数据
             }
             return new Tuple<dynamic, int>(dt.ToOneLine(), status);
@@ -518,11 +521,14 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
-        public DataTable GetPresentList(List<PROMOBILL_FG_RULEEntity> Data) {
+        public DataTable GetPresentList(List<PROMOBILL_FG_RULEEntity> Data)
+        {
             string sql = "";
-            if (Data==null) { return null; }
-            for(var i=0;i<Data.Count;i++) {
-                if (i!=0) {
+            if (Data == null) { return null; }
+            for (var i = 0; i < Data.Count; i++)
+            {
+                if (i != 0)
+                {
                     sql += " union all ";
                 }
                 sql += $@"SELECT A.PRESENTID,P.NAME PRESENTNAME,P.PRICE
@@ -595,7 +601,7 @@ namespace z.ERP.Services
                 }
                 Tran.Commit();
             }
-        }       
+        }
         public string ExecPresent_Send(PRESENT_SENDEntity data)
         {
             if (data.STATUS == ((int)促销单状态.审核).ToString())
@@ -625,11 +631,11 @@ namespace z.ERP.Services
 
             return data.BILLID;
         }
-        public Tuple<dynamic, DataTable,DataTable> Present_SendShowOneData(PRESENT_SENDEntity data)
+        public Tuple<dynamic, DataTable, DataTable> Present_SendShowOneData(PRESENT_SENDEntity data)
         {
             string sql = $@"SELECT * FROM PRESENT_SEND WHERE BILLID={data.BILLID} ";
             var dt = DbHelper.ExecuteTable(sql);
-            
+
             string sql1 = $@"SELECT * FROM PRESENT_SEND_TICKET WHERE BILLID ={data.BILLID} ORDER BY SALE_TIME";
             var dt1 = DbHelper.ExecuteTable(string.Format(sql1));
 

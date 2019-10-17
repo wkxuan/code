@@ -34,22 +34,28 @@ search.beforeVue = function () {
     search.method = "MerchantPayable";
     search.indexShow = true;
     search.selectionShow = false;
+    search.popConfig = {
+        title: "",
+        src: "",
+        width: 800,
+        height: 550,
+        open: false
+    };
+
+    search.screenParam.popParam = {};
     search.screenParam.colDef = cols;
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
 };
 search.newCondition = function () {
-    search.searchParam.BRANCHID = "";
-    search.searchParam.MERCHANTID = "";
+    search.searchParam.BRANCHID = [];
+    search.searchParam.SFXMLX = [];
+    search.searchParam.SFXM = [];
     search.searchParam.MERCHANTNAME = "";
-    search.searchParam.SFXMLX = "";
-    search.searchParam.SFXM = "";
     search.searchParam.NIANYUE_START = "";
     search.searchParam.NIANYUE_END = "";
     search.searchParam.YEARMONTH_START = "";
     search.searchParam.YEARMONTH_END = "";
 };
-search.afterResult = function (data) {
+search.searchDataAfter = function (data) {
     if (data.length) {
         let obj = data[0];
         let sfxmList = [];
@@ -100,18 +106,25 @@ search.afterResult = function (data) {
         search.screenParam.colDef = cols.concat(sfxmList);
     }
 }
+
 search.otherMethods = {
     //商户弹窗click
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     }
 }
 search.popCallBack = function (data) {
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            switch (search.popConfig.title) {
+                case "选择商户":
+                    search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    break;
+            }
         }
     }
 };

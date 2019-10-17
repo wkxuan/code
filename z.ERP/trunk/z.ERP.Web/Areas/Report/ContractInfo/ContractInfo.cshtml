@@ -13,6 +13,7 @@
                 {
                     vModel = "searchParam.BRANCHID",
                     ServiceMothod = m => m.branch(),
+                    Multiple = true
                 });
             }
         </i-col>
@@ -49,62 +50,19 @@
             商户
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
+            <i-input icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
         </i-col>
         <i-col span="2" class="RowTitle">
             租约
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly icon="md-search" v-model="searchParam.CONTRACTID" v-on:on-click="SelContract" />
+            <i-input icon="md-search" v-model="searchParam.CONTRACTID" v-on:on-click="SelContract" />
         </i-col>
         <i-col span="2" class="RowTitle">
             品牌
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly icon="md-search" v-model="searchParam.BRANDNAME" v-on:on-click="SelBrand" />
+            <i-input icon="md-search" v-model="searchParam.BRANDNAME" v-on:on-click="SelBrand" />
         </i-col>
     </row>
-}
-
-@section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopMerchant",
-                    Caption = "选择商户",
-                    Width = "900",
-                    Src = "screenParam.srcPopMerchant"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopContract",
-                    Caption = "选择租约",
-                    Width = "900",
-                    Src = "screenParam.srcPopContract"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopBrand",
-                    Caption = "选择品牌",
-                    Width = "900",
-                    Src = "screenParam.srcPopBrand"
-                });
-            }
-        </i-col>
-    </row>
-
 }

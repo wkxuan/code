@@ -23,7 +23,7 @@
         title: "弹窗",
         src: "",
         width: 800,
-        height: 500,
+        height: 550,
         open: false
     };
     //是否显示中间折叠面板
@@ -195,11 +195,11 @@
                     let _self = this;
                     _this.searchParam = {};
                     _self.searchParam = _this.searchParam;
+                    _self.panelName = ["panelOne", "panelTwo", "panelThree"];
                     _self.data = [];      
                     _self.pagedataCount = 0;
-                    _self.panelName = ["panelOne", "panelTwo", "panelThree"];
-                    _this.newCondition();
-                    _this.searchDataAfter(_self.data);
+                    _this.searchDataAfter([]);
+                    _this.newCondition();                  
                 },               
                 //新增
                 add: function () {
@@ -245,11 +245,16 @@
                     for (let i = 0; i < _self.columns.length; i++) {
                         cols[_self.columns[i].key] = _self.columns[i].title
                     }
-
+                    let selectton = this.$refs.selectData.getSelection();
+                    if (selectton.length == 0) {
+                        iview.Message.info("请选中要导出的数据!");
+                        return;
+                    }
                     _.Ajax('Output', {
                         Name: window.document.title,
                         Cols: cols,
                         Values: param
+                        Data:selectton
                     }, function (data) {
                         if (data) {
                             window.open(__BaseUrl + data);
@@ -329,9 +334,7 @@
                     else {
                         iview.Message.info("没有满足当前查询条件的结果!");
                     }
-                    if (_this.panelTwoShow) {
-                        _this.searchDataAfter(ve.data);
-                    }
+                    _this.searchDataAfter(ve.data);
                 },
                 Error: function () {
                     ve.tbLoading = false;
@@ -348,6 +351,7 @@
     setTimeout(function () {
         _this.vueInit();
         _this.beforeVue();
+        _this.newCondition();
         _this.vue();
     }, 100);
 }

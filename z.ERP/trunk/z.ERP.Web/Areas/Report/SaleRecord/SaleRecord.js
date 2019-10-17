@@ -14,13 +14,18 @@
     search.service = "ReportService";
     search.method = "SaleRecord";
     search.panelTwoShow = true;
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-    search.screenParam.showPopShop = false;
-    search.screenParam.srcPopShop = __BaseUrl + "/Pop/Pop/PopShopList/";
-    search.screenParam.popParam = {};
     search.indexShow = true;
     search.selectionShow = false;
+
+    search.popConfig = {
+        title: "",
+        src: "",
+        width: 800,
+        height: 550,
+        open: false
+    };
+    search.screenParam.popParam = {};
+
     search.screenParam.echartType = [{ label: "按终端号", value: "POSNO" },
                       { label: "按交易时间", value: "SALE_TIME" },
                      { label: "按记账日期", value: "ACCOUNT_DATE" },
@@ -30,7 +35,7 @@
     search.screenParam.echartData = [];
 };
 search.newCondition = function () {
-    search.searchParam.BRANCHID = "";
+    search.searchParam.BRANCHID = [];
     search.searchParam.POSNO = "";
     search.searchParam.SALE_TIME_START = "";
     search.searchParam.SALE_TIME_END = "";
@@ -48,12 +53,16 @@ search.searchDataAfter = function (data) {
 
 search.otherMethods = {
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     },
     SelShop: function () {
-        search.screenParam.showPopShop = true;
-        if (search.searchParam.BRANCHID)
-            search.screenParam.popParam = { BRANCHID: search.searchParam.BRANCHID };
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择店铺";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopShopList/";
+        search.popConfig.open = true;
     }
 }
 search.mountedInit = function () {
@@ -69,23 +78,25 @@ search.mountedInit = function () {
     }];
 }
 search.popCallBack = function (data) {
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
-        search.searchParam.MERCHANTID = $.map(data.sj, item => {
-            return item.MERCHANTID
-        }).join(',');
-        search.searchParam.MERCHANTNAME = $.map(data.sj, item => {
-            return item.NAME
-        }).join(',');
-    }
-    debugger
-    if (search.screenParam.showPopShop) {
-        search.screenParam.showPopShop = false;
-        search.searchParam.SHOPID = $.map(data.sj, item => {
-            return item.SHOPID
-        }).join(',');
-        search.searchParam.SHOPNAME = $.map(data.sj, item => {
-            return item.NAME
-        }).join(',');
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        switch (search.popConfig.title) {
+            case "选择商户":
+                search.searchParam.MERCHANTID = $.map(data.sj, item => {
+                    return item.MERCHANTID
+                }).join(',');
+                search.searchParam.MERCHANTNAME = $.map(data.sj, item => {
+                    return item.NAME
+                }).join(',');
+                break;
+            case "选择店铺":
+                search.searchParam.SHOPID = $.map(data.sj, item => {
+                    return item.SHOPID
+                }).join(',');
+                search.searchParam.SHOPNAME = $.map(data.sj, item => {
+                    return item.NAME
+                }).join(',');
+                break;
+        }
     }
 }

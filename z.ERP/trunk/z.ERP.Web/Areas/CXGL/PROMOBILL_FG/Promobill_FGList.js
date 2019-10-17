@@ -30,55 +30,65 @@
             }
         }
     ];
-    search.screenParam.showPop = false;
-    search.screenParam.srcPop = "";
-    search.screenParam.title = "";
-    search.screenParam.popParam = {};
-    search.searchParam.PROMOTYPE = 4;  //4.满赠
-}
-search.newCondition = function () {   //清空后，重新赋值单据状态
-    search.searchParam.PROMOTYPE = 4;
-}
-search.otherMethods = {
-    SelPromotion: function () {
-        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPromotionList/";
-        search.screenParam.title = "选择营销活动";
-        search.screenParam.showPop = true;
-    },
-    SelReporter: function () {
-        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-        search.screenParam.title = "选择录入人";
-        search.screenParam.showPop = true;
-    },
-    SelVerify: function () {
-        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-        search.screenParam.title = "选择审核人";
-        search.screenParam.showPop = true;
-    }
 }
 
+search.newCondition = function () {
+    search.searchParam.PROMOTYPE = 4;
+    search.searchParam.BRANCHID = [];
+    search.searchParam.STATUS = [];
+    search.searchParam.PROMOTIONNAME = "";
+    search.searchParam.START_DATE_START = "";
+    search.searchParam.START_DATE_END = "";
+    search.searchParam.END_DATE_START = "";
+    search.searchParam.END_DATE_END = "";
+    search.searchParam.REPORTER_NAME = "";
+    search.searchParam.VERIFY_NAME = "";
+};
+
+search.otherMethods = {
+    SelPromotion: function () {
+        search.screenParam.popParam = { STATUS: 2 };
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopPromotionList/";
+        search.popConfig.title = "选择营销活动";
+        search.popConfig.open = true;
+    },
+    SelReporter: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.title = "选择登记人";
+        search.popConfig.open = true;
+    },
+    SelVerify: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.title = "选择审核人";
+        search.popConfig.open = true;
+    }
+}
 //接收子页面返回值
 search.popCallBack = function (data) {
-    if (search.screenParam.showPop) {
-        search.screenParam.showPop = false;
-        for (let i = 0; i < data.sj.length; i++) {
-            if (search.screenParam.title == "选择营销活动") {
-                search.searchParam.PROMOTIONNAME = data.sj[i].NAME;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            switch (search.popConfig.title) {
+                case "选择营销活动":
+                    search.searchParam.PROMOTIONNAME = data.sj[i].NAME;
+                    break;
+                case "选择登记人":
+                    search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+                    break;
+                case "选择审核人":
+                    search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
+                    break;
             }
-            if (search.screenParam.title == "选择录入人") {
-                search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
-            }
-            if (search.screenParam.title == "选择审核人") {
-                search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
-            }
-        };
+        }
     }
 };
 
 search.addHref = function (row) {
     _.OpenPage({
         id: 10600401,
-        title: '促销赠品单详情',
+        title: '添加促销赠品单',
         url: "CXGL/PROMOBILL_FG/PROMOBILL_FGEdit/"
     });
 }

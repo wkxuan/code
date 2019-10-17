@@ -5,11 +5,10 @@
 };
 
 defineDetail.clearKey = function () {
-
-    defineDetail.dataParam.ID = [];
-    defineDetail.dataParam.BRANCHID = null;
-    defineDetail.dataParam.NAME = null;
-    defineDetail.dataParam.PRICE = null;
+    defineDetail.dataParam.ID = "";
+    defineDetail.dataParam.BRANCHID = "";
+    defineDetail.dataParam.NAME = "";
+    defineDetail.dataParam.PRICE = "";
     defineDetail.dataParam.STATUSMC = "未使用"
 };
 

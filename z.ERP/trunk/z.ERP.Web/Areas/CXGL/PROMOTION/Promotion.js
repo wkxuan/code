@@ -28,12 +28,18 @@
                 search.popConfig.open = true;
             }
         }];
+
+};
+search.newCondition = function () {
     search.searchParam.START_DATE_START = "";
     search.searchParam.START_DATE_END = "";
     search.searchParam.END_DATE_START = "";
     search.searchParam.END_DATE_END = "";
+    search.searchParam.NAME = "";
+    search.searchParam.YEAR = "";
+    search.searchParam.CONTENT = "";
+    search.searchParam.STATUS = "";
 };
-
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",

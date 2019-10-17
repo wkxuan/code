@@ -91,24 +91,3 @@
         </i-col>
     </row>
 }
-@section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopShop",
-            Src = "screenParam.srcPopShop",
-            Caption = "选择店铺",
-            Width = "800"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopMerchant",
-            Caption = "选择商户",
-            Width = "800",
-            Src = "screenParam.srcPopMerchant"
-        });
-    }
-
-}

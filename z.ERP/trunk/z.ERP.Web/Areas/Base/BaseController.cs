@@ -132,6 +132,19 @@ namespace z.ERP.Web.Areas.Base
         {
             return SaveFileServer(); ;
         }
+        public UIResult downloadTemplate(string FileName)
+        {
+            var fileUrl = @"/File/Import/" + FileName;
+            var data = new ImportMsg();
+            if (System.IO.File.Exists(fileUrl))
+            {
+                data.SuccFlag = true;      
+            }else
+            {
+                data.SuccFlag = false;
+            }
+            return new UIResult(data); ;
+        }
         public UIResult ImportExcel(string fileUrl)
         {
             var backData = new ImportMsg();
@@ -175,7 +188,7 @@ namespace z.ERP.Web.Areas.Base
                     string filename = System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
                     try
                     {
-                        string dir = @"c:/file/";
+                        string dir = @"/File/Import/";
                         DirectoryInfo di = new DirectoryInfo(dir);
                         if (!di.Exists) { di.Create(); }
                         filrUrl = dir + filename;

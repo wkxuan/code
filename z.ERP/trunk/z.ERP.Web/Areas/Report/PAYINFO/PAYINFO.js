@@ -15,14 +15,13 @@
     search.screenParam.colDef = col;
     search.service = "ReportService";
     search.method = "PAYINFO";
-    search.searchParam.PAYINFO = "";
 };
 
 search.newCondition = function () {
-    search.searchParam.BRANCHID = "";
+    search.searchParam.BRANCHID = [];
     search.searchParam.POSNO = "";
     search.searchParam.DEALID = "";
-    search.searchParam.PAYID = "";
+    search.searchParam.PAYID = [];
     search.searchParam.AMOUNT = "";
     search.searchParam.START = "";
     search.searchParam.END = "";
@@ -39,7 +38,3 @@ search.mountedInit = function () {
         authority: ""
     }];
 }
-
-
-
-

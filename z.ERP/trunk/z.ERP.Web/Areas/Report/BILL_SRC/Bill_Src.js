@@ -20,31 +20,33 @@
     search.screenParam.colDef = col;
     search.service = "ReportService";
     search.method = "Bill_Src";
+
+    search.popConfig = {
+        title: "",
+        src: "",
+        width: 800,
+        height: 550,
+        open: false
+    };
     search.screenParam.popParam = {};
-    search.searchParam.CATEGORYCODE = "";
-    search.screenParam.CATEGORY = [];
-    search.searchParam.Bill_Src = "";
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-    search.screenParam.showPopContract = false;
-    search.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
 };
 
 search.newCondition = function () {
-    search.searchParam.BRANCHID = "";
+    search.searchParam.BRANCHID = [];
     search.searchParam.MERCHANTNAME = "";
     search.searchParam.CONTRACTID = "";
     search.searchParam.BILLID = "";
-    search.searchParam.TYPE = "";
-    search.searchParam.STATUS = "";
-    search.searchParam.TRIMID = "";
+    search.searchParam.TYPE = [];
+    search.searchParam.STATUS = [];
+    search.searchParam.TRIMID = [];
     search.searchParam.NIANYUE_START = "";
     search.searchParam.NIANYUE_END = "";
     search.searchParam.YEARMONTH_START = "";
     search.searchParam.YEARMONTH_END = "";
-    search.searchParam.FLOORID = "";
-    search.searchParam.CATEGORY = "";
+    search.searchParam.FLOORID = [];
     search.searchParam.CATEGORYCODE = "";
+
+    search.screenParam.CATEGORY = [];
 };
 
 search.mountedInit = function () {
@@ -68,31 +70,37 @@ search.mountedInit = function () {
 
 search.otherMethods = {
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     },
     SelContract: function () {
-        search.screenParam.showPopContract = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择租约";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopContractList/";
+        search.popConfig.open = true;
     },
     changeCate: function (value, selectedData) {
-        search.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
+        var data = selectedData[selectedData.length - 1];
+        if (data) {
+            search.searchParam.CATEGORYCODE = data.code;
+        }
     }
 }
 
 search.popCallBack = function (data) {
-
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            switch (search.popConfig.title) {
+                case "选择商户":
+                    search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    break;
+                case "选择租约":
+                    search.searchParam.CONTRACTID = data.sj[i].CONTRACTID;
+                    break;
+            }
         }
     }
-
-    if (search.screenParam.showPopContract) {
-        search.screenParam.showPopContract = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.CONTRACTID = data.sj[i].CONTRACTID;
-        }
-    }
-
 };

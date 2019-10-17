@@ -1296,7 +1296,18 @@ Vue.component('yx-upload', {
         onProgress(event, file, fileList) {
         },
         download() {
-            window.open(__BaseUrl + "/File/Template/凭证导出.xlsx");
+            var fileName = "销售补录单.xls";
+            var fileUrl = __BaseUrl + "/File/Import/" + fileName;
+            _.Ajax('downloadTemplate', {
+                FileName: fileName
+            }, function (data) {
+                if (data.SuccFlag) {
+                    window.location.href = fileUrl;
+                    //window.open(__BaseUrl + "/File/Import/" + fileName);
+                } else {
+                    iview.Message.error(data.Message);
+                }             
+            }); 
         },
         onvisiblechange(val) {
             this.$emit('update:open', val);

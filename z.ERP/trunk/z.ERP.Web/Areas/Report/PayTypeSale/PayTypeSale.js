@@ -27,19 +27,22 @@ var echartTypeList2 = [{ label: "按商户", value: "NAME" },
                      { label: "按收款方式", value: "PAYNAME" }];
 
 search.beforeVue = function () {
-    search.screenParam.colDef = colList;
     search.service = "ReportService";
     search.method = "PayTypeSale";
     search.panelTwoShow = true;
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-    search.screenParam.showPopBrand = false;
-    search.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
     search.indexShow = true;
     search.selectionShow = false;
-    search.screenParam.popParam = {};
-    search.searchParam.SrchTYPE = 1;
 
+    search.popConfig = {
+        title: "",
+        src: "",
+        width: 800,
+        height: 550,
+        open: false
+    };
+    search.screenParam.popParam = {};
+
+    search.screenParam.colDef = colList;
     search.screenParam.echartType = echartTypeList1;
     search.screenParam.echartRadioVal = "NAME";
     search.screenParam.dataSumTypeList = [{ label: "销售金额", value: "AMOUNT" }];
@@ -47,15 +50,21 @@ search.beforeVue = function () {
 };
 
 search.newCondition = function () {
-    search.searchParam.BRANCHID= "";
+    search.searchParam.SrchTYPE = 1;
+    search.searchParam.BRANCHID= [];
     search.searchParam.MERCHANTNAME = "";   
-    search.searchParam.MERCHANTID = "";
     search.searchParam.BRANDNAME = "";
-    search.searchParam.Pay = "";
+    search.searchParam.Pay = [];
     search.searchParam.RQ_START = "";
     search.searchParam.RQ_END = "";
     search.searchParam.YEARMONTH_START = "";
     search.searchParam.YEARMONTH_END = "";
+
+    search.screenParam.colDef = colList;
+    search.screenParam.echartType = echartTypeList1;
+    search.screenParam.echartRadioVal = "NAME";
+    search.screenParam.dataSumTypeList = [{ label: "销售金额", value: "AMOUNT" }];
+    search.screenParam.echartData = [];
 };
 
 search.searchDataAfter = function (data) {
@@ -63,12 +72,6 @@ search.searchDataAfter = function (data) {
 };
 
 search.mountedInit = function () {
-    _.Ajax('SearchKind', {
-        Data: {}
-    }, function (data) {
-        Vue.set(search.screenParam, "dataKind", data.treeorg.Obj);
-    });
-
     search.btnConfig = [{
         id: "search",
         authority: ""
@@ -83,10 +86,16 @@ search.mountedInit = function () {
 
 search.otherMethods = {
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     },
     SelBrand: function () {
-        search.screenParam.showPopBrand = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择品牌";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopBrandList/";
+        search.popConfig.open = true;
     },
     changeSrchType: function (value) {
         search.screenParam.echartData = [];
@@ -108,19 +117,17 @@ search.otherMethods = {
 }
 
 search.popCallBack = function (data) {
-
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
-        }
-    }
-    if (search.screenParam.showPopBrand) {
-        search.screenParam.showPopBrand = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.BRANDID = data.sj[i].BRANDID;
-            search.searchParam.BRANDNAME = data.sj[i].NAME;
+            switch (search.popConfig.title) {
+                case "选择商户":
+                    search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    break;
+                case "选择品牌":
+                    search.searchParam.BRANDNAME = data.sj[i].NAME;
+                    break;
+            }
         }
     }
 };

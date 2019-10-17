@@ -14,7 +14,7 @@
                 {
                     vModel = "searchParam.BRANCHID",
                     ServiceMothod = m => m.branch(),
-
+                    Multiple = true
                 });
             }
         </i-col>
@@ -54,6 +54,7 @@
                 {
                     vModel = "searchParam.PAYID",
                     ServiceMothod = m => m.pay(),
+                    Multiple = true
                 });
             }
         </i-col>
@@ -92,5 +93,4 @@
             }
         </i-col>
     </row>
-
 }

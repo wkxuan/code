@@ -20,47 +20,48 @@ var echartTypeList = [{ label: "按租约", value: "CONTRACTID" },
                      { label: "按楼层", value: "FLOORCODE" },
                      { label: "按品牌", value: "BRANDNAME" }];
 
-search.beforeVue = function () {
-    search.screenParam.colDef = [{ title: '日期', key: 'RQ', width: 100, sortable: true }].concat(cols);
+search.beforeVue = function () {    
     search.service = "ReportService";
     search.method = "ContractSale";
     search.panelTwoShow = true;
     search.indexShow = true;
     search.selectionShow = false;
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-    search.screenParam.showPopContract = false;
-    search.screenParam.srcPopContract = __BaseUrl + "/Pop/Pop/PopContractList/";
-    search.screenParam.showPopBrand = false;
-    search.screenParam.srcPopBrand = __BaseUrl + "/Pop/Pop/PopBrandList/";
+
+    search.popConfig = {
+        title: "",
+        src: "",
+        width: 800,
+        height: 550,
+        open: false
+    };
 
     search.screenParam.popParam = {};
-    search.searchParam.SrchTYPE = 1;
 
-    search.searchParam.CATEGORYCODE = "";
-    search.screenParam.CATEGORY = [];
-
+    search.screenParam.echartData = [];
+    search.screenParam.colDef = [{ title: '日期', key: 'RQ', width: 100, sortable: true }].concat(cols);
     search.screenParam.echartType = echartTypeList.concat({ label: "按日期", value: "RQ" });
     search.screenParam.echartRadioVal = "CONTRACTID";
     search.screenParam.dataSumTypeList = [{ label: "销售金额", value: "AMOUNT" }, { label: "销售成本", value: "COST" },
                                         { label: "折扣金额", value: "DIS_AMOUNT" }, { label: "优惠金额", value: "PER_AMOUNT" }];
-    search.screenParam.echartData = [];
 };
 
 search.newCondition = function () {
     search.searchParam.SrchTYPE = 1;
-    search.searchParam.FLOORID = "";
+    search.searchParam.FLOORID = [];    
+    search.searchParam.BRANCHID = [];
     search.searchParam.CONTRACTID = "";
-    search.searchParam.BRANCHID = "";
     search.searchParam.CATEGORYCODE = "";
-    search.searchParam.MERCHANTID = "";
     search.searchParam.MERCHANTNAME = "";
-    search.searchParam.BRANDID = "";
     search.searchParam.BRANDNAME = "";
     search.searchParam.RQ_START = "";
     search.searchParam.RQ_END = "";
     search.searchParam.YEARMONTH_END = "";
     search.searchParam.YEARMONTH_START = "";
+
+    search.screenParam.CATEGORY = [];
+    search.screenParam.echartRadioVal = "RQ";
+    search.screenParam.colDef = [{ title: '日期', key: 'RQ', width: 100, sortable: true }].concat(cols);
+    search.screenParam.echartType = echartTypeList.concat({ label: "按日期", value: "RQ" });
 };
 
 search.searchDataAfter = function (data) {
@@ -88,56 +89,63 @@ search.mountedInit = function () {
 
 search.otherMethods = {
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     },
     SelContract: function () {
-        search.screenParam.showPopContract = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择租约";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopContractList/";
+        search.popConfig.open = true;
     },
     SelBrand: function () {
-        search.screenParam.showPopBrand = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择品牌";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopBrandList/";
+        search.popConfig.open = true;
     },
     changeCate: function (value, selectedData) {
-        search.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
+        var data = selectedData[selectedData.length - 1];
+        if (data) {
+            search.searchParam.CATEGORYCODE = data.code;
+        }
     },
     changeSrchType: function (value) {
         search.screenParam.echartData = [];
         if (value == 1) {
-            Vue.set(this, "data", []);   //清空table
-            Vue.set(this, "pagedataCount", 0);    //清空分页数据
+            Vue.set(this, "data", []);
+            Vue.set(this, "pagedataCount", 0);
+            search.screenParam.echartRadioVal = "RQ";
             search.screenParam.colDef = [{ title: '日期', key: 'RQ', width: 100, sortable: true }].concat(cols);
             search.screenParam.echartType = echartTypeList.concat({ label: "按日期", value: "RQ" });
         } else {
-            Vue.set(this, "data", []);   //清空table
-            Vue.set(this, "pagedataCount", 0);    //清空分页数据
+            Vue.set(this, "data", []);
+            Vue.set(this, "pagedataCount", 0);    
+            search.screenParam.echartRadioVal = "YEARMONTH";
             search.screenParam.colDef = [{ title: '年月', key: 'YEARMONTH', width: 100, sortable: true }].concat(cols);
             search.screenParam.echartType = echartTypeList.concat({ label: "按年月", value: "YEARMONTH" });
         }
-    },
+    }
 }
 
 search.popCallBack = function (data) {
-
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
-        }
-    }
-
-    if (search.screenParam.showPopContract) {
-        search.screenParam.showPopContract = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.CONTRACTID = data.sj[i].CONTRACTID;
-        }
-    }
-
-    if (search.screenParam.showPopBrand) {
-        search.screenParam.showPopBrand = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.BRANDID = data.sj[i].BRANDID;
-            search.searchParam.BRANDNAME = data.sj[i].NAME;
-        }
+            switch (search.popConfig.title) {
+                case "选择商户":
+                    search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    break;
+                case "选择租约":
+                    search.searchParam.CONTRACTID = data.sj[i].CONTRACTID;
+                    break;
+                case "选择品牌":
+                    search.searchParam.BRANDNAME = data.sj[i].NAME;
+                    break;
+            }
+        }             
     }
 };
 

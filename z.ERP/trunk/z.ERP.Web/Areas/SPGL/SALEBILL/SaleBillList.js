@@ -35,6 +35,22 @@
 }
 
 search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "add",
+        authority: ""
+    }, {
+        id: "del",
+        authority: ""
+    }, {
+        id: "upload",
+        authority: ""
+    }];
 }
 
 search.otherMethods = {
@@ -87,7 +103,7 @@ search.popCallBack = function (data) {
 search.addHref = function (row) {
     _.OpenPage({
         id: 105004,
-        title: '销售补录单详情',
+        title: '添加销售补录单',
         url: "SPGL/SALEBILL/SaleBillEdit/"
     })
 }

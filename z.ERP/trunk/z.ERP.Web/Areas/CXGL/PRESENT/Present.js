@@ -24,6 +24,11 @@
             }
         }];
 };
+search.newCondition = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.ID = "";
+    search.searchParam.NAME = "";
+};
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",

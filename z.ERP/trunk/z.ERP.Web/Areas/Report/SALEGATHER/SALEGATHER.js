@@ -19,14 +19,14 @@
 };
 
 search.newCondition = function () {
-    search.searchParam.BRANCHID = "";
+    search.searchParam.BRANCHID = [];
     search.searchParam.SALETIME_START = "";
     search.searchParam.SALETIME_END = "";
     search.searchParam.CREATE_TIME_START = "";
     search.searchParam.CREATE_TIME_END = "";
     search.searchParam.STATIONBH = "";
     search.searchParam.DEALID = "";
-    search.searchParam.FLAG = "";
+    search.searchParam.FLAG = [];
     search.searchParam.REASON = "";
 };
 
@@ -42,7 +42,3 @@ search.mountedInit = function () {
         authority: ""
     }];
 }
-
-
-
-

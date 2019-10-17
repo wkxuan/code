@@ -52,9 +52,9 @@ namespace z.ERP.Web.Areas.CXGL.PRESENT
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public UIResult GetPresent(PresentEntity data)
+        public UIResult GetPresent(PresentEntity Data)
         {
-            var dt = service.CxglService.GetPresent(data);
+            var dt = service.CxglService.GetPresent(Data);
             return new UIResult(
                 new
                 {
