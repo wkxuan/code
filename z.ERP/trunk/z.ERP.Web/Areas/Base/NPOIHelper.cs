@@ -1,5 +1,8 @@
 ﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using Spire.Doc;
+using Spire.Doc.Documents;
+using Spire.Doc.Fields;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -228,7 +231,44 @@ namespace z.ERP.Web.Areas.Base
             }
         }
         #endregion
-       
+
+        #region Word
+        class Bookmark { 
+            private Document doc = null;
+            public Bookmark(Document document)
+            {
+                doc = document;
+            }
+            /// <summary>
+            /// 用文本替换指定书签的内容
+            /// </summary>
+            /// <param name="bookmarkName">书签名</param>
+            /// <param name="text">文本</param>
+            /// <param name="saveFormatting">删除原始书签内容时，是否保留格式</param>
+            /// <returns>TextRange</returns>
+            public TextRange ReplaceContent(string bookmarkName, string text, bool saveFormatting)
+            {
+                BookmarksNavigator navigator = new BookmarksNavigator(doc);
+                navigator.MoveToBookmark(bookmarkName);//指向特定书签
+                navigator.DeleteBookmarkContent(saveFormatting);//删除原有书签内容     
+                Spire.Doc.Interface.ITextRange textRange = navigator.InsertText(text);//写入文本
+                return textRange as TextRange;
+            }
+        }
+        public static void SpireDoc(string time) {
+            //加载模板文档
+            Document doc = new Document();
+            string filePath = $@"{IOExtension.GetBaesDir()}\File\Template\合同模板.docx";
+            string outPath = $@"{IOExtension.GetBaesDir()}\File\Output\{time}\";
+            doc.LoadFromFile(filePath);
+            //初始化Bookmark对象
+            Bookmark bookmark = new Bookmark(doc);
+            bookmark.ReplaceContent("BRANCHIDS", "陕西", true);
+
+            //生成Word文件
+            doc.SaveToFile(outPath+"output.docx", FileFormat.Docx2013);
+        }
+        #endregion
     }
     public class NoSort : System.Collections.IComparer
     {
