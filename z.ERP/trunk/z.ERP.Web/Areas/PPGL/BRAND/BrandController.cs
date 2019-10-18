@@ -61,7 +61,7 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
         }
         public override ImportMsg ImportExcelDataHandle(DataTable dt)
         {
-            return service.SpglService.SaleBillImport(dt);
+            return service.XtglService.BrandImport(dt);
         }
 
     }

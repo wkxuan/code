@@ -819,6 +819,7 @@
     <Content Include="Areas\Pop\Pop\PopMerchantPaymentList.cshtml" />
     <Content Include="Areas\JSGL\ManualReturn\ManualReturn.cshtml" />
     <Content Include="File\Import\销售补录单.xls" />
+    <Content Include="File\Import\品牌信息.xls" />
     <None Include="File\Template\合同模板.docx" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>

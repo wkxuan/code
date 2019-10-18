@@ -38,7 +38,7 @@ namespace z.ERP.Services
             item.HasKey("WEIXIN", a => sql += $" and B.WEIXIN = '{a}'");
             item.HasKey("CONTRACTID", a => sql += $" and EXISTS(SELECT 1 FROM CONTRACT_BRAND D WHERE D.BRANDID=B.ID AND D.CONTRACTID={a})");
             item.HasKey("MERCHANTID", a => sql += $" and EXISTS(SELECT 1 FROM MERCHANT_BRAND D WHERE D.BRANDID=B.ID AND D.MERCHANTID={a})");
-
+            sql += " ORDER BY ID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
@@ -1309,14 +1309,16 @@ namespace z.ERP.Services
 
         public string SaveBrand(BRANDEntity SaveData)
         {
-            using (var Tran = DbHelper.BeginTransaction())
-            {
-                BrandPro(SaveData);
+            BrandPro(SaveData);
+            //using (var Tran = DbHelper.BeginTransaction())
+            //{
+            //    BrandPro(SaveData);
 
-                Tran.Commit();
-            }
+            //    Tran.Commit();
+            //}
             return SaveData.ID;
         }
+
 
         public ImportMsg VerifyImportBrand(DataTable dt, ref List<BRANDEntity> SaveDataList)
         {
@@ -1334,7 +1336,7 @@ namespace z.ERP.Services
                         backData.SuccFlag = false;
                         return backData;
                     }
-                    SaveData.ID = mc;
+                    SaveData.NAME = mc;
                 }
                 else
                 {
@@ -1342,9 +1344,9 @@ namespace z.ERP.Services
                     backData.SuccFlag = false;
                     return backData;
                 }
-                if(dt.Columns.Contains("业态"))
+                if(dt.Columns.Contains("业态代码"))
                 {
-                    var yt = dt.Rows[i]["业态"].ToString();
+                    var yt = dt.Rows[i]["业态代码"].ToString();
                     if(string.IsNullOrEmpty(yt))
                     {
                         backData.Message = $@"第{i + 1}行的业态不能为空！";
