@@ -9,11 +9,10 @@ using z.Extensions;
 
 namespace z.ERP.Web.Areas.Base
 {
-    /// <summary>
-    /// Excel生成操作类
-    /// </summary>
+
     public class NPOIHelper
     {
+        #region Excel
         /// <summary>
         /// 导出列名
         /// </summary>
@@ -84,7 +83,7 @@ namespace z.ERP.Web.Areas.Base
             //循环导出列
             foreach (System.Collections.DictionaryEntry de in ListColumnsName)
             {
-                ICell newCell = newRow.CreateCell(cellIndex);
+                NPOI.SS.UserModel.ICell newCell = newRow.CreateCell(cellIndex);
                 newCell.SetCellValue(de.Value.ToString());
                 cellIndex++;
             }
@@ -143,7 +142,7 @@ namespace z.ERP.Web.Areas.Base
             {
                 //列名称
                 string columnsName = ListColumnsName.GetKey(cellIndex).ToString();
-                ICell newCell = null;
+                NPOI.SS.UserModel.ICell newCell = null;
                 System.Type rowType = drSource[columnsName].GetType();
                 string drValue = drSource[columnsName].ToString().Trim();
                 switch (rowType.ToString())
@@ -228,6 +227,8 @@ namespace z.ERP.Web.Areas.Base
                 }
             }
         }
+        #endregion
+       
     }
     public class NoSort : System.Collections.IComparer
     {

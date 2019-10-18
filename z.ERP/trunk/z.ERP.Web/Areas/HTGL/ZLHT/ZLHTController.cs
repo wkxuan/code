@@ -98,9 +98,16 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
                 }
             );
         }
-        public string Output(SearchItem item)
+        public string Output(List<CONTRACTEntity> Data)
         {
-            return service.HtglService.GetContractOutput(item);
+            //var RES = new
+            //{
+            //    CONTRACTID = "陕西",
+            //    BRANCHID="西安",
+            //    MERCHANTID="临潼",
+            //};
+            //NPOIHelper.ExportWord(NPOIHelper.getProperties(RES));
+            return null;
         }
         //返回节点数据，并且返回当前节点要面临的操作步骤
         public UIResult Srchsplc(SPLCEntity Data)

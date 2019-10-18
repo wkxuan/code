@@ -101,3 +101,21 @@ search.addHref = function (row) {
     });
 
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "add",
+        authority: ""
+    }, {
+        id: "del",
+        authority: ""
+    }, {
+        id: "export",
+        authority: ""
+    }];
+}
