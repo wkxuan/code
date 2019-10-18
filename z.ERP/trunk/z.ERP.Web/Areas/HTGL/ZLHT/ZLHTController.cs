@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
@@ -100,13 +101,8 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         }
         public string Output(List<CONTRACTEntity> Data)
         {
-            //var RES = new
-            //{
-            //    CONTRACTID = "陕西",
-            //    BRANCHID="西安",
-            //    MERCHANTID="临潼",
-            //};
-            //NPOIHelper.ExportWord(NPOIHelper.getProperties(RES));
+            string time = DateTime.Now.ToString("yyyyMMdd HHmmss");
+            NPOIHelper.SpireDoc(time);
             return null;
         }
         //返回节点数据，并且返回当前节点要面临的操作步骤
