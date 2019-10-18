@@ -422,26 +422,7 @@ namespace z.ERP.Services
             DbHelper.ExecuteNonQuery(sql);
             DbHelper.Delete(DeleteData);
         }
-        public string BrandPro(BRANDEntity SaveData)
-        {
-            var v = GetVerify(SaveData);
-            if (SaveData.ID.IsEmpty())
-                SaveData.ID = CommonService.NewINC("BRAND");
-            SaveData.STATUS = "1";
-            SaveData.REPORTER = employee.Id;
-            SaveData.REPORTER_NAME = employee.Name;
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            v.Require(a => a.ID);
-            v.Require(a => a.NAME);
-            v.Require(a => a.CATEGORYID);
-            v.IsNumber(a => a.ID);
-            v.IsNumber(a => a.CATEGORYID);
-            v.IsUnique(a => a.ID);
-            v.IsUnique(a => a.NAME);
-            v.Verify();
-            DbHelper.Save(SaveData);
-            return SaveData.ID;
-        }
+        
         public virtual UIResult TreeCategoryData(SearchItem item)
         {
             string sql = $@"select C.CATEGORYID,C.CATEGORYCODE,C.CATEGORYNAME,C.LEVEL_LAST,C.CATEGORYIDCASCADER,NVL(C.COLOR,'') COLOR from CATEGORY C where 1=1 ";
@@ -1305,15 +1286,117 @@ namespace z.ERP.Services
             return data;
         }
 
+        public string BrandPro(BRANDEntity SaveData)
+        {
+            var v = GetVerify(SaveData);
+            if (SaveData.ID.IsEmpty())
+                SaveData.ID = CommonService.NewINC("BRAND");
+            SaveData.STATUS = "1";
+            SaveData.REPORTER = employee.Id;
+            SaveData.REPORTER_NAME = employee.Name;
+            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            v.Require(a => a.ID);
+            v.Require(a => a.NAME);
+            v.Require(a => a.CATEGORYID);
+            v.IsNumber(a => a.ID);
+            v.IsNumber(a => a.CATEGORYID);
+            v.IsUnique(a => a.ID);
+            v.IsUnique(a => a.NAME);
+            v.Verify();
+            DbHelper.Save(SaveData);
+            return SaveData.ID;
+        }
+
         public string SaveBrand(BRANDEntity SaveData)
         {
-            BrandPro(SaveData);
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                BrandPro(SaveData);
+
+                Tran.Commit();
+            }
             return SaveData.ID;
         }
 
         public ImportMsg VerifyImportBrand(DataTable dt, ref List<BRANDEntity> SaveDataList)
         {
             var backData = new ImportMsg();
+            for (var i=0; i<dt.Rows.Count;i++)
+            {
+                var SaveData = new BRANDEntity();
+
+                if(dt.Columns.Contains("名称"))
+                {
+                    var mc = dt.Rows[i]["名称"].ToString();
+                    if(string.IsNullOrEmpty(mc))
+                    {
+                        backData.Message = $@"第{i + 1}行的名称不能为空！";
+                        backData.SuccFlag = false;
+                        return backData;
+                    }
+                    SaveData.ID = mc;
+                }
+                else
+                {
+                    backData.Message = "导入项没有名称！";
+                    backData.SuccFlag = false;
+                    return backData;
+                }
+                if(dt.Columns.Contains("业态"))
+                {
+                    var yt = dt.Rows[i]["业态"].ToString();
+                    if(string.IsNullOrEmpty(yt))
+                    {
+                        backData.Message = $@"第{i + 1}行的业态不能为空！";
+                        backData.SuccFlag = false;
+                        return backData;
+                    }
+                    SaveData.CATEGORYID = GetTableDataKey("CATEGORY", "CATEGORYCODE", yt, "CATEGORYID");
+                    if (string.IsNullOrEmpty(SaveData.CATEGORYID))
+                    {
+                        backData.Message = $@"第{i + 1}行的业态代码{yt}不存在！";
+                        backData.SuccFlag = false;
+                        return backData;
+                    }
+                }
+                else
+                {
+                    backData.Message = "导入项没有业态！";
+                    backData.SuccFlag = false;
+                    return backData;
+                }
+                if(dt.Columns.Contains("地址"))
+                {
+                    var dz = dt.Rows[i]["地址"].ToString();
+                    SaveData.ADRESS= dz;
+                }
+                if(dt.Columns.Contains("联系人"))
+                {
+                    var lxr = dt.Rows[i]["联系人"].ToString();
+                    SaveData.CONTACTPERSON = lxr;
+                }
+                if(dt.Columns.Contains("电话"))
+                {
+                    var dh = dt.Rows[i]["电话"].ToString();
+                    SaveData.PHONENUM = dh;
+                }
+                if(dt.Columns.Contains("微信"))
+                {
+                    var wx = dt.Rows[i]["微信"].ToString();
+                    SaveData.WEIXIN = wx;
+                }
+                if(dt.Columns.Contains("邮编"))
+                {
+                    var yb = dt.Rows[i]["邮编"].ToString();
+                    SaveData.PIZ = yb;
+                }
+                if(dt.Columns.Contains("QQ"))
+                {
+                    var qq = dt.Rows[i]["QQ"].ToString();
+                    SaveData.QQ = qq;
+                }
+                SaveDataList.Add(SaveData);
+            }
             return backData;
 
         }
