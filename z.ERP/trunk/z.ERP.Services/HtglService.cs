@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using z.ERP.Entities;
 using z.ERP.Entities.Enum;
 using z.ERP.Entities.Procedures;
@@ -1082,5 +1083,124 @@ namespace z.ERP.Services
             }
             return "";
         }
+        #region 获取导出合同信息
+        public CONTRACTOUTPUTEntity GetContractOutPut(CONTRACTEntity Data) {
+            CONTRACTOUTPUTEntity Coutput = new CONTRACTOUTPUTEntity();
+            string sqlC = CONTRACTINFOSQL(Data.CONTRACTID);   //合同信息
+            DataTable dt = DbHelper.ExecuteTable(sqlC);
+            if (dt.Rows.Count>0) {
+                Coutput.CONTRACTID = Data.CONTRACTID;
+                Coutput.BRANCHNAME = dt.Rows[0]["BRANCHNAME"].ToString();
+                Coutput.MERCHANTNAME= dt.Rows[0]["MERCHANTNAME"].ToString();
+                Coutput.BRANCHADDRESS = dt.Rows[0]["BRANCHADDRESS"].ToString();
+                Coutput.AREAR = dt.Rows[0]["AREAR"].ToString();
+                Coutput.CONT_START = dt.Rows[0]["CONT_START"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
+                Coutput.CONT_END = dt.Rows[0]["CONT_END"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
+                Coutput.CONT_START1 = dt.Rows[0]["CONT_START"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
+                Coutput.CONT_END1 = dt.Rows[0]["CONT_END"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
+                Coutput.CONT_DAYS = dt.Rows[0]["CONT_DAYS"].ToString();
+                Coutput.FREE_BEGIN = dt.Rows[0]["FREE_BEGIN"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
+                Coutput.FREE_END = dt.Rows[0]["FREE_END"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
+                Coutput.FREEDAYS = dt.Rows[0]["FREEDAYS"].ToString();
+                Coutput.FEERULE_RENT = dt.Rows[0]["FEERULE_RENT"].ToString();
+            }
+            string sqlB = CONTRACT_BRANDINFOSQL(Data.CONTRACTID);   //品牌信息
+            DataTable dt1 = DbHelper.ExecuteTable(sqlB);
+            Coutput.BRANDNAME = dt1.Rows[0]["BRANDNAME"].ToString();
+            Coutput.BRANDNAME2 = "";
+            if (dt1.Rows.Count > 1) {
+                var brandname = "";
+                for (var i=1;i<= dt1.Rows.Count;i++) {
+                    brandname += dt1.Rows[i]["BRANDNAME"].ToString();
+                    if (i!= dt1.Rows.Count) {
+                        brandname += ",";
+                    }
+                }
+                Coutput.BRANDNAME2 = brandname;
+            }
+            string sqlS = CONTRACT_SHOPINFOSQL(Data.CONTRACTID);   //商铺信息
+            DataTable dt2 = DbHelper.ExecuteTable(sqlS);
+            Coutput.CATEGORYNAME= dt2.Rows[0]["CATEGORYNAME"].ToString();
+            var shopcode = "";
+            if (dt2.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt2.Rows) {
+                    shopcode += item["SHOPCODE"].ToString()+",";
+                }
+                shopcode.Substring(shopcode.LastIndexOf(",") + 1);
+            }
+            Coutput.SHOPCODE = shopcode;
+            string sqlRENT = CONTRACT_RENTINFOSQL(Data.CONTRACTID);   //租金信息
+            DataTable dt3 = DbHelper.ExecuteTable(sqlRENT);
+            if (dt3.Rows.Count>0) {
+                Coutput.RZJ_PRICE= dt3.Rows[0]["PRICE"].ToString();
+                decimal AMOUNT = 0;
+                foreach (DataRow item in dt3.Rows)
+                {
+                    AMOUNT += item["SUMRENTS"].ToString().ToDecimal();
+                }
+                Coutput.SUMRENTS = AMOUNT.ToString();
+            }
+            string sqlCOST = CONTRACT_COSTINFOSQL(Data.CONTRACTID);   //收费项目信息
+            DataTable dt4 = DbHelper.ExecuteTable(sqlCOST);
+            if (dt4.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt4.Rows) {
+                    if (item["NAME"].ToString().Contains("保证金")) {
+                        Coutput.BZJAMOUNT = item["COST"].ToString();
+                        Coutput.BZJAMOUNT_DX = ConvertToChinese(Coutput.BZJAMOUNT.ToDecimal());
+                    }
+                    if (item["NAME"].ToString().Contains("物业费"))
+                    {
+                        Coutput.WYF_PRICE = item["PRICE"].ToString();
+                        Coutput.SUMWYF = item["COST"].ToString();
+                        Coutput.SUMWYF_RENTS = (Coutput.SUMWYF.ToDecimal() + Coutput.SUMRENTS.ToDecimal()).ToString();
+                    }
+                }
+            }
+            return Coutput;
+        }
+        public string CONTRACTINFOSQL(string CONTRACTID) {
+            return $@"SELECT  C.CONTRACTID,B.NAME BRANCHNAME,M.NAME MERCHANTNAME,B.ADDRESS BRANCHADDRESS,C.AREAR,C.CONT_START,C.CONT_END,(C.CONT_END-C.CONT_START) CONT_DAYS,
+                    C.FREE_BEGIN,C.FREE_END,(C.FREE_END-C.FREE_BEGIN) FREEDAYS,F.NAME FEERULE_RENT 
+                    FROM CONTRACT C,BRANCH B,MERCHANT M,FEERULE F 
+                    WHERE C.BRANCHID=B.ID AND C.MERCHANTID=M.MERCHANTID AND C.FEERULE_RENT=F.ID  AND C.CONTRACTID={CONTRACTID}";
+        }
+        public string CONTRACT_BRANDINFOSQL(string CONTRACTID)
+        {
+            return $@"SELECT B.NAME BRANDNAME
+                    FROM CONTRACT_BRAND CB,BRAND B
+                    WHERE CB.BRANDID=B.ID AND CB.CONTRACTID={CONTRACTID}";
+        }
+        public string CONTRACT_SHOPINFOSQL(string CONTRACTID)
+        {
+            return $@"SELECT S.CODE SHOPCODE ,C.CATEGORYNAME
+                    FROM CONTRACT_SHOP CS,SHOP S,CATEGORY C
+                    WHERE CS.SHOPID=S.SHOPID AND CS.CATEGORYID=C.CATEGORYID AND CS.CONTRACTID={CONTRACTID}";
+        }
+        public string CONTRACT_RENTINFOSQL(string CONTRACTID)
+        {
+            return $@"SELECT CR.PRICE, CR.SUMRENTS
+                    FROM CONTRACT_RENT CR WHERE CR.CONTRACTID={CONTRACTID}";
+        }
+        public string CONTRACT_COSTINFOSQL(string CONTRACTID)
+        {
+            return $@"SELECT CS.PRICE,CS.COST ,F.NAME
+                    FROM CONTRACT_COST CS,FEESUBJECT F
+                    WHERE  CS.TERMID=F.TRIMID AND CS.CONTRACTID={CONTRACTID}";
+        }
+        /// <summary>
+        /// 数字转换成大写
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static string ConvertToChinese(decimal number)
+        {
+            var s = number.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A");
+            var d = Regex.Replace(s, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}");
+            var r = Regex.Replace(d, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString());
+            return r;
+        }
+        #endregion
     }
 }

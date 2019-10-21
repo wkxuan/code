@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using z.ERP.Entities;
 using z.Extensions;
 
 namespace z.ERP.Web.Areas.Base
@@ -254,19 +255,37 @@ namespace z.ERP.Web.Areas.Base
                 Spire.Doc.Interface.ITextRange textRange = navigator.InsertText(text);//写入文本
                 return textRange as TextRange;
             }
+            public string objectlist(CONTRACTOUTPUTEntity data) {               
+                var datad = data.ToDictionary();
+                var name = "";
+                foreach (var item in datad)
+                {
+                    if (item.Key== "MERCHANTNAME") { name = item.Value; }
+                    ReplaceContent(item.Key, item.Value, true);
+                }
+                return name;
+            }
         }
-        public static void SpireDoc(string time) {
+        public static void SpireDoc(string time, CONTRACTOUTPUTEntity data) {
             //加载模板文档
             Document doc = new Document();
             string filePath = $@"{IOExtension.GetBaesDir()}\File\Template\合同模板.docx";
-            string outPath = $@"{IOExtension.GetBaesDir()}\File\Output\{time}\";
+            string outPath = $@"{IOExtension.GetBaesDir()}\File\Output\Contract\{time}\";
+            Directory.CreateDirectory(outPath);   //创建文件夹
             doc.LoadFromFile(filePath);
             //初始化Bookmark对象
             Bookmark bookmark = new Bookmark(doc);
-            bookmark.ReplaceContent("BRANCHIDS", "陕西", true);
-
+            //循环赋值
+            var MERCHANTNAME= bookmark.objectlist(data);
             //生成Word文件
-            doc.SaveToFile(outPath+"output.docx", FileFormat.Docx2013);
+            var outp = outPath + MERCHANTNAME + ".docx";
+            doc.SaveToFile(outp, FileFormat.Docx2013);
+        }
+        public static string FilePath(string time) {
+            string filepath = $@"{IOExtension.GetBaesDir()}\File\Output\Contract\{time}";
+            string outpath = $@"{IOExtension.GetBaesDir()}\File\Output\Contract\{time}.zip";
+            FileHelper.CreateZip(filepath, outpath);
+            return $@"/File/Output/Contract/{time}.zip";
         }
         #endregion
     }

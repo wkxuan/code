@@ -116,6 +116,21 @@ search.mountedInit = function () {
         authority: ""
     }, {
         id: "export",
-        authority: ""
+        authority: "",
+        fun: function () {
+            let selection = search.vueObj.$refs.selectData.getSelection();
+            if (selection.length == 0) {
+                iview.Message.info("请选中要导出的合同信息!");
+            } else {
+                _.Ajax('Output', {
+                    Data: selection
+                }, function (data) {
+                    if (data) {
+                        debugger
+                        window.location.href = __BaseUrl + data;
+                    }
+                });
+            }
+        },
     }];
 }

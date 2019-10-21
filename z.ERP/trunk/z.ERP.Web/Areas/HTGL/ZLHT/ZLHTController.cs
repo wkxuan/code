@@ -101,9 +101,14 @@ namespace z.ERP.Web.Areas.HTGL.ZLHT
         }
         public string Output(List<CONTRACTEntity> Data)
         {
-            string time = DateTime.Now.ToString("yyyyMMdd HHmmss");
-            NPOIHelper.SpireDoc(time);
-            return null;
+            string time = DateTime.Now.ToString("yyyyMMddHHmmss");
+            FileHelper.DeleteDirzip();
+            foreach (var item in Data) {
+                var res = service.HtglService.GetContractOutPut(item);
+                NPOIHelper.SpireDoc(time, res);
+            }
+            var path = NPOIHelper.FilePath(time);
+            return path;
         }
         //返回节点数据，并且返回当前节点要面临的操作步骤
         public UIResult Srchsplc(SPLCEntity Data)
