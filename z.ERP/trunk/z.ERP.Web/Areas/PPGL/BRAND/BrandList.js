@@ -30,6 +30,7 @@
 
     search.searchParam.CATEGORYCODE = "";
     search.screenParam.CATEGORY = [];
+    search.uploadName = "品牌信息";
 }
 
 search.addHref = function (row) {
@@ -61,9 +62,6 @@ search.mountedInit = function () {
         authority: ""
     }, {
         id: "upload",
-        authority: ""
-    }, {
-        id: "print",
         authority: ""
     }];
 }
