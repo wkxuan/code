@@ -1594,7 +1594,17 @@ editDetail.mountedInit = function () {
             editDetail.otherMethods.exec();
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.BILLID && data.STATUS == 1) {
+
+            console.log(editDetail.screenParam);
+            //没有审批流程或者有审批流程并且有当前审批流程节点权限才有审核按钮
+            let splcjdLength = (editDetail.screenParam.splcjd.length > 0);
+            let splcjgLength = (editDetail.screenParam.splcjg.length > 0);
+            console.log(splcjdLength);
+            console.log(splcjgLength);
+            if ((!disabled && data.BILLID && (data.STATUS == 1) && !splcjdLength)
+                ||
+                (splcjdLength && splcjgLength)
+                ) {
                 return true;
             } else {
                 return false;

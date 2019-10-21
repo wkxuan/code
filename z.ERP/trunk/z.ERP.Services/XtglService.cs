@@ -422,7 +422,7 @@ namespace z.ERP.Services
             DbHelper.ExecuteNonQuery(sql);
             DbHelper.Delete(DeleteData);
         }
-        
+
         public virtual UIResult TreeCategoryData(SearchItem item)
         {
             string sql = $@"select C.CATEGORYID,C.CATEGORYCODE,C.CATEGORYNAME,C.LEVEL_LAST,C.CATEGORYIDCASCADER,NVL(C.COLOR,'') COLOR from CATEGORY C where 1=1 ";
@@ -853,16 +853,15 @@ namespace z.ERP.Services
         }
         public Tuple<DataTable, DataTable, int> GetSplc(SPLCEntity Data)
         {
-            //找当前应该是那个节点数据
+
             if (Data.MENUID.IsEmpty())
             {
                 throw new LogicException("请确认查找审批流程的菜单号信息!");
             }
             //查找菜单对应的审批流程数据
+            //应该所有的流程都能看得见
             string sql = $@"select JDID,JDNAME from";
             sql += " SPLCDEFD A,SPLCJD B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
-            sql += " AND  EXISTS(SELECT 1 FROM SYSUSER C,USER_ROLE D";
-            sql += " WHERE C.USERID = D.USERID AND B.ROLEID = D.ROLEID AND C.USERID=" + employee.Id + ")";
             sql += " AND A.MENUID= " + Data.MENUID;
             DataTable splcjd = DbHelper.ExecuteTable(sql);
 
@@ -879,12 +878,9 @@ namespace z.ERP.Services
             {
                 curJdid = spBillJg.Rows[0][0].ToString().ToInt();
             }
-            //根据菜单号和单据编号查询审批流执行节点的结果
+
             string sqlxz = $@"select JDID,JGID,JGTYPE,JGMC from";
             sqlxz += " SPLCDEFD A,SPLCJG B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
-
-            sql += " AND  EXISTS(SELECT 1 FROM SPLCJD L,SYSUSER C,USER_ROLE D";
-            sql += " WHERE C.USERID = D.USERID AND L.ROLEID = D.ROLEID AND L.BILLID = B.BILLID AND C.USERID=" + employee.Id + ")";
 
             sqlxz += " AND A.MENUID= " + Data.MENUID;
             sqlxz += " AND B.JDID= " + curJdid;
@@ -897,9 +893,38 @@ namespace z.ERP.Services
                  curJdid
             );
         }
+
+        public bool SrchSplcQx(int MENUID, int CURJDID)
+        {
+            var result = false;
+
+            string sqldef = $@"select JDID,JDNAME from";
+            sqldef += " SPLCDEFD A,SPLCJD B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+            sqldef += " AND A.MENUID= " + MENUID;
+            DataTable splc = DbHelper.ExecuteTable(sqldef);
+
+
+            string sql = $@"select JDID,JGID,JGTYPE,JGMC from";
+            sql += " SPLCDEFD A,SPLCJG B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
+
+            sql += " AND  EXISTS(SELECT 1 FROM SPLCJD L,SYSUSER C,USER_ROLE D";
+            sql += " WHERE C.USERID = D.USERID AND L.ROLEID = D.ROLEID";
+            sql += " AND L.BILLID = B.BILLID AND C.USERID = " + employee.Id + ")";
+
+            sql += " AND A.MENUID='" + MENUID + "' ";
+            sql += " AND B.JDID= " + CURJDID;
+            DataTable splcjd = DbHelper.ExecuteTable(sql);
+            //当有审批流程定义，但是当前节点没权限
+            if ((splc.Rows.Count > 0) && (splcjd.Rows.Count == 0))
+                result = true;
+            return result;
+        }
         public void ExecMenuSplc(SPLCMENUEntity DataInto)
         {
-
+            if (SrchSplcQx(10600200, DataInto.CURJDID.ToInt()))
+            {
+                throw new LogicException("当前操作员无当前审批权限!");
+            }
             string sqlxz = $@"select JDTYPE from";
             sqlxz += " SPLCDEFD A,SPLCJD B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
             sqlxz += " AND A.MENUID= " + DataInto.MENUID;
@@ -1323,14 +1348,14 @@ namespace z.ERP.Services
         public ImportMsg VerifyImportBrand(DataTable dt, ref List<BRANDEntity> SaveDataList)
         {
             var backData = new ImportMsg();
-            for (var i=0; i<dt.Rows.Count;i++)
+            for (var i = 0; i < dt.Rows.Count; i++)
             {
                 var SaveData = new BRANDEntity();
 
-                if(dt.Columns.Contains("名称"))
+                if (dt.Columns.Contains("名称"))
                 {
                     var mc = dt.Rows[i]["名称"].ToString();
-                    if(string.IsNullOrEmpty(mc))
+                    if (string.IsNullOrEmpty(mc))
                     {
                         backData.Message = $@"第{i + 1}行的名称不能为空！";
                         backData.SuccFlag = false;
@@ -1344,10 +1369,10 @@ namespace z.ERP.Services
                     backData.SuccFlag = false;
                     return backData;
                 }
-                if(dt.Columns.Contains("业态代码"))
+                if (dt.Columns.Contains("业态代码"))
                 {
                     var yt = dt.Rows[i]["业态代码"].ToString();
-                    if(string.IsNullOrEmpty(yt))
+                    if (string.IsNullOrEmpty(yt))
                     {
                         backData.Message = $@"第{i + 1}行的业态不能为空！";
                         backData.SuccFlag = false;
@@ -1367,32 +1392,32 @@ namespace z.ERP.Services
                     backData.SuccFlag = false;
                     return backData;
                 }
-                if(dt.Columns.Contains("地址"))
+                if (dt.Columns.Contains("地址"))
                 {
                     var dz = dt.Rows[i]["地址"].ToString();
-                    SaveData.ADRESS= dz;
+                    SaveData.ADRESS = dz;
                 }
-                if(dt.Columns.Contains("联系人"))
+                if (dt.Columns.Contains("联系人"))
                 {
                     var lxr = dt.Rows[i]["联系人"].ToString();
                     SaveData.CONTACTPERSON = lxr;
                 }
-                if(dt.Columns.Contains("电话"))
+                if (dt.Columns.Contains("电话"))
                 {
                     var dh = dt.Rows[i]["电话"].ToString();
                     SaveData.PHONENUM = dh;
                 }
-                if(dt.Columns.Contains("微信"))
+                if (dt.Columns.Contains("微信"))
                 {
                     var wx = dt.Rows[i]["微信"].ToString();
                     SaveData.WEIXIN = wx;
                 }
-                if(dt.Columns.Contains("邮编"))
+                if (dt.Columns.Contains("邮编"))
                 {
                     var yb = dt.Rows[i]["邮编"].ToString();
                     SaveData.PIZ = yb;
                 }
-                if(dt.Columns.Contains("QQ"))
+                if (dt.Columns.Contains("QQ"))
                 {
                     var qq = dt.Rows[i]["QQ"].ToString();
                     SaveData.QQ = qq;
