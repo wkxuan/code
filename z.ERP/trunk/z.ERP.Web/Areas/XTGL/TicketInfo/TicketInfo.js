@@ -27,7 +27,6 @@
         }];
 };
 
-
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",

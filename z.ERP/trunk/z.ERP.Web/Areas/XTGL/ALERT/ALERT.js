@@ -4,7 +4,6 @@
         { title: '名称', key: 'MC'},
         { title: '显示顺序', key: 'XSSX', width: 100 },
     ];
-    define.dataParam.ALERT_FIELD =[];
     define.screenParam.colAlertField = [
     {
         title: "字段名",
@@ -28,7 +27,13 @@
     define.methodList = "GetAlert";
     define.Key = 'ID';
 };
-
+define.initDataParam = function () {
+    define.dataParam.ID = "";
+    define.dataParam.NAME = "";
+    define.dataParam.XSSX = "";
+    define.dataParam.SQLSTR = "";
+    define.dataParam.ALERT_FIELD = [];
+}
 define.otherMethods = {
     addCol: function () {
         var plsx;

@@ -1,5 +1,4 @@
-﻿define.beforeVue = function()
-{
+﻿define.beforeVue = function () {
     define.screenParam.colDef = [
         { title: "代码", key: "ID", width: 120 },
         { title: "名称", key: "NAME" },
@@ -10,13 +9,12 @@
     define.Key = "ID";
 }
 
-define.getKey = function (data) {
-    if (typeof (data) == "undefined") {
-        return { ID: define.dataParam.ID }
-    }
-    else {
-        return { ID: data }
-    }
+define.initDataParam = function () {
+    define.dataParam.ID = "";
+    define.dataParam.NAME = "";
+    define.dataParam.RATIO = "";
+    define.dataParam.DAYS = "";
+    define.dataParam.AMOUNTS = "";
 }
 
 define.IsValidSave = function () {
@@ -24,24 +22,21 @@ define.IsValidSave = function () {
         iview.Message.info("名称不能为空!");
         return false;
     }
-    if (isNaN(define.dataParam.RATIO)) {
-        iview.Message.info("滞纳金比例必须为数字!");
+    if (!define.dataParam.RATIO) {
+        iview.Message.info("滞纳金比例不能为空!");
         return false;
     }
-    if (parseFloat(define.dataParam.RATIO) < 0 || parseFloat(define.dataParam.RATIO)/100 >1) {
+    if (parseFloat(define.dataParam.RATIO) < 0 || parseFloat(define.dataParam.RATIO) / 100 > 1) {
         iview.Message.info("滞纳金比例超出0~1的范围!");
         return false;
     }
-    if (isNaN(define.dataParam.DAYS)) {
-        iview.Message.info("宽限天数必须为数字!");
+    if (!define.dataParam.DAYS) {
+        iview.Message.info("宽限天数不能为空!");
         return false;
     }
-    if (isNaN(define.dataParam.AMOUNTS)) {
-        iview.Message.info("宽限金额必须为数字!");
+    if (!define.dataParam.AMOUNTS) {
+        iview.Message.info("宽限金额不能为空!");
         return false;
     }
-
-    
-
     return true;
 };

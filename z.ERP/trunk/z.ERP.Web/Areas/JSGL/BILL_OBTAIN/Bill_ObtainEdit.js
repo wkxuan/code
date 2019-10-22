@@ -23,7 +23,7 @@
                 iview.Message.info("此账单的付款金额不能大于未付金额!");
                 return;
             }
-            editDetail.veObj.computeAllmoney();
+            editDetail.vueObj.computeAllmoney();
         }
     }];
 };
@@ -79,7 +79,7 @@ editDetail.otherMethods = {
                     }
                 }
             }
-            editDetail.veObj.computeAllmoney();
+            editDetail.vueObj.computeAllmoney();
         }
     },
     //计算收款金额

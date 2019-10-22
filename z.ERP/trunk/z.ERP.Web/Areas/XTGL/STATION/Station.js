@@ -1,12 +1,4 @@
 ﻿define.beforeVue = function () {
-    define.dataParam.IP = null;
-    define.dataParam.SHOPID = null;
-    define.dataParam.SHOPCODE = null;
-    define.dataParam.TYPE = null;
-    define.dataParam.NETWORK_NODE_ADDRESS = null;
-    define.dataParam.STATIONBH = null;
-    define.dataParam.STATION_PAY = [];
-    define.screenParam.STATION_PAY_DATA = [];
     define.service = "XtglService";
     define.method = "GetStaion";
     define.methodList = "GetStaion";
@@ -23,33 +15,17 @@
        { title: '代码', key: 'PAYID', width: 80 },
        { title: '名称', key: 'NAME' }
     ];
+}
 
-    define.screenParam.showPop = false;
-    define.screenParam.srcPop = null;
-    define.screenParam.title = null;
-    define.screenParam.popParam = {};
-
-    //以下三个表格事件
-    define.screenParam.selectData = function (selection, row) {
-        define.checkSTATION_PAY(selection);
-    };
-
-    define.screenParam.selectDataAll = function (selection) {
-        define.checkSTATION_PAY(selection);
-    };
-    define.screenParam.selectCancel = function (selection) {
-        define.checkSTATION_PAY(selection);
-    };
-
-    define.checkSTATION_PAY = function (selection) {
-        define.dataParam.STATION_PAY = [];
-        let localData = [];
-        for (var i = 0; i < selection.length; i++) {
-            localData.push({ PAYID: selection[i].PAYID });
-        };
-        Vue.set(define.dataParam, 'STATION_PAY', localData);
-    }
-
+define.initDataParam = function () {
+    define.dataParam.IP = null;
+    define.dataParam.SHOPID = null;
+    define.dataParam.SHOPCODE = null;
+    define.dataParam.TYPE = null;
+    define.dataParam.NETWORK_NODE_ADDRESS = null;
+    define.dataParam.STATIONBH = null;
+    define.dataParam.STATION_PAY = [];
+    define.screenParam.STATION_PAY_DATA = [];
 }
 
 define.newRecord = function () {
@@ -106,6 +82,9 @@ define.showOne = function (data, callback) {
     });
 }
 
+define.cancelAfter = function () {
+    define.showOne(define.backData.STATIONBH);
+}
 define.otherMethods = {
     branchChange: function (value) {
         define.dataParam.BRANCHID = define.searchParam.BRANCHID;
@@ -117,26 +96,24 @@ define.otherMethods = {
             iview.Message.info("门店不能为空!");
             return;
         }
-        define.screenParam.title = "选择店铺";
-        define.screenParam.showPop = true;
-        define.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopShopList/";
         define.screenParam.popParam = { BRANCHID: define.dataParam.BRANCHID };
+        define.popConfig.title = "选择店铺";
+        define.popConfig.src = __BaseUrl + "/Pop/Pop/PopShopList/";
+        define.popConfig.open = true;
     },
-    atoA: function () {
+    mackeyup: function () {
         define.dataParam.NETWORK_NODE_ADDRESS = define.dataParam.NETWORK_NODE_ADDRESS.toUpperCase()
     }
 }
 
 //接收子页面返回值
 define.popCallBack = function (data) {
-    if (define.screenParam.showPop) {
-        define.screenParam.showPop = false;
-        if (define.screenParam.title == "选择店铺") {
-            for (var i = 0; i < data.sj.length; i++) {
-                define.dataParam.SHOPID = data.sj[i].SHOPID;
-                define.dataParam.SHOPCODE = data.sj[i].SHOPCODE;
-            };
-        }
+    define.popConfig.open = false;
+    if (define.popConfig.title == "选择店铺") {
+        for (let i = 0; i < data.sj.length; i++) {
+            define.dataParam.SHOPID = data.sj[i].SHOPID;
+            define.dataParam.SHOPCODE = data.sj[i].SHOPCODE;
+        };
     }
 };
 
@@ -158,6 +135,12 @@ define.IsValidSave = function () {
         iview.Message.info("类型为店铺时，店铺不能为空!");
         return false;
     };
-
+    define.dataParam.STATION_PAY = [];
+    let list = define.vueObj.$refs.payRef.getSelection();
+    if (list) {
+        for (var i = 0; i < list.length; i++) {
+            define.dataParam.STATION_PAY.push({ PAYID: list[i].PAYID });
+        };
+    };
     return true;
 };

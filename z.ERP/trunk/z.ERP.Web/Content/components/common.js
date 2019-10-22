@@ -56,7 +56,7 @@ Vue.component('yx-table', {
     mounted() {
         this.curShowHeader = this.showHeader;
         this.curWidth = this.width;
-        this.curHeight = this.height || 438;
+        this.curHeight = this.height;
         this.curStripe = this.stripe || true;
         this.curBorder = this.border || true;
     },

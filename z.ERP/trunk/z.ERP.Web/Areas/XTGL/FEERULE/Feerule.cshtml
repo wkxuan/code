@@ -5,18 +5,11 @@
 
 @section element{
     <row>
-        <i-col  span="4" class="RowTitle">
+        <i-col span="4" class="RowTitle">
             收费规则代码
         </i-col>
-        <i-col span="6">
-            @{ 
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ID",
-                    Id = "tb_code",
-                    Readonly = "true"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ID" disabled />
         </i-col>
     </row>
     <row>
@@ -24,12 +17,33 @@
             <span class="mustElement">*</span>
             收费规则名称
         </i-col>
-        <i-col span="6">
-            @{ 
-                RenderControl(new TextBoxRender()
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            缴费周期(月)
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.PAY_CYCLE" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            出单日期
+        </i-col>
+        <i-col span="3" class="RowText">
+            <i-input v-model="dataParam.FEE_DAY" v-bind:disabled="disabled" />
+        </i-col>
+        <i-col span="1" class="RowTitle">或</i-col>
+        <i-col span="2" class="RowText">
+            @{
+                RenderControl(new EnumCheckBoxListRender<月末标记>()
                 {
-                    vModel = "dataParam.NAME",
-                    Id = "tb_name",
+                    vModel = "dataParam.FEE_DAY",
                     Enable = false,
                 });
             }
@@ -38,59 +52,10 @@
     <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
-            缴费周期(月)
-        </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.PAY_CYCLE",
-                    Id = "tb_paycycle",
-                    Enable = false
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="4" class="RowTitle">
-            <span class="mustElement">*</span>
-            出单日期
-        </i-col>
-        <i-col span="3">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.FEE_DAY",
-                    Id = "tb_feeday",
-                    Enable = false
-                });
-            }
-        </i-col>
-        <i-col span="1" class="RowTitle">或</i-col>
-        <i-col span="2">
-            @{ 
-                RenderControl(new EnumCheckBoxListRender<月末标记>()
-                {
-                    vModel = "dataParam.FEE_DAY",
-                    Enable = false, 
-                  });
-             }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="4" class="RowTitle">
-            <span class="mustElement">*</span>
             提前周期(月)
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ADVANCE_CYCLE",
-                    Id = "tb_advancecycle",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ADVANCE_CYCLE" v-bind:disabled="disabled" />
         </i-col>
         <i-col>提前周期为-1时，出单日期中所填数值表示提前多少天出单</i-col>
     </row>
@@ -99,17 +64,11 @@
             <span class="mustElement">*</span>
             缴费截至日
         </i-col>
-        <i-col span="3">
-            @{ 
-                RenderControl(new TextBoxRender() {
-                    vModel = "dataParam.UP_DATE",
-                    Id = "tb_upd",
-                    Enable = false,
-                });
-            }
+        <i-col span="3" class="RowText">
+            <i-input v-model="dataParam.UP_DATE" v-bind:disabled="disabled" />
         </i-col>
         <i-col span="1" class="RowTitle">或</i-col>
-        <i-col span="2">
+        <i-col span="2" class="RowText">
             @{
                 RenderControl(new EnumCheckBoxListRender<月末标记>()
                 {
@@ -120,30 +79,22 @@
         </i-col>
 
     </row>
-
     <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             缴费截至周期(月)
         </i-col>
-        <i-col span="6">
-            @{ 
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.PAY_UP_CYCLE",
-                    Id = "tb_payupcycle",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.PAY_UP_CYCLE" v-bind:disabled="disabled" />
         </i-col>
     </row>
 
     <row>
         <i-col span="4" class="RowTitle">
             作废标记
-        </i-col> 
-        <i-col span="6">
-            @{ 
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
                 RenderControl(new EnumDropDownListRender<停用标记>()
                 {
                     vModel = "dataParam.VOID_FLAG",

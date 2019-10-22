@@ -30,7 +30,14 @@
     search.screenParam.branchData = [];
     search.screenParam.regionData = [];
 }
-
+search.newCondition = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.REGIONID = "";
+    search.searchParam.CODE = "";
+    search.searchParam.NAME = "";
+    search.searchParam.AREA_BUILD_S = "";
+    search.searchParam.AREA_BUILD_E = "";
+};
 search.mountedInit = function () {
     search.otherMethods.initBranch();
 

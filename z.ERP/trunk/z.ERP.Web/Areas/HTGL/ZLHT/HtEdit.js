@@ -410,7 +410,7 @@ editDetail.popCallBack = function (data) {
             }
         }
         if (editDetail.screenParam.title == "选择收款方式的费用项目") {
-            let selection = editDetail.veObj.$refs.refPay.getSelection();
+            let selection = editDetail.vueObj.$refs.refPay.getSelection();
             let pay = editDetail.dataParam.CONTRACT_PAY
             for (let i = 0; i < selection.length; i++) {
                 for (let j = 0; j < pay.length; j++) {
@@ -1168,7 +1168,7 @@ editDetail.clearKey = function () {
 
 editDetail.afterEdit = function () {
     if (editDetail.dataParam.HTLX == 2) {
-        editDetail.veObj.branchDisabled = true;
+        editDetail.vueObj.branchDisabled = true;
     }
 };
 
@@ -1624,8 +1624,8 @@ editDetail.mountedInit = function () {
                     iview.Message.info(`原租约${editDetail.dataParam.CONTRACTID}已存在未启动的变更合同${data},不能再次变更!`);
                 } else {
                     editDetail.backData = DeepClone(editDetail.dataParam);
-                    editDetail.veObj.branchDisabled = true;
-                    editDetail.veObj.disabled = true;
+                    editDetail.vueObj.branchDisabled = true;
+                    editDetail.vueObj.disabled = true;
                     editDetail.dataParam.CONTRACT_OLD = editDetail.dataParam.BILLID;
                     editDetail.dataParam.BILLID = null;
                     editDetail.dataParam.CONTRACTID = null;

@@ -1,9 +1,8 @@
 ﻿define.beforeVue = function () {
-
     define.screenParam.colDef = [
         {
             title: "项目代码",
-            key: 'TERMID',width:150
+            key: 'TERMID', width: 150
         },
         {
             title: '费用项目名称',
@@ -15,19 +14,21 @@
         }];
 
     define.service = "XtglService";
-    define.method= "GetFEESUBJECT_ACCOUNT";
+    define.method = "GetFEESUBJECT_ACCOUNT";
     define.methodList = "GetFEESUBJECT_ACCOUNT";
     define.screenParam.showPopFeeSubject = false;
     define.screenParam.srcPopFeeSubject = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
     define.Key = 'TERMID';
 
+
+};
+define.initDataParam = function () {
     define.dataParam.TERMID = null;
     define.dataParam.TERMNAME = null;
     define.dataParam.FEE_ACCOUNTID = null;
     define.dataParam.NOTICE_CREATE_WAY = null;
-};
-
-define.mountedInit=function(){
+}
+define.mountedInit = function () {
     _.Ajax('GetBranch', {
         Data: { ID: "" }
     }, function (data) {
@@ -58,9 +59,10 @@ define.otherMethods = {
     branchChange: function (value) {
         define.dataParam.BRANCHID = define.searchParam.BRANCHID;
         this.FEE_ACCOUNTDATA(define.searchParam.BRANCHID);
+        define.initDataParam();
         define.showlist();
     },
-    FEE_ACCOUNTDATA:function(value){
+    FEE_ACCOUNTDATA: function (value) {
         _.Ajax('GetFEE_ACCOUNTDATA', {
             Data: { BRANCHID: value }
         }, function (data) {
@@ -73,28 +75,32 @@ define.otherMethods = {
     //点击费用项目弹窗
     srchFeeSubject: function () {
         define.dataParam.BRANCHID = define.searchParam.BRANCHID;
-        if (!define.dataParam.BRANCHID) { return iview.Message.info("请选择门店"); }
-        define.screenParam.showPopFeeSubject = true;
+        if (!define.dataParam.BRANCHID) {
+            return iview.Message.info("请选择门店");
+        }
         define.screenParam.popParam = { SqlCondition: " not exists(select 1 from FEESUBJECT_ACCOUNT  where FEESUBJECT_ACCOUNT.TERMID=FEESUBJECT.TRIMID AND FEESUBJECT_ACCOUNT.BRANCHID=" + define.dataParam.BRANCHID + ")" };
+        define.popConfig.title = "选择费用项目";
+        define.popConfig.src = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
+        define.popConfig.open = true;
     },
 };
 
 
-define.newRecord = function () {
-    define.dataParam.BRANCHID = define.searchParam.BRANCHID;
-    define.dataParam.TERMID = null;
-    define.dataParam.TERMNAME = null;
-    define.dataParam.FEE_ACCOUNTID = null;
-    define.dataParam.NOTICE_CREATE_WAY = null;
-};
+//define.newRecord = function () {
+//    define.dataParam.BRANCHID = define.searchParam.BRANCHID;
+//    define.dataParam.TERMID = null;
+//    define.dataParam.TERMNAME = null;
+//    define.dataParam.FEE_ACCOUNTID = null;
+//    define.dataParam.NOTICE_CREATE_WAY = null;
+//};
 
 define.popCallBack = function (data) {
-    if (define.screenParam.showPopFeeSubject) {
-        define.screenParam.showPopFeeSubject = false;
-        for (let j = 0; j < data.sj.length; j++) {
-            define.dataParam.TERMID = data.sj[j].TRIMID;
-            define.dataParam.TERMNAME = data.sj[j].NAME;
-        }
+    define.popConfig.open = false;
+    if (define.popConfig.title == "选择费用项目") {
+        for (var i = 0; i < data.sj.length; i++) {
+            define.dataParam.TERMID = data.sj[i].TRIMID;
+            define.dataParam.TERMNAME = data.sj[i].NAME;
+        };
     }
 };
 

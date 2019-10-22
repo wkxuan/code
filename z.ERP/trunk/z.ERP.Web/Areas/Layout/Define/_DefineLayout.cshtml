@@ -1,5 +1,4 @@
 ﻿@inherits ViewBase<DefineRender>
-@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Web.Areas.Layout.Define
 @using z.MVC5.Views
 @{
@@ -15,137 +14,78 @@
     @RenderSection("head", false)
 
     <style>
-        #def_Main {
+        #define {
             overflow: hidden;
             height: 100%;
         }
 
-            #def_Main .topMenuBtn {
+            #define .topMenuBtn {
                 height: 35px;
                 text-align: left;
                 line-height: 35px;
                 background: #2d8cf0;
                 padding-left: 10px;
+                line-height: 35px;
             }
 
-            #def_Main .contentSplit {
+                #define .topMenuBtn .ivu-btn {
+                    color: #fff;
+                }
+
+                    #define .topMenuBtn .ivu-btn:hover {
+                        color: #000000;
+                    }
+
+            #define .contentSplit {
                 height: calc(100% - 35px);
                 overflow: hidden;
                 width: 100%;
             }
 
-            #def_Main .ivu-split-pane {
+            #define .ivu-split-pane {
                 overflow: auto;
             }
-            
-             #def_Main .rightPane {
-                padding-top:8px;
-                overflow: hidden;
+
+            #define .rightPane {
+                padding-top: 8px;
+                overflow-x: hidden;
+                overflow-y: auto;
+                height: 100%;
             }
-            #def_Main .leftPane {
+
+            #define .leftPane {
                 overflow: hidden;
                 height: 100%;
             }
 
-                #def_Main .leftPane .paramDivCon {
-                    margin:8px;
+                #define .leftPane .paramDivCon {
+                    margin: 8px;
+                }
+
+            #define .ivu-table-wrapper {
+                height: 100%;
+            }
+
+                #define .ivu-table-wrapper .ivu-table-body {
+                    overflow: auto;
+                    height: calc(100% - 95px);
                 }
     </style>
 }
 
-<div id="def_Main" v-cloak>
+<div id="define" v-cloak>
     <div class="topMenuBtn">
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "seachList",
-                Text = "查询",
-                Enable = true,
-                Type = "primary",
-                Invisible = (Model?.Invisible_Srch).GetValueOrDefault(),
-                Icon = "md-search"
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "add",
-                Text = "新增",
-                Enable = true,
-                Type = "primary",
-                Invisible = (Model?.Invisible_Add).GetValueOrDefault(),
-                PermissionKey = Model?.Permission_Add,
-                Icon = "md-add"
-            });
-        }
-        <span v-show="topbtnModVisible">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "mod",
-                    Text = "修改",
-                    Enable = true,
-                    Type = "primary",
-                    PermissionKey = Model?.Permission_Mod,
-                    Icon = "md-create"
-                });
-            }
-        </span>
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "save",
-                Text = "存档",
-                Enable = false,
-                Type = "primary",
-                //PermissionKey =Model?.Permission_Save,
-                Icon = "md-checkmark-circle"
-            });
-        }
-        @{
-            RenderControl(new ButtonRender()
-            {
-                Click = "quit",
-                Text = "放弃",
-                Enable = false,
-                Type = "warning",
-                Icon = "md-close"
-            });
-        }
-        @*@{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "del",
-                    Text = "删除",
-                    Enable= true,
-                    Type = "error",
-                    Icon = "md-trash"
-                });
-            }*@
-        <span v-show="topbtnChkVisible">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "chk",
-                    Text = "审核",
-                    Enable = true,
-                    Type = "primary",
-                    Invisible = (Model?.Invisible_Chk).GetValueOrDefault(),
-                    PermissionKey = Model?.Permission_Chk,
-                    Icon = "md-checkmark"
-                });
-            }
-        </span>
+        <yx-tool-bar v-bind:list="toolBtnList" v-bind:disabled="disabled" v-bind:domdata="dataParam"></yx-tool-bar>
     </div>
     <div class="contentSplit">
         <Split v-model="splitVal">
-            <div slot="left" class="leftPane">   
+            <div slot="left" class="leftPane">
                 <div class="paramDivCon">
                     @RenderSection("search", false)
                 </div>
 
-                <yx-table v-bind:columns="columns" v-bind:height="600" v-bind:data="data"  v-bind:highlightrow="true"
-                          v-on:currentChange="currentChange" ref="selectData">
+                <yx-table v-bind:columns="columns" v-bind:data="data" v-bind:highlightrow="highlightRow"
+                          v-on:currentChange="currentChange" v-bind:loading="tbLoading" ref="selectData">
                 </yx-table>
             </div>
             <div slot="right" class="rightPane">
@@ -153,6 +93,10 @@
             </div>
         </Split>
     </div>
+
+    <yx-modal v-bind:src="popConfig.src" v-bind:title="popConfig.title"
+              v-bind:width="popConfig.width" v-bind:height="popConfig.height"
+              v-bind:modal-visible.sync="popConfig.open"></yx-modal>
 
     <div class="hide">
         @RenderSection("hide", false)

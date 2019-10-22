@@ -1,5 +1,4 @@
 ﻿define.beforeVue = function () {
-
     define.screenParam.colDef = [
         {
             title: "代码",
@@ -9,35 +8,49 @@
             title: '名称',
             key: 'FILENAME'
         }];
-
-
     define.service = "XtglService";
     define.method = "GetEnergyFilesElement";
     define.methodList = "GetEnergyFiles";
     define.Key = 'FILEID';
-    define.screenParam.componentVisible = false;
-    define.screenParam.showPopShop = false;
-    define.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
-    define.screenParam.popParam = {};
-    define.dataParam.SHOPCODE = "";
 }
+
 define.otherMethods = {
     SelShop: function () {
-        define.screenParam.showPopShop = true;
+        define.screenParam.popParam = {};
+        define.popConfig.title = "选择单元";
+        define.popConfig.src = __BaseUrl + "/Pop/Pop/PopShopList/";
+        define.popConfig.open = true;
     }
 }
+
+define.initDataParam = function () {
+    define.dataParam.FILEID = "";
+    define.dataParam.FILECODE = "";
+    define.dataParam.FILENAME = "";
+    define.dataParam.SHOPCODE = "";
+    define.dataParam.SHOPID = "";
+    define.dataParam.FACTORY_DATE = "";
+    define.dataParam.PRICE = "";
+    define.dataParam.MULTIPLE = "";
+    define.dataParam.VALUE_LAST = "";
+    define.dataParam.DATE_LAST = "";
+    define.dataParam.AREAID = "";
+    define.dataParam.DESCRIPTION = "";
+}
+
 define.newRecord = function () {
     define.dataParam.AREAID = "2";
 }
 
 //接收子页面返回值
 define.popCallBack = function (data) {
-    define.screenParam.showPopShop = false;
-    for (var i = 0; i < data.sj.length; i++) {
-        define.dataParam.SHOPID = data.sj[i].SHOPID;
-        define.dataParam.SHOPCODE = data.sj[i].SHOPCODE;
-        //define.dataParam.ENERGY_FILES_SHOP.push(data.sj[i]);
-    };
+    define.popConfig.open = false;
+    if (define.popConfig.title == "选择单元") {
+        for (var i = 0; i < data.sj.length; i++) {
+            define.dataParam.SHOPID = data.sj[i].SHOPID;
+            define.dataParam.SHOPCODE = data.sj[i].SHOPCODE;
+        };
+    }
 };
 
 define.IsValidSave = function () {
@@ -49,7 +62,7 @@ define.IsValidSave = function () {
         iview.Message.info("设备名称不能为空!");
         return false;
     }
-      if (!define.dataParam.SHOPCODE) {
+    if (!define.dataParam.SHOPCODE) {
         iview.Message.info("所属单元不能为空!");
         return false;
     }
@@ -77,6 +90,6 @@ define.IsValidSave = function () {
         iview.Message.info("最后读数必须为数字!");
         return false;
     }
-    
+
     return true;
 };

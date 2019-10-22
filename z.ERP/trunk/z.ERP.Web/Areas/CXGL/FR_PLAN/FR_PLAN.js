@@ -22,13 +22,20 @@
         { title: '满额', key: 'FULL', width: 200, cellType: "input", cellDataType: "number", },
         { title: '减额', key: 'CUT', width: 200, cellType: "input", cellDataType: "number", },
     ]
-    define.dataParam.FR_PLAN_ITEM = [];
     define.service = "CxglService";
     define.method = "GetFRPLAN";
     define.methodList = "GetFRPLAN";
     define.Key = 'ID';
-    define.dataParam.STATUSMC = "未使用";
 }
+define.initDataParam = function () {
+    define.dataParam.ID = "";
+    define.dataParam.NAME = "";
+    define.dataParam.STATUSMC = "";
+    define.dataParam.FRTYPE = "";
+    define.dataParam.LIMIT = "";
+    define.dataParam.FR_PLAN_ITEM = [];
+}
+
 define.newRecord = function () {
     define.dataParam.ID = "";
     define.dataParam.NAME = "";

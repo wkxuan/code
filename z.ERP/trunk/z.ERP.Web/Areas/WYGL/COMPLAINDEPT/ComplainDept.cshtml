@@ -1,5 +1,4 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
+﻿
 @using z.ERP.Web.Areas.Layout.Define
 @inherits DefineViewBase
 
@@ -8,14 +7,8 @@
         <i-col span="2" class="RowTitle">
             代码
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender
-                {
-                    vModel = "dataParam.ID",
-                    Id = "tb_id",
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ID" disabled />
         </i-col>
     </row>
     <row>
@@ -23,15 +16,8 @@
             <span class="mustElement">*</span>
             名称
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender
-                {
-                    vModel = "dataParam.NAME",
-                    Id = "tb_name",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled" />
         </i-col>
     </row>
 }

@@ -3,18 +3,6 @@
 @using z.ERP.Web.Areas.Layout.Define
 @inherits DefineViewBase
 
-@section head{
-    <style>
-        .ivu-table-tip {
-            overflow-x: hidden;
-        }
-
-        .ivu-table-overflowX {
-            overflow-x: hidden;
-        }
-    </style>
-}
-
 @section search{
     <row>
         <i-col span="5" class="RowTitle">门店</i-col>
@@ -24,154 +12,85 @@
                 {
                     vModel = "searchParam.BRANCHID",
                     ServiceMothod = m => m.branch(),
+                    Change = "branchChange"
                 });
             }
         </i-col>
         <i-col span="5" class="RowTitle">终端号</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.POSNO"
-                });
-            }
+            <i-input v-model="searchParam.POSNO" />
         </i-col>
     </row>
 }
 
 @section element{
-
     <row>
-
         <i-col span="4" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelStation",
-                    Text = "终端号",
-                    Enable = false,
-                    Type = "primary"
-                });
-            }
+            终端号
         </i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.POSNO",
-                    Enable = false,
-                    Readonly = "true"
-                });
-            }
+            <i-input readonly v-bind:icon="!disabled? 'md-search':''"
+                     v-model="dataParam.POSNO" v-on:on-click="SelStation" v-bind:disabled="disabled" />
         </i-col>
         <i-col span="4" class="RowTitle">
             门店
         </i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.BRANCHNAME",
-                    Enable = false,
-                    Readonly = "true"
-                });
-            }
+            <i-input v-model="dataParam.BRANCHNAME" disabled />
         </i-col>
     </row>
-
     <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             IP
         </i-col>
         <i-col span="15" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.IP",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.IP" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
     <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             备用IP
         </i-col>
         <i-col span="15" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.IP_BAK",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.IP_BAK" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
     <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             端口
         </i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.PORT",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.PORT" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
     <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             银联实体卡商户号
         </i-col>
         <i-col span="15" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CFX_MCHTID",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.CFX_MCHTID" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
     <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             银联实体卡终端号
         </i-col>
         <i-col span="15" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CFX_TERMID",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.CFX_TERMID" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
     <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             银行扫码商户名称
         </i-col>
         <i-col span="15" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CFXMPAY_MCHTNAME",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.CFXMPAY_MCHTNAME" v-bind:disabled="disabled" />
         </i-col>
     </row>
     <row>
@@ -180,46 +99,18 @@
             银行扫码商户号
         </i-col>
         <i-col span="15" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CFXMPAY_MCHTID",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.CFXMPAY_MCHTID" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
-
     <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             银行扫码终端号
         </i-col>
-        <i-col span="15"  class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CFXMPAY_TERMID",
-                    Enable = false
-                });
-            }
+        <i-col span="15" class="RowText">
+            <i-input v-model="dataParam.CFXMPAY_TERMID" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
-
-
-}
-@section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopStation",
-            Caption = "选择终端号",
-            Width = "900",
-            Src = "screenParam.srcPopStation"
-        });
-    }
 }
 
 

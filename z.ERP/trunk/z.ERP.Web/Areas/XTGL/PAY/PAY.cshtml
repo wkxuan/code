@@ -9,7 +9,7 @@
         <i-col span="3" class="RowTitle">
             代码
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -18,13 +18,12 @@
             }
         </i-col>
     </row>
-
     <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             名称
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -37,7 +36,7 @@
             <span class="mustElement">*</span>
             类型
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<支付方式类型>()
                 {
@@ -47,13 +46,12 @@
             }
         </i-col>
     </row>
-
     <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             返款
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<收款方式返款>()
                 {
@@ -62,12 +60,11 @@
                 });
             }
         </i-col>
-
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             积分
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<收款方式积分>()
                 {
@@ -77,13 +74,12 @@
             }
         </i-col>
     </row>
-
     <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             找零方式
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<收款方式找零方式>()
                 {
@@ -97,7 +93,7 @@
             <span class="mustElement">*</span>
             显示序号
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -107,12 +103,11 @@
             }
         </i-col>
     </row>
-
     <row>
         <i-col span="3" class="RowTitle">
             优惠券
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -126,7 +121,7 @@
         <i-col span="3" class="RowTitle">
             停用标记
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<停用标记>()
                 {
@@ -136,7 +131,6 @@
             }
         </i-col>
     </row>
-
 }
 
 @section search{
@@ -144,7 +138,7 @@
         <i-col span="3" class="RowTitle">
             代码
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -155,11 +149,11 @@
         <i-col span="3" class="RowTitle">
             名称
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
-                    vModel = "searchParam.NAME"
+                    vModel = "searchParam.NAME",
                 });
             }
         </i-col>

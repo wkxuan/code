@@ -1,7 +1,7 @@
 ﻿function _EditDetail() {
 
     var _this = this;
-    this.veObj;            //vue实例对象
+    this.vueObj;            //vue实例对象
     this.backData = {}; //新增或编辑前的原数据
     this.beforeVue = function () { }
     //存档前的验证数据函数
@@ -20,8 +20,8 @@
     //根据主表id刷新页面数据
     this.refreshDataParam = function (id) {
         editDetail.showOne(id);
-        _this.veObj.disabled = _this.enabled(false);
-        _this.veObj.branchDisabled = false;
+        _this.vueObj.disabled = _this.enabled(false);
+        _this.vueObj.branchDisabled = false;
     }
     this.afterEdit = function () { }
     //取消成功后
@@ -190,7 +190,7 @@
                     if (!_this.IsValidSave())
                         return;
                     _.Ajax('Save', {
-                        SaveData: _this.veObj.dataParam
+                        SaveData: _this.vueObj.dataParam
                     }, function (data) {
                         iview.Message.info("保存成功");
                         _self.replacePage(data);
@@ -211,7 +211,7 @@
         _this.otherComputed && $.extend(options.computed, _this.otherComputed);
         _this.otherWatch && $.extend(options.watch, _this.otherWatch);
 
-        _this.veObj = new Vue(options);
+        _this.vueObj = new Vue(options);
     }
 
     this.showOne = function (data, callback) { }
@@ -234,7 +234,7 @@
         if (editDetail.Id) {
             editDetail.showOne(editDetail.Id);
         } else {
-            _this.veObj.disabled = _this.enabled(true);
+            _this.vueObj.disabled = _this.enabled(true);
         }
     }, 200);
 }

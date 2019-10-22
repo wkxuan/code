@@ -331,7 +331,7 @@ editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopFeeSubject) {
         editDetail.screenParam.showPopFeeSubject = false;
         if (editDetail.screenParam.payCost) {
-            let selection = editDetail.veObj.$refs.refPay.getSelection();
+            let selection = editDetail.vueObj.$refs.refPay.getSelection();
             let pay = editDetail.dataParam.CONTRACT_PAY
             for (let i = 0; i < selection.length; i++) {
                 for (let j = 0; j < pay.length; j++) {
@@ -1321,7 +1321,7 @@ editDetail.mountedInit = function () {
         authority: "10600103",
         fun: function () {
             editDetail.backData = DeepClone(editDetail.dataParam);
-            editDetail.veObj.disabled = true;
+            editDetail.vueObj.disabled = true;
             editDetail.dataParam.CONTRACT_OLD = editDetail.dataParam.BILLID;
             editDetail.dataParam.BILLID = null;
             editDetail.dataParam.CONTRACTID = null;

@@ -9,3 +9,10 @@
     define.methodList = "GetOperationrule";
     define.Key = "ID";
 }
+define.initDataParam = function () {
+    define.dataParam.ID = "";
+    define.dataParam.NAME = "";
+    define.dataParam.WYSIGN = "";
+    define.dataParam.PROCESSTYPE = "";
+    define.dataParam.LADDERSIGN = "";
+}

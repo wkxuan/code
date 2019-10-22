@@ -5,73 +5,34 @@
 
 @section element{
     <row>
-        <span v-if="screenParam.componentVisible">
-            <i-col span="3" class="RowTitle">设备编号</i-col>
-            <i-col span="6">
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "dataParam.FILEID",
-                        Enable = false
-                    });
-                }
-            </i-col>
-        </span>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             设备代码
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.FILECODE",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.FILECODE" v-bind:disabled="disabled" />
         </i-col>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             设备名称
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.FILENAME",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.FILENAME" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
     <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelShop",
-                    Text = "单元",
-                    Enable = false,
-                    Type = "primary"
-                });
-            }
+            单元
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.SHOPCODE",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="!disabled? 'md-search':''"
+                     v-model="dataParam.SHOPCODE" v-on:on-click="SelShop" v-bind:disabled="disabled" />
         </i-col>
-
         <i-col span="4" class="RowTitle">
             出厂日期
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -81,57 +42,34 @@
             }
         </i-col>
     </row>
-
     <row>
-
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             单价
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.PRICE",
-                    Enable = false,
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.PRICE" v-bind:disabled="disabled" />
         </i-col>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             倍率
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.MULTIPLE",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.MULTIPLE" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
     <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             最后读数
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.VALUE_LAST",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.VALUE_LAST" v-bind:disabled="disabled" />
         </i-col>
-
         <i-col span="4" class="RowTitle">
-         @*   <span class="mustElement">*</span> *@
             最后度数日期
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -146,7 +84,7 @@
             <span class="mustElement">*</span>
             公共区域
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumCheckBoxListRender<标记>()
                 {
@@ -158,39 +96,10 @@
         </i-col><i-col span="4" class="RowTitle">
             描述
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.DESCRIPTION",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.DESCRIPTION" v-bind:disabled="disabled" />
         </i-col>
     </row>
-<row>
-
-
-</row>
-
-}
-
-@section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopShop",
-                    Src = "screenParam.srcPopShop",
-                    Caption = "选择单元",
-                    Width = "800"
-                });
-            }
-        </i-col>
-    </row>
-}
-
 }
 
 @section search{
@@ -198,24 +107,14 @@
         <i-col span="3" class="RowTitle">
             代码
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.FILECODE",
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.FILECODE" />
         </i-col>
         <i-col span="3" class="RowTitle">
             名称
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.FILENAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.FILENAME" />
         </i-col>
     </row>
 }

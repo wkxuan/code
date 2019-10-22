@@ -116,7 +116,7 @@ editDetail.mountedInit = function () {
 editDetail.otherMethods = {
     //租约输入框回车查询
     contractEnter: function () {
-        editDetail.veObj.getContract();
+        editDetail.vueObj.getContract();
     },
     //租约弹窗打开方法
     srchContract: function () {
@@ -193,7 +193,7 @@ editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopContract) {
         editDetail.dataParam.CONTRACTID = data.sj[0].CONTRACTID;
         editDetail.screenParam.showPopContract = false;
-        editDetail.veObj.getContract();
+        editDetail.vueObj.getContract();
     };
     if (editDetail.screenParam.showPopBrand) {
         editDetail.screenParam.showPopBrand = false;

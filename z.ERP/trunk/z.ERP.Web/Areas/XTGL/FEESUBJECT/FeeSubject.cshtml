@@ -10,38 +10,20 @@
             代码
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.TRIMID"
-                });
-            }
+            <i-input v-model="dataParam.TRIMID" disabled></i-input>
         </i-col>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             名称
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NAME",
-                    Enable = false,
-                    Change = "NameChange"
-                });
-            }
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled"></i-input>
         </i-col>
     </row>
     <row>
         <i-col span="3" class="RowTitle">拼音码</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.PYM",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.PYM" v-bind:disabled="disabled"></i-input>
         </i-col>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
@@ -89,15 +71,8 @@
             科目代码
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.SUBJECT_CODE",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.SUBJECT_CODE" v-bind:disabled="disabled"></i-input>
         </i-col>
-
     </row>
     <row>
         <i-col span="3" class="RowTitle">通知单生成方式</i-col>
@@ -124,31 +99,19 @@
     </row>
 }
 
-
-
 @section search{
     <row>
         <i-col span="3" class="RowTitle">
             代码
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.TRIMID",
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.TRIMID"></i-input>
         </i-col>
         <i-col span="3" class="RowTitle">
             名称
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.NAME"
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.NAME"></i-input>
         </i-col>
     </row>
 }

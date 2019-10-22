@@ -47,23 +47,3 @@
         </i-col>
     </row>
 }
-@section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopUser",
-            Caption = "选择收银员",
-            Width = "900",
-            Src = "screenParam.srcPopUser"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopShop",
-            Caption = "选择店铺",
-            Width = "900",
-            Src = "screenParam.srcPopShop"
-        });
-    }
-}

@@ -8,15 +8,8 @@
         <i-col  span="4" class="RowTitle">
             滞纳规则代码
         </i-col>
-        <i-col span="6">
-         @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ID",
-                    Id = "tb_id",
-                    Enable = true
-                });
-           } 
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ID" disabled></i-input>
         </i-col>
     </row>
     <row>
@@ -24,15 +17,8 @@
             <span class="mustElement">*</span>
             滞纳规则名称
         </i-col>
-        <i-col span="6">
-            @{ 
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NAME",
-                    Id = "tb_name",
-                    Enable = false,
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled"></i-input>
         </i-col>
     </row>
     <row>
@@ -40,32 +26,17 @@
             <span class="mustElement">*</span>
             滞纳金比例(%/天)
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.RATIO",
-                    Id = "tb_ratio",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.RATIO" v-bind:disabled="disabled"></i-input>
         </i-col>
     </row>
-
     <row>
         <i-col span="4" class="RowTitle">
             <span class="mustElement">*</span>
             宽限天数
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.DAYS",
-                    Id = "tb_days",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.DAYS" v-bind:disabled="disabled"></i-input>
         </i-col>
     </row>
     <row>
@@ -73,17 +44,8 @@
            <span class="mustElement">*</span> 
             宽限金额
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AMOUNTS",
-                    Id = "tb_amounts",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.AMOUNTS" v-bind:disabled="disabled"></i-input>
         </i-col>
     </row> 
-
- 
 }
