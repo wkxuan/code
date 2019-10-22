@@ -908,12 +908,14 @@ namespace z.ERP.Services
             sql += " SPLCDEFD A,SPLCJG B WHERE A.BILLID=B.BILLID AND A.STATUS=2 ";
 
             sql += " AND  EXISTS(SELECT 1 FROM SPLCJD L,SYSUSER C,USER_ROLE D";
-            sql += " WHERE C.USERID = D.USERID AND L.ROLEID = D.ROLEID";
+            sql += " WHERE C.USERID = D.USERID AND L.ROLEID = D.ROLEID  AND L.JDID=B.JDID";
             sql += " AND L.BILLID = B.BILLID AND C.USERID = " + employee.Id + ")";
 
             sql += " AND A.MENUID='" + MENUID + "' ";
             sql += " AND B.JDID= " + CURJDID;
             DataTable splcjd = DbHelper.ExecuteTable(sql);
+
+       
             //当有审批流程定义，但是当前节点没权限
             if ((splc.Rows.Count > 0) && (splcjd.Rows.Count == 0))
                 result = true;
@@ -921,7 +923,8 @@ namespace z.ERP.Services
         }
         public void ExecMenuSplc(SPLCMENUEntity DataInto)
         {
-            if (SrchSplcQx(10600200, DataInto.CURJDID.ToInt()))
+            var JDID = DataInto.CURJDID.ToInt() + 1;
+            if (SrchSplcQx(10600200, JDID))
             {
                 throw new LogicException("当前操作员无当前审批权限!");
             }
