@@ -10,6 +10,10 @@
     search.indexShow = true;
     search.selectionShow = false;
 };
+search.newCondition = function () {
+    search.searchParam.ORGCODE = "";
+    search.searchParam.ORGNAME = "";
+};
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",

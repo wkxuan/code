@@ -27,25 +27,29 @@
             title: '所属机构',
             key: 'ORGNAME'
         }];
-    define.screenParam.componentVisible = false;
-    define.dataParam.ORGIDCASCADER = [];
-    define.dataParam.USER_ROLE = [];
+
     define.service = "UserService";
     define.method = "GetUserElement";
     define.methodList = "GetUser";
     define.Key = "USERID";
-    define.screenParam.showPopRole = false;
-    define.screenParam.srcPopRole = __BaseUrl + "/" + "Pop/Pop/PopRoleList/";
-    define.screenParam.showPopShop = false;
-    define.screenParam.srcPopShop = __BaseUrl + "/" + "Pop/Pop/PopShopList/";
-    define.screenParam.popParam = {};
+}
+
+define.initDataParam = function () {
+    define.dataParam.USERCODE = "";
+    define.dataParam.USERNAME = "";
+    define.dataParam.SHOPCODE = "";
+    define.dataParam.SHOPID = "";
+    define.dataParam.USER_TYPE = "";
+    define.dataParam.PASSWORD = "";
+    define.dataParam.USER_FLAG = null;
+    define.dataParam.VOID_FLAG = null;
+    define.dataParam.USER_ROLE = [];
+    define.dataParam.ORGIDCASCADER = [];
 }
 
 define.newRecord = function () {
     define.dataParam.USER_FLAG = 1;
     define.dataParam.VOID_FLAG = 2;
-    define.dataParam.USER_ROLE = [];
-    define.dataParam.ORGIDCASCADER = [];
 }
 
 define.showOne = function (data, callback) {
@@ -58,12 +62,16 @@ define.showOne = function (data, callback) {
         callback && callback();
     });
 }
+
 define.otherMethods = {
     orgChange: function (value, selectedData) {
         define.dataParam.ORGID = value[value.length - 1];
     },
     SelRole: function () {
-        define.screenParam.showPopRole = true;
+        define.screenParam.popParam = {};
+        define.popConfig.title = "选择角色";
+        define.popConfig.src = __BaseUrl + "/Pop/Pop/PopRoleList/";
+        define.popConfig.open = true;
     },
     DelRole: function () {
         let selection = this.$refs.roleRef.getSelection();
@@ -82,11 +90,31 @@ define.otherMethods = {
         }
     },
     SelShop: function () {
-        define.screenParam.showPopShop = true;
+        define.screenParam.popParam = {};
+        define.popConfig.title = "选择店铺";
+        define.popConfig.src = __BaseUrl + "/Pop/Pop/PopShopList/";
+        define.popConfig.open = true;
     }
 }
 
 define.mountedInit = function () {
+    define.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "add",
+        authority: ""
+    }, {
+        id: "edit",
+        authority: ""
+    },{
+        id: "save",
+        authority: ""
+    }, {
+        id: "abandon",
+        authority: ""
+    }];
+
     _.Ajax('SearchInit', {
         Data: {}
     }, function (data) {
@@ -96,8 +124,8 @@ define.mountedInit = function () {
 
 //接收子页面返回值
 define.popCallBack = function (data) {
-    if (define.screenParam.showPopRole) {
-        define.screenParam.showPopRole = false;
+    define.popConfig.open = false;
+    if (define.popConfig.title == "选择角色") {
         let role = define.dataParam.USER_ROLE;
         for (let i = 0; i < data.sj.length; i++) {
             if (role.filter(function (item) { return (data.sj[i].ROLECODE == item.ROLECODE) }).length == 0) {
@@ -105,24 +133,19 @@ define.popCallBack = function (data) {
             }
         };
     }
-
-    else if (define.screenParam.showPopShop) {
-        define.screenParam.showPopShop = false;
+    if (define.popConfig.title == "选择店铺") {
         for (var i = 0; i < data.sj.length; i++) {
             define.dataParam.SHOPID = data.sj[i].SHOPID;
             define.dataParam.SHOPCODE = data.sj[i].SHOPCODE;
         };
     }
-
 };
-
 
 define.IsValidSave = function () {
     if (!define.dataParam.USERCODE) {
         iview.Message.info("用户代码不能为空!");
         return false;
     }
-
     if (!define.dataParam.USERNAME) {
         iview.Message.info("用户名称不能为空!");
         return false;

@@ -220,7 +220,7 @@ editDetail.otherMethods = {
         else {
             editDetail.searchParam.REGIONID = editDetail.screenParam.REGIONID;
         }
-        if (editDetail.myve.disabled) {
+        if (editDetail.vueObj.disabled) {
             //editDetail.dataParam.SHOPID = "";
             _.Ajax('GetFloor', {
                 Data: { REGIONID: value }
@@ -243,7 +243,7 @@ editDetail.otherMethods = {
         }
     },
     floorChange: function (value) {
-        //if (editDetail.myve.disabled) {
+        //if (editDetail.vueObj.disabled) {
         //    //editDetail.dataParam.SHOPID = "";
         //    //editDetail.showlist();
         //}

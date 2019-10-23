@@ -38,6 +38,18 @@
         }];
 };
 
+search.newCondition = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.REGIONID = "";
+    search.searchParam.FLOORID = "";
+    search.searchParam.CODE = "";
+    search.searchParam.NAME = "";
+    search.searchParam.AREA_RENTABLE_S = "";
+    search.searchParam.AREA_RENTABLE_E = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.RENT_STATUS = "";
+};
+
 search.otherMethods = {
     branchChange: function () {
         search.otherMethods.initRegion();

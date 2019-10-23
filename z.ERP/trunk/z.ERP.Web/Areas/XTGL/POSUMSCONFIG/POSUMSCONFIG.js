@@ -1,34 +1,45 @@
 ﻿define.beforeVue = function () {
 
     define.screenParam.colDef = [
-    { title: '终端号', key: 'POSNO' },
-    { title: '门店名称', key: 'BRANCHNAME' }
+        { title: '终端号', key: 'POSNO' },
+        { title: '门店名称', key: 'BRANCHNAME' }
     ];
-    define.screenParam.popParam = {};
-
     define.service = "XtglService";
     define.method = "GetPOSUMSCONFIG";
     define.methodList = "GetPOSUMSCONFIG";
     define.Key = 'POSNO';
-    define.screenParam.showPopStation = false;
-    define.screenParam.srcPopStation = __BaseUrl + "/" + "Pop/Pop/PopStationList/";
 }
 
 define.otherMethods = {
     SelStation: function () {
-        define.screenParam.showPopStation = true;
         define.screenParam.popParam = { SqlCondition: " not exists(select 1 from posumsconfig  where STATION.stationbh=posumsconfig.posno)" };
+        define.popConfig.title = "选择终端号";
+        define.popConfig.src = __BaseUrl + "/Pop/Pop/PopStationList/";
+        define.popConfig.open = true;
     },
-
+    branchChange: function () {
+        define.showlist();
+    }
 }
-
+define.initDataParam = function () {
+    define.dataParam.POSNO = "";
+    define.dataParam.BRANCHNAME = "";
+    define.dataParam.IP= "";
+    define.dataParam.IP_BAK = "";
+    define.dataParam.PORT = "";
+    define.dataParam.CFX_MCHTID = "";
+    define.dataParam.CFX_TERMID = "";
+    define.dataParam.CFXMPAY_MCHTNAME = "";
+    define.dataParam.CFXMPAY_MCHTID = "";
+    define.dataParam.CFXMPAY_TERMID = "";
+}
 define.popCallBack = function (data) {
-    if (define.screenParam.showPopStation) {
-        define.screenParam.showPopStation = false;
+    define.popConfig.open = false;
+    if (define.popConfig.title == "选择终端号") {
         for (var i = 0; i < data.sj.length; i++) {
             define.dataParam.POSNO = data.sj[i].POSNO;
             define.dataParam.BRANCHNAME = data.sj[i].BRANCHNAME;
-        }
+        };
     }
 };
 

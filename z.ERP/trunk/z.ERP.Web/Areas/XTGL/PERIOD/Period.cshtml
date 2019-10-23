@@ -1,76 +1,25 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Empty
-@inherits EmptyViewBase
+﻿@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
 
-@section btn{
-    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "mod",
-            Text = "修改",
-            //Enable = false
-        });
-    }
-    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "save",
-            Text = "存档",
-            Enable = false
-        });
-    }
-    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "quit",
-            Text = "放弃",
-            Enable = false
-        });
-    }
-}
-
-@section content{
+@section element{
     <row>
-        <i-col span="10" >
-            <yx-table  v-bind:columns="colDef" v-bind:data="dataDef" height="550"></yx-table>
+        <i-col span="5" class="RowTitle">年度</i-col>
+        <i-col span="8" class="RowText">
+            <i-select v-model="searchParam.YEAR" v-on:on-change="getPeriod" v-bind:disabled="!disabled">
+                <i-option v-for="item in screenParam.nyList" v-bind:value="item.value">{{ item.label }}</i-option>
+            </i-select>
         </i-col>
-        <i-col span="13">
-            <row>
-                <i-col span="5" class="RowTitle">年度</i-col>
-                <i-col span="8">
-                    @*@{
-                        RenderControl(new EnumDropDownListRender<支付方式类型>()
-                        {
-                            vModel = "jzqj.CODE",
-                            Enable = false
-                        });
-                    }*@
-                    <i-select v-model="Year" v-on:on-change="getPeriod" :disabled="!disabled">
-                        <i-option v-for="item in nyList" :value="item.value">{{ item.label }}</i-option>
-                    </i-select>
-                </i-col>
-            </row>
-            <row>
-                <i-col span="5" class="RowTitle">每月结束日</i-col>
-                <i-col span="8">                    
-                    @{
-                        RenderControl(new TextBoxRender
-                        {
-                            vModel = "jzqj.LASTDAY",
-                            Id = "tb_name",
-                            Enable = false
-                        });
-                    }
-                </i-col>
-            </row>
-            <row>
-                <i-col span="5" class="RowTitle"></i-col>
-                <i-col span="8">
-                    <Checkbox v-model="jzqj.Natrual" v-on:on-change="change()" :disabled="disabled">自然月</Checkbox>
-                </i-col>
-                </row>
-        </i-col>    
-
+    </row>
+    <row>
+        <i-col span="5" class="RowTitle">每月结束日</i-col>
+        <i-col span="8" class="RowText">
+            <i-input type="number" v-model="screenParam.LASTDAY" v-bind:disabled="disabled" v-on:on-change="lastdayChange"/>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="5" class="RowTitle"></i-col>
+        <i-col span="8" class="RowText">
+            <Checkbox v-model="screenParam.Natrual" v-on:on-change="natrualChange" v-bind:disabled="disabled">自然月</Checkbox>
+        </i-col>
     </row>
 }

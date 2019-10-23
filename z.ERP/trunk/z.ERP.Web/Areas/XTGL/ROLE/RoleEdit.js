@@ -84,7 +84,7 @@ editDetail.IsValidSave = function () {
 
     //业态权限数据
     editDetail.dataParam.ROLE_YT = [];
-    let ytSaveData = editDetail.veObj.$refs.ytTreeRef.getFilterCheckedNodes();
+    let ytSaveData = editDetail.vueObj.$refs.ytTreeRef.getFilterCheckedNodes();
     if (ytSaveData) {
         for (let i = 0; i < ytSaveData.length; i++) {
             editDetail.dataParam.ROLE_YT.push({
@@ -96,7 +96,7 @@ editDetail.IsValidSave = function () {
     
     //菜单权限数据
     editDetail.dataParam.ROLE_MENU = [];
-    let moduleSaveData = editDetail.veObj.$refs.moduleTreeRef.getCheckedNodes();
+    let moduleSaveData = editDetail.vueObj.$refs.moduleTreeRef.getCheckedNodes();
     if (moduleSaveData) {
         for (let i = 0; i < moduleSaveData.length; i++) {
             editDetail.dataParam.ROLE_MENU.push({
@@ -136,7 +136,7 @@ editDetail.IsValidSave = function () {
     
     //门店权限数据
     editDetail.dataParam.ROLE_BRANCH = [];
-    let branchSaveData = editDetail.veObj.$refs.branchRef.getSelection();
+    let branchSaveData = editDetail.vueObj.$refs.branchRef.getSelection();
     if (branchSaveData)
     {
         for (var i = 0; i < branchSaveData.length; i++) {
@@ -147,7 +147,7 @@ editDetail.IsValidSave = function () {
 
     //费用项权限数据
     editDetail.dataParam.ROLE_FEE = [];
-    let feeSaveData = editDetail.veObj.$refs.feeRef.getSelection();
+    let feeSaveData = editDetail.vueObj.$refs.feeRef.getSelection();
     if (feeSaveData) {
         for (var i = 0; i < feeSaveData.length; i++) {
             editDetail.dataParam.ROLE_FEE.push({ TRIMID: feeSaveData[i].TRIMID });
@@ -156,7 +156,7 @@ editDetail.IsValidSave = function () {
 
     //预警权限数据
     editDetail.dataParam.ROLE_ALERT = [];
-    let alertSaveData = editDetail.veObj.$refs.alertRef.getSelection();
+    let alertSaveData = editDetail.vueObj.$refs.alertRef.getSelection();
     if (alertSaveData)
     {
         for (var i = 0; i < alertSaveData.length; i++) {

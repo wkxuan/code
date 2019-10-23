@@ -7,64 +7,28 @@
     <row>
         <i-col span="3" class="RowTitle">代码</i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.USERCODE"
-                });
-            }
+            <i-input v-model="searchParam.USERCODE" />
         </i-col>
         <i-col span="3" class="RowTitle">名称</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.USERNAME"
-                });
-            }
+            <i-input v-model="searchParam.USERNAME" />
         </i-col>
     </row>
 }
 @section element{
     <row>
-        <span v-if="screenParam.componentVisible">
-            <i-col span="3" class="RowTitle">用户编码</i-col>
-            <i-col span="6"  class="RowText">
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "dataParam.USERID"
-                    });
-                }
-            </i-col>
-        </span>
         <i-col span="3" class="RowTitle">用户代码</i-col>
         <i-col span="6"  class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.USERCODE",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.USERCODE" v-bind:disabled="disabled"/>
         </i-col>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             用户名称
         </i-col>
         <i-col span="6"  class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.USERNAME",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.USERNAME" v-bind:disabled="disabled"/>
         </i-col>
     </row>
-
-
-
     <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
@@ -109,14 +73,7 @@
 
         <i-col span="3" class="RowTitle">用户密码</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.PASSWORD",
-                    type = "password",
-                    Enable = false
-                });
-            }
+            <i-input type="password" v-model="dataParam.PASSWORD" v-bind:disabled="disabled"/>
         </i-col>
     </row>
     <row>
@@ -158,35 +115,4 @@
             </Card>
         </i-col>
     </row>
-}
-
-@section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopRole",
-                    Src = "screenParam.srcPopRole",
-                    Caption = "选择角色",
-                    Width = "800"
-                });
-            }
-        </i-col>
-    </row>
-
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopShop",
-                    Src = "screenParam.srcPopShop",
-                    Caption = "选择店铺",
-                    Width = "800"
-                });
-            }
-        </i-col>
-    </row>
-
 }

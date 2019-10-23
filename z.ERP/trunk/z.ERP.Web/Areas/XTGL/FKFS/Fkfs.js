@@ -9,3 +9,7 @@
     define.methodList = "GetFkfs";
     define.Key = 'ID';
 }
+define.initDataParam = function () {
+    define.dataParam.ID = "";
+    define.dataParam.NAME = "";
+}

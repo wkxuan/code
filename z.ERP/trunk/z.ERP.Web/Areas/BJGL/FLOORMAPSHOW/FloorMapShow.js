@@ -190,7 +190,7 @@ mapShow.otherMethods = {
         //else {
         //    mapShow.mapShowParam.REGIONID = mapShow.screenParam.REGIONID;
         //}
-        //if (mapShow.myve.disabled)
+        //if (mapShow.vueObj.disabled)
         {
             //mapShow.screenParam.SHOPID = "";
              _.Ajax('GetFloor', {
@@ -214,7 +214,7 @@ mapShow.otherMethods = {
         }
     },
     floorChange: function (value) {
-        //if (mapShow.myve.disabled) {
+        //if (mapShow.vueObj.disabled) {
         //    //mapShow.screenParam.SHOPID = "";
         //    //mapShow.showlist();
         //}

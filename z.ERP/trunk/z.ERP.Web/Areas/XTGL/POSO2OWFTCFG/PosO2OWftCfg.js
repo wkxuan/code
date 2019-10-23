@@ -1,38 +1,43 @@
 ﻿define.beforeVue = function () {
-
     define.screenParam.colDef = [
-    { title: '终端号', key: 'POSNO'},
-    { title: '门店名称', key: 'BRANCHNAME'}
+        { title: '终端号', key: 'POSNO' },
+        { title: '门店名称', key: 'BRANCHNAME' }
     ];
-
-    define.screenParam.popParam = {};
 
     define.service = "XtglService";
     define.method = "GetPosO2OWftCfg";
     define.methodList = "GetPosO2OWftCfg";
     define.Key = 'POSNO';
-
-    define.screenParam.showPopStation = false;
-    define.screenParam.srcPopStation = __BaseUrl + "/" + "Pop/Pop/PopStationList/";
-
 }
 
 define.otherMethods = {
     SelStation: function () {
-        define.screenParam.showPopStation = true;
         define.screenParam.popParam = { SqlCondition: " not exists(select 1 from POSO2OWFTCFG  where STATION.stationbh=POSO2OWFTCFG.posno)" };
+        define.popConfig.title = "选择终端号";
+        define.popConfig.src = __BaseUrl + "/Pop/Pop/PopStationList/";
+        define.popConfig.open = true;
     },
-
+    branchChange: function () {
+        define.showlist();
+    }
 }
-
+define.initDataParam = function () {
+    define.dataParam.POSNO = "";
+    define.dataParam.BRANCHNAME = "";
+    define.dataParam.URL = "";
+    define.dataParam.PID = "";
+    define.dataParam.ENCRYPTION = "";
+    define.dataParam.KEY = "";
+    define.dataParam.KEY_PUB = "";
+    define.dataParam.LOG = "";
+}
 define.popCallBack = function (data) {
-
-    if (define.screenParam.showPopStation) {
-        define.screenParam.showPopStation = false;
+    define.popConfig.open = false;
+    if (define.popConfig.title == "选择终端号") {
         for (var i = 0; i < data.sj.length; i++) {
             define.dataParam.POSNO = data.sj[i].POSNO;
             define.dataParam.BRANCHNAME = data.sj[i].BRANCHNAME;
-        }
+        };
     }
 };
 
@@ -64,7 +69,5 @@ define.IsValidSave = function () {
         iview.Message.info("加密方式为RSA时,公钥不能为空!");
         return false;
     }
-
-
     return true;
 }

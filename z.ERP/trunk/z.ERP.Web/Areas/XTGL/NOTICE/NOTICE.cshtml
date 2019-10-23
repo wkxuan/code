@@ -4,16 +4,6 @@
 @inherits DefineViewBase
 
 @section head{
-    <style>
-        .ivu-table-tip {
-            overflow-x: hidden;
-        }
-
-        .ivu-table-overflowX {
-            overflow-x: hidden;
-        }
-
-    </style>
     @InitFiles(new string[] {
         "Content/Editor/wangEditor.css",
         "Content/Editor/wangEditor.js",
@@ -22,7 +12,7 @@
 @section search{
     <row>
         <i-col span="5" class="RowTitle">通知门店</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new ServiceDropDownListRender()
                 {
@@ -32,7 +22,7 @@
             }
         </i-col>
         <i-col span="5" class="RowTitle">通知编号</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -43,7 +33,7 @@
     </row>
     <row>
         <i-col span="5" class="RowTitle">通知标题</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -52,7 +42,7 @@
             }
         </i-col>
         <i-col span="5" class="RowTitle">通知状态</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<通知状态>()
                 {
@@ -137,5 +127,4 @@
     <row>
         <yx-editor v-bind:content="dataParam.CONTENT" v-bind:disabled="disabled" v-on:change="editorChange"></yx-editor>
     </row>
-
 }

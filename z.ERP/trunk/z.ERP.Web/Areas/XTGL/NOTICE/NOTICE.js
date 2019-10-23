@@ -1,44 +1,43 @@
 ﻿define.beforeVue = function () {
     define.screenParam.colDef = [
     { title: '编号', key: 'ID', width: 80 },
-    { title: '通知标题', key: 'TITLE',tooltip :true},
+    { title: '通知标题', key: 'TITLE', tooltip: true },
     {
-        title: '通知状态', key: 'STATUS',tooltip :true,
-        
+        title: '通知状态', key: 'STATUS', tooltip: true,
         render: (h, params) => {
-        const row = params.row;
-        const color = row.STATUS === 2 ? 'success' : 'warning';
-        const text = row.STATUS === 2 ? '发布状态' : '草稿状态';
+            const row = params.row;
+            const color = row.STATUS === 2 ? 'success' : 'warning';
+            const text = row.STATUS === 2 ? '发布状态' : '草稿状态';
 
-        return h('Tag', {
-            props: {
-                type: 'dot',
-                color: color
-            }
-        }, text);
-    }}
-    ];
+            return h('Tag', {
+                props: {
+                    type: 'dot',
+                    color: color
+                }
+            }, text);
+        }
+    }];
+    define.service = "XtglService";
+    define.method = "GetNOTICE";
+    define.methodList = "GetNOTICE";
+    define.Key = 'ID';
+}
+define.initDataParam = function () {
     define.dataParam.ID = null;
     define.dataParam.STATUS = null;
     define.dataParam.TITLE = null;
     define.dataParam.TYPE = null;
     define.dataParam.NOTICE_BRANCH = [];
     define.screenParam.BRANCHID = [];
-    define.service = "XtglService";
-    define.method = "GetNOTICE";
-    define.methodList = "GetNOTICE";
-    define.Key = 'ID';
-
 }
-
 define.otherMethods = {
     editorChange(val) {
         define.dataParam.CONTENT = val;
     },
-    CheckBoxChange(data){
+    CheckBoxChange(data) {
         let localData = [];
         for (var i = 0; i < data.length; i++) {
-            localData.push({ BRANCHID: data[i]});
+            localData.push({ BRANCHID: data[i] });
         };
         Vue.set(define.dataParam, 'NOTICE_BRANCH', localData);
     }
@@ -61,7 +60,7 @@ define.showOne = function (data, callback) {
         }
         define.dataParam.NOTICE_BRANCH = localData;
 
-        define.myve.dataParam = define.dataParam;
+        define.vueObj.dataParam = define.dataParam;
 
         callback && callback();
     });
@@ -102,7 +101,7 @@ define.IsValidSave = function () {
         iview.Message.info("通知内容不能为空!");
         return false;
     }
-    if (define.dataParam.NOTICE_BRANCH.length==0) {
+    if (define.dataParam.NOTICE_BRANCH.length == 0) {
         iview.Message.info("通知门店不能为空!");
         return false;
     }

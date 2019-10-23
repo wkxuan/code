@@ -1,27 +1,15 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Define
+﻿@using z.ERP.Web.Areas.Layout.Define
 @inherits DefineViewBase
 
 @section search{
     <row>
         <i-col span="5" class="RowTitle">预警代码</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.ID",
-                });
-            }
+            <i-input v-model="searchParam.ID" />
         </i-col>
         <i-col span="5" class="RowTitle">预警名称</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.MC",
-                });
-            }
+            <i-input v-model="searchParam.MC" />
         </i-col>
     </row>
 }
@@ -32,60 +20,30 @@
             代码
         </i-col>
         <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender
-                {
-                    vModel = "dataParam.ID",
-                    Id = "tb_id",
-                    Readonly="true"
-                });
-            }
+            <i-input v-model="dataParam.ID" v-bind:disabled="disabled" />
         </i-col>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             名称
         </i-col>
         <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender
-                {
-                    vModel = "dataParam.MC",
-                    Id = "tb_name",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.MC" v-bind:disabled="disabled" />
         </i-col>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             显示顺序
         </i-col>
         <i-col span="3">
-            @{
-                RenderControl(new TextBoxRender
-                {
-                    vModel = "dataParam.XSSX",
-                    Id = "tb_xxsx",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.XSSX" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
     <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             SQL设置
         </i-col>
         <i-col span="21">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.SQLSTR",
-                    type = "textarea",
-                    rows = "5",
-                    Enable = false
-                });
-            }
+            <i-input type = "textarea"  :rows = "5" v-model="dataParam.SQLSTR" v-bind:disabled="disabled" />
         </i-col>
     </row>
     <row>

@@ -6,14 +6,13 @@
 @section search{
     <row>
         <i-col span="3" class="RowTitle">门店</i-col>
-        <i-col span="9">
+        <i-col span="9" class="RowText">
             @{
                 RenderControl(new DropDownListsRender()
                 {
                     vModel = "searchParam.BRANCHID",
                     Data = "screenParam.branchData",
                     Change = "branchChange",
-                    Enable = true
                 });
             }
         </i-col>
@@ -21,49 +20,29 @@
 }
 @section element{
     <row>
-        <span v-if="screenParam.componentVisible">
-            <i-col span="2" class="RowTitle">区域编码</i-col>
-            <i-col span="6">
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "dataParam.ID"
-                    });
-                }
-            </i-col>
-        </span>
-        <i-col span="3" class="RowTitle">区域代码</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CODE",
-                    Enable = false
-                });
-            }
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            区域代码
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.CODE" v-bind:disabled="disabled" />
         </i-col>
 
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             区域名称
-            </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NAME",
-                    Enable = false
-                });
-            }
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled" />
         </i-col>
     </row>
 
     <row>
         <i-col span="3" class="RowTitle">
-            <span class="mustElement">*</span>        
+            <span class="mustElement">*</span>
             管理机构
         </i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new CascaderRender()
                 {
@@ -80,45 +59,24 @@
             <span class="mustElement">*</span>
             建筑面积
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREA_BUILD",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.AREA_BUILD" v-bind:disabled="disabled" />
         </i-col>
     </row>
 
     <row>
         <i-col span="3" class="RowTitle">使用面积</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREA_USABLE",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.AREA_USABLE" v-bind:disabled="disabled" />
         </i-col>
-
         <i-col span="3" class="RowTitle">租赁面积</i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.AREA_RENTABLE",
-                    Enable = false
-                });
-            }
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.AREA_RENTABLE" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
-
     <row>
         <i-col span="3" class="RowTitle">停用标记</i-col>
-        <i-col span="6">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumCheckBoxListRender<停用标记>()
                 {
@@ -129,5 +87,4 @@
             }
         </i-col>
     </row>
-
 }

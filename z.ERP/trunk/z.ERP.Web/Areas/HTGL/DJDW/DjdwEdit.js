@@ -46,7 +46,7 @@
                        }
                        iview.Message.info('当前单元代码不存在或者不属于当前门店!');
                    }
-                   editDetail.veObj.calculateArea();
+                   editDetail.vueObj.calculateArea();
                });
            }
        },
@@ -102,7 +102,7 @@ editDetail.popCallBack = function (data) {
                 shop.push(data.sj[i]);
             }
         };
-        editDetail.veObj.calculateArea();
+        editDetail.vueObj.calculateArea();
     }
     if (editDetail.screenParam.showPopFeeSubject) {
         editDetail.screenParam.showPopFeeSubject = false;
@@ -171,7 +171,7 @@ editDetail.otherMethods = {
                     }
                 }
             }
-            editDetail.veObj.calculateArea();
+            editDetail.vueObj.calculateArea();
         }
     },
     srchCost: function () {

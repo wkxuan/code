@@ -1,17 +1,24 @@
 ﻿define.beforeVue = function () {
-
     define.screenParam.colDef = [
-    { title: '单位编号', key: 'ID', width: 90 },
-    { title: '单位名称', key: 'NAME' },
-    { title: "门店", key: 'BRANCHNAME' }
-
+        { title: '单位编号', key: 'ID', width: 90 },
+        { title: '单位名称', key: 'NAME' },
+        { title: "门店", key: 'BRANCHNAME' }
     ];
-
+    define.screenParam.branchData = [];
     define.service = "XtglService";
     define.method = "GetFeeAccount";
     define.methodList = "GetFeeAccount";
     define.Key = 'ID';
-
+}
+define.initDataParam = function () {
+    define.dataParam.ID = "";
+    define.dataParam.NAME = "";
+    define.dataParam.ADDRESS = "";
+    define.dataParam.CONTACT = "";
+    define.dataParam.CONTACT_NUM = "";
+    define.dataParam.BANK = "";
+    define.dataParam.ACCOUNT = "";
+    define.dataParam.BRANCHID = "";
 }
 define.mountedInit = function () {
     _.Ajax('GetBranch', {
@@ -30,12 +37,13 @@ define.mountedInit = function () {
 }
 define.otherMethods = {
     branchChange: function (value) {
+        debugger
         define.dataParam.BRANCHID = define.searchParam.BRANCHID;
+        define.initDataParam();
         define.showlist();
     },    
 };
 define.IsValidSave = function () {
-    define.dataParam.BRANCHID = define.searchParam.BRANCHID;
     if (!define.dataParam.BRANCHID) {
         iview.Message.info("门店不能为空!");
         return false;

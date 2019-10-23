@@ -31,6 +31,15 @@
             }
         }];
 }
+search.newCondition = function () {
+    search.searchParam.ID = "";
+    search.searchParam.NAME = "";
+    search.searchParam.ORGID = "";
+    search.searchParam.AREA_BUILD_S = "";
+    search.searchParam.AREA_BUILD_E = "";
+    search.searchParam.CONTACT = "";
+    search.searchParam.STATUS = "";
+};
 search.addHref = function () {
     search.popConfig.src = __BaseUrl + "/XTGL/BRANCH/BranchDetail/";
     search.popConfig.open = true;

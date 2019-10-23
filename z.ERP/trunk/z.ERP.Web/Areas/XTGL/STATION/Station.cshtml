@@ -5,8 +5,8 @@
 @section head{
     <style>
         #zzc {
-            width: 100%;
-            height: 330px;
+            width: 80px;
+            height: 100%;
             position: absolute;
             background-color: #F3F3F3;
             z-index: 10;
@@ -30,12 +30,7 @@
         </i-col>
         <i-col span="5" class="RowTitle">终端号</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.STATIONBH"
-                });
-            }
+            <i-input v-model="searchParam.STATIONBH"></i-input>
         </i-col>
     </row>
 }
@@ -46,13 +41,7 @@
             终端号
         </i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.STATIONBH",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.STATIONBH" v-bind:disabled="disabled"></i-input>
         </i-col>
     </row>
     <row>
@@ -76,34 +65,20 @@
             <i-input readonly v-bind:icon="disabled? '':'md-search'"
                      v-model="dataParam.SHOPCODE" v-on:on-click="SelShop"
                      v-bind:disabled="disabled? true:false" />
-        </i-col>        
-
+        </i-col>
     </row>
     <row>
         <i-col span="3" class="RowTitle">
             MAC地址
         </i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NETWORK_NODE_ADDRESS",
-                    Enable = false,
-                    keyup="atoA"
-                });
-            }
+            <i-input v-model="dataParam.NETWORK_NODE_ADDRESS" v-on:on-keyup="mackeyup" v-bind:disabled="disabled"></i-input>
         </i-col>
         <i-col span="3" class="RowTitle">
             IP地址
         </i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.IP",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.IP" v-bind:disabled="disabled"></i-input>
         </i-col>
     </row>
     <row>
@@ -111,21 +86,12 @@
             <span class="mustElement">*</span>
             收款方式
         </i-col>
-        
-        <i-col span="10">  
-            <div id="zzc" v-if="disabled"></div>      
-        <i-table  size="small" border height="330"
-                    v-bind:columns="screenParam.payColDef" v-bind:data="screenParam.STATION_PAY_DATA"
-                    v-on:on-select="screenParam.selectData"
-                    v-on:on-select-all="screenParam.selectDataAll"
-                    v-on:on-select-cancel="screenParam.selectCancel"></i-table>
-       </i-col>
-    </row>
-}
 
-@section pops{
-<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="800"
-          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
+        <i-col span="10">
+            <div id="zzc" v-if="disabled"></div>
+            <yx-table v-bind:columns="screenParam.payColDef" v-bind:data="screenParam.STATION_PAY_DATA" v-bind:selection="true" ref="payRef"></yx-table>
+        </i-col>
+    </row>
 }
 
 

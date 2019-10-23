@@ -4,130 +4,82 @@
 @inherits DefineViewBase
 
 @section search{
-<row>
-    <i-col span="5" class="RowTitle">门店</i-col>
-    <i-col span="6" class="RowText">
-        @{
-            RenderControl(new DropDownListsRender()
-            {
-                vModel = "searchParam.BRANCHID",
-                Data = "screenParam.branchData",
-                EmptyText = "",
-                Change = "branchChange",
-            });
-        }
-    </i-col>
-
-    <i-col span="5" class="RowTitle">单位名称</i-col>
-    <i-col span="6"  class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "searchParam.NAME"
-            });
-        }
-    </i-col>
-</row>
+    <row>
+        <i-col span="5" class="RowTitle">门店</i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    Data = "screenParam.branchData",
+                    EmptyText = "",
+                    Change = "branchChange",
+                });
+            }
+        </i-col>
+        <i-col span="5" class="RowTitle">单位名称</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.NAME" />
+        </i-col>
+    </row>
 }
 
 @section element{
+    <row>
+        <i-col span="3" class="RowTitle">单位编号</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ID" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            单位名称
+        </i-col>
+        <i-col span="15" class="RowText">
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
 
-<row>
-    <i-col span="3" class="RowTitle">单位编号</i-col>
-    <i-col span="6" class="RowText">
-        <i-input v-model="dataParam.ID" disabled="disabled"/>
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">
-        <span class="mustElement">*</span>
-        单位名称
-    </i-col>
-    <i-col span="10" class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.NAME",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
-<row>
-    <i-col span="3" class="RowTitle">
-        单位地址
-    </i-col>
-    <i-col span="15" class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.ADDRESS",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
-<row>
-    <i-col span="3" class="RowTitle">
-        联系人
-    </i-col>
-    <i-col span="6" class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.CONTACT",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
-<row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            单位地址
+        </i-col>
+        <i-col span="15" class="RowText">
+            <i-input v-model="dataParam.ADDRESS" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            联系人
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.CONTACT" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
         <i-col span="3" class="RowTitle">
             联系电话
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.CONTACT_NUM",
-                    Enable = false
-                });
-            }
+            <i-input v-model="dataParam.CONTACT_NUM" v-bind:disabled="disabled" />
         </i-col>
 
-</row>
-
-<row>
-    <i-col span="3" class="RowTitle">
-        银行
-    </i-col>
-    <i-col span="10" class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.BANK",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
-<row>
-    <i-col span="3" class="RowTitle">
-        账户
-    </i-col>
-    <i-col span="10" class="RowText">
-        @{
-            RenderControl(new TextBoxRender()
-            {
-                vModel = "dataParam.ACCOUNT",
-                Enable = false
-            });
-        }
-    </i-col>
-</row>
-
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            银行
+        </i-col>
+        <i-col span="10" class="RowText">
+            <i-input v-model="dataParam.BANK" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            账户
+        </i-col>
+        <i-col span="10" class="RowText">
+            <i-input v-model="dataParam.ACCOUNT" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
 }
