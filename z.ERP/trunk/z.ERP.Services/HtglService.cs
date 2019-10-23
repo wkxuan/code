@@ -706,7 +706,8 @@ namespace z.ERP.Services
                     double zjfjTs = Math.Abs((zjfj.ENDDATE.ToDateTime() - zjfj.STARTDATE.ToDateTime()).Days) + 1;
 
                     zjfj.INX = ydfj.INX;
-                    var je = Convert.ToDouble(ydfj.RENTS);
+                    //  var je = Convert.ToDouble(ydfj.RENTS);
+                    var je = Convert.ToDouble(ydfj.PRICE) * Convert.ToDouble(ContractData.AREAR);
                     switch (ydfj.DJLX.ToInt())
                     {
                         case 1://日租金

@@ -901,7 +901,8 @@ editDetail.otherMethods = {
                 CONT_END: editDetail.dataParam.CONT_END,
                 FEERULE_RENT: editDetail.dataParam.FEERULE_RENT,
                 STANDARD: editDetail.dataParam.STANDARD,
-                OPERATERULE: editDetail.dataParam.OPERATERULE
+                OPERATERULE: editDetail.dataParam.OPERATERULE,
+                AREAR: editDetail.dataParam.AREAR
             }
         }, function (data) {
             let contractRent = editDetail.dataParam.CONTRACT_RENT;
