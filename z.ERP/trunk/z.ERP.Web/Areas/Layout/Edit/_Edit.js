@@ -8,6 +8,14 @@
     this.IsValidSave = function () {
         return true;
     }
+    //默认弹窗设置
+    this.popConfig = {
+        title: "弹窗",
+        src: "",
+        width: 900,
+        height: 550,
+        open: false
+    };
     //是否显示其它信息折叠面板
     this.otherPanel = true;
     //单据底部制单人等信息是否使用默认显示
@@ -41,7 +49,8 @@
                 toolBtnList: [],
                 otherPanel: _this.otherPanel,
                 defaultFooter: _this.defaultFooter,
-                branchDisabled: false
+                branchDisabled: false,
+                popConfig: _this.popConfig
             },
             mounted: function () {
                 _this.mountedInit();

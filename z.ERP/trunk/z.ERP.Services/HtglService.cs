@@ -381,7 +381,7 @@ namespace z.ERP.Services
         /// </summary>
         /// <param name="begin"></param>
         /// <param name="end"></param>
-        public List<PERIODEntity> createHTY(DateTime begin,DateTime end)
+        public List<PERIODEntity> createHTY(DateTime begin, DateTime end)
         {
             List<PERIODEntity> Perio = new List<PERIODEntity>();
 
@@ -391,11 +391,11 @@ namespace z.ERP.Services
 
             if (day >= 29)
             {
-                leftDay = DateTime.DaysInMonth(datetmp.Year, datetmp.Month)-day + 1;
+                leftDay = DateTime.DaysInMonth(datetmp.Year, datetmp.Month) - day + 1;
             }
 
 
-            while(datetmp < end)
+            while (datetmp < end)
             {
                 PERIODEntity per = new PERIODEntity();
                 per.YEARMONTH = datetmp.Year.ToString() + datetmp.Month.ToString().PadLeft(2, '0');
@@ -403,7 +403,7 @@ namespace z.ERP.Services
 
                 if (leftDay > 0)
                 {  //下个月月末 向前推leftDay 天
-                    datetmp = datetmp.AddMonths(1).AddDays(1 - datetmp.AddMonths(1).Day).AddMonths(1).AddDays( - 1 - leftDay);
+                    datetmp = datetmp.AddMonths(1).AddDays(1 - datetmp.AddMonths(1).Day).AddMonths(1).AddDays(-1 - leftDay);
                 }
                 else
                     datetmp = datetmp.AddMonths(1).AddDays(-1);  //下个月
@@ -421,8 +421,8 @@ namespace z.ERP.Services
 
         public List<CONTRACT_RENTITEMEntity> zlYdFj(List<CONTRACT_RENTEntity> Data, CONTRACTEntity ContractData)
         {
-           // ContractData.OPERATERULE
-           // ContractData.STANDARD
+            // ContractData.OPERATERULE
+            // ContractData.STANDARD
 
             OPERATIONRULEEntity oprule = DbHelper.Select(new OPERATIONRULEEntity() { ID = ContractData.OPERATERULE });
 
@@ -463,7 +463,7 @@ namespace z.ERP.Services
             CONFIGEntity configJDFJGZ = new CONFIGEntity();
             configJDFJGZ = DbHelper.Select(new CONFIGEntity() { ID = "1005" });
 
-            if(configJDFJGZ == null)
+            if (configJDFJGZ == null)
                 throw new LogicException("未设置参数1005(季度缴费生成方式)");
 
 
@@ -563,7 +563,7 @@ namespace z.ERP.Services
                 && (a.DATE_END.ToDateTime() >= ContractData.CONT_START.ToDateTime())).OrderBy(b => b.YEARMONTH).ToList();
             }
 
-            List<PERIODEntity> PerioTMP =  Perio.DeepClone();
+            List<PERIODEntity> PerioTMP = Perio.DeepClone();
 
 
 
@@ -575,7 +575,7 @@ namespace z.ERP.Services
                 var scny = 0;
                 int iCYCLE = feeRule.ADVANCE_CYCLE.ToInt();
 
-                if (feeRule.ADVANCE_CYCLE.ToInt() == -1) 
+                if (feeRule.ADVANCE_CYCLE.ToInt() == -1)
                     iCYCLE = 0;
 
                 //可以通过日期上加月份处理
@@ -628,7 +628,7 @@ namespace z.ERP.Services
                 }
                 else
                 {
-                    if(feeRule.ADVANCE_CYCLE.ToInt() == -1)  // 提前多少天出单
+                    if (feeRule.ADVANCE_CYCLE.ToInt() == -1)  // 提前多少天出单
                     {
                         foreach (var pertmp in PerioTMP)
                         {
@@ -639,13 +639,13 @@ namespace z.ERP.Services
                             }
 
                         }
-                              
+
                     }
                     else
                     {
                         zjfj.CREATEDATE = (new DateTime(scn, scy, feeRule.FEE_DAY.ToInt())).ToString().ToDateTime().ToString();
                     }
-                        
+
                 }
 
 
@@ -1066,7 +1066,7 @@ namespace z.ERP.Services
                 string sql1 = @" update SHOP set RENT_STATUS = 1
                                   where SHOPID in (select SHOPID from FREESHOPITEM where BILLID = {0})";
                 string sql2 = @" update FREESHOP set STATUS = 3 WHERE BILLID = {0}";
-                DbHelper.ExecuteNonQuery(string.Format(sql1,freeShop.BILLID));
+                DbHelper.ExecuteNonQuery(string.Format(sql1, freeShop.BILLID));
                 DbHelper.ExecuteNonQuery(string.Format(sql2, freeShop.BILLID));
                 Tran.Commit();
             }
@@ -1085,14 +1085,16 @@ namespace z.ERP.Services
             return "";
         }
         #region 获取导出合同信息
-        public CONTRACTOUTPUTEntity GetContractOutPut(CONTRACTEntity Data) {
+        public CONTRACTOUTPUTEntity GetContractOutPut(CONTRACTEntity Data)
+        {
             CONTRACTOUTPUTEntity Coutput = new CONTRACTOUTPUTEntity();
             string sqlC = CONTRACTINFOSQL(Data.CONTRACTID);   //合同信息
             DataTable dt = DbHelper.ExecuteTable(sqlC);
-            if (dt.Rows.Count>0) {
+            if (dt.Rows.Count > 0)
+            {
                 Coutput.CONTRACTID = Data.CONTRACTID;
                 Coutput.BRANCHNAME = dt.Rows[0]["BRANCHNAME"].ToString();
-                Coutput.MERCHANTNAME= dt.Rows[0]["MERCHANTNAME"].ToString();
+                Coutput.MERCHANTNAME = dt.Rows[0]["MERCHANTNAME"].ToString();
                 Coutput.BRANCHADDRESS = dt.Rows[0]["BRANCHADDRESS"].ToString();
                 Coutput.AREAR = dt.Rows[0]["AREAR"].ToString();
                 Coutput.CONT_START = dt.Rows[0]["CONT_START"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
@@ -1107,34 +1109,36 @@ namespace z.ERP.Services
             }
             string sqlB = CONTRACT_BRANDINFOSQL(Data.CONTRACTID);   //品牌信息
             DataTable dt1 = DbHelper.ExecuteTable(sqlB);
-            Coutput.BRANDNAME = dt1.Rows[0]["BRANDNAME"].ToString();
-            Coutput.BRANDNAME2 = "";
-            if (dt1.Rows.Count > 1) {
-                var brandname = "";
-                for (var i=1;i<= dt1.Rows.Count;i++) {
-                    brandname += dt1.Rows[i]["BRANDNAME"].ToString();
-                    if (i!= dt1.Rows.Count) {
-                        brandname += ",";
+            if (dt1.Rows.Count > 0)
+            {
+                Coutput.BRANDNAME = dt1.Rows[0]["BRANDNAME"].ToString();
+                if (dt1.Rows.Count > 1)
+                {
+                    List<string> list = new List<string>();
+                    for (var i = 1; i < dt1.Rows.Count; i++)
+                    {
+                        list.Add(dt1.Rows[i]["BRANDNAME"].ToString());
                     }
+                    Coutput.BRANDNAME2 = string.Join(",", list);
                 }
-                Coutput.BRANDNAME2 = brandname;
             }
             string sqlS = CONTRACT_SHOPINFOSQL(Data.CONTRACTID);   //商铺信息
             DataTable dt2 = DbHelper.ExecuteTable(sqlS);
-            Coutput.CATEGORYNAME= dt2.Rows[0]["CATEGORYNAME"].ToString();
-            var shopcode = "";
             if (dt2.Rows.Count > 0)
             {
-                foreach (DataRow item in dt2.Rows) {
-                    shopcode += item["SHOPCODE"].ToString()+",";
+                Coutput.CATEGORYNAME = dt2.Rows[0]["CATEGORYNAME"].ToString();
+                List<string> list = new List<string>();
+                for (var i = 0; i < dt2.Rows.Count; i++)
+                {
+                    list.Add(dt2.Rows[i]["SHOPCODE"].ToString());
                 }
-                shopcode.Substring(shopcode.LastIndexOf(",") + 1);
+                Coutput.SHOPCODE = string.Join(",", list);
             }
-            Coutput.SHOPCODE = shopcode;
             string sqlRENT = CONTRACT_RENTINFOSQL(Data.CONTRACTID);   //租金信息
             DataTable dt3 = DbHelper.ExecuteTable(sqlRENT);
-            if (dt3.Rows.Count>0) {
-                Coutput.RZJ_PRICE= dt3.Rows[0]["PRICE"].ToString();
+            if (dt3.Rows.Count > 0)
+            {
+                Coutput.RZJ_PRICE = dt3.Rows[0]["PRICE"].ToString();
                 decimal AMOUNT = 0;
                 foreach (DataRow item in dt3.Rows)
                 {
@@ -1146,8 +1150,10 @@ namespace z.ERP.Services
             DataTable dt4 = DbHelper.ExecuteTable(sqlCOST);
             if (dt4.Rows.Count > 0)
             {
-                foreach (DataRow item in dt4.Rows) {
-                    if (item["NAME"].ToString().Contains("保证金")) {
+                foreach (DataRow item in dt4.Rows)
+                {
+                    if (item["NAME"].ToString().Contains("保证金"))
+                    {
                         Coutput.BZJAMOUNT = item["COST"].ToString();
                         Coutput.BZJAMOUNT_DX = ConvertToChinese(Coutput.BZJAMOUNT.ToDecimal());
                     }
@@ -1161,7 +1167,8 @@ namespace z.ERP.Services
             }
             return Coutput;
         }
-        public string CONTRACTINFOSQL(string CONTRACTID) {
+        public string CONTRACTINFOSQL(string CONTRACTID)
+        {
             return $@"SELECT  C.CONTRACTID,B.NAME BRANCHNAME,M.NAME MERCHANTNAME,B.ADDRESS BRANCHADDRESS,C.AREAR,C.CONT_START,C.CONT_END,(C.CONT_END-C.CONT_START) CONT_DAYS,
                     C.FREE_BEGIN,C.FREE_END,(C.FREE_END-C.FREE_BEGIN) FREEDAYS,F.NAME FEERULE_RENT 
                     FROM CONTRACT C,BRANCH B,MERCHANT M,FEERULE F 

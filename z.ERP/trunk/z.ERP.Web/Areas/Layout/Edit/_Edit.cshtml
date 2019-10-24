@@ -113,6 +113,11 @@
             </div>
         </Card>
     </div>
+
+    <yx-modal v-bind:src="popConfig.src" v-bind:title="popConfig.title"
+              v-bind:width="popConfig.width" v-bind:height="popConfig.height"
+              v-bind:modal-visible.sync="popConfig.open"></yx-modal>
+
     <div class="hide">
         @RenderSection("hide", false)
         @RenderSection("pops", false)
