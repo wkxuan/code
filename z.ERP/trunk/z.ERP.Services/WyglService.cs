@@ -318,7 +318,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT B.*,A.NAME GHSNAME";
             sql += @" FROM WL_MERCHANT A,WL_GOODS B WHERE B.MERCHANTID=B.MERCHANTID AND B.verify IS NOT NULL ";
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
-            item.HasKey("GOODSDM", a => sql += $" and A.GOODSDM LIKE '%{a}%'");
+            item.HasKey("GOODSDM", a => sql += $" and B.GOODSDM LIKE '%{a}%'");
             sql += " ORDER BY  GOODSDM DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -1583,11 +1583,11 @@ namespace z.ERP.Services
         public DataGridResult GetComPlain(SearchItem item)
         {
             string sql = $@"select C.*,B.NAME BRANCHMC from COMPLAIN C,BRANCH B where C.BRANCHID = B.ID ";
-            item.HasKey("BILLID", a => sql += $" and BILLID = '{a}'");
-            item.HasKey("REPORTER", a => sql += $" and REPORTER = '{a}'");
-            item.HasKey("VERIFY", a => sql += $" and VERIFY = '{a}'");
-            item.HasKey("STATUS", a => sql += $" and STATUS  = '{a}'");            
-            sql += " order by BILLID desc";
+            item.HasKey("BILLID", a => sql += $" and C.BILLID = '{a}'");
+            item.HasKey("REPORTER", a => sql += $" and C.REPORTER = '{a}'");
+            item.HasKey("VERIFY", a => sql += $" and C.VERIFY = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and C.STATUS  = '{a}'");            
+            sql += " order by C.BILLID desc";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");

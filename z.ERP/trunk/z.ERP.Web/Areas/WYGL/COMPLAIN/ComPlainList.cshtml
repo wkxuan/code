@@ -9,7 +9,6 @@
             单据号
         </i-col>
         <i-col span="6" class="RowText">
-
             @{
                 RenderControl(new TextBoxRender()
                 {
@@ -30,22 +29,16 @@
         </i-col>
     </row>
     <row>
-
-    </row>
-
-    <row>
         <i-col span="2" class="RowTitle">
             登记人
         </i-col>
         <i-col span="6"  class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.REPORTERNAME" v-on:on-click="SelSysuser" />
+            <i-input readonly icon="md-search" v-model="searchParam.REPORTERNAME" v-on:on-click="SelReporter" />
         </i-col>
-
         <i-col span="2" class="RowTitle">
-            登记时间_起
+            登记时间
         </i-col>
-        <i-col span="6"  class="RowText">
+        <i-col span="3"  class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -53,77 +46,11 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            登记时间_止
-        </i-col>
-        <i-col span="6"  class="RowText">
+        <i-col span="3"  class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
                     vModel = "searchParam.REPORTER_TIME_END"
-                });
-            }
-        </i-col>
-    </row>
-
-    @*<row>
-        <i-col span="2" class="RowTitle">
-            @{
-                RenderControl(new ButtonRender()
-                {
-                    Click = "SelSysuser_sh",
-                    Text = "审核人",
-                    Enable = true,
-                    Type = "primary"
-                });
-            }
-        </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.VERIFYNAME",
-                    Enable = false
-                });
-            }
-        </i-col>
-
-        <i-col span="2" class="RowTitle">
-            审核时间_起
-        </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.VERIFY_TIME_START"
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            审核时间_止
-        </i-col>
-        <i-col span="4">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.VERIFY_TIME_END"
-                });
-            }
-        </i-col>
-    </row>*@
-}
-
-
-@section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopSysuser",
-                    Src = "screenParam.srcPopSysuser",
-                    Caption = "选择人员",
-                    Width = "800"
                 });
             }
         </i-col>

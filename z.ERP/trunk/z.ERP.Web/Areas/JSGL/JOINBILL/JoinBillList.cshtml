@@ -45,15 +45,13 @@
             开始年月
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="searchParam.NIANYUE_START=$event"
-                         v-model="searchParam.NIANYUE_START"></date-picker>
+            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_START"></yx-year-month-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             结束年月
         </i-col>
         <i-col span="6" class="RowText">
-            <date-picker type="month" format="yyyyMM" v-bind:transfer="true" v-on:on-change="searchParam.NIANYUE_END=$event"
-                         v-model="searchParam.NIANYUE_END"></date-picker>
+            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_END"></yx-year-month-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             状态
@@ -80,9 +78,9 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            登记时间_起
+            登记时间
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -90,10 +88,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            登记时间_止
-        </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -115,9 +110,9 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            审核时间_起
+            审核时间
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -125,10 +120,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            审核时间_止
-        </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -137,7 +129,4 @@
             }
         </i-col>
     </row>
-
-   
-
 }

@@ -1,5 +1,4 @@
 ﻿search.beforeVue = function () {
-    search.searchParam.STYLE = "3";
     search.service = "HtglService";
     search.method = "GetContract";
 
@@ -25,61 +24,64 @@
             }
         }
     ];
-
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-
-    search.screenParam.showPopSysuser = false;
-    search.screenParam.srcPopSysuser = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-
-    search.screenParam.popParam = {};
+}
+search.newCondition = function () {
+    search.searchParam.STYLE = "3";
+    search.searchParam.BRANCHID = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.CONTRACTID = "";
+    search.searchParam.SHOPDM = "";
+    search.searchParam.REPORTER_NAME = "";
+    search.searchParam.VERIFY_NAME = "";
 }
 
 search.otherMethods = {
     SelReporter: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "REPORTER";
         search.screenParam.popParam = {};
+        search.popConfig.title = "选择登记人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
     SelVerify: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "VERIFY";
         search.screenParam.popParam = {};
+        search.popConfig.title = "选择审核人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     }
 }
 
 //接收子页面返回值
 search.popCallBack = function (data) {
-    if (search.screenParam.showPopSysuser) {
-        search.screenParam.showPopSysuser = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            if (btnFlag == "REPORTER") {
-                search.searchParam.REPORTER = data.sj[i].USERID;
-                search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+            switch (search.popConfig.title) {
+                case "选择登记人":
+                    search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+                    break;
+                case "选择审核人":
+                    search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
+                    break
+                case "选择商户":
+                    search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+                    search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    break;
             }
-            else if (btnFlag == "VERIFY") {
-                search.searchParam.VERIFY = data.sj[i].USERID;
-                search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
-            };
-        };
-    };
-
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
-        };
-    };
+        }
+    }
 };
 
 search.addHref = function (row) {
     _.OpenPage({
         id: 10600401,
-        title: '多经点位租约详情',
+        title: '添加多经点位租约',
         url: "HTGL/DJDW/DjdwEdit/"
     });
 }

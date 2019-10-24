@@ -1,5 +1,5 @@
 ﻿search.beforeVue = function () {
-    var col = [
+    search.screenParam.colDef = [
         { title: '商户编码', key: 'MERCHANTID'},
         { title: '商户名称', key: 'MERCHANTNAME'},
         { title: '收费单位', key: 'FEE_ACCOUNTNAME' },
@@ -10,18 +10,27 @@
         { title: '付款金额', key: 'USE_MONEY',  align: "right" },
         { title: '变更后余额', key: 'ACCOUNT',align: "right" },
     ];
-    search.screenParam.colDef = col;
     search.service = "ShglService";
     search.method = "GetMerchantAccountDetail";
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-    search.screenParam.popParam = {};
     search.indexShow = true;
     search.selectionShow = false;
 };
+search.newCondition = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.FEE_ACCOUNT_ID = "";
+    search.searchParam.REFERTYPE = "";
+    search.searchParam.STARTTIME = "";
+    search.searchParam.ENDTIME = "";
+    search.searchParam.REFERID = "";
+};
 search.otherMethods = {
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     }
 }
 search.mountedInit = function () {
@@ -34,12 +43,15 @@ search.mountedInit = function () {
     }];
 }
 search.popCallBack = function (data) {
-
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            switch (search.popConfig.title) {
+                case "选择商户":
+                    search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+                    search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    break
+            }
         }
     }
 };

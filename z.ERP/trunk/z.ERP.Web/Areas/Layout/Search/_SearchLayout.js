@@ -22,7 +22,7 @@
     this.popConfig = {
         title: "弹窗",
         src: "",
-        width: 800,
+        width: 900,
         height: 550,
         open: false
     };
@@ -196,8 +196,6 @@
                 //清空
                 clear: function () {
                     let _self = this;
-                    _this.searchParam = {};
-                    _self.searchParam = _this.searchParam;
                     _self.panelName = ["panelOne", "panelTwo", "panelThree"];
                     _self.data = [];      
                     _self.pagedataCount = 0;

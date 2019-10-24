@@ -17,55 +17,59 @@
             }
         }
     ]
-
-    search.windowParam = {
-        terst: false
-    }
-
     search.service = "WyglService";
     search.method = "GetOpenBusiness";
-
-
-    search.screenParam.showPopSysuser = false;
-    search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
-    search.screenParam.popParam = {};
-    search.searchParam.REPORTER = "";
-    search.searchParam.REPORTERNAME = "";
-    search.searchParam.VERIFY = "";
-    search.searchParam.VERIFYNAME = "";
 }
 
-
+search.newCondition = function () {
+    search.searchParam.BILLID = "";
+    search.searchParam.OPENDATE_START = "";
+    search.searchParam.OPENDATE_END = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTERNAME = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
+    search.searchParam.VERIFY = "";
+    search.searchParam.VERIFYNAME = "";
+    search.searchParam.VERIFY_TIME_START = "";
+    search.searchParam.VERIFY_TIME_END = "";
+};
 search.addHref = function (row) {
     _.OpenPage({
         id: 103005,
-        title: '新增店铺开业单',
+        title: '添加店铺开业单',
         url: "WYGL/OPENBUSINESS/OpenBusinessEdit/"
     });
 }
 search.otherMethods = {
-    SelSysuser: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "REPORTER";
+    SelReporter: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.title = "选择登记人";
+        search.popConfig.open = true;
     },
-    SelSysuser_sh: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "VERIFY";
+    SelVerify: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.title = "选择审核人";
+        search.popConfig.open = true;
     }
 }
-
-//接收子页面返回值
 search.popCallBack = function (data) {
-    search.screenParam.showPopSysuser = false;
-    for (var i = 0; i < data.sj.length; i++) {
-        if (btnFlag == "REPORTER") {
-            search.searchParam.REPORTER = data.sj[i].USERID;
-            search.searchParam.REPORTERNAME = data.sj[i].USERNAME;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            switch (search.popConfig.title) {
+                case "选择登记人":
+                    search.searchParam.REPORTER = data.sj[i].USERID;
+                    search.searchParam.REPORTERNAME = data.sj[i].USERNAME;
+                    break;
+                case "选择审核人":
+                    search.searchParam.VERIFY = data.sj[i].USERID;
+                    search.searchParam.VERIFYNAME = data.sj[i].USERNAME;
+                    break;
+            }
         }
-        else if (btnFlag == "VERIFY") {
-            search.searchParam.VERIFY = data.sj[i].USERID;
-            search.searchParam.VERIFYNAME = data.sj[i].USERNAME;
-        }
-
-    };
+    }
 };

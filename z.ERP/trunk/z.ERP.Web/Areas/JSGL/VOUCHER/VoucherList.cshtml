@@ -26,37 +26,37 @@
                 });
             }
         </i-col>
-        </row>
-        <row>
-            <i-col span="2" class="RowTitle">
-                登记人
-            </i-col>
-            <i-col span="6" class="RowText">
-                @{
-                    RenderControl(new TextBoxRender()
-                    {
-                        vModel = "searchParam.REPORTER"
-                    });
-                }
-            </i-col>
-            <i-col span="2" class="RowTitle">
-                登记时间
-            </i-col>
-            <i-col span="3" class="RowText">
-                @{
-                    RenderControl(new DateBoxRender()
-                    {
-                        vModel = "searchParam.REPORTER_TIME_START"
-                    });
-                }
-            </i-col>
-            <i-col span="3" class="RowText">
-                @{
-                    RenderControl(new DateBoxRender()
-                    {
-                        vModel = "searchParam.REPORTER_TIME_END"
-                    });
-                }
-            </i-col>
-        </row>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            登记人
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "searchParam.REPORTER"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            登记时间
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_TIME_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.REPORTER_TIME_END"
+                });
+            }
+        </i-col>
+    </row>
 }

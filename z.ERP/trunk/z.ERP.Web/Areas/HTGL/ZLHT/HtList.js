@@ -1,9 +1,6 @@
 ﻿search.beforeVue = function () {
-    search.searchParam.STYLE = "1";  //只查询租赁合同
-    search.searchParam.HTLX = "1"; //默认查询原始合同
     search.service = "HtglService";
     search.method = "GetContract";
-
     search.screenParam.colDef = [
         { title: '租约号', key: 'CONTRACTID', sortable: true },
         { title: '状态', key: 'STATUSMC' },
@@ -29,74 +26,78 @@
             }
         }
     ];
-
-    search.screenParam.showPop = false;
-    search.screenParam.srcPop = null;
-    search.screenParam.title = null;
-    search.screenParam.popParam = {};
 }
 
 search.newCondition = function () {
     search.searchParam.STYLE = "1";  //只查询租赁合同
-    search.searchParam.HTLX = "1"; //默认查询原始合同
+    search.searchParam.HTLX = 1; //默认查询原始合同
+    search.searchParam.BRANCHID = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.CONTRACTID = "";
+    search.searchParam.SHOPDM = "";
+    search.searchParam.BRANDNAME = "";
+    search.searchParam.SIGNER_NAME = "";
+    search.searchParam.REPORTER_NAME = "";
+    search.searchParam.VERIFY_NAME = "";
+    search.searchParam.STATUS = "";
 }
 
 search.otherMethods = {
     SelSigner: function () {
-        search.screenParam.title = "选择合同员";
-        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-        search.screenParam.showPop = true;
-        btnFlag = "SIGNER";
         search.screenParam.popParam = { USER_TYPE: "7" };
+        search.popConfig.title = "选择合同员";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
     SelReporter: function () {
-        search.screenParam.title = "选择登记人";
-        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-        search.screenParam.showPop = true;
-        btnFlag = "REPORTER";
         search.screenParam.popParam = {};
+        search.popConfig.title = "选择登记人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
     SelVerify: function () {
-        search.screenParam.title = "选择审核人";
-        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-        search.screenParam.showPop = true;
-        btnFlag = "VERIFY";
         search.screenParam.popParam = {};
+        search.popConfig.title = "选择审核人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
     SelMerchant: function () {
-        search.screenParam.title = "选择商户";
-        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-        search.screenParam.showPop = true;
-        btnFlag = "Merchant";
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     }
 }
 
 //接收子页面返回值
 search.popCallBack = function (data) {
-    if (search.screenParam.showPop) {
-        search.screenParam.showPop = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            if (btnFlag == "SIGNER") {
-                search.searchParam.SIGNER_NAME = data.sj[i].USERNAME;
+            switch (search.popConfig.title) {
+                case "选择合同员":
+                    search.searchParam.SIGNER_NAME = data.sj[i].USERNAME;
+                    break;
+                case "选择登记人":
+                    search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+                    break;
+                case "选择审核人":
+                    search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
+                    break
+                case "选择商户":
+                    search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+                    search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    break;
             }
-            else if (btnFlag == "REPORTER") {
-                search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
-            }
-            else if (btnFlag == "VERIFY") {
-                search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
-            }
-            else if (btnFlag == "Merchant") {
-                search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-                search.searchParam.MERCHANTNAME = data.sj[i].NAME;
-            }
-        };
+        }
     }
 };
 
 search.addHref = function (row) {
     _.OpenPage({
         id: 10600201,
-        title: '租赁租约详情',
+        title: '增加租赁租约',
         url: "HTGL/ZLHT/HtEdit/"
     });
 
@@ -126,7 +127,6 @@ search.mountedInit = function () {
                     Data: selection
                 }, function (data) {
                     if (data) {
-                        debugger
                         window.location.href = __BaseUrl + data;
                     }
                 });

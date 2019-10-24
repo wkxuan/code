@@ -24,58 +24,61 @@
     ];
     search.service = "JsglService";
     search.method = "GetBillAdjustList";
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-    search.screenParam.showPopSysuser = false;
-    search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
-    search.searchParam.TYPE = 2;
+}
+search.newCondition = function () {
+    search.searchParam.TYPE = 2;  
+    search.searchParam.BILLID = "";
+    search.searchParam.BRANCHID = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.NIANYUE_START = "";
+    search.searchParam.NIANYUE_END = "";
+    search.searchParam.YEARMONTH_START = "";
+    search.searchParam.YEARMONTH_END = "";
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTER_NAME = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
+    search.searchParam.VERIFY = "";
+    search.searchParam.VERIFY_NAME = "";
+    search.searchParam.VERIFY_TIME_START = "";
+    search.searchParam.VERIFY_TIME_END = "";
 }
 search.addHref = function (row) {
     _.OpenPage({
         id: 10700201,
-        title: '费用调整单详情',
+        title: '添加费用调整单',
         url: "JSGL/BILL_ADJUST/Bill_AdjustEdit/"
     });
 }
 search.otherMethods = {
-    SelMerchant: function () {
-        if (!search.searchParam.BRANCHID) {
-            iview.Message.info("请选择门店!");
-            return;
-        };
-        search.screenParam.showPopMerchant = true;
+    SelReporter: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择登记人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
-    SelSysuser: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "REPORTER";
-    },
-    SelSysuser_sh: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "VERIFY";
-    },
-}
-//接收子页面返回值
-search.popCallBack = function (data) {
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
-        }
+    SelVerify: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择审核人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     }
-    if (search.screenParam.showPopSysuser) {
-        search.screenParam.showPopSysuser = false;
+}
+search.popCallBack = function (data) {
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            if (btnFlag == "REPORTER") {
-                search.searchParam.REPORTER = data.sj[i].USERID;
-                search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+            switch (search.popConfig.title) {
+                case "选择登记人":
+                    search.searchParam.REPORTER = data.sj[i].USERID;
+                    search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+                    break;
+                case "选择审核人":
+                    search.searchParam.VERIFY = data.sj[i].USERID;
+                    search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
+                    break
             }
-            else if (btnFlag == "VERIFY") {
-                search.searchParam.VERIFY = data.sj[i].USERID;
-                search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
-            }
-
-        };
+        }
     }
 };
 

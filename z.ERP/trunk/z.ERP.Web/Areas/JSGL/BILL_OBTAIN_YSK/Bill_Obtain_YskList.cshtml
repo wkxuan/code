@@ -35,8 +35,7 @@
             商户
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
+            <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
         </i-col>
         <i-col span="2" class="RowTitle">
             权债发生月
@@ -62,8 +61,7 @@
             登记人
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.REPORTER_NAME" v-on:on-click="SelSysuser" />
+            <i-input readonly icon="md-search" v-model="searchParam.REPORTER_NAME" v-on:on-click="SelReporter" />
         </i-col>
         <i-col span="2" class="RowTitle">
             登记时间
@@ -90,8 +88,7 @@
             审核人
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.VERIFY_NAME" v-on:on-click="SelSysuser_sh" />
+            <i-input readonly icon="md-search" v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
         </i-col>
         <i-col span="2" class="RowTitle">
             审核时间
@@ -113,24 +110,4 @@
             }
         </i-col>
     </row>
-}
-@section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopMerchant",
-            Caption = "选择商户",
-            Width = "900",
-            Src = "screenParam.srcPopMerchant"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopSysuser",
-            Src = "screenParam.srcPopSysuser",
-            Caption = "选择人员",
-            Width = "800"
-        });
-    }
 }

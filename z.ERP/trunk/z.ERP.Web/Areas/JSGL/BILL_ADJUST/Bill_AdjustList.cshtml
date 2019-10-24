@@ -40,34 +40,11 @@
         <i-col span="3" class="RowText">
             <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_END"></yx-year-month-picker>
         </i-col>
-        
-        <i-col span="2" class="RowTitle">
-            收付实现月
-        </i-col>
-        <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_START"></yx-year-month-picker>
-        </i-col>
-        <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_END"></yx-year-month-picker>
-        </i-col>
-
-        @*<i-col span="2" class="RowTitle">账单类型</i-col>
-        <i-col span="6" class="RowText">
-            @{
-                RenderControl(new EnumDropDownListRender<账单类型>()
-                {
-                    vModel = "searchParam.TYPE",
-                });
-            }
-        </i-col>*@
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
             登记人
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.REPORTER_NAME" v-on:on-click="SelSysuser" />
+            <i-input icon="md-search" v-model="searchParam.REPORTER_NAME" v-on:on-click="SelReporter" />
         </i-col>
         <i-col span="2" class="RowTitle">
             登记时间
@@ -87,15 +64,23 @@
                     vModel = "searchParam.REPORTER_TIME_END"
                 });
             }
-        </i-col>
+        </i-col>       
     </row>
     <row>
+        <i-col span="2" class="RowTitle">
+            收付实现月
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_START"></yx-year-month-picker>
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_END"></yx-year-month-picker>
+        </i-col>
         <i-col span="2" class="RowTitle">
             审核人
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.VERIFY_NAME" v-on:on-click="SelSysuser_sh" />
+            <i-input icon="md-search" v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
         </i-col>
         <i-col span="2" class="RowTitle">
             审核时间
@@ -117,24 +102,4 @@
             }
         </i-col>
     </row>
-}
-@section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopMerchant",
-            Caption = "选择商户",
-            Width = "900",
-            Src = "screenParam.srcPopMerchant"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopSysuser",
-            Src = "screenParam.srcPopSysuser",
-            Caption = "选择人员",
-            Width = "800"
-        });
-    }
 }

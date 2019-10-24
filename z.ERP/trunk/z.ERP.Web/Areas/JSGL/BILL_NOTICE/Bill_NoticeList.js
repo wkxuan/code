@@ -25,78 +25,84 @@
     ];
     search.service = "JsglService";
     search.method = "GetBillNoticeList";
-
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
-    search.screenParam.showPopSysuser = false;
-    search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
-    search.screenParam.showPopContract = false;
-    search.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
-
+}
+search.newCondition = function () {
+    search.searchParam.BILLID = "";
+    search.searchParam.BRANCHID = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.CONTRACTID = "";
+    search.searchParam.TYPE = "";
+    search.searchParam.NIANYUE_START = "";
+    search.searchParam.NIANYUE_END = "";
     search.searchParam.REPORTER = "";
     search.searchParam.REPORTERNAME = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
     search.searchParam.VERIFY = "";
     search.searchParam.VERIFYNAME = "";
-    search.screenParam.popParam = {};
+    search.searchParam.VERIFY_TIME_START = "";
+    search.searchParam.VERIFY_TIME_END = "";
+    search.searchParam.FEE_ACCOUNTID = "";
 }
-
 search.addHref = function (row) {
     _.OpenPage({
         id: 10700501,
-        title: '商户缴费通知单详情',
+        title: '添加商户缴费通知单',
         url: "JSGL/BILL_NOTICE/Bill_NoticeEdit/"
     });
 }
 
-
 search.otherMethods = {
-    SelSysuser: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "REPORTER";
+    SelReporter: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择登记人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
-    SelSysuser_sh: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "VERIFY";
+    SelVerify: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择审核人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     },
     SelContract: function () {
         search.screenParam.popParam = { BRANCHID: search.searchParam.BRANCHID };
-        search.screenParam.showPopContract = true;
+        search.popConfig.title = "选择租约";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopContractList/";
+        search.popConfig.open = true;
     },
 }
 
 //接收子页面返回值
 search.popCallBack = function (data) {
-
-    if (search.screenParam.showPopSysuser){
-        search.screenParam.showPopSysuser = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            if (btnFlag == "REPORTER") {
-                search.searchParam.REPORTER = data.sj[i].USERID;
-                search.searchParam.REPORTERNAME = data.sj[i].USERNAME;
+            switch (search.popConfig.title) {
+                case "选择登记人":
+                    search.searchParam.REPORTER = data.sj[i].USERID;
+                    search.searchParam.REPORTERNAME = data.sj[i].USERNAME;
+                    break;
+                case "选择审核人":
+                    search.searchParam.VERIFY = data.sj[i].USERID;
+                    search.searchParam.VERIFYNAME = data.sj[i].USERNAME;
+                    break
+                case "选择商户":
+                    search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+                    search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    break
+                case "选择租约":
+                    search.searchParam.CONTRACTID = data.sj[i].CONTRACTID;
+                    break
             }
-            else if (btnFlag == "VERIFY") {
-                search.searchParam.VERIFY = data.sj[i].USERID;
-                search.searchParam.VERIFYNAME = data.sj[i].USERNAME;
-            }
-
-        };
-    }
-
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
-        }
-    }
-
-    if (search.screenParam.showPopContract) {
-        search.screenParam.showPopContract = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.CONTRACTID = data.sj[i].CONTRACTID;
         }
     }
 };

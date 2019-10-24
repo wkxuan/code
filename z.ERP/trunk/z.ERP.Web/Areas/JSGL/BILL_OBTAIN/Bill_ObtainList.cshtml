@@ -58,9 +58,9 @@
             <i-input v-model="searchParam.REPORTER" clearable />
         </i-col>
         <i-col span="2" class="RowTitle">
-            登记时间_起
+            登记时间
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -68,10 +68,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            登记时间_止
-        </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -88,9 +85,9 @@
             <i-input v-model="searchParam.VERIFY" clearable />
         </i-col>
         <i-col span="2" class="RowTitle">
-            审核时间_起
+            审核时间
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -98,10 +95,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            审核时间_止
-        </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -110,16 +104,4 @@
             }
         </i-col>
     </row>
-}
-
-@section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopMerchant",
-            Caption = "选择商户",
-            Width = "900",
-            Src = "screenParam.srcPopMerchant"
-        });
-    }
 }

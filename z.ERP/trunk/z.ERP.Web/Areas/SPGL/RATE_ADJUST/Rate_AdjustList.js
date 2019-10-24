@@ -21,43 +21,60 @@
     ];
     search.service = "SpglService";
     search.method = "GetRateAdjustList";
-    search.screenParam.showPopSysuser = false;
-    search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
 }
-
+search.newCondition = function () {
+    search.searchParam.ID = "";
+    search.searchParam.BRANCHID = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.DATE_START = "";
+    search.searchParam.DATE_END = "";
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTER_NAME = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
+    search.searchParam.VERIFY = "";
+    search.searchParam.VERIFY_NAME = "";
+    search.searchParam.VERIFY_TIME_START = "";
+    search.searchParam.VERIFY_TIME_END = "";
+};
 search.otherMethods = {
-    SelSysuser: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "REPORTER";
+    SelReporter: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择登记人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
-    SelSysuser_sh: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "VERIFY";
-    },
+    SelVerify: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择审核人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
+    }
 }
 
 search.addHref = function (row) {
     _.OpenPage({
         id: 10500701,
-        title: '扣率调整单',
+        title: '添加扣率调整单',
         url: "SPGL/RATE_ADJUST/Rate_AdjustEdit/"
     })
 }
-//接收子页面返回值
-search.popCallBack = function (data) {
-    if (search.screenParam.showPopSysuser) {
-        search.screenParam.showPopSysuser = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            if (btnFlag == "REPORTER") {
-                search.searchParam.REPORTER = data.sj[i].USERID;
-                search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
-            }
-            else if (btnFlag == "VERIFY") {
-                search.searchParam.VERIFY = data.sj[i].USERID;
-                search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
-            }
 
-        };
+search.popCallBack = function (data) {
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            switch (search.popConfig.title) {
+                case "选择登记人":
+                    search.searchParam.REPORTER = data.sj[i].USERID;
+                    search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+                    break;
+                case "选择审核人":
+                    search.searchParam.VERIFY = data.sj[i].USERID;
+                    search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
+                    break
+            }
+        }
     }
 };
 

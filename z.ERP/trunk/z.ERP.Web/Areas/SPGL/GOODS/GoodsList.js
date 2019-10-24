@@ -28,11 +28,20 @@
     search.service = "SpglService";
     search.method = "GetGoods";
 }
-
+search.newCondition = function () {
+    search.searchParam.NAME = "";
+    search.searchParam.GOODSDM = "";
+    search.searchParam.BARCODE = "";
+    search.searchParam.PYM = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.TYPE = "";
+    search.searchParam.CONTRACTID = "";
+    search.searchParam.KINDID = "";
+};
 search.addHref = function (row) {
     _.OpenPage({
         id: 105002,
-        title: '商品信息',
+        title: '添加商品信息',
         url: "SPGL/GOODS/GoodsEdit/"
     });
 }

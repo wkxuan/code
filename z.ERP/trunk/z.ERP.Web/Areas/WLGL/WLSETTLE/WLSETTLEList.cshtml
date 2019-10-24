@@ -13,7 +13,6 @@
                 });
             }
         </i-col>
-
         <i-col span="2" class="RowTitle">供货商名称</i-col>
         <i-col span="6"  class="RowText">
             @{
@@ -23,42 +22,19 @@
                 });
             }
         </i-col>
-
     </row>
-
     <row>
         <i-col span="2" class="RowTitle">
             登记人
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.REPORTER_NAME" v-on:on-click="SelReporter" />
+            <i-input readonly icon="md-search" v-model="searchParam.REPORTER_NAME" v-on:on-click="SelReporter" />
         </i-col>
         <i-col span="2" class="RowTitle">
             审核人
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
-        </i-col>
-    </row>
-
-}
-
-
-
-@section pops{
-    <row>
-        <i-col>
-            @{
-                RenderControl(new PopsRender()
-                {
-                    vModel = "screenParam.showPopSysuser",
-                    Src = "screenParam.srcPopSysuser",
-                    Caption = "选择人员",
-                    Width = "800"
-                });
-            }
+            <i-input readonly icon="md-search" v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
         </i-col>
     </row>
 }

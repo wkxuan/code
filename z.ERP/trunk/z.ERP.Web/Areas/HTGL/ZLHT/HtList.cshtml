@@ -33,30 +33,15 @@
     <row>
         <i-col span="3" class="RowTitle">合同号</i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.CONTRACTID"
-                });
-            }
+            <i-input  v-model = "searchParam.CONTRACTID"></i-input>
         </i-col>
         <i-col span="3" class="RowTitle">资产代码</i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.SHOPDM"
-                });
-            }
+            <i-input v-model="searchParam.SHOPDM"></i-input>
         </i-col>
         <i-col span="3" class="RowTitle">品牌名称</i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.BRANDNAME"
-                });
-            }
+            <i-input v-model="searchParam.BRANDNAME"></i-input>
         </i-col>
     </row>
     <row>
@@ -64,19 +49,19 @@
             合同员
         </i-col>
         <i-col span="5" class="RowText">
-            <i-input readonly icon="md-search" v-model="searchParam.SIGNER_NAME" v-on:on-click="SelSigner" />
+            <i-input icon="md-search" v-model="searchParam.SIGNER_NAME" v-on:on-click="SelSigner" />
         </i-col>
         <i-col span="3" class="RowTitle">
             登记人
         </i-col>
         <i-col span="5" class="RowText">
-            <i-input readonly icon="md-search" v-model="searchParam.REPORTER_NAME" v-on:on-click="SelReporter" />
+            <i-input icon="md-search" v-model="searchParam.REPORTER_NAME" v-on:on-click="SelReporter" />
         </i-col>
         <i-col span="3" class="RowTitle">
             审核人
         </i-col>
         <i-col span="5" class="RowText">
-            <i-input readonly icon="md-search" v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
+            <i-input icon="md-search" v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
         </i-col>
     </row>
     <row>
@@ -92,8 +77,4 @@
             }
         </i-col>
     </row>
-}
-@section pops{
-    <yx-modal v-bind:src="screenParam.srcPop"  v-bind:title = "screenParam.title" width="900"
-              v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }

@@ -26,14 +26,26 @@
     ];
     search.service = "HtglService";
     search.method = "GetFreeShopList";
-    //账单收款
-    search.searchParam.TYPE = 3;
 }
-
+search.newCondition = function () {
+    search.searchParam.TYPE = "3";
+    search.searchParam.BILLID = "";
+    search.searchParam.BRANCHID = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.CONTRACTID = "";
+    search.searchParam.FREEDATE_START = "";
+    search.searchParam.FREEDATE_END = "";
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
+    search.searchParam.VERIFY = "";
+    search.searchParam.VERIFY_TIME_START = "";
+    search.searchParam.VERIFY_TIME_END = "";
+}
 search.addHref = function (row) {
     _.OpenPage({
         id: 106003,
-        title: '退铺单详情',
+        title: '添加退铺单',
         url: "HTGL/FREESHOP/FreeShopEdit/"
     });
 }

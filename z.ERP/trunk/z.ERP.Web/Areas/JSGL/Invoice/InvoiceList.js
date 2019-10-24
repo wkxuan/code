@@ -28,30 +28,41 @@
     ];
     search.service = "JsglService";
     search.method = "GetInvoiceList";
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
 }
-
-
+search.newCondition = function () {
+    search.searchParam.BRANCHID = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.INVOICENUMBER = "";
+    search.searchParam.TYPE = "";
+    search.searchParam.INVOICEDATE = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+}
 search.addHref = function (row) {
     _.OpenPage({
         id: 10700801,
-        title: '开票记录详情',
+        title: '添加开票记录',
         url: "JSGL/Invoice/InvoiceEdit/"
     });
 }
 search.otherMethods = {
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     },
 }
 search.popCallBack = function (data) {
-
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+            switch (search.popConfig.title) {
+                case "选择商户":
+                    search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+                    search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    break
+            }
         }
     }
 };

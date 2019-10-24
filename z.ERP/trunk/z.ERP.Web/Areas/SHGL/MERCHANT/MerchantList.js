@@ -1,7 +1,5 @@
 ﻿search.beforeVue = function () {
-    search.searchParam.MERCHANTID = "";
     search.screenParam.colDef = [
-       // { title: '状态', key: 'STATUSMC', width: 80 },
         { title: "商户代码", key: 'MERCHANTID', width: 105, sortable: true },
         { title: '商户名称', key: 'NAME', width: 250 },
         { title: '商户类型', key: 'TYPENAME', width: 100 },
@@ -28,16 +26,21 @@
             }
         }
     ];
-
     search.service = "ShglService";
     search.method = "GetMerchant";
 }
-
+search.newCondition = function () {
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.TYPE = [];
+    search.searchParam.BANK = "";
+    search.searchParam.SH = "";
+    search.searchParam.STATUS = [];
+}
 search.addHref = function (row) {
-
     _.OpenPage({
         id: 10200101,
-        title: '商户信息',
+        title: '添加商户信息',
         url: "SHGL/MERCHANT/MerchantEdit/"
     });
 };

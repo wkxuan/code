@@ -9,7 +9,6 @@ alter table JOIN_BILL rename column ZZSJE_11 to ZZSJE_10;
 editDetail.beforeVue = function () {
     editDetail.service = "JsglService";
     editDetail.method = "GetJoinBillElement"
-    editDetail.Key = 'BILLID';
     editDetail.branchid = false;
 
     editDetail.screenParam.goodscolDef = [
@@ -29,9 +28,26 @@ editDetail.beforeVue = function () {
         { title: "序号", key: "INX", width: 70, },
         { title: "类型", key: "TYPE", width: 70, },
         { title: "金额", key: "JE", width: 100, },
-        ]
+    ];
 }
-
+editDetail.mountedInit = function () {
+    editDetail.btnConfig = [{
+        id: "add",
+        authority: ""
+    }, {
+        id: "edit",
+        authority: ""
+    }, {
+        id: "del",
+        authority: ""
+    }, {
+        id: "save",
+        authority: ""
+    }, {
+        id: "abandon",
+        authority: ""
+    }]
+};
 editDetail.showOne = function (data, callback) {
     _.Ajax('GetJoinBillElement', {
         Data: { BILLID: data }

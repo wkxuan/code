@@ -23,7 +23,7 @@
         </i-col>
         <i-col span="6" class="RowText">
             @{
-                RenderControl(new EnumDropDownListRender<普通单据状态>()
+                RenderControl(new EnumDropDownListRender<退铺单状态>()
                 {
                     vModel = "searchParam.STATUS",
                 });
@@ -38,39 +38,15 @@
             <i-input v-model="searchParam.CONTRACTID" clearable/>
         </i-col>        
         <i-col span="2" class="RowTitle">
-            退铺日期_起
-        </i-col>
-        <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.FREEDATE_START"
-                });
-            }     
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            退铺日期_止
-        </i-col>
-        <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.FREEDATE_END"
-                });
-            }
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
             登记人
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input v-model="searchParam.REPORTER" clearable/>
+            <i-input v-model="searchParam.REPORTER" clearable />
         </i-col>
         <i-col span="2" class="RowTitle">
-            登记时间_起
+            登记时间
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -78,10 +54,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            登记时间_止
-        </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -92,15 +65,34 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            退铺日期
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.FREEDATE_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.FREEDATE_END"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
             审核人
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input v-model="searchParam.VERIFY" clearable/>
+            <i-input v-model="searchParam.VERIFY" clearable />
         </i-col>
         <i-col span="2" class="RowTitle">
-            审核时间_起
+            审核时间
         </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -108,10 +100,7 @@
                 });
             }
         </i-col>
-        <i-col span="2" class="RowTitle">
-            审核时间_止
-        </i-col>
-        <i-col span="6" class="RowText">
+        <i-col span="3" class="RowText">
             @{
                 RenderControl(new DateBoxRender()
                 {

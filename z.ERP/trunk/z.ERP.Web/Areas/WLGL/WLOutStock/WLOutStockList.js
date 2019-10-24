@@ -1,5 +1,4 @@
 ﻿search.beforeVue = function () {
-    search.searchParam.MERCHANTID = "";
     search.screenParam.colDef = [
         { title: '状态', key: 'STATUSMC', width: 80 },
         { title: "购进冲红单单号", key: 'BILLID', width: 100 },
@@ -19,51 +18,52 @@
             }
         }
     ];
-
     search.service = "WyglService";
     search.method = "GetWlOutStock";
-
-    search.screenParam.showPopSysuser = false;
-    search.screenParam.srcPopSysuser = __BaseUrl + "/" + "Pop/Pop/PopSysuserList/";
-    search.screenParam.popParam = {};
-
 };
-
+search.newCondition = function () {
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.NAME = "";
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTER_NAME = "";
+    search.searchParam.VERIFY = "";
+    search.searchParam.VERIFY_NAME = "";
+};
 search.otherMethods = {
     SelReporter: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "REPORTER";
         search.screenParam.popParam = {};
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.title = "选择登记人";
+        search.popConfig.open = true;
     },
     SelVerify: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "VERIFY";
         search.screenParam.popParam = {};
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.title = "选择审核人";
+        search.popConfig.open = true;
     }
 }
-
-
 search.popCallBack = function (data) {
-    if (search.screenParam.showPopSysuser) {
-        search.screenParam.showPopSysuser = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            if (btnFlag == "REPORTER") {
-                search.searchParam.REPORTER = data.sj[i].USERID;
-                search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+            switch (search.popConfig.title) {
+                case "选择登记人":
+                    search.searchParam.REPORTER = data.sj[i].USERID;
+                    search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+                    break;
+                case "选择审核人":
+                    search.searchParam.VERIFY = data.sj[i].USERID;
+                    search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
+                    break;
             }
-            else if (btnFlag == "VERIFY") {
-                search.searchParam.VERIFY = data.sj[i].USERID;
-                search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
-            }
-        };
-    };
+        }
+    }
 };
-
 search.addHref = function (row) {
-
     _.OpenPage({
         id: 10900401,
-        title: '新增物料购进冲红单',
+        title: '添加物料购进冲红单',
         url: "WLGL/WLOutStock/WLOutStockEdit/"
     });
 };

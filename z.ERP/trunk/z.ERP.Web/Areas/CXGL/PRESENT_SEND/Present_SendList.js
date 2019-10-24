@@ -20,36 +20,47 @@
             }
         }
     ];
-    search.screenParam.showPop = false;
-    search.screenParam.srcPop = "";
-    search.screenParam.title = "";
-    search.screenParam.popParam = {};
 }
+search.newCondition = function () {
+    search.searchParam.BILLID = "";
+    search.searchParam.BRANCHID = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.REPORTER_NAME = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
+    search.searchParam.VERIFY_NAME = "";
+    search.searchParam.VERIFY_TIME_START = "";
+    search.searchParam.VERIFY_TIME_END = "";
+};
 search.otherMethods = {
     SelReporter: function () {
-        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-        search.screenParam.title = "选择录入人";
-        search.screenParam.showPop = true;
+        search.screenParam.popParam = {};
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.title = "选择登记人";
+        search.popConfig.open = true;
     },
     SelVerify: function () {
-        search.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-        search.screenParam.title = "选择审核人";
-        search.screenParam.showPop = true;
+        search.screenParam.popParam = {};
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.title = "选择审核人";
+        search.popConfig.open = true;
     }
 }
 
 //接收子页面返回值
 search.popCallBack = function (data) {
-    if (search.screenParam.showPop) {
-        search.screenParam.showPop = false;
-        for (let i = 0; i < data.sj.length; i++) {
-            if (search.screenParam.title == "选择录入人") {
-                search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
+        for (var i = 0; i < data.sj.length; i++) {
+            switch (search.popConfig.title) {
+                case "选择登记人":
+                    search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+                    break;
+                case "选择审核人":
+                    search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
+                    break;
             }
-            if (search.screenParam.title == "选择审核人") {
-                search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
-            }
-        };
+        }
     }
 };
 

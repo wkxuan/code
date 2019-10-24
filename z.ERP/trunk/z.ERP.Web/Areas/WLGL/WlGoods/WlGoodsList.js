@@ -1,5 +1,4 @@
 ﻿search.beforeVue = function () {
-    search.searchParam.MERCHANTID = "";
     search.screenParam.colDef = [
         { title: '状态', key: 'STATUSMC', width: 80 },
         { title: "供货商代码", key: 'MERCHANTID', width: 105, sortable: true },
@@ -20,16 +19,18 @@
             }
         }
     ];
-
     search.service = "WyglService";
     search.method = "GetWlGoods";
 }
-
+search.newCondition = function () {
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.NAME = "";
+    search.searchParam.GOODSDM = "";
+};
 search.addHref = function (row) {
-
     _.OpenPage({
         id: 10900201,
-        title: '新增物料信息',
+        title: '添加物料信息',
         url: "WLGL/WlGoods/WlGoodsEdit/"
     });
 };

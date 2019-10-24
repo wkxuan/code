@@ -27,16 +27,25 @@
     ];
     search.service = "XtglService";
     search.method = "GetBrandData";
+    search.uploadName = "品牌信息";
+}
+search.newCondition = function () {
+    search.searchParam.ID = "";
+    search.searchParam.NAME = "";
+    search.searchParam.ADRESS = "";
+    search.searchParam.CONTACTPERSON = "";
+    search.searchParam.PHONENUM = "";
+    search.searchParam.PIZ = "";
+    search.searchParam.WEIXIN = "";
+    search.searchParam.QQ = "";
 
     search.searchParam.CATEGORYCODE = "";
     search.screenParam.CATEGORY = [];
-    search.uploadName = "品牌信息";
 }
-
 search.addHref = function (row) {
     _.OpenPage({
         id: 102002,
-        title: '品牌信息',
+        title: '添加品牌信息',
         url: "PPGL/BRAND/BrandEdit/"
     });
 }

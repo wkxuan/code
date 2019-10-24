@@ -21,8 +21,7 @@
             商户
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
+            <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
         </i-col>
         <i-col span="2" class="RowTitle">
             收费单位
@@ -78,16 +77,4 @@
             }
         </i-col>
     </row>
-}
-
-@section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopMerchant",
-            Caption = "选择商户",
-            Width = "900",
-            Src = "screenParam.srcPopMerchant"
-        });
-    }
 }

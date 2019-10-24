@@ -22,8 +22,6 @@
     ];
     search.service = "SpglService";
     search.method = "GetSaleBillList";
-    search.screenParam.KINDID = [];
-    search.searchParam.TYPE = 3;
     search.uploadName = "销售补录单";
 }
 
@@ -45,7 +43,23 @@ search.mountedInit = function () {
         authority: ""
     }];
 }
+search.newCondition = function () {
+    search.searchParam.BILLID = "";
+    search.searchParam.BRANCHID = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.BRANDNAME = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.ACCOUNT_DATE_START = "";
+    search.searchParam.ACCOUNT_DATE_END = "";
+    search.searchParam.REPORTER_NAME = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
+    search.searchParam.VERIFY_NAME = "";
+    search.searchParam.VERIFY_TIME_START = "";
+    search.searchParam.VERIFY_TIME_END = "";
 
+    search.searchParam.TYPE = 3;
+};
 search.otherMethods = {
     SelMerchant: function () {
         search.screenParam.popParam = {};
@@ -102,5 +116,3 @@ search.addHref = function (row) {
         url: "SPGL/SALEBILL/SaleBillEdit/"
     })
 }
-
-

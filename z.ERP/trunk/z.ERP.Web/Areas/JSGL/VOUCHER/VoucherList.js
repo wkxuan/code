@@ -18,10 +18,18 @@
     search.service = "CwglService";
     search.method = "GetVoucherList";
 }
-search.addHref = function (row) {
+search.newCondition = function () {
+    search.searchParam.VOUCHERID = "";
+    search.searchParam.VOUCHERNAME = "";
+    search.searchParam.STATUS = "";
+    search.searchParam.REPORTER = "";
+    search.searchParam.REPORTER_TIME_START = "";
+    search.searchParam.REPORTER_TIME_END = "";
+}
+search.addHref = function () {
     _.OpenPage({
         id: 108001,
-        title: '凭证模板详情',
+        title: '添加凭证模板',
         url: "JSGL/VOUCHER/VoucherEdit/"
     });
 }
