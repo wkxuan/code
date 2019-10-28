@@ -67,7 +67,7 @@ namespace z.ERP.Services
 
             if (SaveData.GOODSID.IsEmpty())
             { 
-                SaveData.GOODSID = CommonService.NewINC("GOODSID_" + cont.BRANCHID);
+                SaveData.GOODSID = cont.BRANCHID +CommonService.NewINC("GOODSID_" + cont.BRANCHID).PadLeft(spbmcd - 1, '0');
                 if (spbmfs == 0 && !SaveData.GOODSDM.IsEmpty())
                     SaveData.GOODSDM = null;
 
@@ -80,7 +80,7 @@ namespace z.ERP.Services
             {
                 if (spbmfs == 0)
                 {
-                    SaveData.GOODSDM = cont.BRANCHID + SaveData.GOODSID.PadLeft(spbmcd - 1, '0');
+                    SaveData.GOODSDM = SaveData.GOODSID;
                 }
                 else
                 {
