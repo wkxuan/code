@@ -140,6 +140,14 @@ namespace z.ERP.Services
             SaveData.REPORTER_NAME = employee.Name;
             SaveData.REPORTER_TIME = DateTime.Now.ToString();
 
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.CONTRACTID,
+                MENUID = "10600202",
+                BRABCHID = SaveData.BRANCHID,
+                URL = "HTGL/ZLHT/HtEdit/"
+            };
+
             using (var Tran = DbHelper.BeginTransaction())
             {
                 SaveData.CONTRACT_PAY?.ForEach(item =>
@@ -154,18 +162,11 @@ namespace z.ERP.Services
                 });
 
                 DbHelper.Save(SaveData);
+                InsertDclRw(dcl);
 
                 Tran.Commit();
             }
-
-            var dcl = new BILLSTATUSEntity
-            {
-                BILLID = SaveData.CONTRACTID,
-                MENUID = "10600202",
-                BRABCHID = SaveData.BRANCHID,
-                URL = "HTGL/ZLHT/HtEdit/"
-            };
-            InsertDclRw(dcl);
+            
 
             return SaveData.CONTRACTID;
         }

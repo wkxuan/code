@@ -203,10 +203,10 @@ editDetail.popCallBack = function (data) {
 }
 
 editDetail.IsValidSave = function () {
-    if (!editDetail.dataParam.GOODSDM) {
-        iview.Message.info("请输入商品代码!");
-        return false;
-    };
+    //if (!editDetail.dataParam.GOODSDM) {
+    //    iview.Message.info("请输入商品代码!");
+    //    return false;
+    //};
     if (!editDetail.dataParam.TYPE) {
         iview.Message.info("请确认类型!");
         return false;

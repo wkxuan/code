@@ -1,11 +1,11 @@
 ﻿search.beforeVue = function () {
     search.screenParam.colDef = [
-        { title: '商品代码', key: 'GOODSDM', width: 105, sortable: true },
+        { title: '商品编码', key: 'GOODSDM', width: 105, sortable: true },
         { title: "商品条码", key: 'BARCODE', width: 130, sortable: true },
         { title: '商品名称', key: 'NAME', width: 150 },
         { title: '拼音码', key: 'PYM', width: 100 },
         { title: '租约号', key: 'CONTRACTID', width: 100, sortable: true },
-        { title: '商户代码', key: 'MERCHANTID', width: 105, sortable: true },
+        { title: '商户编码', key: 'MERCHANTID', width: 105, sortable: true },
         { title: '商户名称', key: 'MERCHANTNAME', width: 200 },
         { title: '商品分类', key: 'KINDCODE', width: 105, sortable: true },
         { title: '分类名称', key: 'KINDNAME', width: 120 },

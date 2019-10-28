@@ -33,7 +33,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID={a}");
             item.HasKey("KINDID", a => sql += $" and G.KINDID={a}");
             item.HasKey("TYPE", a => sql += $" and G.TYPE={a}");
-            sql += " ORDER BY  GOODSDM DESC";
+            sql += " ORDER BY  G.REPORTER_TIME DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<商品状态>("STATUS", "STATUSMC");
@@ -43,18 +43,59 @@ namespace z.ERP.Services
         public string SaveGoods(GOODSEntity SaveData)
         {
             var v = GetVerify(SaveData);
-            var spbmcd = 6;
+            
             //定义随机数,条码末尾校验位
             Random sj = new Random();
-            if (SaveData.GOODSID.IsEmpty())
+
+            CONTRACTEntity cont = new CONTRACTEntity();
+            cont = DbHelper.Select(new CONTRACTEntity() { CONTRACTID = SaveData.CONTRACTID });
+
+            CONFIGEntity cfgfs = new CONFIGEntity(); //商品编码生成方式:0系统自动生成流水码1手工录入自编码
+            cfgfs = DbHelper.Select(new CONFIGEntity() { ID = "3001" });
+            if (String.IsNullOrEmpty(cfgfs.CUR_VAL) || (!"012".Contains(cfgfs.CUR_VAL)))
             {
-                SaveData.GOODSID = CommonService.NewINC("GOODSID");
+                throw new LogicException("参数3001(商品编码生成方式)设置有误");
+            }
+            CONFIGEntity cfgcd = new CONFIGEntity();  //商品编码长度
+            cfgcd = DbHelper.Select(new CONFIGEntity() { ID = "3002" });
+            if (String.IsNullOrEmpty(cfgcd.CUR_VAL) || (cfgcd.CUR_VAL.ToInt() < 6) || (cfgcd.CUR_VAL.ToInt() > 10))
+            {
+                throw new LogicException("参数3002(商品编码长度)设置有误");
+            }
+            int spbmfs = cfgfs.CUR_VAL.ToInt();
+            int spbmcd = cfgcd.CUR_VAL.ToInt();
+
+            if (SaveData.GOODSID.IsEmpty())
+            { 
+                SaveData.GOODSID = CommonService.NewINC("GOODSID_" + cont.BRANCHID);
+                if (spbmfs == 0 && !SaveData.GOODSDM.IsEmpty())
+                    SaveData.GOODSDM = null;
+
+                SaveData.REPORTER = employee.Id;
+                SaveData.REPORTER_NAME = employee.Name;
+                SaveData.REPORTER_TIME = DateTime.Now.ToString();
             }
 
             if (SaveData.GOODSDM.IsEmpty())
             {
-                SaveData.GOODSDM = CommonService.NewINC("GOODSDM").PadLeft(spbmcd, '0');
+                if (spbmfs == 0)
+                {
+                    SaveData.GOODSDM = cont.BRANCHID + SaveData.GOODSID.PadLeft(spbmcd - 1, '0');
+                }
+                else
+                {
+                    throw new LogicException("商品编码不能为空,请录入!");
+                }
+
+              //  SaveData.GOODSDM = CommonService.NewINC("GOODSDM").PadLeft(spbmcd, '0');
             }
+            else
+            {
+               if (  SaveData.GOODSDM.Length != spbmcd)
+                    throw new LogicException("商品编码长度必须是"+ spbmcd + "位!");
+            }
+
+
             if (SaveData.BARCODE.IsEmpty())
             {
                 var szFormatBarcode = "21{0:D" + spbmcd + "}{1:D" + (10 - Convert.ToInt32(spbmcd)) + "}";
@@ -76,9 +117,7 @@ namespace z.ERP.Services
 
             SaveData.JXSL = (SaveData.JXSL.ToDouble() / 100).ToString();
             SaveData.XXSL = (SaveData.XXSL.ToDouble() / 100).ToString();
-            SaveData.REPORTER = employee.Id;
-            SaveData.REPORTER_NAME = employee.Name;
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
+
             SaveData.STATUS = ((int)商品状态.未审核).ToString();
 
             SaveData.GOODS_SHOP.ForEach(sdb =>
@@ -89,7 +128,6 @@ namespace z.ERP.Services
                 GetVerify(sdb).Require(a => a.CATEGORYID);
             });
             v.Verify();
-            DbHelper.Save(SaveData);
 
             //增加审核待办任务
             var dcl = new BILLSTATUSEntity
@@ -100,7 +138,12 @@ namespace z.ERP.Services
                 URL = "SPGL/GOODS/GoodsEdit/"
             };
 
-            InsertDclRw(dcl);
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(SaveData);
+                InsertDclRw(dcl);
+                Tran.Commit();
+            }
 
             return SaveData.GOODSID;
         }

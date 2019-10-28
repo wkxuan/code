@@ -22,6 +22,12 @@
         {
             get; set;
         }
+
+        public string goodsname
+        {
+            get; set;
+        }
+
         public decimal price
         {
             get; set;
@@ -30,6 +36,12 @@
         {
             get; set;
         }
+
+        public float returns  //退货数量 
+        {
+            get; set;
+        }
+
         public decimal sale_amount
         {
             get; set;
