@@ -1430,5 +1430,44 @@ namespace z.ERP.Services
             return backData;
 
         }
+
+        #region 收款方式手续费
+        public DataGridResult GetPay_Charges(SearchItem item)
+        {
+            string sql = $@"SELECT PC.BRANCHID,PC.PAYID,PC.RATE*1000 RATE,PC.FLOOR,PC.CEILING,P.NAME PAYNAME FROM PAY_CHARGES PC,PAY P WHERE PC.PAYID=P.PAYID AND P.TYPE>3 AND P.TYPE<20";
+            item.HasKey("BRANCHID", a => sql += $" and PC.BRANCHID = '{a}'");
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
+        public object GetPAY()
+        {
+            string sql = $@"SELECT * FROM PAY WHERE VOID_FLAG=1 AND TYPE>3 AND TYPE<20 ORDER BY  PAYID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new
+            {
+                dt = dt
+            };
+        }
+        public UIResult GetPay_ChargesOne(PAY_CHARGESEntity data)
+        {
+            string sql = $@"SELECT PC.BRANCHID,PC.PAYID,PC.RATE*1000 RATE,PC.FLOOR,PC.CEILING FROM PAY_CHARGES PC WHERE PC.BRANCHID={data.BRANCHID} AND PC.PAYID={data.PAYID}";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new UIResult(dt);
+        }
+        public string PAY_CHARGESSAVE(PAY_CHARGESEntity DefineSave)
+        {
+            var v = GetVerify(DefineSave);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.PAYID);
+            v.Require(a => a.FLOOR);
+            v.Require(a => a.CEILING);
+            v.Require(a => a.RATE);
+
+            DbHelper.Save(DefineSave);
+
+            return DefineSave.PAYID;
+        }
+        #endregion
     }
 }

@@ -1,0 +1,96 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+
+@section search{
+    <row>
+        <i-col span="5" class="RowTitle">门店</i-col>
+        <i-col span="12" class="RowText">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "searchParam.BRANCHID",
+                    Data = "screenParam.branchData",
+                    EmptyText = "",
+                    Change = "branchChange",
+                });
+            }
+        </i-col>
+    </row>
+}
+
+@section element{
+    <row>
+        <i-col span="5" class="RowTitle">
+            <span class="mustElement">*</span>
+            支付方式
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "dataParam.PAYID",
+                    Data = "screenParam.PAYData",
+                    EmptyText = "",
+                    Enable= false,
+                    Change = "payChange",
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="5" class="RowTitle">
+            <span class="mustElement">*</span>
+            单笔最低
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.FLOOR",
+                    type = "number",
+                    Enable = false,
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="5" class="RowTitle">
+            <span class="mustElement">*</span>
+            单笔封顶
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new TextBoxRender()
+                {
+                    vModel = "dataParam.CEILING",
+                    type="number",
+                    Enable = false,
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="5" class="RowTitle">
+            <span class="mustElement">*</span>
+            比率
+        </i-col>
+        <i-col span="3" class="RowText">
+            <input-number v-model="dataParam.RATE" v-bind:max="1000" v-bind:min="0" v-bind:step="0.01" v-bind:precision="2" v-bind:disabled="disabled">
+            </input-number>
+        </i-col>
+        <span style="line-height:32px;font-weight:900">‰</span>
+    </row>
+
+}
+
+
+
+
+
+
+
+
+
+

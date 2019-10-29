@@ -311,6 +311,7 @@
     <Compile Include="Areas\XTGL\CashierSearch\CashierSearchController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT_ACCOUNT\FEESUBJECT_ACCOUNTController.cs" />
     <Compile Include="Areas\XTGL\NOTICE\NOTICEController.cs" />
+    <Compile Include="Areas\XTGL\PAY_CHARGES\Pay_ChargesController.cs" />
     <Compile Include="Areas\XTGL\POSKEYSrch\POSKEYSrchController.cs" />
     <Compile Include="Areas\XTGL\SPLC\SPLCController.cs" />
     <Compile Include="Areas\XTGL\AlertShow\AlertShowController.cs" />
@@ -503,6 +504,7 @@
     <Content Include="Areas\XTGL\CONFIG\Config.js" />
     <Content Include="Areas\XTGL\FEERULE\FeeRule.js" />
     <Content Include="Areas\XTGL\ENERGYFILES\EnergyFiles.js" />
+    <Content Include="Areas\XTGL\PAY_CHARGES\Pay_Charges.js" />
     <Content Include="Areas\XTGL\POSKEYSrch\POSKEYSrch.js" />
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.js" />
     <Content Include="Areas\XTGL\POSUMSCONFIG\POSUMSCONFIG.js" />
@@ -821,6 +823,7 @@
     <Content Include="Areas\JSGL\ManualReturn\ManualReturn.cshtml" />
     <Content Include="File\Import\销售补录单.xls" />
     <Content Include="File\Import\品牌信息.xls" />
+    <Content Include="Areas\XTGL\PAY_CHARGES\Pay_Charges.cshtml" />
     <None Include="File\Template\合同模板.docx" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
