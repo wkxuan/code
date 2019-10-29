@@ -153,28 +153,25 @@ namespace z.ERP.Services
             {
                 foreach (var goods in DeleteData)
                 {
-                    var v = GetVerify(goods);
-                    //校验
-                    DbHelper.Delete(goods);
-                }
-                Tran.Commit();
-            }
+                    //var v = GetVerify(goods);
+                    GOODSEntity g = DbHelper.Select(new GOODSEntity() { GOODSID = goods.GOODSID});
+                    if (g.STATUS != ((int)商品状态.未审核).ToString())
+                        throw new LogicException("商品(" + g.GOODSDM + ")不是未审核状态,不能删除!");
 
-            //删除审核待办任务
-            using (var Tran = DbHelper.BeginTransaction())
-            {
-                foreach (var item in DeleteData)
-                {
                     var dcl = new BILLSTATUSEntity
                     {
-                        BILLID = item.GOODSID,
+                        BILLID = goods.GOODSID,
                         MENUID = "10500202"
                     };
-                    DelDclRw(dcl);
+
+                    DbHelper.Delete(goods);
+
+                    DelDclRw(dcl);  //删除审核待办任务
                 }
                 Tran.Commit();
-            }
+            }  
         }
+
         public Tuple<dynamic, DataTable, DataTable> ShowOneEdit(GOODSEntity Data)
         {
             string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE,C.PKIND_ID from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D";
