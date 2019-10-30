@@ -336,7 +336,7 @@ editDetail.beforeVue = function () {
         { title: "费用项目名称", key: 'TERMNAME' },
         { title: '开始日期', key: 'STARTDATE', cellType: "date", enableCellEdit: true },
         { title: '结束日期', key: 'ENDDATE', cellType: "date", enableCellEdit: true },
-        { title: "比例(%)", key: 'KL', cellType: "input", cellDataType: "number" },
+        { title: "比例(‰)", key: 'KL'},
     ];
 
     editDetail.screenParam.splcjd = [];
@@ -434,6 +434,9 @@ editDetail.popCallBack = function (data) {
                                 break;
                             case "NAME":
                                 loc[item.key] = data.sj[i].NAME;
+                                break;
+                            case "KL":
+                                loc[item.key] = data.sj[i].RATE*1000;
                                 break;
                             default:
                                 loc[item.key] = null;
@@ -658,7 +661,12 @@ editDetail.otherMethods = {
     },
     //点击收款方式弹窗
     srchPay: function () {
+        if (!editDetail.dataParam.BRANCHID) {
+            iview.Message.info('请先确认门店!');
+            return;
+        }
         editDetail.screenParam.title = "选择收款方式";
+        editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
         editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPayList/";
         Vue.set(editDetail.screenParam, "showPop", true);
     },
@@ -1530,10 +1538,10 @@ editDetail.IsValidSave = function () {
                 iview.Message.info(`收款方式"${contract_pay[i].NAME}"的开始日期不能大于结束日期!`);
                 return false;
             };
-            if ((!contract_pay[i].KL) || (Number(contract_pay[i].KL) <= 0) || (Number(contract_pay[i].KL) > 100)) {
-                iview.Message.info(`收款方式"${contract_pay[i].NAME}"的比例应大于0且小于等于100!`);
-                return false;
-            }
+            //if ((!contract_pay[i].KL) || (Number(contract_pay[i].KL) <= 0) || (Number(contract_pay[i].KL) > 100)) {
+            //    iview.Message.info(`收款方式"${contract_pay[i].NAME}"的比例应大于0且小于等于100!`);
+            //    return false;
+            //}
         };
     };
 

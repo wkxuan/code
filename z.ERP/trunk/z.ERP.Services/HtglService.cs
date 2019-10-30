@@ -157,7 +157,7 @@ namespace z.ERP.Services
                     GetVerify(item).Require(a => a.KL);
                     if (!item.KL.IsEmpty())
                     {
-                        item.KL = (item.KL.ToDouble() / 100).ToString();
+                        item.KL = (item.KL.ToDouble() / 1000).ToString();
                     }
                 });
 
@@ -224,7 +224,7 @@ namespace z.ERP.Services
             CONTRACT_RENTEntity ContractRentParm = new CONTRACT_RENTEntity();
             ContractRentParm.CONTRACT_RENTITEM = DbHelper.SelectList(new CONTRACT_RENTITEMEntity() { CONTRACTID = Data.CONTRACTID }).ToList();
 
-            string sqlPay = $@"SELECT A.CONTRACTID,A.PAYID,A.TERMID,A.STARTDATE,A.ENDDATE,A.KL*100 KL,A.ZNGZID,B.NAME,C.NAME TERMNAME 
+            string sqlPay = $@"SELECT A.CONTRACTID,A.PAYID,A.TERMID,A.STARTDATE,A.ENDDATE,A.KL*1000 KL,A.ZNGZID,B.NAME,C.NAME TERMNAME 
                                  FROM CONTRACT_PAY A,PAY B,FEESUBJECT C WHERE A.PAYID=B.PAYID AND A.TERMID=C.TRIMID ";
             sqlPay += (" AND A.CONTRACTID= " + Data.CONTRACTID);
             sqlPay += " ORDER BY A.PAYID,A.STARTDATE";

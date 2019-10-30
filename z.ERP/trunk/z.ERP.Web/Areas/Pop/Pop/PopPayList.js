@@ -9,5 +9,6 @@
 search.initSearchParam = function () {
     search.searchParam.PAYID = "";
     search.searchParam.NAME = "";
+    search.searchParam.BRANCHID = "";
 }
 

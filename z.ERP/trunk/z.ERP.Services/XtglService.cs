@@ -56,10 +56,11 @@ namespace z.ERP.Services
         }
         public DataGridResult GetPay(SearchItem item)
         {
-            string sql = $@"SELECT PAYID,NAME FROM PAY WHERE 1=1 ";
-            item.HasKey("PAYID", a => sql += $" and PAYID LIKE '%{a}%'");
-            item.HasKey("NAME", a => sql += $" and NAME LIKE '%{a}%'");
-            sql += " ORDER BY  PAYID";
+            string sql = $@"SELECT P.PAYID,P.NAME,NVL(PC.RATE,0) RATE FROM PAY P,PAY_CHARGES PC  WHERE P.PAYID=PC.PAYID(+) ";
+            item.HasKey("PAYID", a => sql += $" and P.PAYID LIKE '%{a}%'");
+            item.HasKey("NAME", a => sql += $" and P.NAME LIKE '%{a}%'");
+            item.HasKey("BRANCHID", a => sql += $" and PC.BRANCHID(+) ='{a}'");
+            sql += " ORDER BY  P.PAYID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
@@ -1451,7 +1452,14 @@ namespace z.ERP.Services
         }
         public UIResult GetPay_ChargesOne(PAY_CHARGESEntity data)
         {
-            string sql = $@"SELECT PC.BRANCHID,PC.PAYID,PC.RATE*1000 RATE,PC.FLOOR,PC.CEILING FROM PAY_CHARGES PC WHERE PC.BRANCHID={data.BRANCHID} AND PC.PAYID={data.PAYID}";
+            string sql = $@"SELECT PC.BRANCHID,PC.PAYID,PC.RATE*1000 RATE,PC.FLOOR,PC.CEILING FROM PAY_CHARGES PC WHERE 1=1  ";
+            if (!string.IsNullOrEmpty(data.BRANCHID)) {
+                sql += $@" AND PC.BRANCHID={data.BRANCHID} ";
+            }
+            if (!string.IsNullOrEmpty(data.PAYID))
+            {
+                sql += $@" AND PC.PAYID={data.PAYID} ";
+            }
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new UIResult(dt);
         }
@@ -1463,7 +1471,10 @@ namespace z.ERP.Services
             v.Require(a => a.FLOOR);
             v.Require(a => a.CEILING);
             v.Require(a => a.RATE);
-
+            if (!DefineSave.RATE.IsEmpty())
+            {
+                DefineSave.RATE = (DefineSave.RATE.ToDouble().ToString("N").ToDouble() / 1000).ToString();
+            }
             DbHelper.Save(DefineSave);
 
             return DefineSave.PAYID;

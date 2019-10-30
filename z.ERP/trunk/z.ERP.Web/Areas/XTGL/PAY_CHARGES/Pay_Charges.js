@@ -39,6 +39,12 @@ define.initDataParam = function () {
     define.dataParam.CEILING = null;
     define.dataParam.RATE = null;
 }
+define.newRecord = function () {
+    define.dataParam.PAYID = null;
+    define.dataParam.FLOOR = null;
+    define.dataParam.CEILING = null;
+    define.dataParam.RATE = null;
+}
 define.mountedInit = function () {
     _.Ajax('GetBranch', {
         Data: { ID: "" }
@@ -74,8 +80,7 @@ define.otherMethods = {
         _.Ajax('GetPay_ChargesOne', {
             Data: { PAYID: data, BRANCHID: define.searchParam.BRANCHID }
         }, function (data) {
-            debugger
-            if (data.length > 0) {
+            if (data.length == 1) {
                 iview.Message.warning("该收款方式已设置，将启用编辑!");
                 $.extend(define.dataParam, data[0]);
             } else {
@@ -109,6 +114,8 @@ define.IsValidSave = function () {
         iview.Message.info("请确认比率!");
         return false;
     };
-    define.dataParam.RATE = define.dataParam.RATE / 1000;
+    if (Number(define.dataParam.RATE) < 0 || Number(define.dataParam.RATE) > 1000) {
+        iview.Message.info("比率范围0~1000之间!");
+    };
     return true;
 }
