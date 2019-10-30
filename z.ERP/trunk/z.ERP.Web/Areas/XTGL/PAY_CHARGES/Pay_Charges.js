@@ -1,20 +1,11 @@
 ﻿define.beforeVue = function () {
     define.screenParam.colDef = [
         {
+            title: "支付编码",
+            key: 'PAYID'
+        }, {
             title: "支付方式",
             key: 'PAYNAME'
-        },
-        {
-            title: '单笔最低',
-            key: 'FLOOR'
-        },
-        {
-            title: '单笔封顶',
-            key: 'CEILING'
-        },
-        {
-            title: '比率(‰)',
-            key: 'RATE'
         }];
 
     define.service = "XtglService";
