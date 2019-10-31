@@ -252,7 +252,7 @@ namespace z.ERP.Web.Areas.Base
                 BookmarksNavigator navigator = new BookmarksNavigator(doc);
                 navigator.MoveToBookmark(bookmarkName);//指向特定书签
                 navigator.DeleteBookmarkContent(saveFormatting);//删除原有书签内容     
-                Spire.Doc.Interface.ITextRange textRange = navigator.InsertText(text);//写入文本
+                Spire.Doc.Interface.ITextRange textRange = navigator.InsertText(text,true);//写入文本
                 return textRange as TextRange;
             }
             public string objectlist(CONTRACTOUTPUTEntity data) {               
