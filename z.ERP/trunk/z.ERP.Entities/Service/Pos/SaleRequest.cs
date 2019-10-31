@@ -50,6 +50,12 @@ namespace z.ERP.Entities.Service.Pos
         {
             get; set;
         }
+
+        public int? isFG
+        {
+            get; set;
+        }
+
         public List<GoodsResult> goodslist
         {
             get; set;

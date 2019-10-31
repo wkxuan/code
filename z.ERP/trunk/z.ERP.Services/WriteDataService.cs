@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using z.ERP.Entities;
-using z.ERP.Entities.Enum;
 using z.ERP.Entities.Procedures;
-using z.Exceptions;
 using z.Extensions;
 
 namespace z.ERP.Services
@@ -20,6 +15,16 @@ namespace z.ERP.Services
 
         }
 
+        public string GetConfig(string id)
+        {
+            CONFIGEntity cfg = DbHelper.Select(new CONFIGEntity() { ID = id });
+
+            if (cfg == null)
+                return "";
+            else
+                return cfg.CUR_VAL;
+        }
+            
         public void CanRcl(WRITEDATAEntity WRITEDATA, RichTextBox LogData)
         {
             //取服务器时间

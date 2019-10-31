@@ -403,8 +403,8 @@ namespace z.ERP.Entities.Service.Pos
             set { backDiscount = value; }
         }
 
-        decimal backRate;
-        public decimal BackRate
+        double backRate;
+        public double BackRate
         {
             get { return backRate; }
             set { backRate = value; }
@@ -3587,7 +3587,6 @@ namespace z.ERP.Entities.Service.Pos
         public string PayID;
     }
 
-    //public struct TTranGoods
     public class TTranGoods
     {
         //商品ID
@@ -4744,6 +4743,7 @@ namespace z.ERP.Entities.Service.Pos
         public string erpTranID;
         public string crmTranID;
         public string DDJLBH;
+        public int? isFG;  //是否参与活动 0 未参与 1参与 2 已赠
         public List<TTranGoods> goodsList;
         public List<TTranPayments> paysList;
         public List<TTranCoupon> couponsList;

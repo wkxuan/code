@@ -61,11 +61,6 @@ namespace z.ERP.Services
 
             if (lgi!=null)
             {
-               // TicketInfo ticket = new TicketInfo();
-              //  ticket.tickethead = ConfigExtension.GetConfig("TicketHead");
-              //  ticket.tickettail = ConfigExtension.GetConfig("TicketTail");
-              //  ticket.printCount = ConfigExtension.GetConfig("PrintCount");
-              //  lgi.ticketInfo = ticket;
                 lgi.ticketInfo = DbHelper.ExecuteOneObject<TicketInfo>(sqlTicket);
                 lgi.posWFTConfig = DbHelper.ExecuteOneObject<PosWFTConfig>(sqlWFT);
                 lgi.posUMSConfig = DbHelper.ExecuteOneObject<PosUMSConfig>(sqlUMS);
@@ -290,9 +285,9 @@ namespace z.ERP.Services
             sqlSale += $" posno_old,nvl(dealid_old,-1) dealid_old from {strTable}sale";
             sqlSale += $" where posno='{posNo}' and dealid={filter.dealid}";
 
-            string sqlGoods = "select sheetid,inx,shopid,goodsid,goodscode,price,quantity,";
-            sqlGoods += $" sale_amount,discount_amount,coupon_amount from {strTable}sale_goods";
-            sqlGoods += $" where posno='{posNo}' and dealid={filter.dealid}";
+            string sqlGoods = "select s.sheetid,s.inx,s.shopid,s.goodsid,s.goodscode,g.name goodsname,s.price,s.quantity,nvl(s.returns,0) returns,";
+            sqlGoods += $" s.sale_amount,s.discount_amount,s.coupon_amount from {strTable}sale_goods s,goods g ";
+            sqlGoods += $" where s.goodsid=g.goodsid and posno='{posNo}' and dealid={filter.dealid}";
 
             string sqlPay = $"select a.payid,a.amount,b.name payname,b.type paytype from {strTable}sale_pay a,pay b";
             sqlPay += $" where a.payid=b.payid and a.posno='{posNo}' and a.dealid={filter.dealid}";
@@ -380,7 +375,7 @@ namespace z.ERP.Services
                 string[] sqlarr = new string[1 + goodsCount + payCount + clerkCount + payRecordCount + goodsCount * payCount];
 
                 sqlarr[0] = "insert into sale(posno,dealid,sale_time,account_date,cashierid,sale_amount,";
-                sqlarr[0] += "change_amount,member_cardid,crm_recordid,posno_old,dealid_old)";
+                sqlarr[0] += "change_amount,member_cardid,crm_recordid,posno_old,dealid_old,isFG)";
                 sqlarr[0] += $"values('{posNo}',{request.dealid},"; //to_date('{request.sale_time}','yyyy-mm-dd HH24:MI:SS'),";
                 sqlarr[0] += "sysdate,trunc(sysdate),";
                 //    if (request.account_date.ToString().IsEmpty())
@@ -404,9 +399,14 @@ namespace z.ERP.Services
                     sqlarr[0] += "null,";
 
                 if (request.dealid_old.HasValue && request.dealid_old > 0)
-                    sqlarr[0] += $"{request.dealid_old})";
+                    sqlarr[0] += $"{request.dealid_old},";
                 else
-                    sqlarr[0] += "null)";
+                    sqlarr[0] += "null,";
+                if (request.isFG.HasValue && request.isFG == 1)
+                    sqlarr[0] += "1)";
+                else
+                    sqlarr[0] += "0)";
+
 
 
                 int j = 0;
@@ -469,7 +469,7 @@ namespace z.ERP.Services
                         goodsPayAmount = Math.Round(request.paylist[m].amount * request.goodslist[n].sale_amount / sumGoodsAmount, 2);
                         payAmount = payAmount - goodsPayAmount;
 
-                        if (n == request.paylist.Count() - 1 && payAmount != 0)  //尾差放到最后一行
+                        if (n == request.goodslist.Count() - 1 && payAmount != 0)  //尾差放到最后一行
                             goodsPayAmount = goodsPayAmount + payAmount;
 
 
@@ -516,6 +516,7 @@ namespace z.ERP.Services
                 sql += $" and s.posno = '{employee.PlatformId}'";
             else
                 sql += $" and s.posno = '{filter.posno}'";
+
 
             if (String.IsNullOrEmpty(filter.saledate_begin) && String.IsNullOrEmpty(filter.saledate_end))
                 sql += $" and trunc(s.sale_time) = trunc(sysdate)";
@@ -1036,13 +1037,13 @@ namespace z.ERP.Services
                     //       " 负库存标记:【" + goods.Fkcxsbj.ToString() + "]");
 
                     //2.2.3:后台折
-                    //   int i_Rslt = 0;
-                    //   i_Rslt = DiscountProc.getGoodsBackDiscount(posNo, goods, ref msg);
-                    //   if (i_Rslt != 0)
-                    //   {
-                    //       CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<1.5> 查询后台折扣定义失败:" + msg);
-                    //       break;
-                    //   }
+                    //int i_Rslt = 0;
+                    //i_Rslt = getGoodsBackDiscount(posNo, goods, ref msg);
+                    //if (i_Rslt != 0)
+                    //{
+                    //   // CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<1.5> 查询后台折扣定义失败:" + msg);
+                    //    break;
+                    //}
 
                     //   CommonUtils.WriteSKTLog(1, posNo,
                     //       " 计算销售价格<2.1.1.2> 下一步准备添加商品 商品数量:" + goods.SaleCount + " 金额:" + goods.SaleMoney +
@@ -1050,6 +1051,10 @@ namespace z.ERP.Services
                     //      " 负库存标记:【" + goods.Fkcxsbj.ToString() + "]");
 
                     //   CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<2.1.2> 后台折扣 计算完成 准备添加商品");
+
+                    goods.SubTicktInx = 1;
+                    goods.SubGoodsInx = i+1;
+
                     GoodsList.Add(goods);
                 }
 
@@ -1519,6 +1524,10 @@ namespace z.ERP.Services
             desc.saleMoney = Sour.SaleMoney;
             //desc.Specification = "";
             desc.goodsType = Sour.GoodsType;
+            desc.subTicktInx = Sour.SubTicktInx;
+            desc.subGoodsInx = Sour.SubGoodsInx;
+            desc.subTicktInx_old = Sour.SubTicktInx_old;
+            desc.subGoodsInx_old = Sour.SubGoodsInx_old;
             desc.remarks = "";
 
             result = true;
@@ -1784,7 +1793,7 @@ namespace z.ERP.Services
                         article.DeptCode =  GoodsList[i].DeptCode;
 
                         article.DiscMoney = GoodsList[i].Discount;
-                        article.Inx = i;
+                        article.Inx = GoodsList[i].SubGoodsInx;
                         article.IsNoCent = false;
                         article.IsNoProm = false;
                         article.SaleMoney = GoodsList[i].SaleMoney - GoodsList[i].Discount;
@@ -3092,6 +3101,9 @@ namespace z.ERP.Services
                              " 订单记录号[" + GoodItem.OTherStr1 + "]");
                      } */
 
+                    GoodItem.SubTicktInx = ReqConfirm.goodsList[i].tickInx;
+                    GoodItem.SubGoodsInx = ReqConfirm.goodsList[i].inx;
+
                     GoodList.Add(GoodItem);
 
                     mTotalMoney = mTotalMoney + ReqConfirm.goodsList[i].accountsPayable;
@@ -3302,6 +3314,7 @@ namespace z.ERP.Services
 
                  saleReq.sale_time = DateTime.Now;
                  saleReq.account_date = DateTime.Now.Date;
+                 saleReq.isFG = ReqConfirm.isFG;
 
                  //sale_goods
                  List<GoodsResult> goodsLst = new List<GoodsResult>();
@@ -3309,8 +3322,8 @@ namespace z.ERP.Services
                  for (int g = 0; g <= GoodList.Count - 1; g++)
                  {
                     GoodsResult goodsOne = new GoodsResult();
-                    goodsOne.sheetid = 0;
-                    goodsOne.inx = g;
+                    goodsOne.sheetid = GoodList[g].SubTicktInx;
+                    goodsOne.inx = GoodList[g].SubGoodsInx;
                     goodsOne.goodsid = GoodList[g].Id;
                     goodsOne.goodscode = GoodList[g].Code;
                     goodsOne.price = decimal.Parse(GoodList[g].Price.ToString());
@@ -3357,7 +3370,7 @@ namespace z.ERP.Services
                     for (int p = 0; p <= ReqConfirm.creditDetailList.Count - 1; p++)
                     {
                         PayRecord payRcdOne = new PayRecord();
-                        payRcdOne.inx = ReqConfirm.creditDetailList[p].inx;
+                        payRcdOne.inx = p+1;
                         payRcdOne.payid = ReqConfirm.creditDetailList[p].payid;
                         payRcdOne.cardno = ReqConfirm.creditDetailList[p].cardno;
                         payRcdOne.bank = ReqConfirm.creditDetailList[p].bank;
@@ -4308,12 +4321,12 @@ namespace z.ERP.Services
                   CrmBillId = 0, backType = 0, bulkGoodsType = 0, iVIPID = -1;
 
 
-           // string sTitle = "SysVer", sVer = "", sFuncCode = "<退货预算>:";
+            // string sTitle = "SysVer", sVer = "", sFuncCode = "<退货预算>:";
 
             Goods goods = new Goods();
 
 
-           // posNo = Device;
+            // posNo = Device;
             userCode = employee.Code;
             string sResult = "";
 
@@ -4345,11 +4358,11 @@ namespace z.ERP.Services
             }
 
             //判断是否重复退货
-
+            /*
             string sqlsale = $"select 1 from sale where posno_old='{OldPosId}' and dealid_old={OldErpTranId}";
 
             DataTable saleCount = DbHelper.ExecuteTable(sqlsale);
-            
+
             if (saleCount.Rows.Count > 0)
             {
                 result = -1;
@@ -4366,7 +4379,7 @@ namespace z.ERP.Services
                 msg = "款台号[" + OldPosId + "] 交易号[" + req.oldErpTranID + "]已退货,不能重复退货!";
                 throw new Exception(msg);
             }
-
+           */
 
             iHTH = req.contractID;
             Stopwatch st = new Stopwatch();
@@ -4627,7 +4640,8 @@ namespace z.ERP.Services
 
                         article.DiscMoney = GoodsList[i].Discount;
 
-                        article.Inx = i;
+                        article.Inx = GoodsList[i].SubGoodsInx;
+                        article.Inx_old = GoodsList[i].SubGoodsInx_old;
                         article.IsNoCent = false;
                         article.IsNoProm = false;
                         article.SaleMoney = MoneyToDouble(GoodsList[i].SaleMoney - GoodsList[i].Discount);
@@ -5045,6 +5059,9 @@ namespace z.ERP.Services
                     GoodItem.Discount = GoodItem.Discount * -1;
                     GoodItem.SaleCount = GoodItem.SaleCount * -1;
                     GoodItem.SaleMoney = GoodItem.SaleMoney * -1;
+
+                    GoodItem.SubTicktInx = ReqConfirm.goodsList[i].tickInx;
+                    GoodItem.SubGoodsInx = ReqConfirm.goodsList[i].inx;
 
                     GoodList.Add(GoodItem);
                 }
@@ -5711,8 +5728,8 @@ namespace z.ERP.Services
                 for (int g = 0; g <= goodsList.Count - 1; g++)
                 {
                     GoodsResult goodsOne = new GoodsResult();
-                    goodsOne.sheetid = 0;
-                    goodsOne.inx = g;
+                    goodsOne.sheetid = goodsList[g].SubTicktInx;
+                    goodsOne.inx = goodsList[g].SubGoodsInx;
                     goodsOne.goodsid = goodsList[g].Id;
                     goodsOne.goodscode = goodsList[g].Code;
                     goodsOne.price = decimal.Parse(goodsList[g].Price.ToString());
@@ -6807,6 +6824,121 @@ namespace z.ERP.Services
             }
 
             return result;
+        }
+
+        public int getGoodsBackDiscount(string posid, Goods goods, ref string msg)
+        {
+            double fRate = 0;
+            string sql;
+
+            try
+            {
+                //sql = " select ZKJD,ZKL,ZKJE,ZKXL,YZKSL,VIPZKGZ,BJ_CJ,REFNO"
+                //    + " from GTSP_ZK"
+                //    + $" where DEPTID={goods.DeptId} and SP_ID={goods.Id} and CXRQ2>= trunc(sysdate)"
+                //    + $" and ((DAY_WEEK1<={(int)DateTime.Today.DayOfWeek}) and (DAY_WEEK2>={(int)DateTime.Today.DayOfWeek}) "
+                //    + $"or (DAY_WEEK1<={(int)DateTime.Today.DayOfWeek} +7) and (DAY_WEEK2>={(int)DateTime.Today.DayOfWeek} +7))"
+                //    + $" and (SJ1<={(DateTime.Today.Hour * 60) + DateTime.Today.Minute}) and (SJ2>{(DateTime.Today.Hour * 60) + DateTime.Today.Minute}) order by INX";
+
+                sql = $@"select promotype,billid,dis_rate,fr_planid from promogoods
+                        where trunc(sysdate) >= start_date
+                        and trunc(sysdate) <= end_date
+                        and instr(week, to_char(sysdate-1,'d'))>0
+                        and to_number(to_char(sysdate,'hh24'))*60 +to_number(to_char(sysdate,'mi'))>= start_time 
+                        and to_number(to_char(sysdate,'hh24'))*60 +to_number(to_char(sysdate,'mi'))<= end_time
+                        and goodsid = {goods.Id}
+                        order by billid desc";
+                DataTable dt = DbHelper.ExecuteTable(sql);
+
+                if (dt.IsNotNull())
+                {
+
+                    if (dt.Rows[0]["promotype"].ToString().ToInt() == 2)  //折扣
+                    {
+                        if((!dt.Rows[0]["dis_rate"].IsNullValue()) && (dt.Rows[0]["dis_rate"].ToString().ToDouble() != 0))
+                        {
+                            fRate = dt.Rows[0]["dis_rate"].ToString().ToDouble();
+                            goods.BackRate = fRate;
+                            goods.BackDiscount = ((1 - fRate) * goods.Price);
+                            goods.DiscountBillId = dt.Rows[0]["billid"].ToString().ToInt();
+                            goods.DiscountType = 2;
+                        }
+                    }
+
+                    if (dt.Rows[0]["promotype"].ToString().ToInt() == 3)  //满减
+                    {
+                        if ((!dt.Rows[0]["fr_planid"].IsNullValue()) && (dt.Rows[0]["fr_planid"].ToString().ToInt() > 0))
+                        {
+                            string sqlplan = $"select LIMIT,FRTYPE  from fr_plan where id = {dt.Rows[0]["fr_planid"].ToString()}";
+                            DataTable dtplan = DbHelper.ExecuteTable(sqlplan);
+
+                            //FRTYPE 满减方式 1阶梯满减 2循环满减
+                            if (dtplan.Rows[0]["FRTYPE"].ToString().ToInt() == 1)
+                            {
+                                string sqlplanitem = $@"select CUT  from fr_plan_item 
+                                                         where id = {dt.Rows[0]["fr_planid"].ToString()}
+                                                           and FULL <= {goods.SaleMoney}
+                                                            order by FULL desc";                                                           ;
+                                DataTable dtplanitem = DbHelper.ExecuteTable(sqlplanitem);
+
+
+
+
+                            }
+
+
+                            //select * from fr_plan a,fr_plan_item b where a.id=b.id and a.id=1;
+                            fRate = dt.Rows[0]["dis_rate"].ToString().ToDouble();
+                            goods.BackRate = fRate;
+                            goods.BackDiscount = ((1 - fRate) * goods.Price);
+                            goods.DecreaseBillId = dt.Rows[0]["billid"].ToString().ToInt();
+                            goods.DiscountType = 3;
+                        }
+
+
+                    }
+
+
+                        //计算后台折扣
+                        if (dt.Rows[0]["BJ_CJ"].ToString().ToInt() != 0)
+                    {
+                        goods.IRefNo_ZK = dt.Rows[0]["REFNO"].ToString().ToInt();
+                        goods.VipDisRule = dt.Rows[0]["VIPZKGZ"].ToString().ToInt();
+                        if ((!dt.Rows[0]["ZKL"].IsNullValue()) && (dt.Rows[0]["ZKL"].ToString().ToDouble() != 0))
+                        {
+                            fRate = dt.Rows[0]["ZKL"].ToString().ToDouble();
+                          //  goods.BackRate = fRate;
+                            goods.BackDiscount = ((1 - fRate) * goods.Price);
+
+                        }
+                        else
+                        {
+                            goods.BackRate = 1;
+                            goods.BackDiscount = RoundMoney(dt.Rows[0]["ZKJE"].ToString().ToDouble());
+                        }
+
+                        if (goods.Price > 0)
+                        {
+                            if ((goods.Price - goods.BackDiscount) < goods.MinPrice)
+                            {
+                                goods.BackDiscount = goods.Price - goods.MinPrice;
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                msg = "计算后台折扣出错";
+            }
+
+            //后台折扣计算时，要乘以数量
+            double mTotalBackDiscount = 0;
+            mTotalBackDiscount = RoundMoney(goods.BackDiscount * goods.SaleCount);
+            goods.BackDiscount = mTotalBackDiscount;
+            goods.Discount += mTotalBackDiscount;
+            return 0;
         }
 
 

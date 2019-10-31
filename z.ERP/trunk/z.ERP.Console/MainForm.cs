@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using z.ERP.Entities;
 
 namespace z.ERP.Console
@@ -64,6 +58,10 @@ namespace z.ERP.Console
 
         private void timer_Tick(object sender, EventArgs e)
         {
+
+            if (service.WriteDataService.GetConfig("2002") != "1")  //日处理方式:0 手动 1自动
+                return;
+
             timer.Enabled = false;
 
             if (this.WriteRq.Value < DateTime.Now.AddDays(-1))
