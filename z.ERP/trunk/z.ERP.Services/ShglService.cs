@@ -25,17 +25,18 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult GetMerchant(SearchItem item)
         {
-            string sql = $@"SELECT * FROM MERCHANT WHERE 1=1 ";
-            item.HasKey("MERCHANTID", a => sql += $" and MERCHANTID LIKE '%{a}%'");
-            item.HasKey("MERCHANTNAME", a => sql += $" and NAME  LIKE '%{a}%'");
-            item.HasKey("SH", a => sql += $" and SH LIKE '%{a}%'");
-            item.HasKey("BANK", a => sql += $" and BANK LIKE '%{a}%'");
-            item.HasKey("REPORTER_NAME", a => sql += $" and REPORTER_NAME  LIKE '%{a}%'");
-            item.HasKey("REPORTER_TIME_START", a => sql += $" and REPORTER_TIME>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
-            item.HasKey("REPORTER_TIME_END", a => sql += $" and REPORTER_TIME< to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS') + 1");
-            item.HasKey("STATUS", a => sql += $" and STATUS in ({a})");
-            item.HasKey("TYPE", a => sql += $" and TYPE in ({a})");
-            sql += " ORDER BY  MERCHANTID DESC";
+            string sql = $@"SELECT * FROM MERCHANT M WHERE 1=1 ";
+            item.HasKey("MERCHANTID", a => sql += $" and M.MERCHANTID LIKE '%{a}%'");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME  LIKE '%{a}%'");
+            item.HasKey("SH", a => sql += $" and M.SH LIKE '%{a}%'");
+            item.HasKey("BANK", a => sql += $" and M.BANK LIKE '%{a}%'");
+            item.HasKey("REPORTER_NAME", a => sql += $" and M.REPORTER_NAME  LIKE '%{a}%'");
+            item.HasKey("REPORTER_TIME_START", a => sql += $" and M.REPORTER_TIME>= to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS')");
+            item.HasKey("REPORTER_TIME_END", a => sql += $" and M.REPORTER_TIME< to_date('{a.ToDateTime().ToLocalTime()}','YYYY-MM-DD  HH24:MI:SS') + 1");
+            item.HasKey("STATUS", a => sql += $" and M.STATUS in ({a})");
+            item.HasKey("TYPE", a => sql += $" and M.TYPE in ({a})");
+            item.HasKey("SHOPCODE", a => sql += $" AND EXISTS(SELECT 1 FROM CONTRACT C,CONTRACT_SHOP CS,SHOP WHERE M.MERCHANTID=C.MERCHANTID AND C.CONTRACTID=CS.CONTRACTID AND SHOP.SHOPID=CS.SHOPID AND SHOP.CODE ='{a}')");
+            sql += " ORDER BY  M.MERCHANTID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
