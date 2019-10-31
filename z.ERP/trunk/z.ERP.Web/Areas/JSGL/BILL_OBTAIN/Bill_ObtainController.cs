@@ -52,5 +52,9 @@ namespace z.ERP.Web.Areas.JSGL.BILL_OBTAIN
         //{
         //    return new UIResult(service.DataService.GetBill(Data));
         //}
+        public UIResult GETfee(FEE_ACCOUNTEntity Data)
+        {
+            return new UIResult(service.DataService.feeAccount(Data));
+        }
     }
 }
