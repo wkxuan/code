@@ -1096,6 +1096,8 @@ namespace z.ERP.Services
                 Coutput.CONTRACTID = Data.CONTRACTID;
                 Coutput.BRANCHNAME = dt.Rows[0]["BRANCHNAME"].ToString();
                 Coutput.BRANCHNAME1 = dt.Rows[0]["BRANCHNAME"].ToString();
+                Coutput.BRANCHNAME2 = dt.Rows[0]["BRANCHNAME"].ToString();
+                Coutput.BRANCHNAME3 = dt.Rows[0]["BRANCHNAME"].ToString();
                 Coutput.MERCHANTNAME = dt.Rows[0]["MERCHANTNAME"].ToString();
                 Coutput.BRANCHADDRESS = dt.Rows[0]["BRANCHADDRESS"].ToString();
                 Coutput.AREAR = dt.Rows[0]["AREAR"].ToString();

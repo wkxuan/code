@@ -14,6 +14,10 @@ namespace z.ERP.Entities
         public string BRANCHNAME { set; get; }
         //门店名称1
         public string BRANCHNAME1 { set; get; }
+        //门店名称2
+        public string BRANCHNAME2 { set; get; }
+        //门店名称3
+        public string BRANCHNAME3 { set; get; }
         //商户名称
         public string MERCHANTNAME { set; get; }
         //门店地址

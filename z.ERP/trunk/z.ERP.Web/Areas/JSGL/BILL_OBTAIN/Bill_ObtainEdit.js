@@ -6,7 +6,8 @@
     editDetail.screenParam.title = "";
     editDetail.screenParam.srcPop = "";
     editDetail.screenParam.popParam = {};
-
+    editDetail.screenParam.FEE_ACCOUNT = [];
+    editDetail.dataParam.BILL_OBTAIN_ITEM = [];
     editDetail.screenParam.colDef = [
     { title: '账单号', key: 'FINAL_BILLID', width: 100 },
     { title: '权债年月', key: 'YEARMONTH', width: 100 },
@@ -35,6 +36,16 @@ editDetail.showOne = function (data, callback) {
         $.extend(editDetail.dataParam, data.billObtain);
         editDetail.dataParam.NIANYUE += "";
         editDetail.dataParam.BILL_OBTAIN_ITEM = data.billObtainItem;
+        _.Ajax('GETfee', {
+            Data: { BRANCHID: editDetail.dataParam.BRANCHID }
+        }, function (data) {
+            var list = [];
+            for (var i = 0; i < data.length; i++) {
+                list.push({ value: Number(data[i].Key), label: data[i].Value })
+            }
+            debugger
+            editDetail.screenParam.FEE_ACCOUNT = list;
+        });
         callback && callback(data);
     });
 };
@@ -90,7 +101,22 @@ editDetail.otherMethods = {
             sum += Number(itemData[i].RECEIVE_MONEY);
         }
         editDetail.dataParam.ALL_MONEY = sum;
-    }
+    },
+    branchChange: function () {
+        editDetail.screenParam.FEE_ACCOUNT = [];
+        editDetail.dataParam.BILL_OBTAIN_ITEM = [];
+        debugger
+        _.Ajax('GETfee', {
+            Data: { BRANCHID: editDetail.dataParam.BRANCHID }
+        }, function (data) {
+            var list = [];
+            for (var i = 0; i < data.length; i++) {
+                list.push({ value: Number(data[i].Key), label: data[i].Value })
+            }
+            debugger
+            editDetail.screenParam.FEE_ACCOUNT = list;
+        });
+    },
 };
 
 editDetail.newRecord = function () {

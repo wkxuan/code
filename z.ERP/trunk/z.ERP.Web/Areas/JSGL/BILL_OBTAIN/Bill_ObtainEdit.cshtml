@@ -16,13 +16,28 @@
         </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
+            收费单位
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "dataParam.FEE_ACCOUNT_ID",
+                    Data = "screenParam.FEE_ACCOUNT",
+                    EmptyText = "",
+                    Enable = true,
+                });
+            }
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             收款年月
         </i-col>
         <i-col span="6" class="RowText">
             <yx-year-month-picker v-bind:value.sync="dataParam.NIANYUE" v-bind:disabled="!disabled"></yx-year-month-picker>
         </i-col>
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
             付款方式
