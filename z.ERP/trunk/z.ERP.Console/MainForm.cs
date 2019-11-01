@@ -12,7 +12,11 @@ namespace z.ERP.Console
             InitializeComponent();
 
             this.WriteRq.Value = DateTime.Now.AddDays(-1);
-            this.timer.Enabled = true;
+
+            if (service.WriteDataService.GetConfig("2002") != "1")  //日处理方式:0 手动 1自动
+                this.timer.Enabled = false;
+            else
+                this.timer.Enabled = true;
 
             ButtonClick(btn_rcl, () =>
             {
@@ -26,7 +30,7 @@ namespace z.ERP.Console
                 RCLEntity rcldata = new RCLEntity();
                 rcldata.RQ = this.WriteRq.Value.ToShortDateString();
 
-                // service.WriteDataService.CanHyRcl(rcldata, LogText);
+              //  service.WriteDataService.CanHyRcl(rcldata, LogText);
                 service.WriteDataService.CanRcl(WRITEDATA, LogText);
             });
 
@@ -60,7 +64,11 @@ namespace z.ERP.Console
         {
 
             if (service.WriteDataService.GetConfig("2002") != "1")  //日处理方式:0 手动 1自动
+            {
+                timer.Enabled = false;
                 return;
+            }
+                
 
             timer.Enabled = false;
 
@@ -80,7 +88,7 @@ namespace z.ERP.Console
                     RCLEntity rcldata = new RCLEntity();
                     rcldata.RQ = this.WriteRq.Value.ToShortDateString();
 
-                    // service.WriteDataService.CanHyRcl(rcldata, LogText);
+                  //  service.WriteDataService.CanHyRcl(rcldata, LogText);
                     service.WriteDataService.CanRcl(WRITEDATA, LogText);
                 }
                 finally
@@ -89,11 +97,6 @@ namespace z.ERP.Console
 
                     timer.Enabled = true;
                 };
-        }
-
-        private void btn_rcl_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

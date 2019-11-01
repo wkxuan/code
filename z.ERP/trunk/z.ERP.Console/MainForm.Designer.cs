@@ -45,7 +45,6 @@
             this.btn_rcl.TabIndex = 0;
             this.btn_rcl.Text = "开始执行";
             this.btn_rcl.UseVisualStyleBackColor = true;
-            this.btn_rcl.Click += new System.EventHandler(this.btn_rcl_Click);
             // 
             // WriteRq
             // 

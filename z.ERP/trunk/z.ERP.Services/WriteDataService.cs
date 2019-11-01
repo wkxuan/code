@@ -483,6 +483,12 @@ namespace z.ERP.Services
             DataTable dtMax = DbHelper.ExecuteTable(sqlMax);
             if (dtMax.Rows.Count != 0)
             {
+                if (dtMax.Rows[0][0].IsNullValue())
+                {
+                    LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "未设置日处理开始日期" );
+                    return;
+                }
+
                 if (RCLDATA.RQ.ToDateTime() != dtMax.Rows[0][0].ToString().ToDateTime().ToShortDateString().ToDateTime())
                 {
                     LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + "当前日处理日期应该是" + dtMax.Rows[0][0].ToString());
