@@ -17,7 +17,7 @@
     <collapse v-model="Mainpanel">
         <panel name="condition">
             @RenderSection("Title", false)
-            <div style="float: right; width: 400px ;text-align: right;z-index:99">
+            <div style="float: right; width: calc(100% - 160px) ;height:100%;text-align: right;line-height: inherit;padding-right: 10px;">
                 @RenderSection("Btn", false)
             </div>
             <p slot="content" class="element">

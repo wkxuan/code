@@ -11,6 +11,26 @@
 @{
     var id = ViewBag.id;
 }
+@section head{
+    <style>
+        .ivu-collapse {
+            background-color: #2d8cf0
+        }
+            .ivu-collapse > .ivu-collapse-item > .ivu-collapse-header {
+                color:#fff;
+            }
+        .ivu-btn:hover {
+            color: #000000 !important;
+        }
+    </style>
+    }
+@section btn{
+    <span>
+        <button type="button" style="color:#fff" class="ivu-btn ivu-btn-text ivu-btn-circle" v-on:click="exp">
+            <Icon type="md-download" ></Icon> 导出                    
+        </button>
+    </span>
+}
 @section content{
     <row>
         <i-col span="24">           
@@ -18,7 +38,6 @@
         </i-col>
     </row>
 }
-
 @section foot{
     <script type="text/javascript">
         var ve = new Vue({
@@ -46,6 +65,36 @@
                     _self.columns=colList;
                     _self.data=data.alertData;
                 });
+            },
+            methods:{
+                exp: function () {    
+                    ve.Mainpanel= 'condition';               
+                    let _self = this;
+                    let param = {};
+                    for (let item in _self.searchParam) {
+                        if (_self.searchParam[item]) {
+                            if (Array.isArray(_self.searchParam[item])) {
+                                param[item] = _self.searchParam[item].join(',');
+                            } else {
+                                param[item] = _self.searchParam[item];
+                            }
+                        }
+                    }
+                    let cols = {};
+                    for (let i = 0; i < _self.columns.length; i++) {
+                        cols[_self.columns[i].key] = _self.columns[i].title
+                    }
+                    _.Ajax('Output', {
+                        Name: window.document.title,
+                        Cols: cols,
+                        Data: { ID: @id }
+                    }, function (data) {
+                        if (data) {
+                            ve.Mainpanel= 'condition';
+                            window.location.href = __BaseUrl + data;
+                        }
+                    });                   
+                },
             }
         });
     </script>

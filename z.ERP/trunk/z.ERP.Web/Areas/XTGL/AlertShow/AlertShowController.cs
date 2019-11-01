@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.Define;
@@ -26,6 +28,11 @@ namespace z.ERP.Web.Areas.XTGL.AlertShow
                     alertCol = res.Item2
                 }
             );
+        }
+        public string Output(string Name, Dictionary<string, string> Cols, DEF_ALERTEntity Data)
+        {
+            var res = service.XtglService.GetAlertSql(Data);
+            return NPOIHelper.ExportExcel(res.Item1, Name, Cols);
         }
     }
 }
