@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using z.ERP.Entities;
+using z.ERP.Entities.Enum;
 using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.Edit;
+using z.Extensions;
 using z.MVC5.Attributes;
 using z.MVC5.Results;
 
@@ -12,12 +15,12 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
     {
         public ActionResult HtList()
         {
-            ViewBag.Title = "租约列表信息";
+            ViewBag.Title = "联营租约列表信息";
             return View();
         }
         public ActionResult HtEdit(string Id)
         {
-            ViewBag.Title = "联营租约信息编辑";
+            ViewBag.Title = "联营租约信息";
             return View("HtEdit", (EditRender)Id);
         }
         [Permission("10600101")]
@@ -70,5 +73,42 @@ namespace z.ERP.Web.Areas.HTGL.LYHT
         {
             return new UIResult(service.HtglService.LyYdfj(Data, ContractData));
         }
+        public UIResult SearchInit()
+        {
+            SearchItem item = new SearchItem();
+            var feeRule = service.XtglService.GetFeeRule(item);
+            var lateFeeRule = service.XtglService.GetLateFeeRule(item);
+            var operrule = service.DataService.operrule();
+            var org = service.DataService.org_zslist();
+            var jsfs = EnumExtension.EnumToSelectItem<结算方式>();
+
+            return new UIResult(
+                new
+                {
+                    FeeRule = feeRule,
+                    LateFeeRule = lateFeeRule,
+                    Operrule = operrule,
+                    Org = org,
+                    jsfs= jsfs
+                }
+            );
+        }
+        //检查合同做变更时是否已存在未启动的变更合同
+        public string checkHtBgData(CONTRACTEntity Data)
+        {
+            return service.HtglService.checkHtBgData(Data);
+        }
+        public string Output(List<CONTRACTEntity> Data)
+        {
+            string time = DateTime.Now.ToString("yyyyMMddHHmmss");
+            FileHelper.DeleteDirzip();
+            foreach (var item in Data)
+            {
+                var res = service.HtglService.GetContractOutPut(item);
+                NPOIHelper.SpireDoc(time, res);
+            }
+            var path = NPOIHelper.FilePath(time);
+            return path;
+        }      
     }
 }

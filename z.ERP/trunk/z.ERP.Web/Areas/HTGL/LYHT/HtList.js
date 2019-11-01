@@ -1,8 +1,6 @@
 ﻿search.beforeVue = function () {
-    search.searchParam.STYLE = "2";  //只查询联营合同
     search.service = "HtglService";
     search.method = "GetContract";
-
     search.screenParam.colDef = [
         { title: '租约号', key: 'CONTRACTID', sortable: true },
         { title: '状态', key: 'STATUSMC' },
@@ -19,7 +17,7 @@
         { title: "门店代码", key: 'BRANCHID' },
         { title: '门店名称', key: 'NAME' },
         {
-            title: '操作', key: 'operate', authority: "10600100", onClick: function (index, row, data) {
+            title: '操作', key: 'operate', authority: "10600200", onClick: function (index, row, data) {
                 _.OpenPage({
                     id: 10600101,
                     title: '联营合同详情',
@@ -28,65 +26,95 @@
             }
         }
     ];
+}
 
-    search.screenParam.showPopMerchant = false;
-    search.screenParam.srcPopMerchant = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-    search.screenParam.showPopSysuser = false;
-    search.screenParam.srcPopSysuser = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-    search.screenParam.popParam = {};
+search.newCondition = function () {
+    search.searchParam.STYLE = "2";  //只查询联营合同
+    search.searchParam.HTLX = 1; //默认查询原始合同
+    search.searchParam.BRANCHID = "";
+    search.searchParam.MERCHANTID = "";
+    search.searchParam.MERCHANTNAME = "";
+    search.searchParam.CONTRACTID = "";
+    search.searchParam.SHOPDM = "";
+    search.searchParam.BRANDNAME = "";
+    search.searchParam.SIGNER_NAME = "";
+    search.searchParam.REPORTER_NAME = "";
+    search.searchParam.VERIFY_NAME = "";
+    search.searchParam.STATUS = "";
 }
 
 search.otherMethods = {
     SelSigner: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "SIGNER";
         search.screenParam.popParam = { USER_TYPE: "7" };
+        search.popConfig.title = "选择合同员";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
     SelReporter: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "REPORTER";
         search.screenParam.popParam = {};
+        search.popConfig.title = "选择登记人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
     SelVerify: function () {
-        search.screenParam.showPopSysuser = true;
-        btnFlag = "VERIFY";
         search.screenParam.popParam = {};
+        search.popConfig.title = "选择审核人";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        search.popConfig.open = true;
     },
     SelMerchant: function () {
-        search.screenParam.showPopMerchant = true;
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择商户";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        search.popConfig.open = true;
     }
 }
 
 //接收子页面返回值
 search.popCallBack = function (data) {
-    if (search.screenParam.showPopSysuser) {
-        search.screenParam.showPopSysuser = false;
+    if (search.popConfig.open) {
+        search.popConfig.open = false;
         for (var i = 0; i < data.sj.length; i++) {
-            if (btnFlag == "SIGNER") {
-                search.searchParam.SIGNER_NAME = data.sj[i].USERNAME;
+            switch (search.popConfig.title) {
+                case "选择合同员":
+                    search.searchParam.SIGNER_NAME = data.sj[i].USERNAME;
+                    break;
+                case "选择登记人":
+                    search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
+                    break;
+                case "选择审核人":
+                    search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
+                    break
+                case "选择商户":
+                    search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
+                    search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    break;
             }
-            else if (btnFlag == "REPORTER") {
-                search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
-            }
-            else if (btnFlag == "VERIFY") {
-                search.searchParam.VERIFY_NAME = data.sj[i].USERNAME;
-            }
-        };
-    }
-
-    if (search.screenParam.showPopMerchant) {
-        search.screenParam.showPopMerchant = false;
-        for (var i = 0; i < data.sj.length; i++) {
-            search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
-            search.searchParam.MERCHANTNAME = data.sj[i].NAME;
         }
     }
 };
 
-search.addHref = function (row) {
+search.addHref = function () {
     _.OpenPage({
         id: 10600101,
-        title: '联营合同详情',
+        title: '添加联营合同',
         url: "HTGL/LYHT/HtEdit/"
     });
+
+}
+
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: ""
+    }, {
+        id: "clear",
+        authority: ""
+    }, {
+        id: "add",
+        authority: ""
+    }, {
+        id: "del",
+        authority: ""
+    }];
 }

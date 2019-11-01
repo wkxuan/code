@@ -122,7 +122,7 @@ Vue.component('yx-table', {
                     };
                 });
 
-                _.Ajax('checkMenu', {
+                _.Ajax('CheckMenu', {
                     MenuAuthority: param
                 }, function (data) {
                     let len = data.filter(function (item) {
@@ -160,7 +160,11 @@ Vue.component('yx-table', {
                 item.ellipsis = true;
                 item.tooltip = true;
                 item.resizable = true;
-                
+                if (!item.cellDisabled) {
+                    item.cellDisabled = function (row) {
+                        return false;
+                    }
+                }
                 if (!item.width) {
                     item.minWidth = item.minWidth || 120;
                 }
@@ -181,7 +185,7 @@ Vue.component('yx-table', {
                     item.title = item.title || "操作";
                     item.align = item.align || "center";
                     item.fixed = item.fixed || "right";
-                    item.width = 120;                   
+                    item.width = 120;
                     item.render = function (h, params) {
                         return h('div',
                               [h('Button', {
@@ -222,7 +226,8 @@ Vue.component('yx-table', {
                                 return h("Input", {
                                     props: {
                                         value: params.row[params.column.key],
-                                        type: params.column.cellDataType
+                                        type: params.column.cellDataType,
+                                        disabled: params.column.cellDisabled(params.row)
                                     },
                                     on: _self.initOn(params)
                                 });
@@ -241,17 +246,18 @@ Vue.component('yx-table', {
                                         return _val[0].label;
                                     }
                                     return null;
-                                }
+                                };
                                 return h(
                                   "Select",
                                   {
                                       props: {
                                           value: params.row[params.column.key] + "",
-                                          transfer: true
+                                          transfer: true,
+                                          disabled: params.column.cellDisabled(params.row)
                                       },
                                       on: _self.initOn(params)
                                   },
-                                  $.map(_list, item => {
+                                  $.map(_list, function (item) {
                                       return h(
                                         "Option",
                                         {
@@ -273,7 +279,8 @@ Vue.component('yx-table', {
                                     props: {
                                         value: params.row[params.column.key],
                                         transfer: true,
-                                        format: formatStr
+                                        format: formatStr,
+                                        disabled: params.column.cellDisabled(params.row)
                                     },
                                     on: _self.initOn(params)
                                 });
@@ -289,7 +296,8 @@ Vue.component('yx-table', {
                                     props: {
                                         value: params.row[params.column.key],
                                         transfer: true,
-                                        format: formatStr
+                                        format: formatStr,
+                                        disabled: params.column.cellDisabled(params.row)
                                     },
                                     on: _self.initOn(params)
                                 });
@@ -305,7 +313,8 @@ Vue.component('yx-table', {
                                     props: {
                                         value: params.row[params.column.key],
                                         transfer: true,
-                                        format: formatStr
+                                        format: formatStr,
+                                        disabled: params.column.cellDisabled(params.row)
                                     },
                                     on: _self.initOn(params)
                                 });
@@ -321,7 +330,8 @@ Vue.component('yx-table', {
                                     props: {
                                         value: params.row[params.column.key],
                                         transfer: true,
-                                        format: formatStr
+                                        format: formatStr,
+                                        disabled: params.column.cellDisabled(params.row)
                                     },
                                     on: _self.initOn(params)
                                 });
@@ -334,7 +344,8 @@ Vue.component('yx-table', {
                                 }
                                 return h("yx-time-picker", {
                                     props: {
-                                        value: params.row[params.column.key]
+                                        value: params.row[params.column.key],
+                                        disabled: params.column.cellDisabled(params.row)
                                     },
                                     on: _self.initOn(params)
                                 });
@@ -351,6 +362,7 @@ Vue.component('yx-table', {
                                         transfer: true,
                                         readonly: true,
                                         icon: "md-search",
+                                        disabled: params.column.cellDisabled(params.row)
                                     },
                                     on: _self.initOn(params)
                                 });
@@ -642,7 +654,7 @@ Vue.component('yx-tool-bar', {
                 };
             });
             if (param.length) {
-                _.Ajax('checkMenu', {
+                _.Ajax('CheckMenu', {
                     MenuAuthority: param
                 }, function (data) {
                     _self.btnList = data.filter(item=> {
@@ -1306,3 +1318,143 @@ Vue.component('yx-upload', {
         }
     }
 });
+Vue.component('yx-select', {
+    props: {
+        value: {
+            required: true
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        data: {},
+        multiple: {
+            type: Boolean,
+            default: false
+        },
+        clearable: {
+            type: Boolean,
+            default: true
+        },
+        nullterm: {
+            type: Boolean,
+            default: false
+        },
+        service: {
+            type: String,
+            default: "DataService"
+        },
+        method: {
+            type: String,
+            default: ""
+        },
+        placeholder: {
+            type: String,
+            default: "请选择"
+        },
+    },
+    template: `<i-select v-model="curValue" :disabled="disabled" ` +
+                  ` :clearable="clearable" :placeholder="placeholder" :multiple="multiple" ` +
+                  ` v-on:on-change="onChange" v-on:on-clear="onClear" v-on:on-open-change="onOpenChange">` +
+                  ` <i-option v-for="(i,k) in curData" v-bind:value="i.Key" v-bind:key="k">{{ i.Value }}</i-option>` +
+              `</i-select>`,
+    data() {
+        return {
+            curValue: "",
+            curData: [],
+            itemData: [{ Value: this.placeholder, Key: "", IsSelected: false, Obj: {} }]
+        };
+    },
+    mounted() {
+        if ((!this.data || !this.data.length) && this.service) {
+            this.serviceGetData();
+        }
+    },
+    watch: {
+        value: {
+            handler: function (nv, ov) {
+                this.curValue = nv + "";
+            },
+            immediate: true
+        },
+        data: {
+            handler: function (nv, ov) {
+                let list = nv;
+                if (list && list.length) {
+                    if (this.nullterm) {
+                        list = this.itemData.concat(list);
+                    }
+                    list = $.map(list, function (item) {
+                        item.Value = item.Value + "";
+                        item.Key = item.Key + "";
+                        return item;
+                    });
+                    if (list.length == 1 && !this.multiple) {
+                        this.$emit('update:value', list[0].Key);
+                    }
+                    this.curData = list;
+                }
+            },
+            immediate: true
+        }
+    },
+    methods: {
+        //选中的Option变化时触
+        onChange(curItem) {
+            this.$emit('update:value', curItem);
+            let obj = this.getCurItemObj();
+            this.$emit('change', curItem, obj);
+        },
+        //下拉框展开或收起时触发
+        onOpenChange(isOpen) {
+            this.$emit('openchange', isOpen);
+        },
+        //点击清空按钮时触发
+        onClear() {
+            this.$emit('clear');
+        },
+        //service服务获取数据
+        serviceGetData() {
+            let list = [];
+            let _self = this;
+            _.GetCommonData({
+                Service: _self.service,
+                Method: _self.method,
+                Data: {},
+                Success: function (data) {
+                    if (data || data.length) {
+                        list = data;
+                        if (_self.nullterm) {
+                            list = _self.itemData.concat(list);;
+                        }
+                    }
+                    if (list.length == 1 && !_self.multiple) {
+                        _self.$emit('update:value', list[0].Key);
+                    }
+                    _self.curData = $.map(list, function (item) {
+                        item.Value = item.Value + "";
+                        item.Key = item.Key + "";
+                        return item;
+                    });
+                }
+            })
+           
+        },
+        //获取当前选中项
+        getCurItemObj() {
+            let obj = {};
+            let _self = this;
+            if (_self.curValue) {
+                let list = _self.curData.filter(function (i) {
+                    if (i.Key == _self.curValue) {
+                        return i;
+                    }
+                });
+                if (list.length) {
+                    obj = list[0];
+                }
+            }
+            return obj;
+        }
+    }
+})

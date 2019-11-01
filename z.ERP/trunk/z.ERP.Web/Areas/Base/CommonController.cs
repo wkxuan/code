@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using z.ERP.Services;
 using z.Extensions;
 using z.MVC5.Results;
+using z.Results;
 
 namespace z.ERP.Web.Areas.Base
 {
@@ -55,6 +57,27 @@ namespace z.ERP.Web.Areas.Base
                 throw new Exception($"Method:{Method}不能有参数");
             var d = mi.Invoke(list, null) as UIResult;
             return d;
+        }
+        public UIResult GetCommonData(string Service, string Method, Dictionary<string, string> Data)
+        {
+            Type type = service.GetType();
+            PropertyInfo propertyInfo = type.GetProperty(Service);
+            if (propertyInfo == null)
+                throw new Exception($"无效的Service:{Service}");
+            if (!propertyInfo.PropertyType.BaseOn<ServiceBase>())
+                throw new Exception($"Service:{Service}不继承于ServiceBase");
+            ServiceBase list = propertyInfo.GetValue(service, null) as ServiceBase;
+            MethodInfo mi = propertyInfo.PropertyType.GetMethod(Method);
+            if (mi == null)
+                throw new Exception($"无效的Method:{Method}");
+
+            ParameterInfo[] info = mi.GetParameters();
+            if (info.Count() != 0)
+                throw new Exception($"Method:{Method}不能有参数");
+
+            var data = mi.Invoke(list, null);
+
+            return new UIResult(data);
         }
     }
 }

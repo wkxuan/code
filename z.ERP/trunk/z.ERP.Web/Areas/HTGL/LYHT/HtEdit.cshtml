@@ -1,20 +1,47 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Entities.Enum
 @using z.ERP.Web.Areas.Layout.Edit;
-@using z.ERP.Entities;
-@using z.ERP.Model;
-@using z.Extensions;
 @inherits EditViewBase<string>
-@section head{}
 
+@section head{}
+@section detailParamFooter{
+    <row>
+        <i-col span="2" class="RowTitle">
+            启动人:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.INITINATE_NAME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            启动时间:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.INITINATE_TIME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            终止人:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.TERMINATE_NAME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            终止时间:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.TERMINATE_TIME}}</label>
+        </i-col>
+    </row>
+}
 @section baseParam{
     <row>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             商户
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="dataParam.MERNAME" v-on:on-click="srchMerchant" v-bind:disabled="!disabled" />
+            <i-input readonly v-bind:icon="(!disabled||dataParam.CONTRACT_OLD)? '':'md-search'"
+                     v-model="dataParam.MERNAME" v-on:on-click="srchMerchant"
+                     v-bind:disabled="(!disabled||dataParam.CONTRACT_OLD)? true:false" />
         </i-col>
         <i-col span="2" class="RowTitle">
             纸质编号
@@ -22,35 +49,48 @@
         <i-col span="6" class="RowText">
             <i-input v-model="dataParam.CONTRACTID_PAPER" v-bind:disabled="!disabled" />
         </i-col>
-        <i-col span="2" class="RowTitle" v-if="dataParam.STYLEMC">
+        <i-col span="2" class="RowTitle">
             核算方式
         </i-col>
-        <i-col span="6" class="RowText" v-if="dataParam.STYLEMC">
-            <i-input v-model="dataParam.STYLEMC" v-bind:disabled="true" />
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.STYLEMC" disabled />
         </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             开始日期
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.CONT_START",
-                });
-            }
+            <date-picker type="date" v-bind:value="dataParam.CONT_START" v-on:on-change="contStartChange"
+                         v-bind:disabled="(!disabled||dataParam.CONTRACT_OLD)? true:false"></date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
             结束日期
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.CONT_END",
-                });
-            }
+            <date-picker type="date" v-bind:value="dataParam.CONT_END" v-on:on-change="contEndChange"
+                         v-bind:disabled="!disabled"></date-picker>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            原合同号
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-model="dataParam.CONTRACT_OLD" v-bind:disabled="!disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            招商部门
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-select v-model="dataParam.ORGID" transfer
+                      v-bind:disabled="(!disabled||dataParam.CONTRACT_OLD)? true:false" v-on:on-open-change="orgOpenChange">
+                <i-option v-for="item in screenParam.orgList" v-bind:value="item.value"
+                          v-bind:key="item.value">{{ item.label }}</i-option>
+            </i-select>
         </i-col>
         <i-col span="2" class="RowTitle">
             合同员
@@ -59,37 +99,11 @@
             <i-input readonly v-bind:icon="disabled? 'md-search':''"
                      v-model="dataParam.SIGNER_NAME" v-on:on-click="srchSigner" v-bind:disabled="!disabled" />
         </i-col>
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
-            招商部门
+            建筑面积
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.ORGID",
-                    ServiceMothod = m => m.org_zs()
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            合作方式
-        </i-col>
-        <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.OPERATERULE",
-                    ServiceMothod = m => m.operrule()
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            原合同号
-        </i-col>
-        <i-col span="6" class="RowText">
-            <i-input readonly v-model="dataParam.CONTRACT_OLD" v-bind:disabled="!disabled" />
+            <i-input readonly v-model="dataParam.AREA_BUILD" v-bind:disabled="!disabled" />
         </i-col>
     </row>
     <row>
@@ -116,36 +130,6 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            建筑面积
-        </i-col>
-        <i-col span="6" class="RowText">
-            <i-input readonly v-model="dataParam.AREA_BUILD" v-bind:disabled="!disabled" />
-        </i-col>
-    </row>
-    <row>
-        <i-col span="2" class="RowTitle">
-            免租期起
-        </i-col>
-        <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.FREE_BEGIN",
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
-            免租期至
-        </i-col>
-        <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.FREE_END",
-                });
-            }
-        </i-col>
-        <i-col span="2" class="RowTitle">
             租用面积
         </i-col>
         <i-col span="6" class="RowText">
@@ -153,12 +137,16 @@
         </i-col>
     </row>
     <row>
-        <i-col span="2" class="RowTitle">提前返款日</i-col>
+        <i-col span="2" class="RowTitle">
+            销售额标记
+        </i-col>
         <i-col span="6" class="RowText">
-            <i-select v-model="screenParam.TQFKR" multiple v-bind:disabled="!disabled">
-                <i-option v-for="(i,k) in screenParam.fkrList" v-bind:value="i.value"
-                          v-bind:key="k">{{ i.label }}</i-option>
-            </i-select>
+            @{
+                RenderControl(new EnumDropDownListRender<销售额标记>()
+                {
+                    vModel = "dataParam.TAB_FLAG"
+                });
+            }
         </i-col>
         <i-col span="2" class="RowTitle">
             进项税率
@@ -174,14 +162,31 @@
             <input-number v-bind:max="1" v-bind:min="0" v-bind:step="0.01" v-model="dataParam.XXSL" v-bind:disabled="!disabled">
             </input-number>
         </i-col>
-
     </row>
-    <row v-if="dataParam.CONTRACT_OLD">
-        <i-col span="2" class="RowTitle">
-            <span class="mustElement">*</span>
-            变更日期
+    <row>
+        <i-col span="2" class="RowTitle">提前返款日</i-col>
+        <i-col span="6" class="RowText">
+            <i-select v-model="screenParam.TQFKR" multiple v-bind:disabled="!disabled">
+                <i-option v-for="(i,k) in screenParam.fkrList" v-bind:value="i.value"
+                          v-bind:key="k">{{ i.label }}</i-option>
+            </i-select>
         </i-col>
-        <i-col span="6">
+        <i-col span="2" class="RowTitle">
+            起始日清算
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<起始日清算>()
+                {
+                    vModel = "dataParam.QS_START"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle" v-if="dataParam.CONTRACT_OLD">
+            <span class="mustElement">*</span>
+            变更启动日期
+        </i-col>
+        <i-col span="6" class="RowText" v-if="dataParam.CONTRACT_OLD">
             @{
                 RenderControl(new DateBoxRender()
                 {
@@ -200,7 +205,7 @@
                 {
                     vModel = "dataParam.DESCRIPTION",
                     type = "textarea",
-                    rows = "2"
+                    rows = "3"
                 });
             }
         </i-col>
@@ -208,22 +213,21 @@
     <row>
         <i-col span="12">
             <Card v-bind:padding=0>
-                <p slot="title">品牌</p>
+                <p slot="title"><span class="mustElement">*</span>品牌</p>
                 <div slot="extra">
                     <div class="tableBtnDiv" v-if="disabled">
                         <i-button type="primary" v-on:click="srchBrand">选择</i-button>
-                        <i-button type="primary" v-on:click="addRowBrand">添加一行</i-button>
                         <i-button type="error" v-on:click="delBrand">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDefPP" v-bind:height="200" selection=true
+                <yx-table v-bind:columns="screenParam.colDefPP" selection=true
                           v-bind:data="dataParam.CONTRACT_BRAND" v-bind:disabled="!disabled" ref="refBrand">
                 </yx-table>
             </Card>
         </i-col>
         <i-col span="12">
             <Card v-bind:padding=0>
-                <p slot="title">商铺</p>
+                <p slot="title"><span class="mustElement">*</span>资产</p>
                 <div slot="extra">
                     <div class="tableBtnDiv" v-if="disabled">
                         <i-button type="primary" v-on:click="srchShop">选择</i-button>
@@ -231,8 +235,24 @@
                         <i-button type="error" v-on:click="delShop">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDefSHOP" v-bind:height="200" selection=true
+                <yx-table v-bind:columns="screenParam.colDefSHOP" selection=true
                           v-bind:data="dataParam.CONTRACT_SHOP" v-bind:disabled="!disabled" ref="refShop">
+                </yx-table>
+            </Card>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="24">
+            <Card v-bind:padding=0>
+                <p slot="title"><span class="mustElement">*</span>扣率组</p>
+                <div slot="extra">
+                    <div v-if="disabled">
+                        <i-button type="primary" v-on:click="addColGroup">添加一行</i-button>
+                        <i-button type="error" v-on:click="delColGroup">删除</i-button>
+                    </div>
+                </div>
+                <yx-table v-bind:columns="screenParam.colGroup"  selection=true
+                          v-bind:data="dataParam.CONTRACT_GROUP" v-bind:disabled="!disabled" ref="refGroup">
                 </yx-table>
             </Card>
         </i-col>
@@ -240,12 +260,12 @@
 }
 @section detailParam{
     <Tabs value="name1">
-        <tab-pane label="费用设置" name="name1">
+        <tab-pane label="保底与目标" name="name1">
             <row>
                 <i-col span="24">
                     <div class="tableBtnDiv" v-if="disabled">
-                        <i-button type="primary" v-on:click="addColDefRENT">添加一行</i-button>
-                        <i-button type="error" v-on:click="delColDefRENT">删除</i-button>
+                        <i-button type="primary" v-on:click="addColRent">添加一行</i-button>
+                        <i-button type="error" v-on:click="delColRent">删除</i-button>
                         <i-button type="primary" v-bind:loading="screenParam.yearLoading" v-on:click="operPeriod">
                             <span v-if="!screenParam.yearLoading">按年度分解</span>
                             <span v-else>正在分解</span>
@@ -262,42 +282,57 @@
                     </yx-table>
                 </i-col>
             </row>
-            <row>
-                <i-col span="8">
-                    <Card v-bind:padding=0>
-                        <p slot="title">扣率组</p>
-                        <div slot="extra">
-                            <div v-if="disabled">
-                                <i-button type="primary" v-on:click="addColGroup">添加一行</i-button>
-                                <i-button type="error" v-on:click="delColGroup">删除</i-button>
-                                <i-button type="primary" v-on:click="autoMakeGroup">自动生成扣点信息</i-button>
-                            </div>
-                        </div>
-                        <yx-table v-bind:columns="screenParam.colGroup" v-bind:height="200" selection=true
-                                  v-bind:data="dataParam.CONTRACT_GROUP" v-bind:disabled="!disabled" ref="refGroup">
-                        </yx-table>
-                    </Card>
-                </i-col>
-                <i-col span="16">
-                    <Card v-bind:padding=0>
-                        <p slot="title">扣率信息</p>
-                        <div slot="extra">
-                            <div v-if="disabled">
-                                <i-button type="primary" v-on:click="addCONTJSKL">添加一行</i-button>
-                                <i-button type="error" v-on:click="delCONTJSKL">删除</i-button>
-                            </div>
-                        </div>
-                        <yx-table v-bind:columns="screenParam.colDefJskl" v-bind:height="200" selection=true
-                                  v-bind:data="dataParam.CONTJSKL" v-bind:disabled="!disabled" ref="refJskl">
-                        </yx-table>
-                    </Card>
-                </i-col>
-            </row>
-            <row>
+            <row v-if="screenParam.targetInfo.length">
                 <i-col span="24">
-                    <yx-table v-bind:columns="screenParam.colDefRENTITEM" v-bind:height="200"
-                              v-bind:data="dataParam.CONTRACT_RENTITEM" v-bind:disabled="!disabled">
-                    </yx-table>
+                    <Card v-bind:padding=0>
+                        <p slot="title">多目标信息</p>
+                        <Tabs type="card" v-bind:value="screenParam.targetValue">
+                            <tab-pane v-bind:label="'时间段'+i.INX" v-for="(i,k) in screenParam.targetInfo" v-bind:key="k" v-bind:name="i.INX">
+                                <row v-for="(j,h) in i.targetData" v-bind:key="h">
+                                    <i-col span="2" class="RowTitle">
+                                        目标{{j.TARGETID}}
+                                    </i-col>
+                                    <i-col span="3" class="RowTitle">
+                                        起始金额(包含)
+                                    </i-col>
+                                    <i-col span="4" class="RowText">
+                                        <i-input type="number" v-model="j.SALES_START" v-bind:disabled="!disabled" v-on:on-change="salesStartChange(i.INX,j.TARGETID)" />
+                                    </i-col>
+                                    <i-col span="3" class="RowTitle">
+                                        结束金额(不包含)
+                                    </i-col>
+                                    <i-col span="4" class="RowText">
+                                        <i-input type="number" v-model="j.SALES_END" v-bind:disabled="!disabled"
+                                                 v-on:on-change="salesEndChange(i.INX,j.TARGETID)" />
+                                    </i-col>
+                                    <i-col span="2" class="RowTitle">
+                                        目标扣率(%)
+                                    </i-col>
+                                    <i-col span="4" class="RowText">
+                                        <i-input type="number" v-model="j.JSKL" v-bind:disabled="!disabled" />
+                                    </i-col>
+                                    <i-col span="2" class="RowTitle" v-if="disabled&&(i.targetData.length-1==h)">
+                                        <i-button type="error" v-on:click="delTarget(i.INX)">删除</i-button>
+                                    </i-col>
+                                </row>
+                                <row v-if="disabled">
+                                    <i-col span="24" style="text-align:center;">
+                                        <i-button type="primary" v-on:click="addTarget(i.INX)">添加</i-button>
+                                    </i-col>
+                                </row>
+                                <row>
+                                    <i-col span="24">
+                                        <Card v-bind:padding=0>
+                                            <p slot="title"><span class="mustElement">*</span>月度分解信息</p>
+                                            <yx-table v-bind:columns="screenParam.colDefRENTITEM" v-bind:height="200"
+                                                      v-bind:data="i.rentItemData" v-bind:disabled="!disabled">
+                                            </yx-table>
+                                        </Card>
+                                    </i-col>
+                                </row>
+                            </tab-pane>
+                        </Tabs>
+                    </Card>
                 </i-col>
             </row>
         </tab-pane>
@@ -338,10 +373,10 @@
                 </i-col>
                 <i-col span="5" class="RowText">
                     <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                             v-model="dataParam.PAYMENTID" v-on:on-click="srchMPAYMENT" v-bind:disabled="!disabled" />
+                             v-model="dataParam.PAYMENTID" v-on:on-click="srchPayMent" v-bind:disabled="!disabled" />
                 </i-col>
                 <i-col span="3" class="RowTitle">
-                    <i-button type="error" v-on:click="clearpayment" v-if="disabled">清空付款信息</i-button>
+                    <i-button type="error" v-on:click="clearPayMent" v-if="disabled">清空付款信息</i-button>
                 </i-col>
             </row>
             <row>
@@ -374,70 +409,4 @@
             </row>
         </tab-pane>
     </Tabs>
-}
-
-@section pops{
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showSysuser",
-            Caption = "选择人员",
-            Width = "900",
-            Src = "screenParam.srcPopSigner"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopMerchant",
-            Caption = "选择商户",
-            Width = "900",
-            Src = "screenParam.srcPopMerchant"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopBrand",
-            Caption = "选择品牌",
-            Width = "900",
-            Src = "screenParam.srcPopBrand"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopShop",
-            Caption = "选择商铺",
-            Width = "900",
-            Src = "screenParam.srcPopShop"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopFeeSubject",
-            Caption = "选择费用项目",
-            Width = "900",
-            Src = "screenParam.srcPopFeeSubject"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopPay",
-            Caption = "选择收款方式",
-            Width = "900",
-            Src = "screenParam.srcPopPay"
-        });
-    }
-    @{
-        RenderControl(new PopsRender()
-        {
-            vModel = "screenParam.showPopPayment",
-            Caption = "选择收款方式",
-            Width = "900",
-            Src = "screenParam.srcPopPayment"
-        });
-    }
 }

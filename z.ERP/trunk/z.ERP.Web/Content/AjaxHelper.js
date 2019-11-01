@@ -155,5 +155,25 @@ zQuery.extend({
                 Options.Success && Options.Success(data);
             }
         });
+    },
+    GetCommonData: function (Options) {
+        if (!Options.Service || !Options.Method) {
+            alert("必要的参数Service,Method");
+            return;
+        }
+        this.Ajax({
+            url: _.CommonAjaxUrl + "GetCommonData",
+            data: {
+                Service: Options.Service,
+                Method: Options.Method,
+                Data: Options.Data
+            },
+            success: function (data) {
+                Options.Success && Options.Success(data);
+            },
+            error: function () {
+                Options.Error && Options.Error();
+            }
+        });
     }
 });

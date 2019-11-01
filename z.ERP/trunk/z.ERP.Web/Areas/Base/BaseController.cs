@@ -107,7 +107,7 @@ namespace z.ERP.Web.Areas.Base
             }
         }
         //验证功能按钮权限
-        public UIResult checkMenu(List<MenuAuthority> MenuAuthority)
+        public UIResult CheckMenu(List<MenuAuthority> MenuAuthority)
         {
             var data = new List<MenuAuthority>();
             for (var i = 0; i < MenuAuthority.Count; i++)

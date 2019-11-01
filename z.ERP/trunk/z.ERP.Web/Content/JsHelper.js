@@ -3,7 +3,6 @@
     String.prototype.trim = function () {
         return this.replace(/(^\s*)|(\s*$)/g, '');
     }
-
     //获取拼音码
     String.prototype.toPYM = function () {
         getPY = function (ch) {
@@ -87,7 +86,7 @@
         }
         return py_str;
     };
-
+    
     Date.prototype.Format = function (fmt) { //  
         let o = {
             "M+": this.getMonth() + 1,                 //月份    
@@ -104,6 +103,53 @@
             if (new RegExp("(" + k + ")").test(fmt))
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
+    };
+    /**
+     * 加减日期
+     * @param day 需要加减的日期，减日期的时候为负数即可
+     */
+    Date.prototype.addDay = function (days) {
+        if (days == undefined || days == '') {
+            days = 1;
+        }
+        this.setDate(this.getDate() + days);
+        return this;
+    };
+    /**
+     * 加减月份
+     * @param month 需要加减的月份，减月份的时候为负数即可
+     */
+    Date.prototype.addMonth = function(month){
+        this.setMonth(this.getMonth() + month);
+        return this;
+    };
+    // 判断闰年
+    Date.prototype.isLeapYear = function () {
+        return (0 == this.getYear() % 4 && ((this.getYear() % 100 != 0) || (this.getYear() % 400 == 0)));
+    };
+    /**
+     * 获取两个年份之差
+     * @param date 被减日期
+     */
+    Date.prototype.getYearsRange = function (date) {
+        return this.getFullYear() - date.getFullYear();
+    };
+    /**
+      * 获取当前日期后第years年的第days天
+      * @param years 需要加减的年数
+      * @param days 需要加减的天数
+      */
+    Date.prototype.getNextDate = function (years, days) {
+        if (years == undefined || years == '') {
+            years = 1;
+        }
+        if (days == undefined || days == '') {     
+            days = 1;
+        }
+        let tomYear = this;
+        tomYear.setFullYear(tomYear.getFullYear() + years);
+        tomYear.setDate(tomYear.getDate() + days);
+        return new Date(tomYear);
     };
     //生成全局唯一标识符
     Guid = function () {
@@ -149,6 +195,6 @@
             }
         }
         return obj;
-    }
-})(window);
+    };
 
+})(window);

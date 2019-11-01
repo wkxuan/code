@@ -4,24 +4,18 @@
 @inherits SearchViewBase
 @section conditionParam{
     <row>
-        <i-col span="3" class="RowTitle">门店</i-col>
-        <i-col span="5" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch()
-                });
-            }
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             商户
         </i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="6" class="RowText">
             <i-input readonly icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
         </i-col>
-        <i-col span="3" class="RowTitle">合同类型</i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="2" class="RowTitle">合同类型</i-col>
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<合同类型>()
                 {
@@ -31,44 +25,44 @@
         </i-col>
     </row>
     <row>
-        <i-col span="3" class="RowTitle">合同号</i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="2" class="RowTitle">合同号</i-col>
+        <i-col span="6" class="RowText">
             <i-input  v-model = "searchParam.CONTRACTID"></i-input>
         </i-col>
-        <i-col span="3" class="RowTitle">资产代码</i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="2" class="RowTitle">资产代码</i-col>
+        <i-col span="6" class="RowText">
             <i-input v-model="searchParam.SHOPDM"></i-input>
         </i-col>
-        <i-col span="3" class="RowTitle">品牌名称</i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="2" class="RowTitle">品牌名称</i-col>
+        <i-col span="6" class="RowText">
             <i-input v-model="searchParam.BRANDNAME"></i-input>
         </i-col>
     </row>
     <row>
-        <i-col span="3" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             合同员
         </i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="6" class="RowText">
             <i-input icon="md-search" v-model="searchParam.SIGNER_NAME" v-on:on-click="SelSigner" />
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             登记人
         </i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="6" class="RowText">
             <i-input icon="md-search" v-model="searchParam.REPORTER_NAME" v-on:on-click="SelReporter" />
         </i-col>
-        <i-col span="3" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             审核人
         </i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="6" class="RowText">
             <i-input icon="md-search" v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
         </i-col>
     </row>
     <row>
-        <i-col span="3" class="RowTitle">
+        <i-col span="2" class="RowTitle">
             状态
         </i-col>
-        <i-col span="5" class="RowText">
+        <i-col span="6" class="RowText">
             @{
                 RenderControl(new EnumDropDownListRender<合同状态>()
                 {

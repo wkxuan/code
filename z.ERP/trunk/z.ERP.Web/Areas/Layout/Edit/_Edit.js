@@ -18,6 +18,7 @@
     };
     //是否显示其它信息折叠面板
     this.otherPanel = true;
+    this.otherTitle = "其它信息";
     //单据底部制单人等信息是否使用默认显示
     this.defaultFooter = true;
     //弹窗返回数据回调函数
@@ -48,6 +49,7 @@
                 collapseValue: [1, 2],
                 toolBtnList: [],
                 otherPanel: _this.otherPanel,
+                otherTitle: _this.otherTitle,
                 defaultFooter: _this.defaultFooter,
                 branchDisabled: false,
                 popConfig: _this.popConfig

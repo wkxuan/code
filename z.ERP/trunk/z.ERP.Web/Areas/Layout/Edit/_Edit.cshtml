@@ -1,8 +1,6 @@
 ﻿@inherits ViewBase<EditRender>
-@using z.ERP.Web.Areas.Share.Render
 @using z.ERP.Web.Areas.Layout.Edit
 @using z.MVC5.Views
-@using z.Extensions;
 @{
     Layout = ThisLayout;
 }
@@ -34,46 +32,26 @@
                         <i-col span="6" class="RowText">
                             <i-input v-model="dataParam.BILLID" disabled />
                         </i-col>
-                        <span v-if="branchid">
-                            <i-col span="2" class="RowTitle">
-                                <span class="mustElement">*</span>
-                                门店
-                            </i-col>
-                            <i-col span="6" class="RowText" v-if="branchDisabled">
-                                @{
-                                    RenderControl(new ServiceDropDownListRender()
-                                    {
-                                        vModel = "dataParam.BRANCHID",
-                                        ServiceMothod = m => m.branch(),
-                                        Enable = false
-                                    });
-                                }
-                            </i-col>
-                            <i-col span="6" class="RowText" v-else>
-                                @{
-                                    RenderControl(new ServiceDropDownListRender()
-                                    {
-                                        vModel = "dataParam.BRANCHID",
-                                        ServiceMothod = m => m.branch(),
-                                        Change = "branchChange"
-                                    });
-                                }
-                            </i-col>
-                        </span>
-                        <span v-if="dataParam.STATUSMC">
-                            <i-col span="2" class="RowTitle">
-                                状态
-                            </i-col>
-                            <i-col span="6" class="RowText">
-                                <i-input v-model="dataParam.STATUSMC" disabled />
-                            </i-col>
-                        </span>
+                        <i-col span="2" class="RowTitle" v-if="branchid">
+                            <span class="mustElement">*</span>
+                            门店
+                        </i-col>
+                        <i-col span="6" class="RowText" v-if="branchid">
+                            <yx-select v-bind:value.sync="dataParam.BRANCHID" v-bind:disabled="branchDisabled||!disabled"
+                                       method="branch" v-on:change="branchChange"></yx-select>
+                        </i-col>
+                        <i-col span="2" class="RowTitle" v-if="dataParam.STATUSMC">
+                            状态
+                        </i-col>
+                        <i-col span="6" class="RowText" v-if="dataParam.STATUSMC">
+                            <i-input v-model="dataParam.STATUSMC" disabled />
+                        </i-col>
                     </row>
                     @RenderSection("baseParam", false)
                 </div>
             </Panel>
             <Panel name="2" v-if="otherPanel">
-                其它信息
+                {{otherTitle}}
                 <div slot="content">
                     @RenderSection("detailParam", false)
                 </div>

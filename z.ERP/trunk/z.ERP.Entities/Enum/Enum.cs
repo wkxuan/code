@@ -479,4 +479,12 @@ namespace z.ERP.Entities.Enum
         公司 = 1,
         个人 = 2
     }
+
+    public enum 结算方式
+    {
+        实销实结 = 1,
+        固定租金 = 2,
+        保底销售 = 3,
+        保底毛利 = 4
+    }
 }

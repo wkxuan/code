@@ -45,6 +45,15 @@ namespace z.ERP.Entities
             get; set;
         }
         /// <summary>
+        /// 目标ID
+        /// <summary>
+        [PrimaryKey]
+        [Field("目标ID")]
+        public string TARGETID
+        {
+            get; set;
+        }
+        /// <summary>
         /// 时间段
         /// <summary>
         [PrimaryKey]

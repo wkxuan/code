@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using z.ERP.Entities;
+using z.ERP.Entities.Auto;
+using z.ERP.Entities.Enum;
+using z.ERP.Model.Vue;
 using z.Extensions;
 using z.MVC5.Results;
 using z.Results;
-using z.ERP.Entities.Enum;
-using z.ERP.Model.Vue;
-using z.ERP.Entities.Auto;
 using z.SSO.Model;
 
 namespace z.ERP.Services
@@ -19,41 +19,22 @@ namespace z.ERP.Services
         internal DataService()
         {
         }
-
-        public List<SelectItem> a()
-        {
-            return new List<SelectItem>() {
-                 new SelectItem ("1","11")
-            };
-        }
-
-        public List<SelectItem> b()
-        {
-            return new List<SelectItem>() {
-                 new SelectItem ("1","11"),
-                 new SelectItem ("2","22"),
-                 new SelectItem ("3","33")
-            };
-        }
-        //测试控件SQL语句查询下拉收款方式
         public List<SelectItem> pay()
         {
             string sql = $@"SELECT * FROM PAY WHERE VOID_FLAG=1 ORDER BY  PAYID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("PAYID", "NAME");
         }
-
         public List<SelectItem> fkfs()
         {
             string sql = $@"SELECT ID,NAME FROM FKFS ORDER BY  ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
-
         public List<SelectItem> branch()
         {
             string sql = $@"SELECT A.ID,A.NAME FROM BRANCH A WHERE 1=1"
-                           + " and A.ID in ("+GetPermissionSql(PermissionType.Branch)+")"  //门店权限
+                           + " and A.ID in (" + GetPermissionSql(PermissionType.Branch) + ")"  //门店权限
                          + " ORDER BY  A.ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
@@ -61,13 +42,12 @@ namespace z.ERP.Services
         public List<SelectItem> floor()
         {
             string sql = $@"SELECT A.ID,A.NAME FROM FLOOR A  WHERE 1=1 "
-                       + "     and A.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+ ")"  //门店权限
+                       + "     and A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"  //门店权限
                        + "     and A.ID IN (" + GetPermissionSql(PermissionType.Floor) + ")"
                        + "   ORDER BY  A.ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
-
         public List<SelectItem> org_hs()
         {
             string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE  ORG_TYPE=" + ((int)部门类型.核算部门).ToString() +
@@ -76,7 +56,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
-
         public List<SelectItem> allorg_hs()
         {
             string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE  ORG_TYPE=" + ((int)部门类型.核算部门).ToString() +
@@ -84,17 +63,15 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
-
         public List<SelectItem> org_zs()
         {
-            string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE LEVEL_LAST="+ ((int)末级标记.末级).ToString() + 
+            string sql = $@"SELECT A.ORGID,A.ORGNAME FROM ORG A WHERE LEVEL_LAST=" + ((int)末级标记.末级).ToString() +
                             "  AND  ORG_TYPE=" + ((int)部门类型.招商部门).ToString() +
                             "  AND  A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")" +
                             "  ORDER BY  A.ORGID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ORGID", "ORGNAME");
         }
-
         public DataTable org_zslist()
         {
             string sql = $@"SELECT A.ORGID,A.ORGNAME,A.BRANCHID FROM ORG A WHERE LEVEL_LAST=" + ((int)末级标记.末级).ToString() +
@@ -104,42 +81,37 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
-
         public List<SelectItem> operrule()
         {
             string sql = $@"SELECT A.ID,A.NAME FROM OPERATIONRULE A WHERE 1=1   ORDER BY  A.ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
-
         public List<SelectItem> feesubject()
         {
             string sql = $@"SELECT TRIMID,NAME FROM FeeSubject A  ORDER BY TRIMID";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("TRIMID", "NAME");
         }
-
-        public List<SelectItem> coupon()    //优惠券
+        //优惠券
+        public List<SelectItem> coupon()   
         {
             string sql = "select YHQID,YHQMC from YHQDEF where 1=1 order by YHQID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("YHQID", "YHQMC");
         }
-
         public List<SelectItem> feeRule()
         {
             string sql = $@"SELECT ID,NAME FROM FEERULE   ORDER BY  ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
-
         public List<SelectItem> LateFeeRule()
         {
             string sql = $@"SELECT ID,NAME FROM LateFeeRule  ORDER BY  ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
-
         public DataGridResult GetJsklGroup(SearchItem item)
         {
             string sql = $@"select * from CONTRACT_GROUP A where 1=1";
@@ -151,9 +123,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
-
-
         public object GetBrand(BRANDEntity Data)
         {
             string sql = " SELECT  A.NAME,B.CATEGORYCODE,B.CATEGORYNAME FROM BRAND A,CATEGORY B " +
@@ -166,18 +135,17 @@ namespace z.ERP.Services
                 dt = dt.ToOneLine()
             };
         }
-
         public object GetShop(SHOPEntity Data)
         {
             string sql = " SELECT  A.SHOPID,A.CODE,B.CATEGORYID,B.CATEGORYCODE,B.CATEGORYNAME,A.AREA_BUILD,A.AREA_RENTABLE " +
                           "  FROM SHOP A,CATEGORY B " +
                           " WHERE  A.CATEGORYID = B.CATEGORYID " +
-                          "   AND  A.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+                          "   AND  A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             if (!Data.CODE.IsEmpty())
-                sql += " AND A.CODE='"+ Data.CODE + "'";
+                sql += " AND A.CODE='" + Data.CODE + "'";
             if (!Data.BRANCHID.IsEmpty())
                 sql += " AND A.BRANCHID=" + Data.BRANCHID + "";
-            
+
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new
             {
@@ -197,7 +165,6 @@ namespace z.ERP.Services
                 dt = dt.ToOneLine()
             };
         }
-
         //和下面重名
         public object GetBill_Bak(BILLEntity Data)
         {
@@ -205,7 +172,7 @@ namespace z.ERP.Services
                        + "         A.RECEIVE_MONEY,A.RRETURN_MONEY,A.START_DATE, A.END_DATE,A.TYPE,A.STATUS,A.DESCRIPTION,B.NAME FEENAME"
                        + "   FROM BILL A,FeeSubject B "
                        + "  WHERE  A.TRIMID= B.TRIMID "
-                       + "    AND A.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+") ";  //门店权限
+                       + "    AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";  //门店权限
 
             if (!Data.BILLID.IsEmpty())
                 sql += " AND A.BILLID='" + Data.BILLID + "'";
@@ -244,7 +211,7 @@ namespace z.ERP.Services
             item.HasDateKey("REPORTER_TIME_START", a => sql += $" and A.REPORTER_TIME >= {a}");
             item.HasDateKey("REPORTER_TIME_END", a => sql += $" and A.REPORTER_TIME <= {a}");
             item.HasKey("WFDJ", a => sql += $" and A.MUST_MONEY - A.RECEIVE_MONEY<>0");
-            item.HasKey("FTYPE",a => sql += $" and F.TYPE = {a}");    //费用项目类型
+            item.HasKey("FTYPE", a => sql += $" and F.TYPE = {a}");    //费用项目类型
             item.HasKey("RRETURNFLAG", a => sql += $" and A.RECEIVE_MONEY <> 0");
             item.HasKey("SCFS_TZD", a => sql += $" and F.SCFS_TZD = {a}");
             item.HasKey("FEE_ACCOUNTID", a => sql += $" and F.FEE_ACCOUNTID = {a}");
@@ -255,7 +222,6 @@ namespace z.ERP.Services
             dt.NewEnumColumns<账单状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
-
         /// <summary>
         /// 弹窗选择账单 status 是2和3
         /// </summary>
@@ -269,7 +235,7 @@ namespace z.ERP.Services
                 + "   FROM BILL A,BRANCH B,FEESUBJECT F ,FEESUBJECT_ACCOUNT FA"
                 + "  WHERE  A.BRANCHID=B.ID  and A.TERMID =F.TRIMID and B.ID =FA.BRANCHID " //and A.STATUS IN (2,3)
                 + "    and A.TYPE IN (1,2) AND FA.TERMID=F.TRIMID "
-                + "    AND B.ID IN ("+GetPermissionSql(PermissionType.Branch)+") ";   //门店权限
+                + "    AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";   //门店权限
             item.HasKey("BRANCHID", a => sql += $" and A.BRANCHID = {a}");
             item.HasKey("BILLID", a => sql += $" and A.BILLID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID = '{a}'");
@@ -293,7 +259,6 @@ namespace z.ERP.Services
             dt.NewEnumColumns<账单状态Part>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
-
         /// <summary>
         /// 树形部门
         /// </summary>
@@ -307,7 +272,7 @@ namespace z.ERP.Services
 
             List<ORGEntity> p = DbHelper.ExecuteObject<ORGEntity>(sql);
 
-          //  List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
+            //  List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
             var treeOrg = new UIResult(TreeModel.Create(p,
                 a => a.ORGCODE,
                 a => new TreeModel()
@@ -321,11 +286,10 @@ namespace z.ERP.Services
 
             return new Tuple<dynamic>(treeOrg);
         }
-
         public object GetBranch(BRANCHEntity Data)
         {
             string sql = $@"SELECT A.ID,A.NAME FROM BRANCH A WHERE 1=1"
-                  + " AND A.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+                  + " AND A.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             if (!Data.ID.IsEmpty())
                 sql += (" and A.ID= " + Data.ID);
             sql += @" ORDER BY ID";
@@ -335,7 +299,6 @@ namespace z.ERP.Services
                 dt = dt
             };
         }
-
         public object GetRegion(REGIONEntity Data)
         {
             string sql = $@"SELECT A.REGIONID,A.CODE,A.NAME FROM REGION A WHERE 1=1"
@@ -344,7 +307,7 @@ namespace z.ERP.Services
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
             sql += " AND A.STATUS = 1 ORDER BY A.CODE";
-            
+
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new
             {
@@ -381,7 +344,7 @@ namespace z.ERP.Services
         {
             string sql = $@"SELECT A.ID,A.CODE,A.NAME FROM FLOOR A WHERE 1=1"
                  + " AND A.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")"  //门店权限
-              //   + " AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")" //区域权限
+                                                                                           //   + " AND A.REGIONID IN (" + GetPermissionSql(PermissionType.Region) + ")" //区域权限
                  + " AND A.ID IN (" + GetPermissionSql(PermissionType.Floor) + ")"; //楼层权限
             if (!Data.BRANCHID.IsEmpty())
                 sql += (" and A.BRANCHID= " + Data.BRANCHID);
@@ -433,7 +396,7 @@ namespace z.ERP.Services
             string sql = " SELECT  A.*  ,B.NAME MERCHANTNAME,C.NAME BRANCHNAME "
                        + "   FROM CONTRACT A,MERCHANT B,BRANCH C "
                        + "  WHERE A.MERCHANTID=B.MERCHANTID AND A.BRANCHID=C.ID"
-                       + "    AND C.ID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+                       + "    AND C.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             sql += " and A.HTLX=" + ((int)合同类型.原始合同).ToString();
 
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID like '%{a}%'");
@@ -452,26 +415,24 @@ namespace z.ERP.Services
             dt.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
-
         public DataGridResult GetGoodsShopList(SearchItem item)
         {
             string sql = $@" select G.*,M.NAME SHMC,D.NAME BRANDMC,C.CODE KINDDM,C.NAME KINDMC,S.CODE,S.NAME SPMC,P.SHOPID "
               + "   from GOODS G,MERCHANT M,GOODS_KIND C,BRAND D ,GOODS_SHOP P,SHOP S,CONTRACT T"
               + "  where G.MERCHANTID=M.MERCHANTID  AND G.KINDID=C.ID and G.BRANDID =D.ID "
               + "    and G.GOODSID = P.GOODSID  and P.SHOPID=S.SHOPID AND G.CONTRACTID=T.CONTRACTID"
-              + "    and T.BRANCHID IN ("+GetPermissionSql(PermissionType.Branch)+")";  //门店权限
+              + "    and T.BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
             item.HasKey("GOODSDM", a => sql += $" and G.GOODSDM = '{a}'");
             item.HasKey("CONTRACTID", a => sql += $" and G.CONTRACTID = '{a}'");
             item.HasKey("STATUS", a => sql += $" and G.STATUS IN ({a})");
             item.HasKey("NAME", a => sql += $" and G.NAME like '%{a}%'");
             item.HasKey("YYY", a => sql += $" and exists(select 1 from SYSUSER S where P.SHOPID = S.SHOPID and S.USERID = '{a}')");
-            
+
             sql += " ORDER BY  G.GOODSDM";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public DataGridResult GetGoodsList(SearchItem item)
         {
             string sql = @"SELECT G.*,C.JSKL,B.NAME BRANDMC "
@@ -488,14 +449,12 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
-
         public DataTable GetPay()
         {
             string sql = $@"SELECT * FROM PAY WHERE VOID_FLAG=1 ORDER BY  PAYID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
         }
-
         public List<SelectItem> comPlainDept()
         {
             string sql = $@"select ID,NAME from COMPLAINDEPT ORDER BY ID";
@@ -508,7 +467,6 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
-
         public List<SelectItem> feeAccount()    //收费单位
         {
             string sql = "select id,name from fee_account where BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") order by id ";
@@ -530,7 +488,7 @@ namespace z.ERP.Services
             };
         }
         //获取打印地址
-        public DataTable GetPrintUrl(string menuid,string printtype)
+        public DataTable GetPrintUrl(string menuid, string printtype)
         {
             string sql = @" SELECT * FROM PRINTDEF WHERE  USED=1 ";
             if (!menuid.IsEmpty())
@@ -543,16 +501,17 @@ namespace z.ERP.Services
         public List<SelectItem> feeAccount(FEE_ACCOUNTEntity data)    //收费单位
         {
             string sql = "select id,name from fee_account where BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";
-            if (!string.IsNullOrEmpty(data.BRANCHID)) {
-                sql += " AND BRANCHID= "+data.BRANCHID+" ";
+            if (!string.IsNullOrEmpty(data.BRANCHID))
+            {
+                sql += " AND BRANCHID= " + data.BRANCHID + " ";
             }
-                sql+=" order by id ";
+            sql += " order by id ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("id", "name");
         }
         public List<SelectItem> PUBLICDATA()
         {
-            string sql = $@"SELECT A.ID,A.NAME FROM PUBLICDATA A WHERE 1=1"                          
+            string sql = $@"SELECT A.ID,A.NAME FROM PUBLICDATA A WHERE 1=1"
                          + " ORDER BY  A.ID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
