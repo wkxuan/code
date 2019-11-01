@@ -29,10 +29,10 @@ namespace z.ERP.Web.Areas.XTGL.AlertShow
                 }
             );
         }
-        public string Output(string Name, Dictionary<string, string> Cols, DEF_ALERTEntity Data)
+        public string Output(Dictionary<string, string> Cols, DEF_ALERTEntity Data)
         {
             var res = service.XtglService.GetAlertSql(Data);
-            return NPOIHelper.ExportExcel(res.Item1, Name, Cols);
+            return NPOIHelper.ExportExcel(res.Item1, res.Item3, Cols);
         }
     }
 }

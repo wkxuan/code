@@ -270,7 +270,7 @@ namespace z.ERP.Web.Areas.Base
             //加载模板文档
             Document doc = new Document();
             string filePath = $@"{IOExtension.GetBaesDir()}\File\Template\合同模板.docx";
-            string outPath = $@"{IOExtension.GetBaesDir()}\File\Output\Contract\{time}\";
+            string outPath = $@"{IOExtension.GetBaesDir()}\File\OutputWord\Contract\{time}\";
             Directory.CreateDirectory(outPath);   //创建文件夹
             doc.LoadFromFile(filePath);
             //初始化Bookmark对象
@@ -282,10 +282,10 @@ namespace z.ERP.Web.Areas.Base
             doc.SaveToFile(outp, FileFormat.Docx2013);
         }
         public static string FilePath(string time) {
-            string filepath = $@"{IOExtension.GetBaesDir()}\File\Output\Contract\{time}";
-            string outpath = $@"{IOExtension.GetBaesDir()}\File\Output\Contract\{time}.zip";
+            string filepath = $@"{IOExtension.GetBaesDir()}\File\OutputWord\Contract\{time}";
+            string outpath = $@"{IOExtension.GetBaesDir()}\File\OutputWord\Contract\{time}.zip";
             FileHelper.CreateZip(filepath, outpath);
-            return $@"/File/Output/Contract/{time}.zip";
+            return $@"/File/OutputWord/Contract/{time}.zip";
         }
         #endregion
     }

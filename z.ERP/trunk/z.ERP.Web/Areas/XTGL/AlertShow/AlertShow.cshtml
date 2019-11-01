@@ -85,7 +85,6 @@
                         cols[_self.columns[i].key] = _self.columns[i].title
                     }
                     _.Ajax('Output', {
-                        Name: window.document.title,
                         Cols: cols,
                         Data: { ID: @id }
                     }, function (data) {

@@ -663,7 +663,7 @@ namespace z.ERP.Services
             }
             return b;
         }
-        public Tuple<DataTable, DataTable> GetAlertSql(DEF_ALERTEntity Data)
+        public Tuple<DataTable, DataTable,string> GetAlertSql(DEF_ALERTEntity Data)
         {
             DEF_ALERTEntity alert = new DEF_ALERTEntity();
             alert = DbHelper.Select(new DEF_ALERTEntity() { ID = Data.ID });
@@ -676,7 +676,7 @@ namespace z.ERP.Services
             }
             sqlItem += " order by PLSX";
             DataTable alertCol = DbHelper.ExecuteTable(sqlItem);
-            return new Tuple<DataTable, DataTable>(alertSql, alertCol);
+            return new Tuple<DataTable, DataTable,string>(alertSql, alertCol, alert.MC);
         }
         public string SaveSplc(SPLCDEFDEntity SPLCDEFD,
             List<SPLCJDEntity> SPLCJD, List<SPLCJGEntity> SPLCJG)

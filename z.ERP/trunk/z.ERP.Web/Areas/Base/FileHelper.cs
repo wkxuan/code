@@ -79,7 +79,7 @@ namespace z.ERP.Web.Areas.Base
         }
         public static void DeleteDirzip()
         {
-            var dir = $@"{IOExtension.GetBaesDir()}\File\Output\Contract\";
+            var dir = $@"{IOExtension.GetBaesDir()}\File\OutputWord\Contract\";
             if (dir.Length == 0) return;
             if (Directory.Exists(dir))
                 Directory.Delete(dir, true);
