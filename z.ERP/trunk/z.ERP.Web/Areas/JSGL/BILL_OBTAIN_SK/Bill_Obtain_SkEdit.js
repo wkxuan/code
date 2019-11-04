@@ -138,7 +138,7 @@ editDetail.otherMethods = {
             return;
         };
         editDetail.screenParam.showPopMerchant = true;
-        editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID};
+        editDetail.screenParam.popParam = {};
     },
     SelBill: function () {
         if (!editDetail.dataParam.BRANCHID) {
