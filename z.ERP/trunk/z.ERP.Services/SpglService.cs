@@ -605,6 +605,31 @@ namespace z.ERP.Services
             DelDclRw(dcl);
             return mer.BILLID;
         }
+        public void ExecSaleBillDataList(List<SALEBILLEntity> DataList)
+        {
+            foreach (var Data in DataList) {            
+                SALEBILLEntity mer = DbHelper.Select(Data);
+                if (mer.STATUS == ((int)普通单据状态.审核).ToString()) continue;
+                using (var Tran = DbHelper.BeginTransaction())
+                {
+                    EXEC_SALEBILL execsalebill = new EXEC_SALEBILL()
+                    {
+                        P_BILLID = Data.BILLID,
+                        P_VERIFY = employee.Id
+                    };
+                    DbHelper.ExecuteProcedure(execsalebill);
+                    Tran.Commit();
+                }
+                var dcl = new BILLSTATUSEntity
+                {
+                    BILLID = Data.BILLID,
+                    MENUID = "10500402",
+                    BRABCHID = Data.BRANCHID,
+                    URL = "SPGL/SALEBILL/SaleBillEdit/"
+                };
+                DelDclRw(dcl);
+            }
+        }
         #endregion
 
         #region 扣率调整单

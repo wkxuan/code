@@ -41,6 +41,41 @@ search.mountedInit = function () {
     }, {
         id: "upload",
         authority: ""
+    }, {
+        id: "confirm",
+        name: "审核",
+        icon: "md-star",
+        authority: "",
+        fun: function () {
+            let _this = search.vueObj;
+            let selectton = _this.$refs.selectData.getSelection();
+            if (selectton.length == 0) {
+                iview.Message.info("请选中要审核的数据!");
+                return;
+            }
+            var sh = true;
+            for (var i = 0; i < selectton.length;i++) {   //循环选择数据，当有未审核状态时执行审核
+                if (selectton[i].STATUS == 1) {
+                    sh = false;
+                    break
+                }
+            }
+            if (sh == false) {
+                _.Ajax('ExecDataList', {
+                    DataList: selectton,
+                }, function (data) {
+                    iview.Message.info("审核成功");
+                    search.searchList();
+                });
+            } else {
+                iview.Message.info("请选中的数据已审核!");
+                return;
+            }
+        },
+        enabled: function (disabled, data) {
+            return true;
+        },
+        isNewAdd: true
     }];
 }
 search.newCondition = function () {

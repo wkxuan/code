@@ -39,6 +39,10 @@ namespace z.ERP.Web.Areas.SPGL.SALEBILL
         {
             service.SpglService.ExecSaleBillData(Data);
         }
+        public void ExecDataList(List<SALEBILLEntity> DataList)
+        {
+            service.SpglService.ExecSaleBillDataList(DataList);
+        }
         public UIResult GetPay()
         {
             return new UIResult(service.DataService.GetPay());
