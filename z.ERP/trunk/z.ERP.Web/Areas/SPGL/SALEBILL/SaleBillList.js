@@ -73,7 +73,7 @@ search.mountedInit = function () {
                     iview.Message.info("审核失败");
                 });
             } else {
-                iview.Message.info("请选中的数据已审核!");
+                iview.Message.info("选中的数据已审核!");
                 return;
             }
         },
