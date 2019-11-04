@@ -80,7 +80,8 @@
                 indexShow: _this.indexShow,
                 selectionShow: _this.selectionShow,
                 popConfig: _this.popConfig,
-                uploadName: _this.uploadName
+                uploadName: _this.uploadName,
+                spinShow:false
             },
             watch: {
                 "screenParam.colDef": {

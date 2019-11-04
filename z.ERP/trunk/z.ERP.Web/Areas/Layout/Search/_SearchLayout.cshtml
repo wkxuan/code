@@ -17,6 +17,7 @@
 }
 
 <div id="search" v-cloak>
+    <Spin size="large" fix v-if="spinShow">审核执行中。。。</Spin>
     <collapse v-model="panelName">
         <panel name="panelOne">
             查询条件

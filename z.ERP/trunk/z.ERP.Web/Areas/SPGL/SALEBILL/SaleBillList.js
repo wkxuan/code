@@ -45,7 +45,7 @@ search.mountedInit = function () {
         id: "confirm",
         name: "审核",
         icon: "md-star",
-        authority: "",
+        authority: "10500402",
         fun: function () {
             let _this = search.vueObj;
             let selectton = _this.$refs.selectData.getSelection();
@@ -61,11 +61,16 @@ search.mountedInit = function () {
                 }
             }
             if (sh == false) {
+                search.vueObj.spinShow = true;
                 _.Ajax('ExecDataList', {
                     DataList: selectton,
                 }, function (data) {
+                    search.vueObj.spinShow = false;
                     iview.Message.info("审核成功");
                     search.searchList();
+                }, function () {
+                    search.vueObj.spinShow = false;
+                    iview.Message.info("审核失败");
                 });
             } else {
                 iview.Message.info("请选中的数据已审核!");
