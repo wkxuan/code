@@ -69,7 +69,7 @@
                 columns: [],
                 data: [],
                 tbLoading: false,
-                arrPageSize: [10, 20, 50, 100, 200],
+                arrPageSize: [10, 50, 100, 200, 500],
                 pagedataCount: 0,
                 pageSize: 10,
                 currentPage: 1,
