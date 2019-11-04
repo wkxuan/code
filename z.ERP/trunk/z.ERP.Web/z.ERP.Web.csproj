@@ -824,7 +824,9 @@
     <Content Include="File\Import\销售补录单.xls" />
     <Content Include="File\Import\品牌信息.xls" />
     <Content Include="Areas\XTGL\PAY_CHARGES\Pay_Charges.cshtml" />
-    <None Include="File\Template\合同模板.docx" />
+    <None Include="File\Template\合同模板.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

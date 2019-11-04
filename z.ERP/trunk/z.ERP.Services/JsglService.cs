@@ -425,7 +425,7 @@ namespace z.ERP.Services
             item.HasKey("VERIFY_NAME", a => sql += $" and L.VERIFY_NAME  LIKE '%{a}%'");
             item.HasDateKey("VERIFY_TIME_START", a => sql += $" and trunc(L.VERIFY_TIME)>={a}");
             item.HasDateKey("VERIFY_TIME_END", a => sql += $" and trunc(L.VERIFY_TIME)<={a}");
-            sql += " ORDER BY  L.BILLID DESC";
+            sql += " ORDER BY  to_number(L.BILLID) DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
@@ -480,16 +480,61 @@ namespace z.ERP.Services
         {
             var v = GetVerify(SaveData);
             if (SaveData.BILLID.IsEmpty())
-                SaveData.BILLID = NewINC("BILL_OBTAIN");
+            {
+                SaveData.BILLID = SaveData.BRANCHID +  NewINC("BILL_OBTAIN_" + SaveData.BRANCHID).PadLeft(7,'0');
+                SaveData.REPORTER = employee.Id;
+                SaveData.REPORTER_NAME = employee.Name;
+                SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            }
+            else
+            {
+                BILL_OBTAINEntity data = DbHelper.Select(new BILL_OBTAINEntity() { BILLID = SaveData.BILLID });
+
+                if (data == null)
+                {
+                    throw new LogicException("该单据不存在!");
+                }
+
+                if (data.STATUS != ((int)普通单据状态.未审核).ToString())
+                {
+                    throw new LogicException("该单据不是未审核状态，不能修改!");
+                }
+            }
+                
             SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
-            SaveData.REPORTER = employee.Id;
-            SaveData.REPORTER_NAME = employee.Name;
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            SaveData.VERIFY = employee.Id;
+
             v.Require(a => a.BILLID);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.MERCHANTID);
             v.Verify();
+
+            string menuid = "";
+            string url = "";
+
+            if (SaveData.TYPE == ((int)收款类型.预收款).ToString())
+            {
+                menuid = "10700402";
+                url = "JSGL/BILL_OBTAIN_Ysk/Bill_Obtain_YskEdit/";
+            }
+            else if (SaveData.TYPE == ((int)收款类型.保证金收款).ToString())
+            {
+                menuid = "10700302";
+                url = "JSGL/BILL_OBTAIN/Bill_ObtainEdit/";
+            }
+            else if (SaveData.TYPE == ((int)收款类型.账单收款).ToString())
+            {
+                menuid = "10700702";
+                url = "JSGL/BILL_OBTAIN_Sk/Bill_Obtain_SkEdit/";
+            }
+
+            
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = SaveData.BILLID,
+                MENUID = menuid,
+                BRABCHID = SaveData.BRANCHID,
+                URL = url
+            };
 
             using (var Tran = DbHelper.BeginTransaction())
             {
@@ -503,39 +548,9 @@ namespace z.ERP.Services
                     GetVerify(item).Require(a => a.INVOICEID);
                 });
                 DbHelper.Save(SaveData);
-
+                InsertDclRw(dcl);  //增加审核待办任务
                 Tran.Commit();
             }
-
-            string menuid = "";
-            string url = "";
-
-            if (SaveData.TYPE == ((int)收款类型.预收款).ToString())
-            {
-                menuid = "10700402";
-                url = "JSGL/BILL_OBTAIN_Ysk/Bill_Obtain_YskEdit/";
-            }
-            else if(SaveData.TYPE == ((int)收款类型.保证金收款).ToString())
-            {
-                menuid = "10700302";
-                url = "JSGL/BILL_OBTAIN/Bill_ObtainEdit/";
-            }
-            else if (SaveData.TYPE == ((int)收款类型.账单收款).ToString())
-            {
-                menuid = "10700702";
-                url = "JSGL/BILL_OBTAIN_Sk/Bill_Obtain_SkEdit/"; 
-            }                
-
-            //增加审核待办任务
-            var dcl = new BILLSTATUSEntity
-            {
-                BILLID = SaveData.BILLID,
-                MENUID = menuid,
-                BRABCHID = SaveData.BRANCHID,
-                URL = url
-            };
-
-            InsertDclRw(dcl);
             return SaveData.BILLID;
         }
 
@@ -580,16 +595,6 @@ namespace z.ERP.Services
             {
                 throw new LogicException("单据(" + Data.BILLID + ")已经审核,不能再次审核!");
             }
-            using (var Tran = DbHelper.BeginTransaction())
-            {
-                Exec_BILL_OBTAIN exec_billobtain = new Exec_BILL_OBTAIN()
-                {
-                    p_BILLID = Data.BILLID,
-                    p_VERIFY = employee.Id
-                };
-                DbHelper.ExecuteProcedure(exec_billobtain);
-                Tran.Commit();
-            }
 
             //删除审核待办任务
             string menuid = "";
@@ -606,7 +611,21 @@ namespace z.ERP.Services
                 MENUID = menuid,
                 BRABCHID = Data.BRANCHID
             };
-            DelDclRw(dcl);
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                Exec_BILL_OBTAIN exec_billobtain = new Exec_BILL_OBTAIN()
+                {
+                    p_BILLID = Data.BILLID,
+                    p_VERIFY = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec_billobtain);
+                DelDclRw(dcl);  //删除审核待办任务
+                Tran.Commit();
+            }
+
+
+            
             return billObtain.BILLID;
         }
 
@@ -682,13 +701,32 @@ namespace z.ERP.Services
         public string SaveBillNotice(BILL_NOTICEEntity SaveData)
         {
             var v = GetVerify(SaveData);
+
             if (SaveData.BILLID.IsEmpty())
-                SaveData.BILLID = NewINC("BILL_NOTICE");
+            {
+                SaveData.BILLID = SaveData.BRANCHID + NewINC("BILL_NOTICE_" + SaveData.BRANCHID).PadLeft(7, '0');
+                SaveData.REPORTER = employee.Id;
+                SaveData.REPORTER_NAME = employee.Name;
+                SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            }
+            else
+            {
+                BILL_NOTICEEntity data = DbHelper.Select(new BILL_NOTICEEntity() { BILLID = SaveData.BILLID });
+                
+                if (data == null)
+                {
+                    throw new LogicException("该单据不存在!");
+                }
+
+                if( data.STATUS != ((int)普通单据状态.未审核).ToString())
+                {
+                    throw new LogicException("该单据不是未审核状态，不允许修改!");
+                }
+            }
+                
             SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
-            SaveData.REPORTER = employee.Id;
-            SaveData.REPORTER_NAME = employee.Name;
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            SaveData.VERIFY = employee.Id;
+
+           // SaveData.VERIFY = employee.Id;
             v.Require(a => a.BILLID);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.CONTRACTID);
@@ -696,19 +734,7 @@ namespace z.ERP.Services
             v.Require(a => a.FEE_ACCOUNTID);
 
             v.Verify();
-
-            using (var Tran = DbHelper.BeginTransaction())
-            {
-                SaveData.BILL_NOTICE_ITEM?.ForEach(item =>
-                {
-                    GetVerify(item).Require(a => a.FINAL_BILLID);
-                });
-                DbHelper.Save(SaveData);
-
-                Tran.Commit();
-            }
-
-            //增加审核待办任务
+            
             var dcl = new BILLSTATUSEntity
             {
                 BILLID = SaveData.BILLID,
@@ -717,10 +743,17 @@ namespace z.ERP.Services
                 URL = "JSGL/BILL_NOTICE/Bill_NoticeEdit/"
             };
 
-            InsertDclRw(dcl);
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                SaveData.BILL_NOTICE_ITEM?.ForEach(item =>
+                {
+                    GetVerify(item).Require(a => a.FINAL_BILLID);
+                });
+                DbHelper.Save(SaveData);
+                InsertDclRw(dcl);  //增加审核待办任务
 
-
-
+                Tran.Commit();
+            }
             return SaveData.BILLID;
         }
 
@@ -794,21 +827,29 @@ namespace z.ERP.Services
         /// <returns></returns>
         public string ExecBillNotice(BILL_NOTICEEntity Data)
         {
-            BILL_NOTICEEntity billNotice = DbHelper.Select(Data);
-            if (billNotice.STATUS == ((int)普通单据状态.审核).ToString())
-            {
-                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
-            }           
             using (var Tran = DbHelper.BeginTransaction())
             {
-                billNotice.VERIFY = employee.Id;
-                billNotice.VERIFY_NAME = employee.Name;
-                billNotice.VERIFY_TIME = DateTime.Now.ToString();
-                billNotice.STATUS = ((int)普通单据状态.审核).ToString();
-                DbHelper.Save(billNotice);
+                EXEC_BILL_NOTICE exec = new EXEC_BILL_NOTICE()
+                {
+                    in_BILLID = Data.BILLID,
+                    in_USERID = employee.Id
+                };
+                DbHelper.ExecuteProcedure(exec);
                 Tran.Commit();
             }
 
+            return Data.BILLID;
+
+           /* BILL_NOTICEEntity billNotice = DbHelper.Select(Data);
+            if (billNotice.STATUS == ((int)普通单据状态.审核).ToString())
+            {
+                throw new LogicException("单据(" + Data.BILLID + ")已经审核不能再次审核!");
+            }
+
+            billNotice.VERIFY = employee.Id;
+            billNotice.VERIFY_NAME = employee.Name;
+            billNotice.VERIFY_TIME = DateTime.Now.ToString();
+            billNotice.STATUS = ((int)普通单据状态.审核).ToString();
             //删除审核待办任务
             var dcl = new BILLSTATUSEntity
             {
@@ -816,10 +857,14 @@ namespace z.ERP.Services
                 MENUID = "10700502",
                 BRABCHID = Data.BRANCHID
             };
-            DelDclRw(dcl);
-
-
-            return billNotice.BILLID;
+                   
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(billNotice);
+                DelDclRw(dcl);  //删除审核待办任务
+                Tran.Commit();
+            } 
+            return billNotice.BILLID;  */
         }
 
         public Tuple<dynamic > GetJoinBillDetail(JOIN_BILLEntity Data)
