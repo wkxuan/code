@@ -111,8 +111,8 @@ namespace z.ERP.Services
             if (SaveData.CONTRACTID.IsEmpty())
             {
                 //合同类型判断
-                if (SaveData.CONTRACT_OLD.IsEmpty())
-                    SaveData.HTLX = ((int)合同类型.原始合同).ToString();
+                if (SaveData.CONTRACT_OLD.IsEmpty()) 
+                    SaveData.HTLX = ((int)合同类型.原始合同).ToString();                
                 else
                     SaveData.HTLX = ((int)合同类型.变更合同).ToString();
 
@@ -891,12 +891,26 @@ namespace z.ERP.Services
         {
             var v = GetVerify(SaveData);
             if (SaveData.BILLID.IsEmpty())
+            {
                 SaveData.BILLID = NewINC("FREESHOP");
+                SaveData.REPORTER = employee.Id;
+                SaveData.REPORTER_NAME = employee.Name;
+                SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            }
+            else {
+                FREESHOPEntity data = DbHelper.Select(new FREESHOPEntity() { BILLID = SaveData.BILLID });
+
+                if (data == null)
+                {
+                    throw new LogicException("该单据不存在!");
+                }
+
+                if (data.STATUS != ((int)退铺单状态.未审核).ToString())
+                {
+                    throw new LogicException("该单据不是未审核状态，不能修改!");
+                }
+            }
             SaveData.STATUS = ((int)退铺单状态.未审核).ToString();
-            SaveData.REPORTER = employee.Id;
-            SaveData.REPORTER_NAME = employee.Name;
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            SaveData.VERIFY = employee.Id;
             v.Require(a => a.BILLID);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.CONTRACTID);

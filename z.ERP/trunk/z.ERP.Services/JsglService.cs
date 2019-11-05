@@ -106,12 +106,26 @@ namespace z.ERP.Services
         {
             var v = GetVerify(SaveData);
             if (SaveData.BILLID.IsEmpty())
+            {
                 SaveData.BILLID = NewINC("BILL_RETURN");
+                SaveData.REPORTER = employee.Id;
+                SaveData.REPORTER_NAME = employee.Name;
+                SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            }
+            else {
+                BILL_RETURNEntity data = DbHelper.Select(new BILL_RETURNEntity() { BILLID = SaveData.BILLID });
+
+                if (data == null)
+                {
+                    throw new LogicException("该单据不存在!");
+                }
+
+                if (data.STATUS != ((int)普通单据状态.未审核).ToString())
+                {
+                    throw new LogicException("该单据不是未审核状态，不能修改!");
+                }
+            }
             SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
-            SaveData.REPORTER = employee.Id;
-            SaveData.REPORTER_NAME = employee.Name;
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            SaveData.VERIFY = employee.Id;
             v.Require(a => a.BILLID);
             v.Require(a => a.CONTRACTID);
             v.Require(a => a.BRANCHID);
@@ -307,13 +321,27 @@ namespace z.ERP.Services
         public string SaveBillAdjust(BILL_ADJUSTEntity SaveData)
         {
             var v = GetVerify(SaveData);
-            if (SaveData.BILLID.IsEmpty())
+            if (SaveData.BILLID.IsEmpty()) { 
                 SaveData.BILLID = NewINC("BILL_ADJUST");
+                SaveData.REPORTER = employee.Id;
+                SaveData.REPORTER_NAME = employee.Name;
+                SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            }
+            else
+            {
+                BILL_ADJUSTEntity data = DbHelper.Select(new BILL_ADJUSTEntity() { BILLID = SaveData.BILLID });
+
+                if (data == null)
+                {
+                    throw new LogicException("该单据不存在!");
+                }
+
+                if (data.STATUS != ((int)普通单据状态.未审核).ToString())
+                {
+                    throw new LogicException("该单据不是未审核状态，不能修改!");
+                }
+            }
             SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
-            SaveData.REPORTER = employee.Id;
-            SaveData.REPORTER_NAME = employee.Name;
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            SaveData.VERIFY = employee.Id;
             v.Require(a => a.BILLID);
             v.Require(a => a.BRANCHID);
             v.Verify();
@@ -425,6 +453,7 @@ namespace z.ERP.Services
             item.HasKey("VERIFY_NAME", a => sql += $" and L.VERIFY_NAME  LIKE '%{a}%'");
             item.HasDateKey("VERIFY_TIME_START", a => sql += $" and trunc(L.VERIFY_TIME)>={a}");
             item.HasDateKey("VERIFY_TIME_END", a => sql += $" and trunc(L.VERIFY_TIME)<={a}");
+            item.HasKey("BILLID_NOTICE", a => sql += $" and L.BILLID_NOTICE = {a}");
             sql += " ORDER BY  to_number(L.BILLID) DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -996,16 +1025,30 @@ namespace z.ERP.Services
         }
         public string SaveInvoice(InvoiceEntity SaveData) {
             var v = GetVerify(SaveData);
-            if (SaveData.INVOICEID.IsEmpty()) {
+            if (SaveData.INVOICEID.IsEmpty())
+            {
                 SaveData.INVOICEID = NewINC("INVOICE");
-                SaveData.NOVATAMOUNT = (Convert.ToDecimal(SaveData.INVOICEAMOUNT) - Convert.ToDecimal(SaveData.VATAMOUNT)).ToString();
-                SaveData.REPORTER= employee.Id;
+                SaveData.REPORTER = employee.Id;
                 SaveData.REPORTER_NAME = employee.Name;
                 SaveData.REPORTER_TIME = DateTime.Now.ToString();
-                SaveData.STATUS = ((int)发票状态.已开具).ToString();
-                v.Require(a => a.INVOICEID);
-                v.Verify();
             }
+            else {
+                InvoiceEntity data = DbHelper.Select(new InvoiceEntity() { INVOICEID = SaveData.INVOICEID });
+
+                if (data == null)
+                {
+                    throw new LogicException("该单据不存在!");
+                }
+
+                if (data.STATUS != ((int)发票状态.已核销).ToString())
+                {
+                    throw new LogicException("该发票已核销，不能修改!");
+                }
+            }
+            SaveData.STATUS = ((int)发票状态.已开具).ToString();
+            SaveData.NOVATAMOUNT = (Convert.ToDecimal(SaveData.INVOICEAMOUNT) - Convert.ToDecimal(SaveData.VATAMOUNT)).ToString();
+            v.Require(a => a.INVOICEID);
+            v.Verify();
             DbHelper.Save(SaveData);
             return SaveData.INVOICEID;
         }

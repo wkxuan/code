@@ -551,12 +551,26 @@ namespace z.ERP.Services
         {
             var v = GetVerify(SaveData);
             if (SaveData.VOUCHERID.IsEmpty())
+            {
                 SaveData.VOUCHERID = NewINC("VOUCHER");
+                SaveData.REPORTER = employee.Id;
+                SaveData.REPORTER_NAME = employee.Name;
+                SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            }
+            else {
+                VOUCHEREntity data = DbHelper.Select(new VOUCHEREntity() { VOUCHERID = SaveData.VOUCHERID });
+
+                if (data == null)
+                {
+                    throw new LogicException("该单据不存在!");
+                }
+
+                if (data.STATUS != ((int)普通单据状态.审核).ToString())
+                {
+                    throw new LogicException("该单据已审核，不能修改!");
+                }
+            }
             SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
-            SaveData.REPORTER = employee.Id;
-            SaveData.REPORTER_NAME = employee.Name;
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
-            SaveData.VERIFY = employee.Id;
             v.Require(a => a.VOUCHERID);
             v.Require(a => a.VOUCHERNAME);
             v.Verify();

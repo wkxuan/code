@@ -41,6 +41,7 @@ search.newCondition = function () {
     search.searchParam.VERIFY_NAME = "";
     search.searchParam.VERIFY_TIME_START = "";
     search.searchParam.VERIFY_TIME_END = "";
+    search.searchParam.BILLID_NOTICE = "";
 }
 search.addHref = function (row) {
     _.OpenPage({
