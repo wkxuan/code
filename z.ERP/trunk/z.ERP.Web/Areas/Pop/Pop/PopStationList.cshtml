@@ -8,13 +8,7 @@
             门店
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
         </i-col>
         <i-col span="3" class="RowTitle">
             终端号

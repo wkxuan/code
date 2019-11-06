@@ -8,7 +8,6 @@ editDetail.beforeVue = function () {
     editDetail.screenParam.showPopCrmRole = false;
     editDetail.screenParam.srcPopCrmRole = null;
     editDetail.screenParam.popParam = {};
-    editDetail.screenParam.ORGData = [];
 
     editDetail.screenParam.userModule = [];
     editDetail.screenParam.ytTreeData = [];
@@ -55,7 +54,7 @@ editDetail.showOne = function (data, callback) {
                 if (editDetail.dataParam.ORGIDCASCADER != null) {
                     editDetail.dataParam.ORGIDCASCADER = editDetail.dataParam.ORGIDCASCADER.split(",")
                 } else {
-                    editDetail.dataParam.ORGIDCASCADER = null;
+                    editDetail.dataParam.ORGIDCASCADER = [];
                 }
             };
             editDetail.screenParam.userModule = data.module;
@@ -272,12 +271,6 @@ editDetail.popCallBack = function (data) {
 };
 //按钮初始化
 editDetail.mountedInit = function () {
-    _.Ajax('SearchTreeOrg', {
-        Data: {}
-    }, function (data) {
-        Vue.set(editDetail.screenParam, "ORGData", data.Item1.Obj);
-    });
-
     this.otherMethods.initdata();
 
     editDetail.btnConfig = [{

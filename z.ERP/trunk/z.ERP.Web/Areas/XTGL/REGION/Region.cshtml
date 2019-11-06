@@ -7,14 +7,7 @@
     <row>
         <i-col span="3" class="RowTitle">门店</i-col>
         <i-col span="9" class="RowText">
-            @{
-                RenderControl(new DropDownListsRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    Data = "screenParam.branchData",
-                    Change = "branchChange",
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch" v-on:change="branchChange" v-bind:disabled="!disabled"></yx-select>
         </i-col>
     </row>
 }
@@ -36,25 +29,15 @@
             <i-input v-model="dataParam.NAME" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
     <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             管理机构
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new CascaderRender()
-                {
-                    vModel = "dataParam.ORGIDCASCADER",
-                    Data = "screenParam.ORGData",
-                    Change = "orgChange",
-                    Not_level_last = true,
-                    Enable = false
-                });
-            }
+            <yx-cascader v-bind:value.sync="dataParam.ORGIDCASCADER" method="GetTreeOrg" notlevellast
+                         v-on:change="orgChange" v-bind:disabled="disabled"></yx-cascader>
         </i-col>
-
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             建筑面积

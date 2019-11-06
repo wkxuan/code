@@ -1,11 +1,9 @@
 ﻿defineDetail.beforeVue = function () {
     defineDetail.Key = "BRANCHID";
-    defineDetail.screenParam.branchData = [];
 };
 
-defineDetail.clearKey = function () {
-
-    defineDetail.dataParam.BRANCHID = null;
+defineDetail.initDataParam = function () {
+    defineDetail.dataParam.BRANCHID = "";
     defineDetail.dataParam.PRINTCOUNT = null;
     defineDetail.dataParam.HEAD = null;
     defineDetail.dataParam.TAIL = null;

@@ -1,5 +1,4 @@
-﻿@using z.ERP.Web.Areas.Share.Render;
-@using z.ERP.Web.Areas.Layout.Search;
+﻿@using z.ERP.Web.Areas.Layout.Search;
 @inherits SearchViewBase
 
 @section conditionParam{
@@ -8,13 +7,7 @@
             门店
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
         </i-col>       
         <i-col span="2" class="RowTitle">
             商户
@@ -27,13 +20,7 @@
             收费单位
         </i-col>
         <i-col span="6"  class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.FEE_ACCOUNT_ID",
-                    ServiceMothod = m => m.feeAccount()
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.FEE_ACCOUNT_ID" method="feeAccount"></yx-select>
         </i-col>       
     </row>
 }

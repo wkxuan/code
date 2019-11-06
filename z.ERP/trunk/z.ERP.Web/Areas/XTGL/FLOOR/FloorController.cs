@@ -45,16 +45,6 @@ namespace z.ERP.Web.Areas.XTGL.FLOOR
                 CommenDelete(con);
             }
         }
-        public UIResult SearchInit()
-        {
-            var res = service.DataService.GetTreeOrg();
-            return new UIResult(
-                new
-                {
-                    treeOrg = res.Item1
-                }
-            );
-        }
         public UIResult GetBranch(BRANCHEntity Data)
         {
             return new UIResult(service.DataService.GetBranch(Data));

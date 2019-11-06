@@ -51,17 +51,11 @@ search.newCondition = function () {
     search.searchParam.NIANYUE_START = "";
     search.searchParam.FLOORID = [];
     search.searchParam.CATEGORYCODE = "";
+    search.searchParam.CATEGORY = [];
 
-    search.screenParam.CATEGORY = [];
     search.screenParam.colDef = colD;
 };
 search.mountedInit = function () {
-    _.Ajax('SearchCate', {
-        Data: {}
-    }, function (data) {
-        Vue.set(search.screenParam, "CATEData", data.treeOrg.Obj);
-    });
-
     search.btnConfig = [{
         id: "search",
         authority: ""

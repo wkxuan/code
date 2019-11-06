@@ -45,22 +45,15 @@
 
 search.newCondition = function () {
     search.searchParam.BRANCHID = [];
-    search.searchParam.FLOORID = [];
-    search.searchParam.CATEGORYCODE = "";
+    search.searchParam.FLOORID = [];  
     search.searchParam.MERCHANTNAME = "";
     search.searchParam.CONTRACTID = "";
     search.searchParam.BRANDNAME = "";
-
-    search.screenParam.CATEGORY = [];
+    search.searchParam.CATEGORYCODE = "";
+    search.searchParam.CATEGORY = [];
 };
 
 search.mountedInit = function () {
-    _.Ajax('SearchCate', {
-        Data: {}
-    }, function (data) {
-        Vue.set(search.screenParam, "CATEData", data.treeOrg.Obj);
-    });
-
     search.btnConfig = [{
         id: "search",
         authority: ""

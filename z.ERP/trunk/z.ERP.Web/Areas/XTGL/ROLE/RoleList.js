@@ -18,13 +18,16 @@
     search.service = "UserService";
     search.method = "GetRole";
 }
-search.mountedInit = function () {
-    _.Ajax('SearchTreeOrg', {
-        Data: {}
-    }, function (data) {
-        Vue.set(search.screenParam, "ORGData", data.Item1.Obj)
-    });
+
+search.mountedInit = function () { }
+
+search.newCondition = function () {
+    search.searchParam.ROLECODE = "";
+    search.searchParam.ROLENAME = "";
+    search.searchParam.ORGCODE = "";
+    search.searchParam.ORGData = [];
 }
+
 search.otherMethods = {
     orgChange: function (value, selectedData) {
         Vue.set(search.searchParam, "ORGCODE", selectedData[selectedData.length - 1].code);

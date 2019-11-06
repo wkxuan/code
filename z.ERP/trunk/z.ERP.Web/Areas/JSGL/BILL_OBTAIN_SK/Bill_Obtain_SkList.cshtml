@@ -10,13 +10,7 @@
         </i-col>
         <i-col span="2" class="RowTitle">门店</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
         </i-col>
         <i-col span="2" class="RowTitle">
             状态
@@ -47,13 +41,7 @@
             付款方式
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.FKFSID",
-                    ServiceMothod = m => m.fkfs(),
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.FKFSID" method="fkfs"></yx-select>
         </i-col>
     </row>
     <row>

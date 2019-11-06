@@ -43,13 +43,7 @@
             付款方式
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.FKFSID",
-                    ServiceMothod = m => m.fkfs(),
-                });
-            }
+            <yx-select v-bind:value.sync="dataParam.FKFSID" method="fkfs" v-bind:disabled="!disabled"></yx-select>
         </i-col>
         <i-col span="2" class="RowTitle">
             收款金额

@@ -1,47 +1,38 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.DefineDetail
+﻿@using z.ERP.Web.Areas.Layout.DefineDetail
 @inherits DefineDetailViewBase
 
 @section baseParam{
     <row>
-        <i-col span="5" class="RowTitle"><span class="mustElement">*</span>
+        <i-col span="5" class="RowTitle">
+            <span class="mustElement">*</span>
             门店
         </i-col>
-        <i-col span="6">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                    Enable = true
-
-                });
-            }
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="dataParam.BRANCHID" method="branch" v-bind:disabled="disabled"></yx-select>
         </i-col>
-
-        <i-col span="5" class="RowTitle"><span class="mustElement">*</span>
+        <i-col span="5" class="RowTitle">
+            <span class="mustElement">*</span>
             打印次数
         </i-col>
-        <i-col span="6">
-            <i-input v-model="dataParam.PRINTCOUNT" type="number"v-bind:disabled="!disabled" />
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.PRINTCOUNT" type="number" v-bind:disabled="disabled" />
         </i-col>
-
     </row>
     <row>
-        <i-col span="5" class="RowTitle"><span class="mustElement">*</span>
+        <i-col span="5" class="RowTitle">
+            <span class="mustElement">*</span>
             票头文字
         </i-col>
         <i-col span="17" class="RowText">
-            <i-input v-model="dataParam.HEAD" v-bind:disabled="!disabled" />
+            <i-input v-model="dataParam.HEAD" v-bind:disabled="disabled" />
         </i-col>
-        </ROW>
+    </row>
     <row>
         <i-col span="5" class="RowTitle">
             票尾文字
         </i-col>
         <i-col span="17" class="RowText">
-            <i-input v-model="dataParam.TAIL" v-bind:disabled="!disabled" />
+            <i-input v-model="dataParam.TAIL" v-bind:disabled="disabled" />
         </i-col>
 
     </row>
@@ -50,34 +41,16 @@
         <i-col span="5" class="RowTitle">
             二维码广告位
         </i-col>
-        <i-col span="17" class="RowText">    
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ADQRCODE",
-                    type = "textarea",
-                    rows = "2"
-                    //v - bind:disabled = "!disabled"
-                });
-            }
+        <i-col span="17" class="RowText">
+            <i-input v-model="dataParam.ADQRCODE" type="textarea" v-bind:rows="2" v-bind:disabled="disabled"/>
         </i-col>
- </row>
-     
+    </row>
     <row>
         <i-col span="5" class="RowTitle">
             文字广告位
         </i-col>
         <i-col span="17" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.ADCONTENT",
-                    type = "textarea",
-                    rows = "2"
-                    //v - bind:disabled = "!disabled"
-                });
-            }
+            <i-input v-model="dataParam.ADCONTENT" type="textarea" v-bind:rows="4" v-bind:disabled="disabled" />
         </i-col>
     </row>
-
 }

@@ -12,8 +12,6 @@ namespace z.ERP.Web.Areas.Report.PAYINFO
             ViewBag.Title = "第三方支付记录查询";
             return View();
         }
-
-
         public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
         {
             var dtSource = service.ReportService.PAYINFOOutput(item);

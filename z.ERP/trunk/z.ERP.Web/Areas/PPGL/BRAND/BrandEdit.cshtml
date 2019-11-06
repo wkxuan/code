@@ -1,5 +1,4 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Web.Areas.Layout.Edit
+﻿@using z.ERP.Web.Areas.Layout.Edit
 @inherits EditViewBase<string>
 
 @section baseParam{
@@ -16,17 +15,8 @@
             业态
         </i-col>
         <i-col span="6" class="RowText">
-        @{ 
-            RenderControl(new CascaderRender()
-            {
-                vModel = "screenParam.CATEGORYIDCASCADER",
-                Data = "screenParam.CATEData",
-                Change = "orgChange",
-                Not_level_last = false
-
-            });
-
-           }
+            <yx-cascader v-bind:value.sync="dataParam.CATEGORYIDCASCADER" method="GetTreeCategory"
+                         v-on:change="categoryChange" v-bind:disabled="!disabled"></yx-cascader>
         </i-col>
         <i-col span="2" class="RowTitle">
             地址
@@ -70,5 +60,4 @@
             <i-input v-model="dataParam.QQ" v-bind:disabled="!disabled" />
         </i-col>
     </row>
-    
 }

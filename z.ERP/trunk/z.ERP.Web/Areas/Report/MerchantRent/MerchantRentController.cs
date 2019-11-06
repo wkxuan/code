@@ -12,17 +12,6 @@ namespace z.ERP.Web.Areas.Report.MerchantRent
             ViewBag.Title = "商户租金计提表";
             return View();
         }
-
-        public UIResult SearchCate()
-        {
-            var res = service.DataService.GetTreeCategory();
-            return new UIResult(
-                new
-                {
-                    treeOrg = res.Item1
-                }
-            );
-        }
         public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
         {
             var dtSource = service.ReportService.MerchantRentOutput(item);

@@ -16,13 +16,7 @@
             被投诉部门
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.DEPTID",
-                    ServiceMothod = m => m.org_zs()
-                });
-            }
+            <yx-select v-bind:value.sync="dataParam.DEPTID" method="org_zs" v-bind:disabled="!disabled"></yx-select>
         </i-col>
         <i-col span="2" class="RowTitle">
             店铺
@@ -57,26 +51,14 @@
             投诉处理部门
         </i-col>
         <i-col span="6"  class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.CPLAINDEPT",
-                    ServiceMothod = m => m.comPlainDept()
-                });
-            }
+            <yx-select v-bind:value.sync="dataParam.CPLAINDEPT" method="comPlainDept" v-bind:disabled="!disabled"></yx-select>
         </i-col>
         <i-col span="2" class="RowTitle">
             <span class="mustElement">*</span>
             投诉类型
         </i-col>
         <i-col span="6"  class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.CPLAINTYPE",
-                    ServiceMothod = m => m.comPlainType()
-                });
-            }
+            <yx-select v-bind:value.sync="dataParam.CPLAINTYPE" method="comPlainType" v-bind:disabled="!disabled"></yx-select>
         </i-col>
     </row>
     <row>

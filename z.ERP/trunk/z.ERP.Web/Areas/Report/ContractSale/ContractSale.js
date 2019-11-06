@@ -57,8 +57,8 @@ search.newCondition = function () {
     search.searchParam.RQ_END = "";
     search.searchParam.YEARMONTH_END = "";
     search.searchParam.YEARMONTH_START = "";
+    search.searchParam.CATEGORY = [];
 
-    search.screenParam.CATEGORY = [];
     search.screenParam.echartRadioVal = "RQ";
     search.screenParam.colDef = [{ title: '日期', key: 'RQ', width: 100, sortable: true }].concat(cols);
     search.screenParam.echartType = echartTypeList.concat({ label: "按日期", value: "RQ" });
@@ -69,12 +69,6 @@ search.searchDataAfter = function (data) {
 };
 
 search.mountedInit = function () {
-    _.Ajax('SearchCate', {
-        Data: {}
-    }, function (data) {
-        Vue.set(search.screenParam, "CATEData", data.treeOrg.Obj);
-    });
-
     search.btnConfig = [{
         id: "search",
         authority: ""

@@ -13,13 +13,7 @@
     <row>
         <i-col span="5" class="RowTitle">通知门店</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
         </i-col>
         <i-col span="5" class="RowTitle">通知编号</i-col>
         <i-col span="6" class="RowText">
@@ -54,7 +48,6 @@
 }
 
 @section element{
-
     <row>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>

@@ -1,6 +1,4 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Search
+﻿@using z.ERP.Web.Areas.Layout.Search
 @inherits SearchViewBase
 
 @section conditionParam{
@@ -9,37 +7,20 @@
             代码
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.ID",
-                });
-            }
+            <i-input v-model="searchParam.ID" />
         </i-col>
         <i-col span="2" class="RowTitle">
             名称
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.NAME",
-                });
-            }
+            <i-input v-model="searchParam.NAME" />
         </i-col>
         <i-col span="2" class="RowTitle">
             业态
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new CascaderRender()
-                {
-                    vModel = "screenParam.CATEGORY",
-                    Data = "screenParam.CATEData",
-                    Change = "orgChange",
-                    Not_level_last = true
-                });
-            }
+            <yx-cascader v-bind:value.sync="searchParam.CATEGORY" method="GetTreeCategory"
+                         v-on:change="cateChange" notlevellast></yx-cascader>
         </i-col>
     </row>
     <row>
@@ -47,34 +28,19 @@
             地址
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.ADRESS",
-                });
-            }
+            <i-input v-model="searchParam.ADRESS" />
         </i-col>
         <i-col span="2" class="RowTitle">
             联系人
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.CONTACTPERSON",
-                });
-            }
+            <i-input v-model="searchParam.CONTACTPERSON" />
         </i-col>
         <i-col span="2" class="RowTitle">
             电话
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.PHONENUM",
-                });
-            }
+            <i-input v-model="searchParam.PHONENUM" />
         </i-col>
     </row>
     <row>
@@ -82,34 +48,19 @@
             邮编
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.PIZ",
-                });
-            }
+            <i-input v-model="searchParam.PIZ" />
         </i-col>
         <i-col span="2" class="RowTitle">
             微信
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.WEIXIN",
-                });
-            }
+            <i-input v-model="searchParam.WEIXIN" />
         </i-col>
         <i-col span="2" class="RowTitle">
             QQ
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.QQ",
-                });
-            }
+            <i-input v-model="searchParam.QQ" />
         </i-col>
     </row>
 }

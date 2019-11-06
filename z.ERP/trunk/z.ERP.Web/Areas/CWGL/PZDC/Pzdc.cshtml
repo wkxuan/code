@@ -38,13 +38,7 @@
                             门店
                         </i-col>
                         <i-col span="8">
-                            @{
-                                RenderControl(new ServiceDropDownListRender()
-                                {
-                                    vModel = "BRANCHID",
-                                    ServiceMothod = m => m.branch(),
-                                });
-                            }
+                            <yx-select v-bind:value.sync="BRANCHID" method="branch"></yx-select>
                         </i-col>
                     </row>
                     <row>

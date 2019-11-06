@@ -1,6 +1,4 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.DefineDetail
+﻿@using z.ERP.Web.Areas.Layout.DefineDetail
 @inherits DefineDetailViewBase
 
 @section baseParam{
@@ -9,13 +7,7 @@
             门店
         </i-col>
         <i-col span="17" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                });
-            }
+            <yx-select v-bind:value.sync="dataParam.BRANCHID" method="branch" v-bind:disabled="disabled"></yx-select>
         </i-col>
     </row>
     <row>
@@ -31,12 +23,7 @@
             赠品名称
         </i-col>
         <i-col span="17" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.NAME",
-                });
-            }
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled" />
         </i-col>
     </ROW>
     <row>
@@ -44,17 +31,9 @@
             价格
         </i-col>
         <i-col span="17" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "dataParam.PRICE",
-                    type = "number"
-                });
-            }
+            <i-input type = "number" v-model="dataParam.PRICE" v-bind:disabled="disabled" />
         </i-col>
-
     </row>
-
     <row>
         <i-col span="5" class="RowTitle">
             状态
@@ -63,5 +42,4 @@
             <i-input v-model="dataParam.STATUSMC" disabled />
         </i-col>
     </row>
-
 }

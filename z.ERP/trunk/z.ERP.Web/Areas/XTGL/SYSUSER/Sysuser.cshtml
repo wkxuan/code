@@ -48,19 +48,10 @@
             所属机构
         </i-col>
         <i-col span="6"  class="RowText">
-            @{
-                RenderControl(new CascaderRender()
-                {
-                    vModel = "dataParam.ORGIDCASCADER",
-                    Data = "screenParam.ORGData",
-                    Change = "orgChange",
-                    Not_level_last = true,
-                    Enable = false
-                });
-            }
+            <yx-cascader v-bind:value.sync="dataParam.ORGIDCASCADER" method="GetTreeOrg" notlevellast
+                         v-on:change="orgChange"></yx-cascader>
         </i-col>
     </row>
-
     <row>
         <i-col span="3" class="RowTitle">
             店铺

@@ -3,37 +3,31 @@
 @using z.ERP.Web.Areas.Layout.Search;
 @inherits SearchViewBase
 @section conditionParam{
-<row>
-    <i-col span="2" class="RowTitle">门店</i-col>
-    <i-col span="6"  class="RowText">
+    <row>
+        <i-col span="2" class="RowTitle">门店</i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6" class="RowText">
             @{
-                RenderControl(new ServiceDropDownListRender()
+                RenderControl(new EnumDropDownListRender<普通单据状态>()
                 {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
+                    vModel = "searchParam.STATUS",
                 });
             }
-    </i-col>
-    <i-col span="2" class="RowTitle">
-        状态
-    </i-col>
-    <i-col span="6"  class="RowText">
-        @{
-            RenderControl(new EnumDropDownListRender<普通单据状态>()
-            {
-                vModel = "searchParam.STATUS",
-            });
-        }
-    </i-col>
- </row>
-<row>
-    <i-col span="2" class="RowTitle">单据编号</i-col>
-    <i-col span="6" class="RowText">
-        <i-input v-model="searchParam.BILLID" />
-    </i-col>
-    <i-col span="2" class="RowTitle">备注</i-col>
-    <i-col span="6" class="RowText">
-        <i-input v-model="searchParam.DESCRIPTION" />
-    </i-col>
-</row>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">单据编号</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.BILLID" />
+        </i-col>
+        <i-col span="2" class="RowTitle">备注</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.DESCRIPTION" />
+        </i-col>
+    </row>
 }

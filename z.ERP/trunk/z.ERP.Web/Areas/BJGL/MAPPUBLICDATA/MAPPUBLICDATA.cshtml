@@ -54,14 +54,7 @@
             模型类型
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.PUBLICDATAID",
-                    ServiceMothod = m => m.PUBLICDATA(),
-                    Enable = false,
-                });
-            }
+            <yx-select v-bind:value.sync="dataParam.PUBLICDATAID" method="PUBLICDATA" v-bind:disabled="disabled"></yx-select>
         </i-col>
     </row>
     <row>
@@ -81,7 +74,6 @@
             }
         </i-col>
     </row>
-
     <row>
         <i-col span="3" class="RowTitle" style="padding-top:10px">
             <span class="mustElement">*</span>
@@ -99,5 +91,4 @@
             }
         </i-col>
     </row>
-
 }

@@ -2,7 +2,7 @@
     defineDetail.Key = "ID";
 };
 
-defineDetail.clearKey = function () {
+defineDetail.initDataParam = function () {
     defineDetail.dataParam.ID = null;
     defineDetail.dataParam.NAME = null;
     defineDetail.dataParam.ORGID = null;

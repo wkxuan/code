@@ -38,9 +38,8 @@ search.newCondition = function () {
     search.searchParam.PIZ = "";
     search.searchParam.WEIXIN = "";
     search.searchParam.QQ = "";
-
     search.searchParam.CATEGORYCODE = "";
-    search.screenParam.CATEGORY = [];
+    search.searchParam.CATEGORY = [];
 }
 search.addHref = function (row) {
     _.OpenPage({
@@ -51,12 +50,6 @@ search.addHref = function (row) {
 }
 
 search.mountedInit = function () {
-    _.Ajax('SearchInit', {
-        Data: {}
-    }, function (data) {
-        Vue.set(search.screenParam, "CATEData", data.treeOrg.Obj);
-    });
-
     search.btnConfig = [{
         id: "search",
         authority: ""
@@ -74,10 +67,8 @@ search.mountedInit = function () {
         authority: ""
     }];
 }
-
-
 search.otherMethods = {
-    orgChange: function (value, selectedData) {
+    cateChange: function (value, selectedData) {
         search.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
-    },
+    }
 }

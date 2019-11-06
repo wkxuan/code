@@ -114,12 +114,6 @@ define.mountedInit = function () {
         id: "abandon",
         authority: ""
     }];
-
-    _.Ajax('SearchInit', {
-        Data: {}
-    }, function (data) {
-        Vue.set(define.screenParam, "ORGData", data.treeOrg.Obj);
-    });
 }
 
 //接收子页面返回值

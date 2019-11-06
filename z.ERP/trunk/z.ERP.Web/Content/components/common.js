@@ -247,26 +247,16 @@ Vue.component('yx-table', {
                                     }
                                     return null;
                                 };
-                                return h(
-                                  "Select",
-                                  {
-                                      props: {
-                                          value: params.row[params.column.key] + "",
-                                          transfer: true,
-                                          disabled: params.column.cellDisabled(params.row)
-                                      },
-                                      on: _self.initOn(params)
-                                  },
-                                  $.map(_list, function (item) {
-                                      return h(
-                                        "Option",
-                                        {
-                                            props: { value: item.value + "" }
-                                        },
-                                        item.label
-                                      );
-                                  })
-                                );
+                                return h("yx-select", {
+                                    props: {
+                                        value: params.row[params.column.key],
+                                        disabled: params.column.cellDisabled(params.row),
+                                        data: _list,
+                                        service: params.column.service,
+                                        method: params.column.method,
+                                    },
+                                    on: _self.initOn(params)
+                                });
                             };
                             break;
                         case "date":
@@ -1352,8 +1342,11 @@ Vue.component('yx-select', {
             type: String,
             default: "请选择"
         },
+        params: {
+            type: Object,
+        }
     },
-    template: `<i-select v-model="curValue" :disabled="disabled" ` +
+    template: `<i-select v-model="curValue" :disabled="disabled" transfer` +
                   ` :clearable="clearable" :placeholder="placeholder" :multiple="multiple" ` +
                   ` v-on:on-change="onChange" v-on:on-clear="onClear" v-on:on-open-change="onOpenChange">` +
                   ` <i-option v-for="(i,k) in curData" v-bind:value="i.Key" v-bind:key="k">{{ i.Value }}</i-option>` +
@@ -1373,7 +1366,11 @@ Vue.component('yx-select', {
     watch: {
         value: {
             handler: function (nv, ov) {
-                this.curValue = nv + "";
+                if (this.multiple) {
+                     this.curValue = nv;
+                } else {
+                    this.curValue = nv + "";
+                }               
             },
             immediate: true
         },
@@ -1420,7 +1417,7 @@ Vue.component('yx-select', {
             _.GetCommonData({
                 Service: _self.service,
                 Method: _self.method,
-                Data: {},
+                Data: _self.params,
                 Success: function (data) {
                     if (data || data.length) {
                         list = data;
@@ -1458,3 +1455,92 @@ Vue.component('yx-select', {
         }
     }
 })
+Vue.component('yx-cascader', {
+    props: {
+        value: {
+            required: true
+        },
+        data: {},
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        clearable: {
+            type: Boolean,
+            default: true
+        },
+        service: {
+            type: String,
+            default: "DataService"
+        },
+        method: {
+            type: String,
+            default: ""
+        },
+        placeholder: {
+            type: String,
+            default: "请选择"
+        },
+        notlevellast: {
+            type: Boolean,
+            default: false
+        }
+    },
+    template: `<Cascader :data="curData" :value="curValue" :disabled="disabled" :placeholder="placeholder" :change-on-select="notlevellast" clearable transfer` +
+              ` v-on:on-change="onChange" v-on:on-visible-change="onVisibleChange"></Cascader>`,
+    data() {
+        return {
+            curValue: null,
+            curData: []
+        };
+    },
+    mounted() {
+        if ((!this.data || !this.data.length) && this.service) {
+            this.serviceGetData();
+        }
+    },
+    watch: {
+        value: {
+            handler: function (nv, ov) {
+                this.curValue = nv;
+            },
+            immediate: true
+        },
+        data: {
+            handler: function (nv, ov) {
+                let list = nv;
+                if (list && list.length) {
+                    this.curData = list;
+                }
+            },
+            immediate: true
+        }
+    },
+    methods: {
+        //选中的Option变化时触
+        onChange(value, selectedData) {
+            this.$emit('update:value', value);
+            this.$emit('change', value, selectedData);
+        },
+        //下拉框展开或收起时触发
+        onVisibleChange(isOpen) {
+            this.$emit('visiblechange', isOpen);
+        },
+        //service服务获取数据
+        serviceGetData() {
+            let list = [];
+            let _self = this;
+            _.GetCommonData({
+                Service: _self.service,
+                Method: _self.method,
+                Data: {},
+                Success: function (data) {
+                    if (data && data.Item1) {
+                        _self.curData = data.Item1;
+                    }
+                }
+            })
+
+        }
+    }
+});

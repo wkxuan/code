@@ -2,7 +2,7 @@
     defineDetail.Key = "ID";
 };
 
-defineDetail.clearKey = function () {
+defineDetail.initDataParam = function () {
     defineDetail.dataParam.ID = null;
     defineDetail.dataParam.NAME = "";
     defineDetail.dataParam.YEAR = "";
@@ -16,7 +16,6 @@ defineDetail.clearKey = function () {
     defineDetail.dataParam.VERIFY_NAME = null;
     defineDetail.dataParam.VERIFY_TIME = null;
     defineDetail.dataParam.STATUS = 1;
-
 };
 
 defineDetail.mountedInit = function () {
@@ -27,7 +26,7 @@ defineDetail.mountedInit = function () {
         id: "edit",
         authority: "104004",
         enabled: function (disabled, data) {
-            if (!disabled && data && data.ID && data.STATUS < 2) {
+            if (disabled && data && data.ID && data.STATUS < 2) {
                 return true;
             } else {
                 return false;
@@ -59,7 +58,7 @@ defineDetail.mountedInit = function () {
             });
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.ID && data.STATUS == 1) {
+            if (disabled && data.ID && data.STATUS == 1) {
                 return true;
             } else {
                 return false;
