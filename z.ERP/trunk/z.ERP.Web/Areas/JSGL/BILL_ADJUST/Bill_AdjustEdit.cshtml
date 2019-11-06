@@ -9,13 +9,13 @@
             权债发生月
         </i-col>
         <i-col span="6" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="dataParam.NIANYUE" v-bind:disabled="!disabled"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="dataParam.NIANYUE" v-bind:disabled="!disabled"></yx-date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             收付实现月
         </i-col>
         <i-col span="6" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="dataParam.YEARMONTH" v-bind:disabled="!disabled"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="dataParam.YEARMONTH" v-bind:disabled="!disabled"></yx-date-picker>
         </i-col>
     </row>
 
@@ -24,23 +24,13 @@
             开始日期
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.START_DATE"
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="dataParam.START_DATE" v-bind:disabled="!disabled"></yx-date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             结束日期
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.END_DATE"
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="dataParam.END_DATE" v-bind:disabled="!disabled"></yx-date-picker>
         </i-col>
         @*<i-col span="2" class="RowTitle">
             账单类型

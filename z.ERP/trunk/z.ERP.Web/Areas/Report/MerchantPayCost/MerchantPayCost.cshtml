@@ -61,19 +61,19 @@
             债权发生月
         </i-col>
         <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_START"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.NIANYUE_START"></yx-date-picker>
         </i-col>
         <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_END"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.NIANYUE_END"></yx-date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             收付实现月
         </i-col>
         <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_START"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.YEARMONTH_START"></yx-date-picker>
         </i-col>
         <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_END"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.YEARMONTH_END"></yx-date-picker>
         </i-col>
     </row>
 }

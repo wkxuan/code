@@ -1,5 +1,4 @@
-﻿
-//table组件
+﻿//table组件
 Vue.component('yx-table', {
     props: ['columns', 'data', 'disabled', 'selection', 'stripe', 'showHeader', 'border', 'width', 'height', 'loading', 'highlightrow', 'size', 'showindex'],
     template: ` <div style="width:100%;height:100%;position: relative;"> ` +
@@ -606,7 +605,19 @@ Vue.component('yx-editor', {
 });
 //菜单按钮权限控制组件
 Vue.component('yx-tool-bar', {
-    props: ['list', 'disabled', 'domdata'],
+    props: {
+        list: {
+            type: Array,
+            default: [],
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        domdata: {
+            type: Object
+        }
+    },
     template: ` <div> ` +
               `   <span v-for="(i,k) in curList" v-bind:key="k">` +
               `      <i-button type="text" v-bind:icon="i.icon" v-on:click="i.fun" shape="circle">{{i.name}}</i-button>` +
@@ -1037,156 +1048,67 @@ Vue.component('yx-tree', {
         }
     }
 });
-Vue.component('yx-year-month-picker', {
-    props: ['value', 'disabled', 'clearable', 'clearable', 'editable'],
-    template: `<date-picker :value="curValue" type="month" format="yyyyMM" transfer :disabled="disabled"` +
-              `:clearable="clearable" :editable="editable" v-on:on-change="onChange">` +
-              `</date-picker>`,
-    data() {
-        return {
-            curValue: null
-        }
-    },
-    mounted() { },
-    computed: {},
-    watch: {
-        value: {
-            handler: function (nv, ov) {
-                this.curValue = nv + "";
-            },
-            immediate: true,
-            deep: true
-        }
-    },
-    methods: {
-        onChange(val, type) {
-            this.$emit('update:value', val);
-        }
-    }
-});
-Vue.component('yx-year-picker', {
-    props: ['value', 'disabled', 'clearable', 'clearable', 'editable'],
-    template: `<date-picker :value="curValue" type="year" transfer :disabled="disabled"` +
-              `:clearable="clearable" :editable="editable" v-on:on-change="onChange">` +
-              `</date-picker>`,
-    data() {
-        return {
-            curValue: null
-        }
-    },
-    watch: {
-        value: {
-            handler: function (nv, ov) {
-                this.curValue = nv + "";
-            },
-            immediate: true,
-            deep: true
-        }
-    },
-    methods: {
-        onChange(val, type) {
-            this.$emit('update:value', val);
-        }
-    }
-});
-Vue.component('yx-check-group', {
-    props: ['value', 'disabled'],
-    template: ` <checkbox-group :value="curValue" v-on:on-change="onChange">` +
-                `<checkbox label="1" :disabled="disabled">星期一</checkbox>` +
-                `<checkbox label="2" :disabled="disabled">星期二</checkbox>` +
-                `<checkbox label="3" :disabled="disabled">星期三</checkbox>` +
-                `<checkbox label="4" :disabled="disabled">星期四</checkbox>` +
-                `<checkbox label="5" :disabled="disabled">星期五</checkbox>` +
-                `<checkbox label="6" :disabled="disabled">星期六</checkbox>` +
-                `<checkbox label="7" :disabled="disabled">星期日</checkbox>` +
-            `</checkbox-group>`,
-    data() {
-        return {
-            curValue: []
-        }
-    },
-    watch: {
-        value: {
-            handler: function (nv, ov) {
-                if (nv && typeof nv == "string") {
-                    this.curValue = nv.split(",");
-                } else {
-                    this.curValue = [];
-                }
-            },
-            immediate: true,
-            deep: true
-        }
-    },
-    methods: {
-        onChange(val, type) {
-            this.$emit('update:value', val.join(","));
-        }
-    }
-});
-Vue.component('yx-time-picker', {
-    props: ['value', 'disabled'],
-    template: `<time-picker format="HH:mm" :value="curValue" :disabled="disabled" v-on:on-change="onChange" transfer></time-picker>`,
-    data() {
-        return {
-            curValue: ""
-        }
-    },
-    watch: {
-        value: {
-            handler: function (nv, ov) {
-                this.curValue = this.dataZhTime(nv);
-            },
-            immediate: true,
-            deep: true
-        }
-    },
-    methods: {
-        onChange(val, type) {
-            this.$emit('update:value', this.dataZhNum(val));
-        },
-        dataZhNum (val) {
-            if (!val) {
-                return "";
-            }
-            let strArr = val.split(":");
-            let num = Number(strArr[0]) * 60 + Number(strArr[1]);
-            return num;
-        },
-        dataZhTime (val) {
-            let m = Number(val) / 60;
-            let s = Number(val) % 60;
-            let strM = m == 0 ? "00" : parseInt(m);
-            let strS = s == 0 ? "00" : parseInt(s);
-            let strM1, strS1;
-            if (strM != "00" && strM < 10) {
-                strM1 = "0" + strM;
-            } else {
-                strM1 = strM;
-            }
-            if (strS != "00" && strS < 10) {
-                strS1 = "0" + strS;
-            } else {
-                strS1 = strS;
-            }
-            return strM1 + ":" + strS1;
-        }
-    }
-});
+//日期选择器组件增加start、end控制
 Vue.component('yx-date-picker', {
-    props: ['value', 'disabled', 'clearable', 'clearable', 'editable', 'start', 'end'],
-    template: `<date-picker :value="curValue" type="date" format="yyyy-MM-dd" transfer :disabled="disabled"` +
-              `:clearable="clearable" :editable="editable" :options="options" v-on:on-change="onChange">` +
+    props: {
+        value: {},
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        //可选值为 date、daterange、datetime、datetimerange、year、month
+        type: {
+            type: String ,
+            default: "date",
+        },
+        size: {},
+        format: {
+            type: String,
+            default: "",
+        },
+        clearable: {
+            type: Boolean,
+            default: true,
+        },
+        editable: {
+            type: Boolean,
+            default: true,
+        },
+        showweeknumbers: {
+            type: Boolean,
+            default: true,
+        },
+        multiple: {
+            type: Boolean,
+            default: false,
+        },
+        confirm: {
+            type: Boolean,
+            default: false,
+        },
+        start: {
+            type: String,
+            default: "",
+        },
+        end: {
+            type: String,
+            default: "",
+        }
+    },
+    template: `<date-picker :value="curValue" :type="type" :size="size" :format="curFormat" transfer :disabled="disabled"` +
+              ` :multiple="multiple" :show-week-numbers="showweeknumbers"` +
+              ` :clearable="clearable" :editable="editable" :confirm="confirm" :options="options" v-on:on-change="onChange">` +
               `</date-picker>`,
     data() {
         return {
             curValue: null,
+            curFormat: "",
             options: {}
         }
     },
     mounted() {
+        this.initFormat();
         this.initOptions();
-
     },
     watch: {
         value: {
@@ -1235,11 +1157,172 @@ Vue.component('yx-date-picker', {
                     return false;
                 }
             };
+        },
+        initFormat() {
+            if (this.format) {
+                this.curFormat = this.format;
+            } else {
+                switch (this.type) {
+                    case "date":
+                    case "daterange":
+                        this.curFormat = "yyyy-MM-dd";
+                        break;
+                    case "date":
+                    case "datetimerange":
+                        this.curFormat = "yyyy-MM-dd HH:mm:ss";
+                        break;
+                    case "year":
+                        this.curFormat = "yyyy";
+                        break;
+                    case "month":
+                        this.curFormat = "yyyyMM";
+                    default:
+                        this.curFormat = "yyyy-MM-dd";
+                        break;
+                }
+            }
         }
     }
 });
+//时间选择器组件增加数据转化
+Vue.component('yx-time-picker', {
+    props: {
+        value: {},
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        //可选值为 time、timerange
+        type: {
+            type: String,
+            default: "time",
+        },
+        size: {},
+        format: {
+            type: String,
+            default: "HH:mm",
+        },
+        clearable: {
+            type: Boolean,
+            default: true,
+        },
+        editable: {
+            type: Boolean,
+            default: true,
+        },
+        confirm: {
+            type: Boolean,
+            default: false,
+        },
+        readonly: {
+            type: Boolean,
+            default: false,
+        }
+    },
+    template: `<time-picker :format="format" :value="curValue" :size="size" :disabled="disabled" :clearable="clearable"` +
+              ` :editable="editable" :confirm="confirm" :readonly="readonly" v-on:on-change="onChange" transfer></time-picker>`,
+    data() {
+        return {
+            curValue: "",
+            curFormat:""
+        }
+    },
+    watch: {
+        value: {
+            handler: function (nv, ov) {
+                this.curValue = this.dataZhTime(nv);
+            },
+            immediate: true,
+            deep: true
+        }
+    },
+    methods: {
+        onChange(val, type) {
+            this.$emit('update:value', this.dataZhNum(val));
+            this.$emit('change', val, type);
+        },
+        dataZhNum (val) {
+            if (!val) {
+                return "";
+            }
+            let strArr = val.split(":");
+            let num = Number(strArr[0]) * 60 + Number(strArr[1]);
+            return num;
+        },
+        dataZhTime (val) {
+            let m = Number(val) / 60;
+            let s = Number(val) % 60;
+            let strM = m == 0 ? "00" : parseInt(m);
+            let strS = s == 0 ? "00" : parseInt(s);
+            let strM1, strS1;
+            if (strM != "00" && strM < 10) {
+                strM1 = "0" + strM;
+            } else {
+                strM1 = strM;
+            }
+            if (strS != "00" && strS < 10) {
+                strS1 = "0" + strS;
+            } else {
+                strS1 = strS;
+            }
+            return strM1 + ":" + strS1;
+        }
+    }
+});
+//周checkGroup组件
+Vue.component('yx-week-check-group', {
+    props: {
+        value: {},
+        disabled: {
+            type: Boolean,
+            default: false,
+        }
+    },
+    template: ` <checkbox-group :value="curValue" v-on:on-change="onChange">` +
+                `<checkbox label="1" :disabled="disabled">星期一</checkbox>` +
+                `<checkbox label="2" :disabled="disabled">星期二</checkbox>` +
+                `<checkbox label="3" :disabled="disabled">星期三</checkbox>` +
+                `<checkbox label="4" :disabled="disabled">星期四</checkbox>` +
+                `<checkbox label="5" :disabled="disabled">星期五</checkbox>` +
+                `<checkbox label="6" :disabled="disabled">星期六</checkbox>` +
+                `<checkbox label="7" :disabled="disabled">星期日</checkbox>` +
+            `</checkbox-group>`,
+    data() {
+        return {
+            curValue: []
+        }
+    },
+    watch: {
+        value: {
+            handler: function (nv, ov) {
+                if (nv && typeof nv == "string") {
+                    this.curValue = nv.split(",");
+                } else {
+                    this.curValue = [];
+                }
+            },
+            immediate: true,
+            deep: true
+        }
+    },
+    methods: {
+        onChange(val, type) {
+            this.$emit('update:value', val.join(","));
+        }
+    }
+});
+//上传文件导入组件
 Vue.component('yx-upload', {
-    props: ['open', "name"],
+    props: {
+        open: {
+            type: Boolean,
+            default: false,
+        },
+        name: {
+            type: String,
+            default: "",
+        }
+    },
     template: `<Modal :title="Title" v-model="curopen" :mask-closable="false" v-on:on-visible-change="onvisiblechange"> ` +
                 `<Upload type="drag" :action="curAction" accept="xlsx,xls" :format ="['xlsx','xls']" ` +
                     `:on-error="onError":on-success="onSuccess" :on-format-error="onFormatError" :before-upload="beforeUpload" :on-progress="onProgress"> ` +
@@ -1318,6 +1401,7 @@ Vue.component('yx-upload', {
         }
     }
 });
+//下拉框组件支持service，method异步数据请求
 Vue.component('yx-select', {
     props: {
         value: {
@@ -1465,6 +1549,7 @@ Vue.component('yx-select', {
         }
     }
 })
+//级联选择组件支持service，method异步数据请求
 Vue.component('yx-cascader', {
     props: {
         value: {

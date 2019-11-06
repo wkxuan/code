@@ -17,7 +17,7 @@
             年度
         </i-col>
         <i-col span="16" class="RowText">
-            <yx-year-picker v-bind:value.sync="dataParam.YEAR" v-bind:disabled="disabled"></yx-year-picker>
+            <yx-date-picker type="year" v-bind:value.sync="dataParam.YEAR" v-bind:disabled="disabled"></yx-date-picker>
         </i-col>
     </row>
     <row>
@@ -34,7 +34,7 @@
             开始日期
         </i-col>
         <i-col span="16" class="RowText">
-            <date-picker type="date" v-bind:value="dataParam.START_DATE" v-bind:disabled="disabled"></date-picker>
+            <yx-date-picker type="date" v-bind:value.sync="dataParam.START_DATE" v-bind:disabled="disabled"></yx-date-picker>
         </i-col>
     </row>
     <row>
@@ -43,7 +43,7 @@
             结束日期
         </i-col>
         <i-col span="16" class="RowText">
-            <date-picker type="date" v-bind:value="dataParam.END_DATE" v-bind:disabled="disabled"></date-picker>
+            <yx-date-picker type="date" v-bind:value.sync="dataParam.END_DATE" v-bind:disabled="disabled"></yx-date-picker>
         </i-col>
     </row>
 }

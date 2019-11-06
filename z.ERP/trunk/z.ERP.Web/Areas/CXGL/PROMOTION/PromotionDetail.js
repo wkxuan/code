@@ -6,15 +6,15 @@ defineDetail.initDataParam = function () {
     defineDetail.dataParam.ID = null;
     defineDetail.dataParam.NAME = "";
     defineDetail.dataParam.YEAR = "";
-    defineDetail.dataParam.CONTENT = null;
-    defineDetail.dataParam.START_DATE = null;
-    defineDetail.dataParam.END_DATE = null;
-    defineDetail.dataParam.REPORTER = null;
-    defineDetail.dataParam.REPORTER_NAME = null;
-    defineDetail.dataParam.REPORTER_TIME = null;
-    defineDetail.dataParam.VERIFY = null;
-    defineDetail.dataParam.VERIFY_NAME = null;
-    defineDetail.dataParam.VERIFY_TIME = null;
+    defineDetail.dataParam.CONTENT = "";
+    defineDetail.dataParam.START_DATE = "";
+    defineDetail.dataParam.END_DATE = "";
+    defineDetail.dataParam.REPORTER = "";
+    defineDetail.dataParam.REPORTER_NAME = "";
+    defineDetail.dataParam.REPORTER_TIME = "";
+    defineDetail.dataParam.VERIFY = "";
+    defineDetail.dataParam.VERIFY_NAME = "";
+    defineDetail.dataParam.VERIFY_TIME = "";
     defineDetail.dataParam.STATUS = 1;
 };
 
