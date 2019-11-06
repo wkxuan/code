@@ -247,16 +247,26 @@ Vue.component('yx-table', {
                                     }
                                     return null;
                                 };
-                                return h("yx-select", {
-                                    props: {
-                                        value: params.row[params.column.key],
-                                        disabled: params.column.cellDisabled(params.row),
-                                        data: _list,
-                                        service: params.column.service,
-                                        method: params.column.method,
-                                    },
-                                    on: _self.initOn(params)
-                                });
+                                return h(
+                                 "Select",
+                                 {
+                                     props: {
+                                         value: params.row[params.column.key] + "",
+                                         transfer: true,
+                                         disabled: params.column.cellDisabled(params.row)
+                                     },
+                                     on: _self.initOn(params)
+                                 },
+                                 $.map(_list, function (item) {
+                                     return h(
+                                       "Option",
+                                       {
+                                           props: { value: item.value + "" }
+                                       },
+                                       item.label
+                                     );
+                                 })
+                               );
                             };
                             break;
                         case "date":
