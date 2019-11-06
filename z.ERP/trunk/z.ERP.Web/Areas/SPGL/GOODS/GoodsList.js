@@ -45,3 +45,18 @@ search.addHref = function (row) {
         url: "SPGL/GOODS/GoodsEdit/"
     });
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "10500200"
+    }, {
+        id: "clear",
+        authority: "10500200"
+    }, {
+        id: "add",
+        authority: "10500201"
+    }, {
+        id: "del",
+        authority: "10500201"
+    }];
+};

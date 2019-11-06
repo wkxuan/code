@@ -44,7 +44,21 @@ search.addHref = function (row) {
         url: "SHGL/MERCHANT/MerchantEdit/"
     });
 };
-
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "10200100"
+    }, {
+        id: "clear",
+        authority: "10200100"
+    }, {
+        id: "add",
+        authority: "10200101"
+    }, {
+        id: "del",
+        authority: "10200101"
+    }];
+};
 
 
 

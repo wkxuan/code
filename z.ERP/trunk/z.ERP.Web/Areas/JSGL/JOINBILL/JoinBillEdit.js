@@ -33,19 +33,19 @@ editDetail.beforeVue = function () {
 editDetail.mountedInit = function () {
     editDetail.btnConfig = [{
         id: "add",
-        authority: ""
+        authority: "10700601"
     }, {
         id: "edit",
-        authority: ""
+        authority: "10700601"
     }, {
         id: "del",
-        authority: ""
+        authority: "10700601"
     }, {
         id: "save",
-        authority: ""
+        authority: "10700601"
     }, {
         id: "abandon",
-        authority: ""
+        authority: "10700601"
     }]
 };
 editDetail.showOne = function (data, callback) {

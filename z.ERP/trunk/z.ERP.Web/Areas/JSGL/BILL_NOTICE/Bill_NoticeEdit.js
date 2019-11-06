@@ -243,7 +243,7 @@ editDetail.mountedInit = function () {
         id: "print",
         name: "打印",
         icon: "md-print",
-        authority: "10700500",
+        authority: "10700503",
         fun: function () {
             _.Ajax('Searchprinturl', {
                 1: 1

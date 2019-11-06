@@ -1304,24 +1304,24 @@ editDetail.showOne = function (data) {
 editDetail.mountedInit = function () {
     editDetail.btnConfig = [{
         id: "add",
-        authority: "10600201"
+        authority: "10600101"
     }, {
         id: "edit",
-        authority: "10600201"
+        authority: "10600101"
     }, {
         id: "del",
-        authority: "10600201"
+        authority: "10600101"
     }, {
         id: "save",
-        authority: "10600201"
+        authority: "10600101"
     }, {
         id: "abandon",
-        authority: "10600201"
+        authority: "10600101"
     }, {
         id: "confirm",
         name: "审核",
         icon: "md-star",
-        authority: "10600202",
+        authority: "10600102",
         fun: function () {
             _.Ajax('ExecData', {
                 Data: editDetail.dataParam,
@@ -1342,7 +1342,7 @@ editDetail.mountedInit = function () {
         id: "change",
         name: "变更",
         icon: "md-star",
-        authority: "10600203",
+        authority: "10600103",
         fun: function () {
             _.Ajax('checkHtBgData', {
                 Data: editDetail.dataParam
@@ -1386,7 +1386,7 @@ editDetail.mountedInit = function () {
         id: "begin",
         name: "启动",
         icon: "md-arrow-dropright-circle",
-        authority: "10600204",
+        authority: "10600104",
         fun: function () {
             _.MessageBox("确认启动？", function () {
                 _.Ajax('StartUp', {
@@ -1409,7 +1409,7 @@ editDetail.mountedInit = function () {
         id: "Stop",
         name: "终止",
         icon: "md-close-circle",
-        authority: "10600205",
+        authority: "10600105",
         fun: function () {
             _.MessageBox("确认终止？", function () {
                 _.Ajax('Stop', {

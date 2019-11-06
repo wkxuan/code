@@ -52,19 +52,19 @@ search.addHref = function (row) {
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",
-        authority: ""
+        authority: "10200200"
     }, {
         id: "clear",
-        authority: ""
+        authority: "10200200"
     }, {
         id: "add",
-        authority: ""
+        authority: "10200201"
     }, {
         id: "del",
-        authority: ""
+        authority: "10200201"
     }, {
         id: "upload",
-        authority: ""
+        authority: "10200203"
     }];
 }
 search.otherMethods = {

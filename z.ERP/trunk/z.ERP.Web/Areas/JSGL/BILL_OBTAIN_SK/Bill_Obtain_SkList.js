@@ -92,5 +92,19 @@ search.popCallBack = function (data) {
         }
     }
 };
-
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "10700700"
+    }, {
+        id: "clear",
+        authority: "10700700"
+    }, {
+        id: "add",
+        authority: "10700701"
+    }, {
+        id: "del",
+        authority: "10700701"
+    }];
+};
 

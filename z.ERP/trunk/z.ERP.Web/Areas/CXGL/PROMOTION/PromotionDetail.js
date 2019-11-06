@@ -21,10 +21,10 @@ defineDetail.initDataParam = function () {
 defineDetail.mountedInit = function () {
     defineDetail.btnConfig = [{
         id: "add",
-        authority: "104004"
+        authority: "11000101"
     }, {
         id: "edit",
-        authority: "104004",
+        authority: "11000101",
         enabled: function (disabled, data) {
             if (disabled && data && data.ID && data.STATUS < 2) {
                 return true;
@@ -34,21 +34,21 @@ defineDetail.mountedInit = function () {
         }
     }, {
         id: "del",
-        authority: "104004",
+        authority: "11000101",
         enabled: function (disabled, data) {
             return false;
         }
     }, {
         id: "save",
-        authority: "104004",
+        authority: "11000101",
     }, {
         id: "abandon",
-        authority: "104004"
+        authority: "11000101"
     },{
         id: "confirm",
         name: "审核",
         icon: "md-star",
-        authority: "104004",
+        authority: "11000102",
         fun: function () {
             _.Ajax('Check', {
                 DefineSave: defineDetail.dataParam

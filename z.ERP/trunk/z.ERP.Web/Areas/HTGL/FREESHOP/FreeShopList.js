@@ -49,4 +49,19 @@ search.addHref = function (row) {
         url: "HTGL/FREESHOP/FreeShopEdit/"
     });
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "10600300"
+    }, {
+        id: "clear",
+        authority: "10600300"
+    }, {
+        id: "add",
+        authority: "10600301"
+    }, {
+        id: "del",
+        authority: "10600301"
+    }];
+}
 

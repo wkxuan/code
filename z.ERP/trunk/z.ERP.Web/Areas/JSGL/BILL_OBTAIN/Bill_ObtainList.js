@@ -69,3 +69,18 @@ search.addHref = function (row) {
         url: "JSGL/BILL_OBTAIN/Bill_ObtainEdit/"
     });
 };
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "10700300"
+    }, {
+        id: "clear",
+        authority: "10700300"
+    }, {
+        id: "add",
+        authority: "10700301"
+    }, {
+        id: "del",
+        authority: "10700301"
+    }];
+};

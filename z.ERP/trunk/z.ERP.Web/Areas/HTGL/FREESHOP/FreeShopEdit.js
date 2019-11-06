@@ -88,7 +88,7 @@ editDetail.mountedInit = function () {
         id: "stop",
         name: "合同终止",
         icon: "md-close",
-        authority: "10600302",
+        authority: "10600303",
         fun: function () {
             _.Ajax('StopData', {
                 Data: { BILLID: editDetail.dataParam.BILLID },

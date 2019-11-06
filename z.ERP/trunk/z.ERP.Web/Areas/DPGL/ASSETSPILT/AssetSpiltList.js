@@ -37,3 +37,18 @@ search.addHref = function (row) {
         url: "DPGL/ASSETSPILT/AssetSpiltEdit/"
     });
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "10400200"
+    }, {
+        id: "clear",
+        authority: "10400200"
+    }, {
+        id: "add",
+        authority: "10400201"
+    }, {
+        id: "del",
+        authority: "10400201"
+    }];
+}

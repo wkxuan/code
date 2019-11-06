@@ -41,3 +41,18 @@ search.addHref = function (row) {
         url: "XTGL/ROLE/RoleEdit/"
     });
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "10100701"
+    }, {
+        id: "clear",
+        authority: "10100701"
+    }, {
+        id: "add",
+        authority: "10100701"
+    }, {
+        id: "del",
+        authority: "10100701"
+    }];
+};

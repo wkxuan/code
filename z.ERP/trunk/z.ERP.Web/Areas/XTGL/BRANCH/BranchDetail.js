@@ -21,22 +21,22 @@ defineDetail.initDataParam = function () {
 defineDetail.mountedInit = function () {
     defineDetail.btnConfig = [{
         id: "add",
-        authority: ""
+        authority: "10100401"
     }, {
         id: "edit",
-        authority: ""
+        authority: "10100401"
     }, {
         id: "del",
         enabled: function () {
             return false;
         },
-        authority: ""
+        authority: "10100401"
     }, {
         id: "save",
-        authority: ""
+        authority: "10100401"
     }, {
         id: "abandon",
-        authority: ""
+        authority: "10100401"
     }];
 };
 

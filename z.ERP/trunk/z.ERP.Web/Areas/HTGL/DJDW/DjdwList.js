@@ -85,3 +85,18 @@ search.addHref = function (row) {
         url: "HTGL/DJDW/DjdwEdit/"
     });
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "10600500"
+    }, {
+        id: "clear",
+        authority: "10600500"
+    }, {
+        id: "add",
+        authority: "10600501"
+    }, {
+        id: "del",
+        authority: "10600501"
+    }];
+}
