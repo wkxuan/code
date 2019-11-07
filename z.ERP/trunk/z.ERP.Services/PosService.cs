@@ -282,7 +282,7 @@ namespace z.ERP.Services
 
             string sqlSale = "select posno,dealid,sale_time,account_date,cashierid,sale_amount,change_amount,";
             sqlSale += " nvl(member_cardid,-1) member_cardid,nvl(crm_recordid,-1) crm_recordid,";
-            sqlSale += $" posno_old,nvl(dealid_old,-1) dealid_old from {strTable}sale";
+            sqlSale += $" posno_old,nvl(dealid_old,-1) dealid_old,isfg from {strTable}sale";
             sqlSale += $" where posno='{posNo}' and dealid={filter.dealid}";
 
             string sqlGoods = "select s.sheetid,s.inx,s.shopid,s.goodsid,s.goodscode,g.name goodsname,s.price,s.quantity,nvl(s.returns,0) returns,";
@@ -321,6 +321,7 @@ namespace z.ERP.Services
                 crm_recordid = saleDt.Rows[0][8].ToString().ToInt(),
                 posno_old = saleDt.Rows[0][9].ToString(),
                 dealid_old = saleDt.Rows[0][10].ToString().ToInt(),
+                isFG = saleDt.Rows[0][11].ToString().ToInt(),
                 goodslist = DbHelper.ExecuteObject<GoodsResult>(sqlGoods),
                 paylist = DbHelper.ExecuteObject<PayResult>(sqlPay),
                 clerklist = DbHelper.ExecuteObject<ClerkResult>(sqlClerk),
