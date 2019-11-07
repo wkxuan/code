@@ -106,15 +106,15 @@ search.addHref = function () {
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",
-        authority: ""
+        authority: "10600100"
     }, {
         id: "clear",
-        authority: ""
+        authority: "10600100"
     }, {
         id: "add",
-        authority: ""
+        authority: "10600101"
     }, {
         id: "del",
-        authority: ""
+        authority: "10600101"
     }];
 }

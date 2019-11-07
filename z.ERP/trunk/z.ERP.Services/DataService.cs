@@ -94,7 +94,7 @@ namespace z.ERP.Services
             return dt.ToSelectItem("TRIMID", "NAME");
         }
         //优惠券
-        public List<SelectItem> coupon()   
+        public List<SelectItem> coupon()
         {
             string sql = "select YHQID,YHQMC from YHQDEF where 1=1 order by YHQID ";
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -112,6 +112,33 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
         }
+        //收费单位
+        public List<SelectItem> feeAccount()
+        {
+            string sql = "select id,name from fee_account where BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") order by id ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("id", "name");
+        }
+        //收费单位
+        public List<SelectItem> feeAccount(FEE_ACCOUNTEntity data)
+        {
+            string sql = "select id,name from fee_account where BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";
+            if (!string.IsNullOrEmpty(data.BRANCHID))
+            {
+                sql += " AND BRANCHID= " + data.BRANCHID + " ";
+            }
+            sql += " order by id ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("id", "name");
+        }
+        public List<SelectItem> PUBLICDATA()
+        {
+            string sql = $@"SELECT A.ID,A.NAME FROM PUBLICDATA A WHERE 1=1"
+                         + " ORDER BY  A.ID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt.ToSelectItem("ID", "NAME");
+        }
+
         public DataGridResult GetJsklGroup(SearchItem item)
         {
             string sql = $@"select * from CONTRACT_GROUP A where 1=1";
@@ -272,8 +299,7 @@ namespace z.ERP.Services
 
             List<ORGEntity> p = DbHelper.ExecuteObject<ORGEntity>(sql);
 
-            //  List<ORGEntity> p = DbHelper.SelectList(new ORGEntity()).OrderBy(a => a.ORGCODE).ToList();
-            var treeOrg = new UIResult(TreeModel.Create(p,
+            var treeOrg = TreeModel.Create(p,
                 a => a.ORGCODE,
                 a => new TreeModel()
                 {
@@ -282,7 +308,7 @@ namespace z.ERP.Services
                     value = a.ORGID,
                     label = a.ORGNAME,
                     expand = true
-                })?.ToArray());
+                })?.ToArray();
 
             return new Tuple<dynamic>(treeOrg);
         }
@@ -364,8 +390,6 @@ namespace z.ERP.Services
         /// <returns></returns>
         public Tuple<dynamic> GetTreeCategory()
         {
-            // 不能查全部业态，按照权限查业态
-            //List<CATEGORYEntity> p = DbHelper.SelectList(new CATEGORYEntity()).OrderBy(a => a.CATEGORYCODE).ToList();
             string sql = GetFullYtQX("C");
             string sqlYt = $@" SELECT * FROM  CATEGORY C WHERE 1=1 ";
 
@@ -373,7 +397,7 @@ namespace z.ERP.Services
                 sqlYt += " and " + sql;
 
             List<CATEGORYEntity> p = DbHelper.ExecuteTable(sqlYt).ToList<CATEGORYEntity>();
-            var treeOrg = new UIResult(TreeModel.Create(p,
+            var treeOrg = TreeModel.Create(p,
                 a => a.CATEGORYCODE,
                 a => new TreeModel()
                 {
@@ -382,7 +406,7 @@ namespace z.ERP.Services
                     value = a.CATEGORYID,
                     label = a.CATEGORYNAME,
                     expand = true
-                })?.ToArray());
+                })?.ToArray();
 
             return new Tuple<dynamic>(treeOrg);
         }
@@ -466,13 +490,7 @@ namespace z.ERP.Services
             string sql = $@"select ID,NAME from COMPLAINTYPE ORDER BY ID";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt.ToSelectItem("ID", "NAME");
-        }
-        public List<SelectItem> feeAccount()    //收费单位
-        {
-            string sql = "select id,name from fee_account where BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") order by id ";
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            return dt.ToSelectItem("id", "name");
-        }
+        }        
         //商户收费单位余额
         public object GetBalance(MERCHANT_ACCOUNTEntity Data)
         {
@@ -497,24 +515,6 @@ namespace z.ERP.Services
                 sql += " AND PRINTTYPE='" + printtype + "'";
             DataTable dt = DbHelper.ExecuteTable(sql);
             return dt;
-        }
-        public List<SelectItem> feeAccount(FEE_ACCOUNTEntity data)    //收费单位
-        {
-            string sql = "select id,name from fee_account where BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";
-            if (!string.IsNullOrEmpty(data.BRANCHID))
-            {
-                sql += " AND BRANCHID= " + data.BRANCHID + " ";
-            }
-            sql += " order by id ";
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            return dt.ToSelectItem("id", "name");
-        }
-        public List<SelectItem> PUBLICDATA()
-        {
-            string sql = $@"SELECT A.ID,A.NAME FROM PUBLICDATA A WHERE 1=1"
-                         + " ORDER BY  A.ID ";
-            DataTable dt = DbHelper.ExecuteTable(sql);
-            return dt.ToSelectItem("ID", "NAME");
         }
     }
 }

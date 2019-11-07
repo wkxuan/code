@@ -38,3 +38,18 @@ search.addHref = function (row) {
         url: "DPGL/ASSETCHANGE/AssetChangeEdit/"
     });
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "10400100"
+    }, {
+        id: "clear",
+        authority: "10400100"
+    }, {
+        id: "add",
+        authority: "10400101"
+    }, {
+        id: "del",
+        authority: "10400101"
+    }];
+}

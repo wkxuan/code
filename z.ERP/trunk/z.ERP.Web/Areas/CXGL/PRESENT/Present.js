@@ -32,19 +32,19 @@ search.newCondition = function () {
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",
-        authority: ""
+        authority: "11000200"
     }, {
         id: "clear",
-        authority: ""
+        authority: "11000200"
     }, {
         id: "add",
-        authority: ""
+        authority: "11000201"
     }, {
         id: "del",
         enabled: function () {
             return false;
         },
-        authority: ""
+        authority: "11000201"
     }];
 };
 search.addHref = function () {

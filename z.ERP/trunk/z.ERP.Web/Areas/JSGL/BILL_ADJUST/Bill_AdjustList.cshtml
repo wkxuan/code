@@ -10,13 +10,7 @@
         </i-col>
         <i-col span="2" class="RowTitle">门店</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
         </i-col>
         <i-col span="2" class="RowTitle">
             状态
@@ -35,10 +29,10 @@
             债权发生月
         </i-col>
         <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_START"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.NIANYUE_START"></yx-date-picker>
         </i-col>
         <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_END"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.NIANYUE_END"></yx-date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             登记人
@@ -50,20 +44,10 @@
             登记时间
         </i-col>
         <i-col span="3" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.REPORTER_TIME_START"
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.REPORTER_TIME_START"></yx-date-picker>
         </i-col>
         <i-col span="3" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.REPORTER_TIME_END"
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.REPORTER_TIME_END"></yx-date-picker>
         </i-col>       
     </row>
     <row>
@@ -71,10 +55,10 @@
             收付实现月
         </i-col>
         <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_START"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.YEARMONTH_START"></yx-date-picker>
         </i-col>
         <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.YEARMONTH_END"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.YEARMONTH_END"></yx-date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             审核人
@@ -86,20 +70,10 @@
             审核时间
         </i-col>
         <i-col span="3" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.VERIFY_TIME_START"
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.VERIFY_TIME_START"></yx-date-picker>
         </i-col>
         <i-col span="3" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.VERIFY_TIME_END"
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.VERIFY_TIME_END"></yx-date-picker>
         </i-col>
     </row>
 }

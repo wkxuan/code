@@ -1,5 +1,4 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Web.Areas.Layout.Search;
+﻿@using z.ERP.Web.Areas.Layout.Search;
 @inherits SearchViewBase
 
 @section conditionParam{
@@ -8,26 +7,13 @@
             门店
         </i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
         </i-col>
         <i-col span="3" class="RowTitle">
             终端号
         </i-col>
         <i-col span="5" class="RowText">
-            @{
-                RenderControl(new TextBoxRender()
-                {
-                    vModel = "searchParam.STATIONBH",
-
-                });
-            }
+            <i-input v-model="searchParam.STATIONBH" />
         </i-col>
     </row>
     <row>
@@ -35,15 +21,13 @@
             收银员
         </i-col>
         <i-col span="5" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.USERNAME" v-on:on-click="srchUser"/>
+            <i-input readonly icon="md-search" v-model="searchParam.USERNAME" v-on:on-click="srchUser"/>
         </i-col>
         <i-col span="3" class="RowTitle">
             店铺
         </i-col>
         <i-col span="5" class="RowText">
-            <i-input readonly v-bind:icon="disabled? 'md-search':''"
-                     v-model="searchParam.SHOPCODE" v-on:on-click="SelShop" />
+            <i-input readonly icon="md-search" v-model="searchParam.SHOPCODE" v-on:on-click="SelShop" />
         </i-col>
     </row>
 }

@@ -2,29 +2,27 @@
     defineDetail.Key = "ID";
     defineDetail.screenParam.branchData = [];
     defineDetail.screenParam.regionData = [];
-    defineDetail.screenParam.ORGData = [];
-    defineDetail.screenParam.statusData = [];
 };
 
-defineDetail.clearKey = function () {
+defineDetail.initDataParam = function () {
     defineDetail.dataParam.STATUS = 1;
-    defineDetail.dataParam.ID = null;
-    defineDetail.dataParam.CODE = null;
-    defineDetail.dataParam.NAME = null;
+    defineDetail.dataParam.ID = "";
+    defineDetail.dataParam.CODE = "";
+    defineDetail.dataParam.NAME = "";
+    defineDetail.dataParam.ORGID = "";
     defineDetail.dataParam.ORGIDCASCADER = [];
-    defineDetail.dataParam.AREA_BUILD = null;
-    defineDetail.dataParam.AREA_USABLE = null;
-    defineDetail.dataParam.AREA_RENTABLE = null;
-    defineDetail.dataParam.BRANCHID = null;
-    defineDetail.dataParam.REGIONID = null;
+    defineDetail.dataParam.AREA_BUILD = "";
+    defineDetail.dataParam.AREA_USABLE = "";
+    defineDetail.dataParam.AREA_RENTABLE = "";
+    defineDetail.dataParam.BRANCHID = "";
+    defineDetail.dataParam.REGIONID = "";
 };
 
 defineDetail.mountedInit = function () {
     defineDetail.otherMethods.initBranch();
-    defineDetail.otherMethods.initORG();
     defineDetail.btnConfig = [{
         id: "add",
-        authority: "104004"
+        authority: ""
     }, {
         id: "edit",
         authority: ""
@@ -71,14 +69,6 @@ defineDetail.otherMethods = {
                     defineDetail.screenParam.regionData.push({ value: dt[i].REGIONID, label: dt[i].NAME })
                 }
             }
-        });
-    },
-    initORG: function () {
-        _.Ajax('SearchInit', {
-            Data: {}
-        }, function (data) {
-            defineDetail.screenParam.ORGData = data.treeOrg.Obj;
-            defineDetail.screenParam.statusData = [];
         });
     }
 };

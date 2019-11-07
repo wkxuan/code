@@ -38,9 +38,8 @@ search.newCondition = function () {
     search.searchParam.PIZ = "";
     search.searchParam.WEIXIN = "";
     search.searchParam.QQ = "";
-
     search.searchParam.CATEGORYCODE = "";
-    search.screenParam.CATEGORY = [];
+    search.searchParam.CATEGORY = [];
 }
 search.addHref = function (row) {
     _.OpenPage({
@@ -51,33 +50,25 @@ search.addHref = function (row) {
 }
 
 search.mountedInit = function () {
-    _.Ajax('SearchInit', {
-        Data: {}
-    }, function (data) {
-        Vue.set(search.screenParam, "CATEData", data.treeOrg.Obj);
-    });
-
     search.btnConfig = [{
         id: "search",
-        authority: ""
+        authority: "10200200"
     }, {
         id: "clear",
-        authority: ""
+        authority: "10200200"
     }, {
         id: "add",
-        authority: ""
+        authority: "10200201"
     }, {
         id: "del",
-        authority: ""
+        authority: "10200201"
     }, {
         id: "upload",
-        authority: ""
+        authority: "10200203"
     }];
 }
-
-
 search.otherMethods = {
-    orgChange: function (value, selectedData) {
+    cateChange: function (value, selectedData) {
         search.searchParam.CATEGORYCODE = selectedData[selectedData.length - 1].code;
-    },
+    }
 }

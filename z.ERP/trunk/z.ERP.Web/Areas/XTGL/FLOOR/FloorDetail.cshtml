@@ -10,7 +10,7 @@
             门店
         </i-col>
         <i-col span="7" class="RowText">
-            <i-select v-model="dataParam.BRANCHID" v-on:on-change="branchChange" v-bind:disabled="!disabled">
+            <i-select v-model="dataParam.BRANCHID" v-on:on-change="branchChange" v-bind:disabled="disabled">
                 <i-option v-for="item in screenParam.branchData"
                           v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
             </i-select>
@@ -20,7 +20,7 @@
             区域
         </i-col>
         <i-col span="7" class="RowText">
-            <i-select v-model="dataParam.REGIONID" v-bind:disabled="!disabled">
+            <i-select v-model="dataParam.REGIONID" v-bind:disabled="disabled">
                 <i-option v-for="item in screenParam.regionData"
                           v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
             </i-select>
@@ -32,14 +32,14 @@
             楼层代码
         </i-col>
         <i-col span="7" class="RowText">
-            <i-input v-model="dataParam.CODE" v-bind:disabled="!disabled" />
+            <i-input v-model="dataParam.CODE" v-bind:disabled="disabled" />
         </i-col>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             楼层名称
         </i-col>
         <i-col span="7" class="RowText">
-            <i-input v-model="dataParam.NAME" v-bind:disabled="!disabled" />
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled" />
         </i-col>
     </row>
     <row>
@@ -48,34 +48,27 @@
             管理机构
         </i-col>
         <i-col span="7" class="RowText">
-            @{
-                RenderControl(new CascaderRender()
-                {
-                    vModel = "dataParam.ORGIDCASCADER",
-                    Data = "screenParam.ORGData",
-                    Change = "orgChange",
-                    Not_level_last = true,
-                });
-            }
+            <yx-cascader v-bind:value.sync="dataParam.ORGIDCASCADER" method="GetTreeOrg" notlevellast
+                         v-on:change="orgChange" v-bind:disabled="disabled"></yx-cascader>
         </i-col>
         <i-col span="3" class="RowTitle">
             <span class="mustElement">*</span>
             建筑面积
         </i-col>
         <i-col span="7" class="RowText">
-            <i-input type="number" v-model="dataParam.AREA_BUILD" v-bind:disabled="!disabled" />
+            <i-input type="number" v-model="dataParam.AREA_BUILD" v-bind:disabled="disabled" />
         </i-col>
     </row>
     <row>
         <i-col span="3" class="RowTitle">使用面积</i-col>
         <i-col span="7" class="RowText">
-            <i-input type="number" v-model="dataParam.AREA_USABLE" v-bind:disabled="!disabled" />
+            <i-input type="number" v-model="dataParam.AREA_USABLE" v-bind:disabled="disabled" />
         </i-col>
         <i-col span="3" class="RowTitle">
             租赁面积
         </i-col>
         <i-col span="7" class="RowText">
-            <i-input type="number" v-model="dataParam.AREA_RENTABLE" v-bind:disabled="!disabled" />
+            <i-input type="number" v-model="dataParam.AREA_RENTABLE" v-bind:disabled="disabled" />
         </i-col>
     </row>
     <row>
@@ -84,7 +77,8 @@
             @{
                 RenderControl(new EnumDropDownListRender<停用标记>()
                 {
-                    vModel = "dataParam.STATUS"
+                    vModel = "dataParam.STATUS",
+                    Enable = false
                 });
             }
         </i-col>

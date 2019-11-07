@@ -21,13 +21,7 @@
             管理部门
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.ORGID",
-                    ServiceMothod = m => m.org_hs(),
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.ORGID" method="org_hs"></yx-select>
         </i-col>
     </row>
     <row>

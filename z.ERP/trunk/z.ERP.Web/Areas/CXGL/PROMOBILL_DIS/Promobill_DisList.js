@@ -91,3 +91,18 @@ search.addHref = function (row) {
         url: "CXGL/PROMOBILL_DIS/Promobill_DISEdit/"
     });
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "11000500"
+    }, {
+        id: "clear",
+        authority: "11000500"
+    }, {
+        id: "add",
+        authority: "11000501"
+    }, {
+        id: "del",
+        authority: "11000501"
+    }];
+};

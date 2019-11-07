@@ -28,10 +28,10 @@
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",
-        authority: ""
+        authority: "10500400"
     }, {
         id: "clear",
-        authority: ""
+        authority: "10500400"
     }, {
         id: "add",
         authority: "10500401"

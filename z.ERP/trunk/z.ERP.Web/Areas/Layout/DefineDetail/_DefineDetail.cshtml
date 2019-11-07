@@ -1,6 +1,4 @@
 ﻿@inherits ViewBase<dynamic>
-@using z.ERP.Web.Areas.Layout.DefineDetail
-@using z.ERP.Web.Areas.Share.Render
 @using z.MVC5.Views
 @{
     Layout = ThisLayout;
@@ -21,7 +19,7 @@
         @RenderSection("baseParam", false)
     </div>
     <div class="btnDiv">
-        <yx-tool-bar v-bind:list="list" v-bind:disabled="disabled" 
+        <yx-tool-bar v-bind:list="toolBtnList" v-bind:disabled="disabled" 
                      v-bind:domdata="dataParam"></yx-tool-bar>
     </div>
     <div class="hide">

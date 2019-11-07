@@ -15,7 +15,7 @@
             年度
         </i-col>
         <i-col span="6" class="RowText">
-            <yx-year-picker v-bind:value.sync="searchParam.YEAR"></yx-year-picker>
+            <yx-date-picker type="year" v-bind:value.sync="searchParam.YEAR"></yx-date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             内容
@@ -29,39 +29,19 @@
             开始日期
         </i-col>
         <i-col span="3" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.START_DATE_START",
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.START_DATE_START"></yx-date-picker>
         </i-col>
         <i-col span="3" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.START_DATE_END",
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.START_DATE_END"></yx-date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             结束日期
         </i-col>
         <i-col span="3" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.END_DATE_START",
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.END_DATE_START"></yx-date-picker>
         </i-col>
         <i-col span="3" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "searchParam.END_DATE_END",
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.END_DATE_END"></yx-date-picker>
         </i-col>
         <i-col span="2" class="RowTitle">
             状态

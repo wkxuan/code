@@ -220,13 +220,7 @@
             租金滞纳规则
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.ZNID_RENT",
-                    ServiceMothod = m => m.LateFeeRule()
-                });
-            }
+            <yx-select v-bind:value.sync="dataParam.ZNID_RENT" method="LateFeeRule" v-bind:disabled="!disabled"></yx-select>
         </i-col>
     </row>
     <row>
@@ -235,14 +229,7 @@
             租金收费规则
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.FEERULE_RENT",
-                    ServiceMothod = m => m.feeRule(),
-                    Change = "FEERULE_RENTChange"
-                });
-            }
+            <yx-select v-bind:value.sync="dataParam.FEERULE_RENT" method="feeRule" v-bind:disabled="!disabled" v-on:change="FEERULE_RENTChange"></yx-select>
         </i-col>
         <i-col span="2" class="RowTitle">
             销售额标记

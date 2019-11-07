@@ -4,7 +4,7 @@
     defineDetail.dataParam.STATUSMC = "未使用";
 };
 
-defineDetail.clearKey = function () {
+defineDetail.initDataParam = function () {
     defineDetail.dataParam.ID = "";
     defineDetail.dataParam.BRANCHID = "";
     defineDetail.dataParam.NAME = "";
@@ -12,45 +12,29 @@ defineDetail.clearKey = function () {
     defineDetail.dataParam.STATUSMC = "未使用"
 };
 
-
 defineDetail.mountedInit = function () {
     defineDetail.btnConfig = [{
         id: "add",
-        //authority: "10102001"
+        authority: "11000201"
     }, {
         id: "edit",
-        enabled: function (disabled, data) {
-            if (!disabled && data && data.STATUS < 2) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        //authority: "10102001"
+        authority: "11000201"
     }, {
         id: "del",
-        enabled: function (disabled, data) {
-            if (!disabled && data && data.STATUS < 2) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        //authority: "10102001"
-
+        authority: "11000201"
     }, {
         id: "save",
-        //authority: "10102001"
+        authority: "11000201"
     }, {
         id: "abandon",
-        //authority: "10102001"
+        authority: "11000201"
     }];
 };
 defineDetail.showOne = function (data, callback) {
     _.Ajax('GetPresent', {
         Data: { ID: data }
     }, function (data) {
-        $.extend(defineDetail.dataParam, data.dt[0]);     
+        $.extend(defineDetail.dataParam, data.dt[0]);
     });
 };
 

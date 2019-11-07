@@ -1,11 +1,9 @@
 ﻿defineDetail.beforeVue = function () {
     defineDetail.Key = "BRANCHID";
-    defineDetail.screenParam.branchData = [];
 };
 
-defineDetail.clearKey = function () {
-
-    defineDetail.dataParam.BRANCHID = null;
+defineDetail.initDataParam = function () {
+    defineDetail.dataParam.BRANCHID = "";
     defineDetail.dataParam.PRINTCOUNT = null;
     defineDetail.dataParam.HEAD = null;
     defineDetail.dataParam.TAIL = null;
@@ -16,19 +14,19 @@ defineDetail.clearKey = function () {
 defineDetail.mountedInit = function () {
     defineDetail.btnConfig = [{
         id: "add",
-        //authority: "10102001"
+        authority: "10102001"
     }, {
         id: "edit",
-        //authority: "10102001"
+        authority: "10102001"
     }, {
         id: "del",
-        //authority: "10102001"
+        authority: "10102001"
     }, {
         id: "save",
-        //authority: "10102001"
+        authority: "10102001"
     }, {
         id: "abandon",
-        //authority: "10102001"
+        authority: "10102001"
     }];
 };
 defineDetail.showOne = function (data, callback) {

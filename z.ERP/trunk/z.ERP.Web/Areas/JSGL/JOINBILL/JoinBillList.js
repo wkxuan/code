@@ -47,3 +47,18 @@ search.addHref = function () {
         url: "JSGL/JOINBILL/JoinBillEdit/"
     });
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "10700600"
+    }, {
+        id: "clear",
+        authority: "10700600"
+    }, {
+        id: "add",
+        authority: "10700601"
+    }, {
+        id: "del",
+        authority: "10700601"
+    }];
+};

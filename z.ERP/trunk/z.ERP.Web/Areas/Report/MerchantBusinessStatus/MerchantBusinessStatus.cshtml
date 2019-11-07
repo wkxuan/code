@@ -22,23 +22,16 @@
             门店
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                    Multiple = true
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch" multiple></yx-select>
         </i-col>
         <i-col span="2" class="RowTitle">
             年月
         </i-col>
         <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_START"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.NIANYUE_START"></yx-date-picker>
         </i-col>
         <i-col span="3" class="RowText">
-            <yx-year-month-picker v-bind:value.sync="searchParam.NIANYUE_END"></yx-year-month-picker>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.NIANYUE_END"></yx-date-picker>
         </i-col>
     </row>
     <row>
@@ -60,28 +53,14 @@
             业态
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new CascaderRender()
-                {
-                    vModel = "screenParam.CATEGORY",
-                    Data = "screenParam.CATEData",
-                    Change = "changeCate",
-                    Not_level_last = true
-                });
-            }
+            <yx-cascader v-bind:value.sync="searchParam.CATEGORY" method="GetTreeCategory"
+                         v-on:change="changeCate" notlevellast></yx-cascader>
         </i-col>
         <i-col span="2" class="RowTitle">
             楼层
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.FLOORID",
-                    ServiceMothod = m => m.floor(),
-                    Multiple = true
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.FLOORID" method="floor" multiple></yx-select>
         </i-col>
     </row>
 }

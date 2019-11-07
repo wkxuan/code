@@ -48,17 +48,6 @@ namespace z.ERP.Web.Areas.PPGL.BRAND
         {
             service.XtglService.BrandExecData(Data);
         }
-
-        public UIResult SearchInit()
-        {
-            var res = service.DataService.GetTreeCategory();
-            return new UIResult(
-                new
-                {
-                    treeOrg = res.Item1
-                }
-            );
-        }
         public override ImportMsg ImportExcelDataHandle(DataTable dt)
         {
             return service.XtglService.BrandImport(dt);

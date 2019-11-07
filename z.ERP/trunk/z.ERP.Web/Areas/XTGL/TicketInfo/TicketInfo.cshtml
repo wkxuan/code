@@ -1,19 +1,11 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum;
-@using z.ERP.Web.Areas.Layout.Search;
+﻿@using z.ERP.Web.Areas.Layout.Search;
 @inherits SearchViewBase
 
 @section conditionParam{
     <row>
         <i-col span="2" class="RowTitle">门店</i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
         </i-col>
 
         @*<i-col span="2" class="RowTitle">

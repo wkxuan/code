@@ -3,7 +3,6 @@
 @using z.ERP.Web.Areas.Layout.Define
 @inherits DefineViewBase
 
-
 @section element{
     <row>
         <i-col span="3" class="RowTitle">
@@ -108,16 +107,8 @@
             优惠券
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "dataParam.COUPONID",                   
-                    ServiceMothod = m => m.coupon(),
-                    Enable = false,
-                });
-            }
+            <yx-select v-bind:value.sync="dataParam.COUPONID" method="coupon" v-bind:disabled="disabled"></yx-select>
         </i-col>
-
         <i-col span="3" class="RowTitle">
             停用标记
         </i-col>

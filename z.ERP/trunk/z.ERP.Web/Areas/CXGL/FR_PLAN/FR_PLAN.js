@@ -108,3 +108,21 @@ define.IsValidMod = function () {
     };
     return true;
 }
+define.mountedInit = function () {
+    define.btnConfig = [{
+        id: "search",
+        authority: "11000300"
+    }, {
+        id: "add",
+        authority: "11000301"
+    }, {
+        id: "edit",
+        authority: "11000301"
+    }, {
+        id: "save",
+        authority: "11000301"
+    }, {
+        id: "abandon",
+        authority: "11000301"
+    }];
+}

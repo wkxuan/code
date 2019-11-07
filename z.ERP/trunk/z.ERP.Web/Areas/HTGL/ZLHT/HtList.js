@@ -105,19 +105,19 @@ search.addHref = function (row) {
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",
-        authority: ""
+        authority: "10600200"
     }, {
         id: "clear",
-        authority: ""
+        authority: "10600201"
     }, {
         id: "add",
-        authority: ""
+        authority: "10600201"
     }, {
         id: "del",
-        authority: ""
+        authority: "10600201"
     }, {
         id: "export",
-        authority: "",
+        authority: "10600206",
         fun: function () {
             let selection = search.vueObj.$refs.selectData.getSelection();
             if (selection.length == 0) {

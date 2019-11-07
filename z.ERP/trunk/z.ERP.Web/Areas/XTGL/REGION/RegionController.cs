@@ -19,7 +19,6 @@ namespace z.ERP.Web.Areas.XTGL.REGION
                 Permission_Mod = "10101502"
             });
         }
-
         public string Save(REGIONEntity DefineSave)
         {
             var v = GetVerify(DefineSave);
@@ -42,16 +41,6 @@ namespace z.ERP.Web.Areas.XTGL.REGION
         {
             var v = GetVerify(DefineDelete);
             CommenDelete(DefineDelete);
-        }
-        public UIResult SearchInit()
-        {
-            var res = service.DataService.GetTreeOrg();
-            return new UIResult(
-                new
-                {
-                    treeOrg = res.Item1
-                }
-            );
         }
         public UIResult GetBranch(BRANCHEntity Data)
         {

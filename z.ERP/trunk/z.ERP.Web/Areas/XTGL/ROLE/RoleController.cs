@@ -46,9 +46,6 @@ namespace z.ERP.Web.Areas.XTGL.ROLE
             var v = GetVerify(DefineDelete);
             CommenDelete(DefineDelete);
         }
-        public UIResult SearchTreeOrg() {
-            return new UIResult(service.DataService.GetTreeOrg());
-        }
         public string getCrmService()
         {
             return ConfigurationManager.AppSettings["CrmService"].ToString();

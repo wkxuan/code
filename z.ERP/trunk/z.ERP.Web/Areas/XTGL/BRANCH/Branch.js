@@ -54,18 +54,18 @@ search.popCallBack = function (data) {
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",
-        authority: ""
+        authority: "10100401"
     }, {
         id: "clear",
-        authority: ""
+        authority: "10100401"
     }, {
         id: "add",
-        authority: ""
+        authority: "10100401"
     }, {
         id: "del",
         enabled: function () {
             return false;
         },
-        authority: ""
+        authority: "10100401"
     }];
 };

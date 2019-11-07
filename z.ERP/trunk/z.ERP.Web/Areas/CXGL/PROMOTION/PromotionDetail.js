@@ -2,32 +2,31 @@
     defineDetail.Key = "ID";
 };
 
-defineDetail.clearKey = function () {
+defineDetail.initDataParam = function () {
     defineDetail.dataParam.ID = null;
     defineDetail.dataParam.NAME = "";
     defineDetail.dataParam.YEAR = "";
-    defineDetail.dataParam.CONTENT = null;
-    defineDetail.dataParam.START_DATE = null;
-    defineDetail.dataParam.END_DATE = null;
-    defineDetail.dataParam.REPORTER = null;
-    defineDetail.dataParam.REPORTER_NAME = null;
-    defineDetail.dataParam.REPORTER_TIME = null;
-    defineDetail.dataParam.VERIFY = null;
-    defineDetail.dataParam.VERIFY_NAME = null;
-    defineDetail.dataParam.VERIFY_TIME = null;
+    defineDetail.dataParam.CONTENT = "";
+    defineDetail.dataParam.START_DATE = "";
+    defineDetail.dataParam.END_DATE = "";
+    defineDetail.dataParam.REPORTER = "";
+    defineDetail.dataParam.REPORTER_NAME = "";
+    defineDetail.dataParam.REPORTER_TIME = "";
+    defineDetail.dataParam.VERIFY = "";
+    defineDetail.dataParam.VERIFY_NAME = "";
+    defineDetail.dataParam.VERIFY_TIME = "";
     defineDetail.dataParam.STATUS = 1;
-
 };
 
 defineDetail.mountedInit = function () {
     defineDetail.btnConfig = [{
         id: "add",
-        authority: "104004"
+        authority: "11000101"
     }, {
         id: "edit",
-        authority: "104004",
+        authority: "11000101",
         enabled: function (disabled, data) {
-            if (!disabled && data && data.ID && data.STATUS < 2) {
+            if (disabled && data && data.ID && data.STATUS < 2) {
                 return true;
             } else {
                 return false;
@@ -35,21 +34,21 @@ defineDetail.mountedInit = function () {
         }
     }, {
         id: "del",
-        authority: "104004",
+        authority: "11000101",
         enabled: function (disabled, data) {
             return false;
         }
     }, {
         id: "save",
-        authority: "104004",
+        authority: "11000101",
     }, {
         id: "abandon",
-        authority: "104004"
+        authority: "11000101"
     },{
         id: "confirm",
         name: "审核",
         icon: "md-star",
-        authority: "104004",
+        authority: "11000102",
         fun: function () {
             _.Ajax('Check', {
                 DefineSave: defineDetail.dataParam
@@ -59,7 +58,7 @@ defineDetail.mountedInit = function () {
             });
         },
         enabled: function (disabled, data) {
-            if (!disabled && data.ID && data.STATUS == 1) {
+            if (disabled && data.ID && data.STATUS == 1) {
                 return true;
             } else {
                 return false;

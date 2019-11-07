@@ -17,14 +17,10 @@ namespace z.ERP.Web.Areas.XTGL.SYSUSER
                 Permission_Mod = "10100602" 
             });
         }
-
         public string Save(SYSUSEREntity DefineSave)
         {
             return service.HomeService.SaveSysUser(DefineSave);
         }
-
-
-
         public void Delete(SYSUSEREntity DefineDelete)
         {
             var v = GetVerify(DefineDelete);
@@ -40,16 +36,6 @@ namespace z.ERP.Web.Areas.XTGL.SYSUSER
                     userrole = res.Item2
                 }
                 );
-        }
-        public UIResult SearchInit()
-        {
-            var res = service.DataService.GetTreeOrg();
-            return new UIResult(
-                new
-                {
-                    treeOrg = res.Item1
-                }
-            );
         }
     }
 }

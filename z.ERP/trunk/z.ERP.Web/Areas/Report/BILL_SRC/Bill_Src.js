@@ -45,17 +45,10 @@ search.newCondition = function () {
     search.searchParam.YEARMONTH_END = "";
     search.searchParam.FLOORID = [];
     search.searchParam.CATEGORYCODE = "";
-
-    search.screenParam.CATEGORY = [];
+    search.searchParam.CATEGORY = [];
 };
 
 search.mountedInit = function () {
-    _.Ajax('SearchCate', {
-        Data: {}
-    }, function (data) {
-        Vue.set(search.screenParam, "CATEData", data.treeOrg.Obj);
-    });
-
     search.btnConfig = [{
         id: "search",
         authority: ""

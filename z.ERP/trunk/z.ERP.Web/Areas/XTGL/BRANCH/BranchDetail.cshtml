@@ -5,93 +5,87 @@
 
 @section baseParam{
     <row>
-    <i-col span="3" class="RowTitle">门店代码</i-col>
-    <i-col span="6" class="RowText">
-        <i-input v-model="dataParam.ID" disabled />
-    </i-col>
-    <i-col span="3" class="RowTitle">
-        <span class="mustElement">*</span>
-        门店名称
-    </i-col>
-    <i-col span="6" class="RowText">
-        <i-input v-model="dataParam.NAME" v-bind:disabled="!disabled" />
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">
-        <span class="mustElement">*</span>
-        管理部门
-    </i-col>
-    <i-col span="6" class="RowText">
-        @{
-            RenderControl(new ServiceDropDownListRender()
-            {
-                vModel = "dataParam.ORGID",
-                ServiceMothod = m => m.allorg_hs(),
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">
-        <span class="mustElement">*</span>
-        建筑面积
-    </i-col>
-    <i-col span="6" class="RowText">
-        <i-input type="number" v-model="dataParam.AREA_BUILD" v-bind:disabled="!disabled" />
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">
-        <span class="mustElement">*</span>
-        停用标记
-    </i-col>
-    <i-col span="6" class="RowText">
-        @{
-            RenderControl(new EnumDropDownListRender<停用标记>()
-            {
-                vModel = "dataParam.STATUS"
-            });
-        }
-    </i-col>
-    <i-col span="3" class="RowTitle">租赁面积</i-col>
-    <i-col span="6" >
-        <i-input type="number" v-model="dataParam.AREA_RENTABLE" v-bind:disabled="!disabled" />
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">打印标题</i-col>
-    <i-col span="6" class="RowText">
-        <i-input v-model="dataParam.PRINTNAME" v-bind:disabled="!disabled" />
-    </i-col>
-    <i-col span="3" class="RowTitle">使用面积</i-col>
-    <i-col span="6" class="RowText">
-        <i-input type="number" v-model="dataParam.AREA_USABLE" v-bind:disabled="!disabled" />
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">联系人</i-col>
-    <i-col span="6" class="RowText">
-        <i-input v-model="dataParam.CONTACT" v-bind:disabled="!disabled" />
-    </i-col>
-    <i-col span="3" class="RowTitle">电话</i-col>
-    <i-col span="6" class="RowText">
-        <i-input v-model="dataParam.CONTACT_NUM" v-bind:disabled="!disabled" />
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">银行</i-col>
-    <i-col span="6" class="RowText">
-        <i-input v-model="dataParam.BANK" v-bind:disabled="!disabled" />
-    </i-col>
-    <i-col span="3" class="RowTitle">账户</i-col>
-    <i-col span="6" class="RowText">
-        <i-input v-model="dataParam.ACCOUNT" v-bind:disabled="!disabled" />
-    </i-col>
-</row>
-<row>
-    <i-col span="3" class="RowTitle">地址</i-col>
-    <i-col span="15" class="RowText">
-        <i-input v-model="dataParam.ADDRESS" v-bind:disabled="!disabled" />
-    </i-col>
-</row>
-
+        <i-col span="3" class="RowTitle">门店代码</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ID" disabled />
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            门店名称
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            管理部门
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="dataParam.ORGID" method="allorg_hs" v-bind:disabled="disabled"></yx-select>
+        </i-col>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            建筑面积
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.AREA_BUILD" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">
+            <span class="mustElement">*</span>
+            停用标记
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<停用标记>()
+                {
+                    vModel = "dataParam.STATUS",
+                    Enable = false
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowTitle">租赁面积</i-col>
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.AREA_RENTABLE" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">打印标题</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.PRINTNAME" v-bind:disabled="disabled" />
+        </i-col>
+        <i-col span="3" class="RowTitle">使用面积</i-col>
+        <i-col span="6" class="RowText">
+            <i-input type="number" v-model="dataParam.AREA_USABLE" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">联系人</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.CONTACT" v-bind:disabled="disabled" />
+        </i-col>
+        <i-col span="3" class="RowTitle">电话</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.CONTACT_NUM" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">银行</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.BANK" v-bind:disabled="disabled" />
+        </i-col>
+        <i-col span="3" class="RowTitle">账户</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.ACCOUNT" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="3" class="RowTitle">地址</i-col>
+        <i-col span="15" class="RowText">
+            <i-input v-model="dataParam.ADDRESS" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
 }

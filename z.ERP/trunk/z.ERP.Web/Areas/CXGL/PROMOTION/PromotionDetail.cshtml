@@ -1,5 +1,4 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Web.Areas.Layout.DefineDetail
+﻿@using z.ERP.Web.Areas.Layout.DefineDetail
 @inherits DefineDetailViewBase
 
 @section baseParam{
@@ -9,7 +8,7 @@
             主题名称
         </i-col>
         <i-col span="16" class="RowText">
-            <i-input v-model="dataParam.NAME" v-bind:disabled="!disabled"/>
+            <i-input v-model="dataParam.NAME" v-bind:disabled="disabled" />
         </i-col>
     </row>
     <row>
@@ -18,7 +17,7 @@
             年度
         </i-col>
         <i-col span="16" class="RowText">
-            <yx-year-picker v-bind:value.sync="dataParam.YEAR" v-bind:disabled="!disabled"></yx-year-picker>
+            <yx-date-picker type="year" v-bind:value.sync="dataParam.YEAR" v-bind:disabled="disabled"></yx-date-picker>
         </i-col>
     </row>
     <row>
@@ -26,7 +25,7 @@
             内容
         </i-col>
         <i-col span="16" class="RowText">
-            <i-input type="textarea" :rows="4" v-model="dataParam.CONTENT" v-bind:disabled="!disabled"/>
+            <i-input type="textarea" v-bind:rows="4" v-model="dataParam.CONTENT" v-bind:disabled="disabled" />
         </i-col>
     </row>
     <row>
@@ -35,12 +34,7 @@
             开始日期
         </i-col>
         <i-col span="16" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.START_DATE",
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="dataParam.START_DATE" v-bind:disabled="disabled"></yx-date-picker>
         </i-col>
     </row>
     <row>
@@ -49,12 +43,7 @@
             结束日期
         </i-col>
         <i-col span="16" class="RowText">
-            @{
-                RenderControl(new DateBoxRender()
-                {
-                    vModel = "dataParam.END_DATE",
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="dataParam.END_DATE" v-bind:disabled="disabled"></yx-date-picker>
         </i-col>
     </row>
 }

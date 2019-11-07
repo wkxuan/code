@@ -71,3 +71,18 @@ search.addHref = function (row) {
         url: "CXGL/Present_Send/Present_SendEdit/"
     });
 }
+search.mountedInit = function () {
+    search.btnConfig = [{
+        id: "search",
+        authority: "11000700"
+    }, {
+        id: "clear",
+        authority: "11000700"
+    }, {
+        id: "add",
+        authority: "11000701"
+    }, {
+        id: "del",
+        authority: "11000701"
+    }];
+};

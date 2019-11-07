@@ -15,16 +15,6 @@ namespace z.ERP.Web.Areas.Report.GoodsSaleDetail
             ViewBag.Title = "商品销售明细查询";
             return View();
         }
-        public UIResult SearchKind()
-        {
-            var res = service.SpglService.GetKindInit();
-            return new UIResult(
-                new
-                {
-                    treeorg = res.Item1
-                }
-            );
-        }
         public string Output(string Name, Dictionary<string, string> Cols, SearchItem item)
         {
             var dtSource = service.ReportService.GoodsSaleDetailOutput(item);

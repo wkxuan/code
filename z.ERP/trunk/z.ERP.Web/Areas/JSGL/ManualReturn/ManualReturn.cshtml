@@ -29,14 +29,7 @@
    <row>
        <i-col span="4" class="RowTitle">门店</i-col>
        <i-col span="6" class="RowText">
-           @{
-               RenderControl(new ServiceDropDownListRender()
-               {
-                   vModel = "BRANCHID",
-                   ServiceMothod = m => m.branch(),
-                   Enable=false
-               });
-           }
+           <yx-select v-bind:value.sync="BRANCHID" method="branch"></yx-select>
        </i-col>
    </row>
     <row>

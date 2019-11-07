@@ -9,14 +9,7 @@
             门店
         </i-col>
         <i-col span="4" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.BRANCHID",
-                    ServiceMothod = m => m.branch(),
-                    Multiple = true
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch" multiple></yx-select>
         </i-col>
 
         <i-col span="3" class="RowTitle">
@@ -49,16 +42,8 @@
             收款方式
         </i-col>
         <i-col span="4" class="RowText">
-            @{
-                RenderControl(new ServiceDropDownListRender()
-                {
-                    vModel = "searchParam.PAYID",
-                    ServiceMothod = m => m.pay(),
-                    Multiple = true
-                });
-            }
+            <yx-select v-bind:value.sync="searchParam.PAYID" method="pay" multiple></yx-select>
         </i-col>
-
         <i-col span="3" class="RowTitle">
             支付金额
         </i-col>
@@ -70,7 +55,6 @@
                 });
             }
         </i-col>
-
         <i-col span="3" class="RowTitle">
             交易时间
         </i-col>

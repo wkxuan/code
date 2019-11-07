@@ -5,33 +5,29 @@
     defineDetail.screenParam.floorData = [];
 };
 
-defineDetail.clearKey = function () {
+defineDetail.initDataParam = function () {
     defineDetail.dataParam.STATUS = 2;
     defineDetail.dataParam.RENT_STATUS = 1;
     defineDetail.dataParam.STATUSMC = "正常";
     defineDetail.dataParam.RENT_STATUSMC = "空置";
-    defineDetail.dataParam.SHOPID = null;
-    defineDetail.dataParam.CODE = null;
-    defineDetail.dataParam.NAME = null;
+    defineDetail.dataParam.SHOPID = "";
+    defineDetail.dataParam.CODE = "";
+    defineDetail.dataParam.NAME = "";
+    defineDetail.dataParam.ORGID = "";
     defineDetail.dataParam.ORGIDCASCADER = [];
+    defineDetail.dataParam.CATEGORYID = "";
     defineDetail.dataParam.CATEGORYIDCASCADER = [];
-    defineDetail.dataParam.TYPE = null;
-    defineDetail.dataParam.AREA_BUILD = null;
-    defineDetail.dataParam.AREA_USABLE = null;
-    defineDetail.dataParam.AREA_RENTABLE = null;
-    defineDetail.dataParam.AREA_STATUS = null;
-    defineDetail.dataParam.BRANCHID = null;
-    defineDetail.dataParam.REGIONID = null;
-    defineDetail.dataParam.FLOORID = null;
+    defineDetail.dataParam.TYPE = "";
+    defineDetail.dataParam.AREA_BUILD = "";
+    defineDetail.dataParam.AREA_USABLE = "";
+    defineDetail.dataParam.AREA_RENTABLE = "";
+    defineDetail.dataParam.AREA_STATUS = "";
+    defineDetail.dataParam.BRANCHID = "";
+    defineDetail.dataParam.REGIONID = "";
+    defineDetail.dataParam.FLOORID = "";
 };
 
 defineDetail.mountedInit = function () {
-    _.Ajax('SearchInit', {
-        Data: {}
-    }, function (data) {
-        Vue.set(defineDetail.screenParam, "ORGData", data.treeOrg.Obj);
-        Vue.set(defineDetail.screenParam, "CATEGORYData", data.treeCategory.Obj);
-    });
     defineDetail.otherMethods.initBranch();
 
     defineDetail.btnConfig = [{
@@ -41,7 +37,7 @@ defineDetail.mountedInit = function () {
         id: "edit",
         authority: "104004",
         enabled: function (disabled, data) {
-            if (!disabled && data.RENT_STATUS!=2) {
+            if (disabled && data.RENT_STATUS!=2) {
                 return true;
             } else {
                 return false;
@@ -51,7 +47,7 @@ defineDetail.mountedInit = function () {
         id: "del",
         authority: "104004",
         enabled: function (disabled, data) {
-            if (!disabled && data.RENT_STATUS != 2) {
+            if (disabled && data.RENT_STATUS != 2) {
                 return true;
             } else {
                 return false;

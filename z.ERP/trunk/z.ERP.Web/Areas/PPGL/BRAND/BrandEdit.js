@@ -3,15 +3,7 @@
     editDetail.method = "GetBrandData";
     editDetail.branchid = false;
     editDetail.otherPanel = false;
-    editDetail.Key = "ID";
-    editDetail.screenParam.CATEGORYIDCASCADER = [];
-    _.Ajax('SearchInit', {
-        Data: {}
-    }, function (data) {
-        Vue.set(editDetail.screenParam, "CATEData", data.treeOrg.Obj);
-    });
 }
-
 
 editDetail.showOne = function (data, callback) {
     _.Ajax('SearchElement', {
@@ -22,12 +14,11 @@ editDetail.showOne = function (data, callback) {
 
         editDetail.dataParam.CATEGORYID = data.main[0].CATEGORYID;
         if (data.main[0].CATEGORYIDCASCADER != null) {
-            editDetail.screenParam.CATEGORYIDCASCADER = data.main[0].CATEGORYIDCASCADER.split(",");
+            editDetail.dataParam.CATEGORYIDCASCADER = data.main[0].CATEGORYIDCASCADER.split(",");
         } else {
-            editDetail.screenParam.CATEGORYIDCASCADER = [];
+            editDetail.dataParam.CATEGORYIDCASCADER = [];
         }
         callback && callback(data);
-
     });
 };
 
@@ -81,12 +72,11 @@ editDetail.mountedInit = function () {
     }];
 };
 
-
 editDetail.clearKey = function () {
     editDetail.dataParam.ID = null;
-    editDetail.screenParam.CATEGORYIDCASCADER = [];
     editDetail.dataParam.NAME = null;
     editDetail.dataParam.CATEGORYID = null;
+    editDetail.dataParam.CATEGORYIDCASCADER = [];
     editDetail.dataParam.ADRESS = null;
     editDetail.dataParam.CONTACTPERSON = null;
     editDetail.dataParam.PHONENUM = null;
@@ -96,23 +86,17 @@ editDetail.clearKey = function () {
     editDetail.dataParam.STATUSMC = "未审核";
 }
 
-
 editDetail.otherMethods = {
-    orgChange: function (value, selectedData) {
+    categoryChange: function (value, selectedData) {
         editDetail.dataParam.CATEGORYID = value[value.length - 1];
     },
 };
 
-
 editDetail.IsValidSave = function () {
-
-
     if (!editDetail.dataParam.NAME) {
         iview.Message.info("请确认品牌名称!");
         return false;
     };
-
-
     if (!editDetail.dataParam.CATEGORYID) {
         iview.Message.info("请确认品牌业态!");
         return false;

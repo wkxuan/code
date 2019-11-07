@@ -217,24 +217,24 @@ editDetail.showOne = function (data, callback) {
 editDetail.mountedInit = function () {
     editDetail.btnConfig = [{
         id: "add",
-        authority: "10600501"
+        authority: "11000701"
     }, {
         id: "edit",
-        authority: "10600501"
+        authority: "11000701"
     }, {
         id: "del",
-        authority: "10600501"
+        authority: "11000701"
     }, {
         id: "save",
-        authority: "10600501"
+        authority: "11000701"
     }, {
         id: "abandon",
-        authority: "10600501"
+        authority: "11000701"
     }, {
         id: "confirm",
         name: "审核",
         icon: "md-star",
-        authority: "10600502",
+        authority: "11000702",
         fun: function () {
             _.Ajax('ExecData', {
                 Data: editDetail.dataParam

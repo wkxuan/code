@@ -372,7 +372,6 @@ namespace z.ERP.Services
             data.REPORTER = employee.Id;
             data.REPORTER_NAME = employee.Name;
             data.REPORTER_TIME = DateTime.Now.ToString();
-            data.VERIFY = employee.Id;
             data.POSNO = (data.BRANCHID + "0999").PadLeft(6, '0');
 
             v.Require(a => a.BILLID);
@@ -686,11 +685,26 @@ namespace z.ERP.Services
         {
             var v = GetVerify(SaveData);
             if (SaveData.ID.IsEmpty())
+            {
                 SaveData.ID = NewINC("RATE_ADJUST");
+                SaveData.REPORTER = employee.Id;
+                SaveData.REPORTER_NAME = employee.Name;
+                SaveData.REPORTER_TIME = DateTime.Now.ToString();
+            }
+            else {
+                RATE_ADJUSTEntity data = DbHelper.Select(new RATE_ADJUSTEntity() { ID = SaveData.ID });
+
+                if (data == null)
+                {
+                    throw new LogicException("该单据不存在!");
+                }
+
+                if (data.STATUS != ((int)普通单据状态.未审核).ToString())
+                {
+                    throw new LogicException("该单据不是未审核状态，不能修改!");
+                }
+            }
             SaveData.STATUS = ((int)普通单据状态.未审核).ToString();
-            SaveData.REPORTER = employee.Id;
-            SaveData.REPORTER_NAME = employee.Name;
-            SaveData.REPORTER_TIME = DateTime.Now.ToString();
             v.Require(a => a.ID);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.STARTTIME);

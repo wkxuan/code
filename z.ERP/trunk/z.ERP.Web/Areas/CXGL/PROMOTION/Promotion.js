@@ -43,16 +43,16 @@ search.newCondition = function () {
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",
-        authority: "104004"
+        authority: "11000100"
     }, {
         id: "clear",
-        authority: "104004"
+        authority: "11000100"
     }, {
         id: "add",
-        authority: "104004"
+        authority: "11000101"
     }, {
         id: "del",
-        authority: "104004"
+        authority: "11000101"
     }];
 };
 
