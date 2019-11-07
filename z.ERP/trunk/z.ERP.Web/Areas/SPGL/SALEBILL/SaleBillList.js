@@ -34,13 +34,13 @@ search.mountedInit = function () {
         authority: ""
     }, {
         id: "add",
-        authority: ""
+        authority: "10500401"
     }, {
         id: "del",
-        authority: ""
+        authority: "10500401"
     }, {
         id: "upload",
-        authority: ""
+        authority: "10500401"
     }, {
         id: "confirm",
         name: "审核",
