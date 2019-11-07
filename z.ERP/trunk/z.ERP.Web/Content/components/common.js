@@ -908,19 +908,17 @@ Vue.component('yx-modal', {
             default: 500
         }
     },
-    template: `<Modal v-model="curVisible" :width="curWidth" v-on:on-visible-change="visibleChange" draggable footer-hide transfer>` +
+    template: `<Modal v-model="curVisible" :width="width" v-on:on-visible-change="visibleChange" draggable footer-hide transfer>` +
                  `<div slot="header" name="header">` +
                     `<span>{{title}}</span>` +
                  `</div>` +
                  `<iframe :id="id" :src="src" frameborder="false" scrolling="no" style="border:none;"` +
-                          `width="100%" :height="curHeight"></iframe>` +
+                          `width="100%" :height="height+'px'"></iframe>` +
             `</Modal>`,
     data() {
         return {
             id: Guid(),
-            curWidth: "",
-            curVisible: false,
-            curHeight: "550px"
+            curVisible: false
         }
     },
     mounted() {},
@@ -934,16 +932,6 @@ Vue.component('yx-modal', {
             handler: function (nv, ov) {
                 let _iframe1 = window.document.getElementById(this.id);
                 _iframe1.contentWindow.location.reload();
-            }
-        },
-        height: {
-            handler: function (nv, ov) {
-                this.curHeight = nv + "px";
-            }
-        },
-        width: {
-            handler: function (nv, ov) {
-                this.curWidth = nv;
             }
         }
     },
