@@ -1,11 +1,7 @@
 ﻿editDetail.beforeVue = function () {
     //保证金收款
     editDetail.dataParam.TYPE = 2;
-    //初始化弹窗所要传递参数
-    editDetail.screenParam.showPop = false;
-    editDetail.screenParam.title = "";
-    editDetail.screenParam.srcPop = "";
-    editDetail.screenParam.popParam = {};
+
     editDetail.screenParam.FEE_ACCOUNT = [];
     editDetail.dataParam.BILL_OBTAIN_ITEM = [];
     editDetail.screenParam.colDef = [
@@ -43,7 +39,6 @@ editDetail.showOne = function (data, callback) {
             for (var i = 0; i < data.length; i++) {
                 list.push({ value: Number(data[i].Key), label: data[i].Value })
             }
-            debugger
             editDetail.screenParam.FEE_ACCOUNT = list;
         });
         callback && callback(data);
@@ -57,9 +52,9 @@ editDetail.otherMethods = {
             return;
         }
         editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
-        editDetail.screenParam.title = "选择商户";
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-        editDetail.screenParam.showPop = true;
+        editDetail.popConfig.title = "选择商户";
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        editDetail.popConfig.open = true;
     },
     selBill: function () {
         if (!editDetail.dataParam.MERCHANTID) {
@@ -72,9 +67,9 @@ editDetail.otherMethods = {
             FTYPE: [1],   //保证金类型
             STATUS:[2,3]
         };
-        editDetail.screenParam.title = "选择账单";
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopBillList/";
-        editDetail.screenParam.showPop = true;
+        editDetail.popConfig.title = "选择账单";
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopBillList/";
+        editDetail.popConfig.open = true;
     },
     delBill: function () {
         let selection = this.$refs.refZd.getSelection();
@@ -125,16 +120,16 @@ editDetail.newRecord = function () {
 
 ///接收弹窗返回参数
 editDetail.popCallBack = function (data) {
-    if (editDetail.screenParam.showPop) {
-        editDetail.screenParam.showPop = false;
-        if (editDetail.screenParam.title == "选择商户") {
+    if (editDetail.popConfig.open) {
+        editDetail.popConfig.open = false;
+        if (editDetail.popConfig.title == "选择商户") {
             editDetail.dataParam.BILL_OBTAIN_ITEM = [];
             for (var i = 0; i < data.sj.length; i++) {
                 editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
                 editDetail.dataParam.MERCHANTNAME = data.sj[i].NAME;
             }
         }
-        if (editDetail.screenParam.title == "选择账单") {
+        if (editDetail.popConfig.title == "选择账单") {
             let itemData = editDetail.dataParam.BILL_OBTAIN_ITEM;
             //接收选中的数据
             for (var i = 0; i < data.sj.length; i++) {

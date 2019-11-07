@@ -3,10 +3,11 @@
     editDetail.method = "SearchAssetSpilt";
     editDetail.dataParam.CHANGE_TYPE = 3;  //资产拆分
 
-    editDetail.screenParam.showPop = false;
-    editDetail.screenParam.srcPop = "";
-    editDetail.screenParam.title = "";
-    editDetail.screenParam.popParam = {};
+    //editDetail.screenParam.showPop = false;
+    //editDetail.screenParam.srcPop = "";
+    //editDetail.screenParam.title = "";
+    //editDetail.screenParam.popParam = {};
+
     editDetail.dataParam.ASSETCHANGEITEM = [];
     editDetail.dataParam.ASSETCHANGEITEM2 = [];
 
@@ -125,11 +126,11 @@ editDetail.otherMethods = {
         if (!editDetail.dataParam.BRANCHID) {
             iview.Message.info("请选择门店!");
             return;
-        } else  {
-            editDetail.screenParam.title = "选择单元";
-            editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopShopList/";
-            editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, RENT_STATUS: "1" ,STATUS:"2"};
-            editDetail.screenParam.showPop = true;
+        } else {
+            editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, RENT_STATUS: "1", STATUS: "2" };
+            editDetail.popConfig.title = "选择单元";
+            editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopShopList/";
+            editDetail.popConfig.open = true;
         }         
     },
     delShop: function () {
@@ -192,8 +193,8 @@ editDetail.otherMethods = {
 
 //接收子页面返回值
 editDetail.popCallBack = function (data) {
-    editDetail.screenParam.showPop = false;
-    if (editDetail.screenParam.title == "选择单元") {
+    editDetail.popConfig.open = false;
+    if (editDetail.popConfig.title == "选择单元") {
         let itemData = editDetail.dataParam.ASSETCHANGEITEM;
         for (let i = 0; i < data.sj.length; i++) {
             if (itemData.filter(item=> { return (data.sj[i].SHOPID == item.ASSETID) }).length == 0) {

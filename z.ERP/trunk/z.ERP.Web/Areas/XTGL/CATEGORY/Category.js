@@ -8,10 +8,11 @@ define.initDataParam = function () {
     define.dataParam.CATEGORYCODE = null;
     define.dataParam.CATEGORYNAME = null;
     define.dataParam.LEVEL_LAST = null;
-    define.dataParam.COLOR = " ";
+    define.dataParam.COLOR = "#ffffff";
 }
 define.newRecord = function () {
     define.dataParam.LEVEL_LAST = 1;
+    define.dataParam.COLOR = "#ffffff";
 }
 define.IsValidXj = function () {
     if (define.vueObj.dataParam.LEVEL_LAST == 2) {

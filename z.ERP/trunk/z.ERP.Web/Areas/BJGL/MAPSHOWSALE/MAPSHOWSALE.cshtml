@@ -78,8 +78,7 @@
         <div slot="left" class="leftPane" ref="tree">
             <Tabs v-model="Tabs">
                 <Tab-Pane label="楼层选择" name="selectfloor">
-                    <yx-tree ref="treeRef" v-bind:data="data" v-on:onselectchange="onselectchange"
-                             v-bind:showcheckbox="false"></yx-tree>
+                    <yx-tree ref="treeRef" v-bind:data="data" v-on:onselectchange="onselectchange"></yx-tree>
                 </Tab-Pane>
                 <Tab-Pane label="筛选条件" name="selecttime">
                     <row>

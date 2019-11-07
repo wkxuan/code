@@ -19,7 +19,7 @@
                 <i-button type="primary" v-on:click="SelShop">选择单元</i-button>
                 <i-button type="error" v-on:click="delShop">删除</i-button>
             </div>
-            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="180" selection=true
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="180" selection
                       v-bind:data="dataParam.ASSETCHANGEITEM" v-bind:disabled="!disabled" ref="refOldCell">
             </yx-table>
         </Card>
@@ -33,16 +33,11 @@
                 <i-button type="primary" v-on:click="addCol2">添加一行</i-button>
                 <i-button type="error" v-on:click="delCol2">删除</i-button>
             </div>
-            <yx-table v-bind:columns="screenParam.colDef2" v-bind:height="300" selection=true
+            <yx-table v-bind:columns="screenParam.colDef2" v-bind:height="300" selection
                       v-bind:data="dataParam.ASSETCHANGEITEM2" v-bind:disabled="!disabled" ref="refNewCell">
             </yx-table>
         </Card>
     </i-col>
 </row>
-}
-
-@section pops{
-<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="800"
-          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }
 

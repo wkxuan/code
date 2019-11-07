@@ -39,8 +39,8 @@
             </div>
             <div slot="content" class="popResContent">
                 @*结果显示*@
-                <yx-table v-bind:columns="columns" v-bind:data="data" height="400" ref="selectData" 
-                          v-bind:loading="tbLoading" v-on:rowdblclick="rowdblclick" selection=true>
+                <yx-table v-bind:columns="columns" v-bind:data="data" v-bind:height="400" ref="selectData" 
+                          v-bind:loading="tbLoading" v-on:rowdblclick="rowdblclick" selection>
                 </yx-table>
                 <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total
                       v-bind:current="currentPage"

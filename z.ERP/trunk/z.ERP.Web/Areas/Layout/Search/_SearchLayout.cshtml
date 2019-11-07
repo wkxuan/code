@@ -39,7 +39,7 @@
             查询结果
             <div slot="content">
                 @*结果显示*@
-                <yx-table v-bind:columns="columns" v-bind:selection="selectionShow" v-bind:showindex="indexShow" v-bind:height="450"
+                <yx-table v-bind:columns="columns" v-bind:selection="selectionShow" v-bind:height="450" v-bind:showindex="indexShow"
                           v-bind:data="data" v-bind:loading="tbLoading" ref="selectData">
                 </yx-table>
                 <page v-bind:total="pagedataCount" v-bind:page-size="pageSize" show-total
@@ -56,7 +56,7 @@
 
     <yx-modal v-bind:src="popConfig.src" v-bind:title="popConfig.title"
               v-bind:width="popConfig.width" v-bind:height="popConfig.height"
-              v-bind:modal-visible.sync="popConfig.open"></yx-modal>
+              v-bind:visible.sync="popConfig.open"></yx-modal>
 
     @RenderSection("hide", false)
     @RenderSection("pops", false)

@@ -57,7 +57,7 @@
     <Tabs type="card" value="name1">
         <Tab-Pane label="菜单权限" name="name1">
             <yx-tree v-bind:data="screenParam.userModule"  v-bind:disablecheckbox="!disabled"  ref="moduleTreeRef"
-                     v-bind:showcheckbox="true" v-bind:checkstrictly="true" v-on:oncheckchange="onCheckChangeModule"></yx-tree>
+                     showcheckbox v-bind:checkstrictly="true" v-on:oncheckchange="onCheckChangeModule"></yx-tree>
         </Tab-Pane>
         <Tab-Pane label="门店权限" name="name2">
             <div class="zzc" v-if="!disabled"></div>
@@ -66,13 +66,11 @@
              v-bind:columns="screenParam.colDef_BRANCH" v-bind:data="screenParam.branch"></i-table>
         </Tab-Pane>
         <Tab-Pane label="区域楼层权限" name="name3">
-            <yx-tree v-bind:data="screenParam.regionTreeData" v-bind:disablecheckbox="!disabled" ref="regionTreeRef"
-                     v-bind:showcheckbox="true">
+            <yx-tree v-bind:data="screenParam.regionTreeData" v-bind:disablecheckbox="!disabled" ref="regionTreeRef" showcheckbox>
             </yx-tree>
         </Tab-Pane>
         <Tab-Pane label="业态权限" name="name4">
-            <yx-tree v-bind:data="screenParam.ytTreeData" v-bind:disablecheckbox="!disabled"  ref="ytTreeRef"
-                     v-bind:showcheckbox="true">
+            <yx-tree v-bind:data="screenParam.ytTreeData" v-bind:disablecheckbox="!disabled"  ref="ytTreeRef" showcheckbox>
             </yx-tree>
         </Tab-Pane>
         <Tab-Pane label="预警权限" name="name5">
@@ -94,9 +92,4 @@
             </row>
         </Tab-Pane>
     </Tabs>              
-}
-
-@section pops{
-<yx-modal v-bind:src="screenParam.srcPopCrmRole" title="CRM权限" width="800" height="400"
-          v-bind:modal-visible.sync="screenParam.showPopCrmRole"></yx-modal>
 }

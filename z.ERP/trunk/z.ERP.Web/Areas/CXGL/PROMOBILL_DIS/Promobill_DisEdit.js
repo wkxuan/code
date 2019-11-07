@@ -2,11 +2,6 @@
     editDetail.service = "CxglService";
     editDetail.method = "";
 
-    editDetail.screenParam.showPop = false;
-    editDetail.screenParam.srcPop = "";
-    editDetail.screenParam.title = "";
-    editDetail.screenParam.popParam = {};
-
     editDetail.screenParam.setVal = null;
     //商铺表格
     editDetail.screenParam.colDefGoods = [
@@ -20,11 +15,12 @@
 editDetail.branchChange = function () {
     editDetail.dataParam.PROMOBILL_GOODS = [];
 };
+
 editDetail.popCallBack = function (data) {
-    if (editDetail.screenParam.showPop) {
-        editDetail.screenParam.showPop = false;
+    if (editDetail.popConfig.open) {
+        editDetail.popConfig.open = false;
         for (let i = 0; i < data.sj.length; i++) {
-            if (editDetail.screenParam.title == "选择营销活动") {
+            if (editDetail.popConfig.title == "选择营销活动") {
                 editDetail.dataParam.PROMOTIONID = data.sj[i].ID;
                 editDetail.dataParam.PROMOTIONNAME = data.sj[i].NAME;
                 editDetail.dataParam.START_DATE = data.sj[i].START_DATE;
@@ -33,7 +29,7 @@ editDetail.popCallBack = function (data) {
                 editDetail.dataParam.START_DATE_LIMIT = data.sj[i].START_DATE;
                 editDetail.dataParam.END_DATE_LIMIT = data.sj[i].END_DATE;
             }
-            if (editDetail.screenParam.title == "选择商品") {
+            if (editDetail.popConfig.title == "选择商品") {
                 let itemData = editDetail.dataParam.PROMOBILL_GOODS;
                 for (let i = 0; i < data.sj.length; i++) {
                     if (itemData.filter(function (item) { return (data.sj[i].GOODSID == item.GOODSID) }).length == 0) {
@@ -54,10 +50,10 @@ editDetail.popCallBack = function (data) {
 
 editDetail.otherMethods = {
     srchPromotion: function () {
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPromotionList/";
-        editDetail.screenParam.title = "选择营销活动";
         editDetail.screenParam.popParam = { STATUS: 2 };
-        editDetail.screenParam.showPop = true;
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopPromotionList/";
+        editDetail.popConfig.title = "选择营销活动";
+        editDetail.popConfig.open = true;
     },
     srchGoods: function () {
         if (!editDetail.dataParam.BRANCHID) {
@@ -65,9 +61,9 @@ editDetail.otherMethods = {
             return;
         }
         editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, STATUS: 2 };
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopGoodsList/";
-        editDetail.screenParam.title = "选择商品";
-        editDetail.screenParam.showPop = true;
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopGoodsList/";
+        editDetail.popConfig.title = "选择商品";
+        editDetail.popConfig.open = true;
     },
     delGoods: function () {
         let selection = this.$refs.refGoods.getSelection();

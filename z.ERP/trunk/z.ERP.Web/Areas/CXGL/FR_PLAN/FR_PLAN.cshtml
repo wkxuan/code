@@ -127,7 +127,7 @@
                     <i-button type="primary" v-on:click="addItem">添加</i-button>
                     <i-button type="error" v-on:click="delItem">删除</i-button>
                 </div>
-                <yx-table v-bind:columns="screenParam.itemDef" v-bind:height="300" selection=true
+                <yx-table v-bind:columns="screenParam.itemDef" v-bind:height="300" selection
                           v-bind:data="dataParam.FR_PLAN_ITEM" v-bind:disabled="disabled" ref="refGroup">
                 </yx-table>
             </Card>

@@ -313,7 +313,7 @@
                         <i-button type="error" v-on:click="delBrand">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDefPP" v-bind:height="200" selection=true
+                <yx-table v-bind:columns="screenParam.colDefPP" v-bind:height="200" selection
                           v-bind:data="dataParam.CONTRACT_BRAND" v-bind:disabled="!disabled" ref="refBrand">
                 </yx-table>
             </Card>
@@ -328,7 +328,7 @@
                         <i-button type="error" v-on:click="delShop">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDefSHOP" v-bind:height="200" selection=true
+                <yx-table v-bind:columns="screenParam.colDefSHOP" v-bind:height="200" selection
                           v-bind:data="dataParam.CONTRACT_SHOP" v-bind:disabled="!disabled" ref="refShop">
                 </yx-table>
             </Card>
@@ -354,7 +354,7 @@
                     </div>
                 </i-col>
                 <i-col span="24">
-                    <yx-table v-bind:columns="screenParam.colDefRENT" v-bind:height="200" selection=true
+                    <yx-table v-bind:columns="screenParam.colDefRENT" v-bind:height="200" selection
                               v-bind:data="dataParam.CONTRACT_RENT" v-bind:disabled="!disabled" ref="refRent">
                     </yx-table>
                 </i-col>
@@ -380,7 +380,7 @@
                                 <i-button type="primary" v-on:click="autoMakeGroup">自动生成扣点信息</i-button>
                             </div>
                         </div>
-                        <yx-table v-bind:columns="screenParam.colGroup" v-bind:height="200" selection=true
+                        <yx-table v-bind:columns="screenParam.colGroup" v-bind:height="200" selection
                                   v-bind:data="dataParam.CONTRACT_GROUP" v-bind:disabled="!disabled" ref="refGroup">
                         </yx-table>
                     </Card>
@@ -394,7 +394,7 @@
                                 <i-button type="error" v-on:click="delCONTJSKL">删除</i-button>
                             </div>
                         </div>
-                        <yx-table v-bind:columns="screenParam.colDefJskl" v-bind:height="200" selection=true
+                        <yx-table v-bind:columns="screenParam.colDefJskl" v-bind:height="200" selection
                                   v-bind:data="dataParam.CONTJSKL" v-bind:disabled="!disabled" ref="refJskl">
                         </yx-table>
                     </Card>
@@ -411,7 +411,7 @@
                     </div>
                 </i-col>
                 <i-col span="24">
-                    <yx-table v-bind:columns="screenParam.colDefCOST" v-bind:height="300" selection=true
+                    <yx-table v-bind:columns="screenParam.colDefCOST" v-bind:height="300" selection
                               v-bind:data="dataParam.CONTRACT_COST" v-bind:disabled="!disabled" ref="refCost">
                     </yx-table>
                 </i-col>
@@ -426,7 +426,7 @@
                 </div>
             </i-col>
             <i-col span="24">
-                <yx-table v-bind:columns="screenParam.colDefPAY" v-bind:height="300" selection=true
+                <yx-table v-bind:columns="screenParam.colDefPAY" v-bind:height="300" selection
                           v-bind:data="dataParam.CONTRACT_PAY" v-bind:disabled="!disabled" ref="refPay">
                 </yx-table>
             </i-col>
@@ -474,9 +474,4 @@
             </row>
         </tab-pane>
     </Tabs>
-}
-
-@section pops{
-    <yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
-              v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }

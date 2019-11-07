@@ -28,7 +28,7 @@
             data: {
                 dataParam: _this.dataParam,
                 screenParam: _this.screenParam,
-                disabled: _this.enabled(false),
+                disabled: _this.enabled(true),
                 nodedisabled: false,
                 splitVal: 0.3,
                 data: [],
@@ -55,7 +55,7 @@
                             _self.addtj();
                         },
                         enabled: function (disabled, data) {
-                            if (!disabled && data) {
+                            if (disabled && data && data[_this.Key]) {
                                 return true;
                             } else {
                                 return false;
@@ -69,7 +69,7 @@
                             _self.addxj();
                         },
                         enabled: function (disabled, data) {
-                            if (!disabled && data && data[_this.Key]) {
+                            if (disabled && data && data[_this.Key]) {
                                 return true;
                             } else {
                                 return false;
@@ -83,7 +83,7 @@
                             _self.edit();
                         },
                         enabled: function (disabled, data) {
-                            if (!disabled && data && data[_this.Key]) {
+                            if (disabled && data && data[_this.Key]) {
                                 return true;
                             } else {
                                 return false;
@@ -97,7 +97,7 @@
                             _self.del();
                         },
                         enabled: function (disabled, data) {
-                            if (!disabled && data && data[_this.Key]) {
+                            if (disabled && data && data[_this.Key]) {
                                 return true;
                             } else {
                                 return false;
@@ -111,11 +111,7 @@
                             _self.save();
                         },
                         enabled: function (disabled, data) {
-                            if (disabled) {
-                                return true;
-                            } else {
-                                return false;
-                            }
+                            return !disabled;
                         }
                     }, {
                         id: "abandon",
@@ -125,7 +121,7 @@
                             _self.quit();
                         },
                         enabled: function (disabled, data) {
-                            return disabled;
+                            return !disabled;
                         }
                     }];
                     let data = [];
@@ -160,7 +156,7 @@
                     this.dataParam = ClearObject(this.dataParam);
                     _this.newRecord();
                     _this.AddTar = 'tj';
-                    this.disabled = _this.enabled(true);
+                    this.disabled = false;
                     this.nodedisabled = true;
                 },
                 addxj: function (event) {
@@ -174,7 +170,7 @@
                     this.dataParam = ClearObject(this.dataParam);
                     _this.newRecord();
                     _this.AddTar = 'xj';
-                    this.disabled = _this.enabled(true);
+                    this.disabled = false;
                     this.nodedisabled = true;
                 },          
                 edit: function (event) {
@@ -184,8 +180,8 @@
                     };
                     _this.backData = DeepClone(this.dataParam);
                     //修改的时候值传' ',否则全局变量值上次按钮的值
-                    _this.AddTar = ' ';
-                    this.disabled = _this.enabled(true);
+                    _this.AddTar = " ";
+                    this.disabled = false;
                     this.nodedisabled = true;
                 },       
                 save: function (event) {
@@ -197,7 +193,7 @@
                     }, function (data) {
                         iview.Message.info("保存成功");
                         _this.showOne(data);
-                        _self.disabled = _this.enabled(false);
+                        _self.disabled = true;
                         _self.seachList();
                         _self.nodedisabled = false;
                     });
@@ -206,7 +202,7 @@
                     var _self = this;
                     _.MessageBox("是否取消？", function () {
                         $.extend(_this.dataParam, _this.backData);
-                        _self.disabled = _this.enabled(false);
+                        _self.disabled = true;
                         _self.nodedisabled = false;
                     });
                 },               

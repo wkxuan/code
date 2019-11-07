@@ -15,11 +15,6 @@ editDetail.beforeVue = function () {
     };
     editDetail.screenParam.fkrList = tempList;
 
-    editDetail.screenParam.popParam = {};
-    editDetail.screenParam.show = false;
-    editDetail.screenParam.srcPop = "";
-    editDetail.screenParam.title = "";
-
     _.Ajax('SearchInit', {
         Data: {}
     }, function (data) {
@@ -354,21 +349,21 @@ editDetail.branchChange = function () {
     editDetail.otherMethods.calculateArea();
 };
 editDetail.popCallBack = function (data) {
-    if (editDetail.screenParam.showPop) {
-        editDetail.screenParam.showPop = false;
-        if (editDetail.screenParam.title == "选择人员") {
+    if ( editDetail.popConfig.open) {
+        editDetail.popConfig.open = false;
+        if (editDetail.popConfig.title == "选择人员") {
             for (let i = 0; i < data.sj.length; i++) {
                 editDetail.dataParam.SIGNER = data.sj[i].USERID;
                 editDetail.dataParam.SIGNER_NAME = data.sj[i].USERNAME;
             };
         }
-        if (editDetail.screenParam.title == "选择商户") {
+        if (editDetail.popConfig.title == "选择商户") {
             for (let i = 0; i < data.sj.length; i++) {
                 editDetail.dataParam.MERCHANTID = data.sj[i].MERCHANTID;
                 editDetail.dataParam.MERNAME = data.sj[i].NAME;
             };
         }
-        if (editDetail.screenParam.title == "选择品牌") {
+        if (editDetail.popConfig.title == "选择品牌") {
             let brand = editDetail.dataParam.CONTRACT_BRAND;
             for (let i = 0; i < data.sj.length; i++) {
                 if (brand.filter(item=> { return (data.sj[i].BRANDID == item.BRANDID) }).length == 0) {
@@ -376,7 +371,7 @@ editDetail.popCallBack = function (data) {
                 }
             };
         }
-        if (editDetail.screenParam.title == "选择商铺") {
+        if (editDetail.popConfig.title == "选择商铺") {
             let shop = editDetail.dataParam.CONTRACT_SHOP;
             for (let i = 0; i < data.sj.length; i++) {
                 if (shop.filter(item=> { return (data.sj[i].SHOPID == item.SHOPID) }).length == 0) {
@@ -385,7 +380,7 @@ editDetail.popCallBack = function (data) {
             };
             editDetail.otherMethods.calculateArea();
         }
-        if (editDetail.screenParam.title == "选择费用项目") {
+        if (editDetail.popConfig.title == "选择费用项目") {
             let cost = editDetail.dataParam.CONTRACT_COST;
             for (let i = 0; i < data.sj.length; i++) {
                 let loc = {};
@@ -409,7 +404,7 @@ editDetail.popCallBack = function (data) {
                 cost[i].INX = i + 1;
             }
         }
-        if (editDetail.screenParam.title == "选择收款方式的费用项目") {
+        if (editDetail.popConfig.title == "选择收款方式的费用项目") {
             let selection = editDetail.vueObj.$refs.refPay.getSelection();
             let pay = editDetail.dataParam.CONTRACT_PAY
             for (let i = 0; i < selection.length; i++) {
@@ -421,7 +416,7 @@ editDetail.popCallBack = function (data) {
                 }
             }
         }
-        if (editDetail.screenParam.title == "选择收款方式") {
+        if (editDetail.popConfig.title == "选择收款方式") {
             let pay = editDetail.dataParam.CONTRACT_PAY;
             for (let i = 0; i < data.sj.length; i++) {
                 let len = pay.filter(item=> { return data.sj[i].PAYID == item.PAYID });
@@ -447,7 +442,7 @@ editDetail.popCallBack = function (data) {
                 }
             };
         }
-        if (editDetail.screenParam.title == "选择商户付款信息") {
+        if (editDetail.popConfig.title == "选择商户付款信息") {
             for (let i = 0; i < data.sj.length; i++) {
                 for (let i = 0; i < data.sj.length; i++) {
                     editDetail.dataParam.PAYMENTID = data.sj[i].PAYMENTID;
@@ -521,16 +516,16 @@ editDetail.otherMethods = {
     },
     //点击合同员
     srchSigner: function () {
-        editDetail.screenParam.title = "选择人员";
         editDetail.screenParam.popParam = { USER_TYPE: "7" };
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopSysuserList/";
-        Vue.set(editDetail.screenParam, "showPop", true);
+        editDetail.popConfig.title = "选择人员";
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopSysuserList/";
+        editDetail.popConfig.open = true;
     },
     //点击商户弹窗
     srchMerchant: function () {
-        editDetail.screenParam.title = "选择商户";
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantList/";
-        Vue.set(editDetail.screenParam, "showPop", true);
+        editDetail.popConfig.title = "选择商户";
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
+        editDetail.popConfig.open = true;
     },
     //点击品牌弹窗
     srchBrand: function () {
@@ -538,10 +533,10 @@ editDetail.otherMethods = {
             iview.Message.info("请先选择商户!");
             return;
         }
-        editDetail.screenParam.title = "选择品牌";
         editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID };
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopBrandList/";
-        Vue.set(editDetail.screenParam, "showPop", true);
+        editDetail.popConfig.title = "选择品牌";
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopBrandList/";
+        editDetail.popConfig.open = true;
     },
     delBrand: function () {
         let selection = this.$refs.refBrand.getSelection();
@@ -565,10 +560,10 @@ editDetail.otherMethods = {
             iview.Message.info("请先选择商户!");
             return;
         }
-        editDetail.screenParam.title = "选择商户付款信息";
         editDetail.screenParam.popParam = { MERCHANTID: editDetail.dataParam.MERCHANTID, MERCHANTNAME: editDetail.dataParam.MERNAME };
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopMerchantPaymentList/";
-        Vue.set(editDetail.screenParam, "showPop", true);
+        editDetail.popConfig.title = "选择商户付款信息";
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantPaymentList/";
+        editDetail.popConfig.open = true;
     },
     //清空付款信息
     clearpayment: function () {
@@ -585,10 +580,10 @@ editDetail.otherMethods = {
             return;
         }
         //查询空置的资产
-        editDetail.screenParam.title = "选择商铺";
         editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID, RENT_STATUS: 1, STATUS: 2 };
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopShopList/";
-        Vue.set(editDetail.screenParam, "showPop", true);
+        editDetail.popConfig.title = "选择商铺";
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopShopList/";
+        editDetail.popConfig.open = true;
     },
     addRowShop: function () {
         if (!editDetail.dataParam.BRANCHID) {
@@ -622,10 +617,10 @@ editDetail.otherMethods = {
     },
     //点击费用项目弹窗
     srchFeeSubject: function () {
-        editDetail.screenParam.title = "选择费用项目";
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
-        editDetail.screenParam.popParam = { CUSTOM: 1 }
-        Vue.set(editDetail.screenParam, "showPop", true);
+        editDetail.screenParam.popParam = { CUSTOM: 1 };
+        editDetail.popConfig.title = "选择费用项目";
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
+        editDetail.popConfig.open = true;
     },
     //添加租约收费项目信息
     addRowFeeSubject: function () {
@@ -665,10 +660,10 @@ editDetail.otherMethods = {
             iview.Message.info('请先确认门店!');
             return;
         }
-        editDetail.screenParam.title = "选择收款方式";
         editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPayList/";
-        Vue.set(editDetail.screenParam, "showPop", true);
+        editDetail.popConfig.title = "选择收款方式";
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopPayList/";
+        editDetail.popConfig.open = true;
     },
     srchPayCost: function () {
         let selection = this.$refs.refPay.getSelection();
@@ -676,10 +671,10 @@ editDetail.otherMethods = {
             iview.Message.info("请先添加收款方式并且选中收款方式!");
             return;
         };
-        editDetail.screenParam.title = "选择收款方式的费用项目";
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
         editDetail.screenParam.popParam = { CUSTOM: 1 };
-        Vue.set(editDetail.screenParam, "showPop", true);
+        editDetail.popConfig.title = "选择收款方式的费用项目";
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopFeeSubjectList/";
+        editDetail.popConfig.open = true;
     },
     //删除收款方式手续费
     delPay: function () {

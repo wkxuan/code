@@ -54,8 +54,7 @@
 <div id="MapShow" v-cloak>
     <Split v-model="splitVal">
         <div slot="left" class="leftPane" ref="tree">
-            <yx-tree ref="treeRef" v-bind:data="data" v-on:onselectchange="onselectchange"
-                     v-bind:showcheckbox="false"></yx-tree>
+            <yx-tree ref="treeRef" v-bind:data="data" v-on:onselectchange="onselectchange"></yx-tree>
         </div>
         <div slot="right" class="rightPane">
             <div ref="maps" style="height:100%;width:100%;position:absolute"></div>

@@ -72,16 +72,11 @@
                         <i-button type="error" v-on:click="delBill">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDef" v-bind:height="200" selection=true
+                <yx-table v-bind:columns="screenParam.colDef" v-bind:height="200" selection
                           v-bind:data="dataParam.BILL_OBTAIN_ITEM" v-bind:disabled="!disabled" ref="refZd">
                 </yx-table>
             </Card>
         </i-col>
     </row>
-}
-
-@section pops{
-<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
-          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }
 

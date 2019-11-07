@@ -48,7 +48,7 @@
                         <i-button type="error" v-on:click="delBill">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDef" v-bind:height="200" selection=true
+                <yx-table v-bind:columns="screenParam.colDef" v-bind:height="200" selection
                           v-bind:data="dataParam.BILL_RETURN_ITEM" v-bind:disabled="!disabled" ref="refZd">
                 </yx-table>
             </Card>

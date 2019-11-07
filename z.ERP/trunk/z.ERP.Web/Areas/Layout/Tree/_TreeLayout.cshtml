@@ -54,8 +54,7 @@
     <div class="contentSplit">
         <Split v-model="splitVal">
             <div slot="left" class="leftPane">
-                <yx-tree ref="treeRef" v-bind:data="data" v-on:onselectchange="onselectchange"
-                         v-bind:showcheckbox="false" v-bind:disabled="nodedisabled"></yx-tree>
+                <yx-tree ref="treeRef" v-bind:data="data" v-on:onselectchange="onselectchange" v-bind:disabled="nodedisabled"></yx-tree>
             </div>
             <div slot="right" class="rightPane">
                 @RenderSection("element", true)

@@ -81,7 +81,7 @@
                         <i-button type="error" v-on:click="delShop">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDefSHOP" v-bind:height="300" selection=true
+                <yx-table v-bind:columns="screenParam.colDefSHOP" v-bind:height="300" selection
                           v-bind:data="dataParam.CONTRACT_SHOP" v-bind:disabled="!disabled" ref="refShop">
                 </yx-table>
             </Card>
@@ -96,7 +96,7 @@
                         <i-button type="error" v-on:click="delCost">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDefCOST" v-bind:height="300" selection=true
+                <yx-table v-bind:columns="screenParam.colDefCOST" v-bind:height="300" selection
                           v-bind:data="dataParam.CONTRACT_COST_DJDW" v-bind:disabled="!disabled" ref="refCost">
                 </yx-table>
             </Card>

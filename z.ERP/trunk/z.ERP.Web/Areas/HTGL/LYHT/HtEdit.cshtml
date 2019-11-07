@@ -220,7 +220,7 @@
                         <i-button type="error" v-on:click="delBrand">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDefPP" selection=true
+                <yx-table v-bind:columns="screenParam.colDefPP" selection
                           v-bind:data="dataParam.CONTRACT_BRAND" v-bind:disabled="!disabled" ref="refBrand">
                 </yx-table>
             </Card>
@@ -235,7 +235,7 @@
                         <i-button type="error" v-on:click="delShop">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDefSHOP" selection=true
+                <yx-table v-bind:columns="screenParam.colDefSHOP" selection
                           v-bind:data="dataParam.CONTRACT_SHOP" v-bind:disabled="!disabled" ref="refShop">
                 </yx-table>
             </Card>
@@ -251,7 +251,7 @@
                         <i-button type="error" v-on:click="delColGroup">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colGroup"  selection=true
+                <yx-table v-bind:columns="screenParam.colGroup"  selection
                           v-bind:data="dataParam.CONTRACT_GROUP" v-bind:disabled="!disabled" ref="refGroup">
                 </yx-table>
             </Card>
@@ -277,7 +277,7 @@
                     </div>
                 </i-col>
                 <i-col span="24">
-                    <yx-table v-bind:columns="screenParam.colDefRENT" v-bind:height="200" selection=true
+                    <yx-table v-bind:columns="screenParam.colDefRENT" v-bind:height="200" selection
                               v-bind:data="dataParam.CONTRACT_RENT" v-bind:disabled="!disabled" ref="refRent">
                     </yx-table>
                 </i-col>
@@ -346,7 +346,7 @@
                     </div>
                 </i-col>
                 <i-col span="24">
-                    <yx-table v-bind:columns="screenParam.colDefCOST" v-bind:height="300" selection=true
+                    <yx-table v-bind:columns="screenParam.colDefCOST" v-bind:height="300" selection
                               v-bind:data="dataParam.CONTRACT_COST" v-bind:disabled="!disabled" ref="refCost">
                     </yx-table>
                 </i-col>
@@ -361,7 +361,7 @@
                 </div>
             </i-col>
             <i-col span="24">
-                <yx-table v-bind:columns="screenParam.colDefPAY" v-bind:height="300" selection=true
+                <yx-table v-bind:columns="screenParam.colDefPAY" v-bind:height="300" selection
                           v-bind:data="dataParam.CONTRACT_PAY" v-bind:disabled="!disabled" ref="refPay">
                 </yx-table>
             </i-col>

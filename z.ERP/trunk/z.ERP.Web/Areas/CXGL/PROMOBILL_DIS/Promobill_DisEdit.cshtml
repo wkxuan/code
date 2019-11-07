@@ -73,7 +73,7 @@
                         <i-button type="primary" icon="md-settings" v-on:click="settingVal" >批量设置</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDefGoods" v-bind:height="400" selection=true
+                <yx-table v-bind:columns="screenParam.colDefGoods" v-bind:height="400" selection
                           v-bind:data="dataParam.PROMOBILL_GOODS" v-bind:disabled="!disabled" ref="refGoods">
                 </yx-table>
             </Card>
@@ -107,8 +107,4 @@
             <label>{{dataParam.TERMINATE_TIME}}</label>
         </i-col>
     </row>
-}
-@section pops{
-<yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
-          v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }

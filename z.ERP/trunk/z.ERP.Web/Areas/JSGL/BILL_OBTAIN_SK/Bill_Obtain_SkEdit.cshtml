@@ -85,7 +85,7 @@
                 <i-button type="primary" v-on:click="SelBill">选择</i-button>
                 <i-button type="error" v-on:click="delBill">删除</i-button>
             </div>
-            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection=true
+            <yx-table v-bind:columns="screenParam.colDef" v-bind:height="300" selection
                       v-bind:data="dataParam.BILL_OBTAIN_ITEM" v-bind:disabled="!disabled" ref="refBill">
             </yx-table>
         </Card>
@@ -99,7 +99,7 @@
                 <i-button type="primary" v-on:click="SelInvoice">选择</i-button>
                 <i-button type="error" v-on:click="delInvoice">删除</i-button>
             </div>
-            <yx-table v-bind:columns="screenParam.colDefI" v-bind:height="300" selection=true
+            <yx-table v-bind:columns="screenParam.colDefI" v-bind:height="300" selection
                       v-bind:data="dataParam.BILL_OBTAIN_INVOICE" v-bind:disabled="!disabled" ref="refINVOICE">
             </yx-table>
         </Card>

@@ -18,7 +18,7 @@
             名称
         </i-col>
         <i-col span="8" class="RowText">
-            <i-input typeof="text" v-model="dataParam.NAME" v-bind:disabled="!disabled"></i-input>
+            <i-input typeof="text" v-model="dataParam.NAME" v-bind:disabled="disabled"></i-input>
         </i-col>
     </row>
     <row>
@@ -30,7 +30,7 @@
                 RenderControl(new EnumDropDownListRender<末级标记>()
                 {
                     vModel = "dataParam.LAST_BJ",
-                    Enable = true
+                    Enable = false
                 });
             }
         </i-col>

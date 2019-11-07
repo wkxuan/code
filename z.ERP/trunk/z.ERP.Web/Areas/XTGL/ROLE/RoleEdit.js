@@ -4,10 +4,6 @@ editDetail.beforeVue = function () {
     editDetail.branchid = false;
     editDetail.service = "UserService";
     editDetail.method = "GetRoleElement";
-  
-    editDetail.screenParam.showPopCrmRole = false;
-    editDetail.screenParam.srcPopCrmRole = null;
-    editDetail.screenParam.popParam = {};
 
     editDetail.screenParam.userModule = [];
     editDetail.screenParam.ytTreeData = [];
@@ -242,11 +238,14 @@ editDetail.otherMethods = {
             Data: {}
         }, function (data) {
             if (!editDetail.dataParam.ROLECODE) {
-                editDetail.screenParam.srcPopCrmRole = data;
+                editDetail.popConfig.src = data;
             } else {
-                editDetail.screenParam.srcPopCrmRole = data + "?personid=" + editDetail.dataParam.ROLECODE;
+                editDetail.popConfig.src = data + "?personid=" + editDetail.dataParam.ROLECODE;
             }
-            editDetail.screenParam.showPopCrmRole = true;
+            editDetail.popConfig.title = "CRM权限";
+            editDetail.popConfig.height = 400;
+            editDetail.popConfig.width = 800;
+            editDetail.popConfig.open = true;
         });      
     },
     initdata: function (func) {
@@ -267,7 +266,7 @@ editDetail.otherMethods = {
 }
 //接收子页面返回值
 editDetail.popCallBack = function (data) {
-    editDetail.screenParam.showPopCrmRole = false;
+    editDetail.popConfig.open = false;
 };
 //按钮初始化
 editDetail.mountedInit = function () {

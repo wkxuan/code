@@ -2,11 +2,6 @@
     editDetail.service = "CxglService";
     editDetail.method = "";
 
-    editDetail.screenParam.showPop = false;
-    editDetail.screenParam.srcPop = "";
-    editDetail.screenParam.title = "";
-    editDetail.screenParam.popParam = {};
-
     editDetail.screenParam.INX = null;
     //商铺表格
     editDetail.screenParam.colDefPRESENT = [
@@ -25,16 +20,16 @@ editDetail.branchChange = function () {
     editDetail.dataParam.PROMOBILL_FG_RULE = [];
 };
 editDetail.popCallBack = function (data) {
-    if (editDetail.screenParam.showPop) {
-        editDetail.screenParam.showPop = false;
+    if (editDetail.popConfig.open) {
+        editDetail.popConfig.open = false;
         for (let i = 0; i < data.sj.length; i++) {
-            if (editDetail.screenParam.title == "选择营销活动") {
+            if (editDetail.popConfig.title == "选择营销活动") {
                 editDetail.dataParam.PROMOTIONID = data.sj[i].ID;
                 editDetail.dataParam.PROMOTIONNAME = data.sj[i].NAME;
                 editDetail.dataParam.START_DATE = data.sj[i].START_DATE;
                 editDetail.dataParam.END_DATE = data.sj[i].END_DATE;
             }
-            if (editDetail.screenParam.title == "选择赠品") {
+            if (editDetail.popConfig.title == "选择赠品") {
                 let itemData = editDetail.dataParam.PROMOBILL_FG_RULE;
                 for (let i = 0; i < data.sj.length; i++) {
                     if (itemData.filter(function (item) { return (data.sj[i].ID == item.PRESENTID) }).length == 0) {
@@ -49,10 +44,10 @@ editDetail.popCallBack = function (data) {
 
 editDetail.otherMethods = {
     srchPromotion: function () {
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPromotionList/";
-        editDetail.screenParam.title = "选择营销活动";
         editDetail.screenParam.popParam = { STATUS: 2 };
-        editDetail.screenParam.showPop = true;
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopPromotionList/";
+        editDetail.popConfig.title = "选择营销活动";
+        editDetail.popConfig.open = true;
     },
     srchpop: function () {
         if (!editDetail.dataParam.BRANCHID) {
@@ -60,9 +55,9 @@ editDetail.otherMethods = {
             return;
         }
         editDetail.screenParam.popParam = { BRANCHID: editDetail.dataParam.BRANCHID };
-        editDetail.screenParam.srcPop = __BaseUrl + "/Pop/Pop/PopPRESENTList/";
-        editDetail.screenParam.title = "选择赠品";
-        editDetail.screenParam.showPop = true;
+        editDetail.popConfig.src = __BaseUrl + "/Pop/Pop/PopPRESENTList/";
+        editDetail.popConfig.title = "选择赠品";
+        editDetail.popConfig.open = true;
     },
     addPRESENT: function () {
         if (!editDetail.dataParam.BRANCHID) {

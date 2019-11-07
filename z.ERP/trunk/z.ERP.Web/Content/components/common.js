@@ -1,17 +1,70 @@
 ﻿//table组件
 Vue.component('yx-table', {
-    props: ['columns', 'data', 'disabled', 'selection', 'stripe', 'showHeader', 'border', 'width', 'height', 'loading', 'highlightrow', 'size', 'showindex'],
+    props: {
+        columns: {
+            type: Array,
+            default: () =>[],
+            required: true
+        },
+        data: {
+            type: Array,
+            default: [],
+            required: true
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        selection: {
+            type: Boolean,
+            default: false
+        },
+        stripe: {
+            type: Boolean,
+            default: true
+        },
+        showheader: {
+            type: Boolean,
+            default: true
+        },
+        border: {
+            type: Boolean,
+            default: true
+        },
+        width: {
+            type: Number,
+        },
+        height: {
+            type: Number,
+        },
+        size: {
+            type: String,
+            default: "small"
+        },
+        showindex: {
+            type: Boolean,
+            default: false
+        },
+        loading: {
+            type: Boolean,
+            default: false
+        },
+        highlightrow: {
+            type: Boolean,
+            default: false
+        }
+    },
     template: ` <div style="width:100%;height:100%;position: relative;"> ` +
                  ` <i-table ref="tableRef" v-bind:columns="curColumns" ` +
                     ` v-bind:data="curData" ` +
-                    ` v-bind:stripe="curStripe" ` +
-                    ` v-bind:show-header="curShowHeader" ` +
-                    ` v-bind:border="curBorder" ` +
-                    ` v-bind:width="curWidth" ` +
-                    ` v-bind:height="curHeight" ` +
-                    ` v-bind:loading="curLoading" ` +
-                    ` v-bind:highlight-row="curHighlightRow" ` +
-                    ` v-bind:size="curSize" ` +
+                    ` v-bind:stripe="stripe" ` +
+                    ` v-bind:show-header="showheader" ` +
+                    ` v-bind:border="border" ` +
+                    ` v-bind:width="width" ` +
+                    ` v-bind:height="height" ` +
+                    ` v-bind:loading="loading" ` +
+                    ` v-bind:highlight-row="highlightrow" ` +
+                    ` v-bind:size="size" ` +
                     ` v-bind:tooltipTheme="curTooltipTheme" ` +
                     ` v-on:on-current-change="currentChange" ` +
                     ` v-on:on-sort-change="sortChange" ` +
@@ -35,14 +88,7 @@ Vue.component('yx-table', {
             ` </div> `,
     data() {
         return {
-            curShowHeader: true,
-            curWidth: null,
-            curHeight: null,
-            curMaxHeight: null,
-            curSize: "small",
             curTooltipTheme: "light",
-            curStripe: null,
-            curBorder: null,
             visibleCols: [],
             visibleList: [],
             colsList: [],
@@ -52,13 +98,7 @@ Vue.component('yx-table', {
             operateCol: []
         };
     },
-    mounted() {
-        this.curShowHeader = this.showHeader;
-        this.curWidth = this.width;
-        this.curHeight = this.height;
-        this.curStripe = this.stripe || true;
-        this.curBorder = this.border || true;
-    },
+    mounted() {},
     watch: {
         columns: {
             handler: function (nv, ov) {
@@ -84,12 +124,6 @@ Vue.component('yx-table', {
     computed: {
         curData() {
             return this.data || [];
-        },
-        curLoading() {
-            return this.loading;
-        },
-        curHighlightRow() {
-            return this.highlightrow;
         }
     },
     methods: {
@@ -850,10 +884,33 @@ Vue.component('yx-echart-bar', {
 });
 //弹窗组件
 Vue.component('yx-modal', {
-    props: ['src', 'modalVisible', 'width', 'height', 'title'],
+    props:{
+        src: {
+            type: String,
+            default: "",
+            required: true
+        },
+        title: {
+            type: String,
+            default: "弹窗"
+        },
+        visible: {
+            type: Boolean,
+            default: false,
+            required: true
+        },
+        width: {
+            type: Number,
+            default: 900
+        },
+        height: {
+            type: Number,
+            default: 500
+        }
+    },
     template: `<Modal v-model="curVisible" :width="curWidth" v-on:on-visible-change="visibleChange" draggable footer-hide transfer>` +
                  `<div slot="header" name="header">` +
-                    `<span>{{curTitle}}</span>` +
+                    `<span>{{title}}</span>` +
                  `</div>` +
                  `<iframe :id="id" :src="src" frameborder="false" scrolling="no" style="border:none;"` +
                           `width="100%" :height="curHeight"></iframe>` +
@@ -861,19 +918,14 @@ Vue.component('yx-modal', {
     data() {
         return {
             id: Guid(),
-            curWidth: null,
+            curWidth: "",
             curVisible: false,
             curHeight: "550px"
         }
     },
-    mounted() {
-        this.curWidth = this.width || 900;
-        if (this.height) {
-            this.curHeight = this.height + "px";
-        }
-    },
+    mounted() {},
     watch: {
-        modalVisible: {
+        visible: {
             handler: function (nv, ov) {
                 this.curVisible = nv;
             }
@@ -883,19 +935,25 @@ Vue.component('yx-modal', {
                 let _iframe1 = window.document.getElementById(this.id);
                 _iframe1.contentWindow.location.reload();
             }
+        },
+        height: {
+            handler: function (nv, ov) {
+                this.curHeight = nv + "px";
+            }
+        },
+        width: {
+            handler: function (nv, ov) {
+                this.curWidth = nv;
+            }
         }
     },
-    computed: {
-        curTitle() {
-            return this.title || "弹窗";
-        }
-    },
+    computed: {},
     methods: {
         visibleChange() {
             let iframe = document.getElementById(this.id);
             let iwindow = iframe.contentWindow;
             if (!this.curVisible) {
-                this.$emit('update:modalVisible', this.curVisible);
+                this.$emit('update:visible', this.curVisible);
             } else {
                 iwindow.location.reload(true);
             }
@@ -904,7 +962,33 @@ Vue.component('yx-modal', {
 });
 //tree组件
 Vue.component('yx-tree', {
-    props: ['data', 'disabled', 'disablecheckbox', 'showcheckbox', 'multiple', 'checkstrictly'],
+    props: {
+        data: {
+            type: Array,
+            default: [],
+            required: true
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        showcheckbox: {
+            type: Boolean,
+            default: false
+        },
+        disablecheckbox: {
+            type: Boolean,
+            default: false
+        },
+        multiple: {
+            type: Boolean,
+            default: false
+        },
+        checkstrictly: {
+            type: Boolean,
+            default: false
+        }
+    },
     template: `<Tree ref="treeRef" :data="curData" :multiple="multiple" :show-checkbox="showcheckbox" ` +
               ` :check-strictly="checkstrictly" ` +
               ` v-on:on-select-change="onSelectChange" ` +
@@ -915,11 +999,8 @@ Vue.component('yx-tree', {
             curData: [],
         }
     },
-    mounted() {
-    },
-    computed: {
-
-    },
+    mounted() { },
+    computed: { },
     watch: {
         data: {
             handler: function (nv, ov) {

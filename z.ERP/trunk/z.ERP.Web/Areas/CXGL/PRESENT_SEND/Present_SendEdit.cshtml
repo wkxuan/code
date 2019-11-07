@@ -47,7 +47,7 @@
                         <i-input v-model="screenParam.AMOUNTS" placeholder="" readonly/>
                     </i-col>                   
                 </row>
-                <yx-table v-bind:columns="screenParam.colDefticket" v-bind:height="400" selection=true
+                <yx-table v-bind:columns="screenParam.colDefticket" v-bind:height="400" selection
                           v-bind:data="dataParam.PRESENT_SEND_TICKET" v-bind:disabled="!disabled" ref="reftickets">
                 </yx-table>
             </Card>
@@ -55,7 +55,7 @@
         <i-col span="12">
             <Card v-bind:padding=0 class="righttopcard" shadow>
                 <p slot="title">赠品列表</p>
-                <yx-table v-bind:columns="screenParam.colDefpresent" v-bind:height="213" selection=true
+                <yx-table v-bind:columns="screenParam.colDefpresent" v-bind:height="213" selection
                           v-bind:data="screenParam.PRESENT" v-bind:disabled="!disabled" ref="refpresents">
                 </yx-table>
             </Card>
@@ -67,15 +67,10 @@
                         <i-button type="error" v-on:click="delpresentss">删除</i-button>
                     </div>
                 </div>
-                <yx-table v-bind:columns="screenParam.colDefpresents" v-bind:height="180" selection=true
+                <yx-table v-bind:columns="screenParam.colDefpresents" v-bind:height="180" selection
                           v-bind:data="dataParam.PRESENT_SEND_ITEM" v-bind:disabled="!disabled" ref="refpresentss">
                 </yx-table>
             </Card>
         </i-col>
     </row>
-}
-
-@section pops{
-    <yx-modal v-bind:src="screenParam.srcPop" v-bind:title="screenParam.title" width="900"
-              v-bind:modal-visible.sync="screenParam.showPop"></yx-modal>
 }
