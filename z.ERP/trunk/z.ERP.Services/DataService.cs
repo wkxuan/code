@@ -113,7 +113,7 @@ namespace z.ERP.Services
             return dt.ToSelectItem("ID", "NAME");
         }
         //收费单位
-        public List<SelectItem> feeAccount()
+        public List<SelectItem> feeAccountList()
         {
             string sql = "select id,name from fee_account where BRANCHID IN (" + GetPermissionSql(PermissionType.Branch) + ") order by id ";
             DataTable dt = DbHelper.ExecuteTable(sql);
