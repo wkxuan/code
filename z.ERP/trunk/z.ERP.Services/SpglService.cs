@@ -373,13 +373,15 @@ namespace z.ERP.Services
             data.REPORTER_NAME = employee.Name;
             data.REPORTER_TIME = DateTime.Now.ToString();
             data.POSNO = (data.BRANCHID + "0999").PadLeft(6, '0');
-
+            
             v.Require(a => a.BILLID);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.ACCOUNT_DATE);
             v.Require(a => a.CASHIERID);
             v.Require(a => a.CLERKID);
             v.Verify();
+
+            data.ACCOUNT_DATE = Convert.ToDateTime(data.ACCOUNT_DATE).ToShortDateString();
 
             data.SALEBILLITEM?.ForEach(item =>
             {
@@ -402,7 +404,12 @@ namespace z.ERP.Services
         }
         public string SaveSaleBill(SALEBILLEntity SaveData)
         {
-            SaleBillPro(SaveData);
+           
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                SaleBillPro(SaveData);
+                Tran.Commit();
+            }
             return SaveData.BILLID;
         }
         public ImportMsg VerifyImportDataSaleBill(DataTable dt, ref List<SALEBILLEntity> SaveDataList)
@@ -439,7 +446,7 @@ namespace z.ERP.Services
                         backData.SuccFlag = false;
                         return backData;
                     }
-                    SaveData.ACCOUNT_DATE = jzri;
+                    SaveData.ACCOUNT_DATE = Convert.ToDateTime(jzri).ToShortDateString();
                 }
                 else
                 {
