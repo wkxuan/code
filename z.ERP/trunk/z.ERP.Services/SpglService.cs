@@ -454,41 +454,58 @@ namespace z.ERP.Services
                     backData.SuccFlag = false;
                     return backData;
                 }
-
+                var syy = "";
                 if (dt.Columns.Contains("收银员"))
                 {
-                    var syy = dt.Rows[i]["收银员"].ToString();
-                    if (string.IsNullOrEmpty(syy))
-                    {
-                        backData.Message = $@"第{i + 1}行的收银员不能为空！";
-                        backData.SuccFlag = false;
-                        return backData;
-                    }
-                    SaveData.CASHIERID = GetTableDataKey("SYSUSER", "USERCODE", syy, "USERID");
+                    syy = "收银员";
                 }
-                else
+                if (dt.Columns.Contains("收银员编码"))
+                {
+                    syy = "收银员编码";
+                }
+                if (string.IsNullOrEmpty(syy))
                 {
                     backData.Message = "导入项没有收银员！";
                     backData.SuccFlag = false;
                     return backData;
                 }
+                var syyValue = dt.Rows[i][syy].ToString();
 
+                if (string.IsNullOrEmpty(syyValue))
+                {
+                    backData.Message = $@"第{i + 1}行的{syy}不能为空！";
+                    backData.SuccFlag = false;
+                    return backData;
+                }else
+                {
+                    SaveData.CASHIERID = GetTableDataKey("SYSUSER", "USERCODE", syyValue, "USERID");
+                }
+
+                var yyy = "";
                 if (dt.Columns.Contains("营业员"))
                 {
-                    var yyy = dt.Rows[i]["营业员"].ToString();
-                    if (string.IsNullOrEmpty(yyy))
-                    {
-                        backData.Message = $@"第{i + 1}行的营业员不能为空！";
-                        backData.SuccFlag = false;
-                        return backData;
-                    }
-                    SaveData.CLERKID = GetTableDataKey("SYSUSER", "USERCODE", yyy, "USERID");
+                    yyy = "营业员";
+                }
+                if (dt.Columns.Contains("营业员编码"))
+                {
+                    yyy = "营业员编码";
+                }
+                if (string.IsNullOrEmpty(syy))
+                {
+                    backData.Message = "导入项没有收银员！";
+                    backData.SuccFlag = false;
+                    return backData;
+                }
+                var yyyValue = dt.Rows[i][yyy].ToString();
+                if (string.IsNullOrEmpty(syyValue))
+                {
+                    backData.Message = $@"第{i + 1}行的{yyy}不能为空！";
+                    backData.SuccFlag = false;
+                    return backData;
                 }
                 else
                 {
-                    backData.Message = "导入项没有营业员！";
-                    backData.SuccFlag = false;
-                    return backData;
+                    SaveData.CLERKID = GetTableDataKey("SYSUSER", "USERCODE", yyyValue, "USERID");
                 }
 
                 var list = new List<SALEBILLITEMEntity>();
