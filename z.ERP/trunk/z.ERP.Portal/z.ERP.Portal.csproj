@@ -289,6 +289,7 @@
     <Content Include="Content\ui\img\weipayimg.png" />
     <Content Include="Content\ui\img\weixin_nfine.png" />
     <Content Include="Content\ui\img\yxlogo.png" />
+    <Content Include="Content\ui\img\yxlogoTitle.png" />
     <Content Include="Content\ui\js\bootstrap\bootstrap.js" />
     <Content Include="Content\ui\js\bootstrap\bootstrap.min.css" />
     <Content Include="Content\ui\js\charts\Chart.js" />
