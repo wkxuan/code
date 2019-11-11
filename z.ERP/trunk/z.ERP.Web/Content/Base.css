@@ -8,6 +8,7 @@
 [v-cloak] {
     display: none;
 }
+
 .RowTitle {
     text-align: right;
     font-size: small;
@@ -22,6 +23,10 @@
 .RowText {
     text-align: left;
     font-size: small;
+}
+.ivu-select-disabled .ivu-select-selection,
+.ivu-input[disabled], fieldset[disabled] .ivu-input{
+    color:#515a6e !important;
 }
 
 .elementcard .ivu-row {
