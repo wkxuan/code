@@ -56,6 +56,7 @@
     <Compile Include="Auto\PROMOBILLEntity.cs" />
     <Compile Include="Auto\PROMOBILL_FG_RULEEntity.cs" />
     <Compile Include="Auto\PROMOBILL_GOODSEntity.cs" />
+    <Compile Include="Auto\TICKET_ACTIVITY_HISTORYEntity.cs" />
     <Compile Include="Auto\PROMOTIONEntity.cs" />
     <Compile Include="Auto\PUBLICDATAEntity.cs" />
     <Compile Include="Auto\READNOTOCELOGEntity.cs" />

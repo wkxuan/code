@@ -1,0 +1,75 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Define
+@inherits DefineViewBase
+@section head{
+    <style>
+        .ivu-split-trigger-vertical {
+            display:none
+        }
+        #define .topMenuBtn {
+            text-align:center !important;
+        }
+    </style>
+    }
+@section element{
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            营销活动
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.PROMOTIONNAME" v-on:on-click="srchPromotion"/>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            开始时间
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-model="screenParam.START_DATE"/>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            结束时间
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-model="screenParam.END_DATE" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            扫码区
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="screenParam.TICKETNO" v-on:on-enter="SMsearch"/>
+        </i-col>
+        <i-col span="12">
+            <span style="color:orangered;line-height:32px;text-align:left">扫码时请将光标置于扫码区输入框内</span>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            款台号
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="screenParam.POSNO" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            小票号
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="screenParam.DEALID" />
+        </i-col>
+        <i-col span="8" class="RowText" style="padding-left:10px">
+            <i-button type="primary" v-on:click="srchbtn">添加</i-button>
+            <i-button type="error" v-on:click="delbtn">删除</i-button>
+        </i-col>
+    </row>
+    <row style="padding:0px 10px;">
+        <i-col span="14">
+            <yx-table v-bind:columns="screenParam.itemDef" v-bind:height="400" selection
+                      v-bind:data="dataParam.ITEM" v-bind:disabled="disabled" ref="refGroup">
+            </yx-table>
+        </i-col>
+    </row>
+}
+

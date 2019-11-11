@@ -216,6 +216,7 @@
     <Compile Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DISController.cs" />
     <Compile Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGController.cs" />
     <Compile Include="Areas\CXGL\PROMOTION\PromotionController.cs" />
+    <Compile Include="Areas\CXGL\TICKET_ACTIVITY\TICKET_ACTIVITYController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
     <Compile Include="Areas\DPGL\ASSETCHANGE\AssetChangeController.cs" />
     <Compile Include="Areas\HTGL\DJDW\DjdwController.cs" />
@@ -375,6 +376,7 @@
     <Content Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGList.js" />
     <Content Include="Areas\CXGL\PROMOTION\Promotion.js" />
     <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.js" />
+    <Content Include="Areas\CXGL\TICKET_ACTIVITY\TICKET_ACTIVITY.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltEdit.js" />
     <Content Include="Areas\DPGL\ASSETSPILT\AssetSpiltList.js" />
     <Content Include="Areas\DPGL\ASSETCHANGE\AssetChangeEdit.js" />
@@ -824,6 +826,7 @@
     <Content Include="File\Import\销售补录单.xls" />
     <Content Include="File\Import\品牌信息.xls" />
     <Content Include="Areas\XTGL\PAY_CHARGES\Pay_Charges.cshtml" />
+    <Content Include="Areas\CXGL\TICKET_ACTIVITY\TICKET_ACTIVITY.cshtml" />
     <None Include="File\Template\合同模板.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

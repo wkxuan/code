@@ -482,7 +482,7 @@ namespace z.ERP.Services
             int status = 0;
             string sql = $@"SELECT S.POSNO ,S.DEALID,S.SALE_AMOUNT AMOUNT,S.SALE_TIME
                     FROM ALLSALE S,STATION ST
-                    WHERE S.POSNO =ST.STATIONBH AND S.ISFG=2 AND S.SALE_AMOUNT>0 AND S.POSNO='{POSNO}' AND DEALID='{DEALID}' AND ST.BRANCHID='{BRANCHID}' 
+                    WHERE S.POSNO =ST.STATIONBH AND S.ISFG=1 AND S.SALE_AMOUNT>0 AND S.POSNO='{POSNO}' AND DEALID='{DEALID}' AND ST.BRANCHID='{BRANCHID}' 
                     AND NOT EXISTS (SELECT POSNO,DEALID FROM ALLSALE WHERE POSNO_OLD='{POSNO}' AND DEALID_OLD='{DEALID}')";
             var dt = DbHelper.ExecuteTable(sql);
             if (dt.Rows.Count > 0)
@@ -647,5 +647,41 @@ namespace z.ERP.Services
         }
         #endregion
 
+        #region 活动小票兑奖
+        public DataGridResult GetNULL(SearchItem item)
+        {
+            DataTable dt = new DataTable();
+            int count = 0;
+            return new DataGridResult(dt, count);
+        }
+        public DataTable GetSaleTicketInfo(string PROMOTIONID, string POSNO, string DEALID)
+        {
+            string sql = $@"SELECT S.POSNO ,S.DEALID,S.SALE_AMOUNT AMOUNT,S.SALE_TIME
+                    FROM ALLSALE S
+                    WHERE S.ISFG in (1,2) AND S.SALE_AMOUNT>0 AND S.POSNO='{POSNO}' AND DEALID='{DEALID}' 
+                    AND NOT EXISTS (SELECT POSNO,DEALID FROM ALLSALE WHERE POSNO_OLD='{POSNO}' AND DEALID_OLD='{DEALID}') 
+                    AND NOT EXISTS (SELECT POSNO,DEALID FROM TICKET_ACTIVITY_HISTORY WHERE POSNO='{POSNO}' AND DEALID='{DEALID}' AND PROMOTIONID='{PROMOTIONID}')";
+            var dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+        public bool SaveTICKET_ACTIVITY_HISTORY(List<TICKET_ACTIVITY_HISTORYEntity> DefineSave) {
+            foreach (var item in DefineSave) {
+                var v = GetVerify(item);
+                item.REPORTER = employee.Id;
+                item.REPORTER_NAME = employee.Name;
+                item.REPORTER_TIME = DateTime.Now.ToString();
+
+                v.Require(a => a.PROMOTIONID);
+                v.Require(a => a.POSNO);
+                v.Require(a => a.DEALID);
+                using (var tran = DbHelper.BeginTransaction())
+                {
+                    DbHelper.Save(item);
+                    tran.Commit();
+                }
+            }
+            return true;
+        }
+        #endregion
     }
 }
