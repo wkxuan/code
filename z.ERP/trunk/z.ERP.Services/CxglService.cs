@@ -667,6 +667,8 @@ namespace z.ERP.Services
         public bool SaveTICKET_ACTIVITY_HISTORY(List<TICKET_ACTIVITY_HISTORYEntity> DefineSave) {
             foreach (var item in DefineSave) {
                 var v = GetVerify(item);
+                TICKET_ACTIVITY_HISTORYEntity Data = DbHelper.Select(item);
+                if (Data!=null) { throw new LogicException($@"终端号:{Data.POSNO},小票号:{Data.DEALID} 已参加过该活动!"); }
                 item.REPORTER = employee.Id;
                 item.REPORTER_NAME = employee.Name;
                 item.REPORTER_TIME = DateTime.Now.ToString();

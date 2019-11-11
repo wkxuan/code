@@ -13,7 +13,7 @@ namespace z.ERP.Web.Areas.CXGL.TICKET_ACTIVITY
     {
         public ActionResult TICKET_ACTIVITY()
         {
-            ViewBag.Title = "小票活动兑奖";
+            ViewBag.Title = "营销活动兑奖";
             return View();
         }
         public UIResult GetSaleTicket(string PROMOTIONID,string POSNO, string DEALID)
