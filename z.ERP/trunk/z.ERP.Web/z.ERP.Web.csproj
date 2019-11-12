@@ -258,6 +258,7 @@
     <Compile Include="Areas\Report\MerchantPayable\MerchantPayableController.cs" />
     <Compile Include="Areas\Report\MerchantPayCost\MerchantPayCostController.cs" />
     <Compile Include="Areas\Report\MerchantRent\MerchantRentController.cs" />
+    <Compile Include="Areas\Report\MerchantSaleCollect\MerchantSaleCollectController.cs" />
     <Compile Include="Areas\Report\PAYINFO\PAYINFOController.cs" />
     <Compile Include="Areas\Report\PayTypeSale\PayTypeSaleController.cs" />
     <Compile Include="Areas\Report\SALEGATHER\SALEGATHERController.cs" />
@@ -451,6 +452,7 @@
     <Content Include="Areas\Report\MerchantPayCost\MerchantPayCost.js" />
     <Content Include="Areas\JSGL\Invoice\InvoiceEdit.js" />
     <Content Include="Areas\Report\MerchantRent\MerchantRent.js" />
+    <Content Include="Areas\Report\MerchantSaleCollect\MerchantSaleCollect.js" />
     <Content Include="Areas\Report\PAYINFO\PAYINFO.js" />
     <Content Include="Areas\Report\PayTypeSale\PayTypeSale.js" />
     <Content Include="Areas\Report\SALEGATHER\SALEGATHER.js" />
@@ -827,6 +829,7 @@
     <Content Include="File\Import\品牌信息.xls" />
     <Content Include="Areas\XTGL\PAY_CHARGES\Pay_Charges.cshtml" />
     <Content Include="Areas\CXGL\TICKET_ACTIVITY\TICKET_ACTIVITY.cshtml" />
+    <Content Include="Areas\Report\MerchantSaleCollect\MerchantSaleCollect.cshtml" />
     <None Include="File\Template\合同模板.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
