@@ -76,12 +76,24 @@ namespace z.POS.Services
         /// <returns></returns>
         public long GetLastDealid()
         {
-            string sql = $"select nvl(max(jlbh),0) from xsjl where sktno = '{employee.PlatformId}'";
+            //string sql = $"select nvl(max(jlbh),0) from xsjl where sktno = '{employee.PlatformId}'";
 
-            long lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
+            //long lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
 
-            sql = $"select nvl(max(jlbh),0) from sktxsjl where sktno = '{employee.PlatformId}'";
-            long lastDealid_his = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
+            //sql = $"select nvl(max(jlbh),0) from sktxsjl where sktno = '{employee.PlatformId}'";
+            //long lastDealid_his = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
+
+            //return (lastDealid > lastDealid_his) ? lastDealid : lastDealid_his;
+
+            string sqlerp = $"select nvl(max(JLBH),0) from XSJL where SKTNO = '{employee.PlatformId}'";
+            string sqlcrm = $"select nvl(max(JLBH),0) from BFCRM10.HYK_XFJL where STATUS in (1,2) and SKTNO='{employee.PlatformId}'";
+
+            long lastDealidErp = long.Parse(DbHelper.ExecuteTable(sqlerp).Rows[0][0].ToString());
+            long lastDealidCrm = long.Parse(DbHelper.ExecuteTable(sqlcrm).Rows[0][0].ToString());
+
+            long lastDealid = (lastDealidErp > lastDealidCrm) ? lastDealidErp : lastDealidCrm;
+            sqlerp = $"select nvl(max(JLBH),0) from SKTXSJL where SKTNO = '{employee.PlatformId}'";
+            long lastDealid_his = long.Parse(DbHelper.ExecuteTable(sqlerp).Rows[0][0].ToString());
 
             return (lastDealid > lastDealid_his) ? lastDealid : lastDealid_his;
         }
@@ -5244,6 +5256,8 @@ namespace z.POS.Services
                         CancelCoupon(posNo, out error);
                     }
 
+                    msg = msg + ";" + CancelBackBill(CrmBillId);
+
                     throw new Exception(msg);
                 }
                 else
@@ -5254,7 +5268,10 @@ namespace z.POS.Services
                     if (!CheckOut(posNo, CrmBillId, out ReturnCouponList, out CanReturnCouponList, out msg))
                     {
                         result = -1;
-                        throw new Exception("提交CRM  失败:" + msg);
+
+                        msg = msg + ";" + CancelBackBill(CrmBillId);
+
+                        throw new Exception("提交CRM失败:" + msg);
                     }
                 }
 
@@ -6922,6 +6939,23 @@ namespace z.POS.Services
             }
 
             return result;
+        }
+
+        public string CancelBackBill(int serverBillId)
+        {
+            string CRMUSer = "CRMUSER", CRMPwd = "CRMUSER";
+
+
+            CrmSoapHeader crmSoapHeader = new CrmSoapHeader();
+            crmSoapHeader.UserId = CRMUSer;
+            crmSoapHeader.Password = CRMPwd;
+
+            CancelRSaleBackBillRequest req = new CancelRSaleBackBillRequest();
+            req.CrmSoapHeader = crmSoapHeader;
+            req.serverBillId = serverBillId;
+            CancelRSaleBackBillResponse res = PosAPI.CancelRSaleBackBill(req);
+             
+            return res.msg;
         }
 
     }
