@@ -331,7 +331,7 @@ editDetail.beforeVue = function () {
         { title: "费用项目名称", key: 'TERMNAME' },
         { title: '开始日期', key: 'STARTDATE', cellType: "date", enableCellEdit: true },
         { title: '结束日期', key: 'ENDDATE', cellType: "date", enableCellEdit: true },
-        { title: "比例(‰)", key: 'KL'},
+        { title: "分摊比例(%)", key: 'KL', cellType: "input" },
     ];
 
     editDetail.screenParam.splcjd = [];
@@ -431,7 +431,7 @@ editDetail.popCallBack = function (data) {
                                 loc[item.key] = data.sj[i].NAME;
                                 break;
                             case "KL":
-                                loc[item.key] = data.sj[i].RATE*1000;
+                                loc[item.key] = 100;//data.sj[i].RATE*100;
                                 break;
                             default:
                                 loc[item.key] = null;
