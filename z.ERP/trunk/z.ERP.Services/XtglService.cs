@@ -56,10 +56,10 @@ namespace z.ERP.Services
         }
         public DataGridResult GetPay(SearchItem item)
         {
-            string sql = $@"SELECT P.PAYID,P.NAME,NVL(PC.RATE,0) RATE FROM PAY P,PAY_CHARGES PC  WHERE P.PAYID=PC.PAYID(+) ";
+            string sql = $@"SELECT P.PAYID,P.NAME FROM PAY P WHERE 1=1 ";
             item.HasKey("PAYID", a => sql += $" and P.PAYID LIKE '%{a}%'");
             item.HasKey("NAME", a => sql += $" and P.NAME LIKE '%{a}%'");
-            item.HasKey("BRANCHID", a => sql += $" and PC.BRANCHID(+) ='{a}'");
+         //   item.HasKey("BRANCHID", a => sql += $" and PC.BRANCHID(+) ='{a}'");
             sql += " ORDER BY  P.PAYID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -1435,7 +1435,7 @@ namespace z.ERP.Services
         #region 收款方式手续费
         public DataGridResult GetPay_Charges(SearchItem item)
         {
-            string sql = $@"SELECT PC.BRANCHID,PC.PAYID,PC.RATE*1000 RATE,PC.FLOOR,PC.CEILING,P.NAME PAYNAME FROM PAY_CHARGES PC,PAY P WHERE PC.PAYID=P.PAYID AND P.TYPE>3 AND P.TYPE<20";
+            string sql = $@"SELECT PC.BRANCHID,PC.PAYID,PC.RATE*1000 RATE,PC.FLOOR,PC.CEILING,P.NAME PAYNAME FROM PAY P WHERE PC.PAYID=P.PAYID AND P.TYPE>3 AND P.TYPE<20";
             item.HasKey("BRANCHID", a => sql += $" and PC.BRANCHID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
