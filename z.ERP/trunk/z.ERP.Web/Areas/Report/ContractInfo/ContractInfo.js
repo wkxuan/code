@@ -1,6 +1,7 @@
 ﻿search.beforeVue = function () {
     var col = [
         { title: '租约号', key: 'CONTRACTID', width: 150, sortable: true, ellipsis: true, tooltip: true },
+        { title: '状态', key: 'STATUSMC', width: 100, sortable: true, ellipsis: true, tooltip: true },
         { title: '楼层', key: 'FLOORCODE', width: 80, sortable: true, ellipsis: true, tooltip: true },
         { title: '铺位号', key: 'SHOPCODE', width: 120, sortable: true, ellipsis: true, tooltip: true },
         { title: '品牌', key: 'BRANDNAME', width: 120, sortable: true, ellipsis: true, tooltip: true },
@@ -51,6 +52,7 @@ search.newCondition = function () {
     search.searchParam.BRANDNAME = "";
     search.searchParam.CATEGORYCODE = "";
     search.searchParam.CATEGORY = [];
+    search.searchParam.STATUS = "";
 };
 
 search.mountedInit = function () {

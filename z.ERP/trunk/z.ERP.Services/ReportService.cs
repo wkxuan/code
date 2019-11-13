@@ -320,15 +320,15 @@ namespace z.ERP.Services
                 }
             }
             string SqlyTQx = GetYtQx("Y");
-            string sql = " SELECT C.CONTRACTID,CS.SHOPDM SHOPCODE,CB.BRANDNAME,CS.FLOORCODE,"
+            string sql = " SELECT C.CONTRACTID,CI.SHOPCODESTR SHOPCODE,CI.BRANDNAMESTR BRANDNAME,CI.FLOORCODESTR FLOORCODE,"
                        + "        M.MERCHANTID,M.NAME MERCHANTNAME, C.AREAR,to_char(C.CONT_START,'YYYY-MM-DD') CONT_START,"
-                       + "        to_char(C.CONT_END,'YYYY-MM-DD') CONT_END,O.NAME RENTWAY, CR.RENTPRICE,FR.NAME RENTRULE "
+                       + "        to_char(C.CONT_END,'YYYY-MM-DD') CONT_END,O.NAME RENTWAY, CR.RENTPRICE,FR.NAME RENTRULE,C.STATUS "
                        + sql1
-                       + "  FROM CONTRACT C, MERCHANT M,CONTRACT_SHOPXX CS, CONTRACT_RENTPRICE CR,"
-                       + "       CONTRACT_BRANDXX CB, OPERATIONRULE O,FEERULE FR"
-                       + " WHERE C.MERCHANTID = M.MERCHANTID AND C.CONTRACTID = CS.CONTRACTID"
+                       + "  FROM CONTRACT C, MERCHANT M,CONTRACT_INFO CI, CONTRACT_RENTPRICE CR,"
+                       + "       OPERATIONRULE O,FEERULE FR"
+                       + " WHERE C.MERCHANTID = M.MERCHANTID"
                        + "   AND C.CONTRACTID = CR.CONTRACTID "
-                       + "   AND C.CONTRACTID = CB.CONTRACTID"
+                       + "   AND C.CONTRACTID = CI.CONTRACTID "
                        + "   AND C.OPERATERULE = O.ID AND C.FEERULE_RENT = FR.ID"
                        + "   AND C.HTLX=1 "  //AND C.STATUS !=5
                        + "   AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
@@ -343,10 +343,11 @@ namespace z.ERP.Services
             item.HasKey("FLOORID", a => sql += $" and exists(select 1 from CONTRACT_SHOP CP,SHOP S where C.CONTRACTID = CP.CONTRACTID and CP.SHOPID = S.SHOPID AND S.FLOORID in ({a})) ");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID in ({a})");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
+            item.HasKey("STATUS", a => sql += $" and C.STATUS = '{a}'");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
             item.HasKey("BRANDNAME", a => sql += $" and exists(select 1 from CONTRACT_BRAND CD,BRAND B where C.CONTRACTID=CD.CONTRACTID and CD.BRANDID=B.ID and B.NAME LIKE '%{a}%') ");
 
-            sql += " ORDER BY CS.FLOORCODE,C.CONTRACTID ";
+            sql += " ORDER BY CI.FLOORCODESTR,C.CONTRACTID ";
 
             return sql;
         }
@@ -356,6 +357,7 @@ namespace z.ERP.Services
 
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
             return new DataGridResult(dt, count);
         }
         public DataTable ContractInfoOutput(SearchItem item)
@@ -363,6 +365,7 @@ namespace z.ERP.Services
             string sql = ContractInfoSql(item);
 
             DataTable dt = DbHelper.ExecuteTable(sql);
+            dt.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
             return dt;
         }
 
@@ -1021,7 +1024,8 @@ namespace z.ERP.Services
             }
             var sql = $@"SELECT {sqlpay} SUM(A.AMOUNT) SUMPAY,G.MERCHANTID,M.NAME MERCHANTNAME 
                         FROM ALLSALE_GOODS_PAY A,GOODS G,MERCHANT M ,CONTRACT C,BRANCH B,BRAND BD
-                        WHERE A.GOODSID=G.GOODSID AND G.MERCHANTID=M.MERCHANTID AND G.CONTRACTID=C.CONTRACTID AND C.BRANCHID=B.ID AND G.BRANDID=BD.ID";
+                        WHERE A.GOODSID=G.GOODSID AND G.MERCHANTID=M.MERCHANTID AND G.CONTRACTID=C.CONTRACTID AND C.BRANCHID=B.ID AND G.BRANDID=BD.ID
+                        AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ") ";  //门店权限";
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID in ({a})");
             item.HasKey("Pay", a => sql += $" and A.PAYID in ({a})");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME = '{a}'");
