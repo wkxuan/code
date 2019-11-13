@@ -998,5 +998,76 @@ namespace z.ERP.Services
             return dt;
         }
         #endregion
+
+        #region 商户销售汇总
+        public DataTable GetPayData(SearchItem item)
+        {
+            var id = "";
+            item.HasKey("Pay", a => id = a);
+            string sql = $@"SELECT * FROM PAY WHERE VOID_FLAG=1 ";
+            if (!string.IsNullOrEmpty(id)) {
+                sql += $" AND PAYID in ({id})";
+            }
+            sql+=" ORDER BY  PAYID ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+        public string MerchantSaleCollectSQL(SearchItem item) {           
+            var paydata = GetPayData(item);
+            var sqlpay = "";           
+            foreach (DataRow pay in paydata.Rows) {
+                var payid = pay["PAYID"].ToString();
+                sqlpay += $@"SUM(DECODE(A.PAYID,{payid},A.AMOUNT,0)) PAYID{payid},";
+            }
+            var sql = $@"SELECT {sqlpay} SUM(A.AMOUNT) SUMPAY,G.MERCHANTID,M.NAME MERCHANTNAME 
+                        FROM ALLSALE_GOODS_PAY A,GOODS G,MERCHANT M ,CONTRACT C,BRANCH B,BRAND BD
+                        WHERE A.GOODSID=G.GOODSID AND G.MERCHANTID=M.MERCHANTID AND G.CONTRACTID=C.CONTRACTID AND C.BRANCHID=B.ID AND G.BRANDID=BD.ID";
+            item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID in ({a})");
+            item.HasKey("Pay", a => sql += $" and A.PAYID in ({a})");
+            item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME = '{a}'");
+            item.HasKey("BRANDNAME", a => sql += $" and BD.NAME = '{a}'");
+            item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
+            item.HasDateKey("RQ_START", a => sql += $" and trunc(A.ACCOUNT_DATE) >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and trunc(A.ACCOUNT_DATE) <= {a}");
+
+            sql += " GROUP BY G.MERCHANTID,M.NAME";
+            return sql;
+        }
+        public DataGridResult MerchantSaleCollect(SearchItem item) {
+            string sql = MerchantSaleCollectSQL(item);
+
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            if (count > 0)
+            {
+                var paydata = GetPayData(item);
+                var sqlpay = "";
+                foreach (DataRow pay in paydata.Rows)
+                {
+                    var payid = pay["PAYID"].ToString();
+                    sqlpay += $@"SUM(PAYID{payid}) SUMPAY{payid},";
+                }
+                var sqlsum = $"SELECT {sqlpay} SUM(SUMPAY) SSUMPAY FROM ({sql})";
+                DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
+                DataRow dr = dt.NewRow();
+                dr["MERCHANTID"] = "合计";
+                foreach (DataRow pay in paydata.Rows)
+                {
+                    var payid = pay["PAYID"].ToString();
+                    dr["PAYID"+ payid] =dtSum.Rows[0]["SUMPAY"+ payid].ToString();
+                }
+                dr["SUMPAY"] = dtSum.Rows[0]["SSUMPAY"].ToString();
+                dt.Rows.Add(dr);
+            }
+            return new DataGridResult(dt, count);
+        }
+        public DataTable MerchantSaleCollectOutput(SearchItem item)
+        {
+            string sql = MerchantSaleCollectSQL(item);
+
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
+        #endregion
     }
 }
