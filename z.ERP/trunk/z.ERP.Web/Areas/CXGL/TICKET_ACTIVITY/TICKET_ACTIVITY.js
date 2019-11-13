@@ -76,15 +76,27 @@ define.otherMethods = {
                         define.otherMethods.clearinput();
                     } else {
                         define.otherMethods.clearinput();
-                        iview.Message.warning('该小票已再列表内!');
+                        iview.Message.warning({
+                            content: '该小票已再列表内!',
+                            duration: 3,
+                            closable: true
+                        });
                     }
                 } else {
                     define.otherMethods.clearinput();
-                    iview.Message.warning('该小票交易时间不在活动时间内!');
+                    iview.Message.warning({
+                        content: '该小票交易时间不在活动时间内!',
+                        duration: 3,
+                        closable: true
+                    });
                 }
             } else {
                 define.otherMethods.clearinput();
-                iview.Message.warning('未找到小票数据或该小票已参加过该活动!');
+                iview.Message.warning({
+                    content: '未找到小票数据或该小票已参加过该活动!',
+                    duration: 3,
+                    closable: true
+                });
             }
         });
     },
