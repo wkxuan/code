@@ -78,6 +78,7 @@ search.mountedInit = function () {
         authority: "10700801"
     }, {
         id: "del",
-        authority: "10700801"
+        authority: "10700801",
+        name:"作废"
     }];
 };

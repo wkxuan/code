@@ -1040,7 +1040,7 @@ namespace z.ERP.Services
                     throw new LogicException("该单据不存在!");
                 }
 
-                if (data.STATUS != ((int)发票状态.已核销).ToString())
+                if (data.STATUS != ((int)发票状态.已开具).ToString())
                 {
                     throw new LogicException("该发票已核销，不能修改!");
                 }

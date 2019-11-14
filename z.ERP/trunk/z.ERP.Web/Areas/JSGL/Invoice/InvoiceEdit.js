@@ -41,7 +41,8 @@ editDetail.mountedInit = function () {
         authority: "10700801"
     }, {
         id: "del",
-        authority: "10700801"
+        authority: "10700801",
+        name:"作废"
     }, {
         id: "save",
         authority: "10700801"
