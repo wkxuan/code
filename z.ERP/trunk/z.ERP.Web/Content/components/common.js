@@ -1245,6 +1245,7 @@ Vue.component('yx-date-picker', {
                         break;
                     case "month":
                         this.curFormat = "yyyyMM";
+                        break;
                     default:
                         this.curFormat = "yyyy-MM-dd";
                         break;
