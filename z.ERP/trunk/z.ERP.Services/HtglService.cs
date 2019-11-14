@@ -166,7 +166,17 @@ namespace z.ERP.Services
 
                 Tran.Commit();
             }
-            
+
+            //更新CONTRACT_INFO 表数据
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                MAKE_CONTRACT_INFO proc = new MAKE_CONTRACT_INFO()
+                {
+                    in_CONTRACTID = SaveData.CONTRACTID
+                };
+                DbHelper.ExecuteProcedure(proc);
+                Tran.Commit();
+            }
 
             return SaveData.CONTRACTID;
         }

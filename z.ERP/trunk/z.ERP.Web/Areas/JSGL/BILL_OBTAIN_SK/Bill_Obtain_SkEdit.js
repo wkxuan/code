@@ -31,7 +31,7 @@
             editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY = row.RECEIVE_MONEY;
         let sumJE = 0;
         for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
-            sumJE += parseInt(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
+            sumJE += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
         }
         editDetail.dataParam.ALL_MONEY = sumJE;
     }

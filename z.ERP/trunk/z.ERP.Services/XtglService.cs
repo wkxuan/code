@@ -1435,7 +1435,7 @@ namespace z.ERP.Services
         #region 收款方式手续费
         public DataGridResult GetPay_Charges(SearchItem item)
         {
-            string sql = $@"SELECT PC.BRANCHID,PC.PAYID,PC.RATE*1000 RATE,PC.FLOOR,PC.CEILING,P.NAME PAYNAME FROM PAY P WHERE PC.PAYID=P.PAYID AND P.TYPE>3 AND P.TYPE<20";
+            string sql = $@"SELECT PC.BRANCHID,PC.PAYID,PC.RATE*1000 RATE,PC.FLOOR,PC.CEILING,P.NAME PAYNAME FROM PAY P,PAY_CHARGES PC WHERE PC.PAYID=P.PAYID AND P.TYPE>3 AND P.TYPE<20";
             item.HasKey("BRANCHID", a => sql += $" and PC.BRANCHID = '{a}'");
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
