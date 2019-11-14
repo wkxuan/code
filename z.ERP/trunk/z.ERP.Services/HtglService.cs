@@ -20,10 +20,10 @@ namespace z.ERP.Services
         }
         public DataGridResult GetContract(SearchItem item)
         {
-            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,D.SHOPDM,E.BRANDNAME" +
-                " FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_SHOPXX D,CONTRACT_BRANDXX E " +
-                " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=D.CONTRACTID" +
-                " AND A.CONTRACTID=E.CONTRACTID(+) ";
+            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,CI.SHOPCODESTR SHOPDM,CI.BRANDNAMESTR BRANDNAME" +
+                " FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_INFO CI " +
+                " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID" +
+                " AND A.CONTRACTID=CI.CONTRACTID(+) ";
             sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";    //分店权限 by：DZK
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
@@ -37,7 +37,7 @@ namespace z.ERP.Services
             item.HasKey("VERIFY_NAME", a => sql += $" and A.VERIFY_NAME  LIKE '%{a}%'");
             item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=A.CONTRACTID and UPPER(U.CODE) LIKE '{a.ToUpper()}%')");
             item.HasKey("BRANDNAME", a => sql += $" and exists(select 1 from CONTRACT_BRAND P,BRAND U where  P.BRANDID=U.ID and P.CONTRACTID=A.CONTRACTID and UPPER(U.NAME) LIKE '{a.ToUpper()}%')");
-            sql += " ORDER BY  D.SHOPDM";
+            sql += " ORDER BY  A.REPORTER_TIME DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
@@ -46,9 +46,9 @@ namespace z.ERP.Services
         }
         public string GetContractOutput(SearchItem item)
         {
-            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,D.SHOPDM,E.BRANDNAME,to_char(A.REPORTER_TIME,'yyyy-mm-dd') DJRQ,to_char(A.VERIFY_TIME,'yyyy-mm-dd') SHRQ"
-                         + " FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_SHOPXX D,CONTRACT_BRANDXX E "
-                         + " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=D.CONTRACTID AND A.CONTRACTID=E.CONTRACTID ";
+            string sql = $@"SELECT A.*,B.NAME,C.NAME MERNAME,CI.SHOPCODESTR SHOPDM,CI.BRANDNAMESTR BRANDNAME,to_char(A.REPORTER_TIME,'yyyy-mm-dd') DJRQ,to_char(A.VERIFY_TIME,'yyyy-mm-dd') SHRQ"
+                         + " FROM CONTRACT A,BRANCH B,MERCHANT C,CONTRACT_INFO CI "
+                         + " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID AND A.CONTRACTID=CI.CONTRACTID(+) ";
             sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";    //分店权限 by：DZK
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
@@ -63,7 +63,7 @@ namespace z.ERP.Services
             item.HasKey("VERIFY", a => sql += $" and A.SIGNER = {a}");
             item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=A.CONTRACTID and UPPER(U.CODE) LIKE '{a.ToUpper()}%')");
             item.HasKey("BRANDNAME", a => sql += $" and exists(select 1 from CONTRACT_BRAND P,BRAND U where  P.BRANDID=U.ID and P.CONTRACTID=A.CONTRACTID and UPPER(U.NAME) LIKE '{a.ToUpper()}%')");
-            sql += " ORDER BY  D.SHOPDM";
+            sql += " ORDER BY  A.REPORTER_TIME DESC";
 
             DataTable dt = DbHelper.ExecuteTable(sql);
             dt.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
