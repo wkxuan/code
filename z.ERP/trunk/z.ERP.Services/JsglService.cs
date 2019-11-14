@@ -813,7 +813,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT A.*,TO_CHAR(A.VERIFY_TIME,'YYYYMM') CZNY,B.NAME BRANCHNAME,'('||D.MERCHANTID||')'||D.NAME MERCHANTNAME,"
                  + " F.NAME PRINTNAME,F.BANK,F.ACCOUNT,"
                  + " substr(F.ADDRESS,1,instr(B.ADDRESS,';',-1)-1) ADDRESS1,substr(F.ADDRESS,instr(B.ADDRESS,';',-1)+1) ADDRESS2,"
-                 + " (select min(S.SHOPDM) from CONTRACT_SHOPXX S where S.CONTRACTID=C.CONTRACTID) SHOPDM,"
+                 + " (select min(S.SHOPCODESTR) from CONTRACT_INFO S where S.CONTRACTID=C.CONTRACTID) SHOPDM,"
                  + " (select min(BR.NAME) from CONTRACT_BRAND R,BRAND BR where R.BRANDID=BR.ID and R.CONTRACTID=C.CONTRACTID) BRANDNAME,"
                  + " (select sum(AREA_RENTABLE) from CONTRACT_SHOP S where S.CONTRACTID=C.CONTRACTID) AREA_RENTABLE,"
                  + " (select sum(Y.AMOUNT) from CONTRACT_SUMMARY Y where Y.CONTRACTID=C.CONTRACTID and Y.YEARMONTH=A.NIANYUE) AMOUNT,"

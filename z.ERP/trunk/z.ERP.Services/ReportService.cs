@@ -599,7 +599,7 @@ namespace z.ERP.Services
             item.HasKey("FLOORID", a => sqlParam += $@" and exists(select 1 from CONTRACT_SHOP CP,SHOP S 
                                                                    where C.CONTRACTID = CP.CONTRACTID and CP.SHOPID = S.SHOPID AND S.FLOORID in ({a})) ");
 
-            string sqlstr = @"select M.MERCHANTID,M.NAME MERCHANTNAME,CB.BRANDNAME,P.YEARMONTH,CS.AREA_RENTABLE AREA,
+            string sqlstr = @"select M.MERCHANTID,M.NAME MERCHANTNAME,CI.BRANDNAMESTR BRANDNAME,P.YEARMONTH,CS.AREA_RENTABLE AREA,
                                      (select nvl(sum(B.MUST_MONEY),0) from BILL B where B.CONTRACTID = C.CONTRACTID and B.NIANYUE = P.YEARMONTH 
                                                                            and B.TERMID = 1000 and B.STATUS IN (2,3,4)) JCZJ,
                                      (select nvl(sum(B.MUST_MONEY),0) from BILL B where B.CONTRACTID = C.CONTRACTID 
@@ -609,9 +609,9 @@ namespace z.ERP.Services
                                                                       and CT.YEARMONTH = P.YEARMONTH) TCZJ,
                                      (select nvl(sum(CY.AMOUNT),0) from CONTRACT_SUMMARY_YM CY where CY.CONTRACTID = C.CONTRACTID 
                                                                         and CY.YEARMONTH = P.YEARMONTH) AMOUNT
-                                from CONTRACT C,MERCHANT M,CONTRACT_BRANDXX CB,CONTRACT_SHOPAREA CS,PERIOD P   
+                                from CONTRACT C,MERCHANT M,CONTRACT_INFO CI,CONTRACT_SHOPAREA CS,PERIOD P   
                                where C.MERCHANTID = M.MERCHANTID 
-                                     and C.CONTRACTID = CB.CONTRACTID
+                                     and C.CONTRACTID = CI.CONTRACTID
                                      and C.CONTRACTID = CS.CONTRACTID
                                      and P.YEARMONTH in (select B.NIANYUE from BILL B where B.CONTRACTID = C.CONTRACTID and B.STATUS in (2,3,4))
                                      and C.HTLX = 1 ";
