@@ -52,6 +52,17 @@ Vue.component('yx-table', {
         highlightrow: {
             type: Boolean,
             default: false
+        },
+        showsummary: {
+            type: Boolean,
+            default: false
+        },
+        sumtext: {
+            type: String,
+            default: "合计"
+        },
+        summarymethod: {
+            type: Function
         }
     },
     template: ` <div style="width:100%;height:100%;position: relative;"> ` +
@@ -66,6 +77,9 @@ Vue.component('yx-table', {
                     ` v-bind:highlight-row="highlightrow" ` +
                     ` v-bind:size="size" ` +
                     ` v-bind:tooltipTheme="curTooltipTheme" ` +
+                    ` v-bind:show-summary="showsummary" ` +
+                    ` v-bind:sum-text="sumtext" ` +
+                    ` v-bind:summary-method="summarymethod" ` +
                     ` v-on:on-current-change="currentChange" ` +
                     ` v-on:on-sort-change="sortChange" ` +
                     ` v-on:on-row-click="rowClick" ` +
@@ -98,7 +112,7 @@ Vue.component('yx-table', {
             operateCol: []
         };
     },
-    mounted() {},
+    mounted() { },
     watch: {
         columns: {
             handler: function (nv, ov) {
@@ -884,7 +898,7 @@ Vue.component('yx-echart-bar', {
 });
 //弹窗组件
 Vue.component('yx-modal', {
-    props:{
+    props: {
         src: {
             type: String,
             default: "",
@@ -921,17 +935,11 @@ Vue.component('yx-modal', {
             curVisible: false
         }
     },
-    mounted() {},
+    mounted() { },
     watch: {
         visible: {
             handler: function (nv, ov) {
                 this.curVisible = nv;
-            }
-        },
-        src: {
-            handler: function (nv, ov) {
-                let _iframe1 = window.document.getElementById(this.id);
-                _iframe1.contentWindow.location.reload();
             }
         }
     },
@@ -943,7 +951,7 @@ Vue.component('yx-modal', {
             if (!this.curVisible) {
                 this.$emit('update:visible', this.curVisible);
             } else {
-                iwindow.location.reload(true);
+                iwindow.location.reload();
             }
         }
     }
@@ -988,7 +996,7 @@ Vue.component('yx-tree', {
         }
     },
     mounted() { },
-    computed: { },
+    computed: {},
     watch: {
         data: {
             handler: function (nv, ov) {
@@ -1127,7 +1135,7 @@ Vue.component('yx-date-picker', {
         },
         //可选值为 date、daterange、datetime、datetimerange、year、month
         type: {
-            type: String ,
+            type: String,
             default: "date",
         },
         size: {},
@@ -1294,7 +1302,7 @@ Vue.component('yx-time-picker', {
     data() {
         return {
             curValue: "",
-            curFormat:""
+            curFormat: ""
         }
     },
     watch: {
@@ -1531,10 +1539,10 @@ Vue.component('yx-select', {
         value: {
             handler: function (nv, ov) {
                 if (this.multiple) {
-                     this.curValue = nv;
+                    this.curValue = nv;
                 } else {
                     this.curValue = nv + "";
-                }               
+                }
             },
             immediate: true
         },
@@ -1599,7 +1607,7 @@ Vue.component('yx-select', {
                     });
                 }
             })
-           
+
         },
         //获取当前选中项
         getCurItemObj() {

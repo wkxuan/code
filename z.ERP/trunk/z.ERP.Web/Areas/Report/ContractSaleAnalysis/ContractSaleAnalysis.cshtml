@@ -1,0 +1,65 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum;
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
+
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            查询类型
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<查询类型>()
+                {
+                    vModel = "searchParam.SrchTYPE",
+                    Change = "changeSrchType",
+                    EmptyText = "日数据"
+                });
+            }
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch" multiple></yx-select>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            楼层
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="searchParam.FLOORID" method="floor" multiple></yx-select>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            商户
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input icon="md-search" v-model="searchParam.MERCHANTNAME" v-on:on-click="SelMerchant" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            租约
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input icon="md-search" v-model="searchParam.CONTRACTID" v-on:on-click="SelContract" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            品牌
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input icon="md-search" v-model="searchParam.BRANDNAME" v-on:on-click="SelBrand" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            本期
+        </i-col>
+        <i-col span="6" class="RowText" v-if="searchParam.SrchTYPE==1">
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.CP"></yx-date-picker>
+        </i-col>
+        <i-col span="6" class="RowText" v-else>
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.CP"></yx-date-picker>
+        </i-col>
+    </row>
+}

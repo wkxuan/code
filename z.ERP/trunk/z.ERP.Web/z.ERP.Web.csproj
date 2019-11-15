@@ -251,6 +251,7 @@
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
     <Compile Include="Areas\Report\BILL_SRC\Bill_SrcController.cs" />
     <Compile Include="Areas\Report\ContractInfo\ContractInfoController.cs" />
+    <Compile Include="Areas\Report\ContractSaleAnalysis\ContractSaleAnalysisController.cs" />
     <Compile Include="Areas\Report\ContractSale\ContractSaleController.cs" />
     <Compile Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetailController.cs" />
     <Compile Include="Areas\Report\GoodsSale\GoodsSaleController.cs" />
@@ -444,6 +445,7 @@
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
     <Content Include="Areas\Report\BILL_SRC\Bill_Src.js" />
     <Content Include="Areas\Report\ContractInfo\ContractInfo.js" />
+    <Content Include="Areas\Report\ContractSaleAnalysis\ContractSaleAnalysis.js" />
     <Content Include="Areas\Report\ContractSale\ContractSale.js" />
     <Content Include="Areas\Report\GoodsSaleDetail\GoodsSaleDetail.js" />
     <Content Include="Areas\Report\GoodsSale\GoodsSale.js" />
@@ -830,6 +832,7 @@
     <Content Include="Areas\XTGL\PAY_CHARGES\Pay_Charges.cshtml" />
     <Content Include="Areas\CXGL\TICKET_ACTIVITY\TICKET_ACTIVITY.cshtml" />
     <Content Include="Areas\Report\MerchantSaleCollect\MerchantSaleCollect.cshtml" />
+    <Content Include="Areas\Report\ContractSaleAnalysis\ContractSaleAnalysis.cshtml" />
     <None Include="File\Template\合同模板.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

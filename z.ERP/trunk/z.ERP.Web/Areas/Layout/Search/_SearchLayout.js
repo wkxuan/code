@@ -34,6 +34,10 @@
     this.indexShow = false;
     //table是否显示checkbox
     this.selectionShow = true;
+    //是否显示分页
+    this.pageShow = true;
+    //table高度
+    this.tableHeight = 450;
     //导入模板名称
     this.uploadName = "";
 
@@ -81,6 +85,8 @@
                 selectionShow: _this.selectionShow,
                 popConfig: _this.popConfig,
                 uploadName: _this.uploadName,
+                pageShow: _this.pageShow,
+                tableHeight: _this.tableHeight,
                 spinShow:false
             },
             watch: {

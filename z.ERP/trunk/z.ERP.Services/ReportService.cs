@@ -1071,5 +1071,108 @@ namespace z.ERP.Services
             return dt;
         }
         #endregion
+
+        #region 租约销售对比分析
+        public string ContractSaleAnalysisSql(SearchItem item)
+        {
+            string table = "";
+            string field = "";
+            if (item.Values["SrchTYPE"] == ((int)查询类型.日数据).ToString())
+            {
+                field = " to_char(R.CP,'yyyy-MM-dd') CP,to_char(R.PP,'yyyy-MM-dd') PP,to_char(R.SP,'yyyy-MM-dd') SP,";
+                table = "RF_DAILY_CONTRACT_SALE";
+            }
+            else
+            {
+                field = " R.CP,R.PP,R.SP,";
+                table = "RF_MONTHLY_CONTRACT_SALE";
+            }
+            string sqlstr = $@"select{field}R.CP_SALE,round(decode(nvl(C.AREAR,0),0,0,R.CP_SALE/C.AREAR*100),2) BQPX,
+                                   R.PP_SALE,round(decode(nvl(C.AREAR,0),0,0,R.PP_SALE/C.AREAR*100),2) SQPX,
+                                   round(decode(nvl(R.PP_SALE,0),0,0,(R.CP_SALE/R.PP_SALE-1)*100),2) HB,
+                                   round(decode(nvl(R.PP_SALE,0),0,0,(R.CP_SALE/R.PP_SALE-1)*100),2) PXHB,
+                                   R.SP_SALE,round(decode(nvl(C.AREAR,0),0,0,R.SP_SALE/C.AREAR*100),2) SNTQPX,
+                                   round(decode(nvl(R.SP_SALE,0),0,0,(R.CP_SALE/R.SP_SALE-1)*100),2) TB,
+                                   round(decode(nvl(R.SP_SALE,0),0,0,(R.CP_SALE/R.SP_SALE-1)*100),2) PXTB,
+                                   C.CONTRACTID,C.AREAR,M.NAME MERCHANTNAME,S.NAME SHOPNAME,F.CODE,F.NAME FLOORNAME,B.NAME BRANDNAME                                                           
+                              from CONTRACT C,{table} R,MERCHANT M,SHOP S,BRAND B,FLOOR F
+                             where R.CONTRACTID = C.CONTRACTID and R.SHOPID = S.SHOPID and 
+                                   R.MERCHANTID=M.MERCHANTID and R.BRANDID = B.ID and S.FLOORID = F.ID";
+
+            item.HasKey("BRANCHID", a => sqlstr += $" and C.BRANCHID in ({a})");
+            item.HasKey("FLOORID", a => sqlstr += $" and F.ID in ({a})");
+            item.HasKey("CONTRACTID", a => sqlstr += $" and C.CONTRACTID ={a}");
+            item.HasKey("MERCHANTNAME", a => sqlstr += $" and M.NAME like '%{a}%'");
+            item.HasKey("BRANDNAME", a => sqlstr += $" and B.NAME like '%{a}%'");
+
+            if (item.Values["SrchTYPE"] == ((int)查询类型.日数据).ToString())
+            {
+                item.HasDateKey("CP", a => sqlstr += $" and TRUNC(R.CP)= {a}");
+            }
+            else
+            {
+                item.HasKey("CP", a => sqlstr += $" and R.CP ={a}");
+            }
+
+            return sqlstr;
+        }
+        public DataTable ContractSaleAnalysisDt(SearchItem item)
+        {
+            var sql = ContractSaleAnalysisSql(item);
+
+            DataTable dt = new DataTable();
+
+            var sqlSum = $@"select z.CODE,z.FLOORNAME,sum(z.CP_SALE) CP_SALE,sum(z.PP_SALE) PP_SALE,sum(z.SP_SALE) SP_SALE,
+                                   round(decode(nvl(sum(z.PP_SALE),0),0,0,(sum(z.CP_SALE)/sum(z.PP_SALE)-1)*100),2) HB,
+                                   round(decode(nvl(sum(z.SP_SALE),0),0,0,(sum(z.CP_SALE)/sum(z.SP_SALE)-1)*100),2) TB
+                              from (" + sql + ") Z where 1=1 group by z.CODE,z.FLOORNAME";
+
+            dt = DbHelper.ExecuteTable(sql);
+            if (dt.Rows.Count == 0)
+            {
+                return dt;
+            }
+            DataTable dtSum = DbHelper.ExecuteTable(sqlSum);
+            for (var i = 0; i < dtSum.Rows.Count; i++)
+            {
+                DataRow newRow = dt.NewRow();
+                newRow["CODE"] = dtSum.Rows[i]["CODE"].ToString();
+                newRow["FLOORNAME"] = dtSum.Rows[i]["FLOORNAME"].ToString() + "楼层小计";
+                newRow["CP_SALE"] = dtSum.Rows[i]["CP_SALE"].ToString();
+                newRow["PP_SALE"] = dtSum.Rows[i]["PP_SALE"].ToString();
+                newRow["SP_SALE"] = dtSum.Rows[i]["SP_SALE"].ToString();
+                newRow["HB"] = dtSum.Rows[i]["HB"].ToString();
+                newRow["TB"] = dtSum.Rows[i]["TB"].ToString();
+                dt.Rows.Add(newRow);
+            }
+            dt.DefaultView.Sort = "CODE ASC";
+            dt = dt.DefaultView.ToTable();
+
+            DataRow newRowAll = dt.NewRow();
+            double cps = 0;
+            double pps = 0;
+            double sps = 0;
+            for (var i = 0; i < dtSum.Rows.Count; i++)
+            {
+                cps += Convert.ToDouble(dtSum.Rows[i]["CP_SALE"].ToString());
+                pps += Convert.ToDouble(dtSum.Rows[i]["PP_SALE"].ToString());
+                sps += Convert.ToDouble(dtSum.Rows[i]["SP_SALE"].ToString());
+            }
+            newRowAll["FLOORNAME"] = "合计";
+            newRowAll["CP_SALE"] = cps;
+            newRowAll["PP_SALE"] = pps;
+            newRowAll["SP_SALE"] = sps;
+            newRowAll["HB"] = pps == 0 ? 0 : Math.Round((cps / pps - 1) * 100, 2);
+            newRowAll["TB"] = sps == 0 ? 0 : Math.Round((cps / sps - 1) * 100, 2);
+            dt.Rows.Add(newRowAll);
+
+            return dt;
+        }
+        public DataGridResult ContractSaleAnalysis(SearchItem item)
+        {
+            var dt = ContractSaleAnalysisDt(item);
+            return new DataGridResult(dt, dt.Rows.Count);
+        }
+        #endregion
     }
 }
