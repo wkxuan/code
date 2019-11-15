@@ -1462,6 +1462,10 @@ namespace z.POS.Services
                        {
                            break;
                        }
+
+                    goods.SubTicktInx = 1;
+                    goods.SubGoodsInx = i + 1;
+
                     GoodsList.Add(goods);
                 }
 
@@ -1960,6 +1964,11 @@ namespace z.POS.Services
             desc.goodsType = Sour.GoodsType;
             desc.remarks = "";
 
+            desc.subTicktInx = Sour.SubTicktInx;
+            desc.subGoodsInx = Sour.SubGoodsInx;
+            desc.subTicktInx_old = Sour.SubTicktInx_old;
+            desc.subGoodsInx_old = Sour.SubGoodsInx_old;
+
             result = true;
             return result;
         }
@@ -2192,7 +2201,7 @@ namespace z.POS.Services
                         article.DeptCode = GoodsList[i].DeptCode;
 
                         article.DiscMoney = GoodsList[i].Discount;
-                        article.Inx = i;
+                        article.Inx = GoodsList[i].SubGoodsInx;
                         article.IsNoCent = false;
                         article.IsNoProm = false;
                         article.SaleMoney = GoodsList[i].SaleMoney - GoodsList[i].Discount;
@@ -2978,6 +2987,8 @@ namespace z.POS.Services
                              " 保存销售<1.6.2.3>[TJJYB]_[2018.08.28] 取到的商品的HSFS:" + GoodItem.IHsfs +
                              " 订单记录号[" + GoodItem.OTherStr1 + "]");
                      } */
+                    GoodItem.SubTicktInx = ReqConfirm.goodsList[i].tickInx;
+                    GoodItem.SubGoodsInx = ReqConfirm.goodsList[i].inx;
 
                     GoodList.Add(GoodItem);
 
@@ -3226,8 +3237,8 @@ namespace z.POS.Services
                 for (int g = 0; g <= GoodList.Count - 1; g++)
                 {
                     GoodsResult goodsOne = new GoodsResult();
-                    goodsOne.sheetid = 0;
-                    goodsOne.inx = g;
+                    goodsOne.sheetid = GoodList[g].SubTicktInx;
+                    goodsOne.inx = GoodList[g].SubGoodsInx;
                     goodsOne.goodsid = GoodList[g].Id;
                     goodsOne.goodscode = GoodList[g].Code;
                     goodsOne.price = decimal.Parse(GoodList[g].Price.ToString());
@@ -3346,7 +3357,7 @@ namespace z.POS.Services
                     for (int p = 0; p <= ReqConfirm.creditDetailList.Count - 1; p++)
                     {
                         PayRecord payRcdOne = new PayRecord();
-                        payRcdOne.inx = ReqConfirm.creditDetailList[p].inx;
+                        payRcdOne.inx = p + 1; // ReqConfirm.creditDetailList[p].inx;
                         payRcdOne.payid = ReqConfirm.creditDetailList[p].payid;
                         payRcdOne.cardno = ReqConfirm.creditDetailList[p].cardno;
                         payRcdOne.bank = ReqConfirm.creditDetailList[p].bank;
@@ -4639,7 +4650,8 @@ namespace z.POS.Services
 
                         article.DiscMoney = GoodsList[i].Discount;
 
-                        article.Inx = i;
+                        article.Inx = GoodsList[i].SubGoodsInx;
+                        article.OriginalInx = GoodsList[i].SubGoodsInx_old;
                         article.IsNoCent = false;
                         article.IsNoProm = false;
                         article.SaleMoney = MoneyToDouble(GoodsList[i].SaleMoney - GoodsList[i].Discount);
@@ -5714,8 +5726,8 @@ namespace z.POS.Services
                 for (int g = 0; g <= goodsList.Count - 1; g++)
                 {
                     GoodsResult goodsOne = new GoodsResult();
-                    goodsOne.sheetid = 0;
-                    goodsOne.inx = g;
+                    goodsOne.sheetid = goodsList[g].SubTicktInx;
+                    goodsOne.inx = goodsList[g].SubGoodsInx;
                     goodsOne.goodsid = goodsList[g].Id;
                     goodsOne.goodscode = goodsList[g].Code;
                     goodsOne.price = decimal.Parse(goodsList[g].Price.ToString());
@@ -5830,7 +5842,7 @@ namespace z.POS.Services
                     for (int p = 0; p <= creditList.Count - 1; p++)
                     {
                         PayRecord payRcdOne = new PayRecord();
-                        payRcdOne.inx = creditList[p].inx;
+                        payRcdOne.inx = p + 1;//creditList[p].inx;
                         payRcdOne.payid = creditList[p].payid;
                         payRcdOne.cardno = creditList[p].cardno;
                         payRcdOne.bank = creditList[p].bank;

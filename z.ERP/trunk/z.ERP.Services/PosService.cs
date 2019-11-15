@@ -5061,9 +5061,6 @@ namespace z.ERP.Services
                     GoodItem.SaleCount = GoodItem.SaleCount * -1;
                     GoodItem.SaleMoney = GoodItem.SaleMoney * -1;
 
-                    GoodItem.SubTicktInx = ReqConfirm.goodsList[i].tickInx;
-                    GoodItem.SubGoodsInx = ReqConfirm.goodsList[i].inx;
-
                     GoodList.Add(GoodItem);
                 }
 
@@ -5777,7 +5774,7 @@ namespace z.ERP.Services
                     for (int p = 0; p <= creditList.Count - 1; p++)
                     {
                         PayRecord payRcdOne = new PayRecord();
-                        payRcdOne.inx = creditList[p].inx;
+                        payRcdOne.inx = creditList[p].inx;//creditList[p].inx;
                         payRcdOne.payid = creditList[p].payid;
                         payRcdOne.cardno = creditList[p].cardno;
                         payRcdOne.bank = creditList[p].bank;
