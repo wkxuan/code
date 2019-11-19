@@ -84,7 +84,7 @@ namespace z.ERP.Services
                 if (org.BRANCHID != SaveData.BRANCHID)
                     throw new LogicException($"请核对招商部门与分店之间的关系!");
                 //选择是扣点的时候,不应该有保底数据
-                if ((SaveData.OPERATERULE.ToInt() == (int)联营合同合作方式.扣点)
+                if ((SaveData.OPERATERULE.ToInt() == (int)结算方式.实销实结)
                     && (SaveData.STYLE.ToInt() == (int)核算方式.联营合同))
                 {
                     foreach (var rent in SaveData.CONTRACT_RENT)
@@ -111,8 +111,8 @@ namespace z.ERP.Services
             if (SaveData.CONTRACTID.IsEmpty())
             {
                 //合同类型判断
-                if (SaveData.CONTRACT_OLD.IsEmpty()) 
-                    SaveData.HTLX = ((int)合同类型.原始合同).ToString();                
+                if (SaveData.CONTRACT_OLD.IsEmpty())
+                    SaveData.HTLX = ((int)合同类型.原始合同).ToString();
                 else
                     SaveData.HTLX = ((int)合同类型.变更合同).ToString();
 
@@ -203,7 +203,7 @@ namespace z.ERP.Services
             }
             contract.NewEnumColumns<核算方式>("STYLE", "STYLEMC");
             contract.NewEnumColumns<合同状态>("STATUS", "STATUSMC");
-            contract.NewEnumColumns<联营合同合作方式>("OPERATERULE", "OPERATERULEMC");
+            contract.NewEnumColumns<结算方式>("OPERATERULE", "OPERATERULEMC");
 
             contract.NewEnumColumns<起始日清算>("QS_START", "QS_STARTMC");
             contract.NewEnumColumns<销售额标记>("TAB_FLAG", "TAB_FLAGMC");
@@ -907,7 +907,8 @@ namespace z.ERP.Services
                 SaveData.REPORTER_NAME = employee.Name;
                 SaveData.REPORTER_TIME = DateTime.Now.ToString();
             }
-            else {
+            else
+            {
                 FREESHOPEntity data = DbHelper.Select(new FREESHOPEntity() { BILLID = SaveData.BILLID });
 
                 if (data == null)
@@ -1130,9 +1131,9 @@ namespace z.ERP.Services
                 Coutput.CONT_START1 = dt.Rows[0]["CONT_START"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
                 Coutput.CONT_END1 = dt.Rows[0]["CONT_END"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
                 Coutput.CONT_DAYS = dt.Rows[0]["CONT_DAYS"].ToString();
-                Coutput.FREE_BEGIN = dt.Rows[0]["FREE_BEGIN"].ToString()=="" ?"":dt.Rows[0]["FREE_BEGIN"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
-                Coutput.FREE_END = dt.Rows[0]["FREE_END"].ToString()=="" ? "":dt.Rows[0]["FREE_END"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
-                Coutput.FREEDAYS = dt.Rows[0]["FREEDAYS"].ToString()==""? "0": dt.Rows[0]["FREEDAYS"].ToString();
+                Coutput.FREE_BEGIN = dt.Rows[0]["FREE_BEGIN"].ToString() == "" ? "" : dt.Rows[0]["FREE_BEGIN"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
+                Coutput.FREE_END = dt.Rows[0]["FREE_END"].ToString() == "" ? "" : dt.Rows[0]["FREE_END"].ToString().ToDateTime().ToString("yyyy年MM月dd日");
+                Coutput.FREEDAYS = dt.Rows[0]["FREEDAYS"].ToString() == "" ? "0" : dt.Rows[0]["FREEDAYS"].ToString();
                 Coutput.FEERULE_RENT = dt.Rows[0]["FEERULE_RENT"].ToString();
             }
             string sqlB = CONTRACT_BRANDINFOSQL(Data.CONTRACTID);   //品牌信息
@@ -1165,11 +1166,12 @@ namespace z.ERP.Services
             string sqlRENT = CONTRACT_RENTINFOSQL(Data.CONTRACTID);   //租金信息
             DataTable dt3 = DbHelper.ExecuteTable(sqlRENT);
             if (dt3.Rows.Count > 0)
-            {              
+            {
                 decimal AMOUNT = 0;
                 foreach (DataRow item in dt3.Rows)
                 {
-                    if (item["PRICE"].ToString().ToDecimal()>0) {
+                    if (item["PRICE"].ToString().ToDecimal() > 0)
+                    {
                         Coutput.RZJ_PRICE = item["PRICE"].ToString();
                     }
                     AMOUNT += item["SUMRENTS"].ToString().ToDecimal();
@@ -1189,12 +1191,13 @@ namespace z.ERP.Services
                     }
                     if (item["NAME"].ToString().Contains("市场管理费"))
                     {
-                        Coutput.WYF_PRICE = item["PRICE"].ToString()=="" ? "0": item["PRICE"].ToString();
-                        Coutput.SUMWYF = item["COST"].ToString() == "" ? "0" : item["COST"].ToString(); 
+                        Coutput.WYF_PRICE = item["PRICE"].ToString() == "" ? "0" : item["PRICE"].ToString();
+                        Coutput.SUMWYF = item["COST"].ToString() == "" ? "0" : item["COST"].ToString();
                         Coutput.SUMWYF_RENTS = (Coutput.SUMWYF.ToDecimal() + Coutput.SUMRENTS.ToDecimal()).ToString();
                     }
                 }
-                if (string.IsNullOrEmpty(Coutput.WYF_PRICE)) {
+                if (string.IsNullOrEmpty(Coutput.WYF_PRICE))
+                {
                     Coutput.WYF_PRICE = "0";
                     Coutput.SUMWYF = "0";
                     Coutput.SUMWYF_RENTS = Coutput.SUMRENTS;
