@@ -109,7 +109,7 @@ namespace z.ERP.Entities.Enum
         支付宝 = 5,
         微信 = 6,
         扫码支付 = 7,
-        
+
         //20以后为第三对接支付用
         猫酷优惠券 = 21,
         猫酷折扣券 = 22
@@ -164,12 +164,7 @@ namespace z.ERP.Entities.Enum
         终止 = 5,
     }
 
-    public enum 联营合同合作方式
-    {
-        扣点 = 1,
-        保底销售 = 2,
-        保底毛利 = 3
-    }
+
     public enum 资产调整类型
     {
         资产类型 = 1,
@@ -431,9 +426,9 @@ namespace z.ERP.Entities.Enum
     }
     public enum 发票状态
     {
-        已开具=1,
-        已核销=2,
-        已作废=3
+        已开具 = 1,
+        已核销 = 2,
+        已作废 = 3
     }
     public enum 收银终端状态
     {
@@ -483,8 +478,7 @@ namespace z.ERP.Entities.Enum
     public enum 结算方式
     {
         实销实结 = 1,
-        固定租金 = 2,
-        保底销售 = 3,
-        保底毛利 = 4
+        保底毛利 = 2,
+        保底销售 = 3
     }
 }
