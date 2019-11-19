@@ -242,7 +242,6 @@
     <Compile Include="Areas\Layout\Edit\EditViewBase.cs" />
     <Compile Include="Areas\Layout\MapShow\MapShowViewBase.cs" />
     <Compile Include="Areas\Layout\Empty\EmptyViewBase.cs" />
-    <Compile Include="Areas\Layout\List\ListViewBase.cs" />
     <Compile Include="Areas\Layout\PopSearch\PopSearchViewBase.cs" />
     <Compile Include="Areas\Layout\Print\PrintViewBase.cs" />
     <Compile Include="Areas\Layout\Search\SearchRender.cs" />
@@ -605,7 +604,6 @@
     <None Include="Areas\Base\Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Content Include="Areas\Layout\List\_ListLayout.cshtml" />
     <Content Include="Content\VUE\styles\fonts\ionicons.ttf" />
     <Content Include="Content\VUE\styles\fonts\ionicons.woff" />
     <Content Include="Web.config">

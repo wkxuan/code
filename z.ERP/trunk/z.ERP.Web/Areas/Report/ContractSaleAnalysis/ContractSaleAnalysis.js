@@ -51,6 +51,17 @@ search.mountedInit = function () {
         authority: ""
     }];
 }
+search.IsValidSrch = function () {
+    if (!search.searchParam.CP) {
+        if (search.searchParam.SrchTYPE == 1) {
+            iview.Message.info("请先确定日期!");
+        } else {
+            iview.Message.info("请先确定年月!");
+        }
+        return false;
+    }
+    return true;
+};
 
 search.otherMethods = {
     SelMerchant: function () {
@@ -74,6 +85,7 @@ search.otherMethods = {
     changeSrchType: function (value) {
         Vue.set(this, "data", []);
         Vue.set(this, "pagedataCount", 0);
+        search.searchParam.CP = "";
     }
 }
 
