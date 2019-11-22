@@ -598,7 +598,7 @@ namespace z.ERP.Services
             item.HasKey("FLOORID", a => sqlParam += $@" and exists(select 1 from CONTRACT_SHOP CP,SHOP S 
                                                                    where C.CONTRACTID = CP.CONTRACTID and CP.SHOPID = S.SHOPID AND S.FLOORID in ({a})) ");
 
-            string sqlstr = @"select M.MERCHANTID,M.NAME MERCHANTNAME,CI.BRANDNAMESTR BRANDNAME,P.YEARMONTH,C.AREA_RENTABLE AREA,
+            string sqlstr = @"select M.MERCHANTID,M.NAME MERCHANTNAME,CI.BRANDNAMESTR BRANDNAME,P.YEARMONTH,C.AREAR AREA,
                                      (select nvl(sum(B.MUST_MONEY),0) from BILL B where B.CONTRACTID = C.CONTRACTID and B.NIANYUE = P.YEARMONTH 
                                                                            and B.TERMID = 1000 and B.STATUS IN (2,3,4)) JCZJ,
                                      (select nvl(sum(B.MUST_MONEY),0) from BILL B where B.CONTRACTID = C.CONTRACTID 
