@@ -29,7 +29,9 @@ namespace z.ERP.Web.Areas.Report.MerchantSaleCollect
                 Cols.Remove("SUMPAY");
                 foreach (DataRow dts in dt.Rows)
                 {
-                    Cols.Add("PAYID"+dts["PAYID"].ToString(), dts["NAME"].ToString());
+                    if (!Cols.ContainsKey("PAYID" + dts["PAYID"].ToString())) {
+                        Cols.Add("PAYID"+dts["PAYID"].ToString(), dts["NAME"].ToString());
+                    }
                 }
                 Cols.Add("SUMPAY", "总计金额");
             }

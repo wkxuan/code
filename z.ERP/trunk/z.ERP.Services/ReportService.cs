@@ -1032,7 +1032,7 @@ namespace z.ERP.Services
             item.HasDateKey("RQ_START", a => sql += $" and trunc(A.ACCOUNT_DATE) >= {a}");
             item.HasDateKey("RQ_END", a => sql += $" and trunc(A.ACCOUNT_DATE) <= {a}");
 
-            sql += " GROUP BY G.MERCHANTID,M.NAME";
+            sql += " GROUP BY G.MERCHANTID,M.NAME ORDER BY G.MERCHANTID";
             return sql;
         }
         public DataGridResult MerchantSaleCollect(SearchItem item) {

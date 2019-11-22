@@ -52,7 +52,7 @@ search.searchDataAfter = function (data) {
             { title: '商户编码', key: 'MERCHANTID', width: 120, sortable: true, ellipsis: true, tooltip: true },
             { title: '商户名称', key: 'MERCHANTNAME', width: 150, sortable: true, ellipsis: true, tooltip: true },
             ];
-            col.push(list);
+            col.push.apply(col, list);
             col.push({ title: '总计金额', key: 'SUMPAY', width: 150, sortable: true, ellipsis: true, tooltip: true });
             search.screenParam.colDef = col;
         });
