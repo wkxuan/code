@@ -51,6 +51,28 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            年月
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.NIANYUE_START"></yx-date-picker>
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-date-picker type="month" v-bind:value.sync="searchParam.NIANYUE_END"></yx-date-picker>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            收费单位
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="searchParam.FEE_ACCOUNTID" method="feeAccountList"></yx-select>
+        </i-col>
+        <i-col span="2" class="RowTitle">资产代码</i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.SHOPDM"></i-input>
+        </i-col>
+    </row>
+
+    <row>
+        <i-col span="2" class="RowTitle">
             登记人
         </i-col>
         <i-col span="6" class="RowText">
@@ -65,15 +87,7 @@
         <i-col span="3"  class="RowText">
             <yx-date-picker type="date" v-bind:value.sync="searchParam.REPORTER_TIME_END"></yx-date-picker>
         </i-col>
-        <i-col span="2" class="RowTitle">
-            年月
-        </i-col>
-        <i-col span="3"  class="RowText">
-            <yx-date-picker type="month" v-bind:value.sync="searchParam.NIANYUE_START"></yx-date-picker>
-        </i-col>
-        <i-col span="3" class="RowText">
-            <yx-date-picker type="month" v-bind:value.sync="searchParam.NIANYUE_END"></yx-date-picker>
-        </i-col>
+        
     </row>
     <row>
         <i-col span="2" class="RowTitle">
@@ -91,11 +105,6 @@
         <i-col span="3" class="RowText">
             <yx-date-picker type="date" v-bind:value.sync="searchParam.VERIFY_TIME_END"></yx-date-picker>
         </i-col>
-        <i-col span="2" class="RowTitle">
-            收费单位
-        </i-col>
-        <i-col span="6" class="RowText">
-            <yx-select v-bind:value.sync="searchParam.FEE_ACCOUNTID" method="feeAccountList"></yx-select>
-        </i-col>
+        
     </row>
 }

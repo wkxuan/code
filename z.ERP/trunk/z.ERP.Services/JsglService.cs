@@ -60,6 +60,7 @@ namespace z.ERP.Services
             item.HasDateKey("VERIFY_TIME_END", a => sql += $" and trunc(L.VERIFY_TIME)<={a}");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID={a}");
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID={a}");
+            item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=C.CONTRACTID and UPPER(U.CODE) LIKE '%{a.ToUpper()}%')");
             sql += " ORDER BY  L.BILLID DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -454,6 +455,7 @@ namespace z.ERP.Services
             item.HasDateKey("VERIFY_TIME_START", a => sql += $" and trunc(L.VERIFY_TIME)>={a}");
             item.HasDateKey("VERIFY_TIME_END", a => sql += $" and trunc(L.VERIFY_TIME)<={a}");
             item.HasKey("BILLID_NOTICE", a => sql += $" and L.BILLID_NOTICE = {a}");
+            item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U,CONTRACT O where O.MERCHANTID=C.MERCHANTID AND  P.SHOPID=U.SHOPID and P.CONTRACTID=O.CONTRACTID and UPPER(U.CODE) LIKE '%{a.ToUpper()}%')");
             sql += " ORDER BY  to_number(L.BILLID) DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -673,7 +675,7 @@ namespace z.ERP.Services
 
             item.HasKey("NIANYUE_START", a => sql += $" and L.NIANYUE >= {a}");
             item.HasKey("NIANYUE_END", a => sql += $" and L.NIANYUE <= {a}");
-
+            item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=C.CONTRACTID and UPPER(U.CODE) LIKE '%{a.ToUpper()}%')");
             item.HasKey("STATUS", a => sql += $" and L.STATUS={a}");
             item.HasKey("REPORTER", a => sql += $" and L.REPORTER={a}");
             item.HasKey("FEE_ACCOUNTID", a => sql += $" and L.FEE_ACCOUNTID={a}");

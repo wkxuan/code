@@ -40,6 +40,7 @@ search.newCondition = function () {
     search.searchParam.VERIFY = "";
     search.searchParam.VERIFY_TIME_START = "";
     search.searchParam.VERIFY_TIME_END = "";
+    search.searchParam.SHOPDM = "";
 }
 search.otherMethods = {
     SelMerchant: function () {

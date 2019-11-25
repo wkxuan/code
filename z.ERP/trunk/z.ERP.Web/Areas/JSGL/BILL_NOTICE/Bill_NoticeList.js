@@ -45,6 +45,7 @@ search.newCondition = function () {
     search.searchParam.VERIFY_TIME_START = "";
     search.searchParam.VERIFY_TIME_END = "";
     search.searchParam.FEE_ACCOUNTID = "";
+    search.searchParam.SHOPDM = "";
 }
 search.addHref = function (row) {
     _.OpenPage({
