@@ -13,37 +13,24 @@
     @InitFiles(WebFiles)
     @RenderSection("head", false)
 
-<style>
-    #List_Main {
-        overflow: hidden;
-        height: 100%;
-    }
-
-        #List_Main .topMenuBtn {
-            height: 35px;
-            text-align: left;
-            line-height: 35px;
-            background: #2d8cf0;
-            padding-left: 10px;
+    <style>
+        #List_Main {
+            overflow: hidden;
+            height: 100%;
         }
-         #List_Main .contentDiv {
-                height: calc(100% - 35px);
-                overflow: hidden;
+            #List_Main .contentDiv {
+                height: 100%;
+                overflow: auto;
                 width: 100%;
             }
-</style>
+    </style>
 
 }
 
 
 <div id="List_Main">
-    <div class="topMenuBtn">
-        @RenderSection("btn", false)
-    </div>
     <div class="contentDiv">
-        <card>
-            @RenderSection("content", true)
-        </card>
+        @RenderSection("content", true)
     </div>
 </div>
 
