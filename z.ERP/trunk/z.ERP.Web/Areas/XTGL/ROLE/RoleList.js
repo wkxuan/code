@@ -44,10 +44,10 @@ search.addHref = function (row) {
 search.mountedInit = function () {
     search.btnConfig = [{
         id: "search",
-        authority: "10100701"
+        authority: ""
     }, {
         id: "clear",
-        authority: "10100701"
+        authority: ""
     }, {
         id: "add",
         authority: "10100701"
