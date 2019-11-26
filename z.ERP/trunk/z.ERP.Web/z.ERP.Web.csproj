@@ -311,6 +311,7 @@
     <Compile Include="Areas\WYGL\MARCHINAREAR\MarchinArearController.cs" />
     <Compile Include="Areas\WYGL\OPENBUSINESS\OpenBusinessController.cs" />
     <Compile Include="Areas\XTGL\CashierSearch\CashierSearchController.cs" />
+    <Compile Include="Areas\XTGL\ChargesSearch\ChargesSearchController.cs" />
     <Compile Include="Areas\XTGL\FEESUBJECT_ACCOUNT\FEESUBJECT_ACCOUNTController.cs" />
     <Compile Include="Areas\XTGL\NOTICE\NOTICEController.cs" />
     <Compile Include="Areas\XTGL\PAY_CHARGES\Pay_ChargesController.cs" />
@@ -497,6 +498,7 @@
     <Content Include="Areas\XTGL\AlertShow\AlertShow.js" />
     <Content Include="Areas\XTGL\BRANCH\BranchDetail.js" />
     <Content Include="Areas\XTGL\CashierSearch\CashierSearch.js" />
+    <Content Include="Areas\XTGL\ChargesSearch\ChargesSearch.js" />
     <Content Include="Areas\XTGL\CONFIG\ConfigDetail.js" />
     <Content Include="Areas\XTGL\FEESUBJECT_ACCOUNT\FEESUBJECT_ACCOUNT.js" />
     <Content Include="Areas\XTGL\FLOOR\FloorDetail.js" />
@@ -831,6 +833,7 @@
     <Content Include="Areas\CXGL\TICKET_ACTIVITY\TICKET_ACTIVITY.cshtml" />
     <Content Include="Areas\Report\MerchantSaleCollect\MerchantSaleCollect.cshtml" />
     <Content Include="Areas\Report\ContractSaleAnalysis\ContractSaleAnalysis.cshtml" />
+    <Content Include="Areas\XTGL\ChargesSearch\ChargesSearch.cshtml" />
     <None Include="File\Template\合同模板.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

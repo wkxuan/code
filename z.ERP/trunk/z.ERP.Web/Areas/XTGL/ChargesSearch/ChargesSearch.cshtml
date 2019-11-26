@@ -1,0 +1,53 @@
+﻿@using z.ERP.Web.Areas.Layout.Search;
+@using z.ERP.Web.Areas.Share.Render
+@inherits SearchViewBase
+
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            终端号
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.STATIONBH" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            交易号
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="searchParam.DEALID" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            收款方式
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="searchParam.PAY" method="pay" multiple></yx-select>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            销售日期
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.RQ_START"
+                });
+            }
+        </i-col>
+        <i-col span="3" class="RowText">
+            @{
+                RenderControl(new DateBoxRender()
+                {
+                    vModel = "searchParam.RQ_END"
+                });
+            }
+        </i-col>
+    </row>
+}

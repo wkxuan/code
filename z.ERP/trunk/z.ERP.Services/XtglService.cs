@@ -1480,5 +1480,30 @@ namespace z.ERP.Services
             return DefineSave.PAYID;
         }
         #endregion
+       
+        /// <summary>
+        /// 手续费对账查询
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public DataGridResult ChargesSearch(SearchItem item)
+        {
+            string sql = $@"SELECT B.NAME BRANCHNAME,A.POSNO,A.DEALID,A.SALE_TIME,PAY.NAME PAYNAME,AP.AMOUNT,AP.CHARGES
+                        FROM ALLSALE A,ALLSALE_PAY AP,STATION S,BRANCH B,PAY 
+                        WHERE A.POSNO=AP.POSNO AND A.DEALID=AP.DEALID
+                           AND A.POSNO=S.STATIONBH AND S.BRANCHID=B.ID
+	                         AND PAY.PAYID=AP.PAYID ";
+            sql += "  AND S.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            item.HasKey("BRANCHID", a => sql += $" and S.BRANCHID = '{a}'");
+            item.HasKey("STATIONBH", a => sql += $" and A.POSNO = '{a}'");
+            item.HasKey("DEALID", a => sql += $" and A.DEALID = '{a}'");
+            item.HasKey("PAY", a => sql += $" and PAY.PAYID IN ({a})");
+            item.HasDateKey("RQ_START", a => sql += $" and TRUNC(A.SALE_TIME) >= {a}");
+            item.HasDateKey("RQ_END", a => sql += $" and TRUNC(A.SALE_TIME) <= {a}");
+            sql += " ORDER BY SALE_TIME DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            return new DataGridResult(dt, count);
+        }
     }
 }
