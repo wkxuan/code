@@ -56,7 +56,7 @@
             付款金额
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input  v-model="dataParam.ALL_MONEY" v-bind:disabled="!disabled" />
+            <i-input  v-model="dataParam.ALL_MONEY" v-on:on-blur="FKJEonblur" v-bind:disabled="!disabled" />
         </i-col>
         <i-col span="2" class="RowTitle">
             冲销预付款

@@ -29,12 +29,14 @@
         title: "付款金额", key: 'RECEIVE_MONEY',  cellType: "input", cellDataType: "number",
         onChange: function (index, row, data) {
             editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY = row.RECEIVE_MONEY;
+            editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY = Number(editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY).toFixed(2);
         let sumJE = 0;
         for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
             sumJE += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
         }
         editDetail.dataParam.ALL_MONEY = sumJE;
-    }
+
+        },
     }
     ];
 
@@ -109,6 +111,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.ADVANCE_MONEY = 0;
     editDetail.dataParam.BILL_OBTAIN_ITEM = [];
     editDetail.dataParam.BILL_OBTAIN_INVOICE = [];
+    editDetail.dataParam.TYPE = 3;
 }
 
 ///html中绑定方法
@@ -237,6 +240,9 @@ editDetail.otherMethods = {
         }
         //收款方式和商户改变 账单置为空
         editDetail.dataParam.BILL_OBTAIN_ITEM = [];
+    },
+    FKJEonblur: function () {
+        editDetail.dataParam.ALL_MONEY = Number(editDetail.dataParam.ALL_MONEY).toFixed(2);
     }
 }
 
