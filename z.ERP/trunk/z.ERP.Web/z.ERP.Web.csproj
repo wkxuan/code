@@ -344,6 +344,7 @@
     <Compile Include="Areas\XTGL\SrchSPLC\SrchSPLCController.cs" />
     <Compile Include="Areas\XTGL\STATIONMONITOR\STATIONMONITORController.cs" />
     <Compile Include="Areas\XTGL\STATION\StationController.cs" />
+    <Compile Include="Areas\XTGL\SYSFUNCCONFIG\SysFuncConfigController.cs" />
     <Compile Include="Areas\XTGL\SYSUSER\SysuserController.cs" />
     <Compile Include="Areas\XTGL\TicketInfo\TicketInfoController.cs" />
     <Compile Include="Global.asax.cs">
@@ -524,6 +525,7 @@
     <Content Include="Areas\XTGL\SrchSPLC\SrchSPLC.js" />
     <Content Include="Areas\XTGL\STATIONMONITOR\STATIONMONITOR.css" />
     <Content Include="Areas\XTGL\STATIONMONITOR\STATIONMONITOR.js" />
+    <Content Include="Areas\XTGL\SYSFUNCCONFIG\SysFuncConfig.js" />
     <Content Include="Areas\XTGL\SYSUSER\Sysuser.js" />
     <Content Include="Areas\XTGL\ORG\Org.js" />
     <Content Include="Areas\XTGL\SHOP\Shop.js" />
@@ -834,6 +836,7 @@
     <Content Include="Areas\Report\MerchantSaleCollect\MerchantSaleCollect.cshtml" />
     <Content Include="Areas\Report\ContractSaleAnalysis\ContractSaleAnalysis.cshtml" />
     <Content Include="Areas\XTGL\ChargesSearch\ChargesSearch.cshtml" />
+    <Content Include="Areas\XTGL\SYSFUNCCONFIG\SysFuncConfig.cshtml" />
     <None Include="File\Template\合同模板.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -225,8 +225,9 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult GetMerchantAccount(SearchItem item)
         {
-            string sql = @"SELECT M.*,A.NAME MERCHANTNAME,F.NAME FEE_ACCOUNTNAME,B.NAME BRANCHNAME,B.ID BRANCHID from MERCHANT_ACCOUNT M ,MERCHANT A,FEE_ACCOUNT F,BRANCH B,CONTRACT C
-                        WHERE M.MERCHANTID=A.MERCHANTID AND M.FEE_ACCOUNT_ID=F.ID AND M.MERCHANTID=C.MERCHANTID AND C.BRANCHID=B.ID ";
+            string sql = @"select M.*,A.NAME MERCHANTNAME,F.NAME FEE_ACCOUNTNAME,B.NAME BRANCHNAME,B.ID BRANCHID 
+                             from MERCHANT_ACCOUNT M ,MERCHANT A,FEE_ACCOUNT F,BRANCH B
+                            where M.MERCHANTID=A.MERCHANTID AND M.FEE_ACCOUNT_ID=F.ID AND F.BRANCHID=B.ID ";
             sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("BRANCHID", a => sql += $" and B.ID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");
@@ -244,11 +245,11 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataGridResult GetMerchantAccountDetail(SearchItem item)
         {
-            string sql = @"SELECT M.*,A.NAME MERCHANTNAME,F.NAME FEE_ACCOUNTNAME,B.NAME BRANCHNAME,B.ID BRANCHID,D.CHANGE_TIME,D.REFERTYPE,D.REFERID, 
-                D.BALANCE ACCOUNT,D.SAVE_MONEY,D.USE_MONEY  
-	            from MERCHANT_ACCOUNT M ,MERCHANT_ACCOUNT_RECORD D, MERCHANT A,FEE_ACCOUNT F,BRANCH B,CONTRACT C 
-                WHERE M.MERCHANTID=A.MERCHANTID AND M.FEE_ACCOUNT_ID=F.ID AND M.MERCHANTID=C.MERCHANTID 
-                AND C.BRANCHID=B.ID AND D.MERCHANTID=M.MERCHANTID AND M.FEE_ACCOUNT_ID=D.FEE_ACCOUNT_ID ";
+            string sql = @"select D.MERCHANTID,A.NAME MERCHANTNAME,F.NAME FEE_ACCOUNTNAME,B.NAME BRANCHNAME,
+                                  B.ID BRANCHID,D.CHANGE_TIME,D.REFERTYPE,D.REFERID, 
+                                  D.BALANCE ACCOUNT,D.SAVE_MONEY,D.USE_MONEY  
+	                         from MERCHANT_ACCOUNT_RECORD D, MERCHANT A,FEE_ACCOUNT F,BRANCH B
+                            where D.MERCHANTID=A.MERCHANTID AND D.FEE_ACCOUNT_ID=F.ID AND F.BRANCHID=B.ID ";
             sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ")";    //分店权限 by：DZK
             item.HasKey("BRANCHID", a => sql += $" and B.ID = {a}");
             item.HasKey("MERCHANTID", a => sql += $" and A.MERCHANTID LIKE '%{a}%'");

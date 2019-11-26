@@ -1,0 +1,67 @@
+﻿@using z.ERP.Web.Areas.Layout.Empty
+@inherits EmptyViewBase
+
+@section head{
+    <style>
+        #List_Main .ivu-tree .ivu-tree-children .nodeClass:hover {
+            cursor: pointer;
+            background: #d5e8fc;
+        }
+
+        #List_Main .ivu-tree .ivu-input {
+            height: 24px;
+        }
+    </style>
+}
+@section content{
+    <Card>
+        <Tree v-bind:data="treeData" v-bind:render="renderContent"></Tree>
+    </Card>
+    <Modal v-model="modalValue" draggable footer-hide transfer title="添加">
+        <div style="margin:5px;">
+            <row>
+                <i-col class="RowTitle" span="4">
+                    <span class="mustElement">*</span>
+                    类型
+                </i-col>
+                <i-col class="RowText" span="8">
+                    <i-select v-model="dataParam.TYPE">
+                        <i-option value="1" key="1">模块</i-option>
+                        <i-option value="2" key="2">菜单</i-option>
+                    </i-select>
+                </i-col>
+            </row>
+            <row>
+                <i-col class="RowTitle" span="4">
+                    <span class="mustElement">*</span>
+                    名称
+                </i-col>
+                <i-col class="RowText" span="8">
+                    <i-input clearable v-model="dataParam.NAME" />
+                </i-col>
+            </row>
+            <row v-if="dataParam.TYPE=='2'">
+                <i-col class="RowTitle" span="4">
+                    <span class="mustElement">*</span>
+                    URL
+                </i-col>
+                <i-col class="RowText" span="20">
+                    <i-input clearable v-model="dataParam.URL" />
+                </i-col>
+            </row>
+            <row>
+                <i-col span="8" offset="8">
+                    <i-button type="primary" ghost v-on:click="search">查询</i-button>
+                    <i-button type="primary" ghost v-on:click="addNew">添加</i-button>
+                </i-col>
+            </row>
+            <row v-if="dataParam.TYPE=='2'">
+                <i-col class="RowText" span="24">
+                    <yx-table v-bind:columns="columns" selection v-bind:data="tableData"
+                              v-bind:height="300" v-bind:loading="tbLoading" ref="selectData">
+                    </yx-table>
+                </i-col>
+            </row>
+        </div>     
+    </Modal>
+}

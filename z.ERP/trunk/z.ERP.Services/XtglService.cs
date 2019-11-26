@@ -6,6 +6,7 @@ using z.Encryption;
 using z.ERP.Entities;
 using z.ERP.Entities.Auto;
 using z.ERP.Entities.Enum;
+using z.ERP.Model.Tree;
 using z.ERP.Model.Vue;
 using z.Exceptions;
 using z.Extensions;
@@ -59,7 +60,7 @@ namespace z.ERP.Services
             string sql = $@"SELECT P.PAYID,P.NAME FROM PAY P WHERE 1=1 ";
             item.HasKey("PAYID", a => sql += $" and P.PAYID LIKE '%{a}%'");
             item.HasKey("NAME", a => sql += $" and P.NAME LIKE '%{a}%'");
-         //   item.HasKey("BRANCHID", a => sql += $" and PC.BRANCHID(+) ='{a}'");
+            //   item.HasKey("BRANCHID", a => sql += $" and PC.BRANCHID(+) ='{a}'");
             sql += " ORDER BY  P.PAYID";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
@@ -663,7 +664,7 @@ namespace z.ERP.Services
             }
             return b;
         }
-        public Tuple<DataTable, DataTable,string> GetAlertSql(DEF_ALERTEntity Data)
+        public Tuple<DataTable, DataTable, string> GetAlertSql(DEF_ALERTEntity Data)
         {
             DEF_ALERTEntity alert = new DEF_ALERTEntity();
             alert = DbHelper.Select(new DEF_ALERTEntity() { ID = Data.ID });
@@ -676,7 +677,7 @@ namespace z.ERP.Services
             }
             sqlItem += " order by PLSX";
             DataTable alertCol = DbHelper.ExecuteTable(sqlItem);
-            return new Tuple<DataTable, DataTable,string>(alertSql, alertCol, alert.MC);
+            return new Tuple<DataTable, DataTable, string>(alertSql, alertCol, alert.MC);
         }
         public string SaveSplc(SPLCDEFDEntity SPLCDEFD,
             List<SPLCJDEntity> SPLCJD, List<SPLCJGEntity> SPLCJG)
@@ -916,7 +917,7 @@ namespace z.ERP.Services
             sql += " AND B.JDID= " + CURJDID;
             DataTable splcjd = DbHelper.ExecuteTable(sql);
 
-       
+
             //当有审批流程定义，但是当前节点没权限
             if ((splc.Rows.Count > 0) && (splcjd.Rows.Count == 0))
                 result = true;
@@ -1347,8 +1348,6 @@ namespace z.ERP.Services
             //}
             return SaveData.ID;
         }
-
-
         public ImportMsg VerifyImportBrand(DataTable dt, ref List<BRANDEntity> SaveDataList)
         {
             var backData = new ImportMsg();
@@ -1453,7 +1452,8 @@ namespace z.ERP.Services
         public UIResult GetPay_ChargesOne(PAY_CHARGESEntity data)
         {
             string sql = $@"SELECT PC.BRANCHID,PC.PAYID,PC.RATE*1000 RATE,PC.FLOOR,PC.CEILING FROM PAY_CHARGES PC WHERE 1=1  ";
-            if (!string.IsNullOrEmpty(data.BRANCHID)) {
+            if (!string.IsNullOrEmpty(data.BRANCHID))
+            {
                 sql += $@" AND PC.BRANCHID={data.BRANCHID} ";
             }
             if (!string.IsNullOrEmpty(data.PAYID))
@@ -1505,5 +1505,94 @@ namespace z.ERP.Services
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             return new DataGridResult(dt, count);
         }
+
+        #region 模块菜单
+        public DataGridResult GetMenu(SearchItem item)
+        {
+            var sql = "select e.* from menu e where e.platformid=1 and Length(e.id)=6";
+            item.HasKey("NAME", a => sql += $" and e.name like '%{a}%'");
+            if (item.Values["ISALL"] == "2")
+            {
+                sql += " and not exists(select 1 from usermodule m where e.id=m.menuid)";
+            }
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return new DataGridResult(dt, dt.Rows.Count);
+        }
+        public List<TreeEntity> GetMenuModule(MENUMODULEEntity data)
+        {
+            string sql = @"select * from MENUMODULE order by INX,MODULEID";
+            var resData = DbHelper.ExecuteTable(sql).ToList<MENUMODULEEntity>();
+
+            List<TreeEntity> treeList = new List<TreeEntity>();
+            foreach (var i in resData)
+            {
+                TreeEntity node = new TreeEntity();
+                node.value = i.MODULEID;
+                node.code = i.MODULEID;
+                node.title = i.MODULENAME;
+                node.expand = false;
+                node.parentId = i.PMODULEID;
+                node.data = i;
+                treeList.Add(node);
+            }
+            return treeList.ToTree();
+        }
+        public List<MENUMODULEEntity> AddUserModule(List<MENUMODULEEntity> data)
+        {
+            List<MENUMODULEEntity> backData = new List<MENUMODULEEntity>();
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in data)
+                {
+                    var sql = "select * from MENUMODULE where PMODULEID=" + item.PMODULEID+ " order by MODULECODE";
+                    var res = DbHelper.ExecuteObject<MENUMODULEEntity>(sql);
+                    var sqlP = "select * from MENUMODULE where MODULEID=" + item.PMODULEID;
+                    var resP = DbHelper.ExecuteOneObject<MENUMODULEEntity>(sqlP);
+
+                    item.MODULEID = NewINC("MENUMODULE");
+                    item.MODULECODE = res.Count == 0 ? resP.MODULECODE + "01" :"0"+ (Convert.ToInt32(res[res.Count - 1].MODULECODE)+1);
+                    item.INX = (res.Count + 1).ToString();
+                    item.ENABLE_FLAG = "1";
+                    backData.Add(item);
+                    DbHelper.Insert(item);
+                }
+                Tran.Commit();
+            }
+            return backData;
+        }
+        public string EditUserModule(MENUMODULEEntity data)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                var sql = "select * from MENUMODULE where MODULEID=" + data.MODULEID;
+                var res = DbHelper.ExecuteOneObject<MENUMODULEEntity>(sql);
+                res.MODULENAME = data.MODULENAME;
+                DbHelper.Update(data);
+                Tran.Commit();
+            }
+            return "";
+        }
+        public string DeleteUserModule(MENUMODULEEntity data)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Delete(data);
+                Tran.Commit();
+            }
+            return "";
+        }
+        public string UpAndDownUserModule(List<MENUMODULEEntity> data)
+        {
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var item in data)
+                {
+                    DbHelper.Update(item);
+                }
+                Tran.Commit();
+            }
+            return "";
+        }
+        #endregion
     }
 }

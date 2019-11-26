@@ -44,5 +44,7 @@ namespace z.ERP.Model.Tree
         /// 父级节点ID
         /// </summary>
         public string parentId { get; set; }
+
+        public Object data { get; set; }
     }
 }
