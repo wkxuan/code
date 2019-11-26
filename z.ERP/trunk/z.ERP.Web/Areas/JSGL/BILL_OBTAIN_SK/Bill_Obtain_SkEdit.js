@@ -16,7 +16,7 @@
     editDetail.screenParam.srcPopMerchant = __BaseUrl + "/" + "Pop/Pop/PopMerchantList/";
     editDetail.screenParam.FEE_ACCOUNT = [];
     editDetail.screenParam.popParam = {};
-
+    editDetail.dataParam.BILL_OBTAIN_ITEM = [];
     editDetail.screenParam.colDef = [
     { title: '账单号', key: 'FINAL_BILLID'},
     { title: '权债年月', key: 'NIANYUE' },
@@ -28,14 +28,14 @@
     {
         title: "付款金额", key: 'RECEIVE_MONEY',  cellType: "input", cellDataType: "number",
         onChange: function (index, row, data) {
-            editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY = row.RECEIVE_MONEY;
-            editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY = Number(editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY).toFixed(2);
-        let sumJE = 0;
-        for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
-            sumJE += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
-        }
-        editDetail.dataParam.ALL_MONEY = sumJE;
-
+            if (!isInteger(row.RECEIVE_MONEY) && xsnumber(row.RECEIVE_MONEY)) {
+                editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY = Number(row.RECEIVE_MONEY).toFixed(2);
+            }
+            let sumJE = 0;
+            for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
+                sumJE += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
+            }
+            editDetail.dataParam.ALL_MONEY = sumJE;
         },
     }
     ];
@@ -57,21 +57,12 @@
         { title: "发票金额", key: "INVOICEAMOUNT"}
     ];
 
-
-    if (!editDetail.dataParam.BILL_OBTAIN_ITEM) {
-        editDetail.dataParam.BILL_OBTAIN_ITEM = [{
-            FINAL_BILLID: "",
-            RECEIVE_MONEY: "",
-            MUST_MONEY: "",
-        }]
-    }
     //发票数据初始化
     if (!editDetail.dataParam.BILL_OBTAIN_INVOICE) {
-        debugger
+
         editDetail.dataParam.BILL_OBTAIN_INVOICE = []
     }
     editDetail.screenParam.addCol = function () {
-        debugger
         var temp = editDetail.dataParam.BILL_OBTAIN_ITEM || [];
         var tempI = editDetail.dataParam.BILL_OBTAIN_INVOICE || [];
         temp.push({});
@@ -428,4 +419,16 @@ editDetail.IsValidSave = function () {
     };
 
     return true;
+}
+function isInteger(n) {
+    return parseInt(n) == parseFloat(n)
+}
+function xsnumber(n) {
+    var x = String(n).indexOf('.') + 1; //小数点的位置
+    var y = String(n).length - x; //小数的位数
+    if (y > 2) {
+        return true;
+    } else {
+        return false;
+    }
 }
