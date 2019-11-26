@@ -144,7 +144,6 @@
                     _self.toolBtnList = data;
                 },
                 addtj: function (event) {
-                    debugger
                     _this.backData = DeepClone(this.dataParam);
                     if (this.data.length) {
                         if (!this.dataParam[_this.Key] && this.data.length > 0) {
