@@ -55,7 +55,7 @@
                             _self.addtj();
                         },
                         enabled: function (disabled, data) {
-                            if (disabled && data && data[_this.Key]) {
+                            if (disabled ) {
                                 return true;
                             } else {
                                 return false;
@@ -144,9 +144,10 @@
                     _self.toolBtnList = data;
                 },
                 addtj: function (event) {
+                    debugger
                     _this.backData = DeepClone(this.dataParam);
                     if (this.data.length) {
-                        if (!this.dataParam[_this.Key]) {
+                        if (!this.dataParam[_this.Key] && this.data.length > 0) {
                             iview.Message.error("请选择数据");
                             return;
                         };
@@ -159,7 +160,7 @@
                     this.disabled = false;
                     this.nodedisabled = true;
                 },
-                addxj: function (event) {
+                addxj: function (event) {                    
                     _this.backData = DeepClone(this.dataParam);
                     if (!this.dataParam[_this.Key]) {
                         iview.Message.error("请选择数据");
