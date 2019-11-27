@@ -1503,6 +1503,19 @@ namespace z.ERP.Services
             sql += " ORDER BY SALE_TIME DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            if (count > 0)
+            {
+                var sqlsum = "SELECT NVL(SUM(AMOUNT),0) AMOUNT,NVL(SUM(CHARGES),0) CHARGES FROM ( " + sql + ")";
+                DataTable dtSum = DbHelper.ExecuteTable(sqlsum);
+                //汇总                
+                decimal am = Convert.ToDecimal(dtSum.Rows[0]["AMOUNT"]);
+                decimal ch = Convert.ToDecimal(dtSum.Rows[0]["CHARGES"]);
+                DataRow dr = dt.NewRow();
+                dr["BRANCHNAME"] = "合计";
+                dr["AMOUNT"] = am.ToString();
+                dr["CHARGES"] = ch.ToString();
+                dt.Rows.Add(dr);
+            }
             return new DataGridResult(dt, count);
         }
 
