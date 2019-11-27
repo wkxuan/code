@@ -27,16 +27,19 @@
     { title: '未付金额', key: 'UNPAID_MONEY' },
     {
         title: "付款金额", key: 'RECEIVE_MONEY',  cellType: "input", cellDataType: "number",
-        onChange: function (index, row, data) {
-            if (!isInteger(row.RECEIVE_MONEY) && xsnumber(row.RECEIVE_MONEY)) {
-                editDetail.dataParam.BILL_OBTAIN_ITEM[index].RECEIVE_MONEY = Number(row.RECEIVE_MONEY).toFixed(2);
-            }
+        onChange: function (index, row, data) {            
             let sumJE = 0;
             for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
                 sumJE += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
             }
             editDetail.dataParam.ALL_MONEY = sumJE;
         },
+        onBlur: function (index, row, data) {
+            if (!isInteger(row.RECEIVE_MONEY) && xsnumber(row.RECEIVE_MONEY)) {
+                row.RECEIVE_MONEY = Number(row.RECEIVE_MONEY).toFixed(2);
+            }
+            editDetail.otherMethods.FKJEonblur();
+        }
     }
     ];
 
@@ -231,6 +234,7 @@ editDetail.otherMethods = {
         }
         //收款方式和商户改变 账单置为空
         editDetail.dataParam.BILL_OBTAIN_ITEM = [];
+        editDetail.dataParam.ALL_MONEY = 0;
     },
     FKJEonblur: function () {
         editDetail.dataParam.ALL_MONEY = Number(editDetail.dataParam.ALL_MONEY).toFixed(2);
@@ -396,6 +400,7 @@ editDetail.IsValidSave = function () {
             }
             fkje += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
         };
+        fkje=Number(fkje).toFixed(2);
         if (!editDetail.dataParam.ALL_MONEY)
         {
             editDetail.dataParam.ALL_MONEY = 0;
