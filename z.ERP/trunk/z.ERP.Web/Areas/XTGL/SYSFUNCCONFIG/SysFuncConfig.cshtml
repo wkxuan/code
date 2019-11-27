@@ -11,57 +11,115 @@
         #List_Main .ivu-tree .ivu-input {
             height: 24px;
         }
+
+        .sysfuncconfig .ivu-modal-body .ivu-btn {
+            color: #ffffff;
+        }
+
+            .sysfuncconfig .ivu-modal-body .ivu-btn:hover {
+                color: #000000;
+            }
+
+        .sysfuncconfig .ivu-modal-content .ivu-modal-header {
+            padding: 10px !important;
+        }
+
+        .sysfuncconfig .ivu-modal-header .ivu-modal-header-inner {
+            color: #ffffff;
+        }
     </style>
 }
 @section content{
     <Card>
         <Tree v-bind:data="treeData" v-bind:render="renderContent"></Tree>
     </Card>
-    <Modal v-model="modalValue" draggable footer-hide transfer title="添加">
-        <div style="margin:5px;">
-            <row>
-                <i-col class="RowTitle" span="4">
-                    <span class="mustElement">*</span>
-                    类型
-                </i-col>
-                <i-col class="RowText" span="8">
-                    <i-select v-model="dataParam.TYPE">
-                        <i-option value="1" key="1">模块</i-option>
-                        <i-option value="2" key="2">菜单</i-option>
-                    </i-select>
-                </i-col>
-            </row>
-            <row>
-                <i-col class="RowTitle" span="4">
-                    <span class="mustElement">*</span>
-                    名称
-                </i-col>
-                <i-col class="RowText" span="8">
-                    <i-input clearable v-model="dataParam.NAME" />
-                </i-col>
-            </row>
-            <row v-if="dataParam.TYPE=='2'">
-                <i-col class="RowTitle" span="4">
-                    <span class="mustElement">*</span>
-                    URL
-                </i-col>
-                <i-col class="RowText" span="20">
-                    <i-input clearable v-model="dataParam.URL" />
-                </i-col>
-            </row>
+    <Modal v-model="modalValue" draggable footer-hide transfer title="添加" class="sysfuncconfig">
+        <div style="height:calc(100% - 32px);">
+            <Tabs type="card" v-model="tabsValue">
+                <tab-pane label="新建" name="create">
+                    <row>
+                        <i-col class="RowTitle" span="4">
+                            <span class="mustElement">*</span>
+                            类型
+                        </i-col>
+                        <i-col class="RowText" span="18">
+                            <i-select v-model="dataParam.TYPE">
+                                <i-option value="1" key="1">模块</i-option>
+                                <i-option value="2" key="2">菜单</i-option>
+                            </i-select>
+                        </i-col>
+                    </row>                  
+                    <row>
+                        <i-col class="RowTitle" span="4">
+                            <span class="mustElement">*</span>
+                            名称
+                        </i-col>
+                        <i-col class="RowText" span="18">
+                            <i-input clearable v-model="dataParam.NAME" />
+                        </i-col>
+                    </row>
+                    <row v-if="dataParam.TYPE=='2'">
+                        <i-col class="RowTitle" span="4">
+                            <span class="mustElement">*</span>
+                            菜单ID
+                        </i-col>
+                        <i-col class="RowText" span="18">
+                            <i-input clearable v-model="dataParam.MENUID" />
+                        </i-col>
+                    </row>
+                    <row v-if="dataParam.TYPE=='2'">
+                        <i-col class="RowTitle" span="4">
+                            <span class="mustElement">*</span>
+                            URL
+                        </i-col>
+                        <i-col class="RowText" span="18">
+                            <i-input clearable v-model="dataParam.URL" />
+                        </i-col>
+                    </row>
+                    <row>
+                        <i-col class="RowTitle" span="4">
+                            ICON
+                        </i-col>
+                        <i-col class="RowText" span="18">
+                            <i-input clearable v-model="dataParam.ICON" />
+                        </i-col>
+                    </row>
+                </tab-pane>
+                <tab-pane label="选择" name="select">
+                    <row>
+                        <i-col class="RowTitle" span="4">
+                           类型
+                        </i-col>
+                        <i-col class="RowText" span="8">
+                            <i-select v-model="searchParam.TYPE">
+                                <i-option value="1" key="1">已添加</i-option>
+                                <i-option value="2" key="2">未添加</i-option>
+                            </i-select>
+                        </i-col>
+                        <i-col class="RowTitle" span="4">
+                            菜单名称
+                        </i-col>
+                        <i-col class="RowText" span="8">
+                            <i-input clearable v-model="searchParam.NAME" />
+                        </i-col>
+                    </row>
+                    <row>
+                        <i-col class="RowText" span="24">
+                            <yx-table v-bind:columns="columns" selection v-bind:data="tableData"
+                                      v-bind:height="300" v-bind:loading="tbLoading" ref="selectData">
+                            </yx-table>
+                        </i-col>
+                    </row>
+                </tab-pane>
+            </Tabs>
+        </div>
+        <div style="height:32px;background:#0099ff;">
             <row>
                 <i-col span="8" offset="8">
-                    <i-button type="primary" ghost v-on:click="search">查询</i-button>
-                    <i-button type="primary" ghost v-on:click="addNew">添加</i-button>
+                    <i-button type="text" v-on:click="search" v-if="tabsValue=='select'" shape="circle" icon="md-search">查询</i-button>
+                    <i-button type="text" v-on:click="addNew" shape="circle" icon="md-search">确认</i-button>
                 </i-col>
             </row>
-            <row v-if="dataParam.TYPE=='2'">
-                <i-col class="RowText" span="24">
-                    <yx-table v-bind:columns="columns" selection v-bind:data="tableData"
-                              v-bind:height="300" v-bind:loading="tbLoading" ref="selectData">
-                    </yx-table>
-                </i-col>
-            </row>
-        </div>     
+        </div>
     </Modal>
 }

@@ -18,13 +18,17 @@
             dataParam: {
                 NAME: "",
                 URL: "",
-                STATUS: "1",
                 TYPE: "1",
-                SYSTYPE: "1",
-                ISALL: "1"
+                MENUID: "",
+                ICON: ""
+            },
+            searchParam: {
+                NAME: "",
+                TYPE: "2"
             },
             modalValue: false,
-            curNode: {}
+            curNode: {},
+            tabsValue: ''
         }
     },
     mounted() {
@@ -39,6 +43,7 @@
                 _self.treeData = data.module;
             });
         },
+        //tree节点render
         renderContent(h, dom) {
             let _self = this;
             return h('div', {
@@ -69,7 +74,7 @@
                         title: dom.data.title
                     },
                 }, [
-                   _self.titleRenderFunc(h, dom)
+                   _self.titleRenderFunc(h, dom.data, dom.node, dom.root)
                 ]),
                 h('div', {
                     style: {
@@ -97,7 +102,7 @@
                              },
                              on: {
                                  click: function () {
-                                     _self.add(dom)
+                                     _self.addNode(dom.data, dom.node, dom.root);
                                  }
                              }
                          }),
@@ -116,7 +121,7 @@
                              },
                              on: {
                                  click: function () {
-                                     _self.edit(dom)
+                                     _self.editNode(dom.data, dom.node, dom.root)
                                  }
                              }
                          }),
@@ -135,7 +140,7 @@
                              },
                              on: {
                                  click: function () {
-                                     _self.remove(dom)
+                                     _self.removeNode(dom.data, dom.node, dom.root)
                                  }
                              }
                          }),
@@ -154,7 +159,7 @@
                              },
                              on: {
                                  click: function () {
-                                     _self.save(dom)
+                                     _self.save(dom.data, dom.node, dom.root)
                                  }
                              }
                          }),
@@ -173,7 +178,7 @@
                              },
                              on: {
                                  click: function () {
-                                     _self.abandon(dom)
+                                     _self.abandon(dom.data, dom.node, dom.root)
                                  }
                              }
                          }),
@@ -188,11 +193,11 @@
                                  title: '向上移动'
                              },
                              style: {
-                                 display: (_self.enableEditTitle || dom.data.parentId == "0") || _self.upAndDownShow(dom, "up") ? "none" : ""
+                                 display: (_self.enableEditTitle || dom.data.parentId == "0") || _self.upAndDownShow(dom.data, dom.node, dom.root, "up") ? "none" : ""
                              },
                              on: {
                                  click: function () {
-                                     _self.roundUp(dom)
+                                     _self.roundUpNode(dom.data, dom.node, dom.root)
                                  }
                              }
                          }),
@@ -207,23 +212,24 @@
                                  title: '向下移动'
                              },
                              style: {
-                                 display: (_self.enableEditTitle || dom.data.parentId == "0") || _self.upAndDownShow(dom, "down") ? "none" : ""
+                                 display: (_self.enableEditTitle || dom.data.parentId == "0") || _self.upAndDownShow(dom.data, dom.node, dom.root, "down") ? "none" : ""
                              },
                              on: {
                                  click: function () {
-                                     _self.roundDown(dom)
+                                     _self.roundDownNode(dom.data, dom.node, dom.root)
                                  }
                              }
                          })
                 ])
             ]);
         },
-        titleRenderFunc(h, dom) {
+        //节点title render
+        titleRenderFunc(h, data, node, root) {
             let _self = this;
-            if (dom.data.value == _self.enableEditNodeId && _self.enableEditTitle) {
+            if (data.value == _self.enableEditNodeId && _self.enableEditTitle) {
                 return h('i-input', {
                     props: {
-                        value: dom.data.title,
+                        value: data.title,
                         type: "text"
                     },
                     style: {
@@ -234,7 +240,7 @@
                             _self.editValue = event.target.value;
                         },
                         "on-change": function (event) {
-                            dom.data.title = event.target.value;
+                            data.title = event.target.value;
                         }
                     }
                 });
@@ -242,129 +248,145 @@
                 return h('span', [
                         h('Icon', {
                             props: {
-                                type: (dom.data.children && dom.data.children.length) ? 'ios-folder-outline' : 'ios-document-outline'
+                                type: (data.children && data.children.length) ? 'ios-folder-outline' : 'ios-document-outline'
                             },
                             style: {
                                 marginRight: '8px'
                             }
                         }),
-                      h('span', dom.data.title)
+                      h('span', data.title)
                 ]);
             }
         },
-        add (dom) {
-            if (dom.data.data.type == 2) {
+        //添加节点
+        addNode (data, node, root) {
+            if (data.data.TYPE == 2) {
                 iview.Message.error("此节点下不能再增加节点！");
                 return;
             }
             this.modalValue = true;
-            this.curNode = dom.node;
+            this.curNode = node.node;
         },
-        remove (dom) {
+        //删除
+        removeNode (data, node, root) {
             let _self = this;
             _.MessageBox("确认删除当前内容？", function () {
                 _.Ajax('Delete', {
-                    Data: dom.data.data
-                }, function (data) {
-                    _self.deleteNode(dom);
+                    Data: data.data
+                }, function (res) {
+                    _self.deleteNode(data);
                     iview.Message.info("删除成功");
                 });
             });
         },
-        edit (dom) {
+        //编辑节点title
+        editNode (data, node, root) {
             this.enableEditTitle = true;
-            this.enableEditNodeId = dom.data.value;
+            this.enableEditNodeId = data.value;
         },
-        save (dom) {
+        //编辑节点title时保存
+        save (data, node, root) {
             let _self = this;
-            let param = dom.data.data;
-            param.MODULENAME = dom.data.title;
+            let param = data.data;
+            param.MODULENAME = data.title;
             _.Ajax('Edit', {
                 Data: param
-            }, function (data) {
+            }, function (res) {
                 iview.Message.info("编辑成功");
                 _self.enableEditTitle = false;
                 _self.enableEditNodeId = null;
             });
         },
-        abandon (dom) {
+        //编辑节点title时取消编辑
+        abandon (data, node, root) {
             let _self = this;
             _self.enableEditTitle = false;
             _self.enableEditNodeId = null;
             if (_self.editValue) {
-                dom.data.title = _self.editValue;
+                data.title = _self.editValue;
             }
         },
-        roundUp (dom) {
-            this.nodeUpDown(dom, "up");
+        //向上移动
+        roundUpNode (data, node, root) {
+            this.nodeUpDown(data, node, root, "up");
         },
-        roundDown (dom) {
-            this.nodeUpDown(dom, "down");
+        //向下移动
+        roundDownNode (data, node, root) {
+            this.nodeUpDown(data, node, root, "down");
         },
         //节点上下移动
-        nodeUpDown(dom, type) {
+        nodeUpDown(data, node, root, type) {
             let _self = this;
             let param = [];
-            let parNode = _self.getCurNodeParNode(dom);
+            let parNode = _self.getCurNodeParNode(data, node, root);
             let chl = parNode.node.children;
+            let bnode = {};
             for (let i = 0; i < chl.length; i++) {
-                if (chl[i].value == dom.data.value) {
-                    let a = dom.data.data;
-                    let index = a.INX;
-                    let b;
+                if (chl[i].value == data.value) {
+                    let adata = data.data;
+                    let bdata = {};
+                    let index = adata.INX;
                     if (type == "up") {
-                        b = chl[i - 1].data;
+                        bdata = chl[i - 1].data;
+                        bnode = chl[i - 1];
                     } else {
-                        b = chl[i + 1].data;
+                        bdata = chl[i + 1].data;
+                        bnode = chl[i + 1];
                     }
-                    a.INX = b.INX;
-                    b.INX = index;
-                    param = [a, b];
+                    adata.INX = bdata.INX;
+                    bdata.INX = index;
+                    param = [adata, bdata];
                     break;
                 }
             }
             _.Ajax('RoundUpAndDown', {
                 Data: param
-            }, function (data) {
-                iview.Message.info("成功");
+            }, function (res) {
+                _self.deleteNode(data);
+                if (type == "up") {
+                    _self.insertBefore(bnode, node.node);
+                } else {
+                    _self.insertAfter(bnode, node.node);
+                }
+                iview.Message.info("移动成功");
             });
         },
         //获取当前节点的父级节点
-        getCurNodeParNode(dom) {
-            if (dom.node.parent == undefined) {
+        getCurNodeParNode(data, node, root) {
+            if (node.parent == undefined) {
                 return null;
             };
-            for (let i = 0; i < dom.root.length; i++) {
-                if (dom.root[i].nodeKey == dom.node.parent) {
-                    return dom.root[i];
+            for (let i = 0; i < root.length; i++) {
+                if (root[i].nodeKey == node.parent) {
+                    return root[i];
                 }
             }
         },
         //获取当前节点在父级节点children的序号
-        getCurNodeInParNodeInx(dom) {
-            let parNode = this.getCurNodeParNode(dom);
+        getCurNodeInParNodeInx(data, node, root) {
+            let parNode = this.getCurNodeParNode(data, node, root);
             if (!parNode) {
                 return null;
             }
             for (let i = 0; i < parNode.children.length; i++) {
-                if (parNode.children[i] == dom.data.nodeKey) {
+                if (parNode.children[i] == data.nodeKey) {
                     return (i + 1);
                 }
             }
             return null;
         },
         //判断向上移动、向下移动按钮是否显示
-        upAndDownShow(dom, type) {
+        upAndDownShow(data, node, root, type) {
             let _self = this;
-            let inx = _self.getCurNodeInParNodeInx(dom);
-            let data = _self.treeData;
+            let inx = _self.getCurNodeInParNodeInx(data, node, root);
+            let treeData = _self.treeData;
             if (!inx) {
-                if (data.length < 2) {
+                if (treeData.length < 2) {
                     return true;
                 } else {
                     let index;
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].nodeKey == dom.data.nodeKey) {
+                    for (let i = 0; i < treeData.length; i++) {
+                        if (treeData[i].nodeKey == data.nodeKey) {
                             index = i + 1;
                         }
                     }
@@ -375,7 +397,7 @@
                             return false;
                         }
                     } else {
-                        if (index == data.length) {
+                        if (index == treeData.length) {
                             return true;
                         } else {
                             return false;
@@ -390,7 +412,7 @@
                         return false;
                     }
                 } else {
-                    let parChl = _self.getCurNodeParNode(dom);
+                    let parChl = _self.getCurNodeParNode(data, node, root);
                     if (parChl.children && inx == parChl.children.length) {
                         return true;
                     } else {
@@ -400,12 +422,11 @@
             }
         },
         //删除节点
-        deleteNode(dom) {
+        deleteNode(ndata) {
             let _self = this;
-            let data = _self.treeData;
             let func = function (data) {
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].value == dom.data.value) {
+                    if (data[i].value == ndata.value) {
                         data.splice(i, 1);
                         return;
                     }
@@ -414,14 +435,14 @@
                     }
                 }
             }
-            func(data);
+            func(_self.treeData);
         },
         //为 Tree 的一个节点的前面增加一个节点
-        insertBefore(item, nodeKey) {
+        insertBefore(node, item) {
             let _self = this;
             let func = function (data) {
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].nodeKey == nodeKey) {
+                    if (data[i].nodeKey == node.nodeKey) {
                         data.splice(i, 0, item);
                         return;
                     }
@@ -433,12 +454,12 @@
             func(_self.treeData);
         },
         //为 Tree 的一个节点的后面增加一个节点
-        insertAfter(item, nodeKey) {
+        insertAfter(node, item) {
             let _self = this;
             let func = function (data) {
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].nodeKey == nodeKey) {
-                        data.splice(i, 0, item);
+                    if (data[i].nodeKey == node.nodeKey) {
+                        data.splice(i + 1, 0, item);
                         return;
                     }
                     if (data[i].children && data[i].children.length) {
@@ -448,6 +469,12 @@
             }
             func(_self.treeData);
         },
+        //为 Tree 的一个节点添加子节点
+        insertChildren(pnode, data) {
+            pnode.expand = true;
+            pnode.children = pnode.children.concat(data);
+        },
+        //查询菜单
         search() {
             let _self = this;
             _self.tbLoading = true;
@@ -455,7 +482,7 @@
             _.Search({
                 Service: "XtglService",
                 Method: "GetMenu",
-                Data: _self.dataParam,
+                Data: _self.searchParam,
                 PageInfo: {},
                 Success: function (data) {
                     _self.tbLoading = false;
@@ -471,40 +498,73 @@
                 }
             });
         },
+        //添加新节点
         addNew() {
             let _self = this;
-            if (!_self.dataParam.TYPE) {
-                iview.Message.error("类型不能为空!");
-                return;
-            }
-            if (!_self.dataParam.NAME) {
-                iview.Message.error("名称不能为空!");
-                return;
-            }
-            let data = [];
-            if (_self.dataParam.TYPE == 2) {
-                if (!_self.dataParam.URL) {
-                    iview.Message.error("URL不能为空!");
+            let param = [];
+            let pnode = _self.curNode;
+            if (_self.tabsValue == 'select') {
+                let selection = _self.$refs.selectData.getSelection();
+                if (!selection.length) {
+                    iview.Message.error("请选择要添加的菜单!");
                     return;
                 }
-                let selection = this.$refs.selectData.getSelection();
-                data = [{
-                    MODULENAME: _self.dataParam.NAME,
-                    TYPE: _self.dataParam.TYPE,
-                    PMODULEID: _self.curNode.node.value,
-                    URL: _self.dataParam.URL
-                }];
+                let loc = {};
+                for (let i = 0; i < selection.length; i++) {
+                    for (let j = 0; j < pnode.children.length; j++) {
+                        if (selection[i].ID == pnode.children[j].data.MENUID) {
+                            iview.Message.error(`此节点下已存在菜单"${selection[i].NAME}"!`);
+                            return;
+                        }
+                    }
+                    loc = {
+                        MODULENAME: selection[i].NAME,
+                        MENUID: selection[i].ID,
+                        TYPE: 2,
+                        PMODULEID: pnode.value,
+                        URL: selection[i].URL
+                    };
+                    param.push(loc);
+                }
             } else {
-                data = [{
+                if (!_self.dataParam.TYPE) {
+                    iview.Message.error("类型不能为空!");
+                    return;
+                }
+                if (!_self.dataParam.NAME) {
+                    iview.Message.error("名称不能为空!");
+                    return;
+                }
+                for (let j = 0; j < pnode.children.length; j++) {
+                    if (_self.dataParam.NAME == pnode.children[j].data.MODULENAME) {
+                        iview.Message.error(`此节点下已存在"${_self.dataParam.NAME}"!`);
+                        return;
+                    }
+                }
+                let loc = {
                     MODULENAME: _self.dataParam.NAME,
                     TYPE: _self.dataParam.TYPE,
-                    PMODULEID: _self.curNode.node.value,
-                }];
+                    PMODULEID: pnode.value,
+                    URL: ""
+                }
+                if (_self.dataParam.TYPE == 2) {
+                    if (!_self.dataParam.MENUID) {
+                        iview.Message.error("菜单ID不能为空!");
+                        return;
+                    }
+                    if (!_self.dataParam.URL) {
+                        iview.Message.error("URL不能为空!");
+                        return;
+                    }
+                    loc.MENUID = _self.dataParam.MENUID;
+                    loc.URL = _self.dataParam.URL
+                }
+                param.push(loc);
             }
             _.Ajax('Add', {
-                Data: data
+                Data: param
             }, function (data) {
-                debugger
+                _self.insertChildren(pnode, data.res);
                 iview.Message.info("添加成功");
                 _self.modalValue = false;
             });

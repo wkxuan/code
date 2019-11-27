@@ -1524,7 +1524,7 @@ namespace z.ERP.Services
         {
             var sql = "select e.* from menu e where e.platformid=1 and Length(e.id)=6";
             item.HasKey("NAME", a => sql += $" and e.name like '%{a}%'");
-            if (item.Values["ISALL"] == "2")
+            if (item.Values["TYPE"] == "2")
             {
                 sql += " and not exists(select 1 from usermodule m where e.id=m.menuid)";
             }
@@ -1546,13 +1546,14 @@ namespace z.ERP.Services
                 node.expand = false;
                 node.parentId = i.PMODULEID;
                 node.data = i;
+                node.children = new List<TreeEntity>();
                 treeList.Add(node);
             }
             return treeList.ToTree();
         }
-        public List<MENUMODULEEntity> AddUserModule(List<MENUMODULEEntity> data)
+        public List<TreeEntity> AddUserModule(List<MENUMODULEEntity> data)
         {
-            List<MENUMODULEEntity> backData = new List<MENUMODULEEntity>();
+            List<TreeEntity> backData = new List<TreeEntity>();
             using (var Tran = DbHelper.BeginTransaction())
             {
                 foreach (var item in data)
@@ -1566,8 +1567,17 @@ namespace z.ERP.Services
                     item.MODULECODE = res.Count == 0 ? resP.MODULECODE + "01" :"0"+ (Convert.ToInt32(res[res.Count - 1].MODULECODE)+1);
                     item.INX = (res.Count + 1).ToString();
                     item.ENABLE_FLAG = "1";
-                    backData.Add(item);
                     DbHelper.Insert(item);
+
+                    TreeEntity node = new TreeEntity();
+                    node.value = item.MODULEID;
+                    node.code = item.MODULEID;
+                    node.title = item.MODULENAME;
+                    node.expand = false;
+                    node.parentId = item.PMODULEID;
+                    node.data = item;
+                    node.children = new List<TreeEntity>();
+                    backData.Add(node);
                 }
                 Tran.Commit();
             }
