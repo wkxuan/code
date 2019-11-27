@@ -50,7 +50,8 @@
                 class: 'nodeClass',
                 style: {
                     width: 'calc(100% - 15px)',
-                    float: 'right'
+                    float: 'right',
+                    background: _self.modalValue && (dom.data.value == _self.curNode.value) ? '#d5e8fc' : ''
                 },
                 on: {
                     mouseover() {
