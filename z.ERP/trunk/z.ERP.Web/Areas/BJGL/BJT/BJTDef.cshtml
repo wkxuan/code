@@ -1,6 +1,4 @@
-﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
-@using z.ERP.Web.Areas.Layout.Empty
+﻿@using z.ERP.Web.Areas.Layout.Empty
 @inherits EmptyViewBase
 @section head{
 
@@ -11,10 +9,10 @@
     "/Content/Maps/zMapPoint.js"
 })
 }
-@section btn{
-<input type="button" onclick="add()" value="添加" />
-<input type="button" onclick="save()" value="保存" />
-}
 @section content{
+    <div>
+        <input type="button" onclick="add()" value="添加" />
+        <input type="button" onclick="save()" value="保存" />
+    </div>
     <div id="div_map"></div>
 }

@@ -1,20 +1,18 @@
 ﻿@using z.ERP.Web.Areas.Share.Render
-@using z.ERP.Entities.Enum
 @using z.ERP.Web.Areas.Layout.Empty
 @inherits EmptyViewBase
 
-@section btn{
-    @{
-        RenderControl(new ButtonRender()
-        {
-            Click = "exec",
-            Text = "执行",
-            Enable = false
-        });
-    }
-}
-
 @section content{
+    <row>
+        @{
+            RenderControl(new ButtonRender()
+            {
+                Click = "exec",
+                Text = "执行",
+                Enable = false
+            });
+        }
+    </row>
     <row>
         <i-col span="2" class="RowTitle">
             日期
