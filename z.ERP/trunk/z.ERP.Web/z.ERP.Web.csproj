@@ -837,9 +837,9 @@
     <Content Include="Areas\Report\ContractSaleAnalysis\ContractSaleAnalysis.cshtml" />
     <Content Include="Areas\XTGL\ChargesSearch\ChargesSearch.cshtml" />
     <Content Include="Areas\XTGL\SYSFUNCCONFIG\SysFuncConfig.cshtml" />
-    <None Include="File\Template\合同模板.docx">
+    <Content Include="File\Template\合同模板.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
