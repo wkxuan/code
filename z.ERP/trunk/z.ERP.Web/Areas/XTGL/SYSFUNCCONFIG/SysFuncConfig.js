@@ -17,7 +17,6 @@
             tbLoading: false,
             dataParam: {
                 NAME: "",
-                URL: "",
                 TYPE: "1",
                 MENUID: "",
                 ICON: ""
@@ -249,7 +248,7 @@
                 return h('span', [
                         h('Icon', {
                             props: {
-                                type: (data.children && data.children.length) ? 'ios-folder-outline' : 'ios-document-outline'
+                                type: data.data.TYPE == '1' ? 'ios-folder-outline' : 'ios-document-outline'
                             },
                             style: {
                                 marginRight: '8px'
@@ -523,15 +522,10 @@
                         MENUID: selection[i].ID,
                         TYPE: 2,
                         PMODULEID: pnode.value,
-                        URL: selection[i].URL
                     };
                     param.push(loc);
                 }
             } else {
-                if (!_self.dataParam.TYPE) {
-                    iview.Message.error("类型不能为空!");
-                    return;
-                }
                 if (!_self.dataParam.NAME) {
                     iview.Message.error("名称不能为空!");
                     return;
@@ -544,21 +538,8 @@
                 }
                 let loc = {
                     MODULENAME: _self.dataParam.NAME,
-                    TYPE: _self.dataParam.TYPE,
+                    TYPE: 1,
                     PMODULEID: pnode.value,
-                    URL: ""
-                }
-                if (_self.dataParam.TYPE == 2) {
-                    if (!_self.dataParam.MENUID) {
-                        iview.Message.error("菜单ID不能为空!");
-                        return;
-                    }
-                    if (!_self.dataParam.URL) {
-                        iview.Message.error("URL不能为空!");
-                        return;
-                    }
-                    loc.MENUID = _self.dataParam.MENUID;
-                    loc.URL = _self.dataParam.URL
                 }
                 param.push(loc);
             }
