@@ -57,6 +57,9 @@ define.showOne = function (data, callback) {
         Data: { PAYID: data, BRANCHID: define.searchParam.BRANCHID }
     }, function (data) {
         $.extend(define.dataParam, data[0]);
+        define.dataParam.FLOOR += "";
+        define.dataParam.CEILING += "";
+        define.dataParam.RATE += "";
         callback && callback();
     });
 }

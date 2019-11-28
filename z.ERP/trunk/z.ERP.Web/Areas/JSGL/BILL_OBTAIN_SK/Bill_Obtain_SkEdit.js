@@ -32,7 +32,7 @@
             for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
                 sumJE += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
             }
-            editDetail.dataParam.ALL_MONEY = sumJE;
+            editDetail.dataParam.ALL_MONEY = sumJE.toFixed(2);
         },
         onBlur: function (index, row, data) {
             if (!isInteger(row.RECEIVE_MONEY) && xsnumber(row.RECEIVE_MONEY)) {
@@ -238,7 +238,7 @@ editDetail.otherMethods = {
     },
     FKJEonblur: function () {
         editDetail.dataParam.ALL_MONEY = Number(editDetail.dataParam.ALL_MONEY).toFixed(2);
-    }
+    },
 }
 
 ///接收弹窗返回参数
