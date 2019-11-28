@@ -62,7 +62,7 @@
             冲销预付款
         </i-col>
         <i-col span="6" class="RowText">
-            <i-input  v-model="dataParam.ADVANCE_MONEY" v-on:on-change="YfkChange" type="number" v-bind:disabled="!disabled" />
+            <i-input  v-model="dataParam.ADVANCE_MONEY" v-on:on-change="YfkChange" v-on:on-blur="Yfkonblur" type="number" v-bind:disabled="!disabled" />
         </i-col>
         &nbsp;&nbsp;付款金额 + 冲销预付款金额 = 明细付款金额之和
     </row>

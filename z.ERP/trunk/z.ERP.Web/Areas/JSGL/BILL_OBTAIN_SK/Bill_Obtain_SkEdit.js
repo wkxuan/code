@@ -214,8 +214,11 @@ editDetail.otherMethods = {
         for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
             fkje += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
         };
-        editDetail.dataParam.ADVANCE_MONEY = editDetail.dataParam.ADVANCE_MONEY.replace('-');   //限制输入负号
-        editDetail.dataParam.ALL_MONEY = fkje - editDetail.dataParam.ADVANCE_MONEY;
+        editDetail.dataParam.ADVANCE_MONEY = editDetail.dataParam.ADVANCE_MONEY.replace('-');   //限制输入负号    
+        editDetail.dataParam.ALL_MONEY = Number(fkje - editDetail.dataParam.ADVANCE_MONEY).toFixed(2);
+    },
+    Yfkonblur: function () {
+        editDetail.dataParam.ADVANCE_MONEY = Number(editDetail.dataParam.ADVANCE_MONEY).toFixed(2);
     },
     balance: function () {
         //收款方式和商户不为空，验证余额，其余情况置未0
