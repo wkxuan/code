@@ -36,19 +36,7 @@
     <Modal v-model="modalValue" draggable footer-hide transfer title="添加" class="sysfuncconfig">
         <div style="height:calc(100% - 32px);">
             <Tabs type="card" v-model="tabsValue">
-                <tab-pane label="新建" name="create">
-                    <row>
-                        <i-col class="RowTitle" span="4">
-                            <span class="mustElement">*</span>
-                            类型
-                        </i-col>
-                        <i-col class="RowText" span="18">
-                            <i-select v-model="dataParam.TYPE">
-                                <i-option value="1" key="1">模块</i-option>
-                                <i-option value="2" key="2">菜单</i-option>
-                            </i-select>
-                        </i-col>
-                    </row>                  
+                <tab-pane label="新建" name="create">                 
                     <row>
                         <i-col class="RowTitle" span="4">
                             <span class="mustElement">*</span>
@@ -56,24 +44,6 @@
                         </i-col>
                         <i-col class="RowText" span="18">
                             <i-input clearable v-model="dataParam.NAME" />
-                        </i-col>
-                    </row>
-                    <row v-if="dataParam.TYPE=='2'">
-                        <i-col class="RowTitle" span="4">
-                            <span class="mustElement">*</span>
-                            菜单ID
-                        </i-col>
-                        <i-col class="RowText" span="18">
-                            <i-input clearable v-model="dataParam.MENUID" />
-                        </i-col>
-                    </row>
-                    <row v-if="dataParam.TYPE=='2'">
-                        <i-col class="RowTitle" span="4">
-                            <span class="mustElement">*</span>
-                            URL
-                        </i-col>
-                        <i-col class="RowText" span="18">
-                            <i-input clearable v-model="dataParam.URL" />
                         </i-col>
                     </row>
                     <row>
