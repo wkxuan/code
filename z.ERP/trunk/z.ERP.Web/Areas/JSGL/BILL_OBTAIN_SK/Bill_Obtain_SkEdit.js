@@ -32,6 +32,7 @@
             for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
                 sumJE += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
             }
+            sumJE = sumJE - parseFloat(editDetail.dataParam.ADVANCE_MONEY);
             editDetail.dataParam.ALL_MONEY = sumJE.toFixed(2);
         },
         onBlur: function (index, row, data) {
