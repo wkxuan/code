@@ -77,6 +77,9 @@ define.otherMethods = {
             if (data.length == 1) {
                 iview.Message.warning("该收款方式已设置，将启用编辑!");
                 $.extend(define.dataParam, data[0]);
+                define.dataParam.FLOOR += "";
+                define.dataParam.CEILING += "";
+                define.dataParam.RATE += "";
             } else {
                 define.dataParam.FLOOR = null;
                 define.dataParam.CEILING = null;
