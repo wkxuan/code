@@ -1480,7 +1480,7 @@ namespace z.ERP.Services
             return DefineSave.PAYID;
         }
         #endregion
-       
+
         /// <summary>
         /// 手续费对账查询
         /// </summary>
@@ -1522,19 +1522,19 @@ namespace z.ERP.Services
         #region 模块菜单
         public DataGridResult GetMenu(SearchItem item)
         {
-            var sql = "select e.* from menu e where e.platformid=1 and Length(e.id)=6";
-            item.HasKey("NAME", a => sql += $" and e.name like '%{a}%'");
+            var sql = "select e.* from MENU e where e.PLATFORMID=1 and e.TYPE=1 and e.STATUS=1";
+            item.HasKey("NAME", a => sql += $" and e.NAME like '%{a}%'");
             if (item.Values["TYPE"] == "2")
             {
-                sql += " and not exists(select 1 from usermodule m where e.id=m.menuid)";
+                sql += " and not exists(select 1 from USERMODULE m where e.ID=m.MENUID)";
             }
             DataTable dt = DbHelper.ExecuteTable(sql);
             return new DataGridResult(dt, dt.Rows.Count);
         }
-        public List<TreeEntity> GetMenuModule(MENUMODULEEntity data)
+        public List<TreeEntity> GetMenuModule(USERMODULEEntity data)
         {
-            string sql = @"select * from MENUMODULE order by INX,MODULEID";
-            var resData = DbHelper.ExecuteTable(sql).ToList<MENUMODULEEntity>();
+            string sql = @"select * from USERMODULE where MODULECODE like '02%'  order by INX,MODULECODE";
+            var resData = DbHelper.ExecuteTable(sql).ToList<USERMODULEEntity>();
 
             List<TreeEntity> treeList = new List<TreeEntity>();
             foreach (var i in resData)
@@ -1551,20 +1551,27 @@ namespace z.ERP.Services
             }
             return treeList.ToTree();
         }
-        public List<TreeEntity> AddUserModule(List<MENUMODULEEntity> data)
+        public List<TreeEntity> AddUserModule(List<USERMODULEEntity> data)
         {
             List<TreeEntity> backData = new List<TreeEntity>();
             using (var Tran = DbHelper.BeginTransaction())
             {
                 foreach (var item in data)
                 {
-                    var sql = "select * from MENUMODULE where PMODULEID=" + item.PMODULEID+ " order by MODULECODE";
-                    var res = DbHelper.ExecuteObject<MENUMODULEEntity>(sql);
-                    var sqlP = "select * from MENUMODULE where MODULEID=" + item.PMODULEID;
-                    var resP = DbHelper.ExecuteOneObject<MENUMODULEEntity>(sqlP);
-
-                    item.MODULEID = NewINC("MENUMODULE");
-                    item.MODULECODE = res.Count == 0 ? resP.MODULECODE + "01" :"0"+ (Convert.ToInt32(res[res.Count - 1].MODULECODE)+1);
+                    var sql = "select * from USERMODULE where PMODULEID=" + item.PMODULEID+ " order by MODULECODE";
+                    var res = DbHelper.ExecuteObject<USERMODULEEntity>(sql);
+                    var sqlP = "select * from USERMODULE where MODULEID=" + item.PMODULEID;
+                    var resP = DbHelper.ExecuteOneObject<USERMODULEEntity>(sqlP);
+                    var code = "";
+                    if(res.Count == 0)
+                    {
+                        code = resP.MODULECODE + "01";
+                    }else
+                    {
+                        code = (Convert.ToInt32(res[res.Count - 1].MODULECODE) + 1).ToString().PadLeft(res[res.Count - 1].MODULECODE.Length, '0');
+                    }
+                    item.MODULEID = NewINC("USERMODULE");
+                    item.MODULECODE = code;
                     item.INX = (res.Count + 1).ToString();
                     item.ENABLE_FLAG = "1";
                     DbHelper.Insert(item);
@@ -1583,19 +1590,19 @@ namespace z.ERP.Services
             }
             return backData;
         }
-        public string EditUserModule(MENUMODULEEntity data)
+        public string EditUserModule(USERMODULEEntity data)
         {
             using (var Tran = DbHelper.BeginTransaction())
             {
-                var sql = "select * from MENUMODULE where MODULEID=" + data.MODULEID;
-                var res = DbHelper.ExecuteOneObject<MENUMODULEEntity>(sql);
+                var sql = "select * from USERMODULE where MODULEID=" + data.MODULEID;
+                var res = DbHelper.ExecuteOneObject<USERMODULEEntity>(sql);
                 res.MODULENAME = data.MODULENAME;
                 DbHelper.Update(data);
                 Tran.Commit();
             }
             return "";
         }
-        public string DeleteUserModule(MENUMODULEEntity data)
+        public string DeleteUserModule(USERMODULEEntity data)
         {
             using (var Tran = DbHelper.BeginTransaction())
             {
@@ -1604,7 +1611,7 @@ namespace z.ERP.Services
             }
             return "";
         }
-        public string UpAndDownUserModule(List<MENUMODULEEntity> data)
+        public string UpAndDownUserModule(List<USERMODULEEntity> data)
         {
             using (var Tran = DbHelper.BeginTransaction())
             {

@@ -4,7 +4,7 @@
  * 生成人：书房
  * 代码生成器版本号：1.2.6655.1027
  *
- */ 
+ */
 
 using System.Data;
 using z.DBHelper.DBDomain;
@@ -64,9 +64,17 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-
-        //附加字段
-        public string IsChecked { get; set; }
-        public string PARENTID { get; set; }
+        public string PMODULEID
+        {
+            get; set;
+        }
+        public string INX
+        {
+            get; set;
+        }
+        public string ICON
+        {
+            get; set;
+        }
     }
 }

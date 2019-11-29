@@ -97,21 +97,21 @@ namespace z.ERP.Services
                 sqlRole += " AND ROLEID= " + Data.ROLEID;
             DataTable role = DbHelper.ExecuteTable(sqlRole);
 
-            string sqlMenu = @"(select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid  
+            string sqlMenu = @"(select NVL(U.MENUID,0) MENUID,U.MODULECODE,U.MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) PMODULEID  
                                from USERMODULE U,MENU M 
                               where U.MENUID=M.ID  AND U.ENABLE_FLAG=1 and M.STATUS IN (1,98)  and length(to_char(m.id)) <8
                           union all
-                             select NVL(m.id,0) MENUID,U.MODULECODE|| lpad(to_char(mod(m.id,100)),2,'0') MODULECODE,m.name MODULENAME,U.MODULECODE parentid  
+                             select NVL(m.id,0) MENUID,U.MODULECODE|| lpad(to_char(mod(m.id,100)),2,'0') MODULECODE,m.name MODULENAME,U.MODULECODE PMODULEID  
                                from USERMODULE U,MENU M 
                               where U.ENABLE_FLAG=1 AND M.PLATFORMID =1  and M.STATUS IN (1,98) and length(to_char(m.id)) =8
                                     and u.menuid = trunc(m.id/100)
                           union all 
-                             select NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) parentid 
+                             select NVL(MENUID,0),MODULECODE,MODULENAME,nvl(substr(MODULECODE,0,LENGTH(MODULECODE)-2),0) PMODULEID 
                                from USERMODULE 
                               where ENABLE_FLAG=1 and (MENUID is null or MENUID =0))
                            order by MODULECODE,MENUID";
 
-            string sql1 =@"select Z.MENUID,Z.MODULECODE,Z.MODULENAME,Z.PARENTID,R.ROLEID IsChecked
+            string sql1 = @"select Z.MENUID,Z.MODULECODE,Z.MODULENAME,Z.PMODULEID,R.ROLEID INX
                              from ({0}) Z left join ROLE_MENU R ON Z.MENUID = R.MENUID AND Z.MODULECODE = R.MODULECODE AND R.ROLEID ={1}
                          order by MODULECODE,MENUID";
 
@@ -130,10 +130,10 @@ namespace z.ERP.Services
                 TreeEntity node = new TreeEntity();
                 node.value = item.MENUID;
                 node.code = item.MODULECODE;
-                node.@checked = !item.IsChecked.IsNullValue();
+                node.@checked = !item.INX.IsNullValue();
                 node.title = item.MODULENAME;
                 node.expand = false;
-                node.parentId = item.PARENTID;
+                node.parentId = item.PMODULEID;
                 treeList.Add(node);
             }
             var module = treeList.ToTree();

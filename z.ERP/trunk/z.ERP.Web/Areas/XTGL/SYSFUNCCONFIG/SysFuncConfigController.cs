@@ -14,24 +14,24 @@ namespace z.ERP.Web.Areas.XTGL.SYSFUNCCONFIG
             ViewBag.Title = "系统功能配置";
             return View();
         }
-        public UIResult Add(List<MENUMODULEEntity> Data)
+        public UIResult Add(List<USERMODULEEntity> Data)
         {
             var res = service.XtglService.AddUserModule(Data);
             return new UIResult(new { res });
         }
-        public string Edit(MENUMODULEEntity Data)
+        public string Edit(USERMODULEEntity Data)
         {
             return service.XtglService.EditUserModule(Data);
         }
-        public string Delete(MENUMODULEEntity Data)
+        public string Delete(USERMODULEEntity Data)
         {
             return service.XtglService.DeleteUserModule(Data);
         }
-        public string RoundUpAndDown(List<MENUMODULEEntity> Data)
+        public string RoundUpAndDown(List<USERMODULEEntity> Data)
         {
             return service.XtglService.UpAndDownUserModule(Data);
         }
-        public UIResult GetMenuModule(MENUMODULEEntity Data)
+        public UIResult GetMenuModule(USERMODULEEntity Data)
         {
             var module = service.XtglService.GetMenuModule(Data);
             return new UIResult(new { module });

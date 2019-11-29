@@ -36,7 +36,7 @@
     <Modal v-model="modalValue" draggable footer-hide transfer title="添加" class="sysfuncconfig">
         <div style="height:calc(100% - 32px);">
             <Tabs type="card" v-model="tabsValue">
-                <tab-pane label="新建" name="create">                 
+                <tab-pane label="新建" name="create" v-if="createShow">                 
                     <row>
                         <i-col class="RowTitle" span="4">
                             <span class="mustElement">*</span>
@@ -55,7 +55,7 @@
                         </i-col>
                     </row>
                 </tab-pane>
-                <tab-pane label="选择" name="select">
+                <tab-pane label="选择" name="select" v-if="selectShow">
                     <row>
                         <i-col class="RowTitle" span="4">
                            类型
@@ -86,7 +86,7 @@
         <div style="height:32px;background:#0099ff;">
             <row>
                 <i-col span="8" offset="8">
-                    <i-button type="text" v-on:click="search" v-if="tabsValue=='select'" shape="circle" icon="md-search">查询</i-button>
+                    <i-button type="text" v-on:click="search" v-if="tabsValue=='select'&&selectShow" shape="circle" icon="md-search">查询</i-button>
                     <i-button type="text" v-on:click="addNew" shape="circle" icon="md-search">确认</i-button>
                 </i-col>
             </row>

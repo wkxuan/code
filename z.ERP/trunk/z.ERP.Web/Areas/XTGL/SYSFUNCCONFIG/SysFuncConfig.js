@@ -26,6 +26,8 @@
                 TYPE: "2"
             },
             modalValue: false,
+            selectShow: false,
+            createShow: true,
             curNode: {},
             tabsValue: ''
         }
@@ -62,26 +64,22 @@
                 }
             },
             [
-                h('div', {
+                h('span', {
                     style: {
-                        float: 'left',
-                        width: '50%',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
                     },
                     attrs: {
-                        title: dom.data.title
+                        title: dom.data.data.MENUID ? dom.data.data.MENUID + dom.data.title : dom.data.title
                     },
                 }, [
                    _self.titleRenderFunc(h, dom.data, dom.node, dom.root)
                 ]),
-                h('div', {
+                h('span', {
                     style: {
-                        float: 'right',
                         display: 'none',
-                        width: '50%',
-                        textAlign: 'right'
+                        marginLeft:"20px"
                     },
                     attrs: {
                         id: 'btn_div' + dom.data.value
@@ -95,7 +93,7 @@
                                  icon: 'md-add'
                              }),
                              style: {
-                                 display: _self.enableEditTitle ? "none" : ""
+                                 display: _self.enableEditTitle || dom.data.data.MODULECODE == 8 ? "none" : ""
                              },
                              attrs: {
                                  title: '添加'
@@ -233,7 +231,7 @@
                         type: "text"
                     },
                     style: {
-                        width: "100%",
+                        width: "200px",
                     },
                     on: {
                         "on-focus": function (event) {
@@ -248,7 +246,7 @@
                 return h('span', [
                         h('Icon', {
                             props: {
-                                type: data.data.TYPE == '1' ? 'ios-folder-outline' : 'ios-document-outline'
+                                type: !data.data.MENUID ? 'ios-folder-outline' : 'ios-document-outline'
                             },
                             style: {
                                 marginRight: '8px'
@@ -260,9 +258,21 @@
         },
         //添加节点
         addNode (data, node, root) {
-            if (data.data.TYPE == 2) {
+            if (data.data.MENUID) {
                 iview.Message.error("此节点下不能再增加节点！");
                 return;
+            }
+            if (data.data.MODULECODE.length == 2) {
+                this.selectShow = false;
+                this.createShow = true;
+                this.tabsValue = "create";
+            } else if (data.data.MODULECODE.length == 4) {
+                this.selectShow = true;
+                this.createShow = true;
+            } else if (data.data.MODULECODE.length == 6) {
+                this.selectShow = true;
+                this.createShow = false;
+                this.tabsValue = "select";
             }
             this.modalValue = true;
             this.curNode = node.node;
@@ -520,7 +530,6 @@
                     loc = {
                         MODULENAME: selection[i].NAME,
                         MENUID: selection[i].ID,
-                        TYPE: 2,
                         PMODULEID: pnode.value,
                     };
                     param.push(loc);
@@ -538,7 +547,6 @@
                 }
                 let loc = {
                     MODULENAME: _self.dataParam.NAME,
-                    TYPE: 1,
                     PMODULEID: pnode.value,
                 }
                 param.push(loc);
