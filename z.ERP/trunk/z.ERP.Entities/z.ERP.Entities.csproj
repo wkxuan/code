@@ -63,7 +63,6 @@
     <Compile Include="Auto\ROLE_ALERTEntity.cs" />
     <Compile Include="Auto\ROLE_BRANCHEntity.cs" />
     <Compile Include="Auto\ROLE_FLOOREntity.cs" />
-    <Compile Include="Auto\MENUMODULEEntity.cs" />
     <Compile Include="CONTRACTOUTPUTEntity.cs" />
     <Compile Include="Procedures\EXEC_BILL_NOTICE.cs" />
     <Compile Include="Procedures\MAKE_CONTRACT_INFO.cs" />
