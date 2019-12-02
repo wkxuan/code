@@ -270,7 +270,7 @@ editDetail.popCallBack = function (data) {
         for (var i = 0; i < editDetail.dataParam.BILL_OBTAIN_ITEM.length; i++) {
             sumJE += parseFloat(editDetail.dataParam.BILL_OBTAIN_ITEM[i].RECEIVE_MONEY);
         }
-        editDetail.dataParam.ALL_MONEY = sumJE - editDetail.dataParam.ADVANCE_MONEY;
+        editDetail.dataParam.ALL_MONEY = Number(sumJE.toFixed(2)) - editDetail.dataParam.ADVANCE_MONEY;
     }
     else if (editDetail.screenParam.showPopMerchant) {
         editDetail.screenParam.showPopMerchant = false;
