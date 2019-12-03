@@ -1087,11 +1087,11 @@ namespace z.ERP.Services
                 field = " R.CP,R.PP,R.SP,";
                 table = "RF_MONTHLY_CONTRACT_SALE";
             }
-            string sqlstr = $@"select{field}R.CP_SALE,round(decode(nvl(C.AREAR,0),0,0,R.CP_SALE/C.AREAR*100),2) BQPX,
-                                   R.PP_SALE,round(decode(nvl(C.AREAR,0),0,0,R.PP_SALE/C.AREAR*100),2) SQPX,
+            string sqlstr = $@"select{field}R.CP_SALE,round(decode(nvl(C.AREAR,0),0,0,R.CP_SALE/C.AREAR),2) BQPX,
+                                   R.PP_SALE,round(decode(nvl(C.AREAR,0),0,0,R.PP_SALE/C.AREAR),2) SQPX,
                                    round(decode(nvl(R.PP_SALE,0),0,0,(R.CP_SALE/R.PP_SALE-1)*100),2) HB,
                                    round(decode(nvl(R.PP_SALE,0),0,0,(R.CP_SALE/R.PP_SALE-1)*100),2) PXHB,
-                                   R.SP_SALE,round(decode(nvl(C.AREAR,0),0,0,R.SP_SALE/C.AREAR*100),2) SNTQPX,
+                                   R.SP_SALE,round(decode(nvl(C.AREAR,0),0,0,R.SP_SALE/C.AREAR),2) SNTQPX,
                                    round(decode(nvl(R.SP_SALE,0),0,0,(R.CP_SALE/R.SP_SALE-1)*100),2) TB,
                                    round(decode(nvl(R.SP_SALE,0),0,0,(R.CP_SALE/R.SP_SALE-1)*100),2) PXTB,
                                    C.CONTRACTID,C.AREAR,M.NAME MERCHANTNAME,S.NAME SHOPNAME,F.CODE,F.NAME FLOORNAME,B.NAME BRANDNAME                                                           
@@ -1113,7 +1113,7 @@ namespace z.ERP.Services
             {
                 item.HasKey("CP", a => sqlstr += $" and R.CP ={a}");
             }
-
+            sqlstr += " order by S.NAME ASC";
             return sqlstr;
         }
         public DataTable ContractSaleAnalysisDt(SearchItem item)
