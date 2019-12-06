@@ -1558,15 +1558,16 @@ namespace z.ERP.Services
             {
                 foreach (var item in data)
                 {
-                    var sql = "select * from USERMODULE where PMODULEID=" + item.PMODULEID+ " order by MODULECODE";
+                    var sql = "select * from USERMODULE where PMODULEID=" + item.PMODULEID + " order by MODULECODE";
                     var res = DbHelper.ExecuteObject<USERMODULEEntity>(sql);
                     var sqlP = "select * from USERMODULE where MODULEID=" + item.PMODULEID;
                     var resP = DbHelper.ExecuteOneObject<USERMODULEEntity>(sqlP);
                     var code = "";
-                    if(res.Count == 0)
+                    if (res.Count == 0)
                     {
                         code = resP.MODULECODE + "01";
-                    }else
+                    }
+                    else
                     {
                         code = (Convert.ToInt32(res[res.Count - 1].MODULECODE) + 1).ToString().PadLeft(res[res.Count - 1].MODULECODE.Length, '0');
                     }
@@ -1622,6 +1623,105 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
             return "";
+        }
+        #endregion
+
+        #region 积分抵现规则
+        public DataTable SearchRedemptionRulesOne(REDEMPTIONRULESEntity data)
+        {
+            var sql = $@"select R.*,B.NAME BRANCHNAME from REDEMPTIONRULES R,BRANCH B where R.BRANCHID=B.ID and R.ID ="+data.ID;
+            sql += "  and R.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            return DbHelper.ExecuteTable(sql);
+        }
+        public DataGridResult SearchRedemptionRules(SearchItem item)
+        {
+            var sql = $@"select R.*,B.NAME BRANCHNAME from REDEMPTIONRULES R,BRANCH B where R.BRANCHID=B.ID";
+            item.HasKey("ID", a => sql += $" and R.ID = {a}");
+            item.HasKey("BRANCHID", a => sql += $" and R.BRANCHID in ({a})");
+            item.HasKey("CENT_S", a => sql += $" and R.CENT >= {a}");
+            item.HasKey("CENT_E", a => sql += $" and R.CENT <= {a}");
+            item.HasKey("MONEY_S", a => sql += $" and R.MONEY >= {a}");
+            item.HasKey("MONEY_E", a => sql += $" and R.MONEY <= {a}");
+            item.HasDateKey("START_DATE_S", a => sql += $" and trunc(R.START_DATE) >= {a}");
+            item.HasDateKey("START_DATE_E", a => sql += $" and trunc(R.START_DATE) <= {a}");
+            item.HasDateKey("END_DATE_S", a => sql += $" and trunc(R.END_DATE) >= {a}");
+            item.HasDateKey("END_DATE_E", a => sql += $" and trunc(R.END_DATE) <= {a}");
+            item.HasKey("STATUS", a => sql += $" and R.STATUS in ({a})");
+
+            sql += "  and R.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += " order by R.ID DESC";
+            int count;
+            DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
+            dt.NewEnumColumns<积分抵现>("STATUS", "STATUSMC");
+            return new DataGridResult(dt, count);
+        }
+        public string RedemptionRulesSave(REDEMPTIONRULESEntity data)
+        {
+            var v = GetVerify(data);
+            if (data.ID.IsEmpty())
+                data.ID = NewINC("REDEMPTIONRULES");
+            data.STATUS = "1";
+            v.Require(a => a.ID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.START_DATE);
+            v.Require(a => a.END_DATE);
+            v.Require(a => a.CENT);
+            v.Require(a => a.MONEY);
+            v.Require(a => a.STATUS);
+
+            v.IsNumber(a => a.ID);
+            v.IsNumber(a => a.CENT);
+            v.IsNumber(a => a.MONEY);
+
+            v.IsUnique(a => a.ID);
+
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Save(data);
+                Tran.Commit();
+            }
+            return data.ID;
+        }
+        public void RedemptionRulesDelete(List<REDEMPTIONRULESEntity> data)
+        {
+            foreach (var item in data)
+            {
+                if (item.STATUS != "1")
+                {
+                    throw new LogicException("");
+                }
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach(var item in data)
+                {
+                    DbHelper.Delete(item);
+                }
+                Tran.Commit();
+            }
+        }
+        public string RedemptionRulesBegin(REDEMPTIONRULESEntity data)
+        {
+            data.STATUS = "2";
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Update(data);
+                Tran.Commit();
+            }
+            return data.ID;
+        }
+        public string RedemptionRulesStop(REDEMPTIONRULESEntity data)
+        {
+            data.STATUS = "3";
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                DbHelper.Update(data);
+                Tran.Commit();
+            }
+            return data.ID;
         }
         #endregion
     }

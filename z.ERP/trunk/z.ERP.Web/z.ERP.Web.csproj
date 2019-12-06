@@ -248,6 +248,7 @@
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
+    <Compile Include="Areas\PPGL\RedemptionRules\RedemptionRulesController.cs" />
     <Compile Include="Areas\Report\BILL_SRC\Bill_SrcController.cs" />
     <Compile Include="Areas\Report\ContractInfo\ContractInfoController.cs" />
     <Compile Include="Areas\Report\ContractSaleAnalysis\ContractSaleAnalysisController.cs" />
@@ -444,6 +445,8 @@
     <Content Include="Areas\Pop\Pop\PopShopList.cshtml" />
     <Content Include="Areas\Pop\Pop\PopShopList.js" />
     <Content Include="Areas\PPGL\BRAND\BrandEdit.js" />
+    <Content Include="Areas\PPGL\RedemptionRules\RedemptionRules.js" />
+    <Content Include="Areas\PPGL\RedemptionRules\RedemptionRulesDetail.js" />
     <Content Include="Areas\Report\BILL_SRC\Bill_Src.js" />
     <Content Include="Areas\Report\ContractInfo\ContractInfo.js" />
     <Content Include="Areas\Report\ContractSaleAnalysis\ContractSaleAnalysis.js" />
@@ -840,6 +843,8 @@
     <Content Include="File\Template\合同模板.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Areas\PPGL\RedemptionRules\RedemptionRules.cshtml" />
+    <Content Include="Areas\PPGL\RedemptionRules\RedemptionRulesDetail.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
