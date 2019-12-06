@@ -5,7 +5,7 @@ using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.DefineDetail;
 using z.MVC5.Results;
 
-namespace z.ERP.Web.Areas.PPGL.RedemptionRules
+namespace z.ERP.Web.Areas.XTGL.RedemptionRules
 {
     public class RedemptionRulesController : BaseController
     {

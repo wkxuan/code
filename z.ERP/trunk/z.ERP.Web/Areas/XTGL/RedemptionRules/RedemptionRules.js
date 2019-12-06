@@ -22,7 +22,7 @@
         { title: '状态', key: 'STATUSMC' },
         {
             title: '操作', key: 'operate', authority: "", onClick: function (index, row, data) {
-                search.popConfig.src = __BaseUrl + "/PPGL/RedemptionRules/RedemptionRulesDetail/" + row.ID;
+                search.popConfig.src = __BaseUrl + "/XTGL/RedemptionRules/RedemptionRulesDetail/" + row.ID;
                 search.popConfig.open = true;
             }
         }];
@@ -61,7 +61,7 @@ search.mountedInit = function () {
 };
 
 search.addHref = function () {
-    search.popConfig.src = __BaseUrl + "/PPGL/RedemptionRules/RedemptionRulesDetail/";
+    search.popConfig.src = __BaseUrl + "/XTGL/RedemptionRules/RedemptionRulesDetail/";
     search.popConfig.open = true;
 };
 
