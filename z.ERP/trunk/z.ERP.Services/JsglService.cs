@@ -769,7 +769,7 @@ namespace z.ERP.Services
             var dcl = new BILLSTATUSEntity
             {
                 BILLID = SaveData.BILLID,
-                MENUID = "10500702",
+                MENUID = "10700502",
                 BRABCHID = SaveData.BRANCHID,
                 URL = "JSGL/BILL_NOTICE/Bill_NoticeEdit/"
             };

@@ -338,13 +338,13 @@ namespace z.ERP.Services
                                 {
                                     using (var Tran = DbHelper.BeginTransaction())
                                     {
-                                        WRITE_BILLFROMSALE write_billfromsale = new WRITE_BILLFROMSALE()
+                                        WRITE_CONTRACT_UPDATE write_contract_update = new WRITE_CONTRACT_UPDATE()
                                         {
                                             in_RQ = WRITEDATA.RQ.ToDateTime(),
                                             in_BRANCHID = fd.ID,
                                             in_USERID = employee.Id
                                         };
-                                        DbHelper.ExecuteProcedure(write_billfromsale);
+                                        DbHelper.ExecuteProcedure(write_contract_update);
                                         WRITEDATAEntity writedata = new WRITEDATAEntity();
                                         writedata.RQ = WRITEDATA.RQ;
                                         writedata.BRANCHID = fd.ID;
@@ -366,15 +366,16 @@ namespace z.ERP.Services
                                 LogData.AppendText("\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":分店" + fd.ID + "(" + fd.NAME + ")" + WRITEDATA.RQ + "租约变更启动 ");
                                 try
                                 {
+
                                     using (var Tran = DbHelper.BeginTransaction())
                                     {
-                                        WRITE_CONTRACT_UPDATE write_contract_update = new WRITE_CONTRACT_UPDATE()
+                                        WRITE_BILLFROMSALE write_billfromsale = new WRITE_BILLFROMSALE()
                                         {
                                             in_RQ = WRITEDATA.RQ.ToDateTime(),
                                             in_BRANCHID = fd.ID,
                                             in_USERID = employee.Id
                                         };
-                                        DbHelper.ExecuteProcedure(write_contract_update);
+                                        DbHelper.ExecuteProcedure(write_billfromsale);
                                         WRITEDATAEntity writedata = new WRITEDATAEntity();
                                         writedata.RQ = WRITEDATA.RQ;
                                         writedata.BRANCHID = fd.ID;
@@ -383,6 +384,7 @@ namespace z.ERP.Services
                                         Tran.Commit();
                                         data.STATUS = writedata.STATUS;
                                     }
+
                                 }
                                 catch (Exception e)
                                 {

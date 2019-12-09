@@ -76,26 +76,26 @@ namespace z.POS.Services
         /// <returns></returns>
         public long GetLastDealid()
         {
-            //string sql = $"select nvl(max(jlbh),0) from xsjl where sktno = '{employee.PlatformId}'";
+            string sql = $"select nvl(max(jlbh),0) from xsjl where sktno = '{employee.PlatformId}'";
 
-            //long lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
+            long lastDealid = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
 
-            //sql = $"select nvl(max(jlbh),0) from sktxsjl where sktno = '{employee.PlatformId}'";
-            //long lastDealid_his = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
-
-            //return (lastDealid > lastDealid_his) ? lastDealid : lastDealid_his;
-
-            string sqlerp = $"select nvl(max(JLBH),0) from XSJL where SKTNO = '{employee.PlatformId}'";
-            string sqlcrm = $"select nvl(max(JLBH),0) from BFCRM10.HYK_XFJL where STATUS in (1,2) and SKTNO='{employee.PlatformId}'";
-
-            long lastDealidErp = long.Parse(DbHelper.ExecuteTable(sqlerp).Rows[0][0].ToString());
-            long lastDealidCrm = long.Parse(DbHelper.ExecuteTable(sqlcrm).Rows[0][0].ToString());
-
-            long lastDealid = (lastDealidErp > lastDealidCrm) ? lastDealidErp : lastDealidCrm;
-            sqlerp = $"select nvl(max(JLBH),0) from SKTXSJL where SKTNO = '{employee.PlatformId}'";
-            long lastDealid_his = long.Parse(DbHelper.ExecuteTable(sqlerp).Rows[0][0].ToString());
+            sql = $"select nvl(max(jlbh),0) from sktxsjl where sktno = '{employee.PlatformId}'";
+            long lastDealid_his = long.Parse(DbHelper.ExecuteTable(sql).Rows[0][0].ToString());
 
             return (lastDealid > lastDealid_his) ? lastDealid : lastDealid_his;
+
+            //string sqlerp = $"select nvl(max(JLBH),0) from XSJL where SKTNO = '{employee.PlatformId}'";
+            //string sqlcrm = $"select nvl(max(JLBH),0) from BFCRM10.HYK_XFJL where STATUS in (1,2) and SKTNO='{employee.PlatformId}'";
+
+            //long lastDealidErp = long.Parse(DbHelper.ExecuteTable(sqlerp).Rows[0][0].ToString());
+            //long lastDealidCrm = long.Parse(DbHelper.ExecuteTable(sqlcrm).Rows[0][0].ToString());
+
+            //long lastDealid = (lastDealidErp > lastDealidCrm) ? lastDealidErp : lastDealidCrm;
+            //sqlerp = $"select nvl(max(JLBH),0) from SKTXSJL where SKTNO = '{employee.PlatformId}'";
+            //long lastDealid_his = long.Parse(DbHelper.ExecuteTable(sqlerp).Rows[0][0].ToString());
+
+            //return (lastDealid > lastDealid_his) ? lastDealid : lastDealid_his;
         }
 
         public List<FindGoodsResult> FindGoods(FindGoodsFilter filter)
@@ -1365,8 +1365,6 @@ namespace z.POS.Services
 
                 GetMemberInfo(int.Parse(reqMth.validType), reqMth.ValidID, out vipcard, out msg);
 
-                //  ProcCRM.ProcCRMFunc.GetMemberInfo(iMemberType, reqMth.ValidID, out vipcard, out msg);//iMemberType Member_CondType_HYK_NO
-
 
                 //2.3取CZK信息
                 if (vipcard.id > 0)
@@ -1409,10 +1407,7 @@ namespace z.POS.Services
                     else
                         sDeptCode = reqMth.goodsList[i].deptCode;
 
-                    if (reqMth.goodsList[i].deptID == null)
-                        deptid = 0;
-                    else
-                        deptid = reqMth.goodsList[i].deptID;
+                    deptid = reqMth.goodsList[i].deptID;
 
                     //2018.04.23_1:处理负库存标记
                     //  CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<2.1.1> 第二步:查询商品 部门代码:" + sDeptCode +
@@ -1551,7 +1546,7 @@ namespace z.POS.Services
                 //  CommonUtils.WriteSKTLog(1, posNo, "计算销售价格<2.5.1> 查询返券:会员ID:" + vipcard.id);
                 if (vipcard.id > 0)
                 {
-                    string sCountPwd = "NOCHECKPWD";
+                  //  string sCountPwd = "NOCHECKPWD";
                     cardCodeToCheck = "";
                     verifyCode = "";
                     password = "";

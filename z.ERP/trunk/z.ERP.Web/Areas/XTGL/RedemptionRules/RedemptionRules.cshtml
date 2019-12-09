@@ -1,0 +1,65 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum;
+@using z.ERP.Web.Areas.Layout.Search;
+@inherits SearchViewBase
+
+@section conditionParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            门店
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="searchParam.BRANCHID" method="branch"></yx-select>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            开始日期
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.START_DATE_S"></yx-date-picker>
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.START_DATE_E"></yx-date-picker>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            结束日期
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.END_DATE_S"></yx-date-picker>
+        </i-col>
+        <i-col span="3" class="RowText">
+            <yx-date-picker type="date" v-bind:value.sync="searchParam.END_DATE_E"></yx-date-picker>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            积分
+        </i-col>
+        <i-col span="3" class="RowText">
+            <i-input v-model="searchParam.CENT_S" />
+        </i-col>
+        <i-col span="3" class="RowText">
+            <i-input v-model="searchParam.CENT_E" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            金额
+        </i-col>
+        <i-col span="3" class="RowText">
+            <i-input v-model="searchParam.MONEY_S" />
+        </i-col>
+        <i-col span="3" class="RowText">
+            <i-input v-model="searchParam.MONEY_E" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            状态
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new EnumDropDownListRender<积分抵现>()
+                {
+                    vModel = "searchParam.STATUS",
+                    Multiple = true
+                });
+            }
+        </i-col>
+    </row>
+}

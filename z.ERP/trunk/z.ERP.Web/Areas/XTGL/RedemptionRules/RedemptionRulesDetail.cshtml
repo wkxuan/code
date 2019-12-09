@@ -1,0 +1,50 @@
+﻿@using z.ERP.Web.Areas.Layout.DefineDetail
+@inherits DefineDetailViewBase
+
+@section baseParam{
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            门店
+        </i-col>
+        <i-col span="16" class="RowText">
+            <yx-select v-bind:value.sync="dataParam.BRANCHID" method="branch" v-bind:disabled="disabled"></yx-select>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            开始日期
+        </i-col>
+        <i-col span="16" class="RowText">
+            <yx-date-picker type="date" v-bind:value.sync="dataParam.START_DATE" v-bind:disabled="disabled"></yx-date-picker>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            结束日期
+        </i-col>
+        <i-col span="16" class="RowText">
+            <yx-date-picker type="date" v-bind:value.sync="dataParam.END_DATE" v-bind:disabled="disabled"></yx-date-picker>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            积分
+        </i-col>
+        <i-col span="16" class="RowText">
+            <i-input type="number" v-model="dataParam.CENT" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+    <row>
+        <i-col span="4" class="RowTitle">
+            <span class="mustElement">*</span>
+            金额
+        </i-col>
+        <i-col span="16" class="RowText">
+            <i-input type="number" v-model="dataParam.MONEY" v-bind:disabled="disabled" />
+        </i-col>
+    </row>
+}

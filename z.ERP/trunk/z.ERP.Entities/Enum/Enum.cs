@@ -481,4 +481,10 @@ namespace z.ERP.Entities.Enum
         保底毛利 = 2,
         保底销售 = 3
     }
+    public enum 积分抵现
+    {
+        保存 = 1,
+        启动 = 2,
+        终止 = 3
+    }
 }

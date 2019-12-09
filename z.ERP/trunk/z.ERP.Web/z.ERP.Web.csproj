@@ -316,6 +316,7 @@
     <Compile Include="Areas\XTGL\NOTICE\NOTICEController.cs" />
     <Compile Include="Areas\XTGL\PAY_CHARGES\Pay_ChargesController.cs" />
     <Compile Include="Areas\XTGL\POSKEYSrch\POSKEYSrchController.cs" />
+    <Compile Include="Areas\XTGL\RedemptionRules\RedemptionRulesController.cs" />
     <Compile Include="Areas\XTGL\SPLC\SPLCController.cs" />
     <Compile Include="Areas\XTGL\AlertShow\AlertShowController.cs" />
     <Compile Include="Areas\XTGL\ALERT\ALERTController.cs" />
@@ -517,6 +518,8 @@
     <Content Include="Areas\XTGL\POSO2OWFTCFG\PosO2OWftCfg.js" />
     <Content Include="Areas\XTGL\POSUMSCONFIG\POSUMSCONFIG.js" />
     <Content Include="Areas\XTGL\RCL\RCL.js" />
+    <Content Include="Areas\XTGL\RedemptionRules\RedemptionRules.js" />
+    <Content Include="Areas\XTGL\RedemptionRules\RedemptionRulesDetail.js" />
     <Content Include="Areas\XTGL\REGION\Region.js" />
     <Content Include="Areas\XTGL\ROLE\RoleEdit.js" />
     <Content Include="Areas\XTGL\ROLE\RoleList.js" />
@@ -840,6 +843,8 @@
     <Content Include="File\Template\合同模板.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Areas\XTGL\RedemptionRules\RedemptionRules.cshtml" />
+    <Content Include="Areas\XTGL\RedemptionRules\RedemptionRulesDetail.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
