@@ -36,6 +36,7 @@
         __PortalBaseUrl = '@ViewBag.BaseUrl';
     </script>
     <style type="text/css">
+        
         html,body{
             overflow:hidden;
         }
@@ -55,7 +56,15 @@
         .ivu-modal {
             height:80%;
             overflow-y:scroll;
-        }        
+        }
+        .sysnameOnblur {
+            border-bottom: 3px solid #2D8CF0 !important;
+            font-size: 16px;
+            color: #2D8CF0 !important;
+        }
+        .menui .p-icon:before {
+            display:none;
+        }     
     </style>
     @InitFiles(WebFiles)
     
@@ -80,17 +89,8 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="nav-no-collapse navbar-left pull-left hidden-sm hidden-xs">
-                        <ul class="nav navbar-nav pull-left" style="color:aqua">
-                            <li>
-                                <a class="btn mallerp" id="make-small-nav_mallerp" onclick="GetLoadNav(1)">业务系统<i class="hidden-xs"></i></a>
-                            </li>
-                        </ul>
-                        <ul class="nav navbar-nav pull-left">
-                            <li>
-                                <a class="btn mallcrm" id="make-small-nav_mallcrm" onclick="GetLoadNav(2)">会员系统<i class="hidden-xs"></i></a>
-                            </li>
-                        </ul>
+                    <div class="nav-no-collapse navbar-left pull-left hidden-sm hidden-xs syslist">
+                       
                     </div>
                     <div class="nav-no-collapse pull-right" id="header-nav">
                         <ul class="nav navbar-nav pull-right">
@@ -161,9 +161,7 @@
                  <div id="nav-col">
                 <section id="col-left" class="col-left-nano">
                     <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
-                        <ul class="nav nav-pills nav-stacked">
-                            <li class="nav-header hidden-sm hidden-xs">
-                            </li>
+                        <ul class="nav nav-pills nav-stacked first-menu-list">                           
                         </ul>
                     </div>
                 </section>

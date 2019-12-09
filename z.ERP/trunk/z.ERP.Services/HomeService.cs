@@ -52,8 +52,37 @@ namespace z.ERP.Services
                 ps = allp.First();
             return ps.DOMAIN;
         }
-
-
+        /// <summary>
+        /// 获取配置系统
+        /// </summary>
+        /// <returns></returns>
+        public List<PLATFORMEntity> GetPLATFORM() {
+            return DbHelper.SelectList(new PLATFORMEntity()).OrderBy(a=>a.ID).ToList<PLATFORMEntity>();
+        }
+        /// <summary>
+        /// 获取权限菜单
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public DataTable GetMenuList(MENUEntity data) {
+            string sqlp = "";
+            if (int.Parse(employee.Id) > 0) {
+                //权限条件
+                sqlp = $@"AND U.MODULECODE IN ( SELECT B.MODULECODE FROM USERMODULE A, ROLE_MENU B,USER_ROLE C WHERE A.MODULECODE = B.MODULECODE
+                        AND B.ROLEID = C.ROLEID AND C.USERID = '{employee.Id}')";
+            }
+            //先查询权限菜单再查询菜单父目录
+            string sql = $@"SELECT U.*,M.URL,M.PLATFORMID FROM USERMODULE U,MENU M 
+                        WHERE U.MENUID=M.ID(+) AND U.ENABLE_FLAG=1 AND LENGTH(U.MODULECODE)>2 AND M.PLATFORMID={data.PLATFORMID} {sqlp} 
+                        UNION ALL 
+                        SELECT U.*,M.URL,M.PLATFORMID FROM USERMODULE U,MENU M 
+                        WHERE U.MENUID=M.ID(+) AND U.ENABLE_FLAG=1 AND LENGTH(U.MODULECODE)>2 AND  
+                        U.MODULEID IN ( SELECT U1.PMODULEID FROM USERMODULE U1,MENU M1 WHERE U1.MENUID=M1.ID(+) AND U1.ENABLE_FLAG=1 
+                        AND LENGTH(U1.MODULECODE)>2 AND M1.PLATFORMID={data.PLATFORMID} {sqlp}) ";
+            string sqls = $@"SELECT * FROM ({sql}) ORDER BY MODULECODE,INX";
+            DataTable menuGroup = DbHelper.ExecuteTable(sqls);
+            return menuGroup;
+        }
         /// <summary>
         /// 获取所有菜单
         /// </summary>

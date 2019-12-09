@@ -1,32 +1,58 @@
-﻿$(function ($) {
+﻿var UrlDoMain = {};
+$(function ($) {
     $("#content-wrapper").find('.mainContent').height($(window).height() - 100);
     $(window).resize(function (e) {
         $("#content-wrapper").find('.mainContent').height($(window).height() - 100);
     });
-    $('#sidebar-nav,#nav-col-submenu').on('click', '.dropdown-toggle', function (e) {
-        e.preventDefault();
-        var $item = $(this).parent();
-        if (!$item.hasClass('open')) {
-            $item.parent().find('.open .submenu').slideUp('fast');
-            $item.parent().find('.open').toggleClass('open');
-        }
-        $item.toggleClass('open');
-        if ($item.hasClass('open')) {
-            $item.children('.submenu').slideDown('fast', function () {
-                var _height1 = $(window).height() - 92 - $item.position().top;
-                var _height2 = $item.find('ul.submenu').height() + 10;
-                var _height3 = _height2 > _height1 ? _height1 : _height2;
-                $item.find('ul.submenu').css({
-                    overflow: "auto",
-                    height: _height3
-                })
+    //$('#sidebar-nav,#nav-col-submenu').on('click', '.dropdown-toggle', function (e) {
+    //    e.preventDefault();
+    //    var $item = $(this).parent();
+    //    if (!$item.hasClass('open')) {
+    //        $item.parent().find('.open .submenu').slideUp('fast');
+    //        $item.parent().find('.open').toggleClass('open');
+    //    }
+    //    $item.toggleClass('open');
+    //    if ($item.hasClass('open')) {
+    //        $item.children('.submenu').slideDown('fast', function () {
+    //            var _height1 = $(window).height() - 92 - $item.position().top;
+    //            var _height2 = $item.find('ul.submenu').height() + 10;
+    //            var _height3 = _height2 > _height1 ? _height1 : _height2;
+    //            $item.find('ul.submenu').css({
+    //                overflow: "auto",
+    //                height: _height3
+    //            })
+    //        });
+    //    }
+    //    else {
+    //        $item.children('.submenu').slideUp('fast');
+    //    }
+    //});
+    // 新菜单点击事件
+    $('#sidebar-nav,#nav-col-submenu a').on('click', '.dropdown-toggle', function () {
+        var $obj = $(this);
+        var $ul = $obj.next();       
+        if ($ul.is(':visible')) {
+            $ul.slideUp(100, function () {
+                $obj.removeClass('open');
+                $('#sidebar-nav').find('.three-menu-list').css({display: "none"})
             });
         }
         else {
-            $item.children('.submenu').slideUp('fast');
+            if ($ul.hasClass('second-menu-list')) {
+                $('#sidebar-nav .second-menu-list').slideUp(100, function () {
+                    $(this).prev().removeClass('open');
+                });
+            }
+            else {
+                $ul.parents('.second-menu-list').find('.three-menu-list').slideUp(100, function () {
+                    $(this).prev().removeClass('open');
+                });
+            }
+            $ul.slideDown(300, function () {
+                $obj.addClass('open');
+            });
         }
     });
-    GetLoadNav(1);
     $('body').on('mouseenter', '#page-wrapper.nav-small #sidebar-nav .dropdown-toggle', function (e) {
         if ($(document).width() >= 992) {
             var $item = $(this).parent();
@@ -67,6 +93,7 @@
     });
     $('body').find('#make-small-nav').click(function (e) {
         $('#page-wrapper').toggleClass('nav-small');
+        $('.submenu').toggleClass('menui');  //切换小图标模式 2.3级菜单图标隐藏
         var $item = $('#page-wrapper.nav-small #sidebar-nav > .nav-pills > .open');
         if ($item.hasClass('open')) {
             $item.find('.open .submenu').slideUp('fast');
@@ -74,6 +101,7 @@
             $item.children('.submenu').slideUp('fast');
         }
         $item.removeClass('open');
+        $('#sidebar-nav').find('.submenu').css({ display: "none" });
     });
     $('body').find('.mobile-search').click(function (e) {
         e.preventDefault();
@@ -82,7 +110,7 @@
     });
     $(document).mouseup(function (e) {
         var container = $('.mobile-search');
-        if (!container.is(e.target) && container.has(e.target).length === 0) // ... nor a descendant of the container
+        if (!container.is(e.target) && container.has(e.target).length === 0)
         {
             container.removeClass('active');
         }
@@ -101,38 +129,63 @@
         }, 300);
     });
 });
+//加载系统
+function GetLoadMenu() {
+    _.Ajax('GetPLATFORM', {}, function (data) {
+        if (data.length > 0) {
+            var $html = "";           
+            for (i = 0; i < data.length; i++) {
+                UrlDoMain[data[i].ID] = data[i].DOMAIN;
+                $html += '<ul class="nav navbar-nav pull-left">';
+                $html += '<li><a class="btn system' + data[i].ID + '" id="make-small-nav" onclick="GetLoadNav(' + data[i].ID + ')">' + data[i].SYSNAME + '<i class="hidden-xs"></i></a></li></ul>';
+            }            
+            $(".clearfix .syslist").append($html);
+            GetLoadNav(data[0].ID);
+        }
+    });
+}
+//加载菜单
 function GetLoadNav(systemid) {
-    //erp crm
-    if (systemid == 1) {
-        $(".mallerp").css({ "border-bottom": "3px solid #2D8CF0", "font-size": "16px", "color": "#2D8CF0" });
-        $(".mallcrm").css({ "border-bottom": "", "font-size": "", "color": "" });
-    } else {
-        $(".mallcrm").css({ "border-bottom": "3px solid #2D8CF0", "font-size": "16px", "color": "#2D8CF0" });
-        $(".mallerp").css({ "border-bottom": "", "font-size": "", "color": "" });
-    }
-
+    var $item = $(".clearfix .syslist");
+    $item.find('.sysnameOnblur').removeClass('sysnameOnblur');
+    $item.find('.system' + systemid).addClass('sysnameOnblur');    //系统之间切换css
 
     _.Ajax('GetMenu', {
-        Data: {
-            PLATFORMID: systemid
-        }
+        Data: {PLATFORMID: systemid}
     }, function (data) {
         if (data) {
-            var menus = data;
-
+            var datas = toMap(data);  //菜单转换成有序map
             var _html = "";
-            $.each(menus.MENU, function (i, row) {
+            $.each(datas, function (i, row) {  //循环一级菜单
                 _html += '<li data-type="m">';
-                _html += '<a data-id="' + row.ID + '" href="#" class="dropdown-toggle" style="height:34px"><i style="color: #66D2D3" class="' + row.ICON + ' fa-fw "></i>';
-                _html += '<span>' + row.NAME + '</span><i class="fa fa-angle-right drop-icon"></i></a>';
-                var childMenus = row.MENUList;
-                if (childMenus && childMenus.length > 0) {
-                    _html += '<ul class="submenu">';
+                _html += '<a data-id="' + row.MENUID + '" href="#" class="dropdown-toggle" style="height:34px"><i style="color: #66D2D3" class="' + row.ICON + ' fa-fw "></i>';
+                _html += '<span>' + row.MODULENAME + '</span><i class="fa fa-angle-right drop-icon"></i></a>';
+                var childMenus = row.children;   
+                if (childMenus && childMenus.length > 0) { //循环二级菜单
+                    _html += '<ul class="submenu second-menu-list">';
                     $.each(childMenus, function (i) {
-                        var subrow = childMenus[i];
-                        _html += '<li>';
-                        _html += '<a class="menuItem" data-id="' + subrow.URL + '" href="' + subrow.URL + '" data-index="' + subrow.ID + '">' + subrow.NAME + '</a>';
-                        _html += '</li>';
+                        var trow = childMenus[i];
+                        if (trow.MENUID) {   //有MENUID的时菜单
+                            _html += '<li><i style="color: #66D2D3;position: absolute;padding-left: 30px;line-height: 30px;" class="' + trow.ICON + ' fa-fw p-icon"></i>';
+                            _html += '<a class="menuItem" data-id="' + UrlDoMain[systemid] + trow.URL + '" href="' + UrlDoMain[systemid] + trow.URL + '" data-index="' + trow.MENUID + '">' + trow.MODULENAME + '</a>';
+                            _html += '</li>';
+                        } else {
+                            _html += '<li data-type="m"><i style="color: #66D2D3;position: absolute;padding-left: 30px;line-height: 30px;" class="' + trow.ICON + ' fa-fw p-icon"></i>';
+                            _html += '<a data-id="' + trow.MENUID + '" href="#" class="dropdown-toggle" style="height:34px;">';
+                            _html += '<span>' + trow.MODULENAME + '</span><i class="fa fa-angle-right drop-icon"></i></a>';
+                            var tchildMenus = trow.children;
+                            if (tchildMenus && tchildMenus.length > 0) { //循环三级菜单
+                                _html += '<ul class="submenu three-menu-list">';
+                                $.each(tchildMenus, function (i) {
+                                    var srow = tchildMenus[i];
+                                    _html += '<li><i style="color: #66D2D3;position: absolute;padding-left: 45px;line-height: 30px;" class="' + srow.ICON + ' fa-fw p-icon"></i>';
+                                    _html += '<a class="menuItem" data-id="' + UrlDoMain[systemid] + srow.URL + '" href="' + UrlDoMain[systemid] + srow.URL + '" data-index="' + srow.MENUID + '">' + srow.MODULENAME + '</a>';
+                                    _html += '</li>';
+                                });
+                                _html += '</ul>';
+                            }
+                            _html += '</li>';
+                        }
                     });
                     _html += '</ul>';
                 }
@@ -144,7 +197,29 @@ function GetLoadNav(systemid) {
         };
     });
 }
-
+function toMap(data) {
+    //转化成树结构 
+    let result = []
+    if (!Array.isArray(data)) {
+        return result
+    }
+    data.forEach(item => {
+        delete item.children;
+    });
+    let map = {};
+    data.forEach(item => {
+        map[item.MODULEID] = item;
+    });
+    data.forEach(item => {
+        let parent = map[item.PMODULEID];
+        if (parent) {
+            (parent.children || (parent.children = [])).push(item);
+        } else {
+            result.push(item);
+        }
+    });
+    return result;
+}
 var erpDomain = "";
 
 //添加vue模块
@@ -224,10 +299,9 @@ var Index = new Vue({
                 }],
         alertdataDef: [],
     },
-    created: function () {
-        this.AllTopData();    //加载数据不能放到mounted里，会和加载目录异步方法冲突
-    },
     mounted: function () {
+        this.AllTopData();
+        GetLoadMenu();
     },
     methods: {
         Badgeclick: function () {
@@ -236,7 +310,7 @@ var Index = new Vue({
         },
         AllTopData: function () {
             let _Index = this;
-            _.AjaxT('AllTopData', { 1: 1 }, function (data) {     //为防止与目录加载冲突，用同步加载   AjaxT
+            _.AjaxT('AllTopData', { 1: 1 }, function (data) {     
                 erpDomain = data.erpdomain;
                 _Index.BadgeNO = parseInt(data.noticecount) + parseInt(data.dclrwcount) + parseInt(data.alertcount);
                 _Index.dclrw = (h) => {

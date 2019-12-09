@@ -47,5 +47,9 @@ namespace z.ERP.Entities
         {
             get; set;
         }
+        public string SYSNAME
+        {
+            get; set;
+        }
     }
 }

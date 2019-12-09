@@ -12,11 +12,13 @@ namespace z.ERP.Web.Areas.Home.Index
         {
             return View();
         }
-
+        public UIResult GetPLATFORM() {
+            return new UIResult (service.HomeService.GetPLATFORM());
+        }
         public UIResult GetMenu(MENUEntity data)
         {
-            string host = Request.Url.Host;
-            return service.HomeService.GetMenuNew(data, host);
+            //string host = Request.Url.Host;
+            return new UIResult(service.HomeService.GetMenuList(data));
         }
         public UIResult AllTopData()
         {   

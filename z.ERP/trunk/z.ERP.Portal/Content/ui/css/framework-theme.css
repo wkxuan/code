@@ -79,6 +79,7 @@ a:hover,a:focus{color:#475059;}
 #sidebar-nav .nav>li>a:hover{border-left-color:#1ABC9C}
 #sidebar-nav .nav>li>a>i{position:absolute;}
 #sidebar-nav .nav>li>a>span{margin-left:25px;font-weight:700;}
+/*#sidebar-nav .nav .second-menu-list>li>a>span{margin-left:5px;font-weight:700;}*/
 #sidebar-nav .nav>li>a>span.label{font-size:0.75em;margin:5px 0 0 0;padding:4px 0.6em;}
 #sidebar-nav .nav>li>a>span.label.label-circle{margin-right:5px}
 #sidebar-nav .nav>li.open>a{border-bottom-color:#252525;outline:none;text-decoration:none;}
@@ -87,18 +88,19 @@ a:hover,a:focus{color:#475059;}
 #sidebar-nav .nav li.open>a.dropdown-toggle>.drop-icon,#sidebar-nav .nav li.active>a.dropdown-toggle>.drop-icon{color:#fff;transform:rotate(90deg);}
 #sidebar-nav .nav li .submenu{display:none;background:#253443;padding:5px 0;margin:0;list-style:none;max-height:450px}
 #sidebar-nav .nav li .submenu>li{position:relative}
-#sidebar-nav .nav li .submenu>li>a{display:block;line-height:30px;padding-left:50px;color:#fff;outline:none;text-decoration:none;transition:border-color 0.1s ease-in-out 0s,background-color 0.1s ease-in-out 0s,box-shadow 0.1s ease-in-out 0s;}
+#sidebar-nav .nav li .submenu>li>a{position:relative;display:block;line-height:30px;padding-left:50px;color:#fff;outline:none;text-decoration:none;transition:border-color 0.1s ease-in-out 0s,background-color 0.1s ease-in-out 0s,box-shadow 0.1s ease-in-out 0s;}
+#sidebar-nav .nav li .submenu .submenu>li>a{display:block;line-height:30px;padding-left:65px;color:#fff;outline:none;text-decoration:none;transition:border-color 0.1s ease-in-out 0s,background-color 0.1s ease-in-out 0s,box-shadow 0.1s ease-in-out 0s;}
 #sidebar-nav .nav li .submenu>li:first-of-type>a{border-top:0}
-#sidebar-nav .nav li .submenu>li>a:hover,#sidebar-nav .nav li .submenu>li>a.active,#sidebar-nav .nav li .submenu>li.active>a,#sidebar-nav .nav li .submenu>li.open>a{text-decoration:none;color:#fff;background-color:#1f2c39;}
+#sidebar-nav .nav li .submenu>li:hover {text-decoration:none;color:#fff;background-color:#1f2c39;}
 #sidebar-nav .nav li.active>.submenu{display:block}
 #sidebar-nav .nav>.open .submenu .submenu,#sidebar-nav .nav>.active .submenu .submenu{display:none}
 #sidebar-nav .nav>.open .submenu>.open>a,#sidebar-nav .nav>.open .submenu>.active>a,#sidebar-nav .nav>.active .submenu>.open>a,#sidebar-nav .nav>.active .submenu>.active>a{background:inherit;border-bottom-color:#1f2c39;box-shadow:0 -1px 0 #1f2c39 inset;}
 #sidebar-nav .nav>.open .submenu>li a,#sidebar-nav .nav>.active .submenu>li a{position:relative}
 #sidebar-nav .nav>.open .submenu>li>a.dropdown-toggle>.drop-icon,#sidebar-nav .nav>.active .submenu>li>a.dropdown-toggle>.drop-icon{font-size:10px;margin-top:-5px;}
 #sidebar-nav .nav>.open .submenu>li>.submenu,#sidebar-nav .nav>.active .submenu>li>.submenu{background-color:#1f2c39}
-#sidebar-nav .nav>.open .submenu>li>.submenu>li a:hover,#sidebar-nav .nav>.open .submenu>li>.submenu>li a.active,#sidebar-nav .nav>.active .submenu>li>.submenu>li a:hover,#sidebar-nav .nav>.active .submenu>li>.submenu>li a.active{color:#1ABC9C}
+/*#sidebar-nav .nav>.open .submenu>li>.submenu>li a:hover,#sidebar-nav .nav>.open .submenu>li>.submenu>li a.active,#sidebar-nav .nav>.active .submenu>li>.submenu>li a:hover,#sidebar-nav .nav>.active .submenu>li>.submenu>li a.active{color:#1ABC9C}*/
 #sidebar-nav .nav>.open .submenu>li>.submenu a,#sidebar-nav .nav>.active .submenu>li>.submenu a{border-bottom:0 none;border-top:0 none;padding-left:85px;}
-#sidebar-nav .nav>.open .submenu>li>.submenu a:before,#sidebar-nav .nav>.active .submenu>li>.submenu a:before{content:"\f111";display:inline;font-family:FontAwesome;font-size:4px;font-style:normal;font-weight:normal;margin-left:-10px;margin-top:1px;position:absolute;}
+/*#sidebar-nav .nav>.open .submenu>li>.submenu a:before,#sidebar-nav .nav>.active .submenu>li>.submenu a:before{content:"\f111";display:inline;font-family:FontAwesome;font-size:4px;font-style:normal;font-weight:normal;margin-left:-10px;margin-top:1px;position:absolute;}*/
 .navbar-nav .open .dropdown-menu{background-color:#FFFFFF;border:none;box-shadow:0 6px 12px rgba(0,0,0,0.176);left:0;position:absolute;}
 .dropdown-menu > li > a {padding: 6px 13px;}
 .dropdown-menu li i {margin-right:8px;font-size: 1.125em;margin-top: 3px;width:15px;}
@@ -149,6 +151,7 @@ a:hover,a:focus{color:#475059;}
 .nav-small #nav-col-submenu a.dropdown-toggle>.drop-icon{color:#868b98;font-size:12px;margin-top:-6px;position:absolute;right:25px;top:50%;transition:transform 0.2s ease-in-out 0.1s;}
 .nav-small #nav-col-submenu.open>a.dropdown-toggle>.drop-icon,.nav-small #nav-col-submenu.active>a.dropdown-toggle>.drop-icon{color:#fff;transform:rotate(90deg);}
 .nav-small #nav-col-submenu .submenu{display:none;background:#253443;padding:5px 0;margin:0;list-style:none;}
+.nav-small  .submenu .submenu{list-style:none !important;}
 .nav-small #nav-col-submenu .submenu>li{position:relative}
 .nav-small #nav-col-submenu .submenu>li>a{display:block;line-height:38px;padding-left:66px;color:#fff;outline:none;text-decoration:none;transition:border-color 0.1s ease-in-out 0s,background-color 0.1s ease-in-out 0s,box-shadow 0.1s ease-in-out 0s;}
 .nav-small #nav-col-submenu .submenu>li:first-of-type>a{border-top:0}
@@ -158,9 +161,9 @@ a:hover,a:focus{color:#475059;}
 .nav-small #nav-col-submenu .submenu>li a{position:relative}
 .nav-small #nav-col-submenu .submenu>li>a.dropdown-toggle>.drop-icon{font-size:10px;margin-top:-5px;}
 .nav-small #nav-col-submenu .submenu>li>.submenu{background-color:#1f2c39}
-.nav-small #nav-col-submenu .submenu>li>.submenu>li a:hover,.nav-small #nav-col-submenu .submenu>li>.submenu>li a.active{color:#1ABC9C}
+/*.nav-small #nav-col-submenu .submenu>li>.submenu>li a:hover,.nav-small #nav-col-submenu .submenu>li>.submenu>li a.active{color:#1ABC9C}*/
 .nav-small #nav-col-submenu .submenu>li>.submenu a{border-bottom:0 none;border-top:0 none;padding-left:85px;}
-.nav-small #nav-col-submenu .submenu>li>.submenu a:before{content:"\f111";display:inline;font-family:FontAwesome;font-size:4px;font-style:normal;font-weight:normal;margin-left:-10px;margin-top:1px;position:absolute;}
+/*.nav-small #nav-col-submenu .submenu>li>.submenu a:before{content:"\f111";display:inline;font-family:FontAwesome;font-size:4px;font-style:normal;font-weight:normal;margin-left:-10px;margin-top:1px;position:absolute;}*/
 .nav-small #nav-col-submenu .submenu{position:absolute;top:60px;left:64px;width:210px;}
 .nav-small #nav-col-submenu .submenu>li>a{padding-left:28px}
 .nav-small #nav-col-submenu .submenu>li>a.dropdown-toggle>.drop-icon{display:block}
