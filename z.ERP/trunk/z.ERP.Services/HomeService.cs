@@ -66,19 +66,22 @@ namespace z.ERP.Services
         /// <returns></returns>
         public DataTable GetMenuList(MENUEntity data) {
             string sqlp = "";
+            string sqlp1 = "";
             if (int.Parse(employee.Id) > 0) {
                 //权限条件
-                sqlp = $@" IN ( SELECT B.MODULECODE FROM USERMODULE A, ROLE_MENU B,USER_ROLE C WHERE A.MODULECODE = B.MODULECODE
+                sqlp = $@" AND U.MODULECODE IN ( SELECT B.MODULECODE FROM USERMODULE A, ROLE_MENU B,USER_ROLE C WHERE A.MODULECODE = B.MODULECODE
+                        AND B.ROLEID = C.ROLEID AND C.USERID = '{employee.Id}')";
+                sqlp1 = $@" AND U1.MODULECODE IN ( SELECT B.MODULECODE FROM USERMODULE A, ROLE_MENU B,USER_ROLE C WHERE A.MODULECODE = B.MODULECODE
                         AND B.ROLEID = C.ROLEID AND C.USERID = '{employee.Id}')";
             }
             //先查询权限菜单再查询菜单父目录
             string sql = $@"SELECT U.*,M.URL,M.PLATFORMID FROM USERMODULE U,MENU M 
-                        WHERE U.MENUID=M.ID(+) AND U.ENABLE_FLAG=1 AND LENGTH(U.MODULECODE)>2 AND M.PLATFORMID={data.PLATFORMID} AND U.MODULECODE {sqlp} 
+                        WHERE U.MENUID=M.ID(+) AND U.ENABLE_FLAG=1 AND LENGTH(U.MODULECODE)>2 AND M.PLATFORMID={data.PLATFORMID} {sqlp} 
                         UNION ALL 
                         SELECT U.*,M.URL,M.PLATFORMID FROM USERMODULE U,MENU M 
                         WHERE U.MENUID=M.ID(+) AND U.ENABLE_FLAG=1 AND LENGTH(U.MODULECODE)>2 AND  
                         U.MODULEID IN ( SELECT U1.PMODULEID FROM USERMODULE U1,MENU M1 WHERE U1.MENUID=M1.ID(+) AND U1.ENABLE_FLAG=1 
-                        AND LENGTH(U1.MODULECODE)>2 AND M1.PLATFORMID={data.PLATFORMID} AND U1.MODULECODE {sqlp}) ";
+                        AND LENGTH(U1.MODULECODE)>2 AND M1.PLATFORMID={data.PLATFORMID} {sqlp1}) ";
             string sqls = $@"SELECT * FROM ({sql}) ORDER BY MODULECODE,INX";
             DataTable menuGroup = DbHelper.ExecuteTable(sqls);
             return menuGroup;
