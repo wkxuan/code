@@ -112,7 +112,8 @@ namespace z.ERP.Entities.Enum
 
         //20以后为第三对接支付用
         猫酷优惠券 = 21,
-        猫酷折扣券 = 22
+        猫酷折扣券 = 22,
+        积分抵现 = 23
     }
     public enum 单元类型
     {

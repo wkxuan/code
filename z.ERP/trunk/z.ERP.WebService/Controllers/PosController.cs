@@ -11,7 +11,7 @@ namespace z.ERP.WebService.Controllers
     {
         internal PosController() : base()
         {
-          
+
         }
 
 
@@ -41,7 +41,7 @@ namespace z.ERP.WebService.Controllers
         /// 获取登陆配置
         /// </summary>
         /// <returns></returns>
-                 
+
         public LoginConfigInfo GetConfig()
         {
             return service.PosService.GetConfig();
@@ -50,7 +50,7 @@ namespace z.ERP.WebService.Controllers
         [ServiceAble("BindAddress")]
         public void BindAddress(Address ads)
         {
-             service.PosService.BindAddress(ads);
+            service.PosService.BindAddress(ads);
         }
 
         [ServiceAble("RefreshTime")]
@@ -124,6 +124,16 @@ namespace z.ERP.WebService.Controllers
         public SaleListsResult GetSaleLists(SaleListsFilter filter)
         {
             return service.PosService.GetSaleLists(filter);
+        }
+
+        /// <summary>
+        /// 获取积分抵现规则
+        /// </summary>
+        /// <returns></returns>
+        [ServiceAble("GetRedemptionRule")]
+        public RedeRuleResult GetRedemptionRule()
+        {
+            return service.PosService.GetRedemptionRule();
         }
 
         [ServiceAble("GetMemberInfo")]

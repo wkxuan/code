@@ -24,7 +24,7 @@ namespace z.POS.WebService.Controllers
         }
 
         /// <summary>
-        /// 最大交易号,测试方法,开始做就要删除
+        /// 最大交易号
         /// </summary>
         /// <returns></returns>
         [ServiceAble("GetLastDealid")]

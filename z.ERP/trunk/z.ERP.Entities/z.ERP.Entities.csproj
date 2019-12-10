@@ -67,6 +67,7 @@
     <Compile Include="CONTRACTOUTPUTEntity.cs" />
     <Compile Include="Procedures\EXEC_BILL_NOTICE.cs" />
     <Compile Include="Procedures\MAKE_CONTRACT_INFO.cs" />
+    <Compile Include="Service\Pos\RedeRuleResult.cs" />
     <Compile Include="SPLCMENUEntity.cs" />
     <Compile Include="PRESENT_SENDEntity.cs" />
     <Compile Include="Procedures\EXEC_PRESENT_SEND.cs" />

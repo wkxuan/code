@@ -839,6 +839,25 @@ namespace z.ERP.Services
             };
         }
 
+        /// <summary>
+        /// 获取积分抵现规则
+        /// </summary>
+        public RedeRuleResult GetRedemptionRule()
+        {
+            string sql = $@"select CENT,MONEY from RedemptionRules A,STATION B
+                            where A.BRANCHID = B.BRANCHID
+                                and A.STATUS = 2
+                                and A.START_DATE <= trunc(sysdate)
+                                and A.END_DATE >= trunc(sysdate)
+                                and B.STATIONBH = '{employee.PlatformId}'
+                                order by A.ID desc";
+
+            return DbHelper.ExecuteOneObject<RedeRuleResult>(sql);
+        }
+
+
+
+
         #region  PosService
 
         #region 属性
