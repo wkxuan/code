@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using z.ERP.Entities;
 using z.ERP.Web.Areas.Base;
 using z.ERP.Web.Areas.Layout.DefineDetail;
+using z.Exceptions;
 using z.Extensions;
 using z.MVC5.Results;
 
@@ -13,12 +14,12 @@ namespace z.ERP.Web.Areas.CXGL.PROMOTION
     {
         public ActionResult Promotion()
         {
-            ViewBag.Title = "促销活动主题";
+            ViewBag.Title = "营销活动主题";
             return View();
         }
         public ActionResult PromotionDetail(string Id)
         {
-            ViewBag.Title = "促销活动主题信息";
+            ViewBag.Title = "营销活动主题信息";
             return View("PromotionDetail", model: (DefineDetailRender)Id);
         }
         public string Save(PROMOTIONEntity DefineSave)
@@ -46,6 +47,8 @@ namespace z.ERP.Web.Areas.CXGL.PROMOTION
         {
             foreach (var con in DefineDelete)
             {
+                if (con.STATUS != "1")
+                    throw new LogicException("活动编号"+con.ID+"已审核不能删除!");
                 CommenDelete(con);
             }  
         }

@@ -11,7 +11,7 @@
         open: false
     };
     search.screenParam.colDef = [
-        { title: "活动ID", key: 'ID' },      
+        { title: "活动编号", key: 'ID' },      
         { title: '主题名称', key: 'NAME' },
         { title: '年度', key: 'YEAR' },
         { title: '内容', key: 'CONTENT',  width: 150 },
@@ -50,10 +50,12 @@ search.mountedInit = function () {
     }, {
         id: "add",
         authority: "11000101"
-    }, {
-        id: "del",
-        authority: "11000101"
-    }];
+    }
+    //, {
+    //    id: "del",
+    //    authority: "11000101"
+    //}
+    ];
 };
 
 search.addHref = function () {

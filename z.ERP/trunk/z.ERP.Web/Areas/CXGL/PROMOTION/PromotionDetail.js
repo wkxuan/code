@@ -54,7 +54,10 @@ defineDetail.mountedInit = function () {
                 DefineSave: defineDetail.dataParam
             }, function (data) {
                 iview.Message.info("审核成功!");
-                window.parent.defineNew.popCallBack(data);
+                //     window.parent.defineNew.popCallBack(data);
+                setTimeout(function () {
+                    window.location.reload();
+                }, 100);
             });
         },
         enabled: function (disabled, data) {
