@@ -72,13 +72,21 @@ editDetail.otherMethods = {
                 let temp = editDetail.dataParam.MERCHANT_PAYMENT;
                 for (let j = 0; j < temp.length; j++) {
                     if (temp[j].PAYMENTID == selection[i].PAYMENTID) {
-                        temp.splice(j, 1);
-                        break;
+                        if (!editDetail.dataParam.MERCHANTID) {
+                            temp.splice(j, 1);
+                        }else{
+                            _.Ajax('SearchCMP', {
+                                MERCHANTID: editDetail.dataParam.MERCHANTID, PAYMENTID: selection[i].PAYMENTID
+                            }, function (data) {
+                                if (data.length > 0) {
+                                    iview.Message.info("编号" + selection[i].PAYMENTID + "的付款信息,已被合同引用不能删除");
+                                } else {
+                                    temp.splice(j, 1);
+                                }
+                            });
+                        }
                     }
                 }
-            };
-            for (var j = 0; j < editDetail.dataParam.MERCHANT_PAYMENT.length; j++) {
-                editDetail.dataParam.MERCHANT_PAYMENT[j].PAYMENTID = j + 1;
             };
         }
     }
@@ -228,6 +236,25 @@ editDetail.IsValidSave = function () {
             return false;
         };
     };
-
+    //付款信息判断重复项
+    if (searchdata()) {
+        iview.Message.info("付款信息中有重复项！");
+        return false;
+    }
+    
     return true;
+}
+function searchdata() {
+    //付款信息判断重复项
+    var find = false;
+    let p = editDetail.dataParam.MERCHANT_PAYMENT;
+    for (var i = 0; i < p.length; i++) {
+        for (var j = i + 1; j < p.length; j++) {
+            if (p[i].CARDNO == p[j].CARDNO && p[i].BANKNAME == p[j].BANKNAME && p[i].HOLDERNAME == p[j].HOLDERNAME && p[i].IDCARD == p[j].IDCARD) {
+                find = true; break;
+            }
+        }
+        if (find) break;
+    }
+    return find;
 }

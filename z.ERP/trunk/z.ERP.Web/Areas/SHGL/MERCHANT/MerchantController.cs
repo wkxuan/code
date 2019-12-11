@@ -99,5 +99,9 @@ namespace z.ERP.Web.Areas.SHGL.MERCHANT
         {
             return service.ShglService.Output(Id);
         }
+        public UIResult SearchCMP(string MERCHANTID, string PAYMENTID)
+        {
+            return new UIResult(service.ShglService.SearchCMP(MERCHANTID, PAYMENTID));
+        }
     }
 }

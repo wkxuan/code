@@ -67,7 +67,11 @@ namespace z.ERP.Services
                 Tran.Commit();
             }
         }
-
+        public DataTable SearchCMP(string MERCHANTID, string PAYMENTID) {
+            string sql = $@"SELECT * FROM CONTRACT where MERCHANTID={MERCHANTID} and PAYMENTID={PAYMENTID} ";
+            DataTable dt = DbHelper.ExecuteTable(sql);
+            return dt;
+        }
         /// <summary>
         /// 编辑页的保存
         /// </summary>
