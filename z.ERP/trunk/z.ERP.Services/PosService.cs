@@ -852,7 +852,14 @@ namespace z.ERP.Services
                                 and B.STATIONBH = '{employee.PlatformId}'
                                 order by A.ID desc";
 
-            return DbHelper.ExecuteOneObject<RedeRuleResult>(sql);
+            DataTable Ruledt = DbHelper.ExecuteTable(sql);
+            if (!Ruledt.IsNotNull())
+                throw new Exception("未找到积分抵现规则");
+            return new RedeRuleResult
+            {
+                cent = float.Parse( Ruledt.Rows[0][0].ToString()),
+                money = float.Parse(Ruledt.Rows[0][1].ToString())
+            };
         }
 
 
