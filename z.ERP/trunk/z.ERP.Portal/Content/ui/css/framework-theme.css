@@ -86,7 +86,7 @@ a:hover,a:focus{color:#475059;}
 #sidebar-nav .nav>li.active>.submenu>li.active>.submenu{display:block;}
 #sidebar-nav .nav li a.dropdown-toggle>.drop-icon{color:#868b98;font-size:14px;margin-top:-6px;position:absolute;right:25px;top:50%;transition:transform 0.2s ease-in-out 0.1s;}
 #sidebar-nav .nav li.open>a.dropdown-toggle>.drop-icon,#sidebar-nav .nav li.active>a.dropdown-toggle>.drop-icon{color:#fff;transform:rotate(90deg);}
-#sidebar-nav .nav li .submenu{display:none;background:#253443;padding:5px 0;margin:0;list-style:none;max-height:450px}
+#sidebar-nav .nav li .submenu{display:none;background:#253443;padding:5px 0;margin:0;list-style:none;max-height:450px;overflow:auto}
 #sidebar-nav .nav li .submenu>li{position:relative}
 #sidebar-nav .nav li .submenu>li>a{position:relative;display:block;line-height:30px;padding-left:50px;color:#fff;outline:none;text-decoration:none;transition:border-color 0.1s ease-in-out 0s,background-color 0.1s ease-in-out 0s,box-shadow 0.1s ease-in-out 0s;}
 #sidebar-nav .nav li .submenu .submenu>li>a{display:block;line-height:30px;padding-left:65px;color:#fff;outline:none;text-decoration:none;transition:border-color 0.1s ease-in-out 0s,background-color 0.1s ease-in-out 0s,box-shadow 0.1s ease-in-out 0s;}
