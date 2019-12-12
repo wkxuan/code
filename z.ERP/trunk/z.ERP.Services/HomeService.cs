@@ -80,8 +80,15 @@ namespace z.ERP.Services
                         UNION ALL 
                         SELECT U.*,M.URL,M.PLATFORMID FROM USERMODULE U,MENU M 
                         WHERE U.MENUID=M.ID(+) AND U.ENABLE_FLAG=1 AND LENGTH(U.MODULECODE)>2 AND  
-                        U.MODULEID IN ( SELECT U1.PMODULEID FROM USERMODULE U1,MENU M1 WHERE U1.MENUID=M1.ID(+) AND U1.ENABLE_FLAG=1 
-                        AND LENGTH(U1.MODULECODE)>2 AND M1.PLATFORMID={data.PLATFORMID} {sqlp1}) ";
+                        U.MODULEID IN ( SELECT U1.PMODULEID FROM USERMODULE U1,MENU M1 
+                        WHERE U1.MENUID=M1.ID(+) AND U1.ENABLE_FLAG=1 AND LENGTH(U1.MODULECODE)>2 AND M1.PLATFORMID={data.PLATFORMID} {sqlp1}) 
+                        UNION ALL
+                        SELECT U.*,M.URL,M.PLATFORMID FROM USERMODULE U,MENU M 
+                        WHERE U.MENUID=M.ID(+) AND U.ENABLE_FLAG=1 AND LENGTH(U.MODULECODE)>2 AND  
+                        U.MODULEID IN (SELECT  U2.PMODULEID FROM USERMODULE U2,MENU M2 
+                        WHERE U2.MENUID=M2.ID(+) AND U2.ENABLE_FLAG=1 AND LENGTH(U2.MODULECODE)>2 AND  
+                        U2.MODULEID IN ( SELECT U1.PMODULEID FROM USERMODULE U1,MENU M1 
+                        WHERE U1.MENUID=M1.ID(+) AND U1.ENABLE_FLAG=1 AND LENGTH(U1.MODULECODE)>2 AND M1.PLATFORMID={data.PLATFORMID} {sqlp1} )) ";
             string sqls = $@"SELECT * FROM ({sql}) ORDER BY MODULECODE,INX";
             DataTable menuGroup = DbHelper.ExecuteTable(sqls);
             return menuGroup;
