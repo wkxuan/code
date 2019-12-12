@@ -26,10 +26,7 @@
                 TYPE: "2"
             },
             modalValue: false,
-            selectShow: false,
-            createShow: true,
-            curNode: {},
-            tabsValue: ''
+            curNode: {}
         }
     },
     mounted() {
@@ -261,18 +258,6 @@
             if (data.data.MENUID) {
                 iview.Message.error("此节点下不能再增加节点！");
                 return;
-            }
-            if (data.data.MODULECODE.length == 2) {
-                this.selectShow = false;
-                this.createShow = true;
-                this.tabsValue = "create";
-            } else if (data.data.MODULECODE.length == 4) {
-                this.selectShow = true;
-                this.createShow = true;
-            } else if (data.data.MODULECODE.length == 6) {
-                this.selectShow = true;
-                this.createShow = false;
-                this.tabsValue = "select";
             }
             this.modalValue = true;
             this.curNode = node.node;
@@ -508,47 +493,56 @@
                 }
             });
         },
-        //添加新节点
         addNew() {
             let _self = this;
             let param = [];
             let pnode = _self.curNode;
-            if (_self.tabsValue == 'select') {
-                let selection = _self.$refs.selectData.getSelection();
-                if (!selection.length) {
-                    iview.Message.error("请选择要添加的菜单!");
+            if (!_self.dataParam.NAME) {
+                iview.Message.error("名称不能为空!");
+                return;
+            }
+            for (let j = 0; j < pnode.children.length; j++) {
+                if (_self.dataParam.NAME == pnode.children[j].data.MODULENAME) {
+                    iview.Message.error(`此节点下已存在"${_self.dataParam.NAME}"!`);
                     return;
                 }
-                let loc = {};
-                for (let i = 0; i < selection.length; i++) {
-                    for (let j = 0; j < pnode.children.length; j++) {
-                        if (selection[i].ID == pnode.children[j].data.MENUID) {
-                            iview.Message.error(`此节点下已存在菜单"${selection[i].NAME}"!`);
-                            return;
-                        }
-                    }
-                    loc = {
-                        MODULENAME: selection[i].NAME,
-                        MENUID: selection[i].ID,
-                        PMODULEID: pnode.value,
-                    };
-                    param.push(loc);
-                }
-            } else {
-                if (!_self.dataParam.NAME) {
-                    iview.Message.error("名称不能为空!");
-                    return;
-                }
+            }
+            let loc = {
+                MODULENAME: _self.dataParam.NAME,
+                PMODULEID: pnode.value,
+            }
+            param.push(loc);
+            _.Ajax('Add', {
+                Data: param
+            }, function (data) {
+                _self.insertChildren(pnode, data.res);
+                iview.Message.info("添加成功");
+                _self.modalValue = false;
+            });
+        },
+        //添加新节点
+        sureNew() {
+            let _self = this;
+            let param = [];
+            let pnode = _self.curNode;
+            let selection = _self.$refs.selectData.getSelection();
+            if (!selection.length) {
+                iview.Message.error("请选择要添加的菜单!");
+                return;
+            }
+            let loc = {};
+            for (let i = 0; i < selection.length; i++) {
                 for (let j = 0; j < pnode.children.length; j++) {
-                    if (_self.dataParam.NAME == pnode.children[j].data.MODULENAME) {
-                        iview.Message.error(`此节点下已存在"${_self.dataParam.NAME}"!`);
+                    if (selection[i].ID == pnode.children[j].data.MENUID) {
+                        iview.Message.error(`此节点下已存在菜单"${selection[i].NAME}"!`);
                         return;
                     }
                 }
-                let loc = {
-                    MODULENAME: _self.dataParam.NAME,
+                loc = {
+                    MODULENAME: selection[i].NAME,
+                    MENUID: selection[i].ID,
                     PMODULEID: pnode.value,
-                }
+                };
                 param.push(loc);
             }
             _.Ajax('Add', {
