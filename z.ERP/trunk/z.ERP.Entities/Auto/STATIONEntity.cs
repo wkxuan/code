@@ -60,7 +60,7 @@ namespace z.ERP.Entities
             get; set;
         }
 
-        public string Encryption
+        public string ENCRYPTION
         {
             get; set;
         }

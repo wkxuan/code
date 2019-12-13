@@ -93,7 +93,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.NIANYUE = null;
     editDetail.dataParam.BRANCHID = null;
     editDetail.dataParam.STATUSMC = "未审核";
-    editDetail.dataParam.TYPE = null;
+    editDetail.dataParam.TYPE = 2;
     editDetail.dataParam.YEARMONTH = null;
     editDetail.dataParam.START_DATE = null;
     editDetail.dataParam.END_DATE = null;
@@ -147,6 +147,27 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请选择门店!");
         return false;
     };
+
+    if (!editDetail.dataParam.NIANYUE) {
+        iview.Message.info("请选择权债发生月!");
+        return false;
+    };
+
+    if (!editDetail.dataParam.YEARMONTH) {
+        iview.Message.info("请选择收付实现月!");
+        return false;
+    };
+
+    if (!editDetail.dataParam.START_DATE) {
+        iview.Message.info("请选择开始日期!");
+        return false;
+    };
+
+    if (!editDetail.dataParam.END_DATE) {
+        iview.Message.info("请选择结束日期!");
+        return false;
+    };
+
 
     if (editDetail.dataParam.BILL_ADJUST_ITEM.length == 0) {
         iview.Message.info("请录入费用信息!");

@@ -108,7 +108,7 @@ namespace z.ERP.Services
             var v = GetVerify(SaveData);
             if (SaveData.BILLID.IsEmpty())
             {
-                SaveData.BILLID = NewINC("BILL_RETURN");
+                SaveData.BILLID = SaveData.BRANCHID + NewINC("BILL_RETURN_" + SaveData.BRANCHID).PadLeft(7, '0');
                 SaveData.REPORTER = employee.Id;
                 SaveData.REPORTER_NAME = employee.Name;
                 SaveData.REPORTER_TIME = DateTime.Now.ToString();
@@ -272,7 +272,7 @@ namespace z.ERP.Services
             item.HasKey("VERIFY_NAME", a => sql += $" and L.VERIFY_NAME  LIKE '%{a}%'");
             item.HasDateKey("VERIFY_TIME_START", a => sql += $" and trunc(L.VERIFY_TIME)>={a}");
             item.HasDateKey("VERIFY_TIME_END", a => sql += $" and trunc(L.VERIFY_TIME)<={a}");
-            sql += " ORDER BY  L.BILLID DESC";
+            sql += " ORDER BY  to_number(L.BILLID) DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);
             dt.NewEnumColumns<普通单据状态>("STATUS", "STATUSMC");
@@ -323,7 +323,7 @@ namespace z.ERP.Services
         {
             var v = GetVerify(SaveData);
             if (SaveData.BILLID.IsEmpty()) { 
-                SaveData.BILLID = NewINC("BILL_ADJUST");
+                SaveData.BILLID = SaveData.BRANCHID + NewINC("BILL_ADJUST_" + SaveData.BRANCHID).PadLeft(7, '0');
                 SaveData.REPORTER = employee.Id;
                 SaveData.REPORTER_NAME = employee.Name;
                 SaveData.REPORTER_TIME = DateTime.Now.ToString();

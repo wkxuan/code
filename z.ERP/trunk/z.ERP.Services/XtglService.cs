@@ -390,16 +390,25 @@ namespace z.ERP.Services
         {
             var v = GetVerify(DefineSave);
             if (DefineSave.STATIONBH.IsEmpty())
-                DefineSave.STATIONBH = CommonService.NewINC("STATION").PadLeft(5, '0');
+                DefineSave.STATIONBH = DefineSave.BRANCHID + CommonService.NewINC("STATION").PadLeft(4, '0');
             v.Require(a => a.STATIONBH);
+            v.IsUnique(a => a.STATIONBH);
             v.Require(a => a.BRANCHID);
             v.Require(a => a.TYPE);
+
             //  v.Require(a => a.IP);
             //  v.IsUnique(a => a.IP);
+            v.Verify();
+
+            STATIONEntity station = DbHelper.Select(new STATIONEntity() { STATIONBH = DefineSave.STATIONBH });
+
+            if (DefineSave.BRANCHID != station.BRANCHID)
+                throw new LogicException("终端号"+ DefineSave.STATIONBH + "在"+ station.BRANCHID+"号店已存在!");
+
 
             //生成终端密钥，调用销售数据采集接口时用
-            if (DefineSave.Encryption.IsEmpty())
-                DefineSave.Encryption = MD5Encryption.Encrypt($"z.DGS.LoginSalt{DefineSave.STATIONBH }");
+            if (DefineSave.ENCRYPTION.IsEmpty())
+                DefineSave.ENCRYPTION = MD5Encryption.Encrypt($"z.DGS.LoginSalt{DefineSave.STATIONBH }");
 
 
             DefineSave.STATION_PAY?.ForEach(sdb =>
@@ -407,7 +416,7 @@ namespace z.ERP.Services
                 GetVerify(sdb).Require(a => a.PAYID);
             });
 
-            v.Verify();
+            
             using (var tran = DbHelper.BeginTransaction())
             {
                 DbHelper.Save(DefineSave);
