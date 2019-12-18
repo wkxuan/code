@@ -56,8 +56,19 @@ namespace z.ERP.Services
         /// 获取配置系统
         /// </summary>
         /// <returns></returns>
-        public List<PLATFORMEntity> GetPLATFORM() {
-            return DbHelper.SelectList(new PLATFORMEntity()).OrderBy(a=>a.ID).ToList<PLATFORMEntity>();
+        public List<PLATFORMEntity> GetPLATFORM(string host) {
+            var PlatFormList= DbHelper
+                .SelectList(new PLATFORMEntity())
+                .GroupBy(a => a.ID)
+                .Select(a =>
+                {
+                    var pt = a.FirstOrDefault(b => host.IsRegexMatch(b.MATCH));
+                    if (pt == null)
+                        pt = a.First();
+                    return pt;
+                }).OrderBy(a=>a.ID).ToList();
+
+            return PlatFormList;
         }
         /// <summary>
         /// 获取权限菜单
