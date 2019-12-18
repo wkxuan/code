@@ -1,0 +1,128 @@
+﻿@using z.ERP.Web.Areas.Share.Render
+@using z.ERP.Entities.Enum
+@using z.ERP.Web.Areas.Layout.Edit;
+@using z.ERP.Entities;
+@using z.ERP.Model;
+@using z.Extensions;
+@inherits EditViewBase<string>
+@section head{}
+
+@section baseParam{
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            营销活动
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly v-bind:icon="disabled? 'md-search':''"
+                     v-model="dataParam.PROMOTIONNAME" v-on:on-click="srchPromotion" v-bind:disabled="!disabled" />
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            开始日期
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-date-picker v-bind:value.sync="dataParam.START_DATE" v-bind:disabled="!disabled"
+                            v-bind:start="dataParam.START_DATE_LIMIT" v-bind:end="dataParam.END_DATE_LIMIT">
+            </yx-date-picker>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            结束日期
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-date-picker v-bind:value.sync="dataParam.END_DATE" v-bind:disabled="!disabled"
+                            v-bind:start="dataParam.START_DATE_LIMIT" v-bind:end="dataParam.END_DATE_LIMIT">
+            </yx-date-picker>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            促销周期
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-week-check-group v-bind:value.sync="dataParam.WEEK" v-bind:disabled="!disabled"></yx-week-check-group>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            开始时间
+        </i-col>
+        <i-col span="6">
+            <yx-time-picker v-bind:value.sync="dataParam.START_TIME" v-bind:disabled="!disabled"></yx-time-picker>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            结束时间
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-time-picker v-bind:value.sync="dataParam.END_TIME" v-bind:disabled="!disabled"></yx-time-picker>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
+            <span class="mustElement">*</span>
+            预算总额
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input v-model="dataParam.GLOBAL_BUDGET" type="number" v-bind:disabled="!disabled" v-on:on-blur="GLOBAL_BUDGETonblur"></i-input>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            已使用预算
+        </i-col>
+        <i-col span="6">
+            <i-input v-model="dataParam.USED_BUDGET" v-bind:disabled="!disabled" readonly></i-input>
+        </i-col>
+    </row>
+}
+@section detailParam{
+    <row>
+        <i-col span="24">
+            <Card v-bind:padding=0>
+                <p slot="title"><span class="mustElement">*</span>品牌</p>
+                <div slot="extra">
+                    <div class="tableBtnDiv" v-if="disabled">
+                        <i-button type="primary" v-on:click="srchBrand">选择</i-button>
+                        <i-button type="error" v-on:click="delBrand">删除</i-button>
+                        <i-input type="number" style="width:100px" clearable v-model="screenParam.setVal" v-on:on-blur="valonblur"></i-input>
+                        <i-Select v-model="screenParam.ntype" multiple v-bind:max-tag-count="1" style="width:260px">
+                            <i-Option v-for="item in screenParam.ntypeList" v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-Option>
+                        </i-Select>
+                        <i-button type="primary" icon="md-settings" v-on:click="settingVal">批量设置</i-button>
+                    </div>
+                </div>
+                <yx-table v-bind:columns="screenParam.colDefBrand" v-bind:height="400" selection
+                          v-bind:data="dataParam.PROMOBILL_RR_BRAND" v-bind:disabled="!disabled" ref="refBrand">
+                </yx-table>
+            </Card>
+        </i-col>
+    </row>
+}
+@section detailParamFooter{
+    <row>
+        <i-col span="2" class="RowTitle">
+            启动人:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.INITINATE_NAME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            启动时间:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.INITINATE_TIME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            终止人:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.TERMINATE_NAME}}</label>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            终止时间:
+        </i-col>
+        <i-col span="4" class="Rowline">
+            <label>{{dataParam.TERMINATE_TIME}}</label>
+        </i-col>
+    </row>
+}

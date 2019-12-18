@@ -685,5 +685,106 @@ namespace z.ERP.Services
             return true;
         }
         #endregion
+
+        #region 随机立减单
+        public string SavePromobill_RR(PROMOBILL_RREntity data)
+        {
+            var v = GetVerify(data);
+            if (data.BILLID.IsEmpty())
+                data.BILLID = data.BRANCHID + NewINC("PROMOBILL_" + data.BRANCHID).PadLeft(7, '0');
+
+            data.STATUS = ((int)促销单状态.未审核).ToString();
+            data.REPORTER = employee.Id;
+            data.REPORTER_NAME = employee.Name;
+            data.REPORTER_TIME = DateTime.Now.ToString();
+
+            v.IsUnique(a => a.BILLID);
+            v.Require(a => a.BILLID);
+            v.Require(a => a.BRANCHID);
+            v.Require(a => a.PROMOTYPE);
+            v.Require(a => a.PROMOTIONID);
+            v.Require(a => a.START_DATE);
+            v.Require(a => a.END_DATE);
+            v.Require(a => a.WEEK);
+            v.Require(a => a.START_TIME);
+            v.Require(a => a.END_TIME);
+            v.Verify();
+
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                data.PROMOBILL_RR_BRAND?.ForEach(item =>
+                {
+                    if (!item.REDUCE_UP_RATE.IsEmpty())
+                    {
+                        item.REDUCE_UP_RATE = (item.REDUCE_UP_RATE.ToDouble() / 100).ToString();
+                    }
+                });
+                DbHelper.Save(data);
+
+                ////增加审核待办任务
+                //var dcl = new BILLSTATUSEntity
+                //{
+                //    BILLID = data.BILLID,
+                //    MENUID = "",
+                //    BRABCHID = data.BRANCHID,
+                //    URL = "CXGL/PROMOBILL_DIS/Promobill_DisEdit/"
+                //};
+                //InsertDclRw(dcl);
+
+                Tran.Commit();
+            }
+
+            return data.BILLID;
+        }
+        public Tuple<dynamic, DataTable> Promobill_RRShowOneData(PROMOBILL_RREntity data)
+        {
+            string sql = @"select P.*,T.NAME PROMOTIONNAME,T.START_DATE START_DATE_LIMIT,T.END_DATE END_DATE_LIMIT 
+                             from PROMOBILL_RR P,PROMOTION T 
+                            where P.PROMOTIONID=T.ID and P.BILLID={0}";
+            var dt = DbHelper.ExecuteTable(string.Format(sql, data.BILLID));
+            if (dt.Rows.Count == 0)
+            {
+                throw new LogicException("找不到随机立减单!");
+            }
+            dt.NewEnumColumns<促销单状态>("STATUS", "STATUSMC");
+
+            string sqlitem = @"select P.*,B.NAME BRANDNAME
+                                 from PROMOBILL_RR_BRAND P,BRAND B 
+                                where  P.BRANDID=B.ID and P.BILLID={0} order by P.INX ASC";
+            var itemdt = DbHelper.ExecuteTable(string.Format(sqlitem, data.BILLID));
+            foreach (DataRow dr in itemdt.Rows)
+            {
+                if (!dr["REDUCE_UP_RATE"].ToString().IsEmpty())
+                    dr["REDUCE_UP_RATE"] = dr["REDUCE_UP_RATE"].ToString().ToDouble() * 100;
+            }
+            return new Tuple<dynamic, DataTable>(dt.ToOneLine(), itemdt);
+        }
+        public void DeletePromobill_RR(List<PROMOBILL_RREntity> data)
+        {
+            foreach (var con in data)
+            {
+                var Data = DbHelper.Select(con);
+                if (Data.STATUS != ((int)促销单状态.未审核).ToString())
+                    throw new LogicException($"单据(" + Data.BILLID + ")已经不是未审核不能删除!");
+            }
+            using (var Tran = DbHelper.BeginTransaction())
+            {
+                foreach (var con in data)
+                {
+                    ////删除审核待办任务
+                    //var dcl = new BILLSTATUSEntity
+                    //{
+                    //    BILLID = con.BILLID,
+                    //    MENUID = "",
+                    //    BRABCHID = con.BRANCHID
+                    //};
+                    //DelDclRw(dcl);
+
+                    DbHelper.Delete(con);
+                }
+                Tran.Commit();
+            }
+        }
+        #endregion
     }
 }

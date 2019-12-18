@@ -215,6 +215,7 @@
     <Compile Include="Areas\CXGL\PROMOBILL_FR\Promobill_FRController.cs" />
     <Compile Include="Areas\CXGL\PROMOBILL_DIS\Promobill_DISController.cs" />
     <Compile Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGController.cs" />
+    <Compile Include="Areas\CXGL\PROMOBILL_RR\Promobill_RRController.cs" />
     <Compile Include="Areas\CXGL\PROMOTION\PromotionController.cs" />
     <Compile Include="Areas\CXGL\TICKET_ACTIVITY\TICKET_ACTIVITYController.cs" />
     <Compile Include="Areas\DPGL\ASSETSPILT\AssetSpiltController.cs" />
@@ -378,6 +379,8 @@
     <Content Include="Areas\CXGL\FR_PLAN\FR_PLAN.js" />
     <Content Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGEdit.js" />
     <Content Include="Areas\CXGL\PROMOBILL_FG\Promobill_FGList.js" />
+    <Content Include="Areas\CXGL\PROMOBILL_RR\Promobill_RREdit.js" />
+    <Content Include="Areas\CXGL\PROMOBILL_RR\Promobill_RRList.js" />
     <Content Include="Areas\CXGL\PROMOTION\Promotion.js" />
     <Content Include="Areas\CXGL\PROMOTION\PromotionDetail.js" />
     <Content Include="Areas\CXGL\TICKET_ACTIVITY\TICKET_ACTIVITY.js" />
@@ -845,6 +848,8 @@
     </Content>
     <Content Include="Areas\XTGL\RedemptionRules\RedemptionRules.cshtml" />
     <Content Include="Areas\XTGL\RedemptionRules\RedemptionRulesDetail.cshtml" />
+    <Content Include="Areas\CXGL\PROMOBILL_RR\Promobill_RRList.cshtml" />
+    <Content Include="Areas\CXGL\PROMOBILL_RR\Promobill_RREdit.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>
