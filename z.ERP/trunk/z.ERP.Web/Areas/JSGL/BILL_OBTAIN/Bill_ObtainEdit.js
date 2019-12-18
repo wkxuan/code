@@ -61,9 +61,14 @@ editDetail.otherMethods = {
             iview.Message.info("请选择商户!");
             return;
         };
+        if (!editDetail.dataParam.FEE_ACCOUNT_ID) {
+            iview.Message.info("请选择收费单位!");
+            return;
+        }
         editDetail.screenParam.popParam = {
             BRANCHID: editDetail.dataParam.BRANCHID,
             MERCHANTID: editDetail.dataParam.MERCHANTID,
+            FEE_ACCOUNTID: editDetail.dataParam.FEE_ACCOUNT_ID,
             FTYPE: [1],   //保证金类型
             STATUS:[2,3]
         };
