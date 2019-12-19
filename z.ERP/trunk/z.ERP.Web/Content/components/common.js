@@ -1558,9 +1558,9 @@ Vue.component('yx-select', {
                         item.Key = item.Key + "";
                         return item;
                     });
-                    if (list.length == 1 && !this.multiple) {
-                        this.$emit('update:value', list[0].Key);
-                    }
+                    //if (list.length == 1 && !this.multiple) {
+                    //    this.$emit('update:value', list[0].Key);
+                    //}
                     this.curData = list;
                 }
             },
@@ -1597,9 +1597,9 @@ Vue.component('yx-select', {
                             list = _self.itemData.concat(list);;
                         }
                     }
-                    if (list.length == 1 && !_self.multiple) {
-                        _self.$emit('update:value', list[0].Key);
-                    }
+                    //if (list.length == 1 && !_self.multiple) {
+                    //    _self.$emit('update:value', list[0].Key);
+                    //}
                     _self.curData = $.map(list, function (item) {
                         item.Value = item.Value + "";
                         item.Key = item.Key + "";
