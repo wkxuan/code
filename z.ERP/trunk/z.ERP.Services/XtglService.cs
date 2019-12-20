@@ -402,7 +402,7 @@ namespace z.ERP.Services
 
             STATIONEntity station = DbHelper.Select(new STATIONEntity() { STATIONBH = DefineSave.STATIONBH });
 
-            if (DefineSave.BRANCHID != station.BRANCHID)
+            if (station!=null&&DefineSave.BRANCHID != station.BRANCHID)
                 throw new LogicException("终端号"+ DefineSave.STATIONBH + "在"+ station.BRANCHID+"号店已存在!");
 
 

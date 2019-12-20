@@ -41,7 +41,7 @@
             终端号
         </i-col>
         <i-col span="5" class="RowText">
-            <i-input v-model="dataParam.STATIONBH" v-bind:disabled="disabled"></i-input>
+            <i-input v-model="dataParam.STATIONBH" v-bind:disabled="disabled" v-on:on-blur="bhonblur"></i-input>
         </i-col>
     </row>
     <row>

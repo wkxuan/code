@@ -103,6 +103,9 @@ define.otherMethods = {
     },
     mackeyup: function () {
         define.dataParam.NETWORK_NODE_ADDRESS = define.dataParam.NETWORK_NODE_ADDRESS.toUpperCase()
+    },
+    bhonblur: function () {
+        define.showOne(define.dataParam.STATIONBH);
     }
 }
 
