@@ -164,6 +164,7 @@ editDetail.otherMethods = {
                 CONTRACTID: editDetail.dataParam.CONTRACTID
             }
         }, function (data) {
+            debugger
             if (data.contract.length) {
                 editDetail.dataParam.MERCHANTID = data.contract[0].MERCHANTID;
                 editDetail.dataParam.STYLE = data.contract[0].STYLE;
@@ -181,7 +182,19 @@ editDetail.otherMethods = {
                 iview.Message.info("输入的租约号不存在!");
             }
         })
-    }
+    },
+    //获取扣率组信息
+    getKLZinfo: function () {
+        _.Ajax('GetKLZinfo', {
+            Data: {
+                CONTRACTID: editDetail.dataParam.CONTRACTID, GROUPNO: editDetail.dataParam.JSKL_GROUP
+            }
+        }, function (data) {
+            if (data.length) {
+                editDetail.dataParam.GOODS_GROUP = data;
+            }            
+        })
+    },
 };
 
 ///接收弹窗返回参数
@@ -189,6 +202,7 @@ editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopJsklGroup) {
         editDetail.screenParam.showPopJsklGroup = false;
         editDetail.dataParam.JSKL_GROUP = data.sj[0].GROUPNO;
+        editDetail.otherMethods.getKLZinfo();
     };
     if (editDetail.screenParam.showPopContract) {
         editDetail.dataParam.CONTRACTID = data.sj[0].CONTRACTID;

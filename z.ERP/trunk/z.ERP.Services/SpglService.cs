@@ -248,6 +248,17 @@ namespace z.ERP.Services
 
             return result;
         }
+        public DataTable GetKLZinfo(CONTJSKLEntity Data) {
+            string sql_jskl = $@"SELECT L.CONTRACTID,L.GROUPNO,L.INX,to_char(L.STARTDATE,'YYYY.MM.DD') STARTDATE, " +
+                " to_char(L.ENDDATE,'YYYY.MM.DD') ENDDATE,L.SALES_START,L.SALES_END,L.JSKL   FROM CONTJSKL L WHERE 1=1 ";
+            if (!Data.CONTRACTID.IsEmpty())
+                sql_jskl += (" and CONTRACTID= " + Data.CONTRACTID);
+            if (!Data.GROUPNO.IsEmpty())
+                sql_jskl += (" and GROUPNO= " + Data.GROUPNO);
+            sql_jskl += "  order by INX";
+            DataTable jskl = DbHelper.ExecuteTable(sql_jskl);
+            return jskl;
+        }
         public Tuple<dynamic> GetKindInit()
         {
             List<GOODS_KINDEntity> p = DbHelper.SelectList(new GOODS_KINDEntity()).OrderBy(a => a.CODE).ToList();

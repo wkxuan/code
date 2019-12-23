@@ -57,5 +57,9 @@ namespace z.ERP.Web.Areas.SPGL.GOODS
                 }
             );
         }
+        public UIResult GetKLZinfo(CONTJSKLEntity Data)
+        {
+            return new UIResult(service.SpglService.GetKLZinfo(Data));
+        }
     }
 }
