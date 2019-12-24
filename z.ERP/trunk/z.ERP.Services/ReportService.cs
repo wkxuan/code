@@ -99,8 +99,10 @@ namespace z.ERP.Services
         {
             string sql = " from GOODS_SUMMARY D,GOODS G,MERCHANT M,BRAND B,GOODS_KIND K,CATEGORY C ";
             sql += "      where G.MERCHANTID=M.MERCHANTID and B.CATEGORYID=C.CATEGORYID";
-            sql += "            and D.GOODSID=G.GOODSID  and G.BRANDID=B.ID and G.KINDID=K.ID";
-            sql += "            and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += "        and D.GOODSID=G.GOODSID  and G.BRANDID=B.ID and G.KINDID=K.ID";
+            sql += "        and D.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            sql += "        and exists(select 1 from GOODS_SHOP GS,SHOP P where GS.GOODSID=G.GOODSID and GS.BRANCHID=D.BRANCHID and GS.SHOPID=P.SHOPID and P.FLOORID in ("+GetPermissionSql(PermissionType.Floor)+"))";
+
             string SqlyTQx = GetYtQx("C");
             if (SqlyTQx != "")  //业态权限
             {
@@ -320,7 +322,7 @@ namespace z.ERP.Services
                 }
             }
             string SqlyTQx = GetYtQx("Y");
-            string sql = " SELECT C.CONTRACTID,CI.SHOPCODESTR SHOPCODE,CI.BRANDNAMESTR BRANDNAME,CI.FLOORCODESTR FLOORCODE,"
+            string sql = " SELECT C.CONTRACTID,CI.SHOPCODESTR SHOPCODE,CI.BRANDNAMESTR BRANDNAME,CI.FLOORNAMESTR FLOORCODE,"
                        + "        M.MERCHANTID,M.NAME MERCHANTNAME, C.AREAR,to_char(C.CONT_START,'YYYY-MM-DD') CONT_START,"
                        + "        to_char(C.CONT_END,'YYYY-MM-DD') CONT_END,O.NAME RENTWAY, CI.RENTPRICESTR RENTPRICE,FR.NAME RENTRULE,C.STATUS "
                        + sql1
@@ -335,10 +337,10 @@ namespace z.ERP.Services
                                     and CP.SHOPID = S.SHOPID AND S.FLOORID in (" + GetPermissionSql(PermissionType.Floor) + ")) ";  //楼层权限
             if (SqlyTQx != "") //业态权限
             {
-                sql += @" and exists(select 1 from CONTRACT_SHOP CD,CATEGORY Y 
-                                      where CD.CONTRACTID=C.CONTRACTID and CD.CATEGORYID=Y.CATEGORYID AND " + SqlyTQx + ") ";
+                sql += @" and exists(select 1 from CONTRACT_BRAND CD,BRAND D,CATEGORY Y 
+                                      where CD.CONTRACTID=C.CONTRACTID and CD.BRANDID=D.ID and D.CATEGORYID=Y.CATEGORYID AND " + SqlyTQx + ") ";
             }
-            item.HasKey("CATEGORYCODE", a => sql += $" and exists(select 1 from CONTRACT_SHOP CD,CATEGORY Y where CD.CONTRACTID = C.CONTRACTID and  CD.CATEGORYID = Y.CATEGORYID and Y.CATEGORYCODE LIKE '{a}%') ");
+            item.HasKey("CATEGORYCODE", a => sql += $" and exists(select 1 from CONTRACT_BRAND CD,BRAND D,CATEGORY Y where CD.CONTRACTID = C.CONTRACTID and CD.BRANDID=D.ID and  D.CATEGORYID = Y.CATEGORYID and Y.CATEGORYCODE LIKE '{a}%') ");
             item.HasKey("FLOORID", a => sql += $" and exists(select 1 from CONTRACT_SHOP CP,SHOP S where C.CONTRACTID = CP.CONTRACTID and CP.SHOPID = S.SHOPID AND S.FLOORID in ({a})) ");
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID in ({a})");
             item.HasKey("CONTRACTID", a => sql += $" and C.CONTRACTID = '{a}'");
@@ -346,7 +348,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME LIKE '%{a}%'");
             item.HasKey("BRANDNAME", a => sql += $" and exists(select 1 from CONTRACT_BRAND CD,BRAND B where C.CONTRACTID=CD.CONTRACTID and CD.BRANDID=B.ID and B.NAME LIKE '%{a}%') ");
 
-            sql += " ORDER BY CI.FLOORCODESTR,C.CONTRACTID ";
+            sql += " ORDER BY CI.FLOORNAMESTR,C.CONTRACTID ";
 
             return sql;
         }
@@ -462,20 +464,37 @@ namespace z.ERP.Services
         }
         #endregion
 
-        #region  商户缴费
+        #region  租赁商户缴费查询
         //查询链接字符串（提取公共部分）
         private string MerchantPayCostSQLStr(SearchItem item)
         {
-            string sqlparam = @" from MERCHANT M,BILL B,FEESUBJECT F,CONTRACT_BRAND C,BRAND D
-                                where M.MERCHANTID = B.MERCHANTID AND F.TRIMID = B.TERMID AND C.CONTRACTID = B.CONTRACTID
-                                  and M.MERCHANTID = B.MERCHANTID AND D.ID = C.BRANDID
+            string SqlYTQx = GetYtQx("Y");
+            //string sqlparam = @" from MERCHANT M,BILL B,FEESUBJECT F,CONTRACT_BRAND C,BRAND D
+            //                    where M.MERCHANTID = B.MERCHANTID AND F.TRIMID = B.TERMID AND C.CONTRACTID = B.CONTRACTID
+            //                      and M.MERCHANTID = B.MERCHANTID AND D.ID = C.BRANDID
+            //                      and B.STATUS IN (2,3,4)
+            //                      and B.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            string sqlparam = @" from MERCHANT M,BILL B,FEESUBJECT F,CONTRACT_INFO CI
+                                where M.MERCHANTID = B.MERCHANTID and F.TRIMID = B.TERMID
+                                  and B.CONTRACTID = CI.CONTRACTID(+)
                                   and B.STATUS IN (2,3,4)
                                   and B.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            //楼层权限
+            sqlparam += "and exists(select 1 from CONTRACT_SHOP CS,SHOP P where CS.CONTRACTID=B.CONTRACTID and CS.SHOPID=P.SHOPID and P.FLOORID in ("+GetPermissionSql(PermissionType.Floor) +"))";
+            //业态权限
+            if (SqlYTQx != "")  
+            {
+                sqlparam += " and exists(select 1 from CONTRACT_BRAND CB,BRAND D,CATEGORY Y where CB.CONTRACTID=B.CONTRACTID and CB.BRANDID=D.ID and D.CATEGORYID=Y.CATEGORYID and " + SqlYTQx + ")";
+            };
+
 
             item.HasKey("BRANCHID", a => sqlparam += $" and B.BRANCHID in ({a})");
+            item.HasKey("FLOORID", a => sqlparam += $" and exists(select 1 from CONTRACT_SHOP CS,SHOP P where CS.CONTRACTID=B.CONTRACTID and CS.SHOPID=P.SHOPID and P.FLOORID in ({a}))");
+            item.HasKey("CATEGORYCODE", a => sqlparam += $" and exists(select 1 from CONTRACT_BRAND CB,BRAND D,CATEGORY Y where CB.CONTRACTID=B.CONTRACTID and CB.BRANDID=D.ID and D.CATEGORYID=Y.CATEGORYID and Y.CATEGORYCODE LIKE '{a}%')");
             item.HasKey("TRIMID", a => sqlparam += $" and F.TRIMID in ({a})");
             item.HasKey("MERCHANTNAME", a => sqlparam += $" and M.NAME LIKE '%{a}%'");
-            item.HasKey("BRANDNAME", a => sqlparam += $" and D.NAME LIKE '%{a}%'");
+            item.HasKey("BRANDNAME", a => sqlparam += $" and CI.BRANDNAMESTR LIKE '%{a}%'");
             item.HasKey("YEARMONTH_START", a => sqlparam += $" and B.YEARMONTH >= {a}");
             item.HasKey("YEARMONTH_END", a => sqlparam += $" and B.YEARMONTH <= {a}");
             item.HasKey("NIANYUE_START", a => sqlparam += $" and B.NIANYUE >= {a}");
@@ -508,18 +527,18 @@ namespace z.ERP.Services
             if (item.Values["SrchTYPE"] == ((int)列表或汇总.普通列表).ToString())
             {
                 sql += @"select M.MERCHANTID,M.NAME MERCHANTNAME,B.NIANYUE,B.YEARMONTH,
-                                F.NAME TRIMNAME,D.NAME BRANDNAME,
+                                F.NAME TRIMNAME,CI.BRANDNAMESTR BRANDNAME,
                                 B.MUST_MONEY,B.RECEIVE_MONEY,B.MUST_MONEY-B.RECEIVE_MONEY UNPAID_MONEY ";
                 sql += MerchantPayCostSQLStr(item);
                 sql += @" order by MERCHANTID,NIANYUE,TRIMID ";
             }
             else
             {
-                sql += @"select M.MERCHANTID,M.NAME MERCHANTNAME,D.NAME BRANDNAME,F.NAME TRIMNAME,
+                sql += @"select M.MERCHANTID,M.NAME MERCHANTNAME,CI.BRANDNAMESTR BRANDNAME,F.NAME TRIMNAME,
                                 sum(B.MUST_MONEY) MUST_MONEY,sum(B.RECEIVE_MONEY) RECEIVE_MONEY,
                                 sum(B.MUST_MONEY)-sum(B.RECEIVE_MONEY) UNPAID_MONEY ";
                 sql += MerchantPayCostSQLStr(item);
-                sql += @" group by M.MERCHANTID,M.NAME,D.NAME,F.NAME 
+                sql += @" group by M.MERCHANTID,M.NAME,CI.BRANDNAMESTR,F.NAME 
                           order by M.MERCHANTID,F.NAME";
             }
 
@@ -556,18 +575,18 @@ namespace z.ERP.Services
             if (item.Values["SrchTYPE"] == ((int)列表或汇总.普通列表).ToString())
             {
                 sql += @"select M.MERCHANTID,M.NAME MERCHANTNAME,B.NIANYUE,B.YEARMONTH,
-                                F.NAME TRIMNAME,D.NAME BRANDNAME,
+                                F.NAME TRIMNAME,CI.BRANDNAMESTR BRANDNAME,
                                 B.MUST_MONEY,B.RECEIVE_MONEY,B.MUST_MONEY-B.RECEIVE_MONEY UNPAID_MONEY ";
                 sql += MerchantPayCostSQLStr(item);
                 sql += @" order by MERCHANTID,NIANYUE,TRIMID ";
             }
             else
             {
-                sql += @"select M.MERCHANTID,M.NAME MERCHANTNAME,D.NAME BRANDNAME,F.NAME TRIMNAME,
+                sql += @"select M.MERCHANTID,M.NAME MERCHANTNAME,CI.BRANDNAMESTR BRANDNAME,F.NAME TRIMNAME,
                                 sum(B.MUST_MONEY) MUST_MONEY,sum(B.RECEIVE_MONEY) RECEIVE_MONEY,
                                 sum(B.MUST_MONEY)-sum(B.RECEIVE_MONEY) UNPAID_MONEY ";
                 sql += MerchantPayCostSQLStr(item);
-                sql += @" group by M.MERCHANTID,M.NAME,D.NAME,F.NAME 
+                sql += @" group by M.MERCHANTID,M.NAME,CI.BRANDNAMESTR,F.NAME 
                           order by M.MERCHANTID,F.NAME";
             }
             DataTable dt = DbHelper.ExecuteTable(sql);
@@ -620,6 +639,7 @@ namespace z.ERP.Services
                 sqlstr += " and C.OPERATERULE not in (select ID from OPERATIONRULE where PROCESSTYPE = 2)";
 
             sqlstr += " and C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";
+            sqlstr += " and exists(select 1 from CONTRACT_SHOP CS,SHOP P where CS.CONTRACTID=C.CONTRACTID and CS.SHOPID=P.SHOPID and P.FLOORID in ("+GetPermissionSql(PermissionType.Floor)+")) ";
             sqlstr += sqlParam;
 
             return sqlstr;
@@ -681,17 +701,25 @@ namespace z.ERP.Services
         #region 商品销售明细查询
         public string GoodsSaleDetailSql(SearchItem item)
         {
+            string sqlYTQX = GetYtQx("Y");
             string sql = @" select *
                               from (select to_char(HIS_SALE.SALE_TIME,'yyyy-mm-dd hh24:mi:ss') SALE_TIME,
                                            HIS_SALE.POSNO,HIS_SALE.DEALID,BRAND.NAME BRANDNAME,
                                            GOODS.NAME GOODSNAME,PAY.NAME,HIS_SALE_GOODS_PAY.AMOUNT,
                                            NVL(HIS_SALE.POSNO_OLD,' ') POSNO_OLD,NVL(HIS_SALE.DEALID_OLD,0) DEALID_OLD
-                                      from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
+                                      from HIS_SALE,HIS_SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND,CATEGORY Y
                                      where HIS_SALE.POSNO=HIS_SALE_GOODS_PAY.POSNO and HIS_SALE.DEALID=HIS_SALE_GOODS_PAY.DEALID 
                                        and HIS_SALE_GOODS_PAY.GOODSID=GOODS.GOODSID and HIS_SALE_GOODS_PAY.PAYID=PAY.PAYID 
                                        and CONTRACT.CONTRACTID=GOODS.CONTRACTID and CONTRACT.BRANCHID=BRANCH.ID 
                                        and CONTRACT.MERCHANTID=MERCHANT.MERCHANTID and GOODS.BRANDID=BRAND.ID
+                                       and BRAND.CATEGORYID = Y.CATEGORYID
                                        and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+            //楼层权限
+           sql += " and exists(select 1 from CONTRACT_SHOP CS,SHOP P where CS.CONTRACTID=CONTRACT.CONTRACTID and CS.SHOPID=P.SHOPID and P.FLOORID in (" + GetPermissionSql(PermissionType.Floor) + "))";
+            //业态权限
+            if (sqlYTQX != "")
+                sql += " and " + sqlYTQX;
+                                       
 
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID in ({a})");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(HIS_SALE.SALE_TIME) >= {a}");
@@ -709,12 +737,19 @@ namespace z.ERP.Services
                             SALE.POSNO,SALE.DEALID,BRAND.NAME BRANDNAME,GOODS.NAME GOODSNAME,
                             PAY.NAME,SALE_GOODS_PAY.AMOUNT, NVL(SALE.POSNO_OLD,' ') POSNO_OLD,
                             NVL(SALE.DEALID_OLD,0) DEALID_OLD
-                       from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND
+                       from SALE,SALE_GOODS_PAY,GOODS,PAY,CONTRACT,BRANCH,MERCHANT,BRAND,CATEGORY Y
                       where SALE.POSNO=SALE_GOODS_PAY.POSNO and SALE.DEALID=SALE_GOODS_PAY.DEALID 
                         and SALE_GOODS_PAY.GOODSID=GOODS.GOODSID and SALE_GOODS_PAY.PAYID=PAY.PAYID 
                         and CONTRACT.CONTRACTID=GOODS.CONTRACTID and CONTRACT.BRANCHID=BRANCH.ID 
                         and CONTRACT.MERCHANTID=MERCHANT.MERCHANTID and GOODS.BRANDID=BRAND.ID
+                        and BRAND.CATEGORYID = Y.CATEGORYID
                         and CONTRACT.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+
+            //楼层权限
+            sql += " and exists(select 1 from CONTRACT_SHOP CS,SHOP P where CS.CONTRACTID=CONTRACT.CONTRACTID and CS.SHOPID=P.SHOPID and P.FLOORID in (" + GetPermissionSql(PermissionType.Floor) + "))";
+            //业态权限
+            if (sqlYTQX != "")
+                sql += " and " + sqlYTQX;
 
             item.HasKey("BRANCHID", a => sql += $" and CONTRACT.BRANCHID in ({a})");
             item.HasDateKey("RQ_START", a => sql += $" and TRUNC(SALE.SALE_TIME) >= {a}");
@@ -779,8 +814,19 @@ namespace z.ERP.Services
         private string MerchantPayableSqlParam(SearchItem item)
         {
             string sql = "  from bill b,merchant m,feesubject f" +
-                        "  where b.MERCHANTID=m.MERCHANTID and b.TERMID=f.TRIMID" +
-                        "        and b.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限
+                        "  where b.MERCHANTID = m.MERCHANTID and b.TERMID = f.TRIMID" +
+                        "    and b.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")" +  //门店权限
+                        //楼层权限
+                        "    and exists(select 1 from CONTRACT_SHOP CS,SHOP P where CS.CONTRACTID=b.CONTRACTID and CS.SHOPID=P.SHOPID and P.FLOORID in (" + GetPermissionSql(PermissionType.Floor) + "))";
+
+            string SqlYTQx = GetYtQx("Y");
+            //业态权限
+            if (SqlYTQx != "")
+            {
+                sql += " and exists(select 1 from CONTRACT_BRAND CB,BRAND D,CATEGORY Y where CB.CONTRACTID=B.CONTRACTID and CB.BRANDID=D.ID and D.CATEGORYID=Y.CATEGORYID and " + SqlYTQx + ")";
+            };
+
+
             item.HasKey("BRANCHID", a => sql += $" and b.BRANCHID in ({a})");
             item.HasKey("MERCHANTNAME", a => sql += $" and m.NAME like '%{a}%'");
             item.HasKey("SFXMLX", a => sql += $" and f.TYPE in ({a})");
@@ -886,9 +932,6 @@ namespace z.ERP.Services
             return new DataGridResult(dt, count);
         }
 
-        #endregion
-
-        #region 销售采集处理记录查询
         public DataTable SALEGATHEROutput(SearchItem item)
         {
 
@@ -955,11 +998,11 @@ namespace z.ERP.Services
                                 LEFT JOIN FEE_ACCOUNT F ON E.FEE_ACCOUNTID=F.ID AND F.BRANCHID=A.BRANCHID";
 
             sqlsum += "  WHERE A.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ")";  //门店权限     
-            sqlsum += @"  and exists(select 1 from SHOP S, CONTRACT_SHOP CS where A.BRANCHID = S.BRANCHID AND S.SHOPID=CS.SHOPID AND S.FLOORID  in (" + GetPermissionSql(PermissionType.Floor) + ")) ";  //楼层权限
+            sqlsum += "  and exists(select 1 from SHOP S, CONTRACT_SHOP CS where A.BRANCHID = S.BRANCHID AND S.SHOPID=CS.SHOPID AND S.FLOORID  in (" + GetPermissionSql(PermissionType.Floor) + ")) ";  //楼层权限
             string SqlyTQx = GetYtQx("Y");
             if (SqlyTQx != "") //业态权限
             {
-                sqlsum += @" and exists(select 1 from CONTRACT_SHOP CS,CATEGORY Y, BILL A where CS.CATEGORYID = Y.CATEGORYID AND CS.CONTRACTID = A.CONTRACTID AND " + SqlyTQx + ") ";
+                sqlsum += " and exists(select 1 from CONTRACT_SHOP CS,CATEGORY Y where CS.CATEGORYID = Y.CATEGORYID AND CS.CONTRACTID = A.CONTRACTID AND " + SqlyTQx + ") ";
             }
 
             item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID in ({a})");
@@ -1021,9 +1064,18 @@ namespace z.ERP.Services
                 sqlpay += $@"SUM(DECODE(A.PAYID,{payid},A.AMOUNT,0)) PAYID{payid},";
             }
             var sql = $@"SELECT {sqlpay} SUM(A.AMOUNT) SUMPAY,G.MERCHANTID,M.NAME MERCHANTNAME 
-                        FROM ALLSALE_GOODS_PAY A,GOODS G,MERCHANT M ,CONTRACT C,BRANCH B,BRAND BD
-                        WHERE A.GOODSID=G.GOODSID AND G.MERCHANTID=M.MERCHANTID AND G.CONTRACTID=C.CONTRACTID AND C.BRANCHID=B.ID AND G.BRANDID=BD.ID
-                        AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ") ";  //门店权限";
+                           FROM ALLSALE_GOODS_PAY A,GOODS G,MERCHANT M ,CONTRACT C,BRANCH B,BRAND BD,CATEGORY Y
+                          WHERE A.GOODSID=G.GOODSID AND G.MERCHANTID=M.MERCHANTID 
+                            AND G.CONTRACTID=C.CONTRACTID AND C.BRANCHID=B.ID AND G.BRANDID=BD.ID
+                            AND BD.CATEGORYID=Y.CATEGORYID
+                            AND C.BRANCHID in (" + GetPermissionSql(PermissionType.Branch) + ") ";  //门店权限";
+            //楼层权限
+            sql += "and exists(select 1 from CONTRACT_SHOP CS,SHOP P where CS.CONTRACTID=C.CONTRACTID and CS.SHOPID=P.SHOPID and P.FLOORID in ("+GetPermissionSql(PermissionType.Floor)+"))";
+            //业态权限
+            string sqlYTQX = GetYtQx("Y");
+            if (sqlYTQX != "")
+                sql += " and " + sqlYTQX;
+
             item.HasKey("BRANCHID", a => sql += $" and C.BRANCHID in ({a})");
             item.HasKey("Pay", a => sql += $" and A.PAYID in ({a})");
             item.HasKey("MERCHANTNAME", a => sql += $" and M.NAME = '{a}'");
@@ -1095,9 +1147,19 @@ namespace z.ERP.Services
                                    round(decode(nvl(R.SP_SALE,0),0,0,(R.CP_SALE/R.SP_SALE-1)*100),2) TB,
                                    round(decode(nvl(R.SP_SALE,0),0,0,(R.CP_SALE/R.SP_SALE-1)*100),2) PXTB,
                                    C.CONTRACTID,C.AREAR,M.NAME MERCHANTNAME,S.NAME SHOPNAME,F.CODE,F.NAME FLOORNAME,B.NAME BRANDNAME                                                           
-                              from CONTRACT C,{table} R,MERCHANT M,SHOP S,BRAND B,FLOOR F
+                              from CONTRACT C,{table} R,MERCHANT M,SHOP S,BRAND B,FLOOR F,CATEGORY Y
                              where R.CONTRACTID = C.CONTRACTID and R.SHOPID = S.SHOPID and 
-                                   R.MERCHANTID=M.MERCHANTID and R.BRANDID = B.ID and S.FLOORID = F.ID";
+                                   R.MERCHANTID=M.MERCHANTID and R.BRANDID = B.ID 
+                               and S.FLOORID = F.ID and B.CATEGORYID=Y.CATEGORYID
+                               and R.BRANCHID in (" +GetPermissionSql(PermissionType.Floor)+")";  //门店权限
+
+            sqlstr += " and F.ID in ("+GetPermissionSql(PermissionType.Floor)+")";  //楼层权限
+            //业态权限
+            string sqlYTQX = GetYtQx("Y");
+            if (sqlYTQX != "")
+                sqlstr += " and " + sqlYTQX; 
+        
+
 
             item.HasKey("BRANCHID", a => sqlstr += $" and C.BRANCHID in ({a})");
             item.HasKey("FLOORID", a => sqlstr += $" and F.ID in ({a})");

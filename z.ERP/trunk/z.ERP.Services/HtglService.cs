@@ -25,6 +25,12 @@ namespace z.ERP.Services
                 " WHERE A.BRANCHID=B.ID AND A.MERCHANTID=C.MERCHANTID" +
                 " AND A.CONTRACTID=CI.CONTRACTID(+) ";
             sql += " AND B.ID IN (" + GetPermissionSql(PermissionType.Branch) + ") ";    //分店权限 by：DZK
+            //楼层权限
+            sql += " and exists(select 1 from CONTRACT_SHOP CS,SHOP P where CS.CONTRACTID=A.CONTRACTID and CS.SHOPID=P.SHOPID and P.FLOORID in (" + GetPermissionSql(PermissionType.Floor) + "))";
+            //业态权限
+            string sqlYTQX = GetYtQx("Y");
+            if (sqlYTQX != "")
+               sql += " and exists(select 1 from CONTRACT_BRAND CB,BRAND D,CATEGORY Y where CB.CONTRACTID=A.CONTRACTID and CB.BRANDID=D.ID and D.CATEGORYID=Y.CATEGORYID and "+ sqlYTQX +")";
             item.HasKey("MERCHANTID", a => sql += $" and C.MERCHANTID  LIKE '%{a}%'");
             item.HasKey("MERCHANTNAME", a => sql += $" and C.NAME  LIKE '%{a}%'");
             item.HasKey("CONTRACTID", a => sql += $" and A.CONTRACTID = '{a}'");
@@ -37,6 +43,8 @@ namespace z.ERP.Services
             item.HasKey("VERIFY_NAME", a => sql += $" and A.VERIFY_NAME  LIKE '%{a}%'");
             item.HasKey("SHOPDM", a => sql += $" and exists(select 1 from CONTRACT_SHOP P,SHOP U where  P.SHOPID=U.SHOPID and P.CONTRACTID=A.CONTRACTID and UPPER(U.CODE) LIKE '{a.ToUpper()}%')");
             item.HasKey("BRANDNAME", a => sql += $" and exists(select 1 from CONTRACT_BRAND P,BRAND U where  P.BRANDID=U.ID and P.CONTRACTID=A.CONTRACTID and UPPER(U.NAME) LIKE '{a.ToUpper()}%')");
+            item.HasKey("FLOORID", a => sql += $" and exists(select 1 from CONTRACT_SHOP CS,SHOP P where CS.CONTRACTID=A.CONTRACTID and CS.SHOPID=P.SHOPID and P.FLOORID in ({a}))");
+            item.HasKey("CATEGORYCODE", a => sql += $" and exists(select 1 from CONTRACT_BRAND CB,BRAND D,CATEGORY Y where CB.CONTRACTID=A.CONTRACTID and CB.BRANDID=D.ID and D.CATEGORYID=Y.CATEGORYID and Y.CATEGORYCODE LIKE '{a}%')");
             sql += " ORDER BY  A.REPORTER_TIME DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

@@ -58,6 +58,21 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            业态
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-cascader v-bind:value.sync="searchParam.CATEGORY" method="GetTreeCategory"
+                         v-on:change="changeCate" notlevellast></yx-cascader>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            楼层
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="searchParam.FLOORID" method="floor" multiple></yx-select>
+        </i-col>
+    </row>
+    <row>
+        <i-col span="2" class="RowTitle">
             债权发生月
         </i-col>
         <i-col span="3" class="RowText">

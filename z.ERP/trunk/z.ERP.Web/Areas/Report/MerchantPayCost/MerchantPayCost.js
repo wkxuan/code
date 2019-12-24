@@ -49,6 +49,8 @@ search.newCondition = function () {
     search.searchParam.NIANYUE_START = "";
     search.searchParam.YEARMONTH_END = "";
     search.searchParam.YEARMONTH_START = "";
+    search.searchParam.CATEGORYCODE = "";
+    search.searchParam.FLOORID = [];
 
     search.screenParam.colDef = colD;
 };
@@ -87,7 +89,13 @@ search.otherMethods = {
             Vue.set(this, "pagedataCount", 0);    //清空分页数据
             Vue.set(search.screenParam, "colDef", colM);
         }
+    },
+    changeCate: function (value, selectedData) {
+    var data = selectedData[selectedData.length - 1];
+    if (data) {
+        search.searchParam.CATEGORYCODE = data.code;
     }
+}
 }
 
 search.popCallBack = function (data) {

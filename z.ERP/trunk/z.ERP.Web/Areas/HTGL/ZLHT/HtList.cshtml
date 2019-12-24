@@ -40,11 +40,27 @@
     </row>
     <row>
         <i-col span="2" class="RowTitle">
+            业态
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-cascader v-bind:value.sync="searchParam.CATEGORY" method="GetTreeCategory"
+                         v-on:change="changeCate" notlevellast></yx-cascader>
+        </i-col>
+        <i-col span="2" class="RowTitle">
+            楼层
+        </i-col>
+        <i-col span="6" class="RowText">
+            <yx-select v-bind:value.sync="searchParam.FLOORID" method="floor" multiple></yx-select>
+        </i-col>
+        <i-col span="2" class="RowTitle">
             合同员
         </i-col>
         <i-col span="6" class="RowText">
             <i-input icon="md-search" v-model="searchParam.SIGNER_NAME" v-on:on-click="SelSigner" />
         </i-col>
+    </row>
+    <row>
+        
         <i-col span="2" class="RowTitle">
             登记人
         </i-col>
@@ -57,8 +73,6 @@
         <i-col span="6" class="RowText">
             <i-input icon="md-search" v-model="searchParam.VERIFY_NAME" v-on:on-click="SelVerify" />
         </i-col>
-    </row>
-    <row>
         <i-col span="2" class="RowTitle">
             状态
         </i-col>

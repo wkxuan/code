@@ -41,6 +41,8 @@ search.newCondition = function () {
     search.searchParam.REPORTER_NAME = "";
     search.searchParam.VERIFY_NAME = "";
     search.searchParam.STATUS = "";
+    search.searchParam.CATEGORYCODE = "";
+    search.searchParam.FLOORID = [];
 }
 
 search.otherMethods = {
@@ -67,6 +69,12 @@ search.otherMethods = {
         search.popConfig.title = "选择商户";
         search.popConfig.src = __BaseUrl + "/Pop/Pop/PopMerchantList/";
         search.popConfig.open = true;
+    },
+    changeCate: function (value, selectedData) {
+        var data = selectedData[selectedData.length - 1];
+        if (data) {
+            search.searchParam.CATEGORYCODE = data.code;
+        }
     }
 }
 
