@@ -23,6 +23,8 @@
     editDetail.screenParam.srcPopContract = __BaseUrl + "/" + "Pop/Pop/PopContractList/";
     editDetail.screenParam.showPopBrand = false;
     editDetail.screenParam.srcPopBrand = __BaseUrl + "/" + "Pop/Pop/PopBrandList/";
+    editDetail.dataParam.JSKL_GROUP = null;
+    editDetail.dataParam.JSKL = null;
 };
 
 editDetail.clearKey = function () {
@@ -43,6 +45,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.PKIND_ID = [];
     editDetail.dataParam.XXSL = null;
     editDetail.dataParam.JSKL_GROUP = null;
+    editDetail.dataParam.JSKL = null;
     editDetail.dataParam.PRICE = null;
     editDetail.dataParam.MEMBER_PRICE = null;
     editDetail.dataParam.DESCRIPTION = null;
@@ -59,6 +62,9 @@ editDetail.showOne = function (data, callback) {
         editDetail.dataParam.BILLID = data.goods.GOODSDM;
         editDetail.dataParam.KINDID = data.goods.KINDID;
         editDetail.dataParam.GOODS_SHOP = data.goods_shop;
+        if (data.goods_group.length > 0) {
+            editDetail.dataParam.JSKL = data.goods_group[0].JSKL;
+        }
         editDetail.dataParam.GOODS_GROUP = data.goods_group;
         editDetail.dataParam.PKIND_ID = editDetail.dataParam.PKIND_ID.split(",");
         callback && callback(data);
@@ -157,6 +163,7 @@ editDetail.otherMethods = {
         editDetail.dataParam.XXSL = null;
         editDetail.dataParam.GOODS_SHOP = [];
         editDetail.dataParam.JSKL_GROUP = null;
+        editDetail.dataParam.JSKL = null;
         editDetail.dataParam.GOODS_GROUP = [];
 
         _.Ajax('GetContract', {
@@ -175,6 +182,7 @@ editDetail.otherMethods = {
                 editDetail.dataParam.GOODS_SHOP = data.shop;
                 if (data.jsklGroup) {
                     editDetail.dataParam.JSKL_GROUP = data.jsklGroup[0].GROUPNO;
+                    editDetail.dataParam.JSKL = data.jsklGroup[0].JSKL;
                     editDetail.dataParam.GOODS_GROUP = data.jsklGroup;
                 }
             }
@@ -202,6 +210,7 @@ editDetail.popCallBack = function (data) {
     if (editDetail.screenParam.showPopJsklGroup) {
         editDetail.screenParam.showPopJsklGroup = false;
         editDetail.dataParam.JSKL_GROUP = data.sj[0].GROUPNO;
+        editDetail.dataParam.JSKL = data.sj[0].JSKL;
         editDetail.otherMethods.getKLZinfo();
     };
     if (editDetail.screenParam.showPopContract) {
@@ -249,8 +258,8 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请确认商品分类!");
         return false;
     };
-    if (!editDetail.dataParam.JSKL_GROUP) {
-        iview.Message.info("请确定扣率组!");
+    if (!editDetail.dataParam.JSKL) {
+        iview.Message.info("请确定扣率!");
         return false;
     }
     if (editDetail.dataParam.GOODS_SHOP.length == 0) {
