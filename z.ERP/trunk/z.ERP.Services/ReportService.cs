@@ -1002,7 +1002,7 @@ namespace z.ERP.Services
             string SqlyTQx = GetYtQx("Y");
             if (SqlyTQx != "") //业态权限
             {
-                sqlsum += " and exists(select 1 from CONTRACT_SHOP CS,CATEGORY Y where CS.CATEGORYID = Y.CATEGORYID AND CS.CONTRACTID = A.CONTRACTID AND " + SqlyTQx + ") ";
+                sqlsum += " and exists(select 1 from CONTRACT_BRAND CB,BRAND R,CATEGORY Y where CB.BRANDID=R.ID and R.CATEGORYID = Y.CATEGORYID AND CB.CONTRACTID = A.CONTRACTID AND " + SqlyTQx + ") ";
             }
 
             item.HasKey("BRANCHID", a => sqlsum += $" and a.BRANCHID in ({a})");
@@ -1016,7 +1016,7 @@ namespace z.ERP.Services
             item.HasKey("TYPE", a => sqlsum += $" and A.TYPE in ({a})");
             item.HasKey("STATUS", a => sqlsum += $" and A.STATUS in ({a})");
             item.HasKey("CONTRACTID", a => sqlsum += $" and A.CONTRACTID = {a}");
-            item.HasKey("CATEGORYCODE", a => sqlsum += $" and exists(select 1 from CONTRACT_SHOP CS,CATEGORY Y where A.CONTRACTID = CS.CONTRACTID AND CS.CATEGORYID = Y.CATEGORYID AND Y.CATEGORYCODE LIKE '{a}%') ");
+            item.HasKey("CATEGORYCODE", a => sqlsum += $" and exists(select 1 from CONTRACT_BRAND CB,BRAND R,CATEGORY Y where A.CONTRACTID = CB.CONTRACTID AND CB.BRANDID=R.ID AND R.CATEGORYID = Y.CATEGORYID AND Y.CATEGORYCODE LIKE '{a}%') ");
             item.HasKey("FLOORID", a => sqlsum += $" and exists(select 1 from SHOP S, CONTRACT_SHOP CS where A.BRANCHID = S.BRANCHID AND S.SHOPID = CS.SHOPID AND S.FLOORID in （{a}))");
             return sqlsum;
         }
