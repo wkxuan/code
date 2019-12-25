@@ -274,8 +274,6 @@
     <Content Include="Content\ui\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\ui\fonts\weathericons-regular-webfont.svg" />
     <Content Include="Content\ui\img\ajax-loader.gif" />
-    <Content Include="Content\ui\img\alipay.jpg" />
-    <Content Include="Content\ui\img\alipayimg.png" />
     <Content Include="Content\ui\img\button_pm_close.png" />
     <Content Include="Content\ui\img\cy-reward-title-bg.jpg" />
     <Content Include="Content\ui\img\loading.gif" />
@@ -283,11 +281,6 @@
     <Content Include="Content\ui\img\login_shop.png" />
     <Content Include="Content\ui\img\radio1.jpg" />
     <Content Include="Content\ui\img\radio2.jpg" />
-    <Content Include="Content\ui\img\samples\apple.png" />
-    <Content Include="Content\ui\img\signet.gif" />
-    <Content Include="Content\ui\img\wechat.jpg" />
-    <Content Include="Content\ui\img\weipayimg.png" />
-    <Content Include="Content\ui\img\weixin_nfine.png" />
     <Content Include="Content\ui\img\yxlogo.png" />
     <Content Include="Content\ui\img\yxlogoTitle.png" />
     <Content Include="Content\ui\js\bootstrap\bootstrap.js" />
