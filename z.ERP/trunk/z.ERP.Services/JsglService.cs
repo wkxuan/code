@@ -307,7 +307,7 @@ namespace z.ERP.Services
                     var dcl = new BILLSTATUSEntity
                     {
                         BILLID = item.BILLID,
-                        MENUID = "10700502",
+                        MENUID = "10500702",
                         BRABCHID = item.BRANCHID,
                         URL = "JSGL/BILL_ADJUST/Bill_AdjustEdit/"
                     };
@@ -865,10 +865,16 @@ namespace z.ERP.Services
                     in_BILLID = Data.BILLID,
                     in_USERID = employee.Id
                 };
-                DbHelper.ExecuteProcedure(exec);
+                DbHelper.ExecuteProcedure(exec);                
                 Tran.Commit();
             }
-
+            var dcl = new BILLSTATUSEntity
+            {
+                BILLID = Data.BILLID,
+                MENUID = "10700502",
+                BRABCHID = Data.BRANCHID
+            };
+            DelDclRw(dcl);
             return Data.BILLID;
 
            /* BILL_NOTICEEntity billNotice = DbHelper.Select(Data);
