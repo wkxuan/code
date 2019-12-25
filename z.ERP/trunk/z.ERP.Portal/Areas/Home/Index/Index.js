@@ -221,7 +221,6 @@ function toMap(data) {
     return result;
 }
 var erpDomain = "";
-
 //添加vue模块
 var Index = new Vue({
     el: '#Badge',
@@ -298,6 +297,7 @@ var Index = new Vue({
                     }
                 }],
         alertdataDef: [],
+        tableh: document.documentElement.clientHeight-100
     },
     mounted: function () {
         this.AllTopData();
