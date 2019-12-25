@@ -144,11 +144,11 @@
                                     </Tab-Pane>
                                     <Tab-Pane :label="dclrw" name="dclrw">
                                         <i-table size="small"
-                                                 :columns="dclrwcolDef" :data="dclrwdataDef" v-on:on-row-dblclick="dclrwClick"></i-table>
+                                                 :columns="dclrwcolDef" :data="dclrwdataDef" v-on:on-row-dblclick="dclrwClick" v-bind:height="tableh"></i-table>
                                     </Tab-Pane>
                                     <Tab-Pane :label="alerts" name="alerts">
                                         <i-table size="small"
-                                                 :columns="alertcolDef" :data="alertdataDef"></i-table>
+                                                 :columns="alertcolDef" :data="alertdataDef" v-bind:height="tableh"></i-table>
                                     </Tab-Pane>
                                 </Tabs>
                             </Drawer>
