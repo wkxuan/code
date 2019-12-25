@@ -90,7 +90,7 @@
             this.Location = new System.Drawing.Point(0, 0);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
-            this.Text = "云商日处理程序";
+            this.Text = "商云日处理程序";
             this.ResumeLayout(false);
             this.PerformLayout();
 
