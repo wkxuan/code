@@ -33,6 +33,7 @@ namespace z.ERP.Services
             item.HasKey("MERCHANTID", a => sql += $" and G.MERCHANTID={a}");
             item.HasKey("KINDID", a => sql += $" and G.KINDID={a}");
             item.HasKey("TYPE", a => sql += $" and G.TYPE={a}");
+            item.HasKey("SHOPID", a => sql += $" and exists(select 1 from GOODS_SHOP GS where  GS.BRANCHID=C.BRANCHID AND GS.GOODSID=G.GOODSID AND GS.SHOPID='{a}')");
             sql += " ORDER BY  G.REPORTER_TIME DESC";
             int count;
             DataTable dt = DbHelper.ExecuteTable(sql, item.PageInfo, out count);

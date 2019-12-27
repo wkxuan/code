@@ -62,5 +62,11 @@
         <i-col span="6" class="RowText">
             <i-input v-model="searchParam.KINDID" />
         </i-col>
+        <i-col span="2" class="RowTitle">
+            店铺
+        </i-col>
+        <i-col span="6" class="RowText">
+            <i-input readonly icon="md-search" v-model="searchParam.SHOPCODE" v-on:on-click="SelShop" />
+        </i-col>
     </row>
 }

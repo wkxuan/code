@@ -28,6 +28,23 @@
     search.service = "SpglService";
     search.method = "GetGoods";
 }
+search.otherMethods = {
+    SelShop: function () {
+        search.screenParam.popParam = {};
+        search.popConfig.title = "选择店铺";
+        search.popConfig.src = __BaseUrl + "/Pop/Pop/PopShopList/";
+        search.popConfig.open = true;
+    },
+};
+search.popCallBack = function (data) {
+    search.popConfig.open = false;
+    if (search.popConfig.title == "选择店铺") {
+        for (var i = 0; i < data.sj.length; i++) {
+            search.searchParam.SHOPID = data.sj[i].SHOPID;
+            search.searchParam.SHOPCODE = data.sj[i].SHOPCODE;
+        };
+    }
+};
 search.newCondition = function () {
     search.searchParam.NAME = "";
     search.searchParam.GOODSDM = "";
@@ -37,6 +54,8 @@ search.newCondition = function () {
     search.searchParam.TYPE = "";
     search.searchParam.CONTRACTID = "";
     search.searchParam.KINDID = "";
+    search.searchParam.SHOPID = "";
+    search.searchParam.SHOPCODE = "";
 };
 search.addHref = function (row) {
     _.OpenPage({

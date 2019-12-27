@@ -258,7 +258,7 @@ editDetail.IsValidSave = function () {
         iview.Message.info("请确认商品分类!");
         return false;
     };
-    if (!editDetail.dataParam.JSKL) {
+    if (!editDetail.dataParam.JSKL_GROUP) {
         iview.Message.info("请确定扣率!");
         return false;
     }
