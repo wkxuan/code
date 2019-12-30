@@ -128,6 +128,7 @@ $(function ($) {
             $('#ajax-loader').fadeOut();
         }, 300);
     });
+    $("#nav-col").height($(window).height() - 55);
 });
 //加载系统
 function GetLoadMenu() {

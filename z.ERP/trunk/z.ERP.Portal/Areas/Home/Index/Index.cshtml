@@ -64,7 +64,10 @@
         }
         .menui .p-icon:before {
             display:none;
-        }     
+        } 
+        #nav-col::-webkit-scrollbar {
+            display: none;
+        }    
     </style>
     @InitFiles(WebFiles)
     
@@ -158,7 +161,7 @@
             </div>
         </header>
         <div id="page-wrapper" class="container">
-                 <div id="nav-col">
+            <div id="nav-col" style="overflow-y:auto">
                 <section id="col-left" class="col-left-nano">
                     <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
                         <ul class="nav nav-pills nav-stacked first-menu-list">                           
