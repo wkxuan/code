@@ -93,7 +93,8 @@ $(function ($) {
     });
     $('body').find('#make-small-nav').click(function (e) {
         $('#page-wrapper').toggleClass('nav-small');
-        $('.submenu').toggleClass('menui');  //切换小图标模式 2.3级菜单图标隐藏
+        $('.submenu').toggleClass('menui');  //切换小图标模式 2.3级菜单图标隐藏  
+        $("#nav-col").toggleClass('nav-col-menu'); //菜单栏显示滚动条，小菜单不受影响
         var $item = $('#page-wrapper.nav-small #sidebar-nav > .nav-pills > .open');
         if ($item.hasClass('open')) {
             $item.find('.open .submenu').slideUp('fast');

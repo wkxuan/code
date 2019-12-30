@@ -67,7 +67,10 @@
         } 
         #nav-col::-webkit-scrollbar {
             display: none;
-        }    
+        }
+        .nav-col-menu {
+            overflow-y:auto;
+        }   
     </style>
     @InitFiles(WebFiles)
     
@@ -161,7 +164,7 @@
             </div>
         </header>
         <div id="page-wrapper" class="container">
-            <div id="nav-col" style="overflow-y:auto">
+            <div id="nav-col" class="nav-col-menu">
                 <section id="col-left" class="col-left-nano">
                     <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
                         <ul class="nav nav-pills nav-stacked first-menu-list">                           
