@@ -202,7 +202,7 @@ namespace z.ERP.Services
                 sql_jsklGroup += (" and CONTRACTID= " + dt.Rows[0]["CONTRACTID"].ToString());
             if (!dt.Rows[0]["JSKL_GROUP"].ToString().IsEmpty())
                 sql_jsklGroup += (" and GROUPNO= " + dt.Rows[0]["JSKL_GROUP"].ToString());
-            sql_jsklGroup += "  order by GROUPNO";
+            sql_jsklGroup += "  order by GROUPNO,INX";
             DataTable jsklGroup = DbHelper.ExecuteTable(sql_jsklGroup);
 
             return new Tuple<dynamic, DataTable, DataTable>(dt.ToOneLine(), dtshop, jsklGroup);
