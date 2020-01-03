@@ -97,7 +97,8 @@ search.newCondition = function () {
     search.searchParam.VERIFY_NAME = "";
     search.searchParam.VERIFY_TIME_START = "";
     search.searchParam.VERIFY_TIME_END = "";
-
+    search.searchParam.BRANDID = "";
+    search.searchParam.MERCHANTID = "";
     search.searchParam.TYPE = 3;
 };
 search.otherMethods = {
@@ -134,9 +135,11 @@ search.popCallBack = function (data) {
             switch (search.popConfig.title) {
                 case "选择商户":
                     search.searchParam.MERCHANTNAME = data.sj[i].NAME;
+                    search.searchParam.MERCHANTID = data.sj[i].MERCHANTID;
                     break;
                 case "选择品牌":
                     search.searchParam.BRANDNAME = data.sj[i].NAME;
+                    search.searchParam.BRANDID = data.sj[i].BRANDID;
                     break;
                 case "选择登记人":
                     search.searchParam.REPORTER_NAME = data.sj[i].USERNAME;
