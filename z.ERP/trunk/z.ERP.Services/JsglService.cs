@@ -806,6 +806,7 @@ namespace z.ERP.Services
                 " where M.FINAL_BILLID=B.BILLID(+) and B.TERMID=C.TRIMID(+) ";
             if (!Data.BILLID.IsEmpty())
                 sqlitem += (" and M.BILLID= " + Data.BILLID);
+            sqlitem += " order by B.TERMID,B.NIANYUE";
             DataTable billNoticeItem = DbHelper.ExecuteTable(sqlitem);
 
             return new Tuple<dynamic, DataTable>(billNotice.ToOneLine(), billNoticeItem);
