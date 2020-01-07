@@ -18,6 +18,21 @@
         <i-col span="6" class="RowText">
             <i-input v-model="dataParam.MERCHANTNAME" disabled="disabled" />
         </i-col>
+        <i-col span="2" class="RowTitle">
+            收费单位
+        </i-col>
+        <i-col span="6" class="RowText">
+            @{
+                RenderControl(new DropDownListsRender()
+                {
+                    vModel = "dataParam.FEE_ACCOUNTID",
+                    Data = "screenParam.FEE_ACCOUNT",
+                    EmptyText = "",
+                    Enable = true,
+                    Change = "chgFAT",
+                });
+            }
+        </i-col>
     </row>
     <row>
         <i-col span="2" class="RowTitle">
@@ -40,19 +55,10 @@
             }
         </i-col>
         <i-col span="2" class="RowTitle">
-            收费单位
+            缴费截至日期
         </i-col>
         <i-col span="6" class="RowText">
-            @{
-                RenderControl(new DropDownListsRender()
-                {
-                    vModel = "dataParam.FEE_ACCOUNTID",
-                    Data = "screenParam.FEE_ACCOUNT",
-                    EmptyText = "",
-                    Enable = true,
-                    Change = "chgFAT",
-                });
-            }
+            <yx-date-picker type="date" v-bind:value.sync="dataParam.DUE_DATE" v-bind:disabled="!disabled" ></yx-date-picker>
         </i-col>
     </row>
     <row>

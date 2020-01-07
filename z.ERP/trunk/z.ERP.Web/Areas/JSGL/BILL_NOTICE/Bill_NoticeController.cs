@@ -105,7 +105,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
                 ViewBag.MERCHANTACCOUNT = 0;
                 ViewBag.payable = Convert.ToDecimal(ViewBag.billNotice.NOTICE_MONEY);
             }
-            ViewBag.CurrentDate = System.DateTime.Now;
+            ViewBag.CurrentDate = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             return View();
         }
 
@@ -134,7 +134,7 @@ namespace z.ERP.Web.Areas.JSGL.BILL_NOTICE
                 ViewBag.MERCHANTACCOUNT = 0;
                 ViewBag.payable = Convert.ToDecimal(ViewBag.billNotice.NOTICE_MONEY);
             }            
-            ViewBag.CurrentDate = System.DateTime.Now;
+            ViewBag.CurrentDate = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             return View();
         }
         #region  四海打印方法

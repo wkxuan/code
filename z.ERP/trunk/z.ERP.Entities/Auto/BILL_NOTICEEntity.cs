@@ -134,6 +134,14 @@ namespace z.ERP.Entities
         {
             get; set;
         }
-
+        /// <summary>
+        /// 缴费截至日期
+        /// <summary>
+        [Field("缴费截至日期")]
+        [DbType(DbType.Date)]
+        public string DUE_DATE
+        {
+            get; set;
+        }
     }
 }

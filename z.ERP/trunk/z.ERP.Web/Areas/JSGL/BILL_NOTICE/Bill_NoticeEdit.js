@@ -197,6 +197,7 @@ editDetail.clearKey = function () {
     editDetail.dataParam.TYPE = null;
     editDetail.dataParam.CONTRACTID = null;
     editDetail.dataParam.DESCRIPTION = null;
+    editDetail.dataParam.DUE_DATE = null;
     editDetail.dataParam.BILL_NOTICE_ITEM = [];
 }
 //按钮初始化
