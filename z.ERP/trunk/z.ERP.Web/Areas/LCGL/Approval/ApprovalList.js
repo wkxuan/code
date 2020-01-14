@@ -54,7 +54,7 @@
         Editapproval: function (id,s,bid,bname,name) {
             _.OpenPage({
                 //id: 10600200,
-                title: '审批流详情',
+                title: '(' + name + ')审批流详情',
                 url: "/LCGL/Approval/ApprovalEdit?id=" + id + "&s=" + s + "&bid=" + bid + "&bname=" + bname + "&name=" + name
             });
         }

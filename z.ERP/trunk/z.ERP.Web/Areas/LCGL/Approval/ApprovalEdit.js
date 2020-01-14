@@ -62,7 +62,7 @@ var DataView = new Vue({
         datauser: [],
         datarole: [],
         colDefrole: [
-            { title: "角色编码", key: 'ROLEID' },
+            { title: "角色编码", key: 'ROLECODE' },
             { title: '角色名称', key: 'ROLENAME' },
             { title: ' ',key: 'action',width: 150,align: 'center',
                 render: (h, params) => {
@@ -70,19 +70,20 @@ var DataView = new Vue({
                         h('Button', {
                             props: {
                                 type: 'error',
-                                size: 'small'
+                                size: 'small',
+                                disabled:DataView.disab,
                             },
                             on: {
                                 click: () => {
                                     DataView.remove(params.row, 1)
                                 }
                             }
-                        }, 'Delete')
+                        }, '删除')
                     ]);
                 }           
         }],
         colDefuser: [
-            { title: "人员编码", key: 'USERID' },
+            { title: "人员编码", key: 'USERCODE' },
             { title: '人员名称', key: 'USERNAME' },
             {
                 title: ' ', key: 'action', width: 150, align: 'center',
@@ -91,14 +92,15 @@ var DataView = new Vue({
                         h('Button', {
                             props: {
                                 type: 'error',
-                                size: 'small'
+                                size: 'small',
+                                disabled: DataView.disab,
                             },
                             on: {
                                 click: () => {
                                     DataView.remove(params.row, 2)
                                 }
                             }
-                        }, 'Delete')
+                        }, '删除')
                     ]);
                 }
             }],
@@ -133,7 +135,7 @@ var DataView = new Vue({
                 if (data.an.length > 0) {
                     DataView.APPROVAL_NODE_OPER = [];
                     for (let i = 0; i < data.ano.length; i++) {   //节点权限table数据
-                        DataView.APPROVAL_NODE_OPER.push({ APPR_NODE_ID: data.ano[i].APPR_NODE_ID+"", OPER_TYPE: data.ano[i].OPER_TYPE, OPER_DATA: data.ano[i].OPER_DATA, OPER_NAME: data.ano[i].OPER_NAME });
+                        DataView.APPROVAL_NODE_OPER.push({ APPR_NODE_ID: data.ano[i].APPR_NODE_ID + "", OPER_TYPE: data.ano[i].OPER_TYPE, OPER_DATA: data.ano[i].OPER_DATA, OPER_NAME: data.ano[i].OPER_NAME, CODE: data.ano[i].CODE });
                     }
                     let edata = [];
                     for (let i = 0; i < data.an.length; i++) {   //节点echart数据
@@ -213,15 +215,15 @@ var DataView = new Vue({
         },
         addNPObject: function (data, type) {//type  1角色 2人员
             if (type == 1) {
-                DataView.APPROVAL_NODE_OPER.push({ APPR_NODE_ID: BBID+DY10(DataView.labelValue), OPER_TYPE: 1, OPER_DATA: data.ROLEID, OPER_NAME: data.ROLENAME });
+                DataView.APPROVAL_NODE_OPER.push({ APPR_NODE_ID: BBID+DY10(DataView.labelValue), OPER_TYPE: 1, OPER_DATA: data.ROLEID, OPER_NAME: data.ROLENAME , CODE:data.ROLECODE });
             }else{
-                DataView.APPROVAL_NODE_OPER.push({ APPR_NODE_ID: BBID+DY10(DataView.labelValue), OPER_TYPE: 2, OPER_DATA: data.USERID, OPER_NAME: data.USERNAME });
+                DataView.APPROVAL_NODE_OPER.push({ APPR_NODE_ID: BBID + DY10(DataView.labelValue), OPER_TYPE: 2, OPER_DATA: data.USERID, OPER_NAME: data.USERNAME, CODE: data.USERCODE });
             }
         },
         delNPObject: function (data, type) {
             let temp = DataView.APPROVAL_NODE_OPER;
             for (let i = 0; i < temp.length; i++) {
-                if (temp[i].ROLEID == data.ROLEID && temp[i].APPR_NODE_ID.replace(BBID,"") ==DY10(DataView.labelValue) && temp[i].OPER_TYPE == type) {
+                if (temp[i].OPER_DATA == data && temp[i].APPR_NODE_ID.replace(BBID, "") == DY10(DataView.labelValue) && temp[i].OPER_TYPE == type) {
                     temp.splice(i, 1);
                     break;                
                 }
@@ -244,11 +246,11 @@ var DataView = new Vue({
             let temp = DataView.APPROVAL_NODE_OPER;
             for (let i = 0; i < temp.length; i++) {
                 if (temp[i].APPR_NODE_ID.replace(BBID,"") ==DY10(DataView.labelValue) && temp[i].OPER_TYPE == 1) {
-                    DataView.datarole.push({ ROLEID: temp[i].OPER_DATA, ROLENAME: temp[i].OPER_NAME });
+                    DataView.datarole.push({ ROLECODE: temp[i].CODE, ROLENAME: temp[i].OPER_NAME, ROLEID: temp[i].OPER_DATA });
                     continue;
                 }
                 if (temp[i].APPR_NODE_ID.replace(BBID,"") ==DY10(DataView.labelValue) && temp[i].OPER_TYPE == 2) {
-                    DataView.datauser.push({ USERID: temp[i].OPER_DATA, USERNAME: temp[i].OPER_NAME });
+                    DataView.datauser.push({ USERCODE: temp[i].CODE, USERNAME: temp[i].OPER_NAME, USERID: temp[i].OPER_DATA });
                     continue;
                 }
             }
@@ -278,19 +280,19 @@ var DataView = new Vue({
             var options = myChart.getOption();
             var data = Object.assign(options.series[0].data);
             var links = Object.assign(options.series[0].links);
-            if (data.length>2) {
+            if (data.length > 2) {
                 DataView.APPROVAL_NODE = [];
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].value==0) {
+                    if (data[i].value == 0) {
                         DataView.APPROVAL_NODE.push({
-                            APPR_NODE_ID: BBID+DY10(data[i].value),
+                            APPR_NODE_ID: BBID + DY10(data[i].value),
                             APPRID: id,
                             BRANCHID: bid,
                             NODE_INX: data[i].value,
                             NODE_TITLE: data[i].name,
                             NEXT_APPR_NODE_ID: BBID + DY10(links[0].target)
                         });
-                    }else if (data[i].value == 99) {
+                    } else if (data[i].value == 99) {
                         DataView.APPROVAL_NODE.push({
                             APPR_NODE_ID: BBID + DY10(data[i].value),
                             APPRID: id,
@@ -310,11 +312,13 @@ var DataView = new Vue({
                         });
                     }
                 }
-                DataView.APPROVAL_NODE[data.length - 2].NEXT_APPR_NODE_ID = BBID+99;
+                DataView.APPROVAL_NODE[data.length - 2].NEXT_APPR_NODE_ID = BBID + 99;
+            } else {
+                return;
             }
         },
         IsValidSave: function () {
-            if (!DataView.APPROVAL_NODE.length>=2) {
+            if (DataView.APPROVAL_NODE.length==0) {
                 iview.Message.info("请添加审批节点!");
                 return false;
             };
@@ -336,7 +340,7 @@ var DataView = new Vue({
                 if (data.an.length > 0) {
                     DataView.APPROVAL_NODE_OPER = [];
                     for (let i = 0; i < data.ano.length; i++) {   //节点权限table数据
-                        DataView.APPROVAL_NODE_OPER.push({ APPR_NODE_ID: data.ano[i].APPR_NODE_ID + "", OPER_TYPE: data.ano[i].OPER_TYPE, OPER_DATA: data.ano[i].OPER_DATA, OPER_NAME: data.ano[i].OPER_NAME });
+                        DataView.APPROVAL_NODE_OPER.push({ APPR_NODE_ID: data.ano[i].APPR_NODE_ID + "", OPER_TYPE: data.ano[i].OPER_TYPE, OPER_DATA: data.ano[i].OPER_DATA, OPER_NAME: data.ano[i].OPER_NAME, CODE: data.ano[i].CODE });
                     }
                     let edata = [];
                     for (let i = 0; i < data.an.length; i++) {   //节点echart数据

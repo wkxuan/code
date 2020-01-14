@@ -57,10 +57,10 @@ namespace z.ERP.Services
         public Tuple<DataTable,DataTable> ShowDetail(string branchid, string apprid) {
             string sql = $@"SELECT * FROM APPROVAL_NODE WHERE BRANCHID={branchid} AND APPRID={apprid} ORDER BY NODE_INX";
             DataTable dt = DbHelper.ExecuteTable(sql);
-            string sql1 = $@"SELECT A.*,R.ROLENAME OPER_NAME FROM APPROVAL_NODE_OPER A,APPROVAL_NODE B,ROLE R 
+            string sql1 = $@"SELECT A.*,R.ROLENAME OPER_NAME,R.ROLECODE CODE FROM APPROVAL_NODE_OPER A,APPROVAL_NODE B,ROLE R 
                                 WHERE A.APPR_NODE_ID=B.APPR_NODE_ID AND R.ROLEID=A.OPER_DATA AND A.OPER_TYPE=1 AND B.BRANCHID={branchid} AND B.APPRID={apprid}
                                 UNION ALL
-                            SELECT A.*,U.USERNAME OPER_NAME FROM APPROVAL_NODE_OPER A,APPROVAL_NODE B,SYSUSER U 
+                            SELECT A.*,U.USERNAME OPER_NAME,U.USERCODE CODE FROM APPROVAL_NODE_OPER A,APPROVAL_NODE B,SYSUSER U 
                                 WHERE A.APPR_NODE_ID=B.APPR_NODE_ID AND U.USERID=A.OPER_DATA AND A.OPER_TYPE=2 AND B.BRANCHID={branchid} AND B.APPRID={apprid}";
             DataTable dt1 = DbHelper.ExecuteTable(sql1);
             return new Tuple<DataTable, DataTable>(dt,dt1);
