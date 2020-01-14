@@ -1,0 +1,54 @@
+﻿@inherits ViewBase<dynamic>
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {                   
+        "areas/lcgl/approval/approvaledit.js",
+    };
+}
+@section head{
+    @InitFiles(new string[] {
+        "/Content/echarts.js",
+        "areas/lcgl/approval/approvallist.css"
+    })
+}
+
+<div id="DataView" v-cloak>
+    <div class="topMenuBtn">
+        <span>
+            <i-button type="text" icon="ios-checkmark-circle" v-on:click="save" v-show="disab==false" shape="circle">保存</i-button>
+        </span>
+        <span>
+            <i-button type="text" icon="ios-checkmark-circle" v-on:click="edit" v-show="disab==true" shape="circle">编辑</i-button>
+        </span>
+        <span>
+            <i-button type="text" icon="ios-refresh" v-on:click="refresh" v-show="disab==false" shape="circle">放弃</i-button>
+        </span>
+    </div>
+    <div id="mainview" style="width: 100%;height:300px;padding:20px"></div>
+    <div style="padding:20px">
+        <row>
+            <i-col span="11" offset="2">
+                <span style="font-size:20px;font-weight:600">当前节点：</span> <span style="font-size:18px;color:coral">{{labelName}}</span>
+            </i-col>
+        </row>
+        <row style="height:10px"></row>
+        <i-col span="10" offset="1">
+            <yx-table v-bind:columns="colDefrole" v-bind:height="300" v-bind:border="false"
+                      v-bind:data="datarole" ref="refrole">
+            </yx-table>
+        </i-col>
+        <i-col span="10" offset="2">
+            <yx-table v-bind:columns="colDefuser" v-bind:height="300" v-bind:border="false"
+                      v-bind:data="datauser" ref="refuser">
+            </yx-table>
+        </i-col>
+    </div>
+
+
+    <yx-modal v-bind:src="popConfig.src" v-bind:title="popConfig.title"
+              v-bind:width="popConfig.width" v-bind:height="popConfig.height"
+              v-bind:visible.sync="popConfig.open"></yx-modal>
+</div>

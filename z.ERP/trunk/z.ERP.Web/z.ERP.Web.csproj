@@ -248,6 +248,7 @@
     <Compile Include="Areas\Layout\Search\SearchRender.cs" />
     <Compile Include="Areas\Layout\Search\SearchViewBase.cs" />
     <Compile Include="Areas\Layout\Tree\TreeViewBase.cs" />
+    <Compile Include="Areas\LCGL\Approval\ApprovalController.cs" />
     <Compile Include="Areas\Pop\Pop\PopController.cs" />
     <Compile Include="Areas\Report\BILL_SRC\Bill_SrcController.cs" />
     <Compile Include="Areas\Report\ContractInfo\ContractInfoController.cs" />
@@ -424,6 +425,9 @@
     <Content Include="Areas\Layout\Search\SearchStyle.css" />
     <Content Include="Areas\Layout\Search\_SearchLayout.js" />
     <Content Include="Areas\Layout\Tree\_TreeLayout.js" />
+    <Content Include="Areas\LCGL\Approval\ApprovalEdit.js" />
+    <Content Include="Areas\LCGL\Approval\ApprovalList.css" />
+    <Content Include="Areas\LCGL\Approval\ApprovalList.js" />
     <Content Include="Areas\Pop\Pop\PopFR_PlanList.js" />
     <Content Include="Areas\Pop\Pop\PopMerchantPaymentList.js" />
     <Content Include="Areas\Pop\Pop\PopPRESENTList.js" />
@@ -850,6 +854,8 @@
     <Content Include="Areas\XTGL\RedemptionRules\RedemptionRulesDetail.cshtml" />
     <Content Include="Areas\CXGL\PROMOBILL_RR\Promobill_RRList.cshtml" />
     <Content Include="Areas\CXGL\PROMOBILL_RR\Promobill_RREdit.cshtml" />
+    <Content Include="Areas\LCGL\Approval\ApprovalList.cshtml" />
+    <Content Include="Areas\LCGL\Approval\ApprovalEdit.cshtml" />
     <None Include="Properties\PublishProfiles\wkx.pubxml" />
   </ItemGroup>
   <ItemGroup>

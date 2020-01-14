@@ -188,6 +188,13 @@ namespace z.ERP.Services
                 return ioc.Create<CxglService>();
             }
         }
+        public LcglService LcglService
+        {
+            get
+            {
+                return ioc.Create<LcglService>();
+            }
+        }
         #endregion
 
         #region 通用方法

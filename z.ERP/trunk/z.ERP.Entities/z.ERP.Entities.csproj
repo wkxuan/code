@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auto\APPROVAL_BRANCHEntity.cs" />
+    <Compile Include="Auto\APPROVAL_NODEEntity.cs" />
+    <Compile Include="Auto\APPROVAL_NODE_OPEREntity.cs" />
     <Compile Include="Auto\PROMOBILL_RREntity.cs" />
     <Compile Include="Auto\PROMOBILL_RR_BRANDEntity.cs" />
     <Compile Include="Auto\REDEMPTIONRULESEntity.cs" />

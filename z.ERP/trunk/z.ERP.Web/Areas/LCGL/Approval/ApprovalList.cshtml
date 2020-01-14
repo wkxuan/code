@@ -1,0 +1,42 @@
+﻿@inherits ViewBase<dynamic>
+@using z.MVC5.Views
+@{
+    Layout = ThisLayout;
+}
+@{
+    WebFiles = new string[] {
+        "areas/lcgl/approval/approvallist.js"
+    };
+}
+@section head{
+    @InitFiles(new string[] {
+       "areas/lcgl/approval/approvallist.css"
+    })
+}
+
+<div id="DataView" v-cloak>
+    <row style="padding-top:30px">
+        <i-col span="8" class="RowTitle">选择门店</i-col>
+        <i-col span="6" class="RowText">
+            <i-select v-model="BRANCHID" v-on:on-change="branchChange">
+                <i-option v-for="item in branchData"
+                          v-bind:value="item.value" v-bind:key="item.value">{{ item.label }}</i-option>
+            </i-select>
+        </i-col>
+    </row>
+    <row>
+        <div class="ld">
+            <div class="listdata-item" v-for="item in ListData" v-bind:key="item.APPRID">
+                <div class="listdata-item-name" v-on:click="itemclick(item.APPRID,item.NAME,item.STATUS)">
+                    {{item.NAME}}
+                </div>
+                <div class="listdata-item-switch" v-if="item.STATUS!=0">                   
+                    <i-Switch v-model="item.isON" v-on:on-change="Switchchange(item.APPRID)" />                 
+                </div> 
+                <div class="listdata-item-switch" v-if="item.STATUS==0">
+                    <span class="item-text">未设置</span>
+                </div>               
+            </div>
+        </div>
+    </row>
+</div>

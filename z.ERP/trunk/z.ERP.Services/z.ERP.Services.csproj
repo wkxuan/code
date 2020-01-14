@@ -56,6 +56,7 @@
     <Compile Include="CxglService.cs" />
     <Compile Include="DefaultDataService.cs" />
     <Compile Include="JsglService.cs" />
+    <Compile Include="LcglService.cs" />
     <Compile Include="PosService.cs" />
     <Compile Include="ReportService.cs" />
     <Compile Include="UserService.cs" />

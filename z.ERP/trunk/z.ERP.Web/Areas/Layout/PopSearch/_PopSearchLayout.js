@@ -75,9 +75,11 @@
                     else if (window.parent.define != undefined)
                         window.parent.define.popCallBack(data);
                     else if (window.parent.splc != undefined)
-                        window.parent.splc.popCallBack(data);
+                        window.parent.splc.popCallBack(data);                        
                     else if (window.parent.defineDetail != undefined)
                         window.parent.defineDetail.popCallBack(data);
+                    else if (window.parent.DataView != undefined)
+                        window.parent.DataView.popCallBack(data);
                     this.data = [];
                 },
                 qr: function (event) {
