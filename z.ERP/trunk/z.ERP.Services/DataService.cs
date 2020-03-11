@@ -278,7 +278,7 @@ namespace z.ERP.Services
             item.HasKey("WFDJ", a => sql += $" and A.MUST_MONEY - A.RECEIVE_MONEY<>0");
             item.HasKey("FTYPE", a => sql += $" and F.TYPE in ( { a } ) ");
             item.HasKey("RRETURNFLAG", a => sql += $" and A.RECEIVE_MONEY - A.RETURN_MONEY <> 0");
-            item.HasKey("SCFS_TZD", a => sql += $" and F.SCFS_TZD = {a}");
+            item.HasKey("SCFS_TZD", a => sql += $" and FA.NOTICE_CREATE_WAY = {a}");
             item.HasKey("FEE_ACCOUNTID", a => sql += $" and FA.FEE_ACCOUNTID = {a}");
 
             int count;
